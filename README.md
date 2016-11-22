@@ -3,8 +3,8 @@ Pade
 
 Pade (Yoruba word for Meet) is a unified communication desktop application for [Openfire Meetings] powered by [JxBrowser] and [Spark] that enables the following features:
 
-* Web-based clients based on Jitsi Meet as well as Candy;
-* Openfire user authentication directly from web browser;
+* Modern HTML5 user interface;
+* Openfire user authentication;
 * Audio and Video conferencing;
 * Telephone (SIP) conferencing;
 * Online Meeting/Conference hosting and planning;
@@ -12,6 +12,7 @@ Pade (Yoruba word for Meet) is a unified communication desktop application for [
 * Co-browsing;
 * Application sharing (PDF presentation, Realtime collaborative scrum board, drawing and text editor) 
 * Remote desktop control;
+* Fastpath support with audio and video conferencing
 
 Combined with the [Openfire] server and the [Openfire Meetings] Plugin, Pade allows for very efficient collaboration
 
