@@ -1,7 +1,7 @@
 Pade
 =====
 
-Pade (Yoruba word for Meet) is a unified communication desktop application for [Openfire Meetings] powered by [JxBrowser] and [Spark] that enables the following features:
+Pade (Yoruba word for Meet) is a unified communication desktop application for [Openfire Meetings] powered by [Electron] and [Spark] that enables the following features:
 
 * Modern HTML5 user interface;
 * Openfire user authentication;
@@ -24,11 +24,8 @@ We're aimed at disrupting proprietary, non-open standards-based systems and invi
 of the biggest and most active Open Source communities.
 
 -------
-
-Openfire Meetings Plugin uses [JxBrowser], which is a proprietary software. The use of JxBrowser is governed by JxBrowser Product Licence Agreement http://www.teamdev.com/jxbrowser-licence-agreement. If you would like to use JxBrowser in your development, please contact TeamDev.
-
 [Openfire Meetings]:http://community.igniterealtime.org/community/plugins/commplugins/openfire-meetings
 [Openfire]:http://www.igniterealtime.org/projects/openfire/index.jsp
 [Ignite Realtime]:http://www.igniterealtime.org
 [Spark]:http://www.igniterealtime.org/projects/spark/index.jsp
-[JxBrowser]:http://www.teamdev.com/jxbrowser
+[Electron]:http://electron.atom.io/
