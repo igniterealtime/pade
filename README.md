@@ -1,7 +1,7 @@
 Pade
 =====
 
-Pade (Yoruba word for Meet) is a unified communication desktop application for [Openfire Meetings] powered by [Electron] and [Spark] that enables the following features:
+Pade (Yoruba word for Meet) is a chrome extension for [Openfire Meetings] that enables the following features:
 
 * Modern HTML5 user interface;
 * Openfire user authentication;
@@ -27,5 +27,3 @@ of the biggest and most active Open Source communities.
 [Openfire Meetings]:http://community.igniterealtime.org/community/plugins/commplugins/openfire-meetings
 [Openfire]:http://www.igniterealtime.org/projects/openfire/index.jsp
 [Ignite Realtime]:http://www.igniterealtime.org
-[Spark]:http://www.igniterealtime.org/projects/spark/index.jsp
-[Electron]:http://electron.atom.io/
