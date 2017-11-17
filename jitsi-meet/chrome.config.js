@@ -39,9 +39,10 @@ if (window.localStorage["store.settings.server"])
       "adaptiveLastN": false,
       "desktopSharingChromeExtId": "blnhgbeilkjpcadckjogfflfijeblbpo",
       "hosts": {
-        "domain": "" + __domain + "",
+        "domain": __domain + "",
         "focus": "focus." + __domain + "",
         "muc": "conference." + __domain + "",
+        "callcontrol": "callcontrol." + __domain,
         "bridge": "jitsi-videobridge." + __domain + ""
       },
 	  "getroomnode" : function (config, path) {

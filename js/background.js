@@ -372,7 +372,7 @@ function fetchContacts(callback)
 		$(message).find('body').each(function ()
 		{
 			var body = $(this).text();
-			var pos1 = body.indexOf("/meet/");
+			var pos1 = body.indexOf("/ofmeet/");
 			var pos2 = body.indexOf("https://" + pade.server)
 
             if ( pos1 > 0 && pos2 > 0 )
@@ -520,8 +520,12 @@ function fetchContacts(callback)
 		var type = vCard.find('TYPE').text();
 		var img_src = 'data:'+type+';base64,'+img;
 
-		//console.log("get vcard", img_src);
-		pade.avatar = img_src;
+		console.log("get vcard", img_src);
+
+		if (img_src != 'data:;base64,')
+		{
+			pade.avatar = img_src;
+		}
 
 	}, function (error) {
 		console.error(error);
@@ -534,7 +538,7 @@ function inviteToConference()
 	console.log("inviteToConference", pade.activeContact);
 
 	try {
-		var invite = "Please join me in https://" + pade.server + "/meet/" + pade.activeContact.room;
+		var invite = "Please join me in https://" + pade.server + "/ofmeet/" + pade.activeContact.room;
 		pade.connection.send($msg({type: "chat", to: pade.activeContact.jid}).c("body").t(invite));
 	} catch (e) {
 		console.error(e);

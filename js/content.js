@@ -13,3 +13,7 @@ window.addEventListener('message', function (event) {
     channel.postMessage(event.data);
 });
 
+var div = document.createElement('div');
+div.id = "ofmeet-extension-installed";
+div.style = "display: none;";
+document.body.appendChild(div);

@@ -26,7 +26,6 @@ var interfaceConfig = {
     "fodeviceselection",
     "hangup",
     "profile",
-    "dialout",
     "addtocall",
     "contacts",
     /*"info",*/

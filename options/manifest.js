@@ -61,20 +61,6 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
-            "name": "enableMidi",
-            "type": "checkbox",
-            "label": i18n.get("Enable Midi")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
-            "name": "enableSip",
-            "type": "checkbox",
-            "label": i18n.get("Enable SIP")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
             "name": "enableRingtone",
             "type": "checkbox",
             "label": i18n.get("Enable Ringtone")
