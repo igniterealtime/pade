@@ -1,0 +1,60 @@
+{
+  "manifest_version": 2,
+  "minimum_chrome_version": "34",  
+  "options_page": "options/index.html",  
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data: http: https:",  
+  "short_name": "pade",
+  "name": "Pade - Openfire Meetings",
+  "description": "Pade is an Openfire Meetings Chrome Extension for unified communications",
+  "version": "0.1.0",
+    
+  "background": {
+        "persistent": true,
+        "scripts": [ 
+            "js/jquery.min.js", "js/libs.bundle.js", "js/strophe.reconnect.js", "js/moment.js", "js/sip.js", "js/background.js"
+        ]
+  }, 
+
+   "content_scripts": [ {
+      "all_frames": true,
+      "css": [ "cursor.css" ],
+      "js": [ "js/content.js", "js/jquery.min.js", "js/util.js", "js/ofmeet.js", "js/tinycolor.js" ],
+      "matches": [ "https://*/*", "http://*/*" ]
+   } ],
+   
+  "browser_action": {
+      "default_icon": {
+         "19": "ofmeet.png",
+         "38": "ofmeet.png"
+      },  
+      "default_popup": "popup.html",      
+      "default_title": "Pade - Openfire Meetings"    
+  },
+
+   "icons": {
+      "128": "ignite_dl_openfire.png",
+      "16": "ofmeet.png",
+      "48": "ignite_dl_openfire.png"
+   }, 
+  
+  "web_accessible_resources": [
+    "*",   
+    "options/*",
+    "js/*",    
+    "ringtones/*",       
+    "groupchat/*"
+  ],
+  
+  "permissions": [
+    "background", 
+    "contextMenus", 
+    "desktopCapture",
+    "storage",
+    "tabs",
+    "idle", 
+    "clipboardRead",
+    "notifications", 
+    "http://*/*", 
+    "https://*/*" 
+  ]
+}
