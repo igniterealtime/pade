@@ -8,6 +8,8 @@ if (window.localStorage["store.settings.server"])
     var __displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
     var __username = JSON.parse(window.localStorage["store.settings.username"]);
     var __password = JSON.parse(window.localStorage["store.settings.password"]);
+    var __enableSip = window.localStorage["store.settings.enableSip"] && JSON.parse(window.localStorage["store.settings.enableSip"]);
+
 
 	OFMEET_CONFIG = {
 		emailAddress:'',
@@ -15,7 +17,7 @@ if (window.localStorage["store.settings.server"])
 		userAvatar: null,
 		authorization: btoa(__username + ":" + __password),
 
-		isSwitchAvailable: false,
+		isSwitchAvailable: __enableSip,
 		callcontrol:'callcontrol.' + __domain,
 		sip:__server,
 		hostname: __server,

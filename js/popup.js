@@ -38,6 +38,9 @@ window.addEventListener("load", function()
 			}
 
 			location.href = "jitsi-meet/chrome.index.html?room=" + bgWindow.pade.activeContact.room;
+
+		} else {
+			location.href = "jitsi-meet/chrome.index.html";
 		}
 
 	});

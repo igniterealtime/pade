@@ -1,7 +1,7 @@
 // SAMPLE
 this.i18n = {
     "settings": {
-        "en": "Settings",
+        "en": "Pade",
         "de": "Optionen"
     },
     "search": {
@@ -84,5 +84,17 @@ this.i18n = {
     "disconnect": {
         "en": "Disconnect:",
         "de": "Trennen:"
-    }
+    },
+    "ofmeet": {
+        "en": "Openfire Meetings",
+        "de": "Optionen"
+    },
+    "config": {
+        "en": "Configuration",
+        "de": "Optionen"
+    },
+    "ui": {
+        "en": "User Interface",
+        "de": "Optionen"
+    },
 };

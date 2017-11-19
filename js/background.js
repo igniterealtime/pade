@@ -18,7 +18,6 @@ window.addEventListener("load", function()
     console.log("loaded");
 
     chrome.contextMenus.removeAll();
-
     chrome.contextMenus.create({id: "pade_conversations", title: "Meetings", contexts: ["browser_action"]});
 
     chrome.runtime.onConnect.addListener(function(port)
@@ -33,10 +32,40 @@ window.addEventListener("load", function()
             {
 				inviteToConference()
             }
+			else
 
             if (msg.event == "pade.popup.open")
             {
 				stopTone();
+			}
+			else {	// desktop share backward compatiblity for openfire meetings 0.3.x
+
+				switch(message.type)
+				{
+				case 'ofmeetGetScreen':
+					server = message.server;
+					sendRemoteControl('action=' + message.type + '&resource=' + message.resource + '&server=' + message.server)
+
+					var pending = chrome.desktopCapture.chooseDesktopMedia(message.options || ['screen', 'window'], channel.sender.tab, function (streamid)
+					{
+						message.type = 'ofmeetGotScreen';
+						message.sourceId = streamid;
+						channel.postMessage(message);
+					});
+
+					// Let the app know that it can cancel the timeout
+					message.type = 'ofmeetGetScreenPending';
+					message.request = pending;
+					channel.postMessage(message);
+					break;
+
+				case 'ofmeetCancelGetScreen':
+					chrome.desktopCapture.cancelChooseDesktopMedia(message.request);
+					message.type = 'ofmeetCanceledGetScreen';
+					channel.postMessage(message);
+					break;
+				}
+
 			}
         });
 
@@ -68,7 +97,37 @@ window.addEventListener("load", function()
 
     chrome.browserAction.onClicked.addListener(function()
     {
-        doOptions();
+		//console.log("chrome.browserAction.onClicked", window.localStorage["store.settings.popupWindow"]);
+
+		if (window.localStorage["store.settings.popupWindow"])
+		{
+			if (JSON.parse(window.localStorage["store.settings.popupWindow"]))
+			{
+				chrome.browserAction.setPopup({popup: ""});
+
+				if (pade.activeContact)
+				{
+					closeVideoWindow();
+
+					if (pade.activeContact.type == "person")
+					{
+						inviteToConference();
+					}
+
+					openVideoWindow(pade.activeContact.room);
+
+				} else {
+					openVideoWindow();
+				}
+
+			} else {
+				chrome.browserAction.setPopup({popup: "popup.html"});
+			}
+
+		} else {
+			chrome.browserAction.setPopup({popup: "options/index.html"});
+		}
+
     });
 
     chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex)
@@ -105,6 +164,14 @@ window.addEventListener("load", function()
         pade.password = JSON.parse(window.localStorage["store.settings.password"]);
         pade.jid = pade.username + "@" + pade.domain;
 
+		if (window.localStorage["store.settings.popupWindow"] && JSON.parse(window.localStorage["store.settings.popupWindow"]))
+		{
+			chrome.browserAction.setPopup({popup: ""});
+
+		} else {
+			chrome.browserAction.setPopup({popup: "popup.html"});
+		}
+
         chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
         chrome.browserAction.setBadgeText({ text: 'off' });
 
@@ -126,6 +193,8 @@ window.addEventListener("load", function()
 					chrome.browserAction.setBadgeText({ text: "" });
                     pade.connection.send($pres());
 
+					chrome.browserAction.setTitle({title: "Pade - Connected"});
+
 					pade.presence = {};
 					pade.participants = {};
 
@@ -139,6 +208,7 @@ window.addEventListener("load", function()
                 if (status === Strophe.Status.DISCONNECTED)
                 {
 					chrome.browserAction.setBadgeText({ text: "off" });
+					chrome.browserAction.setTitle({title: "Pade - Disconnected"});
 				}
 
             });
@@ -167,14 +237,20 @@ function handleContact(contact)
 		chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
 
 		// set default
-		if (contact.id == 0 && contact.type == "room") pade.activeContact = contact;
+		if (contact.id == 0 && contact.type == "room") setActiveContact(contact);
 	}
+}
+
+function setActiveContact(contact)
+{
+	pade.activeContact = contact;
+	chrome.browserAction.setTitle({title: "Pade - " + pade.activeContact.name + " Meeting"});
 }
 
 function handleContactClick(info)
 {
 	console.log("handleContactClick", info, pade.participants[info.menuItemId]);
-	pade.activeContact = pade.participants[info.menuItemId];
+	setActiveContact(pade.participants[info.menuItemId]);
 }
 
 function handleUrlClick(info)
@@ -307,9 +383,10 @@ function openVideoWindow(room)
     {
         chrome.windows.remove(pade.videoWindow.id);
     }
-    var url = chrome.extension.getURL("jitsi-meet/chrome.index.html?room=" + room);
+    var url = chrome.extension.getURL("jitsi-meet/chrome.index.html");
+    if (room) url = url + "?room=" + room;
 
-	chrome.windows.create({url: url, width: 800, height: 600, focused: true, type: "popup"}, function (win)
+	chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
 	{
 		pade.videoWindow = win;
 		chrome.windows.update(pade.videoWindow.id, {drawAttention: true});
