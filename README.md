@@ -1,20 +1,36 @@
 Pade
 =====
 
-Pade (Yoruba word for Meet) is a chrome extension for [Openfire Meetings] that enables the following features:
+[Pade] is the Yoruba word for "Meet". Pade (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is based on the Jitsi Meet web application running inside a chrome extension.
 
 * Modern HTML5 user interface;
 * Openfire user authentication;
 * Audio and Video conferencing;
-* Telephone (SIP) conferencing;
+* Telephone (SIP) conferencing (requires ofswitch openfire plugin);
 * Online Meeting/Conference hosting and planning;
 * Screen sharing;
 * Co-browsing;
 * Application sharing (PDF presentation, Realtime collaborative scrum board, drawing and text editor) 
-* Remote desktop control;
+* Remote desktop control (work-in-progress);
 * Fastpath support with audio and video conferencing
 
-Combined with the [Openfire] server and the [Openfire Meetings] Plugin, Pade allows for very efficient collaboration
+To install, visit the [Google Play web store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en)
+
+On your [Openfire] server, you will need at least the two [Openfire Meetings] plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins.jsp) plugin.
+
+Pade will fetch the logged in user's contact roster as well as all the bookmarks configured for the user. To see, the contacts, conference rooms and web page urls, right click on the Openfire icon.
+
+<img width="320" src="https://discourse.igniterealtime.org/uploads/default/original/2X/d/d23c2faf64f4f869793ba906a0f789af7b4bde09.png" />
+
+A normal left click on the Openfire icon causes Pade to open into a Jitsi Meet video-conference with the currently selected contact or multi-chat room. 
+
+<img width="640" src="https://discourse.igniterealtime.org/uploads/default/optimized/2X/f/f72271aaeb1d188f7b9aa6389ea14f85e49624e3_1_480x231.jpg"/>
+
+If the meeting is with a contact, then the meeting is sent to the contact as a standard. chat message. When Pade receives such a message, it displays a notification to the user.
+
+<img width="320" src="https://discourse.igniterealtime.org/uploads/default/optimized/2X/4/4346b0a326c38463f45524d5ca42683961806cc0_1_300x197.png" />
+
+Accepting the invitation opens the Jitsi Meet video-conference window.
 
 -------
 
@@ -25,5 +41,6 @@ of the biggest and most active Open Source communities.
 
 -------
 [Openfire Meetings]:http://community.igniterealtime.org/community/plugins/commplugins/openfire-meetings
+[Pade]: https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en-GB
 [Openfire]:http://www.igniterealtime.org/projects/openfire/index.jsp
 [Ignite Realtime]:http://www.igniterealtime.org
