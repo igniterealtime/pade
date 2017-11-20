@@ -1,7 +1,7 @@
-Pade
+P&agrave;d&eacute;
 =====
 
-[Pade] is the Yoruba word for "Meet". Pade (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is based on the Jitsi Meet web application running inside a chrome extension.
+[P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is based on the Jitsi Meet web application running inside a chrome extension.
 
 * Modern HTML5 user interface;
 * Openfire user authentication;
@@ -41,6 +41,6 @@ of the biggest and most active Open Source communities.
 
 -------
 [Openfire Meetings]:http://community.igniterealtime.org/community/plugins/commplugins/openfire-meetings
-[Pade]: https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en-GB
+[P&agrave;d&eacute;]: https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en-GB
 [Openfire]:http://www.igniterealtime.org/projects/openfire/index.jsp
 [Ignite Realtime]:http://www.igniterealtime.org
