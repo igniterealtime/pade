@@ -43,10 +43,10 @@ window.addEvent("domready", function () {
 				background.reloadApp();
 			}
 			else {
-				if (!server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
-				if (!domain) settings.manifest.status.element.innerHTML = '<b>bad domain</b>';
-				if (!username) settings.manifest.status.element.innerHTML = '<b>bad username</b>';
-				if (!password) settings.manifest.status.element.innerHTML = '<b>bad password</b>';
+				if (!lynks.server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
+				if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b>bad domain</b>';
+				if (!lynks.username) settings.manifest.status.element.innerHTML = '<b>bad username</b>';
+				if (!lynks.password) settings.manifest.status.element.innerHTML = '<b>bad password</b>';
 			}
 
 	     	} else settings.manifest.status.element.innerHTML = '<b>bad bad server, domain, username or password</b>';

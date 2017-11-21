@@ -65,8 +65,8 @@ if (window.localStorage["store.settings.server"])
       ],
       "disableSimulcast": false,
       "startAudioOnly": false,
-      "startWithAudioMuted": false,
-      "startWithVideoMuted": false,
+      "startWithAudioMuted": true,
+      "startWithVideoMuted": true,
       "stereo": false,
       "focusUserJid": "focus@" + __domain + ""
     };

@@ -75,6 +75,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "showSharedCursor",
+            "type": "checkbox",
+            "label": i18n.get("Show Shared Cursor")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "enableRingtone",
             "type": "checkbox",
             "label": i18n.get("Enable Ringtone")

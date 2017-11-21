@@ -20,12 +20,54 @@ var ofmeet = (function(of)
 
         __init();
 
+
+		window.addEventListener('message', function (event)
+		{
+			//console.log("addListener message", event.data);
+
+			if (APP && APP.connection && OFMEET_CONFIG.bgWin && OFMEET_CONFIG.bgWin.pade.activeUrl && event.data)
+			{
+				event.data.from = OFMEET_CONFIG.nickName;
+
+				if (event.data.event == "ofmeet.event.pdf.ready" || event.data.event == "ofmeet.event.pdf.goto")
+				{
+					if (OFMEET_CONFIG.documentOwner)
+					{
+						event.data.url = OFMEET_CONFIG.bgWin.pade.activeUrl + "#" + event.data.page;
+						APP.conference._room.sendOfMeet(JSON.stringify(event.data));
+					}
+				}
+				else
+
+				if (event.data.event == "ofmeet.event.url.ready")
+				{
+					console.log("addListener message collab", event.data);
+
+					if (OFMEET_CONFIG.documentOwner)
+					{
+						//if (!event.data.url) event.data.url = OFMEET_CONFIG.bgWin.pade.activeUrl;
+						APP.conference._room.sendOfMeet(JSON.stringify(event.data));
+					}
+
+					var ofMeetContent = document.getElementById("ofmeet-content");
+
+					if (ofMeetContent)
+					{
+						ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.setup', room: APP.conference.roomName, user: OFMEET_CONFIG.nickName}, '*');
+					}
+				}
+				else {
+					APP.conference._room.sendOfMeet(JSON.stringify(event.data));
+				}
+			}
+		});
+
         this.connection = APP.connection.xmpp.connection;
         of.connection = connection;
 
         of.connection.addHandler(function(message)
         {
-            console.log("ofmeet.js incoming xmpp", message);
+            //console.log("ofmeet.js incoming xmpp", message);
 
             $(message).find('ofmeet').each(function ()
             {
@@ -42,6 +84,67 @@ var ofmeet = (function(of)
                     {
                         removeSipParticipant(json);
                     }
+                    else
+
+                    if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready" || json.event == "ofmeet.event.url.ready")
+                    {
+						var ofMeetContent = document.getElementById("ofmeet-content");
+
+						if (!ofMeetContent)
+						{
+							OFMEET_CONFIG.documentShare = true;
+							OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
+							document.getElementById("largeVideoContainer").innerHTML = '<iframe id="ofmeet-content" style="width: 100%; height: 100%; border: 0;">';
+							ofMeetContent = document.getElementById("ofmeet-content");
+						}
+						var url = json.url;
+
+						if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready")
+						{
+							url = chrome.extension.getURL("pdf/index.html?pdf=" + json.url);
+							ofMeetContent.contentWindow.location.href = url;
+						}
+						else
+
+						if (!OFMEET_CONFIG.documentOwner)
+						{
+							ofMeetContent.contentWindow.location.href = url;
+						}
+                    }
+                    else
+
+                    if (json.event == "ofmeet.event.url.end")
+                    {
+						if (OFMEET_CONFIG.largeVideoContainer && OFMEET_CONFIG.documentShare)
+						{
+							OFMEET_CONFIG.documentShare = false;
+							document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
+						}
+					}
+                    else
+
+                    if (json.event == "ofmeet.event.pdf.message")
+                    {
+						var ofMeetContent = document.getElementById("ofmeet-content");
+
+						if (ofMeetContent && (OFMEET_CONFIG.showSharedCursor || !OFMEET_CONFIG.showSharedCursor && json.from != OFMEET_CONFIG.nickName))
+						{
+							console.log("ofmeet.event.pdf.message", json);
+							ofMeetContent.contentWindow.handlePdfShare(json.msg, json.from);
+						}
+					}
+                    else
+
+                    if (json.event == "ofmeet.event.url.message")
+                    {
+						var ofMeetContent = document.getElementById("ofmeet-content");
+
+						if (ofMeetContent)
+						{
+							//console.log("ofmeet.event.url.message", json);
+							ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.share', json: json}, '*');
+						}
+					}
 
 
                 } catch (e) {}
@@ -484,6 +587,42 @@ var ofmeet = (function(of)
     return of;
 
 }(ofmeet || {}));
+
+function ofmeetEtherpadClicked()
+{
+	console.log("ofmeet.etherpadClicked", OFMEET_CONFIG.bgWin.pade.activeUrl);
+
+	if (OFMEET_CONFIG.bgWin.pade.activeUrl)
+	{
+		if (OFMEET_CONFIG.documentShare)
+		{
+			if (OFMEET_CONFIG.documentOwner)
+			{
+				OFMEET_CONFIG.documentShare = false;
+				OFMEET_CONFIG.documentOwner = false;
+
+				document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
+
+				APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
+			}
+		}
+		else {
+			OFMEET_CONFIG.documentShare = true;
+			OFMEET_CONFIG.documentOwner = true;
+
+			OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
+
+			var url = OFMEET_CONFIG.bgWin.pade.activeUrl;
+
+			if (OFMEET_CONFIG.bgWin.pade.activeUrl.indexOf(".pdf") > -1)
+			{
+				url = chrome.extension.getURL("pdf/index.html?pdf=" + OFMEET_CONFIG.bgWin.pade.activeUrl);
+			}
+
+			document.getElementById("largeVideoContainer").innerHTML = '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;">';
+		}
+	}
+}
 
 /*
  * SIP version 0.7.8

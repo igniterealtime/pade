@@ -12571,6 +12571,8 @@
                 this.room && this.room.removePresenceListener(e)
             }, r.prototype.sendTextMessage = function(e) {
                 this.room && this.room.sendMessage(e)
+            }, r.prototype.sendOfMeet = function(e) {		// BAO
+                this.room && this.room.sendOfMeet(e)
             }, r.prototype.sendCommand = function(e, t) {
                 this.room && (this.room.addToPresence(e, t), this.room.sendPresence())
             }, r.prototype.sendCommandOnce = function(e, t) {
@@ -20370,6 +20372,16 @@
                             } catch (t) {
                                 d.a.callErrorHandler(t), T.error("Error processing:" + e.tagName + " node.", t)
                             }
+                        }
+                    }, {
+                        key: "sendOfMeet",			// BAO
+                        value: function(t) {
+                            var n = Object(u.$msg)({
+                                to: this.roomjid,
+                                type: "groupchat"
+                            });
+                            n.c("ofmeet", {xmlns: "jabber:x:ofmeet"}).t(t);
+                            this.connection.send(n);
                         }
                     }, {
                         key: "sendMessage",

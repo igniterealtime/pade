@@ -455,7 +455,7 @@ function fetchContacts(callback)
             if ( pos1 > 0 && pos2 > 0 )
             {
 				offerer = Strophe.getBareJidFromJid(from);
-				room = body.substring(pos1 + 6);
+				room = body.substring(pos1 + 8);
                 handleInvitation({room: room, offerer: offerer});
             }
 		});

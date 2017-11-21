@@ -2,7 +2,7 @@ var interfaceConfig = {
   "ACTIVE_SPEAKER_AVATAR_SIZE": 100,
   "SHOW_CONTACTLIST_AVATARS": false,
   "SHOW_POWERED_BY": false,
-  "APP_NAME": "Openfire Meetings",
+  "APP_NAME": "Pade - Openfire Meetings",
   "filmStripOnly": false,
   "SHADOW_COLOR": "#ffffff",
   "JITSI_WATERMARK_LINK": "",
@@ -49,7 +49,7 @@ var interfaceConfig = {
   "CANVAS_RADIUS": 7,
   "ENABLE_FEEDBACK_ANIMATION": false,
   "INVITATION_POWERED_BY": true,
-  "DEFAULT_REMOTE_DISPLAY_NAME": "Change Me",
+  "DEFAULT_REMOTE_DISPLAY_NAME": "",
   "TOOLBAR_TIMEOUT": 4000,
   "INVITE_OPTIONS": [
     "invite",

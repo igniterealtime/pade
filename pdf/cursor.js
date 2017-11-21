@@ -11,16 +11,15 @@
 
   	send: function(msg)
   	{
-  		//console.log('session.send', msg);
-  		//window.parent.connection.ofmuc.pfdMessage(msg);
+  		console.log('session.send', msg);
+		window.parent.postMessage({ event: 'ofmeet.event.pdf.message', msg: msg}, '*');
   	}
   };
 
-  var handlePdfShare = function(url, from)
+  var handlePdfShare = function(obj, from)
   {
   	try {
-  		var obj = JSON.parse(url);
-  		//window.parent.console.log("remote handlePdfShare", obj, url, from);
+  		window.parent.console.log("remote handlePdfShare", obj, from);
 
 		var p = peers[from];
 

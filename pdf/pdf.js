@@ -26,7 +26,7 @@ function goto(page)
 	PDFJS.getDocument(pdfDoc).then(function(p) {
 		pdf = p;
 		doPage(page, true);
-		window.parent.postMessage({ type: 'ofmeetPdfReady'}, '*');
+		window.parent.postMessage({ event: 'ofmeet.event.pdf.ready', page: page}, '*');
 	});
 }
 
@@ -40,7 +40,8 @@ function nextPage()
 
 		if (page > pdf.numPages) page = 1;
 
-		doPage(page, true);
+		//doPage(page, true);
+		window.parent.postMessage({ event: 'ofmeet.event.pdf.goto', page: page}, '*');
 	}
 }
 
@@ -71,7 +72,6 @@ function doPage(pdfPage, push)
 	  });
 
 	  if (push) window.history.pushState(null, null, window.location.pathname + "?pdf=" + pdfDoc + "#" + pdfPage);
-	  window.parent.postMessage({ type: 'ofmeetPdfGoto', page: pdfPage}, '*');
 	 }
 }
 

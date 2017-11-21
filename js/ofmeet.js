@@ -17,7 +17,7 @@ var ofmeet = (function (my)
   	send: function(msg)
   	{
   		//console.log("session send", msg);
-  		window.parent.postMessage({ type: 'ofmeetSendMessage', msg: msg}, '*');
+		window.parent.postMessage({ event: 'ofmeet.event.url.message', msg: msg}, '*');
   	}
   };
 
@@ -46,7 +46,7 @@ var ofmeet = (function (my)
     // FIXME: I'm not sure this custom attribute always propagates?
     // seems okay in Firefox/Chrome, but I've had problems with
     // setting attributes on keyboard events in the past.
-    event.togetherjsInternal = false;
+    event.togetherjsInternal = true;
     target = $(target)[0];
     var cancelled = target.dispatchEvent(event);
     if (cancelled) {
@@ -754,28 +754,27 @@ var ofmeet = (function (my)
 		topPos = offset.top + pos.offsetY;
 		leftPos = offset.left + pos.offsetX;
 
-        	eventMaker.performClick(target);
+        if (target) eventMaker.performClick(target);
 	}
 	displayClick({top: topPos, left: leftPos}, 'red');
   };
 
-  my.handleAppMessage = function(json, from)
+  my.handleAppMessage = function(obj, from)
   {
   	displayMouseClick = true;
 
   	//try {
-  		var obj = JSON.parse(json);
-  		//console.log("remote handleAppMessage", obj, json, from);
+  		//console.log("remote handleAppMessage", obj, from);
 
     		p = Cursor.getClient(from);
 
     		if (p)
     		{
-			p.updatePeer({id: from, name: from, status: "live"});
+				p.updatePeer({id: from, name: from, status: "live"});
 
-			if (obj.type == "cursor-update") p.updatePosition(obj);
-			if (obj.type == "cursor-click") handleCursorClick(obj, p);
-		}
+				if (obj.type == "cursor-update") p.updatePosition(obj);
+				if (obj.type == "cursor-click") handleCursorClick(obj, p);
+			}
 
   	//} catch (e) {console.error(e)}
   }
@@ -796,7 +795,6 @@ var ofmeet = (function (my)
     document.removeEventListener("keydown", documentKeydown, true);
 
     $(window).unbind("scroll", scroll);
-    window.parent.postMessage({ type: 'ofmeetUnloaded'}, '*');
   });
 
   window.addEventListener('message', function (event) {
@@ -805,22 +803,33 @@ var ofmeet = (function (my)
 
 	if (!event.data) return;
 
-	// handle ofmuc requests
-	if (event.data.type == 'ofmeetSetMessage')  	my.handleAppMessage(event.data.json, event.data.from);	// from ofmuc
-	if (event.data.type == 'ofmeetEnableCursor') 	enableCursor = event.data.flag;
+	// handle actions
 
-	// handle API requests
-	if (event.data.type == 'ofmeetGetCursor')  	window.parent.postMessage({ type: 'ofmeetGotCursor', content: Cursor.getClient(event.data.user)}, '*');
-	if (event.data.type == 'ofmeetGetMyCursor')  	window.parent.postMessage({ type: 'ofmeetGotCursor', content: Cursor.getClient(my.user)}, '*');
+	if (event.data.action == 'ofmeet.action.url.setup')
+	{
+		my.room = event.data.room;
+		my.user = event.data.user;
+	}
+	else
+
+	if (event.data.action == 'ofmeet.action.url.share')
+	{
+		my.handleAppMessage(event.data.json.msg, event.data.json.from);
+	}
+
+	// handle ofmuc requests
+	//if (event.data.type == 'ofmeetSetMessage')  	my.handleAppMessage(event.data.json, event.data.from);	// from ofmuc
+	//if (event.data.type == 'ofmeetEnableCursor') 	enableCursor = event.data.flag;
+
+
+	//if (event.data.type == 'ofmeetGetCursor')  	window.parent.postMessage({ type: 'ofmeetGotCursor', content: Cursor.getClient(event.data.user)}, '*');
+	//if (event.data.type == 'ofmeetGetMyCursor')  	window.parent.postMessage({ type: 'ofmeetGotCursor', content: Cursor.getClient(my.user)}, '*');
 
   });
 
-  $(document).ready(function ()
+  window.addEventListener("load", function ()
   {
 	if (window == window.parent) return;
-
-	my.room = util.urlParam("room");
-	my.user = util.urlParam("user");
 
 	document.addEventListener("mousemove", mouseMove, true);
 	document.addEventListener("click", documentClick, true);
@@ -829,9 +838,9 @@ var ofmeet = (function (my)
 	$(window).scroll(scroll);
 	scroll();
 
-	console.log("remote loaded", my.room, my.user);
-	window.parent.postMessage({ type: 'ofmeetLoaded'}, '*');
+	window.parent.postMessage({ event: 'ofmeet.event.url.ready', url: window.location.href}, '*');
   });
   return my;
 
 }(ofmeet || {}));
+
