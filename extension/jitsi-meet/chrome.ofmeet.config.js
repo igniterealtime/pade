@@ -18,6 +18,7 @@ if (window.localStorage["store.settings.server"])
 	OFMEET_CONFIG = {
 		emailAddress:'',
 		nickName:__displayname ? __displayname : __username,
+		username:__username,
 		userAvatar: null,
 		authorization: btoa(__username + ":" + __password),
 

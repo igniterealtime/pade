@@ -10,15 +10,15 @@ window.addEventListener("beforeunload", function ()
 
 window.addEventListener("unload", function ()
 {
+    console.log("pade unloaded");
 	if (pade.connection) pade.connection.disconnect();
 });
 
 window.addEventListener("load", function()
 {
-    console.log("loaded");
+    console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
-    chrome.contextMenus.create({id: "pade_conversations", title: "Meetings", contexts: ["browser_action"]});
 
     chrome.runtime.onConnect.addListener(function(port)
     {
@@ -109,7 +109,7 @@ window.addEventListener("load", function()
 				{
 					closeVideoWindow();
 
-					if (pade.activeContact.type == "person")
+					if (pade.activeContact.type == "conversation")
 					{
 						inviteToConference();
 					}
@@ -232,30 +232,84 @@ function handleContact(contact)
 
 		chrome.contextMenus.create({parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick});
 
-	} else {
+	}
+	else
+
+	if (contact.type == "room")
+	{
+		if (contact.id == 0)
+		{
+    		chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
+			setActiveContact(contact);
+		}
+
+		pade.participants[contact.jid] = contact;
+		chrome.contextMenus.create({parentId: "pade_rooms", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleContactClick});
+	}
+	else
+
+	if (contact.type == "conversation")
+	{
+		if (contact.id == 0)
+		{
+    		chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+			if (!pade.activeContact) setActiveContact(contact);
+		}
+
 		pade.participants[contact.jid] = contact;
 		chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+	}
+	else
 
-		// set default
-		if (contact.id == 0 && contact.type == "room") setActiveContact(contact);
+	if (contact.type == "workgroup")
+	{
+		if (contact.id == 0)
+		{
+    		chrome.contextMenus.create({id: "pade_workgroups", title: "Workgroups", contexts: ["browser_action"]});
+			setActiveWorkgroup(contact);
+		}
+
+		pade.participants[contact.jid] = contact;
+		chrome.contextMenus.create({parentId: "pade_workgroups", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleWorkgroupClick});
 	}
 }
 
 function setActiveContact(contact)
 {
 	pade.activeContact = contact;
-	chrome.browserAction.setTitle({title: "Pade - " + pade.activeContact.name + " Meeting"});
+	chrome.browserAction.setTitle({title: "Pade - " + pade.activeContact.name + " (" + pade.activeContact.type + ")"});
+}
+
+function setActiveWorkgroup(contact)
+{
+	if (pade.activeWorkgroup)
+	{
+		pade.connection.send($pres({to: pade.activeWorkgroup.jid, type: "unavailable"}).c("status").t("Online").up().c("priority").t("1"));
+	}
+
+	pade.activeWorkgroup = contact;
+
+	pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
+	pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("status").t("Online").up().c("priority").t("1"));
+	pade.connection.sendIQ($iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"}));
+
 }
 
 function handleContactClick(info)
 {
-	console.log("handleContactClick", info, pade.participants[info.menuItemId]);
+	//console.log("handleContactClick", info, pade.participants[info.menuItemId]);
 	setActiveContact(pade.participants[info.menuItemId]);
+}
+
+function handleWorkgroupClick(info)
+{
+	//console.log("handleWorkgroupClick", info, pade.participants[info.menuItemId]);
+	setActiveWorkgroup(pade.participants[info.menuItemId]);
 }
 
 function handleUrlClick(info)
 {
-	console.log("handleUrlClick", info);
+	//console.log("handleUrlClick", info);
 	pade.activeUrl = info.menuItemId;
 }
 
@@ -268,6 +322,8 @@ function startTone(name)
 {
     if (window.localStorage["store.settings.enableRingtone"] && JSON.parse(window.localStorage["store.settings.enableRingtone"]))
     {
+		//console.log("startTone", name);
+
         if (!pade.ringtone)
         {
             pade.ringtone = new Audio();
@@ -416,6 +472,50 @@ function doOptions()
 
 function fetchContacts(callback)
 {
+	var urlCount = 0;
+	var roomCount = 0;
+	var contactCount = 0;
+	var workgroupCount = 0;
+
+	pade.connection.addHandler(function(iq)
+	{
+		//console.log('fastpath handler', iq);
+
+		var iq = $(iq);
+		var workgroupJid = iq.attr('from');
+
+		pade.connection.send($iq({type: 'result', to: iq.attr('from'), id: iq.attr('id')}));
+
+		iq.find('offer').each(function()
+		{
+			var id = $(this).attr('id');
+			var jid = $(this).attr('jid').toLowerCase();
+			var properties = {id: id, jid: jid, workgroupJid: workgroupJid};
+
+			iq.find('value').each(function()
+			{
+				var name = $(this).attr('name');
+				var value = $(this).text();
+				properties[name] = value;
+			});
+
+			//console.log("fastpath handler offer", properties, workgroupJid);
+
+			acceptRejectOffer(properties);
+		});
+
+		iq.find('offer-revoke').each(function()
+		{
+			id = $(this).attr('id');
+			jid = $(this).attr('jid').toLowerCase();
+
+			//console.log("fastpath handler offer-revoke", workgroupJid);
+		});
+
+		return true;
+
+	}, "http://jabber.org/protocol/workgroup", 'iq', 'set');
+
 	pade.connection.addHandler(function(presence)
 	{
 		var to = $(presence).attr('to');
@@ -425,8 +525,16 @@ function fetchContacts(callback)
 		//console.log("presence handler", from, to, type);
 
         var pres = "online";
-        if (type == "unavailable") pres = "offline";
+        if (type == "unavailable") pres = "unavailable";
+
         pade.presence[from] = pres;
+		var contact = pade.participants[from];
+
+        if (contact)
+        {
+			contact.presence = pres;
+			chrome.contextMenus.update(from, {title: contact.name + " - " + contact.presence});
+		}
 
 		return true;
 
@@ -510,8 +618,6 @@ function fetchContacts(callback)
 	{
 		//console.log("get bookmarks", resp)
 
-		var count = 0;
-
 		$(resp).find('conference').each(function()
 		{
 			var jid = $(this).attr("jid");
@@ -523,7 +629,7 @@ function fetchContacts(callback)
 
 			if (callback) callback(
 			{
-				id: count++,
+				id: roomCount++,
 				type: "room",
 				jid: jid,
 				presence: "room",
@@ -535,15 +641,13 @@ function fetchContacts(callback)
 			});
 		})
 
-		count = 0;
-
 		$(resp).find('url').each(function()
 		{
 			//console.log('ofmeet.bookmark.url.item', {name: $(this).attr("name"), url: $(this).attr("url")});
 
 			if (callback) callback(
 			{
-				id: count++,
+				id: urlCount++,
 				type: "url",
 				url: $(this).attr("url"),
 				name: $(this).attr("name")
@@ -558,7 +662,6 @@ function fetchContacts(callback)
 	pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:roster"}).tree(), function(resp)
 	{
 		//console.log("get roster", resp)
-		var count = 0;
 
 		$(resp).find('item').each(function()
 		{
@@ -571,8 +674,8 @@ function fetchContacts(callback)
 
 			if (callback) callback(
 			{
-				id: count++,
-				type: "person",
+				id: contactCount++,
+				type: "conversation",
 				name: name,
 				room: pade.username + "-" + node,
 				node: node,
@@ -597,7 +700,7 @@ function fetchContacts(callback)
 		var type = vCard.find('TYPE').text();
 		var img_src = 'data:'+type+';base64,'+img;
 
-		console.log("get vcard", img_src);
+		//console.log("get vcard", img_src);
 
 		if (img_src != 'data:;base64,')
 		{
@@ -607,6 +710,45 @@ function fetchContacts(callback)
 	}, function (error) {
 		console.error(error);
 	});
+
+	pade.connection.sendIQ($iq({type: 'get', to: "workgroup." + pade.connection.domain}).c('workgroups', {jid: pade.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"}).tree(), function(resp)
+	{
+		$(resp).find('workgroup').each(function()
+		{
+			var jid = $(this).attr('jid');
+			var name = Strophe.getNodeFromJid(jid);
+			var room = 'workgroup-' + name + "@conference." + pade.connection.domain;
+
+			//console.log("get workgroups", room, jid);
+
+			if (callback) callback(
+			{
+				id: roomCount++,
+				type: "room",
+				jid: room,
+				presence: "room",
+				name: name,
+				pinned: true,
+				open: true,
+				room: room,
+				domain: pade.connection.domain
+			});
+
+			if (callback) callback(
+			{
+				id: workgroupCount++,
+				type: "workgroup",
+				jid: jid,
+				presence: "open",
+				name: name,
+				domain: pade.connection.domain
+			});
+		});
+
+	}, function (error) {
+		console.warn("Fastpath not available");
+	});
+
 
 }
 
@@ -652,7 +794,47 @@ function handleInvitation(invite)
 		}, invite.room);
 
 	} else {
-		console.log("invitation from unknown source", invite);
+		console.warn("invitation from unknown source", invite);
+	}
+}
+
+function acceptRejectOffer(properties)
+{
+	if (pade.participants[properties.workgroupJid])
+	{
+		var agent = pade.participants[properties.workgroupJid];
+
+		var question = properties.question;
+		if (!question) question = "Fastpath Assistance";
+
+		var email = properties.email;
+		if (!email) email = Strophe.getBareJidFromJid(properties.jid);
+
+		//console.log("acceptRejectOffer", question, email, agent);
+
+		startTone("Diggztone_DigitalSanity");
+
+		notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+		{
+			//console.log("handleAction callback", notificationId, buttonIndex);
+
+			if (buttonIndex == 0)   // accept
+			{
+				pade.connection.send($iq({type: 'set', to: properties.workgroupJid}).c('offer-accept', {xmlns: "http://jabber.org/protocol/workgroup", jid: properties.jid, id: properties.id}));
+				stopTone();
+			}
+			else
+
+			if (buttonIndex == 1)   // reject
+			{
+				pade.connection.send($iq({type: 'set', to: properties.workgroupJid}).c('offer-reject', {xmlns: "http://jabber.org/protocol/workgroup", jid: properties.jid, id: properties.id}));
+				stopTone();
+			}
+
+		}, properties.id);
+
+	} else {
+		console.warn("workgroup offer from unknown source", properties.workgroupJid);
 	}
 }
 

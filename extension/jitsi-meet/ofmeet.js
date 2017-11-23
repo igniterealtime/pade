@@ -28,6 +28,7 @@ var ofmeet = (function(of)
 			if (APP && APP.connection && OFMEET_CONFIG.bgWin && OFMEET_CONFIG.bgWin.pade.activeUrl && event.data)
 			{
 				event.data.from = OFMEET_CONFIG.nickName;
+				event.data.username = OFMEET_CONFIG.username;
 
 				if (event.data.event == "ofmeet.event.pdf.ready" || event.data.event == "ofmeet.event.pdf.goto")
 				{
@@ -53,7 +54,7 @@ var ofmeet = (function(of)
 
 					if (ofMeetContent)
 					{
-						ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.setup', room: APP.conference.roomName, user: OFMEET_CONFIG.nickName}, '*');
+						ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.setup', room: APP.conference.roomName, user: OFMEET_CONFIG.nickName, username: OFMEET_CONFIG.username}, '*');
 					}
 				}
 				else {

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="js/woot.js"></script>
+  <script type="text/javascript" src="js/woot_textarea.js"></script>
+  <script type="text/javascript" src="http://localhost:843/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var socket = io.connect( "http://localhost:843", { "force new connection": true } );
+      var room = 13;
+      socket.on('connect', function(){
+        socket.emit('room', room);
+        var io = new Woot.IO(socket);
+        window.q = new Woot.TextareaAdapter(io, '#editor', '#authors');
+      });
+      $('#show').on('click', function(){
+        console.log(window.q.site.value());
+        console.log(window.q.editor.val());
+      });
+    });
+    </script>
+</head>
+<body>
+  <textarea id="editor" rows="10" cols="50"></textarea>
+  <input id="show" type="button" value="Show" />
+  <div id="authors" style="width: 200px">Authors:</div>
+</body>
+</html>
