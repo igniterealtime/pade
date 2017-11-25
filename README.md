@@ -14,9 +14,9 @@ P&agrave;d&eacute;
 * Remote desktop control (work-in-progress);
 * Fastpath support with audio and video conferencing
 
-To install, visit the [Google Play web store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en)
+To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en)
 
-On your [Openfire] server, you will need at least the two [Openfire Meetings] plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins.jsp) plugin.
+On your [Openfire] server, you will need at least the two [Openfire Meetings] plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins.jsp) plugin. If you are running an [Openfire] server lower than 4.2, you will also need the websocket plugin.
 
 P&agrave;d&eacute; will fetch the logged in user's contact roster as well as all the bookmarks configured for the user. To see, the contacts, conference rooms and web page urls, right click on the Openfire icon.
 
