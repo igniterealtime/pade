@@ -29,7 +29,7 @@ OFMEET_CONFIG = {
 	domain:__domain
 };
 
-window.addEventListener("load", function()
+window.addEventListener("DOMContentLoaded", function()
 {
 	chrome.runtime.getBackgroundPage(function(win)
 	{

@@ -10,14 +10,13 @@ var ofmeet = (function(of)
 
     function setup()
     {
-        if (!APP.connection)
+        console.log("ofmeet.js setup", APP.connection, OFMEET_CONFIG.bgWin);
+
+        if (!APP.connection || !OFMEET_CONFIG.bgWin)
         {
             setTimeout(function() {setup();}, 1000);
             return;
         }
-
-        console.log("ofmeet.js setup");
-
         __init();
 
 
@@ -95,7 +94,7 @@ var ofmeet = (function(of)
 						{
 							OFMEET_CONFIG.documentShare = true;
 							OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
-							document.getElementById("largeVideoContainer").innerHTML = '<iframe id="ofmeet-content" style="width: 100%; height: 100%; border: 0;">';
+							document.getElementById("largeVideoContainer").innerHTML = '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 45px; padding-top: 90px;">';
 							ofMeetContent = document.getElementById("ofmeet-content");
 						}
 						var url = json.url;
@@ -228,7 +227,7 @@ var ofmeet = (function(of)
             //connectSIP();
         }
 
-        document.title = APP_NAME.interfaceConfig + " - " + APP.conference.roomName;
+        document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
     }
 
     function connectSIP()
@@ -539,7 +538,7 @@ var ofmeet = (function(of)
         localStorage.removeItem("xmpp_password_override");
     });
 
-    window.addEventListener("load", function()
+    window.addEventListener("DOMContentLoaded", function()
     {
         console.log("ofmeet.js load");
 
@@ -623,7 +622,7 @@ function ofmeetEtherpadClicked()
 				url = chrome.extension.getURL("pdf/index.html?pdf=" + OFMEET_CONFIG.bgWin.pade.activeUrl);
 			}
 
-			document.getElementById("largeVideoContainer").innerHTML = '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;">';
+			document.getElementById("largeVideoContainer").innerHTML = '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 45px; padding-top: 90px;">';
 		}
 	}
 }
