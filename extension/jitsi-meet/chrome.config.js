@@ -5,6 +5,9 @@ if (window.localStorage["store.settings.server"])
     var __username = JSON.parse(window.localStorage["store.settings.username"]);
     var __password = JSON.parse(window.localStorage["store.settings.password"]);
 
+    var __startWithAudioMuted = window.localStorage["store.settings.startWithAudioMuted"] && JSON.parse(window.localStorage["store.settings.startWithAudioMuted"]);
+    var __startWithVideoMuted = window.localStorage["store.settings.startWithVideoMuted"] && JSON.parse(window.localStorage["store.settings.startWithVideoMuted"]);
+
     var config = {
 	  "etherpad_base": 'https://' + __server + '/etherpad/p/',
       "videoBandwidth": 512,
@@ -65,8 +68,8 @@ if (window.localStorage["store.settings.server"])
       ],
       "disableSimulcast": false,
       "startAudioOnly": false,
-      "startWithAudioMuted": true,
-      "startWithVideoMuted": true,
+      "startWithAudioMuted": __startWithAudioMuted,
+      "startWithVideoMuted": __startWithVideoMuted,
       "stereo": false,
       "focusUserJid": "focus@" + __domain + ""
     };

@@ -98,36 +98,7 @@ window.addEventListener("load", function()
     chrome.browserAction.onClicked.addListener(function()
     {
 		//console.log("chrome.browserAction.onClicked", window.localStorage["store.settings.popupWindow"]);
-
-		if (window.localStorage["store.settings.popupWindow"])
-		{
-			if (JSON.parse(window.localStorage["store.settings.popupWindow"]))
-			{
-				chrome.browserAction.setPopup({popup: ""});
-
-				if (pade.activeContact)
-				{
-					closeVideoWindow();
-
-					if (pade.activeContact.type == "conversation")
-					{
-						inviteToConference();
-					}
-
-					openVideoWindow(pade.activeContact.room);
-
-				} else {
-					openVideoWindow();
-				}
-
-			} else {
-				chrome.browserAction.setPopup({popup: "popup.html"});
-			}
-
-		} else {
-			chrome.browserAction.setPopup({popup: "options/index.html"});
-		}
-
+		doJitsiMeet();
     });
 
     chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex)
@@ -153,6 +124,7 @@ window.addEventListener("load", function()
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
             pade.videoWindow = null;
+            pade.connection.send($pres());	// needed because JitsiMeet send unavailable
         }
     });
 
@@ -190,6 +162,8 @@ window.addEventListener("load", function()
             {
                 if (status === Strophe.Status.CONNECTED)
                 {
+					addHandlers();
+
 					chrome.browserAction.setBadgeText({ text: "" });
                     pade.connection.send($pres());
 
@@ -198,9 +172,12 @@ window.addEventListener("load", function()
 					pade.presence = {};
 					pade.participants = {};
 
-					fetchContacts(function(contact)
+					setTimeout(function()
 					{
-						handleContact(contact);
+						fetchContacts(function(contact)
+						{
+							handleContact(contact);
+						});
 					});
                 }
                 else
@@ -299,6 +276,39 @@ function handleContactClick(info)
 {
 	//console.log("handleContactClick", info, pade.participants[info.menuItemId]);
 	setActiveContact(pade.participants[info.menuItemId]);
+	doJitsiMeet();
+}
+
+function doJitsiMeet()
+{
+	if (window.localStorage["store.settings.popupWindow"])
+	{
+		if (JSON.parse(window.localStorage["store.settings.popupWindow"]))
+		{
+			chrome.browserAction.setPopup({popup: ""});
+
+			if (pade.activeContact)
+			{
+				closeVideoWindow();
+
+				if (pade.activeContact.type == "conversation")
+				{
+					inviteToConference();
+				}
+
+				openVideoWindow(pade.activeContact.room);
+
+			} else {
+				openVideoWindow();
+			}
+
+		} else {
+			chrome.browserAction.setPopup({popup: "popup.html"});
+		}
+
+	} else {
+		chrome.browserAction.setPopup({popup: "options/index.html"});
+	}
 }
 
 function handleWorkgroupClick(info)
@@ -470,13 +480,8 @@ function doOptions()
     });
 }
 
-function fetchContacts(callback)
+function addHandlers()
 {
-	var urlCount = 0;
-	var roomCount = 0;
-	var contactCount = 0;
-	var workgroupCount = 0;
-
 	pade.connection.addHandler(function(iq)
 	{
 		//console.log('fastpath handler', iq);
@@ -560,9 +565,12 @@ function fetchContacts(callback)
 			var pos1 = body.indexOf("/ofmeet/");
 			var pos2 = body.indexOf("https://" + pade.server)
 
-            if ( pos1 > 0 && pos2 > 0 )
+			offerer = Strophe.getBareJidFromJid(from);
+
+			//console.log("message handler body", body, offerer);
+
+            if ( pos1 > -1 && pos2 > -1 )
             {
-				offerer = Strophe.getBareJidFromJid(from);
 				room = body.substring(pos1 + 8);
                 handleInvitation({room: room, offerer: offerer});
             }
@@ -612,7 +620,14 @@ function fetchContacts(callback)
 		return true;
 
 	}, null, 'message');
+}
 
+function fetchContacts(callback)
+{
+	var urlCount = 0;
+	var roomCount = 0;
+	var contactCount = 0;
+	var workgroupCount = 0;
 
 	pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("storage", {xmlns: "storage:bookmarks"}).tree(), function(resp)
 	{
@@ -754,7 +769,7 @@ function fetchContacts(callback)
 
 function inviteToConference()
 {
-	console.log("inviteToConference", pade.activeContact);
+	//console.log("inviteToConference", pade.activeContact);
 
 	try {
 		var invite = "Please join me in https://" + pade.server + "/ofmeet/" + pade.activeContact.room;
@@ -766,36 +781,49 @@ function inviteToConference()
 
 function handleInvitation(invite)
 {
+	//console.log("handleInvitation", invite);
+
 	var jid = Strophe.getBareJidFromJid(invite.offerer);
 
 	if (pade.participants[jid])
 	{
 		var participant = pade.participants[jid];
-		console.log("handleInvitation", participant);
+		processInvitation(participant.name, participant.jid, invite.room);
+	}
+	else
 
-		startTone("Diggztone_Vibe");
-
-		notifyText(participant.name, participant.jid, null, [{title: "Accept Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
-		{
-			console.log("handleAction callback", notificationId, buttonIndex);
-
-			if (buttonIndex == 0)   // accept
-			{
-				openVideoWindow(invite.room);
-				stopTone();
-			}
-			else
-
-			if (buttonIndex == 1)   // reject
-			{
-				stopTone();
-			}
-
-		}, invite.room);
-
-	} else {
+	if (invite.offerer == pade.domain)
+	{
+		processInvitation("Administrator", "admin@"+pade.domain, invite.room);
+	}
+	else {
 		console.warn("invitation from unknown source", invite);
 	}
+}
+
+function processInvitation(title, label, room)
+{
+	//console.log("processInvitation", title, label, room);
+
+	startTone("Diggztone_Vibe");
+
+	notifyText(title, label, null, [{title: "Accept Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+	{
+		//console.log("handleAction callback", notificationId, buttonIndex);
+
+		if (buttonIndex == 0)   // accept
+		{
+			openVideoWindow(room);
+			stopTone();
+		}
+		else
+
+		if (buttonIndex == 1)   // reject
+		{
+			stopTone();
+		}
+
+	}, room);
 }
 
 function acceptRejectOffer(properties)

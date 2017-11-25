@@ -226,6 +226,8 @@ var ofmeet = (function(of)
             of.dialstring = APP.conference.roomName;
             connectSIP();
         }
+
+        document.title = "Pade - Openfire Meetings - " + APP.conference.roomName;
     }
 
     function connectSIP()
