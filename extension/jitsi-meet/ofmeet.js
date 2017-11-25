@@ -223,11 +223,12 @@ var ofmeet = (function(of)
 
         if (APP.conference.roomName && OFMEET_CONFIG.isSwitchAvailable)
         {
-            of.dialstring = APP.conference.roomName;
-            connectSIP();
+			//TODO - merge with SIP in background
+            //of.dialstring = APP.conference.roomName;
+            //connectSIP();
         }
 
-        document.title = "Pade - Openfire Meetings - " + APP.conference.roomName;
+        document.title = APP_NAME.interfaceConfig + " - " + APP.conference.roomName;
     }
 
     function connectSIP()

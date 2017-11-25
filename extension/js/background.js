@@ -11,6 +11,8 @@ window.addEventListener("beforeunload", function ()
 window.addEventListener("unload", function ()
 {
     console.log("pade unloaded");
+
+	etherlynk.connect();
 	if (pade.connection) pade.connection.disconnect();
 });
 
@@ -77,6 +79,11 @@ window.addEventListener("load", function()
         });
     });
 
+    chrome.notifications.onClosed.addListener(function(notificationId, byUser)
+    {
+		if (notificationId.startsWith("audioconf-")) etherlynk.leave(notificationId.substring(10));
+    });
+
     chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex)
     {
         var callback = callbacks[notificationId];
@@ -97,25 +104,9 @@ window.addEventListener("load", function()
 
     chrome.browserAction.onClicked.addListener(function()
     {
-		//console.log("chrome.browserAction.onClicked", window.localStorage["store.settings.popupWindow"]);
 		doJitsiMeet();
     });
 
-    chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex)
-    {
-        var callback = callbacks[notificationId];
-
-        if (callback)
-        {
-            callback(notificationId, buttonIndex);
-
-            chrome.notifications.clear(notificationId, function(wasCleared)
-            {
-                callbacks[notificationId] = null;
-                delete callbacks[notificationId];
-            });
-        }
-    });
 
     chrome.windows.onRemoved.addListener(function(win)
     {
@@ -123,6 +114,8 @@ window.addEventListener("load", function()
 
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
+			sendToJabra("onhook");
+
             pade.videoWindow = null;
             pade.connection.send($pres());	// needed because JitsiMeet send unavailable
         }
@@ -134,7 +127,17 @@ window.addEventListener("load", function()
         pade.domain = JSON.parse(window.localStorage["store.settings.domain"]);
         pade.username = JSON.parse(window.localStorage["store.settings.username"]);
         pade.password = JSON.parse(window.localStorage["store.settings.password"]);
+
+        pade.displayName = pade.username;
+
+		if (window.localStorage["store.settings.displayname"] && JSON.parse(window.localStorage["store.settings.displayname"]))
+		{
+    		pade.displayName = JSON.parse(window.localStorage["store.settings.displayname"]);
+		}
+
         pade.jid = pade.username + "@" + pade.domain;
+
+		// setup popup
 
 		if (window.localStorage["store.settings.popupWindow"] && JSON.parse(window.localStorage["store.settings.popupWindow"]))
 		{
@@ -142,6 +145,33 @@ window.addEventListener("load", function()
 
 		} else {
 			chrome.browserAction.setPopup({popup: "popup.html"});
+		}
+
+		// setup jabra speak
+
+		if (window.localStorage["store.settings.useJabra"] && JSON.parse(window.localStorage["store.settings.useJabra"]))
+		{
+			pade.jabraPort = chrome.runtime.connectNative("pade.igniterealtime.org");
+
+			if (pade.jabraPort)
+			{
+				console.log("jabra connected");
+
+				pade.jabraPort.onMessage.addListener(function(data)
+				{
+					console.log("jabra incoming", data);
+					handleJabraMessage(data.message);
+				});
+
+				pade.jabraPort.onDisconnect.addListener(function()
+				{
+					console.log("jabra disconnected");
+					pade.jabraPort = null;
+				});
+
+				pade.jabraPort.postMessage({ message: "getdevices" });
+				pade.jabraPort.postMessage({ message: "getactivedevice" });
+			}
 		}
 
         chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
@@ -155,8 +185,14 @@ window.addEventListener("load", function()
                 pade.enableSip = true;
             }
 
-            pade.connection = new Strophe.Connection("wss://" + pade.server + "/ws/");
-            //pade.connection = new Strophe.Connection("https://" + pade.server + "/http-bind/");
+			var connUrl = "https://" + pade.server + "/http-bind/";
+
+			if (getSetting("useWebsocket", false))
+			{
+				connUrl = "wss://" + pade.server + "/ws/";
+			}
+
+            pade.connection = new Strophe.Connection(connUrl);
 
             pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username, pade.password, function (status)
             {
@@ -189,6 +225,9 @@ window.addEventListener("load", function()
 				}
 
             });
+
+            // etherlynk for audio only
+			etherlynk.connect();
 
         } else doOptions();
 
@@ -291,19 +330,38 @@ function doJitsiMeet()
 			{
 				closeVideoWindow();
 
+				if (isAudioOnly())
+				{
+					joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
+
+				} else {
+					openVideoWindow(pade.activeContact.room);
+				}
+
 				if (pade.activeContact.type == "conversation")
 				{
 					inviteToConference();
 				}
-
-				openVideoWindow(pade.activeContact.room);
 
 			} else {
 				openVideoWindow();
 			}
 
 		} else {
-			chrome.browserAction.setPopup({popup: "popup.html"});
+
+			if (isAudioOnly())
+			{
+				chrome.browserAction.setPopup({popup: ""});
+				joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
+
+				if (pade.activeContact.type == "conversation")
+				{
+					inviteToConference();
+				}
+
+			} else {
+				chrome.browserAction.setPopup({popup: "popup.html"});
+			}
 		}
 
 	} else {
@@ -439,7 +497,6 @@ function closeVideoWindow()
     if (pade.videoWindow != null)
     {
         chrome.windows.remove(pade.videoWindow.id);
-        pade.videoWindow = null;
     }
 }
 
@@ -456,6 +513,8 @@ function openVideoWindow(room)
 	{
 		pade.videoWindow = win;
 		chrome.windows.update(pade.videoWindow.id, {drawAttention: true});
+
+		sendToJabra("offhook");
 	});
 }
 
@@ -813,8 +872,15 @@ function processInvitation(title, label, room)
 
 		if (buttonIndex == 0)   // accept
 		{
-			openVideoWindow(room);
 			stopTone();
+
+			if (isAudioOnly())
+			{
+				joinAudioCall(title, label, room);
+
+			} else {
+				openVideoWindow(room);
+			}
 		}
 		else
 
@@ -824,6 +890,10 @@ function processInvitation(title, label, room)
 		}
 
 	}, room);
+
+	// jabra
+	sendToJabra("ring");
+	pade.activeRoom = {title: title, label: label, room: room};
 }
 
 function acceptRejectOffer(properties)
@@ -865,4 +935,120 @@ function acceptRejectOffer(properties)
 		console.warn("workgroup offer from unknown source", properties.workgroupJid);
 	}
 }
+function handleJabraMessage(message)
+{
+    if (message.startsWith("Event: Version ")) {
+		console.log("Jabra " + message);
+	}
 
+	if (message == "Event: mute") {
+
+	}
+	if (message == "Event: unmute") {
+
+	}
+	if (message == "Event: device attached") {
+
+	}
+	if (message == "Event: device detached") {
+
+	}
+
+	if (message == "Event: acceptcall")
+	{
+		if (pade.activeRoom)
+		{
+			stopTone();
+
+			if (isAudioOnly())
+			{
+				joinAudioCall(pade.activeRoom.title, pade.activeRoom.label, pade.activeRoom.room);
+
+			} else {
+				openVideoWindow(pade.activeRoom.room);
+			}
+			pade.activeRoom = null;
+		}
+	}
+
+	if (message == "Event: endcall")
+	{
+		closeVideoWindow();
+	}
+
+	if (message == "Event: reject")
+	{
+		if (pade.activeRoom)
+		{
+			stopTone();
+			pade.activeRoom = null;
+		}
+	}
+
+	if (message == "Event: flash") {
+
+	}
+
+	if (message.startsWith("Event: devices")) {
+
+	}
+
+	if (message.startsWith("Event: activedevice")) {
+
+	}
+}
+
+function sendToJabra(message)
+{
+	console.log("sendToJabra " + message);
+
+	if (pade.jabraPort)
+	{
+		pade.jabraPort.postMessage({ message: message });
+	}
+}
+
+function isAudioOnly()
+{
+    return window.localStorage["store.settings.audioOnly"] && JSON.parse(window.localStorage["store.settings.audioOnly"]);
+
+}
+
+function clearAudioCall(room)
+{
+	chrome.notifications.clear("audioconf-" + room, function(wasCleared)
+	{
+		console.log("audioconference call cleared", room, wasCleared);
+	});
+}
+
+function joinAudioCall(title, label, room)
+{
+	etherlynk.join(room);
+
+	notifyText(title, label, null, [{title: "Clear Conversation?", iconUrl: chrome.extension.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
+	{
+		if (buttonIndex == 0)   // terminate
+		{
+			etherlynk.leave(room);
+		}
+
+	}, "audioconf-" + room);
+}
+
+function getSetting(name, defaultValue)
+{
+	console.log("getSetting", name, defaultValue);
+
+	var value = defaultValue;
+
+	if (window.localStorage["store.settings." + name])
+	{
+		value = JSON.parse(window.localStorage["store.settings." + name]);
+
+	} else {
+		if (defaultValue) window.localStorage["store.settings." + name] = JSON.parse(defaultValue);
+	}
+
+	return value;
+}

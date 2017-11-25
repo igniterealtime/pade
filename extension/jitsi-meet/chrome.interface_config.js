@@ -15,7 +15,7 @@ var interfaceConfig = {
   "DEFAULT_BACKGROUND": "#474747",
   "BRAND_WATERMARK_LINK": "",
   "DISABLE_FOCUS_INDICATOR": false,
-  "VERTICAL_FILMSTRIP": false,
+  "VERTICAL_FILMSTRIP": getSetting("VERTICAL_FILMSTRIP", true),
   "LOCAL_THUMBNAIL_RATIO": 1.7777777777777777,
   "TOOLBAR_BUTTONS": [
     "microphone",
@@ -40,7 +40,7 @@ var interfaceConfig = {
   ],
   "RANDOM_AVATAR_URL_PREFIX": "",
   "DEFAULT_DOMINANT_SPEAKER_DISPLAY_NAME": "Speaker",
-  "FILM_STRIP_MAX_HEIGHT": 60,
+  "FILM_STRIP_MAX_HEIGHT": getSetting("FILM_STRIP_MAX_HEIGHT", 80),
   "SETTINGS_SECTIONS": [
     "language",
     "devices",

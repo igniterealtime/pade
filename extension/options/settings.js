@@ -1,6 +1,6 @@
 window.addEvent("domready", function () {
 
-    window.localStorage["store.settings.config"] = null;
+    doDefaults();
 
     new FancySettings.initWithManifest(function (settings)
     {
@@ -55,3 +55,29 @@ window.addEvent("domready", function () {
 
 
 });
+
+function doDefaults()
+{
+	// preferences
+	setSetting("popupWindow", false);
+	setSetting("useJabra", false);
+	setSetting("useWebsocket", false);
+
+	// config
+	setSetting("startWithAudioMuted", false);
+	setSetting("startWithVideoMuted", false);
+
+	// user interface
+	setSetting("VERTICAL_FILMSTRIP", true);
+	setSetting("FILM_STRIP_MAX_HEIGHT", 80);
+}
+
+function setSetting(name, defaultValue)
+{
+	console.log("setSetting", name, defaultValue);
+
+	if (!window.localStorage["store.settings." + name])
+	{
+		if (defaultValue) window.localStorage["store.settings." + name] = JSON.parse(defaultValue);
+	}
+}

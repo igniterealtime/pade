@@ -1,0 +1,11 @@
+// Copyright 2017 GN Audio A/S
+{
+  "name": "pade.igniterealtime.org",
+  "description": "Jabra Browser Integration Host",
+  "path": "jabrachromehost.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://bfifigomgmgjnlfhdkphhijegjongifa/",
+    "chrome-extension://fohfnhgabmicpkjcpjpjongpijcffaba/" 
+  ]
+}

@@ -20,6 +20,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("connection"),
+            "name": "useWebsocket",
+            "type": "checkbox",
+            "label": i18n.get("Use Websockets")
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("login"),
             "name": "displayname",
             "type": "text",
@@ -61,6 +68,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "audioOnly",
+            "type": "checkbox",
+            "label": i18n.get("Audioconference Only")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "popupWindow",
             "type": "checkbox",
             "label": i18n.get("Popup Window")
@@ -85,6 +99,13 @@ this.manifest = {
             "name": "enableRingtone",
             "type": "checkbox",
             "label": i18n.get("Enable Ringtone")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "useJabra",
+            "type": "checkbox",
+            "label": i18n.get("Use Jabra Speak")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -141,10 +162,25 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
+            "name": "VERTICAL_FILMSTRIP",
+            "type": "checkbox",
+            "label": i18n.get("Enable Vertical Filmstrip")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ui"),
             "name": "ACTIVE_SPEAKER_AVATAR_SIZE",
             "type": "text",
             "label": i18n.get("Active Speaker Avatar Size"),
             "text": i18n.get("100"),
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ui"),
+            "name": "FILM_STRIP_MAX_HEIGHT",
+            "type": "text",
+            "label": i18n.get("Filmstrip Maximium Height"),
+            "text": i18n.get("80"),
         },
     ],
     "alignment": [
@@ -161,6 +197,10 @@ this.manifest = {
             "startBitrate",
             "resolution",
             "minHDHeight"
+        ],
+        [
+            "ACTIVE_SPEAKER_AVATAR_SIZE",
+            "FILM_STRIP_MAX_HEIGHT"
         ]
     ]
 };
