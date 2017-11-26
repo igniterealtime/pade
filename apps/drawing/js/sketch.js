@@ -1,4 +1,3 @@
-var onReady = false;
 var canvas = null;
 var context = null;
 var oWidth = 0;
@@ -7,7 +6,9 @@ var lines = [];
 var lastMouse = {  x: 0,  y: 0};
 var ongoingTouches = [];
 var initialised = false;
-
+var username = null;
+var owner = false;
+var room = null;
 
 // changeMouse creates a temporary invisible canvas that shows the cursor,
 // which is then set as the cursor through css:
@@ -197,7 +198,7 @@ function touchcancel(e) {
 
 // JQuery to handle buttons and resizing events, also changes the cursor to a dot resembling the brush size:
 
-$(document).ready(function ()
+window.addEventListener('DOMContentLoaded', function (event)
 {
 	// get the canvas element and its context
 	canvas = document.getElementById('sketch');
@@ -325,56 +326,65 @@ $(document).ready(function ()
 
 	OpenfireMeetings =
 	{
-		setContent: function (content)
-		{
-			//console.log("remote set-content", content);
-			var newLines = JSON.parse(content);
-			init({lines: newLines});
-			OpenfireMeetings.send({type: 'init', lines: lines});
-		},
-
-		getContent: function()
-		{
-			//console.log("remote getContent");
-			return JSON.stringify(lines);
-		},
-
-		getPrintContent: function()
-		{
-			//console.log("remote getPrintContent");
-			var img = canvas.toDataURL("image/png");
-			return '<img src="'+img+'"/>';
-		},
-
 		handleAppMessage: function (msg)
 		{
-			if (!onReady) return
-
-			console.log("remote sketch handleAppMessage", msg);
+			//console.log("remote sketch handleAppMessage", msg);
 
 			try {
-				if (msg.type == "draw") draw(msg.start, msg.end, msg.color, msg.size, msg.compositeOperation, true);
-				if (msg.type == "joined") OpenfireMeetings.send({type: 'init', lines: lines});
-				if (msg.type == "init") init(msg);
-				if (msg.type == "clear") clear(false);
+
+				if (msg.type == "getDrawing" && owner)
+				{
+					console.log("handleAppMessage getDrawing", msg);
+					OpenfireMeetings.send({type: 'setDrawing', requestor: msg.requestor, lines: lines});
+				}
+				else
+
+				if (msg.type == "setDrawing" && msg.requestor == username)
+				{
+					console.log("handleAppMessage getDrawing", msg);
+					init(msg);
+				}
+				else {
+
+					if (msg.who != username)
+					{
+						if (msg.type == "draw") draw(msg.start, msg.end, msg.color, msg.size, msg.compositeOperation, true);
+						if (msg.type == "clear") clear(false);
+					}
+				}
 
 			} catch (e) { console.error("remote sketch handleAppMessage", e)}
 		},
 
 		send: function(json)
 		{
+			//console.log("sketch send", json);
+			json.who = username;
 			window.parent.postMessage({ event: 'ofmeet.event.url.message', msg: json}, '*');
 		}
 	}
-  	onReady = true;
 });
 
 window.addEventListener('message', function (event)
 {
-	console.log("sketch message", event);
+	//console.log("sketch message", event);
+
+	if (event.data.action == 'ofmeet.action.url.setup')
+	{
+		console.log("sketch ofmeet.action.url.setup", event);
+
+		room = event.data.room;
+		username = event.data.username;
+		owner = event.data.owner && (event.data.username == event.data.owner);
+
+		// request for content
+		OpenfireMeetings.send({type: 'getDrawing', requestor: username});
+	}
+	else
 
 	if (event.data.action == 'ofmeet.action.url.share')
 	{
+		//console.log("sketch message", event);
 		OpenfireMeetings.handleAppMessage(event.data.json.msg);
 	}
 

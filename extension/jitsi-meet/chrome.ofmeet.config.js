@@ -26,17 +26,23 @@ OFMEET_CONFIG = {
 	sip:__server,
 	hostname: __server,
 	room: urlParam("room"),
-	domain:__domain
+	domain:__domain,
+	iframe: function(url) {
+		return '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 45px; padding-top: 90px;">';
+	},
 };
+
+chrome.runtime.getBackgroundPage(function(win)
+{
+	OFMEET_CONFIG.bgWin = win;
+});
 
 window.addEventListener("DOMContentLoaded", function()
 {
 	chrome.runtime.getBackgroundPage(function(win)
 	{
-		OFMEET_CONFIG.bgWin = win;
-		OFMEET_CONFIG.userAvatar = win.pade.avatar;
 		OFMEET_CONFIG.activeUrl = win.pade.activeUrl;
-
+		OFMEET_CONFIG.userAvatar = win.pade.avatar;
 		APP.conference.changeLocalAvatarUrl(OFMEET_CONFIG.userAvatar);
 	});
 });

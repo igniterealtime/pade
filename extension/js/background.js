@@ -121,25 +121,19 @@ window.addEventListener("load", function()
         }
     });
 
-    if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
+    pade.server = getSetting("server", null);
+    pade.domain = getSetting("domain", null);
+    pade.username = getSetting("username", null);
+    pade.password = getSetting("password", null);
+
+    if (pade.server && pade.domain && pade.username && pade.password)
     {
-        pade.server = JSON.parse(window.localStorage["store.settings.server"]);
-        pade.domain = JSON.parse(window.localStorage["store.settings.domain"]);
-        pade.username = JSON.parse(window.localStorage["store.settings.username"]);
-        pade.password = JSON.parse(window.localStorage["store.settings.password"]);
-
-        pade.displayName = pade.username;
-
-		if (window.localStorage["store.settings.displayname"] && JSON.parse(window.localStorage["store.settings.displayname"]))
-		{
-    		pade.displayName = JSON.parse(window.localStorage["store.settings.displayname"]);
-		}
-
         pade.jid = pade.username + "@" + pade.domain;
+        pade.displayName = getSetting("displayname", pade.username);
 
 		// setup popup
 
-		if (window.localStorage["store.settings.popupWindow"] && JSON.parse(window.localStorage["store.settings.popupWindow"]))
+		if (getSetting("popupWindow", false))
 		{
 			chrome.browserAction.setPopup({popup: ""});
 
@@ -149,7 +143,7 @@ window.addEventListener("load", function()
 
 		// setup jabra speak
 
-		if (window.localStorage["store.settings.useJabra"] && JSON.parse(window.localStorage["store.settings.useJabra"]))
+		if (getSetting("useJabra", false))
 		{
 			pade.jabraPort = chrome.runtime.connectNative("pade.igniterealtime.org");
 
@@ -177,59 +171,52 @@ window.addEventListener("load", function()
         chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
         chrome.browserAction.setBadgeText({ text: 'off' });
 
+		// setup SIP
+		pade.enableSip = getSetting("enableSip", false);
 
-        if (pade.server && pade.domain && pade.username && pade.password)
-        {
-            if (window.localStorage["store.settings.enableSip"] && JSON.parse(window.localStorage["store.settings.enableSip"]))
-            {
-                pade.enableSip = true;
-            }
+		var connUrl = "https://" + pade.server + "/http-bind/";
 
-			var connUrl = "https://" + pade.server + "/http-bind/";
+		if (getSetting("useWebsocket", false))
+		{
+			connUrl = "wss://" + pade.server + "/ws/";
+		}
 
-			if (getSetting("useWebsocket", false))
+		pade.connection = new Strophe.Connection(connUrl);
+
+		pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username, pade.password, function (status)
+		{
+			if (status === Strophe.Status.CONNECTED)
 			{
-				connUrl = "wss://" + pade.server + "/ws/";
+				addHandlers();
+
+				chrome.browserAction.setBadgeText({ text: "" });
+				pade.connection.send($pres());
+
+				chrome.browserAction.setTitle({title: "Pade - Connected"});
+
+				pade.presence = {};
+				pade.participants = {};
+
+				setTimeout(function()
+				{
+					fetchContacts(function(contact)
+					{
+						handleContact(contact);
+					});
+				});
+			}
+			else
+
+			if (status === Strophe.Status.DISCONNECTED)
+			{
+				chrome.browserAction.setBadgeText({ text: "off" });
+				chrome.browserAction.setTitle({title: "Pade - Disconnected"});
 			}
 
-            pade.connection = new Strophe.Connection(connUrl);
+		});
 
-            pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username, pade.password, function (status)
-            {
-                if (status === Strophe.Status.CONNECTED)
-                {
-					addHandlers();
-
-					chrome.browserAction.setBadgeText({ text: "" });
-                    pade.connection.send($pres());
-
-					chrome.browserAction.setTitle({title: "Pade - Connected"});
-
-					pade.presence = {};
-					pade.participants = {};
-
-					setTimeout(function()
-					{
-						fetchContacts(function(contact)
-						{
-							handleContact(contact);
-						});
-					});
-                }
-                else
-
-                if (status === Strophe.Status.DISCONNECTED)
-                {
-					chrome.browserAction.setBadgeText({ text: "off" });
-					chrome.browserAction.setTitle({title: "Pade - Disconnected"});
-				}
-
-            });
-
-            // etherlynk for audio only
-			etherlynk.connect();
-
-        } else doOptions();
+		// etherlynk for audio only
+		etherlynk.connect();
 
     } else doOptions();
 });
@@ -320,52 +307,46 @@ function handleContactClick(info)
 
 function doJitsiMeet()
 {
-	if (window.localStorage["store.settings.popupWindow"])
+	if (getSetting("popupWindow", false))
 	{
-		if (JSON.parse(window.localStorage["store.settings.popupWindow"]))
+		chrome.browserAction.setPopup({popup: ""});
+
+		if (pade.activeContact)
 		{
-			chrome.browserAction.setPopup({popup: ""});
-
-			if (pade.activeContact)
-			{
-				closeVideoWindow();
-
-				if (isAudioOnly())
-				{
-					joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
-
-				} else {
-					openVideoWindow(pade.activeContact.room);
-				}
-
-				if (pade.activeContact.type == "conversation")
-				{
-					inviteToConference();
-				}
-
-			} else {
-				openVideoWindow();
-			}
-
-		} else {
+			closeVideoWindow();
 
 			if (isAudioOnly())
 			{
-				chrome.browserAction.setPopup({popup: ""});
 				joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
 
-				if (pade.activeContact.type == "conversation")
-				{
-					inviteToConference();
-				}
-
 			} else {
-				chrome.browserAction.setPopup({popup: "popup.html"});
+				openVideoWindow(pade.activeContact.room);
 			}
+
+			if (pade.activeContact.type == "conversation")
+			{
+				inviteToConference();
+			}
+
+		} else {
+			openVideoWindow();
 		}
 
 	} else {
-		chrome.browserAction.setPopup({popup: "options/index.html"});
+
+		if (isAudioOnly())
+		{
+			chrome.browserAction.setPopup({popup: ""});
+			joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
+
+			if (pade.activeContact.type == "conversation")
+			{
+				inviteToConference();
+			}
+
+		} else {
+			chrome.browserAction.setPopup({popup: "popup.html"});
+		}
 	}
 }
 
@@ -388,7 +369,7 @@ function reloadApp()
 
 function startTone(name)
 {
-    if (window.localStorage["store.settings.enableRingtone"] && JSON.parse(window.localStorage["store.settings.enableRingtone"]))
+    if (getSetting("enableRingtone", false))
     {
 		//console.log("startTone", name);
 
@@ -973,7 +954,13 @@ function handleJabraMessage(message)
 
 	if (message == "Event: endcall")
 	{
-		closeVideoWindow();
+		if (isAudioOnly())
+		{
+			if (pade.activeRoom) clearAudioCall(pade.activeRoom.room);
+
+		} else {
+			closeVideoWindow();
+		}
 	}
 
 	if (message == "Event: reject")
@@ -1010,8 +997,7 @@ function sendToJabra(message)
 
 function isAudioOnly()
 {
-    return window.localStorage["store.settings.audioOnly"] && JSON.parse(window.localStorage["store.settings.audioOnly"]);
-
+    return getSetting("audioOnly", false);
 }
 
 function clearAudioCall(room)
@@ -1047,7 +1033,7 @@ function getSetting(name, defaultValue)
 		value = JSON.parse(window.localStorage["store.settings." + name]);
 
 	} else {
-		if (defaultValue) window.localStorage["store.settings." + name] = JSON.parse(defaultValue);
+		if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
 	}
 
 	return value;

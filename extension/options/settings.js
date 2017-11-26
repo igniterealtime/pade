@@ -69,7 +69,7 @@ function doDefaults()
 
 	// user interface
 	setSetting("VERTICAL_FILMSTRIP", true);
-	setSetting("FILM_STRIP_MAX_HEIGHT", 80);
+	setSetting("FILM_STRIP_MAX_HEIGHT", 90);
 }
 
 function setSetting(name, defaultValue)
@@ -78,6 +78,6 @@ function setSetting(name, defaultValue)
 
 	if (!window.localStorage["store.settings." + name])
 	{
-		if (defaultValue) window.localStorage["store.settings." + name] = JSON.parse(defaultValue);
+		if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
 	}
 }

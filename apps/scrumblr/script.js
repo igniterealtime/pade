@@ -7,47 +7,16 @@ var boardInitialized = false;
 var keyTrap = null;
 var user = null;
 var username = null;
+var owner = false;
 var room = null;
 
-window.addEventListener('load', function (event)
+window.addEventListener('DOMContentLoaded', function (event)
 {
 	OpenfireMeetings =
 	{
-		setContent: function (content)
-		{
-			//console.log("remote set-content", content);
-			var newData = JSON.parse(content);
-
-    			for (var i in newData)
-    			{
-    				handleMessage(newData[i]);
-    			}
-
-		},
-
-		getContent: function()
-		{
-			//console.log("remote getContent", scrumHistory);
-			return JSON.stringify(scrumHistory);
-
-		},
-
-		getPrintContent: function()
-		{
-			//console.log("remote getPrintContent");
-			return document.body.innerHTML;
-
-		},
-
-		handleAppMessage: function (json)
-		{
-			//console.log("remote handleAppMessage", json, from, user);
-   			getMessage(json);
-
-		},
-
 		send: function(json)
 		{
+			json.who = username;
 			//console.log("remote send", json);
 			window.parent.postMessage({ event: 'ofmeet.event.url.message', msg: json}, '*');
 		}
@@ -59,7 +28,7 @@ window.addEventListener('load', function (event)
 
 window.addEventListener('message', function (event)
 {
-	console.log("scrumblr message", event);
+	//console.log("scrumblr message", event);
 
 	if (event.data.action == 'ofmeet.action.url.setup')
 	{
@@ -68,18 +37,19 @@ window.addEventListener('message', function (event)
 		user = event.data.user;
 		room = event.data.room;
 		username = event.data.username;
+		owner = (event.data.username == event.data.owner);
 
 		// send message to ofmeet chrome content  page
 		window.postMessage({action: 'ofmeet.action.enable.cursor', flag: false}, "*");
+
+		// request for content
+		OpenfireMeetings.send({type: 'getHistory', requestor: username});
 	}
 	else
 
 	if (event.data.action == 'ofmeet.action.url.share')
 	{
-		if (username != event.data.json.username)
-		{
-			OpenfireMeetings.handleAppMessage(event.data.json.msg);
-		}
+		processMessage(event.data.json.msg);
 	}
 
 })
@@ -125,22 +95,26 @@ function blockUI(message)
     });
 }
 
-function getMessage(message)
+function processMessage(message)
 {
 	if (message.action)
 	{
-		handleMessage(message)
+		if (message.who != username) handleMessage(message)
 		return;
 	}
 
-	if (message.type == "joined")
+	if (owner && message.type == "getHistory")
 	{
-		OpenfireMeetings.send({type: 'history', history: scrumHistory});
-		return;
-	}
+    	console.log('processMessage getHistory', message);
 
-	if (message.type == "history")
+		OpenfireMeetings.send({type: 'setHistory', requestor: message.requestor, history: scrumHistory});
+	}
+	else
+
+	if (message.type == "setHistory" && message.requestor == username)
 	{
+    	console.log('processMessage setHistory', message);
+
 		initCards(new Array());
 		initColumns(new Array());
 
@@ -156,7 +130,7 @@ function handleMessage(message)
     var action = message.action;
     var data = message.data;
 
-    //console.log('<-- ' + action, data);
+    console.log('<-- ' + action, data);
 
     scrumHistory.push(message);
 
