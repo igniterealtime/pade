@@ -6,12 +6,12 @@ P&agrave;d&eacute;
 * Modern HTML5 user interface;
 * Openfire user authentication;
 * Audio and Video conferencing;
-* Telephone (SIP) conferencing (requires ofswitch openfire plugin);
-* Online Meeting/Conference hosting and planning;
+* Telephone (SIP) conferencing (work-in-progress);
+* Online Meeting/Conference hosting and planner with a calendar or CRON trigger;
 * Screen sharing;
 * Co-browsing;
-* Application sharing (PDF presentation, Realtime collaborative scrum board, drawing and text editor) 
-* Remote desktop control (work-in-progress);
+* Application sharing (PDF presentation, realtime collaborative scrum board, drawing and shared WOOT text editor) 
+* Simple API for making any web page collaborative.
 * Fastpath support with audio and video conferencing
 
 To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en)
