@@ -182,6 +182,29 @@ this.manifest = {
             "label": i18n.get("Filmstrip Maximium Height"),
             "text": i18n.get("80"),
         },
+        {
+            "tab": i18n.get("User Directory"),
+            "group": i18n.get("User Directory"),
+            "name": "searchString",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter the partial username, name or email address"),
+        },
+        {
+            "tab": i18n.get("User Directory"),
+            "group": i18n.get("User Directory"),
+            "name": "search",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("search")
+        },
+        {
+            "tab": i18n.get("User Directory"),
+            "group": i18n.get("User Directory"),
+            "name": "searchResults",
+            "text": i18n.get(""),
+            "type": "description"
+        }
     ],
     "alignment": [
         [

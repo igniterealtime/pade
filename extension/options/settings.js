@@ -11,6 +11,38 @@ window.addEvent("domready", function () {
             reloadApp()
         });
 
+        settings.manifest.search.addEvent("action", function ()
+        {
+			background.findUsers(settings.manifest.searchString.element.value, function(users)
+			{
+				//console.log("findUsers", users);
+
+				var html = "";
+
+				for (var i=0; i<users.length; i++)
+				{
+					var user = users[i];
+					html = html + "<a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a><br/>";
+				}
+
+				if (html == "") html = "No user found";
+
+				settings.manifest.searchResults.element.innerHTML = "<p/><p/>" + html;
+
+				for (var i=0; i<users.length; i++)
+				{
+					document.getElementById(users[i].jid).addEventListener("click", function(e)
+					{
+						var user = e.target;
+						console.log("findUsers click", user.id, user.title, user.name);
+
+						background.acceptCall(user.title, user.id, user.name);
+						background.inviteToConference(user.id, user.name);
+					});
+				}
+			});
+        });
+
         settings.manifest.popupWindow.addEvent("action", function ()
         {
 			if (window.localStorage["store.settings.popupWindow"] && JSON.parse(window.localStorage["store.settings.popupWindow"]))

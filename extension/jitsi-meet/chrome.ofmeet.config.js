@@ -32,10 +32,15 @@ OFMEET_CONFIG = {
 	},
 };
 
-chrome.runtime.getBackgroundPage(function(win)
+OFMEET_CONFIG.bgWin = chrome.extension.getBackgroundPage();
+
+if (!OFMEET_CONFIG.bgWin)
 {
-	OFMEET_CONFIG.bgWin = win;
-});
+	chrome.runtime.getBackgroundPage(function(win)
+	{
+		OFMEET_CONFIG.bgWin = win;
+	});
+}
 
 window.addEventListener("DOMContentLoaded", function()
 {

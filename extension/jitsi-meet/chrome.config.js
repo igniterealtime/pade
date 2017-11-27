@@ -4,6 +4,13 @@ var __displayname = getSetting("displayname");
 var __username = getSetting("username");
 var __password = getSetting("password");
 
+var connUrl = "https://" + __server + "/http-bind/";
+
+if (getSetting("useWebsocket", false))
+{
+	connUrl = "wss://" + __server + "/ws/";
+}
+
 var config = {
   "etherpad_base": 'https://' + __server + '/etherpad/p/',
   "videoBandwidth": 512,
@@ -18,7 +25,7 @@ var config = {
   "enableWelcomePage": true,
   "useStunTurn": false,
   "enableRtpStats": true,
-  "bosh": "wss://" + __server + "/ws/",
+  "bosh": connUrl,
   "enableRecording": false,
   "resolution": 720,
   "hiddenDomain": "recorder." + __domain + "",

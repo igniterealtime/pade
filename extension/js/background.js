@@ -14,6 +14,9 @@ window.addEventListener("unload", function ()
 
 	etherlynk.connect();
 	if (pade.connection) pade.connection.disconnect();
+
+	closeChatWindow();
+	closeVideoWindow();
 });
 
 window.addEventListener("load", function()
@@ -21,6 +24,10 @@ window.addEventListener("load", function()
     console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
+	chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Chat", contexts: ["browser_action"],  onclick: function()
+	{
+		openChatWindow("groupchat/index.html");
+	}});
 
     chrome.runtime.onConnect.addListener(function(port)
     {
@@ -32,7 +39,7 @@ window.addEventListener("load", function()
         {
             if (msg.action == "pade.invite.contact")
             {
-				inviteToConference()
+				inviteToConference(pade.activeContact.jid, pade.activeContact.room);
             }
 			else
 
@@ -111,6 +118,11 @@ window.addEventListener("load", function()
     chrome.windows.onRemoved.addListener(function(win)
     {
         //console.log("closing window ", win);
+
+        if (pade.chatWindow && win == pade.chatWindow.id)
+        {
+			pade.chatWindow = null;
+		}
 
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
@@ -325,7 +337,7 @@ function doJitsiMeet()
 
 			if (pade.activeContact.type == "conversation")
 			{
-				inviteToConference();
+				inviteToConference(pade.activeContact.jid, pade.activeContact.room);
 			}
 
 		} else {
@@ -341,7 +353,7 @@ function doJitsiMeet()
 
 			if (pade.activeContact.type == "conversation")
 			{
-				inviteToConference();
+				inviteToConference(pade.activeContact.jid, pade.activeContact.room);
 			}
 
 		} else {
@@ -473,6 +485,30 @@ function notifyList(message, context, items, buttons, callback)
     });
 };
 
+function closeChatWindow()
+{
+    if (pade.chatWindow)
+    {
+        chrome.windows.remove(pade.chatWindow.id);
+        pade.chatWindow = null;
+    }
+}
+
+function openChatWindow(url)
+{
+    if (!pade.chatWindow)
+    {
+        chrome.windows.create({url: chrome.extension.getURL(url), focused: true, type: "popup"}, function (win)
+        {
+            pade.chatWindow = win;
+            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 800, height: 600});
+        });
+
+    } else {
+        chrome.windows.update(pade.chatWindow.id, {drawAttention: true, focused: true, width: 800, height: 600});
+    }
+}
+
 function closeVideoWindow()
 {
     if (pade.videoWindow != null)
@@ -596,6 +632,7 @@ function addHandlers()
 		var offerer = null;
 		var type = $(message).attr("type");
 		var room = null;
+		var autoaccept = null;
 
 		//console.log("message handler", from, to, type)
 
@@ -633,6 +670,7 @@ function addHandlers()
 				});
 
 				id = $(this).attr('jid');
+				autoaccept = $(this).attr('autoaccept');
 				room = Strophe.getNodeFromJid(id);
 				reason = $(this).attr('reason');
 				password = $(this).attr('password');
@@ -653,7 +691,7 @@ function addHandlers()
 					});
 				}
 
-				handleInvitation({room: room, offerer: offerer});
+				handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept});
 			}
 		});
 
@@ -807,13 +845,45 @@ function fetchContacts(callback)
 
 }
 
-function inviteToConference()
+function findUsers(search, callback)
 {
-	//console.log("inviteToConference", pade.activeContact);
+	console.log('findUsers', search);
+
+	var iq = $iq({type: 'set', to: "search." + pade.connection.domain}).c('query', {xmlns: 'jabber:iq:search'}).c('x').t(search).up().c('email').t(search).up().c('nick').t(search);
+
+	pade.connection.sendIQ(iq, function(response)
+	{
+		var users = [];
+
+		$(response).find('item').each(function()
+		{
+			var current = $(this);
+			var jid = current.attr('jid');
+			var username = Strophe.getNodeFromJid(jid);
+
+			var name = current.find('nick').text();
+			var email = current.find('email').text();
+			var room = pade.username + "-" + username;
+
+			console.log('findUsers response', name, jid, room);
+
+			users.push({username: username, name: name, email: email, jid: jid, room: room});
+		});
+
+		if (callback) callback(users);
+
+	}, function (error) {
+		console.error('findUsers', error);
+	});
+};
+
+function inviteToConference(jid, room)
+{
+	console.log("inviteToConference", jid, room);
 
 	try {
-		var invite = "Please join me in https://" + pade.server + "/ofmeet/" + pade.activeContact.room;
-		pade.connection.send($msg({type: "chat", to: pade.activeContact.jid}).c("body").t(invite));
+		var invite = "Please join me in https://" + pade.server + "/ofmeet/" + room;
+		pade.connection.send($msg({type: "chat", to: jid}).c("body").t(invite));
 	} catch (e) {
 		console.error(e);
 	}
@@ -828,53 +898,65 @@ function handleInvitation(invite)
 	if (pade.participants[jid])
 	{
 		var participant = pade.participants[jid];
-		processInvitation(participant.name, participant.jid, invite.room);
+		processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept);
 	}
 	else
 
 	if (invite.offerer == pade.domain)
 	{
-		processInvitation("Administrator", "admin@"+pade.domain, invite.room);
+		processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept);
 	}
 	else {
-		console.warn("invitation from unknown source", invite);
+		processInvitation("Unknown User", invite.offerer, invite.room);
 	}
 }
 
-function processInvitation(title, label, room)
+function processInvitation(title, label, room, autoaccept)
 {
 	//console.log("processInvitation", title, label, room);
 
-	startTone("Diggztone_Vibe");
-
-	notifyText(title, label, null, [{title: "Accept Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+	if (!autoaccept || autoaccept != "true")
 	{
-		//console.log("handleAction callback", notificationId, buttonIndex);
+		startTone("Diggztone_Vibe");
 
-		if (buttonIndex == 0)   // accept
+		notifyText(title, label, null, [{title: "Accept Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
 		{
-			stopTone();
+			//console.log("handleAction callback", notificationId, buttonIndex);
 
-			if (isAudioOnly())
+			if (buttonIndex == 0)   // accept
 			{
-				joinAudioCall(title, label, room);
-
-			} else {
-				openVideoWindow(room);
+				stopTone();
+				acceptCall(title, label, room);
 			}
-		}
-		else
+			else
 
-		if (buttonIndex == 1)   // reject
-		{
-			stopTone();
-		}
+			if (buttonIndex == 1)   // reject
+			{
+				stopTone();
+			}
 
-	}, room);
+		}, room);
 
-	// jabra
-	sendToJabra("ring");
-	pade.activeRoom = {title: title, label: label, room: room};
+		// jabra
+		sendToJabra("ring");
+		pade.activeRoom = {title: title, label: label, room: room};
+
+	} else {
+		acceptCall(title, label, room);
+	}
+}
+
+function acceptCall(title, label, room)
+{
+	//console.log("acceptCall", title, label, room);
+
+	if (isAudioOnly())
+	{
+		joinAudioCall(title, label, room);
+
+	} else {
+		openVideoWindow(room);
+	}
 }
 
 function acceptRejectOffer(properties)

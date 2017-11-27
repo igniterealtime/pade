@@ -92,7 +92,14 @@
             }
 
             function a() {
-                return /^((?!chrome).)*safari/i.test(navigator.userAgent) ? (f = v.RTC_BROWSER_SAFARI, m.info("This appears to be Safari"), 1) : null
+                if (/^((?!chrome).)*safari/i.test(navigator.userAgent)) {
+                    f = v.RTC_BROWSER_SAFARI;
+                    var e = navigator.userAgent.match(/version\/(\d+(\.\d+)?)/i),
+                        t = e && e[1],
+                        n = t ? parseInt(t, 10) : -1;
+                    return m.info("This appears to be Safari, ver: " + n), n
+                }
+                return null
             }
 
             function s() {
@@ -160,7 +167,7 @@
                     RTC_BROWSER_ELECTRON: "rtc_browser.electron",
                     RTC_BROWSER_REACT_NATIVE: "rtc_browser.react-native",
                     doesVideoMuteByStreamRemove: function() {
-                        return !(v.isFirefox() || v.isEdge())
+                        return !(v.isFirefox() || v.isEdge() || v.isSafariWithWebrtc())
                     },
                     getBrowserType: function() {
                         return f
@@ -186,6 +193,9 @@
                     isSafari: function() {
                         return f === v.RTC_BROWSER_SAFARI
                     },
+                    isSafariWithWebrtc: function() {
+                        return v.isSafari() && v.getSafariVersion() >= 11
+                    },
                     isNWJS: function() {
                         return f === v.RTC_BROWSER_NWJS
                     },
@@ -199,10 +209,10 @@
                         return f === v.RTC_BROWSER_REACT_NATIVE
                     },
                     isTemasysPluginUsed: function() {
-                        return v.isSafari() || v.isIExplorer() && v.getIExplorerVersion() < 12
+                        return v.isSafari() && !v.isSafariWithWebrtc() || v.isIExplorer() && v.getIExplorerVersion() < 12
                     },
                     usesNewGumFlow: function() {
-                        return v.isChrome() && v.getChromeVersion() >= 61 || v.isFirefox()
+                        return v.isChrome() && v.getChromeVersion() >= 61 || v.isFirefox() || v.isSafariWithWebrtc()
                     },
                     isVideoMuteOnConnInterruptedSupported: function() {
                         return v.isChrome() || v.isElectron()
@@ -221,6 +231,9 @@
                     },
                     getEdgeVersion: function() {
                         return v.isEdge() ? h : null
+                    },
+                    getSafariVersion: function() {
+                        return v.isSafari ? h : null
                     },
                     usesPlanB: function() {
                         return !v.usesUnifiedPlan()
@@ -245,6 +258,9 @@
                     },
                     supportsRtpSender: function() {
                         return v.isFirefox()
+                    },
+                    supportsVideo: function() {
+                        return !v.isSafariWithWebrtc()
                     }
                 };
             h = function() {
@@ -270,10 +286,10 @@
 
                     function o(e, t) {
                         var n, r, i, o, a, s, c, u, l, d, p, h, f = t && t.split("/"),
-                            m = _.map,
+                            m = S.map,
                             v = m && m["*"] || {};
                         if (e) {
-                            for (e = e.split("/"), a = e.length - 1, _.nodeIdCompat && E.test(e[a]) && (e[a] = e[a].replace(E, "")), "." === e[0].charAt(0) && f && (h = f.slice(0, f.length - 1), e = h.concat(e)), l = 0; l < e.length; l++)
+                            for (e = e.split("/"), a = e.length - 1, S.nodeIdCompat && E.test(e[a]) && (e[a] = e[a].replace(E, "")), "." === e[0].charAt(0) && f && (h = f.slice(0, f.length - 1), e = h.concat(e)), l = 0; l < e.length; l++)
                                 if ("." === (p = e[l])) e.splice(l, 1), l -= 1;
                                 else if (".." === p) {
                                 if (0 === l || 1 === l && ".." === e[2] || ".." === e[l - 1]) continue;
@@ -318,9 +334,9 @@
                     function l(e) {
                         if (i(b, e)) {
                             var t = b[e];
-                            delete b[e], S[e] = !0, f.apply(r, t)
+                            delete b[e], _[e] = !0, f.apply(r, t)
                         }
-                        if (!i(y, e) && !i(S, e)) throw new Error("No " + e);
+                        if (!i(y, e) && !i(_, e)) throw new Error("No " + e);
                         return y[e]
                     }
 
@@ -335,13 +351,13 @@
 
                     function h(e) {
                         return function() {
-                            return _ && _.config && _.config[e] || {}
+                            return S && S.config && S.config[e] || {}
                         }
                     }
                     var f, m, v, g, y = {},
                         b = {},
-                        _ = {},
                         S = {},
+                        _ = {},
                         T = Object.prototype.hasOwnProperty,
                         C = [].slice,
                         E = /\.js$/;
@@ -372,14 +388,14 @@
                             }
                         }
                     }, f = function(e, t, n, o) {
-                        var c, d, h, f, m, _, T, C = [],
+                        var c, d, h, f, m, S, T, C = [],
                             E = void 0 === n ? "undefined" : a(n);
-                        if (o = o || e, _ = p(o), "undefined" === E || "function" === E) {
+                        if (o = o || e, S = p(o), "undefined" === E || "function" === E) {
                             for (t = !t.length && n.length ? ["require", "exports", "module"] : t, m = 0; m < t.length; m += 1)
-                                if (f = v(t[m], _), "require" === (d = f.f)) C[m] = g.require(e);
+                                if (f = v(t[m], S), "require" === (d = f.f)) C[m] = g.require(e);
                                 else if ("exports" === d) C[m] = g.exports(e), T = !0;
                             else if ("module" === d) c = C[m] = g.module(e);
-                            else if (i(y, d) || i(b, d) || i(S, d)) C[m] = l(d);
+                            else if (i(y, d) || i(b, d) || i(_, d)) C[m] = l(d);
                             else {
                                 if (!f.p) throw new Error(e + " missing " + d);
                                 f.p.load(f.n, s(o, !0), u(d), {}), C[m] = y[d]
@@ -389,7 +405,7 @@
                     }, e = t = m = function(e, t, n, i, o) {
                         if ("string" == typeof e) return g[e] ? g[e](t) : l(v(e, p(t)).f);
                         if (!e.splice) {
-                            if (_ = e, _.deps && m(_.deps, _.callback), !t) return;
+                            if (S = e, S.deps && m(S.deps, S.callback), !t) return;
                             t.splice ? (e = t, t = n, n = null) : e = r
                         }
                         return t = t || function() {}, "function" == typeof n && (n = i, i = o), i ? f(r, e, t, n) : setTimeout(function() {
@@ -1364,16 +1380,16 @@
                             s = "n=" + n.utf16to8(r.authcid);
                         return s += ",r=", s += a, r._sasl_data.cnonce = a, r._sasl_data["client-first-message-bare"] = s, s = "n,," + s, this.onChallenge = function(t, r) {
                             for (var i, o, a, s, c, u, l, d, p, h, f, m, v = "c=biws,", g = t._sasl_data["client-first-message-bare"] + "," + r + ",", y = t._sasl_data.cnonce, b = /([a-z]+)=([^,]+)(,|$)/; r.match(b);) {
-                                var _ = r.match(b);
-                                switch (r = r.replace(_[0], ""), _[1]) {
+                                var S = r.match(b);
+                                switch (r = r.replace(S[0], ""), S[1]) {
                                     case "r":
-                                        i = _[2];
+                                        i = S[2];
                                         break;
                                     case "s":
-                                        o = _[2];
+                                        o = S[2];
                                         break;
                                     case "i":
-                                        a = _[2]
+                                        a = S[2]
                                 }
                             }
                             if (i.substr(0, y.length) !== y) return t._sasl_data = {}, t._sasl_failure_cb();
@@ -1854,9 +1870,9 @@
         "use strict";
         (function(e) {
             function r(e) {
-                S || (v.a.loadScript(e.customScriptUrl || "https://api.callstats.io/static/callstats-ws.min.js", !0, !0, void 0, function() {
+                _ || (v.a.loadScript(e.customScriptUrl || "https://api.callstats.io/static/callstats-ws.min.js", !0, !0, void 0, function() {
                     return i(e)
-                }), S = !0)
+                }), _ = !0)
             }
 
             function i(e) {
@@ -1894,13 +1910,13 @@
                 g = n(11),
                 y = n(42),
                 b = n(0).getLogger(e),
-                _ = void 0,
-                S = !1;
+                S = void 0,
+                _ = !1;
             a.init = function(e) {
                 a.audioLevelsEnabled = !e.disableAudioLevels, "number" == typeof e.audioLevelsInterval && (a.audioLevelsInterval = e.audioLevelsInterval), a.disableThirdPartyRequests = e.disableThirdPartyRequests
             }, a.audioLevelsEnabled = !1, a.audioLevelsInterval = 200, a.disableThirdPartyRequests = !1, a.analytics = u.a, Object.defineProperty(a, "instances", {
                 get: function() {
-                    return _ || (_ = new Set), _
+                    return S || (S = new Set), S
                 }
             }), a.prototype.startRemoteStats = function(e) {
                 this.stopRemoteStats(e);
@@ -2229,9 +2245,9 @@
         }), n.d(t, "KICKED", function() {
             return b
         }), n.d(t, "LAST_N_ENDPOINTS_CHANGED", function() {
-            return _
-        }), n.d(t, "LOCK_STATE_CHANGED", function() {
             return S
+        }), n.d(t, "LOCK_STATE_CHANGED", function() {
+            return _
         }), n.d(t, "MESSAGE_RECEIVED", function() {
             return T
         }), n.d(t, "PARTICIPANT_CONN_STATUS_CHANGED", function() {
@@ -2269,9 +2285,9 @@
         }), n.d(t, "TRANSCRIPTION_STATUS_CHANGED", function() {
             return U
         }), n.d(t, "USER_JOINED", function() {
-            return H
-        }), n.d(t, "USER_LEFT", function() {
             return B
+        }), n.d(t, "USER_LEFT", function() {
+            return H
         }), n.d(t, "USER_ROLE_CHANGED", function() {
             return G
         }), n.d(t, "USER_STATUS_CHANGED", function() {
@@ -2294,8 +2310,8 @@
             g = "conference.endpoint_message_received",
             y = "conference.jvb121Status",
             b = "conferenece.kicked",
-            _ = "conference.lastNEndpointsChanged",
-            S = "conference.lock_state_changed",
+            S = "conference.lastNEndpointsChanged",
+            _ = "conference.lock_state_changed",
             T = "conference.messageReceived",
             C = "conference.participant_conn_status_changed",
             E = "conference.partcipant_features_changed",
@@ -2314,8 +2330,8 @@
             j = "conference.trackMuteChanged",
             F = "conference.trackRemoved",
             U = "conference.transcriptionStatusChanged",
-            H = "conference.userJoined",
-            B = "conference.userLeft",
+            B = "conference.userJoined",
+            H = "conference.userLeft",
             G = "conference.roleChanged",
             J = "conference.statusChanged"
     }, function(e, t) {
@@ -2677,10 +2693,10 @@
                         return e.hasOwnAttribute("tcptype") && (t += "tcptype", t += " ", t += e.tcptype, t += " "), t += "generation", t += " ", t += e.hasOwnAttribute("generation") ? e.generation : "0"
                     },
                     parseSSRC: function(e) {
-                        for (var t = {}, n = e.split("\r\n"), r = 0; r < n.length; r++)
+                        for (var t = new Map, n = e.split("\r\n"), r = 0; r < n.length; r++)
                             if ("a=ssrc:" === n[r].substring(0, 7)) {
-                                var i = n[r].indexOf(" ");
-                                t[n[r].substr(i + 1).split(":", 2)[0]] = n[r].substr(i + 1).split(":", 2)[1]
+                                var i = n[r].split("a=ssrc:")[1].split(" ")[0];
+                                t.get(i) || t.set(i, []), t.get(i).push(n[r])
                             }
                         return t
                     },
@@ -2799,7 +2815,7 @@
                     },
                     preferVideoCodec: function(e, t) {
                         var n = null;
-                        if (t) {
+                        if (e && t) {
                             for (var r = 0; r < e.rtp.length; ++r) {
                                 var i = e.rtp[r];
                                 if (i.codec && i.codec.toLowerCase() === t.toLowerCase()) {
@@ -2817,7 +2833,7 @@
                         }
                     },
                     stripVideoCodec: function(e, t) {
-                        if (t) {
+                        if (e && t) {
                             var n = [],
                                 i = !0,
                                 o = !1,
@@ -2864,8 +2880,8 @@
             t.a = u
         }).call(t, "modules/xmpp/SDPUtil.js")
     }, function(e, t, n) {
-        var r = n(124),
-            i = n(125);
+        var r = n(125),
+            i = n(126);
         t.write = i, t.parse = r.parse, t.parseFmtpConfig = r.parseFmtpConfig, t.parseParams = r.parseParams, t.parsePayloads = r.parsePayloads, t.parseRemoteCandidates = r.parseRemoteCandidates, t.parseImageAttributes = r.parseImageAttributes, t.parseSimulcastStreamList = r.parseSimulcastStreamList
     }, function(e, t) {
         function n() {
@@ -3776,7 +3792,7 @@
                                 var r = this;
                                 try {
                                     e(t, n, function(e) {
-                                        if ("function" != typeof e) throw new TypeError("onCancel must be a function, got: " + H.toString(e));
+                                        if ("function" != typeof e) throw new TypeError("onCancel must be a function, got: " + B.toString(e));
                                         r._attachCancellationCallback(e)
                                     })
                                 } catch (e) {
@@ -3787,7 +3803,7 @@
                             function s(e) {
                                 if (!this._isCancellable()) return this;
                                 var t = this._onCancel();
-                                void 0 !== t ? H.isArray(t) ? t.push(e) : this._setOnCancel([t, e]) : this._setOnCancel(e)
+                                void 0 !== t ? B.isArray(t) ? t.push(e) : this._setOnCancel([t, e]) : this._setOnCancel(e)
                             }
 
                             function u() {
@@ -3825,12 +3841,12 @@
                             }
 
                             function v(e, t) {
-                                if (B(e)) {
+                                if (H(e)) {
                                     var n = this._trace;
                                     if (void 0 !== n && t && (n = n._parent), void 0 !== n) n.attachExtraTrace(e);
                                     else if (!e.__stackCleaned__) {
                                         var r = w(e);
-                                        H.notEnumerableProp(e, "stack", r.message + "\n" + r.stack.join("\n")), H.notEnumerableProp(e, "__stackCleaned__", !0)
+                                        B.notEnumerableProp(e, "stack", r.message + "\n" + r.stack.join("\n")), B.notEnumerableProp(e, "__stackCleaned__", !0)
                                     }
                                 }
                             }
@@ -3881,12 +3897,12 @@
                                 }
                             }
 
-                            function _(e, t) {
+                            function S(e, t) {
                                 for (var n = 0; n < t.length - 1; ++n) t[n].push("From previous event:"), t[n] = t[n].join("\n");
                                 return n < t.length && (t[n] = t[n].join("\n")), e + "\n" + t.join("\n")
                             }
 
-                            function S(e) {
+                            function _(e) {
                                 for (var t = 0; t < e.length; ++t)(0 === e[t].length || t + 1 < e.length && e[t][0] === e[t + 1][0]) && (e.splice(t, 1), t--)
                             }
 
@@ -3936,7 +3952,7 @@
                             function R(e, t, n) {
                                 if ("undefined" != typeof console) {
                                     var r;
-                                    if (H.isObject(e)) {
+                                    if (B.isObject(e)) {
                                         var i = e.stack;
                                         r = t + q(i, e)
                                     } else r = t + String(e);
@@ -3958,7 +3974,7 @@
                                 var t;
                                 if ("function" == typeof e) t = "[function " + (e.name || "anonymous") + "]";
                                 else {
-                                    if (t = e && "function" == typeof e.toString ? e.toString() : H.toString(e), /\[object [a-zA-Z0-9$_]+\]/.test(t)) try {
+                                    if (t = e && "function" == typeof e.toString ? e.toString() : B.toString(e), /\[object [a-zA-Z0-9$_]+\]/.test(t)) try {
                                         t = JSON.stringify(e)
                                     } catch (e) {}
                                     0 === t.length && (t = "(empty array)")
@@ -4014,18 +4030,18 @@
                             var N, L, M, j = t._getDomain,
                                 F = t._async,
                                 U = e("./errors").Warning,
-                                H = e("./util"),
-                                B = H.canAttachTrace,
+                                B = e("./util"),
+                                H = B.canAttachTrace,
                                 G = /[\\\/]bluebird[\\\/]js[\\\/](release|debug|instrumented)/,
                                 J = /\((?:timers\.js):\d+:\d+\)/,
                                 V = /[\/<\(](.+?):(\d+):(\d+)\)?\s*$/,
                                 W = null,
                                 q = null,
                                 K = !1,
-                                z = !(0 == H.env("BLUEBIRD_DEBUG")),
-                                $ = !(0 == H.env("BLUEBIRD_WARNINGS") || !z && !H.env("BLUEBIRD_WARNINGS")),
-                                Q = !(0 == H.env("BLUEBIRD_LONG_STACK_TRACES") || !z && !H.env("BLUEBIRD_LONG_STACK_TRACES")),
-                                X = 0 != H.env("BLUEBIRD_W_FORGOTTEN_RETURN") && ($ || !!H.env("BLUEBIRD_W_FORGOTTEN_RETURN"));
+                                z = !(0 == B.env("BLUEBIRD_DEBUG")),
+                                $ = !(0 == B.env("BLUEBIRD_WARNINGS") || !z && !B.env("BLUEBIRD_WARNINGS")),
+                                Q = !(0 == B.env("BLUEBIRD_LONG_STACK_TRACES") || !z && !B.env("BLUEBIRD_LONG_STACK_TRACES")),
+                                X = 0 != B.env("BLUEBIRD_W_FORGOTTEN_RETURN") && ($ || !!B.env("BLUEBIRD_W_FORGOTTEN_RETURN"));
                             t.prototype.suppressUnhandledRejections = function() {
                                 var e = this._target();
                                 e._bitField = -1048577 & e._bitField | 524288
@@ -4064,10 +4080,10 @@
                                 return b(e, t, n || this)
                             }, t.onPossiblyUnhandledRejection = function(e) {
                                 var t = j();
-                                L = "function" == typeof e ? null === t ? e : H.domainBind(t, e) : void 0
+                                L = "function" == typeof e ? null === t ? e : B.domainBind(t, e) : void 0
                             }, t.onUnhandledRejectionHandled = function(e) {
                                 var t = j();
-                                N = "function" == typeof e ? null === t ? e : H.domainBind(t, e) : void 0
+                                N = "function" == typeof e ? null === t ? e : B.domainBind(t, e) : void 0
                             };
                             var Y = function() {};
                             t.longStackTraces = function() {
@@ -4087,30 +4103,30 @@
                                     try {
                                         if ("function" == typeof CustomEvent) {
                                             var e = new CustomEvent("CustomEvent");
-                                            return H.global.dispatchEvent(e),
+                                            return B.global.dispatchEvent(e),
                                                 function(e, t) {
                                                     var n = new CustomEvent(e.toLowerCase(), {
                                                         detail: t,
                                                         cancelable: !0
                                                     });
-                                                    return !H.global.dispatchEvent(n)
+                                                    return !B.global.dispatchEvent(n)
                                                 }
                                         }
                                         if ("function" == typeof Event) {
                                             var e = new Event("CustomEvent");
-                                            return H.global.dispatchEvent(e),
+                                            return B.global.dispatchEvent(e),
                                                 function(e, t) {
                                                     var n = new Event(e.toLowerCase(), {
                                                         cancelable: !0
                                                     });
-                                                    return n.detail = t, !H.global.dispatchEvent(n)
+                                                    return n.detail = t, !B.global.dispatchEvent(n)
                                                 }
                                         }
                                         var e = document.createEvent("CustomEvent");
-                                        return e.initCustomEvent("testingtheevent", !1, !0, {}), H.global.dispatchEvent(e),
+                                        return e.initCustomEvent("testingtheevent", !1, !0, {}), B.global.dispatchEvent(e),
                                             function(e, t) {
                                                 var n = document.createEvent("CustomEvent");
-                                                return n.initCustomEvent(e.toLowerCase(), !1, !0, t), !H.global.dispatchEvent(n)
+                                                return n.initCustomEvent(e.toLowerCase(), !1, !0, t), !B.global.dispatchEvent(n)
                                             }
                                     } catch (e) {}
                                     return function() {
@@ -4118,12 +4134,12 @@
                                     }
                                 }(),
                                 ee = function() {
-                                    return H.isNode ? function() {
+                                    return B.isNode ? function() {
                                         return n.emit.apply(n, arguments)
-                                    } : H.global ? function(e) {
+                                    } : B.global ? function(e) {
                                         var t = "on" + e.toLowerCase(),
-                                            n = H.global[t];
-                                        return !!n && (n.apply(H.global, [].slice.call(arguments, 1)), !0)
+                                            n = B.global[t];
+                                        return !!n && (n.apply(B.global, [].slice.call(arguments, 1)), !0)
                                     } : function() {
                                         return !1
                                     }
@@ -4171,7 +4187,7 @@
                             t.config = function(e) {
                                 if (e = Object(e), "longStackTraces" in e && (e.longStackTraces ? t.longStackTraces() : !e.longStackTraces && t.hasLongStackTraces() && Y()), "warnings" in e) {
                                     var n = e.warnings;
-                                    se.warnings = !!n, X = se.warnings, H.isObject(n) && "wForgottenReturn" in n && (X = !!n.wForgottenReturn)
+                                    se.warnings = !!n, X = se.warnings, B.isObject(n) && "wForgottenReturn" in n && (X = !!n.wForgottenReturn)
                                 }
                                 if ("cancellation" in e && e.cancellation && !se.cancellation) {
                                     if (F.haveItemsQueued()) throw new Error("cannot enable cancellation after promises are in use");
@@ -4190,7 +4206,7 @@
                                     return !1
                                 },
                                 oe = /[\/<\(]([^:\/]+):(\d+):(?:\d+)\)?\s*$/;
-                            H.inherits(x, Error), r.CapturedTrace = x, x.prototype.uncycle = function() {
+                            B.inherits(x, Error), r.CapturedTrace = x, x.prototype.uncycle = function() {
                                 var e = this._length;
                                 if (!(e < 2)) {
                                     for (var t = [], n = {}, r = 0, i = this; void 0 !== i; ++r) t.push(i), i = i._parent;
@@ -4215,7 +4231,7 @@
                                 if (!e.__stackCleaned__) {
                                     this.uncycle();
                                     for (var t = w(e), n = t.message, r = [t.stack], i = this; void 0 !== i;) r.push(C(i.stack.split("\n"))), i = i._parent;
-                                    T(r), S(r), H.notEnumerableProp(e, "stack", _(n, r)), H.notEnumerableProp(e, "__stackCleaned__", !0)
+                                    T(r), _(r), B.notEnumerableProp(e, "stack", S(n, r)), B.notEnumerableProp(e, "__stackCleaned__", !0)
                                 }
                             };
                             var ae = function() {
@@ -4258,10 +4274,10 @@
                             }();
                             "undefined" != typeof console && void 0 !== console.warn && (M = function(e) {
                                 console.warn(e)
-                            }, H.isNode && n.stderr.isTTY ? M = function(e, t) {
+                            }, B.isNode && n.stderr.isTTY ? M = function(e, t) {
                                 var n = t ? "[33m" : "[31m";
                                 console.warn(n + e + "[0m\n")
-                            } : H.isNode || "string" != typeof(new Error).stack || (M = function(e, t) {
+                            } : B.isNode || "string" != typeof(new Error).stack || (M = function(e, t) {
                                 console.warn("%c" + e, t ? "color: darkorange" : "color: red")
                             }));
                             var se = {
@@ -4920,7 +4936,7 @@
                             }
 
                             function o(e) {
-                                e !== S && i(this, e), this._bitField = 0, this._fulfillmentHandler0 = void 0, this._rejectionHandler0 = void 0, this._promise0 = void 0, this._receiver0 = void 0, this._resolveFromExecutor(e), this._promiseCreated(), this._fireEvent("promiseCreated", this)
+                                e !== _ && i(this, e), this._bitField = 0, this._fulfillmentHandler0 = void 0, this._rejectionHandler0 = void 0, this._promise0 = void 0, this._receiver0 = void 0, this._resolveFromExecutor(e), this._promiseCreated(), this._fireEvent("promiseCreated", this)
                             }
 
                             function a(e) {
@@ -4932,7 +4948,7 @@
                             }
 
                             function c(e) {
-                                var t = new o(S);
+                                var t = new o(_);
                                 t._fulfillmentHandler0 = e, t._rejectionHandler0 = e, t._promise0 = e, t._receiver0 = e
                             }
                             var u, l = function() {
@@ -4961,13 +4977,13 @@
                             var y = e("./errors"),
                                 b = o.TypeError = y.TypeError;
                             o.RangeError = y.RangeError;
-                            var _ = o.CancellationError = y.CancellationError;
+                            var S = o.CancellationError = y.CancellationError;
                             o.TimeoutError = y.TimeoutError, o.OperationalError = y.OperationalError, o.RejectionError = y.OperationalError, o.AggregateError = y.AggregateError;
-                            var S = function() {},
+                            var _ = function() {},
                                 T = {},
                                 C = {},
-                                E = e("./thenables")(o, S),
-                                w = e("./promise_array")(o, S, E, p, r),
+                                E = e("./thenables")(o, _),
+                                w = e("./promise_array")(o, _, E, p, r),
                                 R = e("./context")(o),
                                 k = R.create,
                                 I = e("./debuggability")(o, R),
@@ -5018,7 +5034,7 @@
                             }, o.getNewLibraryCopy = t.exports, o.is = function(e) {
                                 return e instanceof o
                             }, o.fromNode = o.fromCallback = function(e) {
-                                var t = new o(S);
+                                var t = new o(_);
                                 t._captureStackTrace();
                                 var n = arguments.length > 1 && !!Object(arguments[1]).multiArgs,
                                     r = x(e)(O(t, n));
@@ -5027,23 +5043,23 @@
                                 return new w(e).promise()
                             }, o.cast = function(e) {
                                 var t = E(e);
-                                return t instanceof o || (t = new o(S), t._captureStackTrace(), t._setFulfilled(), t._rejectionHandler0 = e), t
+                                return t instanceof o || (t = new o(_), t._captureStackTrace(), t._setFulfilled(), t._rejectionHandler0 = e), t
                             }, o.resolve = o.fulfilled = o.cast, o.reject = o.rejected = function(e) {
-                                var t = new o(S);
+                                var t = new o(_);
                                 return t._captureStackTrace(), t._rejectCallback(e, !0), t
                             }, o.setScheduler = function(e) {
                                 if ("function" != typeof e) throw new b("expecting a function but got " + f.classString(e));
                                 return g.setScheduler(e)
                             }, o.prototype._then = function(e, t, n, r, i) {
                                 var a = void 0 !== i,
-                                    s = a ? i : new o(S),
+                                    s = a ? i : new o(_),
                                     c = this._target(),
                                     l = c._bitField;
                                 a || (s._propagateFrom(this, 3), s._captureStackTrace(), void 0 === r && 0 != (2097152 & this._bitField) && (r = 0 != (50397184 & l) ? this._boundValue() : c === this ? void 0 : this._boundTo), this._fireEvent("promiseChained", this, s));
                                 var d = u();
                                 if (0 != (50397184 & l)) {
                                     var p, h, m = c._settlePromiseCtx;
-                                    0 != (33554432 & l) ? (h = c._rejectionHandler0, p = e) : 0 != (16777216 & l) ? (h = c._fulfillmentHandler0, p = t, c._unsetRejectionIsUnhandled()) : (m = c._settlePromiseLateCancellationObserver, h = new _("late cancellation observer"), c._attachExtraTrace(h), p = t), g.invoke(m, c, {
+                                    0 != (33554432 & l) ? (h = c._rejectionHandler0, p = e) : 0 != (16777216 & l) ? (h = c._fulfillmentHandler0, p = t, c._unsetRejectionIsUnhandled()) : (m = c._settlePromiseLateCancellationObserver, h = new S("late cancellation observer"), c._attachExtraTrace(h), p = t), g.invoke(m, c, {
                                         handler: null === d ? p : "function" == typeof p && f.domainBind(d, p),
                                         promise: s,
                                         receiver: r,
@@ -5125,7 +5141,7 @@
                                     } else if (0 != (33554432 & i)) this._fulfill(r._value());
                                     else if (0 != (16777216 & i)) this._reject(r._reason());
                                     else {
-                                        var c = new _("late cancellation observer");
+                                        var c = new S("late cancellation observer");
                                         r._attachExtraTrace(c), this._reject(c)
                                     }
                                 }
@@ -5138,7 +5154,7 @@
                                 }
                                 this._attachExtraTrace(r, !!t && i), this._reject(e)
                             }, o.prototype._resolveFromExecutor = function(e) {
-                                if (e !== S) {
+                                if (e !== _) {
                                     var t = this;
                                     this._captureStackTrace(), this._pushContext();
                                     var n = !0,
@@ -5233,17 +5249,17 @@
                                 return 0 != (33554432 & e) ? this._rejectionHandler0 : 0 != (16777216 & e) ? this._fulfillmentHandler0 : void 0
                             }, o.defer = o.pending = function() {
                                 return I.deprecated("Promise.defer", "new Promise"), {
-                                    promise: new o(S),
+                                    promise: new o(_),
                                     resolve: a,
                                     reject: s
                                 }
-                            }, f.notEnumerableProp(o, "_makeSelfResolutionError", l), e("./method")(o, S, E, p, I), e("./bind")(o, S, E, I), e("./cancel")(o, w, p, I), e("./direct_resolve")(o), e("./synchronous_inspection")(o), e("./join")(o, w, E, S, g, u), o.Promise = o, o.version = "3.5.1", e("./map.js")(o, w, p, E, S, I), e("./call_get.js")(o), e("./using.js")(o, p, E, k, S, I), e("./timers.js")(o, S, I), e("./generators.js")(o, p, S, E, r, I), e("./nodeify.js")(o), e("./promisify.js")(o, S), e("./props.js")(o, w, E, p), e("./race.js")(o, S, E, p), e("./reduce.js")(o, w, p, E, S, I), e("./settle.js")(o, w, I), e("./some.js")(o, w, p), e("./filter.js")(o, S), e("./each.js")(o, S), e("./any.js")(o), f.toFastProperties(o), f.toFastProperties(o.prototype), c({
+                            }, f.notEnumerableProp(o, "_makeSelfResolutionError", l), e("./method")(o, _, E, p, I), e("./bind")(o, _, E, I), e("./cancel")(o, w, p, I), e("./direct_resolve")(o), e("./synchronous_inspection")(o), e("./join")(o, w, E, _, g, u), o.Promise = o, o.version = "3.5.1", e("./map.js")(o, w, p, E, _, I), e("./call_get.js")(o), e("./using.js")(o, p, E, k, _, I), e("./timers.js")(o, _, I), e("./generators.js")(o, p, _, E, r, I), e("./nodeify.js")(o), e("./promisify.js")(o, _), e("./props.js")(o, w, E, p), e("./race.js")(o, _, E, p), e("./reduce.js")(o, w, p, E, _, I), e("./settle.js")(o, w, I), e("./some.js")(o, w, p), e("./filter.js")(o, _), e("./each.js")(o, _), e("./any.js")(o), f.toFastProperties(o), f.toFastProperties(o.prototype), c({
                                 a: 1
                             }), c({
                                 b: 2
                             }), c({
                                 c: 3
-                            }), c(1), c(function() {}), c(void 0), c(!1), c(new o(S)), I.setBounds(v.firstLineError, f.lastLineError), o
+                            }), c(1), c(function() {}), c(void 0), c(!1), c(new o(_)), I.setBounds(v.firstLineError, f.lastLineError), o
                         }
                     }, {
                         "./any.js": 1,
@@ -5359,7 +5375,7 @@
                         "use strict";
                         t.exports = function(t, n) {
                             function r(e) {
-                                return !S.test(e)
+                                return !_.test(e)
                             }
 
                             function i(e) {
@@ -5445,8 +5461,8 @@
                                 b = {
                                     __isPromisified__: !0
                                 },
-                                _ = ["arity", "length", "name", "arguments", "caller", "callee", "prototype", "__isPromisified__"],
-                                S = new RegExp("^(?:" + _.join("|") + ")$"),
+                                S = ["arity", "length", "name", "arguments", "caller", "callee", "prototype", "__isPromisified__"],
+                                _ = new RegExp("^(?:" + S.join("|") + ")$"),
                                 T = function(e) {
                                     return h.isIdentifier(e) && "_" !== e.charAt(0) && "constructor" !== e
                                 },
@@ -6102,12 +6118,12 @@
                                     }
                                     c[d] = m
                                 }
-                                for (var _ = new Array(c.length), d = 0; d < _.length; ++d) _[d] = t.resolve(c[d]).reflect();
-                                var S = t.all(_).then(function(e) {
+                                for (var S = new Array(c.length), d = 0; d < S.length; ++d) S[d] = t.resolve(c[d]).reflect();
+                                var _ = t.all(S).then(function(e) {
                                         for (var t = 0; t < e.length; ++t) {
                                             var n = e[t];
                                             if (n.isRejected()) return g.e = n.error(), g;
-                                            if (!n.isFulfilled()) return void S.cancel();
+                                            if (!n.isFulfilled()) return void _.cancel();
                                             e[t] = n.value()
                                         }
                                         T._pushContext(), i = y(i);
@@ -6115,8 +6131,8 @@
                                             o = T._popContext();
                                         return a.checkForgottenReturns(r, o, "Promise.using", T), r
                                     }),
-                                    T = S.lastly(function() {
-                                        var e = new t.PromiseInspection(S);
+                                    T = _.lastly(function() {
+                                        var e = new t.PromiseInspection(_);
                                         return u(c, e)
                                     });
                                 return c.promise = T, T._setOnCancel(c), T
@@ -6232,11 +6248,11 @@
                             }
                         }
 
-                        function _(e) {
+                        function S(e) {
                             return e instanceof Error || null !== e && "object" === (void 0 === e ? "undefined" : c(e)) && "string" == typeof e.message && "string" == typeof e.name
                         }
 
-                        function S(e) {
+                        function _(e) {
                             try {
                                 h(e, "isOperational", !0)
                             } catch (e) {}
@@ -6247,7 +6263,7 @@
                         }
 
                         function C(e) {
-                            return _(e) && A.propertyIsWritable(e, "stack")
+                            return S(e) && A.propertyIsWritable(e, "stack")
                         }
 
                         function E(e) {
@@ -6353,17 +6369,17 @@
                                 return A.isArray(e) ? e : null
                             };
                         if ("undefined" != typeof Symbol && Symbol.iterator) {
-                            var H = "function" == typeof Array.from ? function(e) {
+                            var B = "function" == typeof Array.from ? function(e) {
                                 return Array.from(e)
                             } : function(e) {
                                 for (var t, n = [], r = e[Symbol.iterator](); !(t = r.next()).done;) n.push(t.value);
                                 return n
                             };
                             U = function(e) {
-                                return A.isArray(e) ? e : null != e && "function" == typeof e[Symbol.iterator] ? H(e) : null
+                                return A.isArray(e) ? e : null != e && "function" == typeof e[Symbol.iterator] ? B(e) : null
                             }
                         }
-                        var B = void 0 !== n && "[object process]" === E(n).toLowerCase(),
+                        var H = void 0 !== n && "[object process]" === E(n).toLowerCase(),
                             G = void 0 !== n && void 0 !== n.env,
                             J = {
                                 isClass: m,
@@ -6376,7 +6392,7 @@
                                 notEnumerableProp: h,
                                 isPrimitive: s,
                                 isObject: u,
-                                isError: _,
+                                isError: S,
                                 canEvaluate: O,
                                 errorObj: D,
                                 tryCatch: a,
@@ -6389,11 +6405,11 @@
                                 canAttachTrace: C,
                                 ensureErrorObject: F,
                                 originatesFromRejection: T,
-                                markAsOriginatingFromRejection: S,
+                                markAsOriginatingFromRejection: _,
                                 classString: E,
                                 copyDescriptors: w,
                                 hasDevTools: "undefined" != typeof chrome && chrome && "function" == typeof chrome.loadTimes,
-                                isNode: B,
+                                isNode: H,
                                 hasEnvVariables: G,
                                 env: R,
                                 global: x,
@@ -6461,11 +6477,11 @@
                 var n = [],
                     r = null;
                 return e.forEach(function(e) {
-                    e.mediaType === g.a ? r = t.micDeviceId : e.videoType === E.a.CAMERA && (r = t.cameraDeviceId), I += 1;
-                    var i = new h.a(R({}, e, {
+                    e.mediaType === g.a ? r = t.micDeviceId : e.videoType === w.a.CAMERA && (r = t.cameraDeviceId), P += 1;
+                    var i = new h.a(k({}, e, {
                         deviceId: r,
                         facingMode: t.facingMode,
-                        rtcId: I
+                        rtcId: P
                     }));
                     n.push(i)
                 }), n
@@ -6481,11 +6497,11 @@
                         a = i.getSettings(),
                         s = a.deviceId,
                         c = a.facingMode;
-                    return I += 1, new h.a({
+                    return P += 1, new h.a({
                         deviceId: s,
                         facingMode: c,
                         mediaType: i.kind,
-                        rtcId: I,
+                        rtcId: P,
                         sourceId: t,
                         sourceType: n,
                         stream: r,
@@ -6495,23 +6511,24 @@
                 })
             }
             var c = n(0),
-                u = (n.n(c), n(117)),
+                u = (n.n(c), n(118)),
                 l = n(3),
                 d = n.n(l),
                 p = n(6),
-                h = n(118),
+                h = n(119),
                 f = n(11),
                 m = n(15),
                 v = n(9),
                 g = n(4),
                 y = n(1),
                 b = n(8),
-                _ = n.n(b),
-                S = n(27),
-                T = n(141),
-                C = n(16),
-                E = n.n(C),
-                w = function() {
+                S = n.n(b),
+                _ = n(27),
+                T = n(5),
+                C = n(142),
+                E = n(16),
+                w = n.n(E),
+                R = function() {
                     function e(e, t) {
                         for (var n = 0; n < t.length; n++) {
                             var r = t[n];
@@ -6522,39 +6539,27 @@
                         return n && e(t.prototype, n), r && e(t, r), t
                     }
                 }(),
-                R = Object.assign || function(e) {
+                k = Object.assign || function(e) {
                     for (var t = 1; t < arguments.length; t++) {
                         var n = arguments[t];
                         for (var r in n) Object.prototype.hasOwnProperty.call(n, r) && (e[r] = n[r])
                     }
                     return e
                 },
-                k = Object(c.getLogger)(e),
-                I = 0,
-                P = function(e) {
+                I = Object(c.getLogger)(e),
+                P = 0,
+                A = function(e) {
                     function t(e) {
                         var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                         r(this, t);
                         var o = i(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this));
-                        return o.conference = e, o.peerConnections = new Map, o.peerConnectionIdCounter = 1, o.localTracks = [], o.options = n, o._channel = null, o._channelOpen = !1, o._lastN = -1, o._lastNEndpoints = null, o._pinnedEndpoint = null, o._selectedEndpoint = null, o._lastNChangeListener = o._onLastNChanged.bind(o), S.a.isDeviceChangeAvailable("output") && S.a.addListener(_.a.AUDIO_OUTPUT_DEVICE_CHANGED, function(e) {
-                            var t = o.getRemoteTracks(g.a),
-                                n = !0,
-                                r = !1,
-                                i = void 0;
-                            try {
-                                for (var a, s = t[Symbol.iterator](); !(n = (a = s.next()).done); n = !0) a.value.setAudioOutput(e)
-                            } catch (e) {
-                                r = !0, i = e
-                            } finally {
-                                try {
-                                    !n && s.return && s.return()
-                                } finally {
-                                    if (r) throw i
-                                }
-                            }
-                        }), o
+                        return o.conference = e, o.peerConnections = new Map, o.peerConnectionIdCounter = 1, o.localTracks = [], o.options = n, o._channel = null, o._channelOpen = !1, o._lastN = -1, o._lastNEndpoints = null, o._pinnedEndpoint = null, o._selectedEndpoint = null, o._lastNChangeListener = o._onLastNChanged.bind(o), _.a.isDeviceChangeAvailable("output") && (_.a.addListener(S.a.AUDIO_OUTPUT_DEVICE_CHANGED, function(e) {
+                            return o._updateAudioOutputForAudioTracks(e)
+                        }), _.a.addListener(S.a.DEVICE_LIST_CHANGED, function() {
+                            return o._updateAudioOutputForAudioTracks(_.a.getAudioOutputDevice())
+                        })), o
                     }
-                    return o(t, e), w(t, [{
+                    return o(t, e), R(t, [{
                         key: "initializeBridgeChannel",
                         value: function(e, t) {
                             var n = this;
@@ -6563,10 +6568,10 @@
                                 try {
                                     n._channel.sendPinnedEndpointMessage(n._pinnedEndpoint), n._channel.sendSelectedEndpointMessage(n._selectedEndpoint)
                                 } catch (e) {
-                                    d.a.callErrorHandler(e), k.error("Cannot send selected(" + n._selectedEndpoint + ")pinned(" + n._pinnedEndpoint + ") endpoint message.", e)
+                                    d.a.callErrorHandler(e), I.error("Cannot send selected(" + n._selectedEndpoint + ")pinned(" + n._pinnedEndpoint + ") endpoint message.", e)
                                 }
-                                n.removeListener(_.a.DATA_CHANNEL_OPEN, n._channelOpenListener), n._channelOpenListener = null, -1 !== n._lastN && n._channel.sendSetLastNMessage(n._lastN)
-                            }, this.addListener(_.a.DATA_CHANNEL_OPEN, this._channelOpenListener), this.addListener(_.a.LASTN_ENDPOINT_CHANGED, this._lastNChangeListener)
+                                n.removeListener(S.a.DATA_CHANNEL_OPEN, n._channelOpenListener), n._channelOpenListener = null, -1 !== n._lastN && n._channel.sendSetLastNMessage(n._lastN)
+                            }, this.addListener(S.a.DATA_CHANNEL_OPEN, this._channelOpenListener), this.addListener(S.a.LASTN_ENDPOINT_CHANGED, this._lastNChangeListener)
                         }
                     }, {
                         key: "_onLastNChanged",
@@ -6605,8 +6610,12 @@
                     }, {
                         key: "createPeerConnection",
                         value: function(e, n, r, i) {
-                            var o = new T.a(this, this.peerConnectionIdCounter, e, n, t.getPCConstraints(r), r, i);
-                            return this.peerConnections.set(o.id, o), this.peerConnectionIdCounter += 1, o
+                            var o = t.getPCConstraints(r);
+                            void 0 !== i.abtestSuspendVideo && (_.a.setSuspendVideo(o, i.abtestSuspendVideo), T.a.analytics.addPermanentProperties({
+                                abtestSuspendVideo: i.abtestSuspendVideo
+                            }));
+                            var a = new C.a(this, this.peerConnectionIdCounter, e, n, o, r, i);
+                            return this.peerConnections.set(a.id, a), this.peerConnectionIdCounter += 1, a
                         }
                     }, {
                         key: "_removePeerConnection",
@@ -6704,20 +6713,20 @@
                                     if (r) throw i
                                 }
                             }
-                            return k.debug("Removed remote tracks for " + e + " count: " + t.length), t
+                            return I.debug("Removed remote tracks for " + e + " count: " + t.length), t
                         }
                     }, {
                         key: "closeBridgeChannel",
                         value: function() {
-                            this._channel && (this._channel.close(), this._channelOpen = !1, this.removeListener(_.a.LASTN_ENDPOINT_CHANGED, this._lastNChangeListener))
+                            this._channel && (this._channel.close(), this._channelOpen = !1, this.removeListener(S.a.LASTN_ENDPOINT_CHANGED, this._lastNChangeListener))
                         }
                     }, {
                         key: "setAudioLevel",
                         value: function(e, t, n, r) {
                             var i = e.getTrackBySSRC(t);
                             if (i) {
-                                if (!i.isAudioTrack()) return void k.warn("Received audio level for non-audio track: " + t);
-                                i.isLocal() !== r && k.error(i + " was expected to " + (r ? "be" : "not be") + " local"), i.setAudioLevel(n, e)
+                                if (!i.isAudioTrack()) return void I.warn("Received audio level for non-audio track: " + t);
+                                i.isLocal() !== r && I.error(i + " was expected to " + (r ? "be" : "not be") + " local"), i.setAudioLevel(n, e)
                             }
                         }
                     }, {
@@ -6729,18 +6738,37 @@
                     }, {
                         key: "setLastN",
                         value: function(e) {
-                            this._lastN !== e && (this._lastN = e, this._channel && this._channelOpen && this._channel.sendSetLastNMessage(e), this.eventEmitter.emit(_.a.LASTN_VALUE_CHANGED, e))
+                            this._lastN !== e && (this._lastN = e, this._channel && this._channelOpen && this._channel.sendSetLastNMessage(e), this.eventEmitter.emit(S.a.LASTN_VALUE_CHANGED, e))
                         }
                     }, {
                         key: "isInLastN",
                         value: function(e) {
                             return !this._lastNEndpoints || this._lastNEndpoints.indexOf(e) > -1
                         }
+                    }, {
+                        key: "_updateAudioOutputForAudioTracks",
+                        value: function(e) {
+                            var t = this.getRemoteTracks(g.a),
+                                n = !0,
+                                r = !1,
+                                i = void 0;
+                            try {
+                                for (var o, a = t[Symbol.iterator](); !(n = (o = a.next()).done); n = !0) o.value.setAudioOutput(e)
+                            } catch (e) {
+                                r = !0, i = e
+                            } finally {
+                                try {
+                                    !n && a.return && a.return()
+                                } finally {
+                                    if (r) throw i
+                                }
+                            }
+                        }
                     }], [{
                         key: "obtainAudioAndVideoPermissions",
                         value: function(e) {
                             var t = y.a.usesNewGumFlow();
-                            return (t ? S.a.newObtainAudioAndVideoPermissions(e) : S.a.obtainAudioAndVideoPermissions(e)).then(function(n) {
+                            return (t ? _.a.newObtainAudioAndVideoPermissions(e) : _.a.obtainAudioAndVideoPermissions(e)).then(function(n) {
                                 var r = t ? s(n) : a(n, e);
                                 return r.some(function(e) {
                                     return !e._isReceivingData()
@@ -6750,83 +6778,84 @@
                     }, {
                         key: "addListener",
                         value: function(e, t) {
-                            S.a.addListener(e, t)
+                            _.a.addListener(e, t)
                         }
                     }, {
                         key: "removeListener",
                         value: function(e, t) {
-                            S.a.removeListener(e, t)
+                            _.a.removeListener(e, t)
                         }
                     }, {
                         key: "isRTCReady",
                         value: function() {
-                            return S.a.isRTCReady()
+                            return _.a.isRTCReady()
                         }
                     }, {
                         key: "init",
                         value: function() {
                             var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                            return this.options = e, S.a.init(this.options)
+                            return this.options = e, _.a.init(this.options)
                         }
                     }, {
                         key: "getDeviceAvailability",
                         value: function() {
-                            return S.a.getDeviceAvailability()
+                            return _.a.getDeviceAvailability()
                         }
                     }, {
                         key: "getPCConstraints",
                         value: function(e) {
-                            return e ? S.a.p2pPcConstraints : S.a.pcConstraints
+                            var t = e ? _.a.p2pPcConstraints : _.a.pcConstraints;
+                            return t ? JSON.parse(JSON.stringify(t)) : {}
                         }
                     }, {
                         key: "attachMediaStream",
                         value: function(e, t) {
-                            return S.a.attachMediaStream(e, t)
+                            return _.a.attachMediaStream(e, t)
                         }
                     }, {
                         key: "getStreamID",
                         value: function(e) {
-                            return S.a.getStreamID(e)
+                            return _.a.getStreamID(e)
                         }
                     }, {
                         key: "getTrackID",
                         value: function(e) {
-                            return S.a.getTrackID(e)
+                            return _.a.getTrackID(e)
                         }
                     }, {
                         key: "isDeviceListAvailable",
                         value: function() {
-                            return S.a.isDeviceListAvailable()
+                            return _.a.isDeviceListAvailable()
                         }
                     }, {
                         key: "isDeviceChangeAvailable",
                         value: function(e) {
-                            return S.a.isDeviceChangeAvailable(e)
+                            return _.a.isDeviceChangeAvailable(e)
                         }
                     }, {
                         key: "getAudioOutputDevice",
                         value: function() {
-                            return S.a.getAudioOutputDevice()
+                            return _.a.getAudioOutputDevice()
                         }
                     }, {
                         key: "getCurrentlyAvailableMediaDevices",
                         value: function() {
-                            return S.a.getCurrentlyAvailableMediaDevices()
+                            return _.a.getCurrentlyAvailableMediaDevices()
                         }
                     }, {
                         key: "getEventDataForActiveDevice",
                         value: function(e) {
-                            return S.a.getEventDataForActiveDevice(e)
+                            return _.a.getEventDataForActiveDevice(e)
                         }
                     }, {
                         key: "setAudioOutputDevice",
                         value: function(e) {
-                            return S.a.setAudioOutputDevice(e)
+                            return _.a.setAudioOutputDevice(e)
                         }
                     }, {
                         key: "isUserStream",
                         value: function(e) {
-                            return t.isUserStreamById(S.a.getStreamID(e))
+                            return t.isUserStreamById(_.a.getStreamID(e))
                         }
                     }, {
                         key: "isUserStreamById",
@@ -6836,21 +6865,21 @@
                     }, {
                         key: "enumerateDevices",
                         value: function(e) {
-                            S.a.enumerateDevices(e)
+                            _.a.enumerateDevices(e)
                         }
                     }, {
                         key: "stopMediaStream",
                         value: function(e) {
-                            S.a.stopMediaStream(e)
+                            _.a.stopMediaStream(e)
                         }
                     }, {
                         key: "isDesktopSharingEnabled",
                         value: function() {
-                            return S.a.isDesktopSharingEnabled()
+                            return _.a.isDesktopSharingEnabled()
                         }
                     }]), t
                 }(v.a);
-            t.a = P
+            t.a = A
         }).call(t, "modules/RTC/RTC.js")
     }, function(e, t, n) {
         "use strict";
@@ -7033,7 +7062,7 @@
 
             function d(e, t) {
                 var n = t && t.getAudioTracks().length > 0,
-                    r = t && t.getVideoTracks().length > 0; - 1 !== e.indexOf("video") && (ee.video = r), -1 !== e.indexOf("audio") && (ee.audio = n), Y.emit(H.a.AVAILABLE_DEVICES_CHANGED, ee)
+                    r = t && t.getVideoTracks().length > 0; - 1 !== e.indexOf("video") && (ee.video = r), -1 !== e.indexOf("audio") && (ee.audio = n), Y.emit(B.a.AVAILABLE_DEVICES_CHANGED, ee)
             }
 
             function p(e) {
@@ -7083,7 +7112,7 @@
                     i = n.filter(function(e) {
                         return "" === e.label
                     });
-                t.length && t.length === r.length && (ee.video = !1), n.length && n.length === i.length && (ee.audio = !1), Y.emit(H.a.DEVICE_LIST_CHANGED, e)
+                t.length && t.length === r.length && (ee.video = !1), n.length && n.length === i.length && (ee.audio = !1), Y.emit(B.a.DEVICE_LIST_CHANGED, e)
             }
 
             function v(e, t) {
@@ -7123,7 +7152,7 @@
                 }
             }
 
-            function _(e, t) {
+            function S(e, t) {
                 var n = void 0,
                     r = void 0,
                     i = void 0,
@@ -7173,7 +7202,7 @@
                 }), o
             }
 
-            function S(e, t) {
+            function _(e, t) {
                 var n = "srcObject";
                 if (n in e || (n = "mozSrcObject") in e || (n = null), n) return void(e[n] = t);
                 var r = void 0;
@@ -7198,8 +7227,8 @@
             }
 
             function E(e, t) {
-                he = !0, Y.emit(H.a.RTC_READY, !0), G.a.init(e, t), ve.isDeviceListAvailable() && de && de(function(e) {
-                    le = e.splice(0), Q.info("Available devices: ", le), f(le), Y.emit(H.a.DEVICE_LIST_AVAILABLE, le), pe ? navigator.mediaDevices.addEventListener("devicechange", function() {
+                he = !0, Y.emit(B.a.RTC_READY, !0), G.a.init(e, t), ve.isDeviceListAvailable() && de && de(function(e) {
+                    le = e.splice(0), Q.info("Available devices: ", le), f(le), Y.emit(B.a.DEVICE_LIST_AVAILABLE, le), pe ? navigator.mediaDevices.addEventListener("devicechange", function() {
                         return ve.enumerateDevices(m)
                     }) : h()
                 })
@@ -7231,9 +7260,9 @@
                 j = n.n(M),
                 F = n(1),
                 U = n(8),
-                H = n.n(U),
-                B = n(119),
-                G = n(128),
+                B = n.n(U),
+                H = n(120),
+                G = n(129),
                 J = n(12),
                 V = n(5),
                 W = n(16),
@@ -7258,7 +7287,7 @@
                 }(),
                 Q = Object(A.getLogger)(e),
                 X = F.a.isTemasysPluginUsed() ? n(35) : void 0;
-            F.a.usesNewGumFlow() && n(129);
+            F.a.usesNewGumFlow() && n(130);
             var Y = new P.a,
                 Z = 3e3,
                 ee = {
@@ -7310,18 +7339,18 @@
                                     }).catch(function(t) {
                                         return Q.error("Error enumerating devices: " + t), e([]), []
                                     })
-                                }, e.attachMediaStream = function(e, t) {
+                                }, e.attachMediaStream = w(function(e, t) {
                                     return e && (e.srcObject = t), e
-                                }, e.getStreamID = function(e) {
+                                }), e.getStreamID = function(e) {
                                     return e.id
                                 }, e.getTrackID = function(e) {
                                     return e.id
                                 };
-                                else if (F.a.isOpera() || F.a.isNWJS() || F.a.isElectron() || F.a.isReactNative()) {
+                                else if (F.a.isChrome() || F.a.isOpera() || F.a.isNWJS() || F.a.isElectron() || F.a.isReactNative()) {
                                     e.RTCPeerConnectionType = webkitRTCPeerConnection;
                                     var i = navigator.webkitGetUserMedia.bind(navigator);
                                     e.getUserMedia = g(i), e.enumerateDevices = de, e.attachMediaStream = w(function(e, t) {
-                                        return S(e, t), e
+                                        return _(e, t), e
                                     }), e.getStreamID = function(e) {
                                         var t = e.id;
                                         return "number" == typeof t ? t : J.a.filterSpecialChars(t)
@@ -7332,8 +7361,8 @@
                                     }), webkitMediaStream.prototype.getAudioTracks || (webkitMediaStream.prototype.getAudioTracks = function() {
                                         return this.audioTracks
                                     })
-                                } else if (F.a.isEdge()) e.RTCPeerConnectionType = B.a, e.getUserMedia = g(navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices), !0), e.enumerateDevices = de, e.attachMediaStream = w(function(e, t) {
-                                    return S(e, t), e
+                                } else if (F.a.isEdge()) e.RTCPeerConnectionType = H.a, e.getUserMedia = g(navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices), !0), e.enumerateDevices = de, e.attachMediaStream = w(function(e, t) {
+                                    return _(e, t), e
                                 }), e.getStreamID = function(e) {
                                     var t = e.jitsiRemoteId || e.id;
                                     return J.a.filterSpecialChars(t)
@@ -7374,23 +7403,15 @@
                     }, {
                         key: "_initPCConstraints",
                         value: function(e) {
-                            if (F.a.isFirefox()) this.pcConstraints = {};
-                            else if (F.a.isChrome() || F.a.isOpera() || F.a.isNWJS() || F.a.isElectron() || F.a.isReactNative()) {
-                                this.pcConstraints = {
-                                    optional: []
-                                }, e.useIPv6 && this.pcConstraints.optional.push({
-                                    googIPv6: !0
-                                }), this.p2pPcConstraints = JSON.parse(JSON.stringify(this.pcConstraints)), e.disableSuspendVideo || this.pcConstraints.optional.push({
-                                    googSuspendBelowMinBitrate: !0
-                                });
-                                var t = (e.testing || {}).forceP2PSuspendVideoRatio;
-                                ("number" != typeof t || Math.random() < t) && (Q.info("Enable suspend video mode for p2p (ratio=" + t + ")"), V.a.analytics.addPermanentProperties({
-                                    forceP2PSuspendVideo: !0
-                                }), this.p2pPcConstraints.optional.push({
-                                    googSuspendBelowMinBitrate: !0
-                                }))
-                            }
-                            this.p2pPcConstraints = this.p2pPcConstraints || this.pcConstraints
+                            F.a.isFirefox() ? this.pcConstraints = {} : (F.a.isChrome() || F.a.isOpera() || F.a.isNWJS() || F.a.isElectron() || F.a.isReactNative()) && (this.pcConstraints = {
+                                optional: []
+                            }, e.useIPv6 && this.pcConstraints.optional.push({
+                                googIPv6: !0
+                            }), this.p2pPcConstraints = JSON.parse(JSON.stringify(this.pcConstraints)), e.disableSuspendVideo || this.pcConstraints.optional.push({
+                                googSuspendBelowMinBitrate: !0
+                            }), this.p2pPcConstraints.optional.push({
+                                googSuspendBelowMinBitrate: !0
+                            })), this.p2pPcConstraints = this.p2pPcConstraints || this.pcConstraints
                         }
                     }, {
                         key: "getUserMediaWithConstraints",
@@ -7428,7 +7449,7 @@
                     }, {
                         key: "_newGetDesktopMedia",
                         value: function(e, t) {
-                            if (!G.a.isSupported()) return Promise.reject(new Error("Desktop sharing is not supported!"));
+                            if (!G.a.isSupported() || !F.a.supportsVideo()) return Promise.reject(new Error("Desktop sharing is not supported!"));
                             var n = K({}, e, {
                                 desktopSharingSources: t
                             });
@@ -7451,7 +7472,7 @@
                                 });
                             return new Promise(function(i, o) {
                                 var a = function(e) {
-                                    i(_(e, t.resolution))
+                                    i(S(e, t.resolution))
                                 };
                                 if (t.devices = t.devices || ["audio", "video"], t.resolution = t.resolution || "720", G.a.isSupported() || -1 === t.devices.indexOf("desktop") || o(new Error("Desktop sharing is not supported!")), F.a.isFirefox() || F.a.isReactNative() || F.a.isTemasysPluginUsed()) {
                                     var s = function(e, n, r) {
@@ -7533,7 +7554,7 @@
                                 i = function() {
                                     var t = e.devices || ["audio", "video"],
                                         n = t.filter(function(e) {
-                                            return "desktop" !== e
+                                            return "audio" === e || "video" === e && F.a.supportsVideo()
                                         });
                                     if (!n.length) return Promise.resolve();
                                     var r = l(n, e);
@@ -7585,9 +7606,9 @@
                         value: function() {
                             return he ? Promise.resolve() : new Promise(function(e) {
                                 var t = function t() {
-                                    Y.removeListener(H.a.RTC_READY, t), e()
+                                    Y.removeListener(B.a.RTC_READY, t), e()
                                 };
-                                Y.addListener(H.a.RTC_READY, t)
+                                Y.addListener(B.a.RTC_READY, t)
                             })
                         }
                     }, {
@@ -7618,7 +7639,7 @@
                         key: "setAudioOutputDevice",
                         value: function(e) {
                             return this.isDeviceChangeAvailable("output") || Promise.reject(new Error("Audio output device change is not supported")), ce.setSinkId(e).then(function() {
-                                te = e, ne = !0, Q.log("Audio output device set to " + e), Y.emit(H.a.AUDIO_OUTPUT_DEVICE_CHANGED, e)
+                                te = e, ne = !0, Q.log("Audio output device set to " + e), Y.emit(B.a.AUDIO_OUTPUT_DEVICE_CHANGED, e)
                             })
                         }
                     }, {
@@ -7644,6 +7665,15 @@
                             return t.push(n), {
                                 deviceList: t
                             }
+                        }
+                    }, {
+                        key: "setSuspendVideo",
+                        value: function(e, t) {
+                            e.optional || (e.optional = []), e.optional = e.optional.filter(function(e) {
+                                return !e.hasOwnProperty("googSuspendBelowMinBitrate")
+                            }), t && e.optional.push({
+                                googSuspendBelowMinBitrate: "true"
+                            })
                         }
                     }]), t
                 }(N.a),
@@ -9474,7 +9504,7 @@
                                                         mid: f,
                                                         isDatachannel: !0
                                                     });
-                                                    var m, v, g, y, b, _, S, T, C, E, w, R, k = r.parseRtpParameters(o);
+                                                    var m, v, g, y, b, S, _, T, C, E, w, R, k = r.parseRtpParameters(o);
                                                     p || (w = r.getIceParameters(o, a), R = r.getDtlsParameters(o, a), R.role = "client"), T = r.parseRtpEncodingParameters(o);
                                                     var I, P = r.matchPrefix(o, "a=ssrc:").map(function(e) {
                                                         return r.parseSsrcMedia(e)
@@ -9488,16 +9518,16 @@
                                                         }).filter(function(e) {
                                                             return "1" === e.component
                                                         });
-                                                    if ("offer" !== e.type || p) "answer" !== e.type || p || (m = t.transceivers[c], v = m.iceGatherer, g = m.iceTransport, y = m.dtlsTransport, b = m.rtpSender, _ = m.rtpReceiver, S = m.sendEncodingParameters, C = m.localCapabilities, t.transceivers[c].recvEncodingParameters = T, t.transceivers[c].remoteCapabilities = k, t.transceivers[c].cname = I, (s || A) && O.length && g.setRemoteCandidates(O), t.usingBundle && 0 !== c || (g.start(v, w, "controlling"), y.start(R)), t._transceive(m, "sendrecv" === h || "recvonly" === h, "sendrecv" === h || "sendonly" === h), !_ || "sendrecv" !== h && "sendonly" !== h ? delete m.rtpReceiver : (E = _.track, i.push([E, _]), n.addTrack(E)));
+                                                    if ("offer" !== e.type || p) "answer" !== e.type || p || (m = t.transceivers[c], v = m.iceGatherer, g = m.iceTransport, y = m.dtlsTransport, b = m.rtpSender, S = m.rtpReceiver, _ = m.sendEncodingParameters, C = m.localCapabilities, t.transceivers[c].recvEncodingParameters = T, t.transceivers[c].remoteCapabilities = k, t.transceivers[c].cname = I, (s || A) && O.length && g.setRemoteCandidates(O), t.usingBundle && 0 !== c || (g.start(v, w, "controlling"), y.start(R)), t._transceive(m, "sendrecv" === h || "recvonly" === h, "sendrecv" === h || "sendonly" === h), !S || "sendrecv" !== h && "sendonly" !== h ? delete m.rtpReceiver : (E = S.track, i.push([E, S]), n.addTrack(E)));
                                                     else {
                                                         var D = t.usingBundle && c > 0 ? {
                                                             iceGatherer: t.transceivers[0].iceGatherer,
                                                             iceTransport: t.transceivers[0].iceTransport,
                                                             dtlsTransport: t.transceivers[0].dtlsTransport
                                                         } : t._createIceAndDtlsTransports(f, c);
-                                                        if (A && D.iceTransport.setRemoteCandidates(O), C = RTCRtpReceiver.getCapabilities(d), S = [{
+                                                        if (A && D.iceTransport.setRemoteCandidates(O), C = RTCRtpReceiver.getCapabilities(d), _ = [{
                                                                 ssrc: 1001 * (2 * c + 2)
-                                                            }], _ = new RTCRtpReceiver(D.dtlsTransport, d), E = _.track, i.push([E, _]), n.addTrack(E), t.localStreams.length > 0 && t.localStreams[0].getTracks().length >= c) {
+                                                            }], S = new RTCRtpReceiver(D.dtlsTransport, d), E = S.track, i.push([E, S]), n.addTrack(E), t.localStreams.length > 0 && t.localStreams[0].getTracks().length >= c) {
                                                             var x;
                                                             "audio" === d ? x = t.localStreams[0].getAudioTracks()[0] : "video" === d && (x = t.localStreams[0].getVideoTracks()[0]), x && (b = new RTCRtpSender(x, D.dtlsTransport))
                                                         }
@@ -9508,11 +9538,11 @@
                                                             localCapabilities: C,
                                                             remoteCapabilities: k,
                                                             rtpSender: b,
-                                                            rtpReceiver: _,
+                                                            rtpReceiver: S,
                                                             kind: d,
                                                             mid: f,
                                                             cname: I,
-                                                            sendEncodingParameters: S,
+                                                            sendEncodingParameters: _,
                                                             recvEncodingParameters: T
                                                         }, t._transceive(t.transceivers[c], !1, "sendrecv" === h || "sendonly" === h)
                                                     }
@@ -10469,12 +10499,12 @@
                 f = n(1),
                 m = n(96),
                 v = n(99),
-                g = n(106),
-                y = n(107),
-                b = n(108),
-                _ = n(109),
-                S = n(9),
-                T = n(110),
+                g = n(107),
+                y = n(108),
+                b = n(109),
+                S = n(110),
+                _ = n(9),
+                T = n(111),
                 C = function() {
                     function e(e, t) {
                         for (var n = 0; n < t.length; n++) {
@@ -10632,10 +10662,10 @@
                                     urls: "stun:stun2.l.google.com:19302"
                                 }],
                                 t = this.options.p2p && this.options.p2p.stunServers || e;
-                            Object(m.a)(this), Object(v.a)(this, this.eventEmitter, t), Object(g.a)(), Object(y.a)(this), Object(b.a)(), Object(_.a)()
+                            Object(m.a)(this), Object(v.a)(this, this.eventEmitter, t), Object(g.a)(), Object(y.a)(this), Object(b.a)(), Object(S.a)()
                         }
                     }]), t
-                }(S.a);
+                }(_.a);
             t.a = w
         }).call(t, "modules/xmpp/xmpp.js")
     }, function(e, t, n) {
@@ -10904,7 +10934,32 @@
             this.media = t, this.raw = o + t.join(""), this.session = o
         }
         t.a = r;
-        var i = n(12);
+        var i = n(12),
+            o = function() {
+                function e(e, t) {
+                    var n = [],
+                        r = !0,
+                        i = !1,
+                        o = void 0;
+                    try {
+                        for (var a, s = e[Symbol.iterator](); !(r = (a = s.next()).done) && (n.push(a.value), !t || n.length !== t); r = !0);
+                    } catch (e) {
+                        i = !0, o = e
+                    } finally {
+                        try {
+                            !r && s.return && s.return()
+                        } finally {
+                            if (i) throw o
+                        }
+                    }
+                    return n
+                }
+                return function(t, n) {
+                    if (Array.isArray(t)) return t;
+                    if (Symbol.iterator in Object(t)) return e(t, n);
+                    throw new TypeError("Invalid attempt to destructure non-iterable instance")
+                }
+            }();
         r.prototype.failICE = !1, r.prototype.removeTcpCandidates = !1, r.prototype.removeUdpCandidates = !1, r.prototype.getMediaSsrcMap = function() {
             for (var e = this, t = {}, n = void 0, r = 0; r < e.media.length; r++) ! function(r) {
                 n = i.a.findLines(e.media[r], "a=ssrc:");
@@ -10972,109 +11027,100 @@
         }, r.prototype.toJingle = function(e, t) {
             var n = void 0,
                 r = void 0,
-                o = void 0,
                 a = void 0,
                 s = void 0,
                 c = void 0,
                 u = void 0,
-                l = void 0;
-            if (a = i.a.findLines(this.session, "a=group:"), a.length)
-                for (n = 0; n < a.length; n++) {
-                    l = a[n].split(" ");
-                    var d = l.shift().substr(8);
+                l = void 0,
+                d = void 0;
+            if (s = i.a.findLines(this.session, "a=group:"), s.length)
+                for (n = 0; n < s.length; n++) {
+                    d = s[n].split(" ");
+                    var p = d.shift().substr(8);
                     for (e.c("group", {
                             xmlns: "urn:xmpp:jingle:apps:grouping:0",
-                            semantics: d
-                        }), r = 0; r < l.length; r++) e.c("content", {
-                        name: l[r]
+                            semantics: p
+                        }), r = 0; r < d.length; r++) e.c("content", {
+                        name: d[r]
                     }).up();
                     e.up()
                 }
             for (n = 0; n < this.media.length; n++)
-                if (s = i.a.parseMLine(this.media[n].split("\r\n")[0]), "audio" === s.media || "video" === s.media || "application" === s.media) {
-                    var p = i.a.findLine(this.media[n], "a=ssrc:");
-                    u = !!p && p.substring(7).split(" ")[0], e.c("content", {
+                if (c = i.a.parseMLine(this.media[n].split("\r\n")[0]), "audio" === c.media || "video" === c.media || "application" === c.media) {
+                    var h = i.a.findLine(this.media[n], "a=ssrc:");
+                    l = !!h && h.substring(7).split(" ")[0], e.c("content", {
                         creator: t,
-                        name: s.media
+                        name: c.media
                     });
-                    var h = i.a.findLine(this.media[n], "a=mid:");
-                    if (h) {
-                        var f = i.a.parseMID(h);
+                    var f = i.a.findLine(this.media[n], "a=mid:");
+                    if (f) {
+                        var m = i.a.parseMID(f);
                         e.attrs({
-                            name: f
+                            name: m
                         })
                     }
                     if (i.a.findLine(this.media[n], "a=rtpmap:").length) {
                         for (e.c("description", {
                                 xmlns: "urn:xmpp:jingle:apps:rtp:1",
-                                media: s.media
-                            }), u && e.attrs({
-                                ssrc: u
-                            }), r = 0; r < s.fmt.length; r++) {
-                            c = i.a.findLine(this.media[n], "a=rtpmap:" + s.fmt[r]), e.c("payload-type", i.a.parseRTPMap(c));
-                            var m = i.a.findLine(this.media[n], "a=fmtp:" + s.fmt[r]);
-                            if (m)
-                                for (l = i.a.parseFmtp(m), o = 0; o < l.length; o++) e.c("parameter", l[o]).up();
-                            this.rtcpFbToJingle(n, e, s.fmt[r]), e.up()
+                                media: c.media
+                            }), l && e.attrs({
+                                ssrc: l
+                            }), r = 0; r < c.fmt.length; r++) {
+                            u = i.a.findLine(this.media[n], "a=rtpmap:" + c.fmt[r]), e.c("payload-type", i.a.parseRTPMap(u));
+                            var v = i.a.findLine(this.media[n], "a=fmtp:" + c.fmt[r]);
+                            if (v)
+                                for (d = i.a.parseFmtp(v), a = 0; a < d.length; a++) e.c("parameter", d[a]).up();
+                            this.rtcpFbToJingle(n, e, c.fmt[r]), e.up()
                         }
-                        var v = i.a.findLines(this.media[n], "a=crypto:", this.session);
-                        if (v.length && (e.c("encryption", {
+                        var g = i.a.findLines(this.media[n], "a=crypto:", this.session);
+                        if (g.length && (e.c("encryption", {
                                 required: 1
-                            }), v.forEach(function(t) {
+                            }), g.forEach(function(t) {
                                 return e.c("crypto", i.a.parseCrypto(t)).up()
-                            }), e.up()), u) {
-                            e.c("source", {
-                                ssrc: u,
-                                xmlns: "urn:xmpp:jingle:apps:rtp:ssma:0"
-                            });
-                            var g = i.a.findLines(this.media[n], "a=ssrc:");
-                            if (g.length > 0) g.forEach(function(t) {
-                                var n = t.indexOf(" "),
-                                    r = t.substr(0, n).substr(7);
-                                r !== u && (e.up(), u = r, e.c("source", {
-                                    ssrc: u,
-                                    xmlns: "urn:xmpp:jingle:apps:rtp:ssma:0"
-                                }));
-                                var o = t.substr(n + 1);
-                                if (e.c("parameter"), -1 === o.indexOf(":")) e.attrs({
-                                    name: o
-                                });
-                                else {
-                                    var a = o.split(":", 2)[0];
-                                    e.attrs({
-                                        name: a
-                                    });
-                                    var s = o.split(":", 2)[1];
-                                    s = i.a.filterSpecialChars(s), e.attrs({
-                                        value: s
-                                    })
+                            }), e.up()), l) {
+                            var y = i.a.parseSSRC(this.media[n]),
+                                b = !0,
+                                S = !1,
+                                _ = void 0;
+                            try {
+                                for (var T, C = y[Symbol.iterator](); !(b = (T = C.next()).done); b = !0) {
+                                    var E = T.value,
+                                        w = o(E, 2),
+                                        R = w[0],
+                                        k = w[1];
+                                    e.c("source", {
+                                        ssrc: R,
+                                        xmlns: "urn:xmpp:jingle:apps:rtp:ssma:0"
+                                    }), k.forEach(function(t) {
+                                        var n = t.indexOf(" "),
+                                            r = t.substr(n + 1);
+                                        if (e.c("parameter"), -1 === r.indexOf(":")) e.attrs({
+                                            name: r
+                                        });
+                                        else {
+                                            var o = r.split(":", 2)[0];
+                                            e.attrs({
+                                                name: o
+                                            });
+                                            var a = r.split(":", 2)[1];
+                                            a = i.a.filterSpecialChars(a), e.attrs({
+                                                value: a
+                                            })
+                                        }
+                                        e.up()
+                                    }), e.up()
                                 }
-                                e.up()
-                            });
-                            else {
-                                e.up(), e.c("source", {
-                                    ssrc: u,
-                                    xmlns: "urn:xmpp:jingle:apps:rtp:ssma:0"
-                                }), e.c("parameter"), e.attrs({
-                                    name: "cname",
-                                    value: Math.random().toString(36).substring(7)
-                                }), e.up();
-                                var y = null,
-                                    b = APP.RTC.getLocalTracks(s.media);
-                                b && (y = b.getTrackId()), null !== y && (y = i.a.filterSpecialChars(y), e.c("parameter"), e.attrs({
-                                    name: "msid",
-                                    value: y
-                                }), e.up(), e.c("parameter"), e.attrs({
-                                    name: "mslabel",
-                                    value: y
-                                }), e.up(), e.c("parameter"), e.attrs({
-                                    name: "label",
-                                    value: y
-                                }), e.up())
+                            } catch (e) {
+                                S = !0, _ = e
+                            } finally {
+                                try {
+                                    !b && C.return && C.return()
+                                } finally {
+                                    if (S) throw _
+                                }
                             }
-                            e.up();
-                            var _ = i.a.findLines(this.media[n], "a=ssrc-group:");
-                            _.forEach(function(t) {
+                            var I = i.a.findLines(this.media[n], "a=ssrc-group:");
+                            I.forEach(function(t) {
                                 var n = t.indexOf(" "),
                                     r = t.substr(0, n).substr(13),
                                     i = t.substr(14 + r.length).split(" ");
@@ -11088,36 +11134,36 @@
                                 }), e.up())
                             })
                         }
-                        var S = i.a.findLines(this.media[n], "a=rid");
-                        if (S.length) {
-                            var T = S.map(function(e) {
+                        var P = i.a.findLines(this.media[n], "a=rid");
+                        if (P.length) {
+                            var A = P.map(function(e) {
                                 return e.split(":")[1]
                             }).map(function(e) {
                                 return e.split(" ")[0]
                             });
-                            T.forEach(function(t) {
+                            A.forEach(function(t) {
                                 e.c("source", {
                                     rid: t,
                                     xmlns: "urn:xmpp:jingle:apps:rtp:ssma:0"
                                 }), e.up()
                             });
-                            var C = i.a.findLine(this.media[n], "a=simulcast");
-                            C && (e.c("rid-group", {
+                            var O = i.a.findLine(this.media[n], "a=simulcast");
+                            O && (e.c("rid-group", {
                                 semantics: "SIM",
                                 xmlns: "urn:xmpp:jingle:apps:rtp:ssma:0"
-                            }), T.forEach(function(t) {
+                            }), A.forEach(function(t) {
                                 e.c("source", {
                                     rid: t
                                 }).up()
                             }), e.up())
                         }
-                        if (i.a.findLine(this.media[n], "a=rtcp-mux") && e.c("rtcp-mux").up(), this.rtcpFbToJingle(n, e, "*"), a = i.a.findLines(this.media[n], "a=extmap:"), a.length)
-                            for (r = 0; r < a.length; r++) {
-                                if (l = i.a.parseExtmap(a[r]), e.c("rtp-hdrext", {
+                        if (i.a.findLine(this.media[n], "a=rtcp-mux") && e.c("rtcp-mux").up(), this.rtcpFbToJingle(n, e, "*"), s = i.a.findLines(this.media[n], "a=extmap:"), s.length)
+                            for (r = 0; r < s.length; r++) {
+                                if (d = i.a.parseExtmap(s[r]), e.c("rtp-hdrext", {
                                         xmlns: "urn:xmpp:jingle:apps:rtp:rtp-hdrext:0",
-                                        uri: l.uri,
-                                        id: l.value
-                                    }), l.hasOwnProperty("direction")) switch (l.direction) {
+                                        uri: d.uri,
+                                        id: d.value
+                                    }), d.hasOwnProperty("direction")) switch (d.direction) {
                                     case "sendonly":
                                         e.attrs({
                                             senders: "responder"
@@ -11143,16 +11189,16 @@
                         e.up()
                     }
                     this.transportToJingle(n, e);
-                    var E = this.media[n];
-                    i.a.findLine(E, "a=sendrecv", this.session) ? e.attrs({
+                    var D = this.media[n];
+                    i.a.findLine(D, "a=sendrecv", this.session) ? e.attrs({
                         senders: "both"
-                    }) : i.a.findLine(E, "a=sendonly", this.session) ? e.attrs({
+                    }) : i.a.findLine(D, "a=sendonly", this.session) ? e.attrs({
                         senders: "initiator"
-                    }) : i.a.findLine(E, "a=recvonly", this.session) ? e.attrs({
+                    }) : i.a.findLine(D, "a=recvonly", this.session) ? e.attrs({
                         senders: "responder"
-                    }) : i.a.findLine(E, "a=inactive", this.session) && e.attrs({
+                    }) : i.a.findLine(D, "a=inactive", this.session) && e.attrs({
                         senders: "none"
-                    }), "0" === s.port && e.attrs({
+                    }), "0" === c.port && e.attrs({
                         senders: "rejected"
                     }), e.up()
                 }
@@ -12062,7 +12108,7 @@
                     fmt: r.slice(3).join(" ")
                 }
             }, "object" === t(e) && (e.exports = n)
-        }).call(t, n(135)(e))
+        }).call(t, n(136)(e))
     }, function(e, t, n) {
         function r(e) {
             if (void 0 === e.recorder) throw new Error("Passed an object to startRecorder which is not a TrackRecorder object");
@@ -12089,7 +12135,7 @@
             if ("undefined" != typeof webkitMediaStream) return new webkitMediaStream;
             throw new Error("cannot create a clean mediaStream")
         }
-        var c = n(154),
+        var c = n(155),
             u = "audio/webm",
             l = "audio/ogg",
             d = function(e) {
@@ -12209,13 +12255,13 @@
                     p = n(62),
                     h = n(45),
                     f = n(25),
-                    m = n(162),
+                    m = n(163),
                     v = n(58),
                     g = n(49),
                     y = n.n(g),
                     b = n(11),
-                    _ = n(15),
-                    S = n(17),
+                    S = n(15),
+                    _ = n(17),
                     T = n(46),
                     C = n(41),
                     E = n(48),
@@ -12227,7 +12273,7 @@
                     A = n(34),
                     O = n(26),
                     D = n(1),
-                    x = n(163),
+                    x = n(164),
                     N = n(43),
                     L = n.n(N),
                     M = n(18),
@@ -12235,7 +12281,7 @@
                     F = n(36),
                     U = R.a.getLogger(e);
                 t.default = {
-                    version: "jitsi-meet_2606#408f737",
+                    version: "4f1969acaa",
                     JitsiConnection: p.a,
                     constants: {
                         participantConnectionStatus: A.a,
@@ -12247,7 +12293,7 @@
                     events: {
                         conference: d,
                         connection: f,
-                        track: S,
+                        track: _,
                         mediaDevices: v,
                         connectionQuality: s
                     },
@@ -12255,7 +12301,7 @@
                         conference: l,
                         connection: h,
                         recorder: y.a,
-                        track: _
+                        track: S
                     },
                     errorTypes: {
                         JitsiTrackError: b.a
@@ -12310,7 +12356,7 @@
                                 for (var n = 0; n < e.length; n++) ! function(t) {
                                     var n = e[t],
                                         r = n.getOriginalStream();
-                                    n.getType() === k.a && (j.a.startLocalStats(r, n.setAudioLevel.bind(n)), n.addEventListener(S.LOCAL_TRACK_STOPPED, function() {
+                                    n.getType() === k.a && (j.a.startLocalStats(r, n.setAudioLevel.bind(n)), n.addEventListener(_.LOCAL_TRACK_STOPPED, function() {
                                         j.a.stopLocalStats(r)
                                     }))
                                 }(n);
@@ -12322,18 +12368,18 @@
                                 }
                             return e
                         }).catch(function(n) {
-                            if (o = !0, n.name === _.UNSUPPORTED_RESOLUTION) {
+                            if (o = !0, n.name === S.UNSUPPORTED_RESOLUTION) {
                                 var a = t.resolution || "720",
                                     s = r(a);
                                 if (null !== s) return t.resolution = s, U.debug("Retry createLocalTracks with resolution", s), j.a.analytics.sendEvent("getUserMedia.fail.resolution." + a), e.createLocalTracks(t)
                             }
-                            if (_.CHROME_EXTENSION_USER_CANCELED === n.name) {
+                            if (S.CHROME_EXTENSION_USER_CANCELED === n.name) {
                                 var c = {
                                     id: "chrome_extension_user_canceled",
                                     message: n.message
                                 };
                                 j.a.sendLog(JSON.stringify(c)), j.a.analytics.sendEvent("getUserMedia.userCancel.extensionInstall")
-                            } else if (_.NOT_FOUND === n.name) {
+                            } else if (S.NOT_FOUND === n.name) {
                                 var u = {
                                     id: "usermedia_missing_device",
                                     status: n.gum.devices
@@ -12464,30 +12510,30 @@
                 p = n.n(d),
                 h = n(94),
                 f = n(30),
-                m = n(111),
+                m = n(112),
                 v = n(6),
-                g = n(113),
+                g = n(114),
                 y = n.n(g),
-                b = n(114),
-                _ = n(11),
-                S = n(15),
+                b = n(115),
+                S = n(11),
+                _ = n(15),
                 T = n(17),
-                C = n(115),
+                C = n(116),
                 E = n(4),
                 w = n(34),
-                R = n(116),
+                R = n(117),
                 k = n(26),
                 I = n(1),
                 P = n(8),
                 A = (n.n(P), n(5)),
-                O = n(152),
-                D = n(153),
+                O = n(153),
+                D = n(154),
                 x = n.n(D),
                 N = n(16),
                 L = n.n(N),
-                M = n(158),
+                M = n(159),
                 j = n(7),
-                F = (n.n(j), n(160)),
+                F = (n.n(j), n(161)),
                 U = Object(c.getLogger)(e);
             r.prototype.constructor = r, r.prototype._init = function() {
                 var e = this,
@@ -12571,7 +12617,7 @@
                 this.room && this.room.removePresenceListener(e)
             }, r.prototype.sendTextMessage = function(e) {
                 this.room && this.room.sendMessage(e)
-            }, r.prototype.sendOfMeet = function(e) {		// BAO
+            }, r.prototype.sendOfMeet = function(e) {       // BAO
                 this.room && this.room.sendOfMeet(e)
             }, r.prototype.sendCommand = function(e, t) {
                 this.room && (this.room.addToPresence(e, t), this.room.sendPresence())
@@ -12648,7 +12694,7 @@
                 return this.replaceTrack(e, null)
             }, r.prototype.replaceTrack = function(e, t) {
                 var n = this;
-                return e && e.disposed ? Promise.reject(new _.a(S.TRACK_IS_DISPOSED)) : t && t.disposed ? Promise.reject(new _.a(S.TRACK_IS_DISPOSED)) : this._doReplaceTrack(e, t).then(function() {
+                return e && e.disposed ? Promise.reject(new S.a(_.TRACK_IS_DISPOSED)) : t && t.disposed ? Promise.reject(new S.a(_.TRACK_IS_DISPOSED)) : this._doReplaceTrack(e, t).then(function() {
                     return e && n.onLocalTrackRemoved(e), t && n._setupNewTrack(t), Promise.resolve()
                 }, function(e) {
                     return Promise.reject(new Error(e))
@@ -12788,7 +12834,7 @@
                 }, this)
             }, r.prototype.onIncomingCall = function(e, t, n) {
                 var r = this;
-                if (e.isP2P) return void("moderator" !== this.room.getMemberRole(e.peerjid) ? this._rejectIncomingCallNonModerator(e) : I.a.isP2PSupported() ? this.isP2PEnabled() || this.isP2PTestModeEnabled() ? this.p2pJingleSession ? this._rejectIncomingCall(e, {
+                if (e.isP2P) return void("moderator" !== this.room.getMemberRole(e.remoteJid) ? this._rejectIncomingCallNonModerator(e) : I.a.isP2PSupported() ? this.isP2PEnabled() || this.isP2PTestModeEnabled() ? this.p2pJingleSession ? this._rejectIncomingCall(e, {
                     reasonTag: "busy",
                     reasonMsg: "P2P already in progress",
                     errorMsg: 'Duplicated P2P "session-initiate"'
@@ -12801,7 +12847,7 @@
                     reasonMsg: "P2P not supported",
                     errorMsg: "This client does not support P2P connections"
                 }));
-                if (!this.room.isFocus(e.peerjid)) return void this._rejectIncomingCall(e);
+                if (!this.room.isFocus(e.remoteJid)) return void this._rejectIncomingCall(e);
                 this.jvbJingleSession = e, this.room.connectionTimes["session.initiate"] = n, this.wasStopped && A.a.sendEventToAll("session.restart");
                 var i = null;
                 this.options.config && this.options.config.deploymentInfo && void 0 !== this.options.config.deploymentInfo.crossRegion && (i = this.options.config.deploymentInfo.crossRegion), A.a.analytics.sendEvent("session.initiate", {
@@ -12842,7 +12888,7 @@
                 this._rejectIncomingCall(e, {
                     reasonTag: "security-error",
                     reasonMsg: "Only focus can start new sessions",
-                    errorMsg: "Rejecting session-initiate from non-focus andnon-moderator user: " + e.peerjid
+                    errorMsg: "Rejecting session-initiate from non-focus andnon-moderator user: " + e.remoteJid
                 })
             }, r.prototype._rejectIncomingCall = function(e, t) {
                 t && t.errorMsg && l.a.callErrorHandler(new Error(t.errorMsg)), e.terminate(null, function(e) {
@@ -12857,7 +12903,7 @@
                     forceJvb121: !0
                 })) : "connectivity-error" === t && "ICE FAILED" === n && A.a.analytics.addPermanentProperties({
                     p2pFailed: !0
-                }), this._stopP2PSession()) : U.error("Received onCallEnded for invalid session", e.sid, e.peerjid, t, n)
+                }), this._stopP2PSession()) : U.error("Received onCallEnded for invalid session", e.sid, e.remoteJid, t, n)
             }, r.prototype.onSuspendDetected = function(e) {
                 e.isP2P || (this.leave(), this.eventEmitter.emit(v.SUSPEND_DETECTED))
             }, r.prototype.updateDTMFSupport = function() {
@@ -12972,7 +13018,7 @@
                 e.isP2P ? this.isP2PConnectionInterrupted = !1 : this.isJvbConnectionInterrupted = !1, e.isP2P === this.isP2PActive() && this.eventEmitter.emit(v.CONNECTION_RESTORED)
             }, r.prototype._acceptP2PIncomingCall = function(e, t) {
                 this.isP2PConnectionInterrupted = !1, this.p2pJingleSession = e, this.p2pJingleSession.initialize(!1, this.room, this.rtc), U.info("Starting CallStats for P2P connection...");
-                var n = i.Strophe.getResourceFromJid(this.p2pJingleSession.peerjid);
+                var n = i.Strophe.getResourceFromJid(this.p2pJingleSession.remoteJid);
                 if (this.options.config.enableStatsID) {
                     var r = this.participants[n];
                     r && (n = r.getStatsID() || n)
@@ -13065,7 +13111,7 @@
             }, r.prototype._startP2PSession = function(e) {
                 if (this._maybeClearDeferredStartP2P(), this.p2pJingleSession) return void U.error("P2P session already started!");
                 this.isP2PConnectionInterrupted = !1, this.p2pJingleSession = this.xmpp.connection.jingle.newP2PJingleSession(this.room.myroomjid, e), U.info("Created new P2P JingleSession", this.room.myroomjid, e), this.p2pJingleSession.initialize(!0, this.room, this.rtc), U.info("Starting CallStats for P2P connection...");
-                var t = i.Strophe.getResourceFromJid(this.p2pJingleSession.peerjid);
+                var t = i.Strophe.getResourceFromJid(this.p2pJingleSession.remoteJid);
                 if (this.options.config.enableStatsID) {
                     var n = this.participants[t];
                     n && (t = n.getStatsID() || t)
@@ -13098,7 +13144,7 @@
                         if (this.deferredStartP2PTask) return void U.error("Deferred start P2P task's been set already!");
                         U.info("Will start P2P with: " + c + " after " + this.backToP2PDelay + " seconds..."), this.deferredStartP2PTask = setTimeout(this._startP2PSession.bind(this, c), 1e3 * this.backToP2PDelay)
                     } else U.info("Will start P2P with: " + c), this._startP2PSession(c)
-                } else this.p2pJingleSession && !i && (U.info("Will stop P2P with: " + this.p2pJingleSession.peerjid), this.p2pJingleSession.isInitiator && n > 1 && A.a.sendEventToAll("p2p.switch_to_jvb"), this._stopP2PSession())
+                } else this.p2pJingleSession && !i && (U.info("Will stop P2P with: " + this.p2pJingleSession.remoteJid), this.p2pJingleSession.isInitiator && n > 1 && A.a.sendEventToAll("p2p.switch_to_jvb"), this._stopP2PSession())
             }, r.prototype._stopP2PSession = function(e, t) {
                 if (!this.p2pJingleSession) return void U.error("No P2P session to be stopped!");
                 var n = this.isP2PActive();
@@ -13109,7 +13155,7 @@
                 }, {
                     reason: e || "success",
                     reasonDescription: t || "Turing off P2P session",
-                    sendSessionTerminate: this.room && this.getParticipantById(i.Strophe.getResourceFromJid(this.p2pJingleSession.peerjid))
+                    sendSessionTerminate: this.room && this.getParticipantById(i.Strophe.getResourceFromJid(this.p2pJingleSession.remoteJid))
                 }), this.p2pJingleSession = null, this._setP2PStatus(!1), n && (this.jvbJingleSession ? this._addRemoteJVBTracks() : U.info("Not adding remote JVB tracks - no session yet"))
             }, r.prototype.isP2PActive = function() {
                 return this.p2p
@@ -13604,9 +13650,9 @@
             d = new l,
             p = function() {
                 function e() {
-                    o(this, e), this.disposed = !1, this.browserName = a.a.getBrowserName(), this.analyticsHandlers = new Set, this.permanentProperties = Object.create(null), this.addPermanentProperties({
+                    o(this, e), this.disposed = !1, this.browserName = a.a.getBrowserName(), this.analyticsHandlers = new Set, this.permanentProperties = {
                         callstatsname: s.a.callStatsUserName
-                    }), this.analyticsHandlers.add(d)
+                    }, this.analyticsHandlers.add(d)
                 }
                 return c(e, [{
                     key: "sendEvent",
@@ -13635,7 +13681,7 @@
                 }, {
                     key: "addPermanentProperties",
                     value: function(e) {
-                        this.permanentProperties = Object.assign(this.permanentProperties, e)
+                        Object.assign(this.permanentProperties, e)
                     }
                 }]), e
             }();
@@ -13744,16 +13790,16 @@
                                         g = void 0;
                                     try {
                                         for (var y, b = e.reportsQueue[Symbol.iterator](); !(m = (y = b.next()).done); m = !0) {
-                                            var _ = y.value;
-                                            if (_.type === p.ERROR) {
-                                                var S = _.data;
-                                                e._reportError(i, S.type, S.error, S.pc || f)
-                                            } else if (_.type === p.EVENT) {
-                                                var T = _.data;
-                                                e.backend.sendFabricEvent(_.pc || f, T.event, h, T.eventData)
-                                            } else if (_.type === p.MST_WITH_USERID) {
-                                                var C = _.data;
-                                                e.backend.associateMstWithUserID(_.pc || f, C.callStatsId, h, C.ssrc, C.usageLabel, C.containerId)
+                                            var S = y.value;
+                                            if (S.type === p.ERROR) {
+                                                var _ = S.data;
+                                                e._reportError(i, _.type, _.error, _.pc || f)
+                                            } else if (S.type === p.EVENT) {
+                                                var T = S.data;
+                                                e.backend.sendFabricEvent(S.pc || f, T.event, h, T.eventData)
+                                            } else if (S.type === p.MST_WITH_USERID) {
+                                                var C = S.data;
+                                                e.backend.associateMstWithUserID(S.pc || f, C.callStatsId, h, C.ssrc, C.usageLabel, C.containerId)
                                             }
                                         }
                                     } catch (e) {
@@ -14032,103 +14078,143 @@
                     }
 
                     function r() {
-                        return t() + Fe.currentOffset
+                        return t() + We.currentOffset
                     }
 
-                    function i() {
-                        return window.performance.now ? window.performance.now() : null
+                    function i(e) {
+                        if (!Ge || !Ge.rtc_rtp_parameters || !Ge.rtc_rtp_parameters.encodings) return void e.streams.forEach(function(e) {
+                            var t = e.data;
+                            "video" === t.mediaType && e.streamType === lt.outbound && (t.csioSCSValidationSampleCount = null, t.csioAvgMaxBitrateDiff = null, t.csioAvgDeltaThroughput = null, t.csioMaxBitrateAboveRatio = null, t.csioCCDrivenRatio = null)
+                        });
+                        var t = function(e) {
+                                return xt[e] ? xt[e] : (xt[e] = {
+                                    total: 0,
+                                    above: 0,
+                                    ccDriven: 0,
+                                    sumMaxBitrateDiff: 0,
+                                    sumThroughputDiff: 0,
+                                    prevCsioAvgBRKbps: 0
+                                }, xt[e])
+                            },
+                            n = function(e, n, r, i, o) {
+                                var a = t(e.ssrc);
+                                e.csioSCSValidationSampleCount = ++a.total, a.sumMaxBitrateDiff += n, e.csioAvgMaxBitrateDiff = a.sumMaxBitrateDiff / a.total, a.sumThroughputDiff += r, e.csioAvgDeltaThroughput = a.sumThroughputDiff / a.total, i && (a.above += 1), e.csioMaxBitrateAboveRatio = a.above / a.total, o && (a.ccDriven += 1), e.csioCCDrivenRatio = a.ccDriven / a.total
+                            },
+                            r = 0;
+                        Ge.rtc_rtp_parameters.encodings.forEach(function(e) {
+                            e && (r = Math.max(r, e.maxBitrate))
+                        });
+                        var i = 0;
+                        if (Je) {
+                            Je.encodings.forEach(function(e) {
+                                i = Math.max(i, e.maxBitrate)
+                            });
+                            var o = 0,
+                                a = 0,
+                                s = null,
+                                c = null;
+                            e.streams.forEach(function(e) {
+                                var u = e.data,
+                                    l = t(u.ssrc);
+                                "video" === u.mediaType && e.streamType === lt.outbound && (0 < i && .9 * i < 1e3 * u.csioAvgBRKbps ? (o = r - i, c = !1) : (o = r - 1e3 * u.csioAvgBRKbps, c = !0), s = 0 < o, a = u.csioAvgBRKbps - l.prevCsioAvgBRKbps, l.prevCsioAvgBRKbps = u.csioAvgBRKbps, n(u, o, a, s, c))
+                            })
+                        }
                     }
 
                     function o() {
-                        if (Le) return Le.level
+                        return window.performance.now ? window.performance.now() : null
                     }
 
                     function a() {
-                        if (Le) return Le.charging
+                        if (Ue) return Ue.level
                     }
 
-                    function c(e, t) {
+                    function c() {
+                        if (Ue) return Ue.charging
+                    }
+
+                    function u(e, t) {
                         return e.sort().toString() === t.sort().toString()
                     }
 
-                    function u(e) {
+                    function l(e) {
                         navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices && navigator.mediaDevices.enumerateDevices().then(function(t) {
-                            ie ? c(ie, t) || (ie = t, xt(e)) : (ie = t, xt(e)), setTimeout(function() {
-                                u(e)
-                            }, de)
+                            ae ? u(ae, t) || (ae = t, Gt(e)) : (ae = t, Gt(e)), setTimeout(function() {
+                                l(e)
+                            }, he)
                         }).catch(function() {
                             setTimeout(function() {
-                                u(e)
-                            }, de)
+                                l(e)
+                            }, he)
                         })
                     }
 
-                    function l() {
-                        ue || window && window.addEventListener && window.addEventListener("beforeunload", function(e) {
+                    function d() {
+                        de || window && window.addEventListener && window.addEventListener("beforeunload", function(e) {
                             var t;
-                            for (t in je) je.hasOwnProperty(t) && Pt(qe.userLeft, null, t, je[t].ucID, null, null, null);
+                            for (t in Ve) Ve.hasOwnProperty(t) && Ft(Ze.userLeft, null, t, Ve[t].ucID, null, null, null);
                             return "Are you sure you want to close the call?"
                         })
                     }
 
-                    function d(e, t, n, r, o) {
-                        var a = Vt(n, r),
+                    function p(e, t, n, r, i) {
+                        var a = Zt(n, r),
                             s = null;
-                        a && (s = i(), Pt(qe.mediaPlaybackStartEvent, t, n, e, {
-                            ssrc: o,
+                        a && (s = o(), Ft(Ze.mediaPlaybackStartEvent, t, n, e, {
+                            ssrc: i,
                             highResTs: s
                         }, a, null))
                     }
 
-                    function p(e, t, n, r, o) {
-                        var a = Vt(n, r),
+                    function h(e, t, n, r, i) {
+                        var a = Zt(n, r),
                             s = null;
-                        a && (s = i(), Pt(qe.mediaSuspendedEvent, t, n, e, {
-                            ssrc: o,
+                        a && (s = o(), Ft(Ze.mediaSuspendedEvent, t, n, e, {
+                            ssrc: i,
                             highResTs: s
                         }, a, null))
                     }
 
-                    function h(e, t, n, r) {
+                    function f(e, t, n, r) {
                         var i, o = document.getElementById(t);
                         o && (o.oncanplay = function() {
-                            i = je[e].ucID;
-                            var t = Jt(e, n);
-                            d(i, t.remoteUserID, e, n, r)
+                            i = Ve[e].ucID;
+                            var t = Yt(e, n);
+                            t && p(i, t.remoteUserID, e, n, r)
                         }, o.onsuspend = function() {
-                            i = je[e].ucID;
-                            var t = Jt(e, n);
-                            p(i, t.remoteUserID, e, n, r)
+                            i = Ve[e].ucID;
+                            var t = Yt(e, n);
+                            t && h(i, t.remoteUserID, e, n, r)
                         })
                     }
 
-                    function f(e) {
-                        var t = ve.codebase,
+                    function m(e) {
+                        var t = be.codebase,
                             n = !1;
                         if (null === e) n = !1;
-                        else if (t === ht.firefox) {
+                        else if (t === _t.firefox) {
                             var r = "undefined" == typeof mozRTCPeerConnection ? "undefined" : s(mozRTCPeerConnection),
                                 i = "undefined" == typeof RTCPeerConnection ? "undefined" : s(RTCPeerConnection);
                             "undefined" !== r && e instanceof mozRTCPeerConnection ? n = !0 : "undefined" !== i && e instanceof RTCPeerConnection && (n = !0)
-                        } else null !== Ve && e instanceof Ve && (n = !0), "function" != typeof e && t !== ht.edge || (n = !0), void 0 !== s(e.createOffer) && (n = !0);
+                        } else null !== Xe && e instanceof Xe && (n = !0), "function" != typeof e && t !== _t.edge || (n = !0), void 0 !== s(e.createOffer) && (n = !0);
                         return n
                     }
 
-                    function m(e, t) {
+                    function v(e, t) {
                         var n;
-                        return e && (t === ht.chrome ? e.googLocalAddress ? (n = e.googLocalAddress, n.concat(":", e.googRemoteAddress)) : e.selectedCandidatePairId && (n = e.selectedCandidatePairId) : t === ht.firefox && (e.localAddr ? (n = e.localAddr, n.concat(":", e.remoteAddr)) : e.selectedCandidatePairId && (n = e.selectedCandidatePairId))), Mt(n)
+                        return e && (t === _t.chrome ? e.googLocalAddress ? (n = e.googLocalAddress, n.concat(":", e.googRemoteAddress)) : e.selectedCandidatePairId && (n = e.selectedCandidatePairId) : t === _t.firefox && (e.localAddr ? (n = e.localAddr, n.concat(":", e.remoteAddr)) : e.selectedCandidatePairId && (n = e.selectedCandidatePairId))), Wt(n)
                     }
 
-                    function v() {
+                    function g() {
                         return !0 === navigator.onLine ? "online" : "offline"
                     }
 
-                    function g(e, t, n) {
+                    function y(e, t, n) {
                         var r = null;
                         n.ssrcMap.hasOwnProperty(e.data.ssrc) && (n.ssrcMap[e.data.ssrc].mediaType = e.data.mediaType, e.data.googCodecName ? r = e.data.googCodecName : e.data.codec && (r = e.data.codec), n.ssrcMap[e.data.ssrc].codec = r, e.data.codecImplementationName && (n.ssrcMap[e.data.ssrc].codecImplementationName = e.data.codecImplementationName))
                     }
 
-                    function y(e, t, n) {
+                    function b(e, t, n) {
                         var r, i, o, a, s, c, u, l, d = [];
                         if (void 0 !== e.lastStatsSent && void 0 !== e.lastStatsSent.statistics.Transport)
                             for (o = e.lastStatsSent.statistics.Transport, a = e.latestEventSent, s = void 0, r = 0; r < t.length; r++) {
@@ -14142,9 +14228,9 @@
                         return d
                     }
 
-                    function b(e, t, n, r) {
+                    function S(e, t, n, r) {
                         var i = [];
-                        return n === ht.firefox ? i = t : t && (i = y(e, t, r)), i
+                        return n === _t.firefox ? i = t : t && (i = b(e, t, r)), i
                     }
 
                     function _(e) {
@@ -14152,16 +14238,16 @@
                         for (t in e.streams)
                             if (e.streams.hasOwnProperty(t)) {
                                 if (e.streams[t].inbound)
-                                    for (r in e.streams[t].inbound) e.streams[t].inbound.hasOwnProperty(r) && (n = e.streams[t].inbound[r].mark, n === it.bad ? e.streams[t].inbound[r].mark = 2 : n === it.fair ? e.streams[t].inbound[r].mark = 1 : e.streams[t].inbound[r].mark = 0);
+                                    for (r in e.streams[t].inbound) e.streams[t].inbound.hasOwnProperty(r) && (n = e.streams[t].inbound[r].mark, n === pt.bad ? e.streams[t].inbound[r].mark = 2 : n === pt.fair ? e.streams[t].inbound[r].mark = 1 : e.streams[t].inbound[r].mark = 0);
                                 if (e.streams[t].outbound)
-                                    for (r in e.streams[t].outbound) e.streams[t].outbound.hasOwnProperty(r) && (n = e.streams[t].outbound[r].mark, n === it.bad ? e.streams[t].outbound[r].mark = 2 : n === it.fair ? e.streams[t].outbound[r].mark = 1 : e.streams[t].outbound[r].mark = 0)
+                                    for (r in e.streams[t].outbound) e.streams[t].outbound.hasOwnProperty(r) && (n = e.streams[t].outbound[r].mark, n === pt.bad ? e.streams[t].outbound[r].mark = 2 : n === pt.fair ? e.streams[t].outbound[r].mark = 1 : e.streams[t].outbound[r].mark = 0)
                             }
                         return e
                     }
 
-                    function S(e) {
+                    function T(e) {
                         var t = {},
-                            n = Kn.getConferenceURL();
+                            n = rr.getConferenceURL();
                         return e.connectionState && (t.connectionState = e.connectionState), e.fabricState && (t.fabricState = e.fabricState), n && (t.conferenceURL = n), t.streams = {}, null === e.streams ? t : (e.streams.forEach(function(e) {
                             var n = {
                                 cname: e.cname,
@@ -14175,104 +14261,120 @@
                         }), t)
                     }
 
-                    function T(e, t, n, i, o, a) {
+                    function C(e, t, n, i, o, a) {
                         var s = r();
-                        e.hasOwnProperty("token") && e.hasOwnProperty("ucID") && !Ue ? (G(Ke.processedStats, e, a), t.latestEventSent = s, t.lastFabricState = t.pcState) : (e.clockUnsynced = Ue, Re.cacheEvent({
-                            channel: Ke.processedStats,
+                        e.hasOwnProperty("token") && e.hasOwnProperty("ucID") && !qe ? (J(et.processedStats, e, a), t.latestEventSent = s, t.lastFabricState = t.pcState) : (e.clockUnsynced = qe, Ae.cacheEvent({
+                            channel: et.processedStats,
                             data: e
                         }))
                     }
 
-                    function C(e, t) {
+                    function E(e, t) {
                         for (var n in t) t.hasOwnProperty(n) && "id" !== n && "type" !== n && "timestamp" !== n && (e[n] = t[n]);
                         return e
                     }
 
-                    function E(e, n, i, s, c) {
-                        function u(u) {
-                            if (u) {
-                                var l = r(),
-                                    d = t();
-                                void 0 === s.lastRawStatsSentInterval || null === s.lastRawStatsSentInterval ? s.lastRawStatsSentInterval = d - s.statsPollingStart : s.lastRawStatsSentInterval = d - s.rawstatsTS + s.lastRawStatsSentInterval, void 0 === s.lastProcessedStatsSentInterval || null === s.lastProcessedStatsSentInterval ? s.lastProcessedStatsSentInterval = _e + 1 : s.lastProcessedStatsSentInterval = d - s.rawstatsTS + s.lastProcessedStatsSentInterval, s.rawstatsTS = d;
-                                var p = {},
-                                    h = ve.codebase,
-                                    f = s.conferenceID,
-                                    y = s.remoteUserID;
-                                p.version = Z, p.appID = oe, p.conferenceID = encodeURIComponent(f), p.apiTS = l, p.timeShift = 0, p.fabricState = s.pcState, p.pcID = s.pcHash, void 0 !== i && (p.ucID = i), De.authToken && (p.token = De.authToken), p.localID = encodeURIComponent(n), p.remoteID = y ? encodeURIComponent(y) : null, p.deviceID = ce;
-                                var C, E, w, k, O, D, N, L = {
+                    function w(e, n, o, s, u) {
+                        function l(l) {
+                            if (l) {
+                                var d = r(),
+                                    p = t();
+                                void 0 === s.lastRawStatsSentInterval || null === s.lastRawStatsSentInterval ? s.lastRawStatsSentInterval = p - s.statsPollingStart : s.lastRawStatsSentInterval = p - s.rawstatsTS + s.lastRawStatsSentInterval, void 0 === s.lastProcessedStatsSentInterval || null === s.lastProcessedStatsSentInterval ? s.lastProcessedStatsSentInterval = Ce + 1 : s.lastProcessedStatsSentInterval = p - s.rawstatsTS + s.lastProcessedStatsSentInterval, s.rawstatsTS = p;
+                                var h = {},
+                                    f = be.codebase,
+                                    m = s.conferenceID,
+                                    b = s.remoteUserID;
+                                h.version = ee, h.appID = se, h.conferenceID = encodeURIComponent(m), h.apiTS = d, h.timeShift = 0, h.fabricState = s.pcState, h.pcID = s.pcHash, void 0 !== o && (h.ucID = o), Me.authToken && (h.token = Me.authToken), h.localID = encodeURIComponent(n), h.remoteID = b ? encodeURIComponent(b) : null, h.deviceID = le;
+                                var E, w, R, I, D, x, L, M = {
                                         streams: []
                                     },
-                                    M = null,
-                                    j = !1,
+                                    j = null,
                                     F = !1,
-                                    U = {},
+                                    U = !1,
+                                    B = {},
                                     H = {};
-                                for (M = Kt(u), C = 0; C < M.length; ++C)
-                                    if (E = P(M[C]), w = R(E), !A(w))
-                                        if (w.hasOwnProperty("Transport")) k = "Transport", L.hasOwnProperty(k) || (L[k] = []), h !== ht.firefox ? (parseInt(w[k].bytesReceived, 10) > 0 || parseInt(w[k].bytesSent, 10) > 0) && (L[k].push(w[k]), "true" !== w[k].googActiveConnection && !0 !== w[k].googActiveConnection || (p.activeConnectionIndex = L[k].length)) : (L[k].push(w[k]), "true" !== w[k].selected && !0 !== w[k].selected || (p.activeConnectionIndex = L[k].length));
-                                        else if (w.localCandidate) U[w.localCandidate.id] = w.localCandidate;
-                                else if (w.remoteCandidate) H[w.remoteCandidate.id] = w.remoteCandidate;
-                                else if (w.bwe) L.bwe = w.bwe;
-                                else if (w.trackStats) L.trackStats || (L.trackStats = []), L.trackStats.push(w.trackStats);
-                                else if (w.codec) L.codec || (L.codec = []), L.codec.push(w.codec);
-                                else if (w.candidatePair) L.candidatePair || (L.candidatePair = []), L.candidatePair.push(w.candidatePair);
+                                for (j = nn(l), E = 0; E < j.length; ++E)
+                                    if (w = A(j[E]), R = k(w), !O(R))
+                                        if (R.hasOwnProperty("Transport")) I = "Transport", M.hasOwnProperty(I) || (M[I] = []), f !== _t.firefox ? (parseInt(R[I].bytesReceived, 10) > 0 || parseInt(R[I].bytesSent, 10) > 0) && (M[I].push(R[I]), "true" !== R[I].googActiveConnection && !0 !== R[I].googActiveConnection || (h.activeConnectionIndex = M[I].length)) : (M[I].push(R[I]), "true" !== R[I].selected && !0 !== R[I].selected || (h.activeConnectionIndex = M[I].length));
+                                        else if (R.localCandidate) B[R.localCandidate.id] = R.localCandidate;
+                                else if (R.remoteCandidate) H[R.remoteCandidate.id] = R.remoteCandidate;
+                                else if (R.bwe) M.bwe = R.bwe;
+                                else if (R.trackStats) M.trackStats || (M.trackStats = []), M.trackStats.push(R.trackStats);
+                                else if (R.codec) M.codec || (M.codec = []), M.codec.push(R.codec);
+                                else if (R.candidatePair) M.candidatePair || (M.candidatePair = []), M.candidatePair.push(R.candidatePair);
                                 else {
-                                    D = Rt(s, w.ssrc), void 0 !== D && D.localStartTime || (N = It(y, f, i, s, c, null), N && (F = !0), D = Rt(s, w.ssrc)), D && (O = D.remoteUserID), void 0 === O && (O = y);
-                                    var B = {
-                                        userID: O,
-                                        data: w.data,
-                                        reportType: w.reportType,
-                                        streamType: w.streamType,
-                                        ssrc: w.ssrc
+                                    x = Lt(s, R.ssrc), void 0 !== x && x.localStartTime || (L = jt(b, m, o, s, u, null), L && (U = !0), x = Lt(s, R.ssrc)), x && (D = x.remoteUserID), void 0 === D && (D = b);
+                                    var G = {
+                                        userID: D,
+                                        data: R.data,
+                                        reportType: R.reportType,
+                                        streamType: R.streamType,
+                                        ssrc: R.ssrc
                                     };
-                                    void 0 !== D && (B.cname = D.cname, B.msid = D.msid, B.associatedVideoTag = D.associatedVideoTag, B.usage = D.usageLabel), L.streams.push(B)
+                                    void 0 !== x && (G.cname = x.cname, G.msid = x.msid, G.associatedVideoTag = x.associatedVideoTag, G.usage = x.usageLabel), M.streams.push(G)
                                 }
-                                if (p.statistics = L, L.Transport && (j = I(L.Transport, s)), j && Ln(c, qe.fabricTransportSwitch, f), L.Transport || h !== ht.firefox || (L.Transport = L.candidatePair.filter(function(e) {
+                                if (h.statistics = M, M.Transport && (F = P(M.Transport, s)), F && Wn(u, Ze.fabricTransportSwitch, m), M.Transport || f !== _t.firefox || (M.Transport = M.candidatePair.filter(function(e) {
                                         return !(!e.selected && "true" !== e.selected)
-                                    })), L.Transport)
-                                    for (var G = 0; G < L.Transport.length; G++) L.Transport[G].hash = m(L.Transport[G], h);
-                                s.pcState === ot.disrupted && x(p), L.trackStats && (L = Hn(L)), L.Transport && L.candidatePair && (L = Un(L)), F && Pt(qe.ssrcMap, y, f, i, kt(s), s.pcHash);
-                                var J = {},
-                                    W = {
-                                        response: null
-                                    },
+                                    })), M.Transport)
+                                    for (var J = 0; J < M.Transport.length; J++) M.Transport[J].hash = v(M.Transport[J], f);
+                                s.pcState === ht.disrupted && N(h), M.trackStats && (M = Qn(M)), M.Transport && M.candidatePair && (M = $n(M)), U && Ft(Ze.ssrcMap, b, m, o, Mt(s), s.pcHash), He && (Ft(et.senderConfiguration, b, m, o, Ge, s.pcHash), He = !1);
+                                var V = {},
                                     q = {
                                         response: null
-                                    };
-                                if (re.fire(re.events.OnPolling, {
-                                        streams: L.streams,
-                                        codeBase: h
-                                    }), re.fire(re.events.OnOneWayAudioDisruptionsRequest, q), null !== q.response && q.response.forEach(function(e) {
-                                        var t = {
+                                    },
+                                    K = {
+                                        response: null
+                                    },
+                                    z = {
+                                        response: null
+                                    },
+                                    $ = null;
+                                if (oe.fire(oe.events.OnPolling, {
+                                        streams: M.streams,
+                                        codeBase: f
+                                    }), oe.fire(oe.events.OnOneWayAudioDisruptionsRequest, K), null !== K.response && K.response.forEach(function(e) {
+                                        $ = {
+                                            mediaType: e.mediaType,
+                                            ssrc: e.ssrc,
                                             disruptionType: e.type
+                                        }, Ft(Ze.oneWayMedia, b, m, o, $, s.pcHash)
+                                    }), oe.fire(oe.events.OnSendingThroughputObservationsRequest, z), null !== z.response && ($ = z.response, Ft(et.sendingThroughputObservations, b, m, o, $, s.pcHash)), oe.fire(oe.events.OnStatsRequest, q), null !== q.response) {
+                                    if (q.response.streams)
+                                        for (E = 0; E < q.response.streams.length; E++) y(q.response.streams[E], f, s);
+                                    V.streams = q.response.streams;
+                                    for (var Q = 0 < Ie.length, X = 0, Y = function(e) {
+                                            e.data.ssrc === X && (Q |= "audio" === e.mediaType && e.streamType === lt.inbound)
+                                        }; 0 < Ie.length;) X = Ie.shift(), V.streams.forEach(Y);
+                                    if (Q) {
+                                        var Z = {
+                                            mediaType: "audio",
+                                            ssrc: null,
+                                            disruptionType: dt.noInboundAudioOnlyFabric
                                         };
-                                        Pt(We.audioDisruption, y, f, i, t, s.pcHash)
-                                    }), re.fire(re.events.OnStatsRequest, W), null !== W.response) {
-                                    if (W.response.streams)
-                                        for (C = 0; C < W.response.streams.length; C++) g(W.response.streams[C], h, s);
-                                    if (J.streams = W.response.streams, J.fabricState = s.pcState, J.connectionState = v(), L.Transport && (J.Transport = b(s, L.Transport, h, l)), L.bwe && (J.bwe = L.bwe), void 0 === s.processedStatsTupleArray && (s.processedStatsTupleArray = []), be.stats) {
-                                        var K = S(J);
-                                        be.stats(K)
+                                        Ft(Ze.oneWayMedia, b, m, o, Z, s.pcHash)
                                     }
-                                    J.apiTS = l, J.batteryStatus = {}, J.batteryStatus.batteryLevel = o(), J.batteryStatus.isBatteryCharging = a(), J = _(J), s.processedStatsTupleArray.push(J), p.processedStatistics = s.processedStatsTupleArray, s.lastStatsSent = p;
-                                    var z = V(p),
-                                        $ = V(p);
-                                    delete z.processedStatistics, delete $.statistics, s.lastProcessedStatsSentInterval >= _e && (s.processedStatsTupleArray = [], Pe.add($, $.processedStatistics.length), $.msgStat = Pe.getStat(), T($, s, f, y, n, e), s.lastProcessedStatsSentInterval = 0)
+                                    if (V.fabricState = s.pcState, V.connectionState = g(), M.Transport && (V.Transport = S(s, M.Transport, f, d)), M.bwe && (V.bwe = M.bwe), void 0 === s.processedStatsTupleArray && (s.processedStatsTupleArray = []), Te.stats) {
+                                        var te = T(V);
+                                        Te.stats(te)
+                                    }
+                                    V.apiTS = d, V.batteryStatus = {}, V.batteryStatus.batteryLevel = a(), V.batteryStatus.isBatteryCharging = c(), V = _(V), i(V), s.processedStatsTupleArray.push(V), h.processedStatistics = s.processedStatsTupleArray, s.lastStatsSent = h;
+                                    var ne = W(h);
+                                    delete ne.statistics, s.lastProcessedStatsSentInterval >= Ce && (s.processedStatsTupleArray = [], xe.add(ne, ne.processedStatistics.length), ne.msgStat = xe.getStat(), C(ne, s, m, b, n, e), s.lastProcessedStatsSentInterval = 0)
                                 }
                             }
                         }
-                        return u
-                    }
-
-                    function w(e) {
-                        var t;
-                        return at.hasOwnProperty(e) ? e === at.createOffer || e === at.createAnswer || e === at.setRemoteDescription ? t = st.negotiationFailure : e === at.setLocalDescription ? t = st.sdpError : e === at.addIceCandidate ? t = st.sdpError : e === at.getUserMedia ? t = st.mediaConfigError : e === at.iceConnectionFailure ? t = st.iceFailure : e === at.signalingError ? t = st.signalingError : (e === at.applicationLog || at.applicationError) && (t = st.applicationLog) : t = Tt.invalidWebRTCFunctionName, t
+                        return l
                     }
 
                     function R(e) {
+                        var t;
+                        return ft.hasOwnProperty(e) ? e === ft.createOffer || e === ft.createAnswer || e === ft.setRemoteDescription ? t = mt.negotiationFailure : e === ft.setLocalDescription ? t = mt.sdpError : e === ft.addIceCandidate ? t = mt.sdpError : e === ft.getUserMedia ? t = mt.mediaConfigError : e === ft.iceConnectionFailure ? t = mt.iceFailure : e === ft.signalingError ? t = mt.signalingError : (e === ft.applicationLog || ft.applicationError) && (t = mt.applicationLog) : t = At.invalidWebRTCFunctionName, t
+                    }
+
+                    function k(e) {
                         var t = {};
                         if ("inboundrtp" === e.type || "outboundrtp" === e.type || "inbound-rtp" === e.type || "outbound-rtp" === e.type) {
-                            if (t.ssrc = e.ssrc, t.streamType = "inboundrtp" === e.type || "inbound-rtp" === e.type ? "inbound" : "outbound", "Safari" === ve.name && !e.mediaType) {
+                            if (t.ssrc = e.ssrc, t.streamType = "inboundrtp" === e.type || "inbound-rtp" === e.type ? "inbound" : "outbound", "Safari" === be.name && !e.mediaType) {
                                 e.id.includes("Audio") ? e.mediaType = "audio" : e.id.includes("Video") && (e.mediaType = "video");
                                 var n = e.id.split("_");
                                 if (n[1]) try {
@@ -14284,7 +14386,7 @@
                         return t
                     }
 
-                    function k(e) {
+                    function I(e) {
                         var t = "None";
                         switch (e) {
                             case 0:
@@ -14299,20 +14401,20 @@
                         return t
                     }
 
-                    function I(e, t) {
+                    function P(e, t) {
                         var n, r, i, o, a, s, c, u, l, d = !1,
                             p = "None",
                             h = !1,
-                            f = ve.codebase,
+                            f = be.codebase,
                             m = function(e) {
                                 if (e.typePreference) {
                                     var t = e.typePreference >> 24;
-                                    return "rtp" === e.protocol && e.address === n && (t >= 0 && t <= 2 && (p = k(t)), !0)
+                                    return "rtp" === e.protocol && e.address === n && (t >= 0 && t <= 2 && (p = I(t)), !0)
                                 }
                                 return !1
                             };
                         for (c = 0; c < e.length; c++)
-                            if (u = e[c], f !== ht.firefox || "candidatepair" !== u.type || "true" !== u.selected && !0 !== u.selected ? "googCandidatePair" !== u.type || "true" !== u.googActiveConnection && !0 !== u.googActiveConnection ? "transport" === u.type && (h = !0, u.selectedCandidatePairId && (l = u.selectedCandidatePairId)) : (h = !0, n = u.googLocalAddress, r = u.googRemoteAddress, i = u.googLocalCandidateType, o = u.googRemoteCandidateType, a = u.googTransportType) : (h = !0, n = u.localAddr, r = u.remoteAddr, i = u.localAddrType, o = u.remoteAddrType, a = u.transportType), h) {
+                            if (u = e[c], f !== _t.firefox || "candidatepair" !== u.type || "true" !== u.selected && !0 !== u.selected ? "googCandidatePair" !== u.type || "true" !== u.googActiveConnection && !0 !== u.googActiveConnection ? "transport" === u.type && (h = !0, u.selectedCandidatePairId && (l = u.selectedCandidatePairId)) : (h = !0, n = u.googLocalAddress, r = u.googRemoteAddress, i = u.googLocalCandidateType, o = u.googRemoteCandidateType, a = u.googTransportType) : (h = !0, n = u.localAddr, r = u.remoteAddr, i = u.localAddrType, o = u.remoteAddrType, a = u.transportType), h) {
                                 n && (s = 0 === n.indexOf("[")), t.iceCandidates.some(m);
                                 break
                             }
@@ -14330,7 +14432,7 @@
                         }, d = !0), d
                     }
 
-                    function P(e) {
+                    function A(e) {
                         var t, n = {};
                         e.timestamp instanceof Date && (n.timestamp = e.timestamp.getTime().toString()), e.type && (n.type = e.type);
                         var r = 0;
@@ -14349,7 +14451,7 @@
                         return n
                     }
 
-                    function A(e) {
+                    function O(e) {
                         if (null === e) return !0;
                         if (e.length > 0) return !1;
                         if (0 === e.length) return !0;
@@ -14359,84 +14461,84 @@
                         return !0
                     }
 
-                    function O(e) {
+                    function D(e) {
                         return {
                             magicKey: e,
-                            statsSubmissionInterval: _e,
-                            endpoint: Me,
-                            localUserIDObject: se
+                            statsSubmissionInterval: Ce,
+                            endpoint: Be,
+                            localUserIDObject: ue
                         }
                     }
 
-                    function D(e, t, n) {
-                        void 0 === je[e] && (je[e] = {}, je[e].participants = null, n && (je[e].userJoinedSent = !0), t && (je[e].refreshPresence = t))
+                    function x(e, t, n) {
+                        void 0 === Ve[e] && (Ve[e] = {}, Ve[e].participants = null, n && (Ve[e].userJoinedSent = !0), t && (Ve[e].refreshPresence = t))
                     }
 
-                    function x(e) {
+                    function N(e) {
                         var t, n = e.statistics.outbound;
                         if (void 0 !== n)
                             for (t in n) n.hasOwnProperty(t) && (n[t].data.mozRtt ? n[t].data.mozRtt = 0 : n[t].data.googRtt ? n[t].data.googRtt = 0 : n[t].data.rtt ? n[t].data.rtt = 0 : n[t].data.roundTripTime && (n[t].data.roundTripTime = 0))
                     }
 
-                    function N(e) {
+                    function L(e) {
                         return clearInterval(e), null
                     }
 
-                    function L() {
+                    function M() {
                         var e;
-                        for (e in je) je.hasOwnProperty(e) && (je[e].refreshPresence = N(je[e].refreshPresence), delete je[e].refreshPresence);
-                        q()
+                        for (e in Ve) Ve.hasOwnProperty(e) && (Ve[e].refreshPresence = L(Ve[e].refreshPresence), delete Ve[e].refreshPresence);
+                        K()
                     }
 
-                    function M(e) {
+                    function j(e) {
                         var t = !1;
                         if (!e) return t;
-                        var n = je[e];
+                        var n = Ve[e];
                         return void 0 !== n && n.participants && n.participants.length > 0 && (t = !0), t
                     }
 
-                    function j(e, t) {
-                        var n = je[e],
+                    function F(e, t) {
+                        var n = Ve[e],
                             r = [];
-                        if (void 0 === n) r.push(t), je[e] = {}, je[e].participants = r;
+                        if (void 0 === n) r.push(t), Ve[e] = {}, Ve[e].participants = r;
                         else {
                             var i = n.participants;
                             null === i ? (r.push(t), n.participants = r) : i.push(t)
                         }
                     }
 
-                    function F(e) {
+                    function U(e) {
                         var t = !1;
-                        if (!je[e]) return {
+                        if (!Ve[e]) return {
                             conferenceFinished: t,
                             ucID: null
                         };
-                        var n = je[e].ucID;
-                        return 0 === je[e].participants.length && (N(je[e].refreshPresence), q(), Re.sendCachedEvents(De, Ue), delete je[e], t = !0), {
+                        var n = Ve[e].ucID;
+                        return 0 === Ve[e].participants.length && (L(Ve[e].refreshPresence), K(), Ae.sendCachedEvents(Me, qe), delete Ve[e], t = !0), {
                             conferenceFinished: t,
                             ucID: n
                         }
                     }
 
-                    function U(e, t) {
-                        Pt(qe.userLeft, null, e, t, null, null, null), q(), He = Et, Et = null
+                    function B(e, t) {
+                        Ft(Ze.userLeft, null, e, t, null, null, null), K(), Ke = Dt, Dt = null
                     }
 
                     function H() {
                         var e;
-                        for (e in je)
-                            if (je.hasOwnProperty(e)) {
-                                if (e === ne) return;
-                                Nt(e), je[e].refreshPresence = function(e) {
+                        for (e in Ve)
+                            if (Ve.hasOwnProperty(e)) {
+                                if (e === ie) return;
+                                Jt(e), Ve[e].refreshPresence = function(e) {
                                     return setInterval(function() {
-                                        Nt(e)
-                                    }, Te)
+                                        Jt(e)
+                                    }, we)
                                 }(e)
                             }
-                        K()
+                        z()
                     }
 
-                    function B(e) {
+                    function G(e) {
                         try {
                             if (window && window.sessionStorage) {
                                 var t = JSON.parse(window.sessionStorage.getItem("csio_ucid_data"));
@@ -14448,20 +14550,20 @@
                         return null
                     }
 
-                    function G(e, t, n) {
+                    function J(e, t, n) {
                         var r = t.action,
                             i = t.remoteID,
                             o = t.ucID;
-                        t.channel = e, De._isTokenValid(De.authToken, oe, ae) ? (o && !Ue && i || -1 !== mt.indexOf(r)) && t.conferenceID !== ne ? (t.token = De.authToken, zn(e, t, n), n && r && n(Qe.success, r + " sent to the backend.")) : (t.clockUnsynced = Ue, Re.cacheEvent({
+                        t.channel = e, Me._isTokenValid(Me.authToken, se, ce) ? (o && !qe && i || -1 !== Ct.indexOf(r)) && t.conferenceID !== ie ? (t.token = Me.authToken, ir(e, t, n), n && r && n(rt.success, r + " sent to the backend.")) : (t.clockUnsynced = qe, Ae.cacheEvent({
                             channel: e,
                             data: t,
                             callback: n
-                        })) : De.sendAuthenticationRequest(oe, ae, function(a, s) {
-                            a !== Qe.success ? (a === Xe.authOngoing && (t.clockUnsynced = Ue, Re.cacheEvent({
+                        })) : Me.sendAuthenticationRequest(se, ce, function(a, s) {
+                            a !== rt.success ? (a === it.authOngoing && (t.clockUnsynced = qe, Ae.cacheEvent({
                                 channel: e,
                                 data: t,
                                 callback: n
-                            })), n && a !== Xe.authOngoing && n(a, s)) : a === Qe.success && "SDK authentication successful." === s && ((o && !Ue && i || -1 !== mt.indexOf(r)) && t.conferenceID !== ne ? (t.token = De.authToken, zn(e, t, n), n && r && n(Qe.success, r + " sent to the backend.")) : (t.clockUnsynced = Ue, Re.cacheEvent({
+                            })), n && a !== it.authOngoing && n(a, s)) : a === rt.success && "SDK authentication successful." === s && ((o && !qe && i || -1 !== Ct.indexOf(r)) && t.conferenceID !== ie ? (t.token = Me.authToken, ir(e, t, n), n && r && n(rt.success, r + " sent to the backend.")) : (t.clockUnsynced = qe, Ae.cacheEvent({
                                 channel: e,
                                 data: t,
                                 callback: n
@@ -14469,21 +14571,29 @@
                         })
                     }
 
-                    function J(e) {
-                        e && e(Xe.authOngoing, "Authentication Ongoing")
-                    }
-
                     function V(e) {
-                        if (null === e || "object" != (void 0 === e ? "undefined" : s(e))) return e;
-                        var t, n = new e.constructor;
-                        for (t in e) e.hasOwnProperty(t) && (n[t] = V(e[t]));
-                        return n
+                        e && e(it.authOngoing, "Authentication Ongoing")
                     }
 
-                    function W() {
+                    function W(e) {
+                        var t;
+                        if (null === e || "object" != (void 0 === e ? "undefined" : s(e))) return e;
+                        if (e instanceof Array) {
+                            t = [];
+                            for (var n = 0, r = e.length; n < r; n++) t[n] = W(e[n]);
+                            return t
+                        }
+                        if (e instanceof Object) {
+                            t = {};
+                            for (var i in e) e.hasOwnProperty(i) && (t[i] = W(e[i]));
+                            return t
+                        }
+                    }
+
+                    function q() {
                         var e = {};
-                        Object.keys(je).forEach(function(t) {
-                            var n = je[t];
+                        Object.keys(Ve).forEach(function(t) {
+                            var n = Ve[t];
                             if (!n) return !0;
                             var r, i, o = {
                                     ucID: n.ucID,
@@ -14504,77 +14614,80 @@
                             o.participants = a, e[t] = o
                         });
                         var t = {
-                            authStatus: !!De.tokenData,
-                            clockSync: !Ue,
+                            authStatus: !!Me.tokenData,
+                            clockSync: !qe,
                             stateMachine: e,
                             pageURL: window.location.href,
                             eventType: "warn",
-                            version: Z
+                            version: ee
                         };
-                        t.wsStatus = Kn.getWSConnectionState(), St(oe, ae, "stateMachine", t)
-                    }
-
-                    function q() {
-                        Be || (Be = setInterval(function() {
-                            W()
-                        }, Ge))
+                        t.wsStatus = rr.getWSConnectionState(), Pt(se, ce, "stateMachine", t)
                     }
 
                     function K() {
-                        N(Be), Be = null
+                        ze || (ze = setInterval(function() {
+                            q()
+                        }, $e))
                     }
-                    var z = n(70),
-                        $ = n(71),
-                        Q = n(78),
-                        X = "https://collector.callstats.io:443/",
-                        Y = "https://auth.callstats.io/",
-                        Z = "3.24.6",
-                        ee = "wss://collector.callstats.io:443/csiows/collectCallStats",
-                        te = "https://dashboard.callstats.io/api-internal/v1/qmodelthresholds",
-                        ne = "csio-conf-id-tmp",
-                        re = new $.Reporter;
+
+                    function z() {
+                        L(ze), ze = null
+                    }
+                    var $ = n(70),
+                        Q = n(71),
+                        X = n(78),
+                        Y = "https://collector.callstats.io:443/",
+                        Z = "https://auth.callstats.io/",
+                        ee = "3.26.2",
+                        te = "wss://collector.callstats.io:443/csiows/collectCallStats",
+                        ne = "https://dashboard.callstats.io/api-internal/v1/qmodelthresholds",
+                        re = "https://appsettings.callstats.io/v1/apps/",
+                        ie = "csio-conf-id-tmp",
+                        oe = new Q.Reporter;
                     window && (window.csioChromeLegacyGetStats = !0);
-                    var ie, oe = null,
-                        ae = null,
-                        se = null,
+                    var ae, se = null,
                         ce = null,
-                        ue = !1,
-                        le = !1,
-                        de = 1e4,
-                        pe = function(e, t) {
+                        ue = null,
+                        le = null,
+                        de = !1,
+                        pe = !1,
+                        he = 1e4,
+                        fe = "",
+                        me = function(e, t) {
                             var n = "precalltest error (" + e + "): " + t;
-                            console.warn(n), St && St(oe, ae, "log", {
+                            console.warn(n), Pt && Pt(se, ce, "log", {
                                 msg: n
-                            })
+                            }), fe += "(error)"
                         },
-                        he = n(79),
-                        fe = null;
+                        ve = n(79),
+                        ge = null;
                     try {
-                        fe = new he.PreCallTest
+                        ge = new ve.PreCallTest
                     } catch (e) {
-                        pe("initializing", e)
+                        me("initializing", e)
                     }
-                    var me, ve, ge = [],
-                        ye = {
+                    var ye, be, Se = [],
+                        _e = {
                             create: Date.now()
                         },
-                        be = {
+                        Te = {
                             stats: null,
                             defaultConfig: null,
                             recommendedConfig: null,
                             preCallTest: null
                         },
-                        _e = 15e3,
-                        Se = !1,
-                        Te = 1e4,
-                        Ce = !1,
-                        Ee = !0,
-                        we = function() {
+                        Ce = 15e3,
+                        Ee = !1,
+                        we = 1e4,
+                        Re = !1,
+                        ke = !0,
+                        Ie = [],
+                        Pe = function() {
                             function e(e, t) {
                                 setTimeout(function() {
                                     var t = r(),
                                         n = t - e.data.apiTS;
-                                    e.data.timeShift = n, G(e.channel, e.data, e.callback)
+                                    e.data.timeShift = n, J(e.channel, e.data, e.callback)
                                 }, t)
                             }
                             this.eventCache = [], this.updateRemoteUserID = function(e, t) {
@@ -14582,16 +14695,16 @@
                             }, this.sendCachedEvents = function(t, n, i, o, a, s) {
                                 var c = this;
                                 if (0 !== c.eventCache.length) {
-                                    if (!t.authToken) return void t.sendAuthenticationRequest(oe, ae);
+                                    if (!t.authToken) return void t.sendAuthenticationRequest(se, ce);
                                     if (!n) {
                                         var u, l, d, p, h = r(),
                                             f = [],
-                                            m = Math.max(_e / c.eventCache.length, Je);
+                                            m = Math.max(Ce / c.eventCache.length, Qe);
                                         for (u = 0; u < c.eventCache.length; u++)
-                                            if (d = c.eventCache[u], !d.data.remoteID && d.data.pcID || d.data.conferenceID === ne) f.push(c.eventCache[u]);
-                                            else if (d.data.action !== qe.userJoined) {
+                                            if (d = c.eventCache[u], !d.data.remoteID && d.data.pcID || d.data.conferenceID === ie) f.push(c.eventCache[u]);
+                                            else if (d.data.action !== Ze.userJoined) {
                                             if (d.data.token = t.authToken, i && d.data.apiTS >= h - o || !d.data.ucID)
-                                                if (p = decodeURIComponent(d.data.conferenceID), je[p] && je[p].ucID) d.data.ucID = je[p].ucID;
+                                                if (p = decodeURIComponent(d.data.conferenceID), Ve[p] && Ve[p].ucID) d.data.ucID = Ve[p].ucID;
                                                 else {
                                                     if (p !== a) {
                                                         f.push(c.eventCache[u]);
@@ -14599,8 +14712,8 @@
                                                     }
                                                     d.data.ucID = s
                                                 }
-                                            if (d.data.clockUnsynced && (d.data.apiTS += Fe.currentOffset), d.channel === Ke.processedStats && d.data.clockUnsynced && d.data.processedStatistics && d.data.processedStatistics.length > 0)
-                                                for (l = 0; l < d.data.processedStatistics.length; l++) d.data.processedStatistics[l].apiTS += Fe.currentOffset;
+                                            if (d.data.clockUnsynced && (d.data.apiTS += We.currentOffset), d.channel === et.processedStats && d.data.clockUnsynced && d.data.processedStatistics && d.data.processedStatistics.length > 0)
+                                                for (l = 0; l < d.data.processedStatistics.length; l++) d.data.processedStatistics[l].apiTS += We.currentOffset;
                                             delete d.data.clockUnsynced, e(d, m * (u + 1))
                                         } else f.push(c.eventCache[u]);
                                         c.eventCache = f
@@ -14609,34 +14722,36 @@
                             }, this.sendCachedUserJoinedEvents = function(t) {
                                 var n = this;
                                 if (0 !== n.eventCache.length) {
-                                    if (!t.authToken) return void t.sendAuthenticationRequest(oe, ae);
+                                    if (!t.authToken) return void t.sendAuthenticationRequest(se, ce);
                                     var r, i, o = [],
-                                        a = Math.max(_e / n.eventCache.length, Je);
-                                    for (r = 0; r < n.eventCache.length; r++) i = n.eventCache[r], !i.data.remoteID && i.data.pcID || i.data.conferenceID === ne ? o.push(n.eventCache[r]) : i.data.action === qe.userJoined || i.data.action === We.fabricSetupFailed ? (i.data.token = t.authToken, i.data.clockUnsynced && (i.data.apiTS = i.data.apiTS + Fe.currentOffset), i.data.value && (i.data.value.statsSubmissionInterval = _e), e(i, a * (r + 1))) : o.push(n.eventCache[r]);
+                                        a = Math.max(Ce / n.eventCache.length, Qe);
+                                    for (r = 0; r < n.eventCache.length; r++) i = n.eventCache[r], !i.data.remoteID && i.data.pcID || i.data.conferenceID === ie ? o.push(n.eventCache[r]) : i.data.action === Ze.userJoined || i.data.action === Ye.fabricSetupFailed ? (i.data.token = t.authToken, i.data.clockUnsynced && (i.data.apiTS = i.data.apiTS + We.currentOffset), i.data.value && (i.data.value.statsSubmissionInterval = Ce), e(i, a * (r + 1))) : o.push(n.eventCache[r]);
                                     n.eventCache = o
                                 }
                             }, this.updateConferenceId = function(e) {
-                                for (var t, n = this, r = 0; r < n.eventCache.length; r++) t = n.eventCache[r], t.data.conferenceID === ne && (t.data.conferenceID = e)
+                                for (var t, n = this, r = 0; r < n.eventCache.length; r++) t = n.eventCache[r], t.data.conferenceID === ie && (t.data.conferenceID = e)
                             }, this.cacheEvent = function(e) {
                                 this.eventCache.push(e)
                             }, this.sendCachedFeedback = function() {
-                                var e = gt("feedback"),
-                                    t = JSON.parse(gt("csio_auth_data"));
+                                var e = wt("feedback"),
+                                    t = JSON.parse(wt("csio_auth_data"));
                                 if (e && t) {
                                     var n = JSON.parse(e),
                                         r = t === n.token;
-                                    r || ae !== n.userID || (n.token = t, r = !0), r ? G(Ke.userFeedback, n) : yt("feedback")
+                                    r || ce !== n.userID || (n.token = t, r = !0), r ? J(et.userFeedback, n) : Rt("feedback")
                                 }
                             }
                         },
-                        Re = new we,
-                        ke = function() {
-                            this.size_max = 0, this.size_ewma = 0, this.statNum_max = 0, this.statNum_ewma = 0, this.msg_num = 0
+                        Ae = new Pe,
+                        Oe = function() {
+                            this.size_max = 0, this.size_ewma = 0, this.statNum_max = 0, this.statNum_ewma = 0, this.msg_num = 0, this.maxInterval = 0, this.minInterval = 0, this.avgInterval = 0, this.stdInterval = 0
                         },
-                        Ie = function() {
-                            this.stat = new ke, this.add = function(e, t) {
-                                var n = this.memorySizeOf(e);
-                                this.stat.size_ewma = .5 * this.stat.size_ewma + .5 * n, this.stat.size_max < n && (this.stat.size_max = n), this.stat.statNum_ewma = .5 * this.stat.statNum_ewma + .5 * t, this.stat.statNum_max < t && (this.stat.statNum_max = t), this.stat.msg_num += 1
+                        De = function() {
+                            this.stat = new Oe, this.lastTime = null, this.samplesCount = 0, this.add = function(e, n) {
+                                var r = this.memorySizeOf(e);
+                                if (this.stat.size_ewma = .5 * this.stat.size_ewma + .5 * r, this.stat.size_max < r && (this.stat.size_max = r), this.stat.statNum_ewma = .5 * this.stat.statNum_ewma + .5 * n, this.stat.statNum_max < n && (this.stat.statNum_max = n), this.stat.msg_num += 1, null === this.lastTime) return void(this.lastTime = t());
+                                var i = t() - this.lastTime;
+                                this.lastTime = t(), (0 === this.stat.maxInterval || this.stat.maxInterval < i) && (this.maxInterval = i), (0 === this.stat.minInterval || i < this.stat.minInterval) && (this.minInterval = i), this.stat.avgInterval = (this.stat.avgInterval * this.samplesCount + i) / (this.samplesCount + n), this.samplesCount += n, this.stat.stdInterval = (31 * this.stat.stdInterval + Math.abs(this.stat.avgInterval - i)) / 32
                             }, this.getStat = function() {
                                 return this.stat
                             }, this.memorySizeOf = function(e) {
@@ -14663,15 +14778,15 @@
                                 return t(e)
                             }
                         },
-                        Pe = new Ie,
-                        Ae = {
+                        xe = new De,
+                        Ne = {
                             appSecret: "appSecret",
                             jwt: "jwt"
                         },
-                        Oe = function() {
+                        Le = function() {
                             var e = this,
                                 t = "urn:x-callstats:auth:errorActions";
-                            this.authInProgress = !1, this.tokenData = null, this.authToken = null, this.type = Ae.appSecret, this.tokenGenerator = function(e, t) {
+                            this.authInProgress = !1, this.tokenData = null, this.authToken = null, this.type = Ne.appSecret, this.tokenGenerator = function(e, t) {
                                 t("Token generator not set")
                             };
                             var n = null,
@@ -14758,13 +14873,13 @@
                                 this.type = e
                             }, this._isTokenValid = function(e, t, n) {
                                 var i = !1,
-                                    o = ve.codebase;
+                                    o = be.codebase;
                                 if (null === e) return !1;
                                 try {
                                     var a = h.decode(e);
                                     if (null !== a && a.appID === t && a.userID === encodeURIComponent(n)) {
                                         var s = null;
-                                        if (o === ht.firefox) {
+                                        if (o === _t.firefox) {
                                             var c = a.expiry.split(" ").join("T");
                                             s = Date.parse(c)
                                         } else s = new Date(a.expiry);
@@ -14774,19 +14889,19 @@
                                 } catch (e) {}
                                 return !1
                             }, this.setupAuthToken = function(e) {
-                                vt("csio_auth_data", JSON.stringify(e)), this.authToken = e, this.tokenData = h.decode(e), _e = parseInt(this.tokenData.submissionInterval, 10), re.setSubmissionInterval(_e), re.setReportingMode(this.tokenData.adaptiveInterval), Se = this.tokenData.collectSDP
+                                Et("csio_auth_data", JSON.stringify(e)), this.authToken = e, this.tokenData = h.decode(e), Ce = parseInt(this.tokenData.submissionInterval, 10), oe.setSubmissionInterval(Ce), oe.setReportingMode(this.tokenData.adaptiveInterval), Ee = this.tokenData.collectSDP
                             }, this.sendAuthenticationRequest = function(r, i, a) {
                                 if (r && i) {
-                                    if (e.authInProgress) return void J(a);
+                                    if (e.authInProgress) return void V(a);
                                     null !== n && (clearTimeout(n), n = null), f(), e.authInProgress = !0, e.tokenGenerator(o, function(s, c) {
-                                        if (null !== s) return e.authInProgress = !1, void(a && a(Qe.tokenGenerationError, s.toString()));
-                                        Gn(Y + "authenticate", {
-                                            client_id: i + "@" + oe,
+                                        if (null !== s) return e.authInProgress = !1, void(a && a(rt.tokenGenerationError, s.toString()));
+                                        Yn(Z + "authenticate", {
+                                            client_id: i + "@" + se,
                                             code: c,
                                             grant_type: "authorization_code"
                                         }, function(s, c) {
                                             var u = null;
-                                            e.authInProgress = !1, ye.auth = c;
+                                            e.authInProgress = !1, _e.auth = c;
                                             try {
                                                 u = JSON.parse(s.response)
                                             } catch (e) {
@@ -14797,19 +14912,16 @@
                                                 if ("bearer" !== u.token_type) return console.error("Authentication was successful, but token type was not bearer. Scheduling retry."), void(n = setTimeout(e.sendAuthenticationRequest, 5e3, r, i, a));
                                                 e.setupAuthToken(u.access_token);
                                                 var l = parseInt(1e3 * parseInt(u.expires_in) * .9);
-                                                if (m(l, r, i, a), o = !1, a && a(Qe.success, "SDK authentication successful."), u.iceServers && !le && fe) {
-                                                    try {
-                                                        fe.start(u.iceServers, Ht.bind(this))
-                                                    } catch (e) {
-                                                        pe("start", e), fe.crashDisconnect()
-                                                    }
-                                                    St(oe, ae, "log", {
-                                                        msg: "precalltest started"
-                                                    })
+                                                if (m(l, r, i, a), o = !1, a && a(rt.success, "SDK authentication successful."), u.iceServers && !pe && ge) try {
+                                                    fe = u.iceServers[0].username + " ", ge.start(u.iceServers, $t.bind(this)), Pt(se, ce, "log", {
+                                                        msg: "precalltest started " + fe
+                                                    }), fe += "(started)"
+                                                } catch (e) {
+                                                    me("start", e), ge.crashDisconnect()
                                                 }
-                                                le && St(oe, ae, "log", {
-                                                    msg: "precalltest disabled"
-                                                }), Bt(), Kn._isChannelReady() ? (Re.sendCachedUserJoinedEvents(De), a && a(Qe.success, "WebSocket establishment successful.")) : Kn._setupWebSocketConnection(function(e, t) {
+                                                pe && (Pt(se, ce, "log", {
+                                                    msg: "precalltest disabled " + fe
+                                                }), fe += "(disabled)"), Qt(), rr._isChannelReady() ? (Ae.sendCachedUserJoinedEvents(Me), a && a(rt.success, "WebSocket establishment successful.")) : rr._setupWebSocketConnection(function(e, t) {
                                                     a && a(e, t)
                                                 })
                                             } else {
@@ -14831,11 +14943,11 @@
                                 v = function e(t, n, r, i, a) {
                                     if (0 !== i.length) {
                                         var s = i.shift();
-                                        if (s.action === Ct.RETRY) return a === Ae.jwt && m(s.params.timeout, t, n, r), e(t, n, r, i);
-                                        if (s.action === Ct.GET_NEW_TOKEN) return o = !0, e(t, n, r, i);
-                                        if (s.action === Ct.REPORT_ERROR) {
+                                        if (s.action === Ot.RETRY) return a === Ne.jwt && m(s.params.timeout, t, n, r), e(t, n, r, i);
+                                        if (s.action === Ot.GET_NEW_TOKEN) return o = !0, e(t, n, r, i);
+                                        if (s.action === Ot.REPORT_ERROR) {
                                             var u = "Authentication Error";
-                                            return s.params && s.params.errorCode >= 0 && (u = c[s.params.errorCode]), r && r(Qe.authError, u), e(t, n, r, i)
+                                            return s.params && s.params.errorCode >= 0 && (u = c[s.params.errorCode]), r && r(rt.authError, u), e(t, n, r, i)
                                         }
                                     }
                                 };
@@ -14859,8 +14971,8 @@
                                             e.tokenGenerator(t, a)
                                         }, 100);
                                         var s = {
-                                            userID: ae,
-                                            appID: oe
+                                            userID: ce,
+                                            appID: se
                                         };
                                         o && (s.keyID = o), h.sign({
                                             alg: "HS256"
@@ -14870,25 +14982,28 @@
                                     }
                             }
                         },
-                        De = new Oe,
-                        xe = new z;
+                        Me = new Le,
+                        je = new $;
                     try {
-                        ve = xe.detectBrowserInfo()
+                        be = je.detectBrowserInfo()
                     } catch (e) {
                         console.log("detectBrowserInfo: Error", e)
                     }
-                    var Ne;
-                    window.csioReactNative || (Ne = xe.measureAppLoadingPerformance(ve), ye.loading = Ne);
-                    var Le, Me = {
+                    var Fe;
+                    window.csioReactNative || (Fe = je.measureAppLoadingPerformance(be), _e.loading = Fe);
+                    var Ue, Be = {
                             type: "browser",
-                            name: ve.name,
-                            ver: ve.ver,
-                            os: ve.os,
-                            osVersion: ve.osVersion,
-                            userAgent: ve.userAgent
+                            name: be.name,
+                            ver: be.ver,
+                            os: be.os,
+                            osVersion: be.osVersion,
+                            userAgent: be.userAgent
                         },
-                        je = {},
-                        Fe = {
+                        He = !1,
+                        Ge = null,
+                        Je = null,
+                        Ve = {},
+                        We = {
                             currentOffset: 0,
                             offsetResults: [],
                             syncStartTime: null,
@@ -14896,20 +15011,19 @@
                             syncHandler: null,
                             maxAllowedLatency: 6e4
                         },
-                        Ue = !0,
-                        He = null,
-                        Be = null,
-                        Ge = 2e4,
-                        Je = 100,
-                        Ve = null;
-                    "Firefox" === ve.name ? Ve = mozRTCPeerConnection : "Chrome" === ve.name || "Opera" === ve.name ? Ve = webkitRTCPeerConnection : "Safari" === ve.name ? console.log("Browser type Safari") : "Edge" === ve.name && (Ve = window.RTCPeerConnection);
-                    var We = {
+                        qe = !0,
+                        Ke = null,
+                        ze = null,
+                        $e = 2e4,
+                        Qe = 100,
+                        Xe = null;
+                    "Firefox" === be.name ? Xe = mozRTCPeerConnection : "Chrome" === be.name || "Opera" === be.name ? Xe = webkitRTCPeerConnection : "Safari" === be.name ? console.log("Browser type Safari") : "Edge" === be.name && (Xe = window.RTCPeerConnection);
+                    var Ye = {
                             fabricSetupFailed: "fabricSetupFailed",
                             fabricHold: "fabricHold",
                             fabricResume: "fabricResume",
                             audioMute: "audioMute",
                             audioUnmute: "audioUnmute",
-                            audioDisruption: "audioDisruption",
                             videoPause: "videoPause",
                             videoResume: "videoResume",
                             fabricUsageEvent: "fabricUsageEvent",
@@ -14921,7 +15035,7 @@
                             activeDeviceList: "activeDeviceList",
                             applicationErrorLog: "applicationErrorLog"
                         },
-                        qe = {
+                        Ze = {
                             autoFabricSetup: "autoFabricSetup",
                             userJoined: "userJoined",
                             userLeft: "userLeft",
@@ -14929,6 +15043,7 @@
                             ssrcMap: "ssrcMap",
                             mediaPlaybackStartEvent: "mediaPlaybackStartEvent",
                             mediaSuspendedEvent: "mediaSuspendedEvent",
+                            oneWayMedia: "oneWayMedia",
                             fabricStateChange: "fabricStateChange",
                             iceDisruptionStart: "iceDisruptionStart",
                             iceDisruptionEnd: "iceDisruptionEnd",
@@ -14944,24 +15059,26 @@
                             iceCompleted: "iceCompleted",
                             iceCandidateFound: "iceCandidateFound"
                         },
-                        Ke = {
+                        et = {
                             sdpSubmission: "sdpSubmissionEvent",
                             rtpStats: "rtpStats",
                             processedStats: "processedStats",
                             callStatsEvent: "callStatsEvent",
                             userFeedback: "userFeedbackEvent",
                             clockSync: "clockSync",
-                            preCallTest: "preCallTest"
+                            preCallTest: "preCallTest",
+                            senderConfiguration: "senderConfiguration",
+                            sendingThroughputObservations: "sendingThroughputObservations"
                         },
-                        ze = {
+                        tt = {
                             results: "preCallTestResults",
                             associate: "preCallTestAssociate"
                         },
-                        $e = {
+                        nt = {
                             success: "success",
                             failure: "failure"
                         },
-                        Qe = {
+                        rt = {
                             httpError: "httpError",
                             authError: "authError",
                             wsChannelFailure: "wsChannelFailure",
@@ -14971,20 +15088,20 @@
                             tokenGenerationError: "tokenGenerationError",
                             ok: "OK"
                         },
-                        Xe = {
+                        it = {
                             authOngoing: "authOngoing"
                         },
-                        Ye = {
+                        ot = {
                             peer: "peer",
                             server: "server"
                         },
-                        Ze = {
+                        at = {
                             sendonly: "sendonly",
                             receiveonly: "receiveonly",
                             sendrecv: "sendrecv",
                             inactive: "inactive"
                         },
-                        et = {
+                        st = {
                             audio: "audio",
                             video: "video",
                             data: "data",
@@ -14992,36 +15109,41 @@
                             multiplex: "multiplex",
                             unbundled: "unbundled"
                         },
-                        tt = {
+                        ct = {
                             local: "local",
                             remote: "remote"
                         },
-                        nt = {
+                        ut = {
                             excellent: 5,
                             good: 4,
                             fair: 3,
                             poor: 2,
                             bad: 1
                         },
-                        rt = {
+                        lt = {
                             local: "local",
                             remote: "remote",
                             inbound: "inbound",
                             outbound: "outbound"
                         },
-                        it = {
+                        dt = {
+                            noAudioInMultiplexFabric: "noAudioInMultiplexFabric",
+                            noOutboundAudioOnlyFabric: "noOutboundAudioOnlyFabric",
+                            noInboundAudioOnlyFabric: "noInboundAudioOnlyFabric"
+                        },
+                        pt = {
                             excellent: "excellent",
                             fair: "fair",
                             bad: "bad"
                         },
-                        ot = {
+                        ht = {
                             established: "established",
                             initializing: "initializing",
                             failed: "failed",
                             disrupted: "disrupted",
                             checkingDisrupted: "checkingDisrupted"
                         },
-                        at = {
+                        ft = {
                             createOffer: "createOffer",
                             createAnswer: "createAnswer",
                             setLocalDescription: "setLocalDescription",
@@ -15033,7 +15155,7 @@
                             applicationError: "applicationError",
                             applicationLog: "applicationLog"
                         },
-                        st = {
+                        mt = {
                             mediaConfigError: "MediaConfigError",
                             negotiationFailure: "NegotiationFailure",
                             sdpError: "SDPGenerationError",
@@ -15043,7 +15165,7 @@
                             applicationError: "ApplicationError",
                             applicationLog: "ApplicationLog"
                         },
-                        ct = {
+                        vt = {
                             video: {
                                 gThreshold: 1024,
                                 rThreshold: 256
@@ -15053,19 +15175,19 @@
                                 rThreshold: 8
                             }
                         },
-                        ut = {
+                        gt = {
                             video: {
                                 gThreshold: .8,
                                 rThreshold: .3
                             }
                         },
-                        lt = {
+                        yt = {
                             video: {
                                 gThreshold: 400,
                                 rThreshold: 1e3
                             }
                         },
-                        dt = {
+                        bt = {
                             video: {
                                 gThreshold: 10,
                                 rThreshold: 50
@@ -15075,31 +15197,31 @@
                                 rThreshold: 30
                             }
                         },
-                        pt = {
+                        St = {
                             audio: {
                                 gThreshold: 240,
                                 rThreshold: 400
                             }
                         },
-                        ht = {
+                        _t = {
                             chrome: "Chrome",
                             firefox: "Firefox",
                             edge: "Edge"
                         },
-                        ft = {
+                        Tt = {
                             signalingState: "signalingState",
                             iceConnectionState: "iceConnectionState",
                             iceGatheringState: "iceGatheringState"
                         },
-                        mt = [qe.userJoined, qe.refreshPresence, We.fabricSetupFailed],
-                        vt = function(e, t) {
+                        Ct = [Ze.userJoined, Ze.refreshPresence, Ye.fabricSetupFailed],
+                        Et = function(e, t) {
                             try {
                                 window && window.localStorage && window.localStorage.setItem(e, t)
                             } catch (e) {
                                 return
                             }
                         },
-                        gt = function(e) {
+                        wt = function(e) {
                             try {
                                 if (window && window.localStorage) return window.localStorage.getItem(e)
                             } catch (e) {
@@ -15107,19 +15229,19 @@
                             }
                             return null
                         },
-                        yt = function(e) {
+                        Rt = function(e) {
                             try {
                                 window && window.localStorage && window.localStorage.removeItem(e)
                             } catch (e) {
                                 return
                             }
                         },
-                        bt = function(e, n, r, i, o) {
+                        kt = function(e, n, r, i, o) {
                             var a = null,
                                 s = null,
                                 c = null,
                                 u = new XMLHttpRequest;
-                            if ("Microsoft Internet Explorer" !== ve.name && (u.timeout = r), u) {
+                            if ("Microsoft Internet Explorer" !== be.name && (u.timeout = r), u) {
                                 u.open("GET", encodeURI(e));
                                 for (var l in n) u.setRequestHeader(l, n[l]);
                                 a = t(), u.onload = function() {
@@ -15127,24 +15249,28 @@
                                 }, u.ontimeout = o, u.send()
                             }
                         },
-                        _t = function(e, t, n) {
-                            var r = new XMLHttpRequest;
-                            r && (r.open("POST", encodeURI(e)), r.setRequestHeader("Content-Type", "application/json"), r.onload = function() {
-                                n(r)
-                            }, r.send(t))
+                        It = function(e, t, n, r) {
+                            var i = new XMLHttpRequest;
+                            if (i) {
+                                if (i.open("POST", encodeURI(e)), i.setRequestHeader("Content-Type", "application/json"), r)
+                                    for (var o in r) i.setRequestHeader(o, r[o]);
+                                i.onload = function() {
+                                    n(i)
+                                }, i.send(t)
+                            }
                         },
-                        St = function(e, t, n, r) {
-                            if (Ce && e) {
-                                var i = X + "generics",
+                        Pt = function(e, t, n, r) {
+                            if (Re && e) {
+                                var i = Y + "generics",
                                     o = {
                                         appID: e,
                                         userID: encodeURIComponent(t),
-                                        version: Z,
+                                        version: ee,
                                         eventType: n,
                                         data: r
                                     },
                                     a = JSON.stringify(o);
-                                me !== a && (me = a, _t(i, a, function(e) {
+                                ye !== a && (ye = a, It(i, a, function(e) {
                                     200 === e.status ? console.log("Got generic response: %o", e.response) : 200 !== e.status && console.log("Got error for generic request %o, %s", e, e.status)
                                 }))
                             }
@@ -15156,25 +15282,26 @@
                                     fileName: e.filename,
                                     line: e.lineno,
                                     col: e.colno,
-                                    jsVersion: Z,
+                                    jsVersion: ee,
                                     eventType: "error",
                                     message: e.message,
                                     pageURL: window.location.href
                                 };
-                            for (t in je) je.hasOwnProperty(t) && (r.conferenceID = t, St(oe, ae, "onErrorLog", r), n = !0);
-                            n || St(oe, ae, "onErrorLog", r)
+                            for (t in Ve) Ve.hasOwnProperty(t) && (r.conferenceID = t, Pt(se, ce, "onErrorLog", r), n = !0);
+                            n || Pt(se, ce, "onErrorLog", r)
                         }
                     });
-                    var Tt = {
+                    var At = {
                             invalidWebRTCFunctionName: "Invalid WebRTC function name"
                         },
-                        Ct = {
+                        Ot = {
                             RETRY: 0,
                             GET_NEW_TOKEN: 1,
                             REPORT_ERROR: 2
                         },
-                        Et = e(),
-                        wt = function(e, n, i) {
+                        Dt = e(),
+                        xt = Object.create(null),
+                        Nt = function(e, n, i) {
                             var o = RegExp.prototype.test.bind(/^([a-z])=(.*)/),
                                 a = /^ssrc:(\d*) ([\w_]*):(.*)/,
                                 s = /^ssrc-group:SIM (\d*)/;
@@ -15191,184 +15318,184 @@
                                 }
                             })
                         },
-                        Rt = function(e, t) {
+                        Lt = function(e, t) {
                             return e.ssrcMap[t]
                         },
-                        kt = function(e) {
+                        Mt = function(e) {
                             return e.ssrcMap
                         },
-                        It = function(e, t, n, r, i, o) {
+                        jt = function(e, t, n, r, i, o) {
                             if (!i.localDescription || !i.remoteDescription) return !1;
                             var a = i.localDescription.sdp,
                                 s = i.remoteDescription.sdp;
                             if (!a || !s || a === r.localSDP && s === r.remoteSDP) return !1;
-                            if (wt(r, a, rt.outbound), wt(r, s, rt.inbound), Se) {
+                            if (Nt(r, a, lt.outbound), Nt(r, s, lt.inbound), Ee) {
                                 var c = {
                                     sdp: {}
                                 };
-                                c.sdp.localSDP = a !== r.localSDP ? a : -1, c.sdp.remoteSDP = s !== r.remoteSDP ? s : -1, Ot(e, t, n, c, r.pcHash, o)
+                                c.sdp.localSDP = a !== r.localSDP ? a : -1, c.sdp.remoteSDP = s !== r.remoteSDP ? s : -1, Bt(e, t, n, c, r.pcHash, o)
                             }
                             return r.localSDP = a, r.remoteSDP = s, !0
                         },
-                        Pt = function(e, t, n, i, o, a, s) {
+                        Ft = function(e, t, n, i, o, a, s) {
                             if (!e) return void console.error("sendEvent: Invalid eventType ");
                             var c = r(),
                                 u = {
-                                    version: Z,
+                                    version: ee,
                                     apiTS: c,
                                     action: e,
-                                    localID: encodeURIComponent(ae),
+                                    localID: encodeURIComponent(ce),
                                     remoteID: t ? encodeURIComponent(t) : null,
                                     conferenceID: encodeURIComponent(n),
                                     timeShift: 0,
-                                    appID: oe,
+                                    appID: se,
                                     ucID: i,
                                     pcID: a,
-                                    deviceID: ce,
+                                    deviceID: le,
                                     value: o
                                 };
-                            return null === n ? void St(oe, ae, "log", {
+                            return null === n ? void Pt(se, ce, "log", {
                                 msg: "conferenceID is null in sendEvent for " + e
-                            }) : void G(Ke.callStatsEvent, u, s)
+                            }) : void J(et.callStatsEvent, u, s)
                         },
-                        At = function(e, t, n, i) {
+                        Ut = function(e, t, n, i) {
                             if (!e) return void console.error("sendEvent: Invalid eventType ");
                             var o = r(),
                                 a = {
-                                    version: Z,
-                                    channel: Ke.preCallTest,
+                                    version: ee,
+                                    channel: et.preCallTest,
                                     timestamp: o,
                                     apiTS: o,
                                     action: e,
                                     eventType: e,
-                                    localID: encodeURIComponent(ae),
-                                    remoteID: encodeURIComponent(ae),
+                                    localID: encodeURIComponent(ce),
+                                    remoteID: encodeURIComponent(ce),
                                     conferenceID: encodeURIComponent(t),
                                     timeShift: 0,
-                                    appID: oe,
+                                    appID: se,
                                     ucID: n,
-                                    deviceID: ce,
-                                    token: De.authToken
+                                    deviceID: le,
+                                    token: Me.authToken
                                 };
-                            return e === ze.results && (a.results = i, null == t) ? void zn(Ke.preCallTest, a) : (e === ze.associate && (a.ids = i), void(n && !Ue ? G(Ke.preCallTest, a) : (a.clockUnsynced = Ue, Re.cacheEvent({
-                                channel: Ke.preCallTest,
+                            return e === tt.results && (a.results = i, null == t) ? void ir(et.preCallTest, a) : (e === tt.associate && (a.ids = i), void(n && !qe ? J(et.preCallTest, a) : (a.clockUnsynced = qe, Ae.cacheEvent({
+                                channel: et.preCallTest,
                                 data: a,
                                 callback: null
                             }))))
                         },
-                        Ot = function(e, t, n, i, o, a) {
+                        Bt = function(e, t, n, i, o, a) {
                             var s = r(),
                                 c = {
-                                    version: Z,
-                                    appID: oe,
+                                    version: ee,
+                                    appID: se,
                                     conferenceID: encodeURIComponent(t),
                                     ucID: n,
                                     apiTS: s,
-                                    localID: encodeURIComponent(ae),
+                                    localID: encodeURIComponent(ce),
                                     remoteID: encodeURIComponent(e),
                                     pcID: o,
-                                    deviceID: ce,
+                                    deviceID: le,
                                     sdpPayload: i,
-                                    action: Ke.sdpSubmission
+                                    action: et.sdpSubmission
                                 };
-                            De.authToken && n && !Ue ? (c.token = De.authToken, G(Ke.sdpSubmission, c, a)) : (c.clockUnsynced = Ue, Re.cacheEvent({
-                                channel: Ke.sdpSubmission,
+                            Me.authToken && n && !qe ? (c.token = Me.authToken, J(et.sdpSubmission, c, a)) : (c.clockUnsynced = qe, Ae.cacheEvent({
+                                channel: et.sdpSubmission,
                                 data: c,
                                 callback: a
-                            }), De.authToken || De.sendAuthenticationRequest(oe, ae))
+                            }), Me.authToken || Me.sendAuthenticationRequest(se, ce))
                         },
-                        Dt = function(e, t, n, r, i, o, a) {
-                            Yt(e, function(e) {
-                                t.localCandidates = e.localCandidates, t.remoteCandidates = e.remoteCandidates, t.iceCandidatePairs = e.iceCandidatePairs, t.activeIceCandidatePair = bn(t.iceCandidatePairs), a.currPair = t.activeIceCandidatePair, Pt(qe.fabricStateChange, i, n, r, a, o)
+                        Ht = function(e, t, n, r, i, o, a) {
+                            cn(e, function(e) {
+                                t.localCandidates = e.localCandidates, t.remoteCandidates = e.remoteCandidates, t.iceCandidatePairs = e.iceCandidatePairs, t.activeIceCandidatePair = In(t.iceCandidatePairs), a.currPair = t.activeIceCandidatePair, Ft(Ze.fabricStateChange, i, n, r, a, o)
                             })
                         },
-                        xt = function(e) {
+                        Gt = function(e) {
                             var t = {
-                                    connectedDevices: ie
+                                    connectedDevices: ae
                                 },
-                                n = je[e] ? je[e].ucID : null;
-                            Pt(qe.connectedDevices, null, e, n, t, null)
+                                n = Ve[e] ? Ve[e].ucID : null;
+                            Ft(Ze.connectedDevices, null, e, n, t, null)
                         },
-                        Nt = function(e) {
+                        Jt = function(e) {
                             var t = {
-                                ucID: je[e].ucID,
-                                endpoint: Me,
-                                magicKey: Et
+                                ucID: Ve[e].ucID,
+                                endpoint: Be,
+                                magicKey: Dt
                             };
-                            Pt(qe.refreshPresence, null, e, je[e].ucID, t, null)
+                            Ft(Ze.refreshPresence, null, e, Ve[e].ucID, t, null)
                         },
-                        Lt = function(e, t) {
+                        Vt = function(e, t) {
                             var n = {};
                             return n.status = e, t && (n.message = t), n
                         },
-                        Mt = function(e, t) {
+                        Wt = function(e, t) {
                             var n, r, i, o = 0;
                             if (!e) return o;
                             for (n = 0, i = e.length; n < i; n++) r = e.charCodeAt(n), o = (o << 5) - o + r, o |= 0;
                             return t && t(o), o
                         },
-                        jt = function(e, n, r, i, o, a) {
-                            if (!e || !r || !n) return console.error("initialize: Argument missing/invalid"), Lt($e.failure, "initialize: Argument missing/invalid");
-                            if (i && "function" != typeof i) return console.error("initialize: Argument missing/invalid"), Lt($e.failure, "initialize: Argument missing/invalid");
-                            if (o && "function" != typeof o) return console.error("initialize: Argument missing/invalid"), Lt($e.failure, "initialize: Argument missing/invalid");
-                            if (De.setAuthType(Ae.jwt), "function" != typeof n) {
-                                if (De.setAuthType(Ae.appSecret), !(window.crypto && (window.crypto.subtle || window.crypto.webkitSubtle) || window.msCrypto && window.msCrypto.subtle || window.csioReactNative)) return console.error("Browser does not support Web Cryptography API. App secret based authentication requires Web Cryptography API"), i && i(Qe.tokenGenerationError, "Browser does not support Web Cryptography API. App secret based authentication requires Web Cryptography API"), Lt($e.failure, "Browser does not support Web Cryptography API. App secret based authentication requires Web Cryptography API");
-                                n = De.appSecretTokenGenerator(n)
+                        qt = function(e, n, r, i, o, a) {
+                            if (!e || !r || !n) return console.error("initialize: Argument missing/invalid"), Vt(nt.failure, "initialize: Argument missing/invalid");
+                            if (i && "function" != typeof i) return console.error("initialize: Argument missing/invalid"), Vt(nt.failure, "initialize: Argument missing/invalid");
+                            if (o && "function" != typeof o) return console.error("initialize: Argument missing/invalid"), Vt(nt.failure, "initialize: Argument missing/invalid");
+                            if (Me.setAuthType(Ne.jwt), "function" != typeof n) {
+                                if (Me.setAuthType(Ne.appSecret), !(window.crypto && (window.crypto.subtle || window.crypto.webkitSubtle) || window.msCrypto && window.msCrypto.subtle || window.csioReactNative)) return console.error("Browser does not support Web Cryptography API. App secret based authentication requires Web Cryptography API"), i && i(rt.tokenGenerationError, "Browser does not support Web Cryptography API. App secret based authentication requires Web Cryptography API"), Vt(nt.failure, "Browser does not support Web Cryptography API. App secret based authentication requires Web Cryptography API");
+                                n = Me.appSecretTokenGenerator(n)
                             }
-                            if ("string" == typeof e && (e = parseInt(e, 10)), oe = e, isNaN(oe)) return Lt($e.failure, "Invalid Credentials");
-                            if ("object" == (void 0 === r ? "undefined" : s(r)) ? (ae = r.aliasName, se = r) : ae = r, ye.initializeSinceCreate = t() - ye.create, St(oe, ae, "log", {
+                            if ("string" == typeof e && (e = parseInt(e, 10)), se = e, isNaN(se)) return Vt(nt.failure, "Invalid Credentials");
+                            if ("object" == (void 0 === r ? "undefined" : s(r)) ? (ce = r.aliasName, ue = r) : ce = r, _e.initializeSinceCreate = t() - _e.create, Pt(se, ce, "log", {
                                     msg: "callstats initialize in progress"
-                                }), a && (!0 === a.disableBeforeUnloadHandler && (ue = !0), null === a.applicationVersion && void 0 === a.applicationVersion || (Me.appVer = a.applicationVersion), !0 === a.disablePrecalltest && (le = !0)), De.tokenGenerator = n, gt("csio_auth_data")) try {
-                                var c = JSON.parse(gt("csio_auth_data"));
-                                De._isTokenValid(c, oe, ae) && (i && i(Qe.success, "SDK authentication successful."), De.setupAuthToken(c), Bt(), Kn._isChannelReady() || Kn._setupWebSocketConnection(i))
+                                }), a && (!0 === a.disableBeforeUnloadHandler && (de = !0), null !== a.applicationVersion && void 0 !== a.applicationVersion && (Be.appVer = ln(a.applicationVersion, 30)), !0 === a.disablePrecalltest && (pe = !0)), Me.tokenGenerator = n, wt("csio_auth_data")) try {
+                                var c = JSON.parse(wt("csio_auth_data"));
+                                Me._isTokenValid(c, se, ce) && (i && i(rt.success, "SDK authentication successful."), Me.setupAuthToken(c), Qt(), rr._isChannelReady() || rr._setupWebSocketConnection(i))
                             } catch (e) {
                                 console.log("initialize: Error", e)
                             }
-                            l(), o && (be.stats = o);
+                            d(), o && (Te.stats = o);
                             try {
-                                De.sendAuthenticationRequest(oe, ae, i)
+                                Me.sendAuthenticationRequest(se, ce, i)
                             } catch (e) {
                                 console.log("initialize: Error", e)
                             }
-                            return Lt($e.success)
+                            return Vt(nt.success)
                         },
-                        Ft = function() {
-                            ye.sent || (ye.remoteofferSinceCreate && ye.config || ye.errorSinceCreate) && (St(oe, ae, "timing", ye), ye.sent = !0)
+                        Kt = function() {
+                            _e.sent || (_e.remoteofferSinceCreate && _e.config && _e.senderConfig || _e.errorSinceCreate) && (console.log("Send generic event for timing"), Pt(se, ce, "timing", _e), _e.sent = !0)
                         },
-                        Ut = function(e, t) {
-                            "function" == typeof t && be.hasOwnProperty(e) && (be[e] = t)
+                        zt = function(e, t) {
+                            "function" == typeof t && Te.hasOwnProperty(e) && (Te[e] = t)
                         },
-                        Ht = function(e) {
-                            St(oe, ae, "log", {
-                                msg: "precalltest finished"
-                            }), be.preCallTest && be.preCallTest(e);
+                        $t = function(e) {
+                            Pt(se, ce, "log", {
+                                msg: "precalltest finished " + fe
+                            }), fe += "(finished)", Te.preCallTest && Te.preCallTest(e);
                             try {
-                                ge.push(e.id);
+                                Se.push(e.id);
                                 var t = null,
                                     n = null;
-                                for (var r in je)
-                                    if (je.hasOwnProperty(r)) {
-                                        t = r, je[r].ucID && (n = je[r].ucID);
+                                for (var r in Ve)
+                                    if (Ve.hasOwnProperty(r)) {
+                                        t = r, Ve[r].ucID && (n = Ve[r].ucID);
                                         break
                                     }
-                                At(ze.results, t, n, e)
+                                Ut(tt.results, t, n, e)
                             } catch (e) {
-                                pe("send results", e)
+                                me("send results", e)
                             }
                         },
-                        Bt = function() {
-                            var e = "https://appsettings.callstats.io/v1/apps/" + oe,
+                        Qt = function() {
+                            var e = re + se,
                                 t = {
-                                    Authorization: "Bearer " + De.authToken
+                                    Authorization: "Bearer " + Me.authToken
                                 },
                                 n = function(e, t) {
                                     200 !== e.status && setTimeout(function() {
                                         i()
-                                    }, 100), ye.config = t, Ft();
+                                    }, 100), _e.config = t, Kt();
                                     var n = JSON.parse(e.response);
-                                    if (console.log("internal config:", n), n.submissionInterval && (_e = parseInt(n.submissionInterval, 10), re.setSubmissionInterval(_e)), n.adaptiveStats && re.setReportingMode(n.adaptiveStats), n.collectSDP && (Se = n.collectSDP), n.qmodelThresholdsAPI) {
+                                    if (console.log("internal config:", n), n.submissionInterval && (Ce = parseInt(n.submissionInterval, 10), oe.setSubmissionInterval(Ce)), n.adaptiveStats && oe.setReportingMode(n.adaptiveStats), n.collectSDP && (Ee = n.collectSDP), n.qmodelThresholdsAPI) {
                                         var r = n.qmodelThresholdsAPI;
-                                        Bn("eModelThreshold", r, pt), Bn("throughputThreshold", r, ct), Bn("fractionalLossThreshold", r, dt), Bn("rttThreshold", r, lt), Bn("currOverPrevFrameRateThreshold", r, ut)
+                                        Xn("eModelThreshold", r, St), Xn("throughputThreshold", r, vt), Xn("fractionalLossThreshold", r, bt), Xn("rttThreshold", r, yt), Xn("currOverPrevFrameRateThreshold", r, gt)
                                     }
                                 },
                                 r = function(e) {
@@ -15383,43 +15510,43 @@
                                                 media: null
                                             }), e.peerConnection && (n.peerConnection = e.peerConnection), e.media && (n.media = e.media), e.sender && (n.sender = e.sender), e.confidence && (n.confidence = e.confidence), n
                                         };
-                                    if (be.defaultConfig && t.default) {
+                                    if (Te.defaultConfig && t.default) {
                                         var r = n(t.default, !0);
-                                        r !== {} && be.defaultConfig(r)
+                                        r !== {} && Te.defaultConfig(r)
                                     }
-                                    if (be.recommendedConfig && t.recommended) {
+                                    if (Te.recommendedConfig && t.recommended) {
                                         var i = n(t.recommended, !1);
-                                        i !== {} && be.recommendedConfig(i)
+                                        i !== {} && Te.recommendedConfig(i)
                                     }
                                 },
                                 i = function r() {
-                                    bt(e + "/configurations/internal", t, 2e3, n, r)
+                                    kt(e + "/configurations/internal", t, 2e3, n, r)
                                 },
                                 o = function n() {
-                                    bt(e + "/configurations", t, 2e3, r, n)
+                                    kt(e + "/configurations", t, 2e3, r, n)
                                 };
                             i(), o()
                         },
-                        Gt = function(e) {
+                        Xt = function(e) {
                             return function(t) {
                                 return t.pc === e || !(!e.callstatsID || t.pcHash !== e.callstatsID) || void 0
                             }
                         },
-                        Jt = function(e, t) {
+                        Yt = function(e, t) {
                             var n = null;
-                            return je[e] && je[e].participants && (n = je[e].participants.filter(Gt(t))), n && n.length > 0 ? n[0] : null
+                            return Ve[e] && Ve[e].participants && (n = Ve[e].participants.filter(Xt(t))), n && n.length > 0 ? n[0] : null
                         },
-                        Vt = function(e, t) {
+                        Zt = function(e, t) {
                             var n = null,
                                 r = null;
-                            return n = Jt(e, t), n && (r = n.pcHash), r
+                            return n = Yt(e, t), n && (r = n.pcHash), r
                         },
-                        Wt = function(e) {
+                        en = function(e) {
                             var t = null,
                                 n = null,
                                 r = null;
-                            for (t in je)
-                                if (je.hasOwnProperty(t) && (r = Jt(t, e))) {
+                            for (t in Ve)
+                                if (Ve.hasOwnProperty(t) && (r = Yt(t, e))) {
                                     n = {
                                         fabric: r,
                                         conferenceID: t
@@ -15428,16 +15555,16 @@
                                 }
                             return n
                         },
-                        qt = function(e, t) {
+                        tn = function(e, t) {
                             var n = 0;
-                            if (e && je[t].participants)
-                                for (n = 0; n < je[t].participants.length; n++)
-                                    if (je[t].participants[n].pcHash === e.pcHash) {
-                                        je[t].participants.splice(n, 1);
+                            if (e && Ve[t].participants)
+                                for (n = 0; n < Ve[t].participants.length; n++)
+                                    if (Ve[t].participants[n].pcHash === e.pcHash) {
+                                        Ve[t].participants.splice(n, 1);
                                         break
                                     }
                         },
-                        Kt = function(e) {
+                        nn = function(e) {
                             if (e) {
                                 var t = [],
                                     n = 0;
@@ -15450,7 +15577,7 @@
                                 return t
                             }
                         },
-                        zt = function(e) {
+                        rn = function(e) {
                             var t, n = null,
                                 r = null,
                                 i = null,
@@ -15458,12 +15585,12 @@
                                 a = [],
                                 s = [],
                                 c = 0;
-                            if (!(n = Kt(e))) return {
+                            if (!(n = nn(e))) return {
                                 localCandidates: o,
                                 remoteCandidates: a
                             };
                             for (c = 0; c < n.length; ++c)
-                                if (r = P(n[c]), i = R(r), i.localCandidate) o.push(i.localCandidate);
+                                if (r = A(n[c]), i = k(r), i.localCandidate) o.push(i.localCandidate);
                                 else if (i.remoteCandidate) a.push(i.remoteCandidate);
                             else if (i.Transport) {
                                 if ("transport" === i.Transport.type) {
@@ -15480,123 +15607,127 @@
                                 iceCandidatePairs: s
                             }
                         },
-                        $t = function(e) {
+                        on = function(e) {
                             function t(t) {
                                 var n = {};
-                                n = zt(t), e(n)
+                                n = rn(t), e(n)
                             }
                             return t
                         },
-                        Qt = function(e) {
+                        an = function(e) {
                             var t = null;
                             return e && (t = e.message + " : " + e.stack), t
                         },
-                        Xt = function(e, t, n, r, i, o) {
-                            var a = ve.codebase,
-                                s = ve.name;
-                            if (a === ht.firefox)
-                                if (Ee) try {
+                        sn = function(e, t, n, r, i, o) {
+                            var a = be.codebase,
+                                s = be.name;
+                            if (a === _t.firefox)
+                                if (ke) try {
                                     e.getStats().then(n(t, r, i, o, e)).catch(function(s) {
-                                        Ee = !1, St(oe, r, "log", {
-                                            msg: "### " + a + " getStats reports error " + Qt(s)
+                                        ke = !1, Pt(se, r, "log", {
+                                            msg: "### " + a + " getStats reports error " + an(s)
                                         }), e.getStats(null, n(t, r, i, o, e))
                                     })
                                 } catch (s) {
-                                    Ee = !1, St(oe, r, "log", {
-                                        msg: "### " + a + " getStats reports error " + Qt(s)
+                                    ke = !1, Pt(se, r, "log", {
+                                        msg: "### " + a + " getStats reports error " + an(s)
                                     }), e.getStats(null, n(t, r, i, o, e))
                                 } else e.getStats(null, n(t, r, i, o, e), function(e) {
                                     console.log("getstats error ", e)
                                 });
                                 else if ("Safari" === s) e.getStats().then(n(t, r, i, o, e)).catch(function(e) {
-                                St(oe, r, "log", {
-                                    msg: "### " + a + " getStats reports error " + Qt(e)
+                                Pt(se, r, "log", {
+                                    msg: "### " + a + " getStats reports error " + an(e)
                                 })
                             });
-                            else if (a === ht.chrome)
+                            else if (a === _t.chrome)
                                 if (window && window.csioReactNative) e.getStats(null, n(t, r, i, o, e), function(e) {
-                                    St(oe, r, "log", {
-                                        msg: "### " + a + " getStats reports error " + Qt(e)
+                                    Pt(se, r, "log", {
+                                        msg: "### " + a + " getStats reports error " + an(e)
                                     })
                                 });
-                                else if (Ee) try {
+                                else if (ke) try {
                                 e.getStats().then(n(t, r, i, o, e)).catch(function(s) {
-                                    Ee = !1, St(oe, r, "log", {
-                                        msg: "### " + a + " getStats reports error " + Qt(s)
+                                    ke = !1, Pt(se, r, "log", {
+                                        msg: "### " + a + " getStats reports error " + an(s)
                                     }), e.getStats(n(t, r, i, o, e))
                                 })
                             } catch (s) {
-                                Ee = !1, St(oe, r, "log", {
-                                    msg: "### " + a + " getStats reports error " + Qt(s)
+                                ke = !1, Pt(se, r, "log", {
+                                    msg: "### " + a + " getStats reports error " + an(s)
                                 }), e.getStats(n(t, r, i, o, e))
                             } else e.getStats(n(t, r, i, o, e));
-                            else a === ht.edge && e.getStats().then(n(t, r, i, o, e)).catch(function(e) {
-                                St(oe, r, "log", {
-                                    msg: "### " + a + " getStats reports error " + Qt(e)
+                            else a === _t.edge && e.getStats().then(n(t, r, i, o, e)).catch(function(e) {
+                                Pt(se, r, "log", {
+                                    msg: "### " + a + " getStats reports error " + an(e)
                                 })
                             })
                         },
-                        Yt = function(e, t) {
+                        cn = function(e, t) {
                             try {
-                                Xt(e, t, $t)
+                                sn(e, t, on)
                             } catch (e) {
                                 console.log("csioGetStats: Error", e)
                             }
                         },
-                        Zt = function(e, t, n, r) {
-                            if (n || (n = ne), !e || !t) return console.error("sendFabricEvent: Arguments missing/Invalid"), Lt($e.failure, "sendFabricEvent: Arguments missing/Invalid");
-                            if (!oe || !ae || !je[n]) return console.error("sendFabricEvent: SDK is not initialized or no Fabrics added."), Lt($e.failure, "sendFabricEvent: SDK is not initialized or no Fabrics added.");
-                            if (t === We.fabricSetupFailed) return console.error("sendFabricEvent: Unsupported fabricEvent fabricSetupFailed"), Lt($e.failure, "sendFabricEvent: Unsupported fabricEvent fabricSetupFailed");
-                            if (!f(e)) return console.error("sendFabricEvent: Invalid PeerConnection object passed"), Lt($e.failure, "sendFabricEvent: Invalid PeerConnection object passed");
-                            if (!We.hasOwnProperty(t) && !qe.hasOwnProperty(t)) return console.error("sendFabricEvent: Invalid fabricEvents value: ", t), Lt($e.failure, "sendFabricEvent: Invalid fabricEvents value: " + t);
+                        un = function(e, t, n, r) {
+                            if (n || (n = ie), !e || !t) return console.error("sendFabricEvent: Arguments missing/Invalid"), Vt(nt.failure, "sendFabricEvent: Arguments missing/Invalid");
+                            if (!se || !ce || !Ve[n]) return console.error("sendFabricEvent: SDK is not initialized or no Fabrics added."), Vt(nt.failure, "sendFabricEvent: SDK is not initialized or no Fabrics added.");
+                            if (t === Ye.fabricSetupFailed) return console.error("sendFabricEvent: Unsupported fabricEvent fabricSetupFailed"), Vt(nt.failure, "sendFabricEvent: Unsupported fabricEvent fabricSetupFailed");
+                            if (!m(e)) return console.error("sendFabricEvent: Invalid PeerConnection object passed"), Vt(nt.failure, "sendFabricEvent: Invalid PeerConnection object passed");
+                            if (!Ye.hasOwnProperty(t) && !Ze.hasOwnProperty(t)) return console.error("sendFabricEvent: Invalid fabricEvents value: ", t), Vt(nt.failure, "sendFabricEvent: Invalid fabricEvents value: " + t);
                             var i = {},
                                 o = null,
-                                a = je[n],
+                                a = Ve[n],
                                 s = null;
-                            if (void 0 === a) return console.error("sendFabricEvent: Conference ID not found!"), Lt($e.failure, "sendFabricEvent: Conference ID not found!");
-                            if (null === (s = Jt(n, e))) return console.error("sendFabricEvent: fabricData is null"), Lt($e.failure, "sendFabricEvent: fabricData is null");
-                            if (o = s.remoteUserID, t === We.activeDeviceList) {
-                                if (!r || !r.deviceList) return console.error("sendFabricEvent: Arguments missing/Invalid"), Lt($e.failure, "sendFabricEvent: Arguments missing/Invalid");
-                                if (!(r.deviceList instanceof Array)) return console.error("sendFabricEvent: DeviceList Invalid"), Lt($e.failure, "sendFabricEvent: DeviceList Invalid");
+                            if (void 0 === a) return console.error("sendFabricEvent: Conference ID not found!"), Vt(nt.failure, "sendFabricEvent: Conference ID not found!");
+                            if (null === (s = Yt(n, e))) return console.error("sendFabricEvent: fabricData is null"), Vt(nt.failure, "sendFabricEvent: fabricData is null");
+                            if (o = s.remoteUserID, t === Ye.activeDeviceList) {
+                                if (!r || !r.deviceList) return console.error("sendFabricEvent: Arguments missing/Invalid"), Vt(nt.failure, "sendFabricEvent: Arguments missing/Invalid");
+                                if (!(r.deviceList instanceof Array)) return console.error("sendFabricEvent: DeviceList Invalid"), Vt(nt.failure, "sendFabricEvent: DeviceList Invalid");
                                 i = {
-                                    magicKey: Et,
-                                    endpoint: Me,
+                                    magicKey: Dt,
+                                    endpoint: Be,
                                     activeDevicelist: r.deviceList
                                 }
                             }
-                            if (Pt(t, o, n, a.ucID, i, s.pcHash, s.pcCallback), t === We.fabricTerminated) {
-                                if (je[n].participants) {
-                                    s && (s.statsInterval = N(s.statsInterval), qt(s, n));
-                                    var c = F(n);
-                                    c.conferenceFinished && U(n, c.ucID)
+                            if (t !== Ye.screenShareStart && t !== Ye.screenShareStop || (i = {
+                                    magicKey: Dt,
+                                    endpoint: Be,
+                                    ssrc: r
+                                }), Ft(t, o, n, a.ucID, i, s.pcHash, s.pcCallback), t === Ye.fabricTerminated) {
+                                if (Ve[n].participants) {
+                                    s && (s.statsInterval = L(s.statsInterval), tn(s, n));
+                                    var c = U(n);
+                                    c.conferenceFinished && B(n, c.ucID)
                                 }
-                            } else t === We.fabricHold ? (s.statsInterval = N(s.statsInterval), s.onHold = !0) : t === We.fabricResume && (s.onHold = !1, Sn(s, e, n, o));
-                            return Lt($e.success)
+                            } else t === Ye.fabricHold ? (s.statsInterval = L(s.statsInterval), s.onHold = !0) : t === Ye.fabricResume && (s.onHold = !1, On(s, e, n, o));
+                            return Vt(nt.success)
                         },
-                        en = function(e) {
-                            return e.length > 2e4 && (console.log("Log exceeds 20kb, It will be truncated"), e = e.substring(0, 2e4)), e
+                        ln = function(e, t) {
+                            return e && "string" == typeof e ? (e.length > t && (e = e.substring(0, t)), e) : null
                         },
-                        tn = function(e) {
-                            return e && "string" == typeof e ? e = en(e) : e && "object" == (void 0 === e ? "undefined" : s(e)) && e.message && (e.message = en(e.message)), e
+                        dn = function(e) {
+                            return e && "string" == typeof e ? e = ln(e, 2e4) : e && "object" == (void 0 === e ? "undefined" : s(e)) && e.message && (e.message = ln(e.message, 2e4)), e
                         },
-                        nn = function(e, t, n) {
+                        pn = function(e, t, n) {
                             return t || (e && e[n] ? e[n].sdp : -1)
                         },
-                        rn = function(n, r, i, o, a, c) {
-                            if (r || (r = ne), void 0 === n || !i) return console.error("reportError: Arguments missing/invalid"), Lt($e.error, "reportError: Arguments missing/invalid");
-                            if (!oe || !ae) return console.error("reportError: SDK is not initialized"), Lt($e.error, "reportError: SDK is not initialized");
-                            if (!at.hasOwnProperty(i)) return console.error("reportError: Invalid webRTC functionName value: %o", i), Lt($e.error, "reportError: Invalid webRTC functionName value: " + i);
+                        hn = function(n, r, i, o, a, c) {
+                            if (r || (r = ie), void 0 === n || !i) return console.error("reportError: Arguments missing/invalid"), Vt(nt.error, "reportError: Arguments missing/invalid");
+                            if (!se || !ce) return console.error("reportError: SDK is not initialized"), Vt(nt.error, "reportError: SDK is not initialized");
+                            if (!ft.hasOwnProperty(i)) return console.error("reportError: Invalid webRTC functionName value: %o", i), Vt(nt.error, "reportError: Invalid webRTC functionName value: " + i);
                             void 0 === o && console.warn("reportError: Missing dom error parameter");
                             var u, l, d, p = null,
                                 h = t(),
-                                m = je[r],
+                                f = Ve[r],
                                 v = null,
                                 g = h,
                                 y = null,
                                 b = null,
-                                _ = null,
-                                S = null;
-                            if (_ = B(r), l = w(i), i !== at.getUserMedia && (S = e()), o)
+                                S = null,
+                                _ = null;
+                            if (S = G(r), l = R(i), i !== ft.getUserMedia && (_ = e()), o)
                                 if (window.DOMException && o instanceof window.DOMException) o = {
                                     message: o.message,
                                     name: o.name
@@ -15605,81 +15736,81 @@
                                 var T = {};
                                 o.message && (T.message = o.message), o.name && (T.name = o.name), o.constraintName && (T.constraintName = o.constraintName), o.stack && (T.stack = o.stack), o = T
                             }
-                            if (o = tn(o), f(n)) {
-                                if (m && (_ = m.ucID), v = Jt(r, n), v ? (u = v.remoteUserID, g = v.startTime, y = v.pcState, b = v.pc.iceConnectionState, S = v.pcHash, d = v.pcCallback) : u = ae, p = {
+                            if (o = dn(o), m(n)) {
+                                if (f && (S = f.ucID), v = Yt(r, n), v ? (u = v.remoteUserID, g = v.startTime, y = v.pcState, b = v.pc.iceConnectionState, _ = v.pcHash, d = v.pcCallback) : u = ce, p = {
                                         failureDelay: h - g,
                                         reason: l,
                                         domError: o,
                                         fabricState: y,
                                         iceConnectionState: b,
                                         function: i,
-                                        magicKey: Et,
-                                        endpoint: Me
-                                    }, i === at.applicationLog || i === at.applicationError ? Pt(We.applicationErrorLog, u, r, _, p, S, d) : (Pt(We.fabricSetupFailed, u, r, _, p, S, d), ye.errorSinceCreate = t() - ye.create, Ft()), a || c || n && n.localDescription || n && n.remoteDescription) {
+                                        magicKey: Dt,
+                                        endpoint: Be
+                                    }, i === ft.applicationLog || i === ft.applicationError ? Ft(Ye.applicationErrorLog, u, r, S, p, _, d) : (Ft(Ye.fabricSetupFailed, u, r, S, p, _, d), _e.errorSinceCreate = t() - _e.create, Kt()), a || c || n && n.localDescription || n && n.remoteDescription) {
                                     var C = {
                                         sdp: {}
                                     };
-                                    C.sdp.localSDP = nn(n, a, "localDescription"), C.sdp.remoteSDP = nn(n, c, "remoteDescription"), Ot(u, r, _, C, S)
+                                    C.sdp.localSDP = pn(n, a, "localDescription"), C.sdp.remoteSDP = pn(n, c, "remoteDescription"), Bt(u, r, S, C, _)
                                 }
-                            } else null === Et && (Et = e()), u = ae, p = {
+                            } else null === Dt && (Dt = e()), u = ce, p = {
                                 failureDelay: 0,
                                 reason: l,
                                 domError: o,
                                 function: i,
-                                magicKey: Et,
-                                endpoint: Me
-                            }, i === at.applicationLog || i === at.applicationError ? Pt(We.applicationErrorLog, u, r, _, p, null, null) : Pt(We.fabricSetupFailed, u, r, _, p, S, null);
-                            return Lt($e.success)
+                                magicKey: Dt,
+                                endpoint: Be
+                            }, i === ft.applicationLog || i === ft.applicationError ? Ft(Ye.applicationErrorLog, u, r, S, p, null, null) : Ft(Ye.fabricSetupFailed, u, r, S, p, _, null);
+                            return Vt(nt.success)
                         },
-                        on = function(e) {
+                        fn = function(e) {
                             for (var t = [], n = 0; n < e.length; n++) {
                                 var r = e.charCodeAt(n);
                                 r < 128 ? t[t.length] = r : r > 127 && r < 2048 ? (t[t.length] = r >> 6 | 192, t[t.length] = 63 & r | 128) : (t[t.length] = r >> 12 | 224, t[t.length] = r >> 6 & 63 | 128, t[t.length] = 63 & r | 128)
                             }
                             return new Uint8Array(t).buffer
                         },
-                        an = function(e) {
+                        mn = function(e) {
                             for (var t, n = new DataView(e), r = "", i = 0; i < n.byteLength; i++) t = n.getUint8(i).toString(16), t.length < 2 && (t = "0" + t), r += t;
                             return r
                         },
-                        sn = function(e, t) {
+                        vn = function(e, t) {
                             var n = {
                                 name: "SHA-256"
                             };
                             if (window.crypto) {
                                 var r = window.crypto.subtle || window.crypto.webkitSubtle;
-                                if (!r) return void Mt(e, t);
-                                r.digest(n, on(e)).then(function(e) {
-                                    t(an(e))
+                                if (!r) return void Wt(e, t);
+                                r.digest(n, fn(e)).then(function(e) {
+                                    t(mn(e))
                                 }).catch(function() {
-                                    Mt(e, t)
+                                    Wt(e, t)
                                 })
                             } else if (window.msCrypto) {
-                                if (!window.msCrypto.subtle) return void Mt(e, t);
-                                var i = window.msCrypto.subtle.digest(n, on(e));
+                                if (!window.msCrypto.subtle) return void Wt(e, t);
+                                var i = window.msCrypto.subtle.digest(n, fn(e));
                                 i.oncomplete = function(e) {
-                                    e.target && t(an(e.target.result))
+                                    e.target && t(mn(e.target.result))
                                 }, i.onerror = function() {
-                                    Mt(e, t)
+                                    Wt(e, t)
                                 }
-                            } else Mt(e, t)
+                            } else Wt(e, t)
                         },
-                        cn = function(e, t, n) {
+                        gn = function(e, t, n) {
                             var r;
-                            if (!t || !e) return console.error("sendUserFeedback: Arguments missing/Invalid"), Lt($e.error, "sendUserFeedback: Arguments missing/Invalid");
-                            if ("object" != (void 0 === t ? "undefined" : s(t))) return console.error("sendUserFeedback: Invalid feedback object."), Lt($e.error, "sendUserFeedback: Invalid feedback object.");
-                            if (0 === Object.keys(t).length) return console.error("sendUserFeedback: Feedback data object must not be empty."), Lt($e.error, "sendUserFeedback: Feedback data object must not be empty.");
-                            var i = je[e],
+                            if (!t || !e) return console.error("sendUserFeedback: Arguments missing/Invalid"), Vt(nt.error, "sendUserFeedback: Arguments missing/Invalid");
+                            if ("object" != (void 0 === t ? "undefined" : s(t))) return console.error("sendUserFeedback: Invalid feedback object."), Vt(nt.error, "sendUserFeedback: Invalid feedback object.");
+                            if (0 === Object.keys(t).length) return console.error("sendUserFeedback: Feedback data object must not be empty."), Vt(nt.error, "sendUserFeedback: Feedback data object must not be empty.");
+                            var i = Ve[e],
                                 o = null;
                             void 0 !== i && void 0 !== i.ucID && (o = i.ucID);
                             var a = null;
-                            if (a = null === Et ? He : Et, null === o && (o = B(e)), null === o) return console.error("sendUserFeedback: ucID unavailable"), Lt($e.error, "sendUserFeedback: ucID unavailable");
+                            if (a = null === Dt ? Ke : Dt, null === o && (o = G(e)), null === o) return console.error("sendUserFeedback: ucID unavailable"), Vt(nt.error, "sendUserFeedback: ucID unavailable");
                             r = "object" == s(t.userID) ? t.userID.aliasName : t.userID, t && t.overall <= 0 && (t.overall = null);
                             var c = {
                                 conferenceID: encodeURIComponent(e),
                                 magicKey: a,
-                                appID: oe,
-                                version: Z,
+                                appID: se,
+                                version: ee,
                                 ucID: o,
                                 remoteID: encodeURIComponent(r),
                                 userID: encodeURIComponent(r),
@@ -15687,106 +15818,106 @@
                                     overall: t.overall
                                 }
                             };
-                            return t.video && (c.userQoe.video = t.video), t.audio && (c.userQoe.audio = t.audio), t.screen && (c.userQoe.screen = t.screen), t.comment && (c.userQoe.comment = t.comment), De.authToken && !Ue ? (c.token = De.authToken, vt("feedback", JSON.stringify(c)), G(Ke.userFeedback, c, n)) : (c.clockUnsynced = Ue, Re.cacheEvent({
-                                channel: Ke.userFeedback,
+                            return t.video && (c.userQoe.video = t.video), t.audio && (c.userQoe.audio = t.audio), t.screen && (c.userQoe.screen = t.screen), t.comment && (c.userQoe.comment = t.comment), Me.authToken && !qe ? (c.token = Me.authToken, Et("feedback", JSON.stringify(c)), J(et.userFeedback, c, n)) : (c.clockUnsynced = qe, Ae.cacheEvent({
+                                channel: et.userFeedback,
                                 data: c,
                                 callback: n
-                            }), De.sendAuthenticationRequest(oe, r)), Lt($e.success)
+                            }), Me.sendAuthenticationRequest(se, r)), Vt(nt.success)
                         },
-                        un = function(e, t, n, r, i, o) {
+                        yn = function(e, t, n, r, i, o) {
                             var a = null;
-                            if (a = "object" == (void 0 === t ? "undefined" : s(t)) ? t.aliasName : t, n || (n = ne), !(e && r && i && a)) return console.error("associateMstWithUserID: Arguments missing"), Lt($e.error, "associateMstWithUserID: Arguments missing");
-                            if (!f(e)) return console.error("associateMstWithUserID: Invalid PeerConnection object passed"), Lt($e.error, "associateMstWithUserID: Invalid PeerConnection object passed");
-                            if (void 0 === je[n]) return console.error("associateMstWithUserID: conferenceID doesn't exist"), Lt($e.error, "associateMstWithUserID: conferenceID doesn't exist");
+                            if (a = "object" == (void 0 === t ? "undefined" : s(t)) ? t.aliasName : t, n || (n = ie), !(e && r && i && a)) return console.error("associateMstWithUserID: Arguments missing"), Vt(nt.error, "associateMstWithUserID: Arguments missing");
+                            if (!m(e)) return console.error("associateMstWithUserID: Invalid PeerConnection object passed"), Vt(nt.error, "associateMstWithUserID: Invalid PeerConnection object passed");
+                            if (void 0 === Ve[n]) return console.error("associateMstWithUserID: conferenceID doesn't exist"), Vt(nt.error, "associateMstWithUserID: conferenceID doesn't exist");
                             var c = null;
-                            if (null === (c = Jt(n, e))) return console.error("associateMstWithUserID: Unknown pcObject passed"), Lt($e.error, "associateMstWithUserID: Unknown pcObject passed");
-                            var u = Rt(c, r);
-                            return void 0 === u && (c.ssrcMap[r] = {}, u = Rt(c, r)), u.remoteUserID = a, u.ssrc = r, u.associatedVideoTag = o, u.usageLabel = i, o && a !== ae && h(n, o, e, r), Lt($e.success)
+                            if (null === (c = Yt(n, e))) return console.error("associateMstWithUserID: Unknown pcObject passed"), Vt(nt.error, "associateMstWithUserID: Unknown pcObject passed");
+                            var u = Lt(c, r);
+                            return void 0 === u && (c.ssrcMap[r] = {}, u = Lt(c, r)), u.remoteUserID = a, u.ssrc = r, u.associatedVideoTag = o, u.usageLabel = i, o && a !== ce && f(n, o, e, r), Vt(nt.success)
                         },
-                        ln = function(e) {
-                            if (je[ne]) {
-                                var t = je[ne].participants;
+                        bn = function(e) {
+                            if (Ve[ie]) {
+                                var t = Ve[ie].participants;
                                 if (t)
                                     for (var n = 0; n < t.length; n++) t[n].conferenceID = e
                             }
                         },
-                        dn = function(e) {
-                            Re.updateConferenceId(encodeURIComponent(e))
+                        Sn = function(e) {
+                            Ae.updateConferenceId(encodeURIComponent(e))
                         },
-                        pn = function(e, t) {
-                            var n = Wt(t);
-                            n && Re.updateRemoteUserID(e, n.fabric.pcHash)
+                        _n = function(e, t) {
+                            var n = en(t);
+                            n && Ae.updateRemoteUserID(e, n.fabric.pcHash)
                         },
-                        hn = function(e, t) {
+                        Tn = function(e, t) {
                             var n = null;
-                            (n = Wt(t)) && (n.fabric.remoteUserID = e)
+                            (n = en(t)) && (n.fabric.remoteUserID = e)
                         },
-                        fn = function() {
-                            Re.sendCachedUserJoinedEvents(De), Re.sendCachedEvents(De, Ue)
+                        Cn = function() {
+                            Ae.sendCachedUserJoinedEvents(Me), Ae.sendCachedEvents(Me, qe)
                         },
-                        mn = function(e, t) {
-                            return e ? (e.conferenceID && (ln(e.conferenceID), je[e.conferenceID] = je[ne], dn(e.conferenceID), fn()), e.remoteUserID && t && (pn(e.remoteUserID, t), hn(e.remoteUserID, t), fn()), Lt($e.success)) : (console.error("setIdentifiers: Arguments missing/Invalid"), Lt($e.error, "_setIdentifiers: Arguments missing/Invalid"))
+                        En = function(e, t) {
+                            return e ? (e.conferenceID && (bn(e.conferenceID), Ve[e.conferenceID] = Ve[ie], Sn(e.conferenceID), Cn()), e.remoteUserID && t && (_n(e.remoteUserID, t), Tn(e.remoteUserID, t), Cn()), Vt(nt.success)) : (console.error("setIdentifiers: Arguments missing/Invalid"), Vt(nt.error, "_setIdentifiers: Arguments missing/Invalid"))
                         },
-                        vn = function(e) {
-                            return window && !window.csioproxy ? (console.error("setCallstatsURLs: cannot be called if window.csioproxy is false"), Lt($e.error, "setCallstatsURLs: cannot be called if window.csioproxy is false")) : e ? (e.collectorURL && (X = e.collectorURL), e.authServiceURL && (Y = e.authServiceURL), e.csioInternalAPIURL && (te = e.csioInternalAPIURL), e.wsURL && (ee = e.wsURL), Ce = !0, Jn(), Vn(), q(), Lt($e.success)) : (console.error("setCallstatsURLs: Arguments missing/Invalid"), Lt($e.error, "setCallstatsURLs: Arguments missing/Invalid"))
+                        wn = function(e) {
+                            return window && !window.csioproxy ? (console.error("setCallstatsURLs: cannot be called if window.csioproxy is false"), Vt(nt.error, "setCallstatsURLs: cannot be called if window.csioproxy is false")) : e ? (e.collectorURL && (Y = e.collectorURL), e.authServiceURL && (Z = e.authServiceURL), e.csioInternalAPIURL && (ne = e.csioInternalAPIURL), e.wsURL && (te = e.wsURL), Re = !0, Zn(), er(), K(), Vt(nt.success)) : (console.error("setCallstatsURLs: Arguments missing/Invalid"), Vt(nt.error, "setCallstatsURLs: Arguments missing/Invalid"))
                         },
-                        gn = function(n, r, i, o, a, c) {
-                            var l = null,
-                                d = Ye.peer,
-                                p = Ze.sendrecv,
+                        Rn = function(n, r, i, o, a, c) {
+                            var u = null,
+                                d = ot.peer,
+                                p = at.sendrecv,
                                 h = {
-                                    authStatus: !!De.tokenData,
-                                    clockSync: !Ue,
+                                    authStatus: !!Me.tokenData,
+                                    clockSync: !qe,
                                     msg: "addNewFabric called",
                                     eventType: "warn",
                                     pageURL: window.location.href,
                                     conferenceID: o,
-                                    version: Z
+                                    version: ee
                                 };
-                            if (q(), St(oe, ae, "stateMachine", h), l = r && "object" == (void 0 === r ? "undefined" : s(r)) ? r.aliasName : r, o || (o = ne), !n || !i) return console.error("addNewFabric: Arguments missing/Invalid"), Lt($e.error, "addNewFabric: Arguments missing/Invalid");
-                            if (!oe || !ae) return console.error("addNewFabric: SDK not initialized."), Lt($e.error, "addNewFabric: SDK not initialized");
-                            if (!f(n)) return console.error("addNewFabric: Invalid PeerConnection object passed"), Lt($e.error, "addNewFabric: Invalid PeerConnection object passed");
-                            if (!et.hasOwnProperty(i) || i instanceof Function) return console.error("addNewFabric: Invalid fabricUsage value"), Lt($e.error, "addNewFabric: Invalid fabricUsage value");
+                            if (K(), Pt(se, ce, "stateMachine", h), u = r && "object" == (void 0 === r ? "undefined" : s(r)) ? r.aliasName : r, o || (o = ie), !n || !i) return console.error("addNewFabric: Arguments missing/Invalid"), Vt(nt.error, "addNewFabric: Arguments missing/Invalid");
+                            if (!se || !ce) return console.error("addNewFabric: SDK not initialized."), Vt(nt.error, "addNewFabric: SDK not initialized");
+                            if (!m(n)) return console.error("addNewFabric: Invalid PeerConnection object passed"), Vt(nt.error, "addNewFabric: Invalid PeerConnection object passed");
+                            if (!st.hasOwnProperty(i) || i instanceof Function) return console.error("addNewFabric: Invalid fabricUsage value"), Vt(nt.error, "addNewFabric: Invalid fabricUsage value");
                             if (a && "function" != typeof a) {
                                 if (a.remoteEndpointType) {
-                                    if (!Ye.hasOwnProperty(a.remoteEndpointType)) return console.error("addNewFabric: Invalid remoteEndpointType value"), Lt($e.error, "addNewFabric: Invalid remoteEndpointType value");
+                                    if (!ot.hasOwnProperty(a.remoteEndpointType)) return console.error("addNewFabric: Invalid remoteEndpointType value"), Vt(nt.error, "addNewFabric: Invalid remoteEndpointType value");
                                     d = a.remoteEndpointType
                                 }
                                 if (a.fabricTransmissionDirection) {
-                                    if (!Ze.hasOwnProperty(a.fabricTransmissionDirection)) return console.error("addNewFabric: Invalid fabricTransmissionDirection value"), Lt($e.error, "addNewFabric: Invalid fabricTransmissionDirection value");
+                                    if (!at.hasOwnProperty(a.fabricTransmissionDirection)) return console.error("addNewFabric: Invalid fabricTransmissionDirection value"), Vt(nt.error, "addNewFabric: Invalid fabricTransmissionDirection value");
                                     p = a.fabricTransmissionDirection
                                 }
                             }
-                            var m = t();
-                            ye.addnewfabricSinceCreate = m - ye.create, Ft(), null === Et && (Et = e());
+                            var f = t();
+                            _e.addnewfabricSinceCreate = f - _e.create, Kt(), null === Dt && (Dt = e());
                             var v = !1;
-                            if (!M(o)) {
-                                var g = O(Et);
-                                Pt(qe.userJoined, null, o, null, g, null, null), v = !0, h = {
-                                    authStatus: !!De.tokenData,
-                                    clockSync: !Ue,
+                            if (!j(o)) {
+                                var g = D(Dt);
+                                Ft(Ze.userJoined, null, o, null, g, null, null), v = !0, h = {
+                                    authStatus: !!Me.tokenData,
+                                    clockSync: !qe,
                                     msg: "userJoined sent",
                                     pageURL: window.location.href,
                                     eventType: "warn",
                                     conferenceID: o,
-                                    version: Z
-                                }, St(oe, ae, "stateMachine", h)
+                                    version: ee
+                                }, Pt(se, ce, "stateMachine", h)
                             }
-                            if (D(o, null, v), !Jt(o, n)) {
-                                n && new Q(n, Dn, An, _n, Pn);
+                            if (x(o, null, v), !Yt(o, n)) {
+                                n && new X(n, Gn, Bn, An, Un);
                                 var y = e(),
                                     b = {
                                         pc: n,
-                                        remoteUserID: l,
+                                        remoteUserID: u,
                                         fabricUsage: i,
-                                        magicKey: Et,
-                                        startTime: m,
+                                        magicKey: Dt,
+                                        startTime: f,
                                         pcCallback: c,
-                                        pcState: ot.initializing,
+                                        pcState: ht.initializing,
                                         fabricSetupSent: !1,
                                         iceCandidates: [],
                                         iceConnectionState: n.iceConnectionState,
-                                        latestEventSent: m,
+                                        latestEventSent: f,
                                         pcHash: y,
                                         localSDP: -1,
                                         remoteSDP: -1,
@@ -15802,41 +15933,68 @@
                                         remoteEndpointType: d,
                                         fabricTransmissionDirection: p
                                     };
-                                "function" != typeof n || n.callstatsID || (n.callstatsID = y), "connected" !== n.iceConnectionState && "completed" !== n.iceConnectionState || (b.pcState = ot.established), j(o, b), b.pcState === ot.established && (Nn(n, qe.autoFabricSetup, o), Sn(b, n, o))
+                                He && (Ft(et.senderConfiguration, r, o, null, Ge, b.pcHash), He = !1), "function" != typeof n || n.callstatsID || (n.callstatsID = y), "connected" !== n.iceConnectionState && "completed" !== n.iceConnectionState || (b.pcState = ht.established), F(o, b), b.pcState === ht.established && (Vn(n, Ze.autoFabricSetup, o), On(b, n, o));
+                                var S = function(e) {
+                                        var t = 0;
+                                        return Object.keys(e).forEach(function(e) {
+                                            e && e.mediaType && (t += "audio" === e.mediaType ? 1 : 0)
+                                        }), 0 < t
+                                    },
+                                    _ = null;
+                                if (i === st.multiplex && function() {
+                                        return !!b.ssrcMap && S(b.ssrcMap)
+                                    }() ? _ = {
+                                        mediaType: "audio",
+                                        ssrc: null,
+                                        disruptionType: dt.noAudioInMultiplexFabric
+                                    } : i === st.audio && function() {
+                                        return !(!b.ssrcMap || p !== at.sendonly) && S(b.ssrcMap)
+                                    }() ? _ = {
+                                        mediaType: "audio",
+                                        ssrc: null,
+                                        disruptionType: dt.noOutboundAudioOnlyFabric
+                                    } : i === st.audio && p === at.receiveonly && function() {
+                                        !!b.ssrcMap && Object.keys(b.ssrcMap).forEach(function(e) {
+                                            Ie.push(e)
+                                        })
+                                    }(), _) {
+                                    var T = Ve[o] ? Ve[o].ucID : null;
+                                    Ft(Ze.oneWayMedia, u, o, T, _, b.pcHash)
+                                }
                             }
-                            if (u(o), fe) try {
-                                var _ = ge;
-                                ge = [];
-                                var S = null;
-                                if (S = fe.getId(), S && _.push(S), _.length > 0) {
-                                    var T = je[o].ucID;
-                                    At(ze.associate, o, T, _)
+                            if (l(o), ge) try {
+                                var C = Se;
+                                Se = [];
+                                var E = null;
+                                if (E = ge.getId(), E && C.push(E), C.length > 0) {
+                                    var w = Ve[o].ucID;
+                                    Ut(tt.associate, o, w, C)
                                 }
                             } catch (e) {
-                                pe("send associate", e)
+                                me("send associate", e)
                             }
-                            return Lt($e.success)
+                            return Vt(nt.success)
                         },
-                        yn = function(e, t, n, r) {
-                            if (!(e && n && r && t)) return console.error("reportUserIDChange: Arguments missing/Invalid"), Lt($e.error, "reportUserIDChange: Arguments missing/Invalid");
-                            if (!oe || !ae) return console.error("reportUserIDChange: SDK not initialized."), Lt($e.error, "reportUserIDChange: SDK not initialized");
-                            if ("" === n || "" === t) return console.error("reportUserIDChange: id or  conferenceID MUST not be empty"), Lt($e.error, "reportUserIDChange: id or  conferenceID MUST not be empty");
-                            if (!f(e)) return console.error("reportUserIDChange: Invalid PeerConnection object passed"), Lt($e.error, "reportUserIDChange: Invalid PeerConnection object passed");
+                        kn = function(e, t, n, r) {
+                            if (!(e && n && r && t)) return console.error("reportUserIDChange: Arguments missing/Invalid"), Vt(nt.error, "reportUserIDChange: Arguments missing/Invalid");
+                            if (!se || !ce) return console.error("reportUserIDChange: SDK not initialized."), Vt(nt.error, "reportUserIDChange: SDK not initialized");
+                            if ("" === n || "" === t) return console.error("reportUserIDChange: id or  conferenceID MUST not be empty"), Vt(nt.error, "reportUserIDChange: id or  conferenceID MUST not be empty");
+                            if (!m(e)) return console.error("reportUserIDChange: Invalid PeerConnection object passed"), Vt(nt.error, "reportUserIDChange: Invalid PeerConnection object passed");
                             var i = null,
-                                o = je[t];
-                            if (void 0 === o) return console.error("reportUserIDChange: Conference ID not found!"), Lt($e.error, "reportUserIDChange: Conference ID not found!");
+                                o = Ve[t];
+                            if (void 0 === o) return console.error("reportUserIDChange: Conference ID not found!"), Vt(nt.error, "reportUserIDChange: Conference ID not found!");
                             var a = null;
-                            if (void 0 === o.ucID) return console.error("reportUserIDChange: addNewFabric was not called"), St(oe, ae, "log", {
+                            if (void 0 === o.ucID) return console.error("reportUserIDChange: addNewFabric was not called"), Pt(se, ce, "log", {
                                 msg: "### reportUserIDChange: addNewFabric was not called"
-                            }), Lt($e.error, "reportUserIDChange: addNewFabric was not called");
-                            if (a = o.ucID, null === (i = Jt(t, e))) return console.error("reportUserIDChange: Invalid pcObject passed as argument"), Lt($e.error, "reportUserIDChange: Invalid pcObject passed as argument");
+                            }), Vt(nt.error, "reportUserIDChange: addNewFabric was not called");
+                            if (a = o.ucID, null === (i = Yt(t, e))) return console.error("reportUserIDChange: Invalid pcObject passed as argument"), Vt(nt.error, "reportUserIDChange: Invalid pcObject passed as argument");
                             var s = {
                                 id: n,
                                 idType: r
                             };
-                            return Pt(We.userIDChangedEvent, void 0, t, a, s, null, i.pcCallback), Lt($e.success)
+                            return Ft(Ye.userIDChangedEvent, void 0, t, a, s, null, i.pcCallback), Vt(nt.success)
                         },
-                        bn = function(e) {
+                        In = function(e) {
                             var t = null;
                             if (e && e.length > 0) {
                                 var n = e.filter(function(e) {
@@ -15846,89 +16004,140 @@
                             }
                             return t
                         },
-                        _n = function(e, n) {
+                        Pn = function(e) {
+                            var n = t(),
+                                r = function() {
+                                    _e.senderConfig = -1, _e.senderExists = !1, Kt()
+                                },
+                                i = function(e) {
+                                    var r = JSON.parse(e.response);
+                                    console.log("Sender config response:", e.status, r);
+                                    var i;
+                                    r.recommended && r.recommended.sender && (i = r.recommended.sender, console.log("ConfigService, recommended SENDER info:", i)), i && (Ge = i, He = !0), _e.senderConfig = t() - n, _e.senderExists = !!i, Kt()
+                                },
+                                o = function(e) {
+                                    Je = e;
+                                    var t = re + se + "/configurations",
+                                        n = {
+                                            Authorization: "Bearer " + Me.authToken
+                                        },
+                                        r = {
+                                            app_id: se,
+                                            local_id: ce,
+                                            rtc_rtp_parameters: e
+                                        },
+                                        o = JSON.stringify(r);
+                                    It(t, o, i, n)
+                                },
+                                a = function() {
+                                    o({
+                                        encodings: [{
+                                            maxBitrate: 0
+                                        }]
+                                    })
+                                };
+                            if (Object.keys(Ve).length > 1) return console.warn("Multiple PCs found, skipping"), void r();
+                            if (!e.getSenders || "function" != typeof e.getSenders) return console.warn("Get senders error"), void a();
+                            var c, u = e.getSenders();
+                            for (var l in u) {
+                                var d = u[l];
+                                if ("object" != (void 0 === d ? "undefined" : s(d)) || !d.track || "object" != s(d.track) || !d.track.kind) return console.warn("Access senders error"), void r();
+                                if ("video" === d.track.kind) {
+                                    if (c) return console.warn("Multiple video sender, skipping"), void r();
+                                    c = d
+                                }
+                            }
+                            if (!c) return console.warn("No video sender found"), void r();
+                            if (!c.getParameters || "function" != typeof c.getParameters) return console.warn("Sender getParameters error"), void a();
+                            var p = c.getParameters();
+                            return "object" != (void 0 === p ? "undefined" : s(p)) ? void r() : ("encodings" in p || (p.encodings = []), 0 === p.encodings.length && p.encodings.push({
+                                maxBitrate: 0
+                            }), void o(p))
+                        },
+                        An = function(e, n) {
                             if (e) {
                                 var r, i = null;
                                 if (void 0 !== n) {
                                     var o = n.signalingState;
-                                    if ((i = Wt(n)) && i.fabric) {
+                                    if ((i = en(n)) && i.fabric) {
                                         r = i.fabric.signalingState, i.fabric.signalingState = o;
                                         var a = i.conferenceID,
                                             s = i.fabric,
                                             c = s.remoteUserID,
-                                            u = je[a].ucID,
+                                            u = Ve[a].ucID,
                                             l = {
-                                                changedState: ft.signalingState,
+                                                changedState: Tt.signalingState,
                                                 prevState: r,
                                                 newState: o
                                             };
-                                        if (Dt(n, s, a, u, c, s.pcHash, l), "closed" === o && (Zt(n, We.fabricTerminated, i.conferenceID), fe)) try {
-                                            fe.callFinished()
-                                        } catch (e) {
-                                            pe("callFinished", e), fe.crashDisconnect()
-                                        }
+                                        Ht(n, s, a, u, c, s.pcHash, l), "closed" === o && un(n, Ye.fabricTerminated, i.conferenceID), "have-local-offer" !== o && "have-local-pranswer" !== o && "stable" !== o || i.sentSenderConfigRequest || (console.log(o, ".. requesting sender config.", i.sentSenderConfigRequest), i.sentSenderConfigRequest = !0, Pn(n))
+                                    }
+                                    if ("closed" === o && ge) try {
+                                        ge.callFinished()
+                                    } catch (e) {
+                                        me("callFinished", e), ge.crashDisconnect()
                                     }
                                     if ("have-remote-offer" === o || "stable" === o) {
-                                        if (ye.remoteofferSinceCreate = t() - ye.create, Ft(), fe) try {
-                                            fe.callStarts()
+                                        if (_e.remoteofferSinceCreate = t() - _e.create, Kt(), ge) try {
+                                            ge.callStarts()
                                         } catch (e) {
-                                            pe("callStarts", e), fe.crashDisconnect()
+                                            me("callStarts", e), ge.crashDisconnect()
                                         }
-                                        St(oe, ae, "log", {
-                                            msg: "precalltest told to stop"
-                                        })
+                                        Pt(se, ce, "log", {
+                                            msg: "precalltest told to stop " + fe
+                                        }), fe += "(stopped)"
                                     }
                                 }
                             }
                         },
-                        Sn = function(e, n, r) {
+                        On = function(e, n, r) {
                             if (!e.onHold) {
                                 var i = n,
                                     o = r;
-                                null === e.statsInterval && (e.statsPollingStart = t(), xn(i, o), e.statsInterval = setInterval(function() {
-                                    xn(i, o)
+                                null === e.statsInterval && (e.statsPollingStart = t(), Jn(i, o), e.statsInterval = setInterval(function() {
+                                    Jn(i, o)
                                 }, 1e3))
                             }
                         },
-                        Tn = function(e, t, n, r, i, o) {
-                            o.localCandidates = t.localCandidates, o.remoteCandidates = t.remoteCandidates, o.iceCandidatePairs = t.iceCandidatePairs, Pt(qe.iceFailed, n, r, i, o, t.pcHash, t.pcCallback)
+                        Dn = function(e, t, n, r, i, o) {
+                            o.localCandidates = t.localCandidates, o.remoteCandidates = t.remoteCandidates, o.iceCandidatePairs = t.iceCandidatePairs, Ft(Ze.iceFailed, n, r, i, o, t.pcHash, t.pcCallback)
                         },
-                        Cn = function(e, t, n, r) {
+                        xn = function(e, t, n, r) {
                             var i = t.iceConnectionState,
                                 o = t.remoteUserID,
-                                a = je[n],
+                                a = Ve[n],
                                 s = {
                                     prevIceConnectionState: i,
                                     currIceConnectionState: e.iceConnectionState,
                                     currPair: t.activeIceCandidatePair,
                                     failureDelay: r
                                 };
-                            t.pcState = ot.failed, "checking" === i ? Tn(0, t, o, n, a.ucID, s) : "completed" === i || "connected" === i ? Pt(qe.fabricDropped, o, n, a.ucID, s, t.pcHash, t.pcCallback) : "disconnected" === i && t.established ? Pt(qe.fabricDropped, o, n, a.ucID, s, t.pcHash, t.pcCallback) : "disconnected" === i && Tn(0, t, o, n, a.ucID, s)
+                            t.pcState = ht.failed, "checking" === i ? Dn(0, t, o, n, a.ucID, s) : "completed" === i || "connected" === i ? Ft(Ze.fabricDropped, o, n, a.ucID, s, t.pcHash, t.pcCallback) : "disconnected" === i && t.established ? Ft(Ze.fabricDropped, o, n, a.ucID, s, t.pcHash, t.pcCallback) : "disconnected" === i && Dn(0, t, o, n, a.ucID, s)
                         },
-                        En = function(e, n, r, i) {
+                        Nn = function(e, n, r, i) {
                             var o = n.iceConnectionState,
                                 a = n.remoteUserID,
-                                s = je[r],
+                                s = Ve[r],
                                 c = t(),
                                 u = {
                                     prevIceConnectionState: o,
                                     currIceConnectionState: e.iceConnectionState,
                                     prevPair: n.activeIceCandidatePair
                                 },
-                                l = n.pcState === ot.disrupted,
+                                l = n.pcState === ht.disrupted,
                                 d = "completed" === e.iceConnectionState;
-                            n.connectivityIceStatusDelay = i, n.established = !0, Yt(e, function(e) {
-                                if (n.localCandidates = e.localCandidates, n.remoteCandidates = e.remoteCandidates, n.iceCandidatePairs = e.iceCandidatePairs, n.activeIceCandidatePair = bn(n.iceCandidatePairs), u.currPair = n.activeIceCandidatePair, u.disruptionDelay = c - n.disruptedTS, l) Pt(qe.iceDisruptionEnd, a, r, s.ucID, u, n.pcHash);
+                            n.connectivityIceStatusDelay = i, n.established = !0, cn(e, function(e) {
+                                if (n.localCandidates = e.localCandidates, n.remoteCandidates = e.remoteCandidates, n.iceCandidatePairs = e.iceCandidatePairs, n.activeIceCandidatePair = In(n.iceCandidatePairs), u.currPair = n.activeIceCandidatePair, u.disruptionDelay = c - n.disruptedTS, l) Ft(Ze.iceDisruptionEnd, a, r, s.ucID, u, n.pcHash);
                                 else if (d) {
                                     var t = {};
-                                    t.iceCandidatePairs = e.iceCandidatePairs, Pt(qe.iceCompleted, a, r, s.ucID, t, n.pcHash)
+                                    t.iceCandidatePairs = e.iceCandidatePairs, Ft(Ze.iceCompleted, a, r, s.ucID, t, n.pcHash)
                                 }
-                            }), Nn(n.pc, qe.autoFabricSetup, r), n.pcState = ot.established, Sn(n, e, r, a)
+                            }), Vn(n.pc, Ze.autoFabricSetup, r), n.pcState = ht.established, On(n, e, r, a)
                         },
-                        wn = function(e, n, r) {
+                        Ln = function(e, n, r) {
                             var i = n.iceConnectionState,
                                 o = n.remoteUserID,
-                                a = je[r],
+                                a = Ve[r],
                                 s = t(),
                                 c = {
                                     prevIceConnectionState: i,
@@ -15936,82 +16145,82 @@
                                     prevIceConnectionStateTs: n.iceConnectionStateTS,
                                     currPair: n.activeIceCandidatePair
                                 };
-                            n.startTime = s, "connected" === i || "completed" === i ? (n.pcState = ot.disrupted, n.disruptedTS = s, Pt(qe.iceDisruptionStart, o, r, a.ucID, c, n.pcHash, n.pcCallback), n.pcCallback && n.pcCallback(Qe.appConnectivityError, "Connectivity check for PC object to " + o + " failed.")) : "checking" === i && (n.pcState = ot.checkingDisrupted, n.disruptedTS = s, Pt(qe.iceConnectionDisruptionStart, o, r, a.ucID, c, n.pcHash, n.pcCallback), n.pcCallback && n.pcCallback(Qe.appConnectivityError, "Connectivity check for PC object to " + o + " failed."))
+                            n.startTime = s, "connected" === i || "completed" === i ? (n.pcState = ht.disrupted, n.disruptedTS = s, Ft(Ze.iceDisruptionStart, o, r, a.ucID, c, n.pcHash, n.pcCallback), n.pcCallback && n.pcCallback(rt.appConnectivityError, "Connectivity check for PC object to " + o + " failed.")) : "checking" === i && (n.pcState = ht.checkingDisrupted, n.disruptedTS = s, Ft(Ze.iceConnectionDisruptionStart, o, r, a.ucID, c, n.pcHash, n.pcCallback), n.pcCallback && n.pcCallback(rt.appConnectivityError, "Connectivity check for PC object to " + o + " failed."))
                         },
-                        Rn = function(e, t, n, r) {
+                        Mn = function(e, t, n, r) {
                             var i = t.iceConnectionState,
                                 o = t.remoteUserID,
-                                a = je[n],
+                                a = Ve[n],
                                 s = {
                                     prevIceConnectionState: i,
                                     currIceConnectionState: e.iceConnectionState
                                 };
-                            "new" === i || "checking" === i ? (s.failureDelay = r, Pt(qe.iceAborted, o, n, a.ucID, s, t.pcHash, t.pcCallback)) : (s.currPair = t.activeIceCandidatePair, Pt(qe.iceTerminated, o, n, a.ucID, s, t.pcHash, t.pcCallback))
+                            "new" === i || "checking" === i ? (s.failureDelay = r, Ft(Ze.iceAborted, o, n, a.ucID, s, t.pcHash, t.pcCallback)) : (s.currPair = t.activeIceCandidatePair, Ft(Ze.iceTerminated, o, n, a.ucID, s, t.pcHash, t.pcCallback))
                         },
-                        kn = function(e, t, n) {
+                        jn = function(e, t, n) {
                             var r = t.iceConnectionState,
                                 i = t.remoteUserID,
-                                o = je[n],
+                                o = Ve[n],
                                 a = {
                                     prevIceConnectionState: r,
                                     currIceConnectionState: e.iceConnectionState,
                                     prevPair: t.activeIceCandidatePair
                                 };
-                            "new" !== r && (t.established = !1, Pt(qe.iceRestarted, i, n, o.ucID, a, t.pcHash, t.pcCallback))
+                            "new" !== r && (t.established = !1, Ft(Ze.iceRestarted, i, n, o.ucID, a, t.pcHash, t.pcCallback))
                         },
-                        In = function(e, n, r, i) {
+                        Fn = function(e, n, r, i) {
                             var o = n.iceConnectionState,
                                 a = n.remoteUserID,
-                                s = je[r],
+                                s = Ve[r],
                                 c = t(),
                                 u = {
                                     prevIceConnectionState: o,
                                     currIceConnectionState: e.iceConnectionState
                                 };
-                            n.gatheringIceCandidatesDelay = i, "disconnected" === o && n.pcState === ot.checkingDisrupted && (u.disruptionDelay = c - n.disruptedTS, Pt(qe.iceConnectionDisruptionEnd, a, r, s.ucID, u, n.pcHash, n.pcCallback))
+                            n.gatheringIceCandidatesDelay = i, "disconnected" === o && n.pcState === ht.checkingDisrupted && (u.disruptionDelay = c - n.disruptedTS, Ft(Ze.iceConnectionDisruptionEnd, a, r, s.ucID, u, n.pcHash, n.pcCallback))
                         },
-                        Pn = function(e, t) {
+                        Un = function(e, t) {
                             if (e && void 0 !== t) {
                                 var n = null;
-                                (n = Wt(t)) && n.fabric && n.fabric.numNegotiationNeededCalls++
+                                (n = en(t)) && n.fabric && n.fabric.numNegotiationNeededCalls++
                             }
                         },
-                        An = function(e, n) {
+                        Bn = function(e, n) {
                             if (e && void 0 !== n) {
                                 var r, i, o, a, s, c = null,
                                     u = null;
-                                if ((u = Wt(n)) && u.fabric) {
+                                if ((u = en(n)) && u.fabric) {
                                     c = u.fabric, r = u.conferenceID, i = t(), o = i - c.startTime, a = c.iceConnectionState, s = c.iceGatheringState;
                                     var l = c.remoteUserID,
-                                        d = je[r].ucID,
+                                        d = Ve[r].ucID,
                                         p = {
-                                            changedState: ft.iceConnectionState,
+                                            changedState: Tt.iceConnectionState,
                                             prevState: a,
                                             newState: n.iceConnectionState
                                         };
-                                    if (Dt(n, c, r, d, l, c.pcHash, p), s !== n.iceGatheringState) {
+                                    if (Ht(n, c, r, d, l, c.pcHash, p), s !== n.iceGatheringState) {
                                         var h = {
-                                            changedState: ft.iceGatheringState,
+                                            changedState: Tt.iceGatheringState,
                                             prevState: s,
                                             newState: n.iceGatheringState
                                         };
-                                        Dt(n, c, r, d, l, c.pcHash, h)
+                                        Ht(n, c, r, d, l, c.pcHash, h)
                                     }
-                                    "complete" === n.iceGatheringState && "checking" === n.iceConnectionState && In(n, c, r, o), "connected" === n.iceConnectionState || "completed" === n.iceConnectionState ? En(n, c, r, o) : "failed" === n.iceConnectionState ? Cn(n, c, r, o) : "disconnected" === n.iceConnectionState ? wn(n, c, r) : "closed" === n.iceConnectionState ? Rn(n, c, r, o) : "new" === n.iceConnectionState && kn(), c.iceConnectionState = n.iceConnectionState, c.iceGatheringState = n.iceGatheringState, c.iceConnectionStateTS = t()
+                                    "complete" === n.iceGatheringState && "checking" === n.iceConnectionState && Fn(n, c, r, o), "connected" === n.iceConnectionState || "completed" === n.iceConnectionState ? Nn(n, c, r, o) : "failed" === n.iceConnectionState ? xn(n, c, r, o) : "disconnected" === n.iceConnectionState ? Ln(n, c, r) : "closed" === n.iceConnectionState ? Mn(n, c, r, o) : "new" === n.iceConnectionState && jn(), c.iceConnectionState = n.iceConnectionState, c.iceGatheringState = n.iceGatheringState, c.iceConnectionStateTS = t()
                                 }
                             }
                         },
-                        On = function(e, t) {
-                            var n = Wt(e);
+                        Hn = function(e, t) {
+                            var n = en(e);
                             if (n && n.fabric) {
                                 var r = n.fabric,
                                     i = r.remoteUserID,
                                     o = n.conferenceID,
-                                    a = je[o].ucID;
-                                Pt(qe.iceCandidateFound, i, o, a, t, r.pcHash)
+                                    a = Ve[o].ucID;
+                                Ft(Ze.iceCandidateFound, i, o, a, t, r.pcHash)
                             }
                         },
-                        Dn = function(e, t) {
+                        Gn = function(e, t) {
                             var n, r, i;
                             if (void 0 !== t) {
                                 if (null !== e.candidate) {
@@ -16027,29 +16236,29 @@
                                     })
                                 }
                                 var a = null;
-                                a = Wt(t), Yt(t, function(e) {
-                                    a.localCandidates = e.localCandidates, a.remoteCandidates = e.remoteCandidates, a.iceCandidatePairs = e.iceCandidatePairs, a.activeIceCandidatePair = bn(a.iceCandidatePairs)
-                                }), a && a.fabric && (void 0 !== n && -1 === a.fabric.iceCandidates.indexOf(n) && a.fabric.iceCandidates.push(n), n && a.fabric.fabricSetupSent && On(t, n))
+                                a = en(t), cn(t, function(e) {
+                                    a.localCandidates = e.localCandidates, a.remoteCandidates = e.remoteCandidates, a.iceCandidatePairs = e.iceCandidatePairs, a.activeIceCandidatePair = In(a.iceCandidatePairs)
+                                }), a && a.fabric && (void 0 !== n && -1 === a.fabric.iceCandidates.indexOf(n) && a.fabric.iceCandidates.push(n), n && a.fabric.fabricSetupSent && Hn(t, n))
                             }
                         },
-                        xn = function(e, t) {
-                            if (!je.hasOwnProperty(t)) return void console.error("ConferenceID %o doesn't exist. Can't call getStats for it.", t);
-                            if ("closed" === e.signalingState) return Zt(e, We.fabricTerminated, t), !0;
-                            var n = Jt(t, e);
-                            if (n.pcState !== ot.established && n.lastFabricState === n.pcState && "connected" !== e.iceConnectionState && "completed" !== e.iceConnectionState) return !0;
-                            var r = je[t].ucID;
+                        Jn = function(e, t) {
+                            if (!Ve.hasOwnProperty(t)) return void console.error("ConferenceID %o doesn't exist. Can't call getStats for it.", t);
+                            if ("closed" === e.signalingState) return un(e, Ye.fabricTerminated, t), !0;
+                            var n = Yt(t, e);
+                            if (n.pcState !== ht.established && n.lastFabricState === n.pcState && "connected" !== e.iceConnectionState && "completed" !== e.iceConnectionState) return !0;
+                            var r = Ve[t].ucID;
                             try {
-                                Xt(e, n.pcCallback, E, ae, r, n)
+                                sn(e, n.pcCallback, w, ce, r, n)
                             } catch (e) {
                                 console.log("csioGetStats: Error", e)
                             }
                         },
-                        Nn = function(e, n, r) {
+                        Vn = function(e, n, r) {
                             var i, o = null,
-                                a = je[r],
+                                a = Ve[r],
                                 s = null,
                                 c = t();
-                            if (void 0 === a && console.error("sendAutoFabricSetupEvent: Conference ID not found!"), s = Jt(r, e), null === s && console.error("sendAutoFabricSetupEvent: fabricData is null"), !s.fabricSetupSent) {
+                            if (void 0 === a && console.error("sendAutoFabricSetupEvent: Conference ID not found!"), s = Yt(r, e), null === s && console.error("sendAutoFabricSetupEvent: fabricData is null"), !s.fabricSetupSent) {
                                 o = s.remoteUserID, i = c - s.startTime;
                                 var u = {
                                     setupDelay: i,
@@ -16058,21 +16267,21 @@
                                     remoteEndpointType: s.remoteEndpointType,
                                     fabricTransmissionDirection: s.fabricTransmissionDirection
                                 };
-                                Ue || (u.clockSyncOffset = Fe.currentOffset), Yt(e, function(e) {
-                                    u.localCandidates = e.localCandidates, u.remoteCandidates = e.remoteCandidates, u.iceCandidatePairs = e.iceCandidatePairs, s.localCandidates = e.localCandidates, s.remoteCandidates = e.remoteCandidates, s.iceCandidatePairs = e.iceCandidatePairs, s.pcState = ot.established, s.fabricSetupSent = !0, s.activeIceCandidatePair = bn(s.iceCandidatePairs), Pt(n, o, r, a.ucID, u, s.pcHash, s.pcCallback)
+                                qe || (u.clockSyncOffset = We.currentOffset), cn(e, function(e) {
+                                    u.localCandidates = e.localCandidates, u.remoteCandidates = e.remoteCandidates, u.iceCandidatePairs = e.iceCandidatePairs, s.localCandidates = e.localCandidates, s.remoteCandidates = e.remoteCandidates, s.iceCandidatePairs = e.iceCandidatePairs, s.pcState = ht.established, s.fabricSetupSent = !0, s.activeIceCandidatePair = In(s.iceCandidatePairs), Ft(n, o, r, a.ucID, u, s.pcHash, s.pcCallback)
                                 })
                             }
                         },
-                        Ln = function(e, t, n) {
+                        Wn = function(e, t, n) {
                             var r = {},
                                 i = null,
-                                o = je[n],
+                                o = Ve[n],
                                 a = null;
-                            void 0 === o && console.error("sendFabricTransportSwitchEvent: Conference ID not found!"), a = Jt(n, e), null === a && console.error("sendFabricTransportSwitchEvent: fabricData is null"), i = a.remoteUserID, r.prevPair = a.activeIceCandidatePair, Yt(e, function(e) {
-                                r.currPair = bn(e.iceCandidatePairs), a.activeIceCandidatePair = r.currPair, r.switchDelay = null, r.relayType = a.transportData.relayType, Pt(t, i, n, o.ucID, r, a.pcHash, a.pcCallback)
+                            void 0 === o && console.error("sendFabricTransportSwitchEvent: Conference ID not found!"), a = Yt(n, e), null === a && console.error("sendFabricTransportSwitchEvent: fabricData is null"), i = a.remoteUserID, r.prevPair = a.activeIceCandidatePair, cn(e, function(e) {
+                                r.currPair = In(e.iceCandidatePairs), a.activeIceCandidatePair = r.currPair, r.switchDelay = null, r.relayType = a.transportData.relayType, Ft(t, i, n, o.ucID, r, a.pcHash, a.pcCallback)
                             })
                         },
-                        Mn = function(e, t) {
+                        qn = function(e, t) {
                             if (e.trackStats) {
                                 var n = e.trackStats.filter(function(e) {
                                     return e.id === t
@@ -16080,7 +16289,7 @@
                                 if (n.length > 0) return n[0]
                             }
                         },
-                        jn = function(e, t) {
+                        Kn = function(e, t) {
                             if (e.codec) {
                                 var n = e.codec.filter(function(e) {
                                     return e.id === t
@@ -16088,7 +16297,7 @@
                                 if (n.length > 0) return n[0]
                             }
                         },
-                        Fn = function(e, t) {
+                        zn = function(e, t) {
                             if (e.candidatePair) {
                                 var n = e.candidatePair.filter(function(e) {
                                     return e.id === t
@@ -16096,18 +16305,18 @@
                                 if (n.length > 0) return n[0]
                             }
                         },
-                        Un = function(e) {
-                            for (var t, n, r = e.Transport.length, i = 0; i < r; i++) n = e.Transport[i], n.selectedCandidatePairId && (t = Fn(e, n.selectedCandidatePairId)) && (e.Transport[i] = C(e.Transport[i], t));
+                        $n = function(e) {
+                            for (var t, n, r = e.Transport.length, i = 0; i < r; i++) n = e.Transport[i], n.selectedCandidatePairId && (t = zn(e, n.selectedCandidatePairId)) && (e.Transport[i] = E(e.Transport[i], t));
                             return e
                         },
-                        Hn = function(e) {
-                            for (var t, n, r, i = e.streams.length, o = 0; o < i; o++) t = e.streams[o], t.data.trackId && (n = Mn(e, t.data.trackId)) && (e.streams[o].data = C(e.streams[o].data, n)), t.data.codecId && (r = jn(e, t.data.codecId)) && (e.streams[o].data = C(e.streams[o].data, r));
+                        Qn = function(e) {
+                            for (var t, n, r, i = e.streams.length, o = 0; o < i; o++) t = e.streams[o], t.data.trackId && (n = qn(e, t.data.trackId)) && (e.streams[o].data = E(e.streams[o].data, n)), t.data.codecId && (r = Kn(e, t.data.codecId)) && (e.streams[o].data = E(e.streams[o].data, r));
                             return e
                         },
-                        Bn = function(e, t, n) {
+                        Xn = function(e, t, n) {
                             t.hasOwnProperty(e) && (t[e].hasOwnProperty("video") && (t[e].video.isGreaterBetter ? (n.video.gThreshold = t[e].video.upperThreshold, n.video.rThreshold = t[e].video.lowerThreshold) : (n.video.gThreshold = t[e].video.lowerThreshold, n.video.rThreshold = t[e].video.upperThreshold)), t[e].hasOwnProperty("audio") && (t[e].audio.isGreaterBetter ? (n.audio.gThreshold = t[e].audio.upperThreshold, n.audio.rThreshold = t[e].audio.lowerThreshold) : (n.audio.gThreshold = t[e].audio.lowerThreshold, n.audio.rThreshold = t[e].audio.upperThreshold)))
                         },
-                        Gn = function(e, n, r) {
+                        Yn = function(e, n, r) {
                             var i = [],
                                 o = null,
                                 a = null;
@@ -16118,54 +16327,54 @@
                                 a = t(), r(u, a - o)
                             }, u.send(c)
                         },
-                        Jn = function() {
-                            bt(te, null, 5e3, function(e) {
+                        Zn = function() {
+                            kt(ne, null, 5e3, function(e) {
                                 if (200 === e.status) try {
                                     var t = JSON.parse(e.responseText);
-                                    Bn("eModelThreshold", t, pt), Bn("throughputThreshold", t, ct), Bn("fractionalLossThreshold", t, dt), Bn("rttThreshold", t, lt), Bn("currOverPrevFrameRateThreshold", t, ut)
+                                    Xn("eModelThreshold", t, St), Xn("throughputThreshold", t, vt), Xn("fractionalLossThreshold", t, bt), Xn("rttThreshold", t, yt), Xn("currOverPrevFrameRateThreshold", t, gt)
                                 } catch (e) {
                                     return e
                                 }
                             }, function() {
-                                Ue && Vn()
+                                qe && er()
                             })
                         },
-                        Vn = function e() {
-                            var n = X + "clockSync",
+                        er = function e() {
+                            var n = Y + "clockSync",
                                 r = null,
                                 i = null;
-                            bt(n, null, 5e3, function(n, o) {
-                                200 === n.status ? (r = JSON.parse(n.response), i = t(), Wn(r, o, i)) : Ue && setTimeout(function() {
+                            kt(n, null, 5e3, function(n, o) {
+                                200 === n.status ? (r = JSON.parse(n.response), i = t(), tr(r, o, i)) : qe && setTimeout(function() {
                                     e()
                                 }, 100)
                             }, function() {
-                                Ue && e()
+                                qe && e()
                             })
                         },
-                        Wn = function(e, t, n) {
-                            if (Ue) {
+                        tr = function(e, t, n) {
+                            if (qe) {
                                 var r = t / 2;
-                                if (r > Fe.maxAllowedLatency) Fe.offsetResults = [], St(oe, ae, "log", {
+                                if (r > We.maxAllowedLatency) We.offsetResults = [], Pt(se, ce, "log", {
                                     msg: "clockSync restarting"
                                 });
                                 else {
                                     var i = e.now + r,
                                         o = i - n;
-                                    Fe.offsetResults.push(o)
+                                    We.offsetResults.push(o)
                                 }
-                                if (Fe.offsetResults.length >= Fe.syncAttempts) {
-                                    var a = Fe.offsetResults.reduce(function(e, t) {
+                                if (We.offsetResults.length >= We.syncAttempts) {
+                                    var a = We.offsetResults.reduce(function(e, t) {
                                         return e + t
                                     });
-                                    Fe.currentOffset = a / Fe.offsetResults.length, Fe.offsetResults = [], Ue = !1, St(oe, ae, "log", {
+                                    We.currentOffset = a / We.offsetResults.length, We.offsetResults = [], qe = !1, Pt(se, ce, "log", {
                                         msg: "clockSync Done"
-                                    }), Re.sendCachedUserJoinedEvents(De), Re.sendCachedEvents(De, Ue)
-                                } else Ue && setTimeout(function() {
-                                    Vn()
+                                    }), Ae.sendCachedUserJoinedEvents(Me), Ae.sendCachedEvents(Me, qe)
+                                } else qe && setTimeout(function() {
+                                    er()
                                 }, 100)
                             }
                         },
-                        qn = function() {
+                        nr = function() {
                             var e = this,
                                 n = null,
                                 r = !1,
@@ -16186,43 +16395,43 @@
                                 } catch (e) {
                                     return
                                 }
-                                o[e] = "https://dashboard.callstats.io/apps/" + oe + "/conferences/" + encodeURIComponent(e) + "/" + t + "/general"
+                                o[e] = "https://dashboard.callstats.io/apps/" + se + "/conferences/" + encodeURIComponent(e) + "/" + t + "/general"
                             };
                             this.getConferenceURL = function() {
                                 return o
                             }, this._setupWebSocketConnection = function(o) {
-                                return e._wsConnectionState === a.initiated || e._wsConnectionState === a.connected ? (St(oe, ae, "log", {
+                                return e._wsConnectionState === a.initiated || e._wsConnectionState === a.connected ? (Pt(se, ce, "log", {
                                     msg: "### _setupWebSocketConnection is called when already connected!"
-                                }), console.log("### _setupWebSocketConnection is called when already connected!"), void(o && o(Qe.success, "WebSocket establishment successful."))) : (e._wsConnectionState = a.initiated, n = new WebSocket(ee, "echo-protocol"), n.onopen = function() {
-                                    console.log("**** Successfully connected to the backend ", i, ae), St(oe, ae, "log", {
+                                }), console.log("### _setupWebSocketConnection is called when already connected!"), void(o && o(rt.success, "WebSocket establishment successful."))) : (e._wsConnectionState = a.initiated, n = new WebSocket(te, "echo-protocol"), n.onopen = function() {
+                                    console.log("**** Successfully connected to the backend ", i, ce), Pt(se, ce, "log", {
                                         msg: "Successfully connected to the backend"
-                                    }), e._wsConnectionState = a.connected, r ? i = !0 : r = !0, Fe.syncHandler || (St(oe, ae, "log", {
+                                    }), e._wsConnectionState = a.connected, r ? i = !0 : r = !0, We.syncHandler || (Pt(se, ce, "log", {
                                         msg: "start clockSync"
-                                    }), Fe.offsetResults = [], Vn(), Fe.syncHandler = !0), Re.sendCachedUserJoinedEvents(De), i && (H(), Re.sendCachedEvents(De, Ue)), i = !1
+                                    }), We.offsetResults = [], er(), We.syncHandler = !0), Ae.sendCachedUserJoinedEvents(Me), i && (H(), Ae.sendCachedEvents(Me, qe)), i = !1
                                 }, n.onclose = function() {
-                                    e._wsConnectionState = a.closed, console.log("**** Connection to the server closed."), St(oe, ae, "log", {
+                                    e._wsConnectionState = a.closed, console.log("**** Connection to the server closed."), Pt(se, ce, "log", {
                                         msg: "Connection to the server closed."
-                                    }), L(), Ue && (Fe.offsetResults = [], Fe.syncHandler = null, Ue = !1), n && (n = null), o && o(Qe.httpError, "Connection to the server closed.")
+                                    }), M(), qe && (We.offsetResults = [], We.syncHandler = null, qe = !1), n && (n = null), o && o(rt.httpError, "Connection to the server closed.")
                                 }, n.onerror = function(t) {
-                                    e._wsConnectionState = a.closed, St(oe, ae, "log", {
+                                    e._wsConnectionState = a.closed, Pt(se, ce, "log", {
                                         msg: "WebSocket establishment failed."
-                                    }), console.log("WebSocket establishment failed.", t), o && o(Qe.wsChannelFailure, "WebSocket establishment failed.", t)
+                                    }), console.log("WebSocket establishment failed.", t), o && o(rt.wsChannelFailure, "WebSocket establishment failed.", t)
                                 }, void(n.onmessage = function(e) {
                                     var n, r = e.data,
                                         i = t(),
                                         a = JSON.parse(r);
-                                    if ("Error" === a.status) "Invalid client token." === a.reason && (De.tokenData = null, De.authToken = null, De.sendAuthenticationRequest(oe, ae)), o && o(Qe.csProtoError, r.reason);
+                                    if ("Error" === a.status) "Invalid client token." === a.reason && (Me.tokenData = null, Me.authToken = null, Me.sendAuthenticationRequest(se, ce)), o && o(rt.csProtoError, r.reason);
                                     else if ("200 OK" === a.status)
-                                        if ("feedback" === a.event) yt("feedback");
-                                        else if (a.event === qe.userJoined || a.event === qe.refreshPresence) {
+                                        if ("feedback" === a.event) Rt("feedback");
+                                        else if (a.event === Ze.userJoined || a.event === Ze.refreshPresence) {
                                         var c = !1,
                                             u = null;
-                                        n = decodeURIComponent(a.conferenceID), je.hasOwnProperty(n) && (je[n].ucID !== a.ucID && (c = !0, s(n, a.ucID), u = a.conferenceCreationTS ? a.conferenceCreationTS : a.conferenceDuration), a.event !== qe.userJoined || je[n].refreshPresence || (je[n].refreshPresence = function(e) {
+                                        n = decodeURIComponent(a.conferenceID), Ve.hasOwnProperty(n) && (Ve[n].ucID !== a.ucID && (c = !0, s(n, a.ucID), u = a.conferenceCreationTS ? a.conferenceCreationTS : a.conferenceDuration), a.event !== Ze.userJoined || Ve[n].refreshPresence || (Ve[n].refreshPresence = function(e) {
                                             return setInterval(function() {
-                                                Nt(e)
-                                            }, Te)
-                                        }(n), K()), je[n].ucID = a.ucID), Re.sendCachedFeedback(), Re.sendCachedEvents(De, Ue, c, u, n, a.ucID)
-                                    } else a.event === Ke.clockSync ? Wn(a, i) : a.event === We.fabricSetupFailed && (n = decodeURIComponent(a.conferenceID), a.ucID && (s(n, a.ucID), Re.sendCachedFeedback(), Re.sendCachedEvents(De, Ue, !0, 0, n, a.ucID)))
+                                                Jt(e)
+                                            }, we)
+                                        }(n), z()), Ve[n].ucID = a.ucID), Ae.sendCachedFeedback(), Ae.sendCachedEvents(Me, qe, c, u, n, a.ucID)
+                                    } else a.event === et.clockSync ? tr(a, i) : a.event === Ye.fabricSetupFailed && (n = decodeURIComponent(a.conferenceID), a.ucID && (s(n, a.ucID), Ae.sendCachedFeedback(), Ae.sendCachedEvents(Me, qe, !0, 0, n, a.ucID)))
                                 }))
                             }, this._isChannelReady = function() {
                                 return !(!n || 1 !== n.readyState)
@@ -16232,33 +16441,33 @@
                                 n.send(JSON.stringify(e))
                             }
                         },
-                        Kn = new qn,
-                        zn = function(e, t, n) {
-                            if (Kn._isChannelReady()) try {
-                                Kn.send(t)
+                        rr = new nr,
+                        ir = function(e, t, n) {
+                            if (rr._isChannelReady()) try {
+                                rr.send(t)
                             } catch (r) {
-                                r && "InvalidStateError" === r.name && Re.cacheEvent({
+                                r && "InvalidStateError" === r.name && Ae.cacheEvent({
                                     channel: e,
                                     data: t,
                                     callback: n
                                 })
-                            } else Re.cacheEvent({
+                            } else Ae.cacheEvent({
                                 channel: e,
                                 data: t,
                                 callback: n
-                            }), Kn._setupWebSocketConnection()
+                            }), rr._setupWebSocketConnection()
                         };
                     return function() {
                             navigator && "function" == typeof navigator.getBattery && navigator.getBattery().then(function(e) {
-                                Le = e
+                                Ue = e
                             })
                         }(),
                         function() {
-                            if (null === (ce = gt("endpointID"))) {
+                            if (null === (le = wt("endpointID"))) {
                                 var e = t(),
                                     n = Math.random() * e;
-                                sn(n.toString(), function(e) {
-                                    ce = e, vt("endpointID", ce)
+                                vn(n.toString(), function(e) {
+                                    le = e, Et("endpointID", le)
                                 })
                             }
                         }(),
@@ -16271,27 +16480,27 @@
                                         if (t = n[o], e.call(i, t, o, n)) return t
                                 }
                             })
-                        }(), window && !window.csioproxy && (Ce = !0, Jn(), Vn()), window && window.csioChromeLegacyGetStats && (Ee = !1), {
-                            version: Z,
-                            initialize: jt,
-                            on: Ut,
-                            fabricEvent: We,
-                            addNewFabric: gn,
-                            sendFabricEvent: Zt,
-                            sendUserFeedback: cn,
-                            associateMstWithUserID: un,
-                            csError: Qe,
-                            fabricUsage: et,
-                            qualityRating: nt,
-                            webRTCFunctions: at,
-                            reportError: rn,
-                            reportUserIDChange: yn,
-                            userIDType: tt,
-                            setProxyConfig: vn,
-                            callStatsAPIReturnStatus: $e,
-                            setIdentifiers: mn,
-                            transmissionDirection: Ze,
-                            endpointType: Ye
+                        }(), window && !window.csioproxy && (Re = !0, Zn(), er()), window && window.csioChromeLegacyGetStats && (ke = !1), {
+                            version: ee,
+                            initialize: qt,
+                            on: zt,
+                            fabricEvent: Ye,
+                            addNewFabric: Rn,
+                            sendFabricEvent: un,
+                            sendUserFeedback: gn,
+                            associateMstWithUserID: yn,
+                            csError: rt,
+                            fabricUsage: st,
+                            qualityRating: ut,
+                            webRTCFunctions: ft,
+                            reportError: hn,
+                            reportUserIDChange: kn,
+                            userIDType: ct,
+                            setProxyConfig: wn,
+                            callStatsAPIReturnStatus: nt,
+                            setIdentifiers: En,
+                            transmissionDirection: at,
+                            endpointType: ot
                         }
                 }
                 o = [], i = r, void 0 !== (a = "function" == typeof i ? i.apply(t, o) : i) && (e.exports = a), e.exports = r
@@ -16481,32 +16690,38 @@
         }
 
         function s(e, t) {
-            return e.rtt === t.rtt ? 0 : e.rtt < t.rtt ? -1 : 1
+            var n = "number" == typeof e ? e : parseInt(e),
+                r = "number" == typeof t ? t : parseInt(t);
+            return n === r ? 0 : n < r ? -1 : 1
         }
 
         function c(e, t) {
-            return e.frameHeight === t.frameHeight ? 0 : e.frameHeight < t.frameHeight ? -1 : 1
+            return s(e.rtt, t.rtt)
         }
 
         function u(e, t) {
-            return e.frameWidth === t.frameWidth ? 0 : e.frameWidth < t.frameWidth ? -1 : 1
+            return s(e.frameHeight, t.frameHeight)
         }
 
         function l(e, t) {
-            return e.jitter === t.jitter ? 0 : e.jitter < t.jitter ? -1 : 1
+            return s(e.frameWidth, t.frameWidth)
         }
 
         function d(e, t) {
+            return s(e.jitter, t.jitter)
+        }
+
+        function p(e, t) {
             var n = parseInt(e.frameRateReceived),
                 r = parseInt(t.frameRateReceived);
             return n === r ? 0 : n < r ? -1 : 1
         }
 
-        function p(e, t) {
+        function h(e, t) {
             return e
         }
 
-        function h() {
+        function f() {
             this.codeBase = null, this.mediaType = {
                 unknown: "unknown",
                 audio: "audio",
@@ -16518,93 +16733,93 @@
             }
         }
 
-        function f(e) {
-            A.call(this), this.extractorFnc = e, this.prev = 0, this.delta = 0, this.first = 0, this.actual = 0, this.addSignalListener(I.Signals.onDataSent, this.onDataSent, this)
-        }
-
         function m(e) {
-            A.call(this), this.extractorFnc = e, this.prev = null
+            O.call(this), this.extractorFnc = e, this.prev = 0, this.delta = 0, this.first = 0, this.actual = 0, this.addSignalListener(P.Signals.onDataSent, this.onDataSent, this)
         }
 
-        function v(e, t) {
-            this.intervalPacketsRecv = t, this.intervalLoss = e
+        function v(e) {
+            O.call(this), this.extractorFnc = e, this.prev = null
         }
 
         function g(e, t) {
+            this.intervalPacketsRecv = t, this.intervalLoss = e
+        }
+
+        function y(e, t) {
             var n = e.getValue(),
                 r = t.getValue();
             return n === r ? 0 : n < r ? -1 : 1
         }
 
-        function y(e, t) {
-            return new v((e.getIntervalLoss() + t.getIntervalLoss()) / 2, (e.getIntervalPacketsRecv() + t.getIntervalPacketsRecv()) / 2)
+        function b(e, t) {
+            return new g((e.getIntervalLoss() + t.getIntervalLoss()) / 2, (e.getIntervalPacketsRecv() + t.getIntervalPacketsRecv()) / 2)
         }
 
-        function b() {
-            this.measurements = new P(I.maxItemsNum, I.timeoutInMs), this.packetLostTracker = new f(function(e) {
+        function S() {
+            this.measurements = new A(P.maxItemsNum, P.timeoutInMs), this.packetLostTracker = new m(function(e) {
                 return e.packetLosts
-            }), this.measurements.addPlugin(this.packetLostTracker), this.packetsDiscardedTracker = new f(function(e) {
+            }), this.measurements.addPlugin(this.packetLostTracker), this.packetsDiscardedTracker = new m(function(e) {
                 return e.packetsDiscarded
-            }), this.measurements.addPlugin(this.packetsDiscardedTracker), this.resolutionTracker = new m(function(e) {
+            }), this.measurements.addPlugin(this.packetsDiscardedTracker), this.resolutionTracker = new v(function(e) {
                 return e.resolution
-            }), this.measurements.addPlugin(this.resolutionTracker), this.jitter95PercentileTracker = new O(l, 95, p), this.measurements.addPlugin(this.jitter95PercentileTracker), this.jitter95PercentileTracker.addFilter(function(e) {
+            }), this.measurements.addPlugin(this.resolutionTracker), this.jitter95PercentileTracker = new D(d, 95, h), this.measurements.addPlugin(this.jitter95PercentileTracker), this.jitter95PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.jitter && null !== e.jitter
-            }), this.rtt95PercentileTracker = new O(s, 95, p), this.measurements.addPlugin(this.rtt95PercentileTracker), this.rtt95PercentileTracker.addFilter(function(e) {
+            }), this.rtt95PercentileTracker = new D(c, 95, h), this.measurements.addPlugin(this.rtt95PercentileTracker), this.rtt95PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.rtt && null !== e.rtt && 0 < e.rtt
-            }), this.frameHeight50PercentileTracker = new O(c, 50, p), this.measurements.addPlugin(this.frameHeight50PercentileTracker), this.frameHeight50PercentileTracker.addFilter(function(e) {
+            }), this.frameHeight50PercentileTracker = new D(u, 50, h), this.measurements.addPlugin(this.frameHeight50PercentileTracker), this.frameHeight50PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.frameHeight && null !== e.frameHeight && 0 < e.frameHeight
-            }), this.frameHeight95PercentileTracker = new O(c, 95, p), this.measurements.addPlugin(this.frameHeight95PercentileTracker), this.frameHeight95PercentileTracker.addFilter(function(e) {
+            }), this.frameHeight95PercentileTracker = new D(u, 95, h), this.measurements.addPlugin(this.frameHeight95PercentileTracker), this.frameHeight95PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.frameHeight && null !== e.frameHeight && 0 < e.frameHeight
-            }), this.frameRate50PercentileTracker = new O(d, 50, p), this.measurements.addPlugin(this.frameRate50PercentileTracker), this.frameRate50PercentileTracker.addFilter(function(e) {
+            }), this.frameRate50PercentileTracker = new D(p, 50, h), this.measurements.addPlugin(this.frameRate50PercentileTracker), this.frameRate50PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.frameRateReceived && null !== e.frameRateReceived
-            }), this.frameRate95PercentileTracker = new O(d, 95, p), this.measurements.addPlugin(this.frameRate95PercentileTracker), this.frameRate95PercentileTracker.addFilter(function(e) {
+            }), this.frameRate95PercentileTracker = new D(p, 95, h), this.measurements.addPlugin(this.frameRate95PercentileTracker), this.frameRate95PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.frameRateReceived && null !== e.frameRateReceived
-            }), this.frameWidth50PercentileTracker = new O(u, 50, p), this.measurements.addPlugin(this.frameWidth50PercentileTracker), this.frameWidth50PercentileTracker.addFilter(function(e) {
+            }), this.frameWidth50PercentileTracker = new D(l, 50, h), this.measurements.addPlugin(this.frameWidth50PercentileTracker), this.frameWidth50PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.frameWidth && null !== e.frameWidth && 0 < e.frameWidth
-            }), this.frameWidth95PercentileTracker = new O(u, 95, p), this.measurements.addPlugin(this.frameWidth95PercentileTracker), this.frameWidth95PercentileTracker.addFilter(function(e) {
+            }), this.frameWidth95PercentileTracker = new D(l, 95, h), this.measurements.addPlugin(this.frameWidth95PercentileTracker), this.frameWidth95PercentileTracker.addFilter(function(e) {
                 return void 0 !== e.frameWidth && null !== e.frameWidth && 0 < e.frameWidth
-            }), this.rttAvgRTTracker = new D(function(e) {
+            }), this.rttAvgRTTracker = new x(function(e) {
                 return e.rtt
             }), this.measurements.addPlugin(this.rttAvgRTTracker), this.rttAvgRTTracker.addFilter(function(e) {
                 return void 0 !== e.rtt && null !== e.rtt && 0 < e.rtt
-            }), this.frameRateMeanTracker = new D(function(e) {
+            }), this.frameRateMeanTracker = new x(function(e) {
                 return e.frameRateReceived
             }), this.measurements.addPlugin(this.frameRateMeanTracker), this.frameRateMeanTracker.addFilter(function(e) {
                 return void 0 !== e.frameRateReceived && null !== e.frameRateReceived && 0 < e.frameRateReceived
-            }), this.frameHeightMeanTracker = new D(function(e) {
+            }), this.frameHeightMeanTracker = new x(function(e) {
                 return e.frameHeight
             }), this.measurements.addPlugin(this.frameHeightMeanTracker), this.frameHeightMeanTracker.addFilter(function(e) {
                 return void 0 !== e.frameHeight && null !== e.frameHeight && 0 < e.frameHeight
-            }), this.frameWidthMeanTracker = new D(function(e) {
+            }), this.frameWidthMeanTracker = new x(function(e) {
                 return e.frameWidth
             }), this.measurements.addPlugin(this.frameWidthMeanTracker), this.frameWidthMeanTracker.addFilter(function(e) {
                 return void 0 !== e.frameHeight && null !== e.frameWidth && 0 < e.frameWidth
-            }), this.jitterAvgTracker = new D(function(e) {
+            }), this.jitterAvgTracker = new x(function(e) {
                 return e.jitter
             }), this.measurements.addPlugin(this.jitterAvgTracker), this.jitterAvgTracker.addFilter(function(e) {
                 return void 0 !== e.jitter && null !== e.jitter && 0 < e.jitter
-            }), this.intervalFractionLosts = new P(I.maxItemsNum, I.timeoutInMs), this.FLPercentileTracker = new O(g, 95, y), this.intervalFractionLosts.addPlugin(this.FLPercentileTracker), this.lastSent = 0, this.firstAdded = 0, this.lastAdded = 0, this.doSending = !1, this.mediaType = null, this.direction = null, this.lastTraffic = 0
+            }), this.intervalFractionLosts = new A(P.maxItemsNum, P.timeoutInMs), this.FLPercentileTracker = new D(y, 95, b), this.intervalFractionLosts.addPlugin(this.FLPercentileTracker), this.lastSent = 0, this.firstAdded = 0, this.lastAdded = 0, this.doSending = !1, this.mediaType = null, this.direction = null, this.lastTraffic = 0, this.ssrc = 0
         }
 
         function _() {
-            b.call(this), this.bytesReceivedTracker = new f(function(e) {
+            S.call(this), this.bytesReceivedTracker = new m(function(e) {
                 return e.bytesReceived
-            }), this.packetsReceivedTracker = new f(function(e) {
+            }), this.packetsReceivedTracker = new m(function(e) {
                 return e.packetsReceived
             }), this.addPlugin(this.bytesReceivedTracker), this.addPlugin(this.packetsReceivedTracker), this.csioIntBRKbpsCount = 0, this.csioIntPRCount = 0
         }
 
-        function S() {
+        function T() {
             _.call(this), this.quality = {
                 eModel: 0,
                 bandwidth: 0
             }, this.direction = a.Direction.inbound, this.mediaType = a.MediaTypes.audio
         }
 
-        function T() {
-            _.call(this), this.frameRateReceivedTracker = new f(function(e) {
+        function C() {
+            _.call(this), this.frameRateReceivedTracker = new m(function(e) {
                 return e.frameRateReceived
-            }), this.frameRatePercTracker = new O(d, 10, p), this.frameRatePercTracker.addFilter(function(e) {
+            }), this.frameRatePercTracker = new D(p, 10, h), this.frameRatePercTracker.addFilter(function(e) {
                 return void 0 !== e.frameRateReceived && null !== e.frameRateReceived
             }), this.frameRatePercTracker.attach(this.setFrameRateReceived10, this), this.frameRateReceived10 = null, this.addPlugin(this.frameRatePercTracker), this.addPlugin(this.frameRateReceivedTracker), this.quality = {
                 eModel: 0,
@@ -16613,35 +16828,45 @@
             }, this.direction = a.Direction.inbound, this.mediaType = a.MediaTypes.video
         }
 
-        function C() {
-            b.call(this), this.bytesSentTracker = new f(function(e) {
+        function E() {
+            S.call(this), this.bytesSentTracker = new m(function(e) {
                 return e.bytesSent
-            }), this.packetsSentTracker = new f(function(e) {
+            }), this.packetsSentTracker = new m(function(e) {
                 return e.packetsSent
             }), this.addPlugin(this.bytesSentTracker), this.addPlugin(this.packetsSentTracker), this.csioIntBRKbpsCount = 0, this.csioIntPRCount = 0
         }
 
-        function E() {
-            C.call(this), this.frameRateReceivedTracker = new f(function(e) {
+        function w() {
+            E.call(this), this.frameRateReceivedTracker = new m(function(e) {
                 return e.frameRateReceived
-            }), this.frameRatePercTracker = new O(d, 10, p), this.frameRatePercTracker.addFilter(function(e) {
+            }), this.frameRatePercTracker = new D(p, 10, h), this.frameRatePercTracker.addFilter(function(e) {
                 return void 0 !== e.frameRateReceived && null !== e.frameRateReceived
             }), this.frameRatePercTracker.attach(this.setFrameRateReceived10, this), this.frameRateReceived10 = null, this.addPlugin(this.frameRatePercTracker), this.addPlugin(this.frameRateReceivedTracker), this.quality = {
                 eModel: 0,
                 bandwidth: 0,
                 frameRate: 0
+            }, this.sendingThroughputObservations = {
+                ssrc: 0,
+                started: 0,
+                max: 0,
+                maxTs: 0,
+                stable: 0,
+                stableTs: 0,
+                ready: !1,
+                maxVerified: !1,
+                stableVerified: !1
             }, this.direction = a.Direction.outbound, this.mediaType = a.MediaTypes.video
         }
 
-        function w() {
-            C.call(this), this.quality = {
+        function R() {
+            E.call(this), this.quality = {
                 eModel: 0,
                 bandwidth: 0
             }, this.direction = a.Direction.outbound, this.mediaType = a.MediaTypes.audio
         }
 
-        function R() {
-            this.monitors = {}, this.assembler = new h, this.sendable = !1, this.inbOneWayAudioDisruption = {
+        function k() {
+            this.monitors = {}, this.assembler = new f, this.sendable = !1, this.inbOneWayAudioDisruption = {
                 sent: !1,
                 started: 0,
                 hasTrafficTs: 0
@@ -16652,11 +16877,11 @@
             }
         }
 
-        function k(e) {
-            this.monitors = new R, this.output = new r, this.lastForwarded = (new Date).getTime(), this.lastInterval = 0, this.sentCounter = 0, this.nextInterval = 0, e.addListener(this.monitors.onDataSent, this.monitors), e.addListener(this.onDataSent, this)
+        function I(e) {
+            this.monitors = new k, this.output = new r, this.lastForwarded = (new Date).getTime(), this.lastInterval = 0, this.sentCounter = 0, this.nextInterval = 0, e.addListener(this.monitors.onDataSent, this.monitors), e.addListener(this.onDataSent, this)
         }
 
-        function I() {
+        function P() {
             this.states = {
                 Idle: "Idle",
                 Run: "Run"
@@ -16665,18 +16890,19 @@
                 OnStatsRequest: "OnStatsRequest",
                 OnStop: "OnStop",
                 OnStart: "OnStart",
-                OnOneWayAudioDisruptionsRequest: "OnOneWayAudioDisruptionsRequest"
-            }, this.onDataSent = new i, this.analyzer = new k(this.onDataSent), this.senderGate = new o(this.onDataSent), this.analyzer.output.connect(this.senderGate.receiver, this.senderGate), this.currentState = this.states.Run
+                OnOneWayAudioDisruptionsRequest: "OnOneWayAudioDisruptionsRequest",
+                OnSendingThroughputObservationsRequest: "OnSendingThroughputObservationsRequest"
+            }, this.onDataSent = new i, this.analyzer = new I(this.onDataSent), this.senderGate = new o(this.onDataSent), this.sendingThroughputObservationsSent = !1, this.analyzer.output.connect(this.senderGate.receiver, this.senderGate), this.currentState = this.states.Run
         }
-        var P = n(72),
-            A = n(31),
-            O = n(74),
-            D = n(77);
-        I.disruptions = [], I.adaptiveSending = !0, I.minMeasurementsNum = 20, I.SendingTimeTresholds = {
+        var A = n(72),
+            O = n(31),
+            D = n(74),
+            x = n(77);
+        P.disruptions = [], P.adaptiveSending = !0, P.minMeasurementsNum = 20, P.SendingTimeTresholds = {
             max: 3e4,
             min: 1e3,
             regular: 5e3
-        }, I.maxItemsNum = 1e3, I.timeoutInMs = 3e5, I.Signals = {
+        }, P.minDeltaTimeInMs = 1e3, P.maxItemsNum = 1e3, P.timeoutInMs = 3e5, P.Signals = {
             onDataSent: "onDataSent"
         }, r.prototype = {
             constructor: r,
@@ -16709,7 +16935,7 @@
                 var e = null,
                     t = (new Date).getTime();
                 if (null === this.stats) return null;
-                if (this.initiate && t - I.SendingTimeTresholds.min < this.lastResponsed) return null;
+                if (this.initiate && t - P.SendingTimeTresholds.min < this.lastResponsed) return console.warn("Reporter : Too small interval between two sampling to response"), null;
                 var n = t - this.lastResponsed;
                 return console.log("Elapsed time since last report: " + n), e = {
                     streams: this.stats
@@ -16726,8 +16952,8 @@
             toString: function() {
                 return "Measurement {RTT: " + this.RTT + "; }"
             }
-        }, h.prototype = {
-            constructor: h,
+        }, f.prototype = {
+            constructor: f,
             do: function(e, t) {
                 var n = new a(e);
                 if (n.ssrc = e.ssrc, n.mediaType = this.getMediaType(e), n.resolution = this.getResolution(e), n.frameRateReceived = this.getFrameRate(e), n.frameWidth = this.getFrameWidth(e), n.frameHeight = this.getFrameHeight(e), n.rtt = this.getLatencyData(e), n.droppedFramesNum = this.getDroppedFramesNum(e), n.packetLosts = this.getPacketLosts(e), n.jitter = this.getJitter(e), e.streamType === a.Direction.inbound ? (n.direction = a.Direction.inbound, n.bytesReceived = this.getBytesReceived(e), n.packetsReceived = this.getPacketsReceived(e), n.packetsDiscarded = this.getPacketsDiscarded(e)) : e.streamType === a.Direction.outbound && (n.direction = a.Direction.outbound, n.bytesSent = this.getBytesSent(e), n.packetsSent = this.getPacketsSent(e)), void 0 !== t && !0 === t) {
@@ -16815,17 +17041,17 @@
             toString: function() {
                 return "ToString function is not defined. for this object"
             }
-        }, f.prototype = Object.create(A.prototype), f.prototype.constructor = f, f.prototype.onDataSent = function() {
+        }, m.prototype = Object.create(O.prototype), m.prototype.constructor = m, m.prototype.onDataSent = function() {
             this.prev = this.actual
-        }, f.prototype.getActual = function() {
+        }, m.prototype.getActual = function() {
             return this.actual
-        }, f.prototype.getFirst = function() {
+        }, m.prototype.getFirst = function() {
             return this.first
-        }, f.prototype.getDelta = function() {
+        }, m.prototype.getDelta = function() {
             return this.delta = this.actual - this.prev, this.delta
-        }, f.prototype.getPrevious = function() {
+        }, m.prototype.getPrevious = function() {
             return this.prev
-        }, f.prototype.add = function(e) {
+        }, m.prototype.add = function(e) {
             var t = this.extractorFnc(e);
             if (void 0 !== t && null !== t) {
                 if (0 === this.first) return this.first = t, void(this.actual = t);
@@ -16834,12 +17060,12 @@
                     delta: this.delta
                 })
             }
-        }, f.prototype.remove = function() {}, m.prototype = Object.create(A.prototype), m.prototype.constructor = m, m.prototype.add = function(e) {
+        }, m.prototype.remove = function() {}, v.prototype = Object.create(O.prototype), v.prototype.constructor = v, v.prototype.add = function(e) {
             void 0 !== e && null !== e && (this.prev = this.extractorFnc(e))
-        }, m.prototype.remove = function() {}, m.prototype.getPrevious = function() {
+        }, v.prototype.remove = function() {}, v.prototype.getPrevious = function() {
             return this.prev
-        }, v.prototype = {
-            constructor: v,
+        }, g.prototype = {
+            constructor: g,
             getIntervalLoss: function() {
                 return this.intervalLoss
             },
@@ -16849,37 +17075,37 @@
             getValue: function() {
                 return void 0 === this.intervalPacketsRecv || void 0 === this.intervalLoss ? null : null === this.intervalPacketsRecv || null === this.intervalLoss ? null : 0 === this.intervalLoss && 0 === this.intervalPacketsRecv ? 0 : this.intervalLoss / (this.intervalPacketsRecv + this.intervalLoss)
             }
-        }, b.VideoThroughputThresholds = {
+        }, S.VideoThroughputThresholds = {
             green: 1024,
             red: 256
-        }, b.AudioThroughputThresholds = {
+        }, S.AudioThroughputThresholds = {
             green: 30,
             red: 8
-        }, b.FrameRateRatioTresholds = {
+        }, S.FrameRateRatioTresholds = {
             green: .8,
             red: .3
-        }, b.VideoRTTThresholds = {
+        }, S.VideoRTTThresholds = {
             green: 400,
             red: 1e3
-        }, b.VideoFractionLostTreshdolds = {
+        }, S.VideoFractionLostTreshdolds = {
             green: 10,
             red: 50
-        }, b.AudioFractionLostTresholds = {
+        }, S.AudioFractionLostTresholds = {
             green: 15,
             red: 30
-        }, b.AudioEModelTresholds = {
+        }, S.AudioEModelTresholds = {
             green: 240,
             red: 400
-        }, b.avQualityRating = {
+        }, S.avQualityRating = {
             excellent: 3,
             fair: 2,
             bad: 1
-        }, b.avQualityRatingString = {
+        }, S.avQualityRatingString = {
             excellent: "excellent",
             fair: "fair",
             bad: "bad"
-        }, b.prototype = {
-            constructor: b,
+        }, S.prototype = {
+            constructor: S,
             doStart: function() {
                 return !0
             },
@@ -16899,6 +17125,12 @@
             getLastMeasurement: function() {
                 return this.measurements.getLast()
             },
+            setSSRC: function(e) {
+                this.ssrc = e
+            },
+            getSSRC: function() {
+                return this.ssrc
+            },
             add: function(e) {
                 var t = (new Date).getTime();
                 if (0 === this.firstAdded) {
@@ -16912,7 +17144,7 @@
             },
             setIntBRAndPR: function(e, t, n) {
                 var r = this.getDeltaTimeInMs(),
-                    i = Math.max(I.SendingTimeTresholds.min, r),
+                    i = Math.max(P.minDeltaTimeInMs, r),
                     o = 8 * e.getDelta() / i,
                     a = t.getDelta() / (i / 1e3);
                 n.data.csioIntBRKbps = o, n.data.csioIntPR = a, 0 < o ? this.csioIntBRKbpsCount = 10 : 0 < this.csioIntBRKbpsCount && (--this.csioIntBRKbpsCount, this.requestSendingIf(1e3 < r && this.csioIntPRCount < 5, "OutboundMonitor csioIntBRKbps is 0 and this is the reason for sending")), 0 < a ? this.csioIntPRCount = 10 : 0 < this.csioIntPRCount && (--this.csioIntPRCount, this.requestSendingIf(1e3 < r && this.csioIntPRCount < 5, "OutboundMonitor csioIntPR is 0 and this is the reason for sending: "))
@@ -16937,7 +17169,7 @@
                     }, null),
                     t = this.getLastMeasurement();
                 if (null !== t && null !== e) {
-                    var n = Math.max(.1 * e, 100);
+                    var n = Math.max(.05 * e, 20);
                     this.requestSendingIf(e + n < t.rtt, "RTT95 the reason of sending " + e + " < " + t.rtt)
                 }
                 return e
@@ -16948,7 +17180,7 @@
                     }, null),
                     t = this.getLastMeasurement();
                 if (null !== t) {
-                    var n = Math.max(.1 * e, 10);
+                    var n = Math.max(.05 * e, 5);
                     this.requestSendingIf(e + n < t.jitter, "Jitter95 the reason of sending " + e + " < " + t.jitter)
                 }
                 return this.result
@@ -16996,10 +17228,10 @@
                 return this.jitterAvgTracker.getResult()
             },
             getQualityEvaluation: function(e, t) {
-                if (void 0 !== e && void 0 !== t) return null === e || null === e ? null : t.green <= e ? b.avQualityRating.excellent : t.red < e && e < t.green ? b.avQualityRating.fair : b.avQualityRating.bad
+                if (void 0 !== e && void 0 !== t) return null === e || null === e ? null : t.green <= e ? S.avQualityRating.excellent : t.red < e && e < t.green ? S.avQualityRating.fair : S.avQualityRating.bad
             },
             getQualityReverseEvaluation: function(e, t) {
-                if (void 0 !== e && void 0 !== t) return null === e || null === e ? null : t.red < e ? b.avQualityRating.bad : t.green <= e && e <= t.red ? b.avQualityRating.fair : b.avQualityRating.excellent
+                if (void 0 !== e && void 0 !== t) return null === e || null === e ? null : t.red < e ? S.avQualityRating.bad : t.green <= e && e <= t.red ? S.avQualityRating.fair : S.avQualityRating.excellent
             },
             hasData: function() {
                 return this.measurements.refresh(), 1 < this.measurements.getItemsNum()
@@ -17008,7 +17240,7 @@
                 this.measurements.addPlugin(e)
             },
             setup: function(e) {
-                e.data.csioIntBRKbps = 0, e.data.csioAvgBRKbps = 0, e.data.csioIntFL = void 0, e.data.csioIntMs = Math.max(I.SendingTimeTresholds.regular, this.getDeltaTimeInMs()), e.data.csioIntPR = void 0, e.data.csioPercentileFl = void 0, e.data.csioAvgJitter = this.getAvgJitter(), e.data.csioAvgRtt = this.getAvgRTT(), e.data.csioPercentileJitter = this.getJitter95(), e.data.csioSig2Latency = this.getRTT95(), e.data.csioTimeElapseMs = this.getTotalTimeInMs(), e.data.csioeM = (null !== this.getRTT95() ? this.getRTT95() : 0) + 40, e.data.csiores = this.getResolution(), e.data.csioFrameWidth95Percentile = this.getFrameWidth95Percentile(), e.data.csioFrameWidth50Percentile = this.getFrameWidth50Percentile(), e.data.csioFrameHeight95Percentile = this.getFrameHeight95Percentile(), e.data.csioFrameHeight50Percentile = this.getFrameHeight50Percentile(), e.data.csioFrameRate95Percentile = this.getFrameRate95Percentile(), e.data.csioFrameRate50Percentile = this.getFrameRate50Percentile(), e.data.csioFrameWidthMean = this.getFrameWidthMean(), e.data.csioFrameHeightMean = this.getFrameHeightMean(), e.data.csioFrameRateMean = this.getFrameRateMean()
+                e.data.csioIntBRKbps = 0, e.data.csioAvgBRKbps = 0, e.data.csioIntFL = void 0, e.data.csioIntMs = Math.max(P.SendingTimeTresholds.regular, this.getDeltaTimeInMs()), e.data.csioIntPR = void 0, e.data.csioPercentileFl = void 0, e.data.csioIntPktLoss = void 0, e.data.csioAvgJitter = this.getAvgJitter(), e.data.csioAvgRtt = this.getAvgRTT(), e.data.csioPercentileJitter = this.getJitter95(), e.data.csioSig2Latency = this.getRTT95(), e.data.csioTimeElapseMs = this.getTotalTimeInMs(), e.data.csioeM = (null !== this.getRTT95() ? this.getRTT95() : 0) + 40, e.data.csiores = this.getResolution(), e.data.csioFrameWidth95Percentile = this.getFrameWidth95Percentile(), e.data.csioFrameWidth50Percentile = this.getFrameWidth50Percentile(), e.data.csioFrameHeight95Percentile = this.getFrameHeight95Percentile(), e.data.csioFrameHeight50Percentile = this.getFrameHeight50Percentile(), e.data.csioFrameRate95Percentile = this.getFrameRate95Percentile(), e.data.csioFrameRate50Percentile = this.getFrameRate50Percentile(), e.data.csioFrameWidthMean = this.getFrameWidthMean(), e.data.csioFrameHeightMean = this.getFrameHeightMean(), e.data.csioFrameRateMean = this.getFrameRateMean()
             },
             addIntervalFractionLost: function(e) {
                 this.intervalFractionLosts.add(e)
@@ -17029,7 +17261,7 @@
             },
             onDataSent: function() {
                 var e = (new Date).getTime();
-                this.measurements.signalize(I.Signals.onDataSent, null), this.lastSent = e
+                this.measurements.signalize(P.Signals.onDataSent, null), this.lastSent = e
             },
             isValid: function() {
                 for (var e = 0; e < arguments.length; e++)
@@ -17047,65 +17279,87 @@
             getDirection: function() {
                 return this.direction
             }
-        }, _.prototype = Object.create(b.prototype), _.prototype.constructor = _, _.prototype.setRTT95 = function(e) {
-            b.prototype.setRTT95(e)
+        }, _.prototype = Object.create(S.prototype), _.prototype.constructor = _, _.prototype.setRTT95 = function(e) {
+            S.prototype.setRTT95(e)
         }, _.prototype.setup = function(e) {
-            b.prototype.setup.call(this, e);
-            var t = new v(this.packetLostTracker.getDelta(), this.packetsReceivedTracker.getDelta());
-            this.addIntervalFractionLost(t), e.data.csioIntPktRcv = this.packetsReceivedTracker.getDelta(), this.setIntBRAndPR(this.bytesReceivedTracker, this.packetsReceivedTracker, e), this.getTotalTimeInMs() > 0 && (e.data.csioAvgBRKbps = 8 * this.bytesReceivedTracker.getPrevious() / this.getTotalTimeInMs()), e.data.csioIntFL = t.getValue(), e.data.csioPercentileFl = this.getIntervalFractionLost95(), e.data.csioeM = (null !== this.getRTT95() ? this.getRTT95() : 0) + 40, void 0 !== e.data.csioAvgBRKbps && null !== e.data.csioAvgBRKbps ? e.data.csioAvgPacketSize = this.bytesReceivedTracker.getDelta() / this.packetsReceivedTracker.getDelta() : e.data.csioAvgPacketSize = null, e.data.csioPktLossPercentage = this.packetLostTracker.getDelta() / this.packetsReceivedTracker.getDelta() * 100
-        }, S.prototype = Object.create(_.prototype), S.prototype.constructor = S, S.prototype.setup = function(e) {
-            _.prototype.setup.call(this, e), e.data.csioMediaType = a.MediaTypes.audio, this.quality.eModel = this.getQualityReverseEvaluation(e.data.csioeM, b.AudioEModelTresholds), this.quality.bandwidth = this.getQualityEvaluation(e.data.csioIntBRKbps, b.AudioThroughputThresholds), e.data.csioMark = this.getQuality()
-        }, S.prototype.getQuality = function() {
-            var e = 0,
-                t = .5 * this.quality.bandwidth + .5 * this.quality.eModel;
-            return t = Math.floor(t), t === b.avQualityRating.excellent ? e = b.avQualityRatingString.excellent : t === b.avQualityRating.fair ? e = b.avQualityRatingString.fair : t === b.avQualityRating.bad && (e = b.avQualityRatingString.bad), e
-        }, T.prototype = Object.create(_.prototype), T.prototype.constructor = T, T.prototype.setFrameRatioQuality = function() {
-            var e = this.frameRateReceivedTracker.getActual(),
-                t = this.frameRateReceivedTracker.getPrevious(),
-                n = 0;
-            this.quality.frameRate = 0, void 0 !== e && void 0 !== t && null !== e && null !== t && 0 !== t && (n = e / t, this.quality.frameRate = this.getQualityEvaluation(n, b.FrameRateRatioTresholds))
-        }, T.prototype.setFrameRateReceived10 = function(e) {
-            return null === e ? void(this.frameRateReceived10 = null) : void(this.frameRateReceived10 = e.actual)
-        }, T.prototype.setup = function(e) {
-            _.prototype.setup.call(this, e), e.data.csioMediaType = a.MediaTypes.video, this.setFrameRatioQuality(), this.quality.eModel = this.getQualityReverseEvaluation(e.data.csioeM, b.AudioEModelTresholds), this.quality.bandwidth = this.getQualityEvaluation(e.data.csioIntBRKbps, b.VideoThroughputThresholds), e.data.csioMark = this.getQuality()
+            S.prototype.setup.call(this, e);
+            var t = new g(this.packetLostTracker.getDelta(), this.packetsReceivedTracker.getDelta());
+            this.addIntervalFractionLost(t), e.data.csioIntPktRcv = this.packetsReceivedTracker.getDelta(), this.setIntBRAndPR(this.bytesReceivedTracker, this.packetsReceivedTracker, e), this.getTotalTimeInMs() > 0 && (e.data.csioAvgBRKbps = 8 * this.bytesReceivedTracker.getActual() / this.getTotalTimeInMs()), e.data.csioIntFL = t.getValue(), e.data.csioPercentileFl = this.getIntervalFractionLost95(), e.data.csioeM = (null !== this.getRTT95() ? this.getRTT95() : 0) + 40, e.data.csioIntPktLoss = this.packetLostTracker.getDelta(), void 0 !== e.data.csioAvgBRKbps && null !== e.data.csioAvgBRKbps ? e.data.csioAvgPacketSize = this.bytesReceivedTracker.getDelta() / this.packetsReceivedTracker.getDelta() : e.data.csioAvgPacketSize = null, e.data.csioPktLossPercentage = this.packetLostTracker.getDelta() / this.packetsReceivedTracker.getDelta() * 100
+        }, T.prototype = Object.create(_.prototype), T.prototype.constructor = T, T.prototype.setup = function(e) {
+            _.prototype.setup.call(this, e), e.data.csioMediaType = a.MediaTypes.audio, this.quality.eModel = this.getQualityReverseEvaluation(e.data.csioeM, S.AudioEModelTresholds), this.quality.bandwidth = this.getQualityEvaluation(e.data.csioIntBRKbps, S.AudioThroughputThresholds), e.data.csioMark = this.getQuality()
         }, T.prototype.getQuality = function() {
             var e = 0,
-                t = .33 * this.quality.bandwidth + .33 * this.quality.eModel + .33 * this.quality.frameRate;
-            return t = Math.floor(t), t === b.avQualityRating.excellent ? e = b.avQualityRatingString.excellent : t === b.avQualityRating.fair ? e = b.avQualityRatingString.fair : t === b.avQualityRating.bad && (e = b.avQualityRatingString.bad), e
-        }, C.prototype = Object.create(b.prototype), C.prototype.constructor = C, C.prototype.setup = function(e) {
-            b.prototype.setup.call(this, e);
-            var t = new v(this.packetLostTracker.getDelta(), this.packetsSentTracker.getDelta());
-            this.addIntervalFractionLost(t), this.setIntBRAndPR(this.bytesSentTracker, this.packetsSentTracker, e), this.getTotalTimeInMs() > 0 && (e.data.csioAvgBRKbps = 8 * this.bytesSentTracker.getPrevious() / this.getTotalTimeInMs()), e.data.csioIntFL = t.getValue(), e.data.csioIntPktRcv = this.packetsSentTracker.getDelta(), e.data.csioPercentileFl = this.getIntervalFractionLost95(), e.data.csioeM = (null !== this.getRTT95() ? this.getRTT95() : 0) + 40, void 0 !== e.data.csioAvgBRKbps && null !== e.data.csioAvgBRKbps ? e.data.csioAvgPacketSize = this.bytesSentTracker.getDelta() / this.packetsSentTracker.getDelta() : e.data.csioAvgPacketSize = null, e.data.csioPktLossPercentage = this.packetLostTracker.getDelta() / this.packetsSentTracker.getDelta() * 100
-        }, E.prototype = Object.create(C.prototype), E.prototype.constructor = E, E.prototype.setFrameRatioQuality = function() {
+                t = .5 * this.quality.bandwidth + .5 * this.quality.eModel;
+            return t = Math.floor(t), t === S.avQualityRating.excellent ? e = S.avQualityRatingString.excellent : t === S.avQualityRating.fair ? e = S.avQualityRatingString.fair : t === S.avQualityRating.bad && (e = S.avQualityRatingString.bad), e
+        }, C.prototype = Object.create(_.prototype), C.prototype.constructor = C, C.prototype.setFrameRatioQuality = function() {
             var e = this.frameRateReceivedTracker.getActual(),
                 t = this.frameRateReceivedTracker.getPrevious(),
                 n = 0;
-            this.quality.frameRate = 0, void 0 !== e && void 0 !== t && null !== e && null !== t && 0 !== t && (n = e / t, this.quality.frameRate = this.getQualityEvaluation(n, b.FrameRateRatioTresholds))
-        }, E.prototype.setFrameRateReceived10 = function(e) {
+            this.quality.frameRate = 0, void 0 !== e && void 0 !== t && null !== e && null !== t && 0 !== t && (n = e / t, this.quality.frameRate = this.getQualityEvaluation(n, S.FrameRateRatioTresholds))
+        }, C.prototype.setFrameRateReceived10 = function(e) {
             return null === e ? void(this.frameRateReceived10 = null) : void(this.frameRateReceived10 = e.actual)
-        }, E.prototype.setup = function(e) {
-            C.prototype.setup.call(this, e), e.data.csioMediaType = a.MediaTypes.video, this.setFrameRatioQuality(), this.quality.eModel = this.getQualityReverseEvaluation(e.data.csioeM, b.AudioEModelTresholds), this.quality.bandwidth = this.getQualityEvaluation(e.data.csioIntBRKbps, b.VideoThroughputThresholds), e.data.csioMark = this.getQuality()
-        }, E.prototype.getQuality = function() {
+        }, C.prototype.setup = function(e) {
+            _.prototype.setup.call(this, e), e.data.csioMediaType = a.MediaTypes.video, this.setFrameRatioQuality(), this.quality.eModel = this.getQualityReverseEvaluation(e.data.csioeM, S.AudioEModelTresholds), this.quality.bandwidth = this.getQualityEvaluation(e.data.csioIntBRKbps, S.VideoThroughputThresholds), e.data.csioMark = this.getQuality()
+        }, C.prototype.getQuality = function() {
             var e = 0,
                 t = .33 * this.quality.bandwidth + .33 * this.quality.eModel + .33 * this.quality.frameRate;
-            return t = Math.floor(t), t === b.avQualityRating.excellent ? e = b.avQualityRatingString.excellent : t === b.avQualityRating.fair ? e = b.avQualityRatingString.fair : t === b.avQualityRating.bad && (e = b.avQualityRatingString.bad), e
-        }, w.prototype = Object.create(C.prototype), w.prototype.constructor = w, w.prototype.setEModelQuality = function(e) {
-            e < b.AudioEModelTresholds.green ? this.quality.eModel = b.avQualityRating.excellent : e > b.AudioEModelTresholds.green && e < b.AudioEModelTresholds.red ? this.quality.eModel = b.avQualityRating.fair : e > b.AudioEModelTresholds.red && (this.quality.eModel = b.avQualityRating.bad)
-        }, w.prototype.setThroughputQuality = function(e) {
-            null !== e && void 0 !== e && (e > b.AudioThroughputThresholds.green ? this.quality.bandwidth = b.avQualityRating.excellent : e > b.AudioThroughputThresholds.red && e < b.AudioThroughputThresholds.green ? this.quality.bandwidth = b.avQualityRating.fair : e < b.AudioThroughputThresholds.red && (this.quality.bandwidth = b.avQualityRating.bad))
+            return t = Math.floor(t), t === S.avQualityRating.excellent ? e = S.avQualityRatingString.excellent : t === S.avQualityRating.fair ? e = S.avQualityRatingString.fair : t === S.avQualityRating.bad && (e = S.avQualityRatingString.bad), e
+        }, E.prototype = Object.create(S.prototype), E.prototype.constructor = E, E.prototype.setup = function(e) {
+            S.prototype.setup.call(this, e);
+            var t = new g(this.packetLostTracker.getDelta(), this.packetsSentTracker.getDelta());
+            this.addIntervalFractionLost(t), this.setIntBRAndPR(this.bytesSentTracker, this.packetsSentTracker, e), this.getTotalTimeInMs() > 0 && (e.data.csioAvgBRKbps = 8 * this.bytesSentTracker.getActual() / this.getTotalTimeInMs()), e.data.csioIntFL = t.getValue(), e.data.csioIntPktRcv = this.packetsSentTracker.getDelta(), e.data.csioPercentileFl = this.getIntervalFractionLost95(), e.data.csioeM = (null !== this.getRTT95() ? this.getRTT95() : 0) + 40, e.data.csioIntPktLoss = this.packetLostTracker.getDelta(), void 0 !== e.data.csioAvgBRKbps && null !== e.data.csioAvgBRKbps ? e.data.csioAvgPacketSize = this.bytesSentTracker.getDelta() / this.packetsSentTracker.getDelta() : e.data.csioAvgPacketSize = null, e.data.csioPktLossPercentage = this.packetLostTracker.getDelta() / this.packetsSentTracker.getDelta() * 100
+        }, w.verificationElapsedThreshold = 1e4, w.initialElapsedThreshold = 15e3, w.minStableKBpsSlack = 50, w.prototype = Object.create(E.prototype), w.prototype.constructor = w, w.prototype.setFrameRatioQuality = function() {
+            var e = this.frameRateReceivedTracker.getActual(),
+                t = this.frameRateReceivedTracker.getPrevious(),
+                n = 0;
+            this.quality.frameRate = 0, void 0 !== e && void 0 !== t && null !== e && null !== t && 0 !== t && (n = e / t, this.quality.frameRate = this.getQualityEvaluation(n, S.FrameRateRatioTresholds))
+        }, w.prototype.setFrameRateReceived10 = function(e) {
+            return null === e ? void(this.frameRateReceived10 = null) : void(this.frameRateReceived10 = e.actual)
+        }, w.prototype.getSendingKBitrateObservations = function() {
+            var e = this.sendingThroughputObservations;
+            return e.ready ? {
+                ssrc: e.ssrc,
+                maxsendingKBitrate: e.max,
+                timeToMaxSendingKBitrate: e.maxTs - e.started,
+                stablesendingKBitrate: e.stable,
+                timeToStableSendingKBitrate: e.stableTs - e.started
+            } : null
+        }, w.prototype.checkSendingKBitrateObservations = function(e) {
+            var t = this.sendingThroughputObservations,
+                n = (new Date).getTime();
+            if (!0 !== t.ready) {
+                if (0 === t.started) return t.ssrc = this.getSSRC(), void(t.started = n);
+                var r = e.data.csioIntBRKbps,
+                    i = Math.min(w.minStableKBpsSlack, .05 * r);
+                t.max < r ? (t.max = r, t.maxTs = n) : w.verificationElapsedThreshold < n - t.maxTs && (t.maxVerified = !0), n - t.started < w.initialElapsedThreshold || (r - i < e.data.csioAvgBRKbps && e.data.csioAvgBRKbps < r + i && (t.stableTs = n, t.stable = r, t.stableVerified = !0), t.stableVerified && t.maxVerified && (t.ready = !0))
+            }
         }, w.prototype.setup = function(e) {
-            C.prototype.setup.call(this, e), this.setThroughputQuality(e.data.csioIntBRKbps), this.setEModelQuality(e.data.csioeM), e.data.csioMediaType = a.MediaTypes.audio, e.data.csioMark = this.getQuality()
-        }, w.prototype.doSend = function() {
-            return this.hasData(), !1
+            E.prototype.setup.call(this, e), e.data.csioMediaType = a.MediaTypes.video, this.setFrameRatioQuality(), this.quality.eModel = this.getQualityReverseEvaluation(e.data.csioeM, S.AudioEModelTresholds), this.quality.bandwidth = this.getQualityEvaluation(e.data.csioIntBRKbps, S.VideoThroughputThresholds), e.data.csioMark = this.getQuality(), this.checkSendingKBitrateObservations(e)
         }, w.prototype.getQuality = function() {
             var e = 0,
+                t = .33 * this.quality.bandwidth + .33 * this.quality.eModel + .33 * this.quality.frameRate;
+            return t = Math.floor(t), t === S.avQualityRating.excellent ? e = S.avQualityRatingString.excellent : t === S.avQualityRating.fair ? e = S.avQualityRatingString.fair : t === S.avQualityRating.bad && (e = S.avQualityRatingString.bad), e
+        }, R.prototype = Object.create(E.prototype), R.prototype.constructor = R, R.prototype.setEModelQuality = function(e) {
+            e < S.AudioEModelTresholds.green ? this.quality.eModel = S.avQualityRating.excellent : e > S.AudioEModelTresholds.green && e < S.AudioEModelTresholds.red ? this.quality.eModel = S.avQualityRating.fair : e > S.AudioEModelTresholds.red && (this.quality.eModel = S.avQualityRating.bad)
+        }, R.prototype.setThroughputQuality = function(e) {
+            null !== e && void 0 !== e && (e > S.AudioThroughputThresholds.green ? this.quality.bandwidth = S.avQualityRating.excellent : e > S.AudioThroughputThresholds.red && e < S.AudioThroughputThresholds.green ? this.quality.bandwidth = S.avQualityRating.fair : e < S.AudioThroughputThresholds.red && (this.quality.bandwidth = S.avQualityRating.bad))
+        }, R.prototype.setup = function(e) {
+            E.prototype.setup.call(this, e), this.setThroughputQuality(e.data.csioIntBRKbps), this.setEModelQuality(e.data.csioeM), e.data.csioMediaType = a.MediaTypes.audio, e.data.csioMark = this.getQuality()
+        }, R.prototype.doSend = function() {
+            return this.hasData(), !1
+        }, R.prototype.getQuality = function() {
+            var e = 0,
                 t = .5 * this.quality.bandwidth + .5 * this.quality.eModel;
-            return t = Math.floor(t), t === b.avQualityRating.excellent ? e = b.avQualityRatingString.excellent : t === b.avQualityRating.fair ? e = b.avQualityRatingString.fair : t === b.avQualityRating.bad && (e = b.avQualityRatingString.bad), e
-        }, R.OneWayAudioDisruptionTimeout = 5e3, R.AudioDisruptions = {
-            inboundOneWayAudio: "inbound-one-way",
-            outboundOneWayAudio: "outbound-one-way"
-        }, R.prototype = {
-            constructor: R,
+            return t = Math.floor(t), t === S.avQualityRating.excellent ? e = S.avQualityRatingString.excellent : t === S.avQualityRating.fair ? e = S.avQualityRatingString.fair : t === S.avQualityRating.bad && (e = S.avQualityRatingString.bad), e
+        }, k.OneWayAudioDisruptionTimeout = 5e3, k.DisruptionsMediaType = {
+            audio: "audio",
+            video: "video",
+            screen: "screen"
+        }, k.DisruptionsType = {
+            inbOneWayAudioDisruption: "inbOneWayAudioDisruption",
+            outbOneWayAudioDisruption: "outbOneWayAudioDisruption"
+        }, k.prototype = {
+            constructor: k,
             getMonitor: function(e) {
                 var t;
                 if (this.monitors[e.direction] && (t = this.monitors[e.direction][e.ssrc]), void 0 !== t) return this.monitors[e.direction][e.ssrc];
@@ -17113,7 +17367,7 @@
                     r = e.direction === a.Direction.outbound,
                     i = e.mediaType === a.MediaTypes.audio,
                     o = e.mediaType === a.MediaTypes.video;
-                return t = n && i ? new S : r && i ? new w : n && o ? new T : r && o ? new E : null, this.monitors[e.direction] || (this.monitors[e.direction] = {}), this.monitors[e.direction][e.ssrc] = t, t
+                return t = n && i ? new T : r && i ? new R : n && o ? new C : r && o ? new w : null, t.setSSRC(e.ssrc), this.monitors[e.direction] || (this.monitors[e.direction] = {}), this.monitors[e.direction][e.ssrc] = t, t
             },
             setupCodeBase: function(e) {
                 this.assembler.setupCodeBase(e)
@@ -17136,8 +17390,16 @@
                 }), r = this.monitors[a.Direction.outbound], r && Object.keys(r).forEach(function(t) {
                     e = r[t], e.getMediaType() === a.MediaTypes.audio && n.push(e)
                 }), [this.getInbOneWayAudioDisruption(t, n), this.getOutbOneWayAudioDisruption(t, n)].forEach(function(e) {
-                    e && I.disruptions.push(e)
+                    e && P.disruptions.push(e)
                 })
+            },
+            getSendingThroughputObservations: function() {
+                var e = [],
+                    t = null,
+                    n = this.monitors[a.Direction.outbound];
+                return n ? (Object.keys(n).forEach(function(r) {
+                    t = n[r], t.getMediaType() === a.MediaTypes.video && e.push(t.getSendingKBitrateObservations())
+                }), e) : null
             },
             getInbOneWayAudioDisruption: function(e, t) {
                 var n = this.inbOneWayAudioDisruption,
@@ -17149,11 +17411,20 @@
                     o = t.filter(function(e) {
                         return !e.hasTraffic()
                     }).length < 1;
-                return !i || o ? null : e.length ? e.filter(function(e) {
+                if (!i || o) return null;
+                if (!e.length) return null;
+                var a = e.filter(function(e) {
                     return !e.hasTraffic()
-                }).length < 1 ? (n.started = 0, null) : 0 === n.started ? (n.started = r, null) : r - R.OneWayAudioDisruptionTimeout < n.started ? null : (n.sent = !0, {
-                    type: R.AudioDisruptions.inboundOneWayAudio
-                }) : null
+                });
+                if (a.length < 1) return n.started = 0, null;
+                if (0 === n.started) return n.started = r, null;
+                if (r - k.OneWayAudioDisruptionTimeout < n.started) return null;
+                var s = a[0].getSSRC();
+                return n.sent = !0, {
+                    mediaType: k.DisruptionsMediaType.audio,
+                    type: k.DisruptionsType.inbOneWayAudioDisruption,
+                    ssrc: s
+                }
             },
             getOutbOneWayAudioDisruption: function(e, t) {
                 var n = this.outbOneWayAudioDisruption,
@@ -17165,11 +17436,20 @@
                     o = e.filter(function(e) {
                         return !e.hasTraffic()
                     }).length < 1;
-                return i && o && t.length ? t.filter(function(e) {
+                if (!i || !o) return null;
+                if (!t.length) return null;
+                var a = t.filter(function(e) {
                     return !e.hasTraffic()
-                }).length < 1 ? (n.started = 0, null) : 0 === n.started ? (n.started = r, null) : r - R.OneWayAudioDisruptionTimeout < n.started ? null : (n.sent = !0, {
-                    type: R.AudioDisruptions.outboundOneWayAudio
-                }) : null
+                });
+                if (a.length < 1) return n.started = 0, null;
+                if (0 === n.started) return n.started = r, null;
+                if (r - k.OneWayAudioDisruptionTimeout < n.started) return null;
+                var s = a[0].getSSRC();
+                return n.sent = !0, {
+                    mediaType: k.DisruptionsMediaType.audio,
+                    type: k.DisruptionsType.outbOneWayAudioDisruption,
+                    ssrc: s
+                }
             },
             toString: function() {
                 return "ToString function is not defined. for this object"
@@ -17183,10 +17463,16 @@
                                 null !== n ? n.onDataSent() : console.warn("A Monitor with ssrc: " + t + " should not be null but it is!")
                             }
             }
-        }, k.prototype = {
-            constructor: k,
+        }, I.prototype = {
+            constructor: I,
             onDataSent: function() {
                 ++this.sentCounter
+            },
+            getSendingThroughputObservations: function() {
+                var e = this.monitors.getSendingThroughputObservations();
+                return e && e.filter(function(e) {
+                    return null === e
+                }).length < 1 ? e : null
             },
             receive: function(e) {
                 var t = (new Date).getTime(),
@@ -17199,19 +17485,19 @@
                 }
                 this.monitors.checkDistortions();
                 var a = !1;
-                if (!1 === I.adaptiveSending)(a = this.lastForwarded + I.SendingTimeTresholds.regular < t) && (this.output.send(n), this.lastInterval = t - this.lastForwarded, this.lastForwarded = t);
+                if (!1 === P.adaptiveSending)(a = this.lastForwarded + P.SendingTimeTresholds.regular < t) && (this.output.send(n), this.lastInterval = t - this.lastForwarded, this.lastForwarded = t);
                 else {
                     var s = this.monitors.isSendable();
-                    if (0 === this.sentCounter ? a = !0 : this.sentCounter < 5 ? (a = this.lastForwarded + I.SendingTimeTresholds.regular < t, s = !1) : a = this.lastForwarded + Math.min(I.SendingTimeTresholds.max, this.nextInterval) < t, a || s)
-                        if (this.output.send(n), this.lastInterval = t - this.lastForwarded, this.lastForwarded = t, s) this.lastInterval = Math.max(I.SendingTimeTresholds.min, this.lastInterval / 2);
+                    if (0 === this.sentCounter ? a = !0 : this.sentCounter < 5 ? (a = this.lastForwarded + P.SendingTimeTresholds.regular < t, s = !1) : a = this.lastForwarded + Math.min(P.SendingTimeTresholds.max, this.nextInterval) < t, a || s)
+                        if (this.output.send(n), this.lastInterval = t - this.lastForwarded, this.lastForwarded = t, s) this.lastInterval = Math.max(P.SendingTimeTresholds.min, this.lastInterval / 2);
                         else if (a) {
                         var c = Math.random() + 1;
-                        this.nextInterval = Math.min(I.SendingTimeTresholds.max, this.lastInterval * c)
+                        this.nextInterval = Math.min(P.SendingTimeTresholds.max, this.lastInterval * c)
                     }
                 }
             }
-        }, I.prototype = {
-            constructor: I,
+        }, P.prototype = {
+            constructor: P,
             fire: function(e) {
                 var t;
                 switch (this.currentState) {
@@ -17238,7 +17524,13 @@
                                     console.warn("OnStatsRequest event required a parameter to store the response");
                                     break
                                 }
-                                0 < I.disruptions.length && (t.response = I.disruptions, I.disruptions = []);
+                                0 < P.disruptions.length && (t.response = P.disruptions, P.disruptions = []);
+                                break;
+                            case this.events.OnSendingThroughputObservationsRequest:
+                                if (void 0 === (t = arguments[1])) {
+                                    console.warn("OnSendingThroughputObservationsRequest event required a parameter to store the response");
+                                    break
+                                }!1 === this.sendingThroughputObservationsSent && (t.response = this.analyzer.getSendingThroughputObservations(), this.sendingThroughputObservationsSent = null !== t.response);
                                 break;
                             case this.events.OnStatsRequest:
                                 if (void 0 === (t = arguments[1])) {
@@ -17259,12 +17551,12 @@
                 return "Reporter is in " + this.currentState
             },
             setReportingMode: function(e) {
-                I.adaptiveSending = !0 === e
+                P.adaptiveSending = !0 === e
             },
             setSubmissionInterval: function(e) {
-                I.SendingTimeTresholds.regular = e, I.adaptiveSending ? (I.SendingTimeTresholds.min = 1e3, I.SendingTimeTresholds.max = 3e4) : (I.SendingTimeTresholds.min = e, I.SendingTimeTresholds.max = e)
+                P.SendingTimeTresholds.regular = e, P.adaptiveSending ? (P.SendingTimeTresholds.min = 1e3, P.SendingTimeTresholds.max = 3e4) : (P.SendingTimeTresholds.min = e, P.SendingTimeTresholds.max = e)
             }
-        }, e.exports.Reporter = I
+        }, e.exports.Reporter = P
     }, function(e, t, n) {
         function r(e, t) {
             this.items = [], this.plugins = [], this.timeoutInMs = t, this.maxItemsNum = e, this.minItemsNum = 0, this.last = null
@@ -18005,15 +18297,15 @@
                                     y = !1,
                                     b = void 0;
                                 try {
-                                    for (var _, S = e.localCandidates[Symbol.iterator](); !(g = (_ = S.next()).done); g = !0) {
-                                        var T = _.value;
+                                    for (var S, _ = e.localCandidates[Symbol.iterator](); !(g = (S = _.next()).done); g = !0) {
+                                        var T = S.value;
                                         "relay" !== T.candidateType && "relayed" !== T.candidateType || ("udp" === T.mozLocalTransport && (l.relayUdpGathered = !0), "tcp" === T.mozLocalTransport && (l.relayTcpGathered = !0), "tls" === T.mozLocalTransport && (l.relayTlsGathered = !0)), "srflx" !== T.candidateType && "serverreflexive" !== T.candidateType || (l.srflxGathered = !0)
                                     }
                                 } catch (e) {
                                     y = !0, b = e
                                 } finally {
                                     try {
-                                        !g && S.return && S.return()
+                                        !g && _.return && _.return()
                                     } finally {
                                         if (y) throw b
                                     }
@@ -18892,8 +19184,10 @@
                         } catch (e) {
                             return
                         }
-                        var o = i.sentBytes + this.lastMessage.length;
-                        this.results.bytesSent = o, this.results.fractionLostBytes = 1 - this.receivedBytes / o
+                        if (i) {
+                            var o = i.sentBytes + this.lastMessage.length;
+                            this.results.bytesSent = o, this.results.fractionLostBytes = 1 - this.receivedBytes / o
+                        } else this.results.bytesSent = -1, this.results.fractionLostBytes = -1
                     }
                 }, {
                     key: "stop",
@@ -18944,7 +19238,7 @@
             u = n(40),
             l = function() {
                 function e() {
-                    r(this, e), this.start = c.getCurrent(), this.id = Math.trunc(this.start) + "-" + (0, u.randomAsciiString)(20), this.version = "1.1.2", this.failures = [], this.results = {}, this.forceStopped = !1
+                    r(this, e), this.start = c.getCurrent(), this.id = Math.trunc(this.start) + "-" + (0, u.randomAsciiString)(20), this.version = "1.1.4", this.failures = [], this.results = {}, this.forceStopped = !1
                 }
                 return a(e, [{
                     key: "getResults",
@@ -19307,11 +19601,11 @@
                                         var y = this.ssrc2stats.get(g);
                                         y || (y = new i, this.ssrc2stats.set(g, y));
                                         var b = !0,
-                                            _ = "packetsReceived",
-                                            S = t(a, _);
-                                        void 0 !== S && null !== S && "" !== S || (b = !1, _ = "packetsSent", void 0 !== (S = t(a, _)) && null !== S || d.warn("No packetsReceived nor packetsSent stat found")), (!S || S < 0) && (S = 0);
-                                        var T = this.getNonNegativeStat(v, _),
-                                            C = Math.max(0, S - T),
+                                            S = "packetsReceived",
+                                            _ = t(a, S);
+                                        void 0 !== _ && null !== _ && "" !== _ || (b = !1, S = "packetsSent", void 0 !== (_ = t(a, S)) && null !== _ || d.warn("No packetsReceived nor packetsSent stat found")), (!_ || _ < 0) && (_ = 0);
+                                        var T = this.getNonNegativeStat(v, S),
+                                            C = Math.max(0, _ - T),
                                             E = this.getNonNegativeStat(a, "packetsLost"),
                                             w = this.getNonNegativeStat(v, "packetsLost"),
                                             R = Math.max(0, E - w);
@@ -19359,11 +19653,11 @@
                             download: 0,
                             upload: 0
                         },
-                        H = {
+                        B = {
                             download: 0,
                             upload: 0
                         },
-                        B = 0,
+                        H = 0,
                         G = 0,
                         J = {},
                         V = {},
@@ -19382,7 +19676,7 @@
                                 re = te[1],
                                 ie = re.loss,
                                 oe = ie.isDownloadStream ? "download" : "upload";
-                            U[oe] += ie.packetsTotal, H[oe] += ie.packetsLost, B += re.bitrate.download, G += re.bitrate.upload;
+                            U[oe] += ie.packetsTotal, B[oe] += ie.packetsLost, H += re.bitrate.download, G += re.bitrate.upload;
                             var ae = this.peerconnection.getTrackBySSRC(ne);
                             if (ae) {
                                 ae.isAudioTrack() ? (W += re.bitrate.download, q += re.bitrate.upload) : (K += re.bitrate.download, z += re.bitrate.upload);
@@ -19412,7 +19706,7 @@
                     }
                     this.eventEmitter.emit(c.c, this.peerconnection, n), this.conferenceStats.bitrate = {
                         upload: G,
-                        download: B
+                        download: H
                     }, this.conferenceStats.bitrate.audio = {
                         upload: q,
                         download: W
@@ -19420,9 +19714,9 @@
                         upload: z,
                         download: K
                     }, this.conferenceStats.packetLoss = {
-                        total: r(H.download + H.upload, U.download + U.upload),
-                        download: r(H.download, U.download),
-                        upload: r(H.upload, U.upload)
+                        total: r(B.download + B.upload, U.download + U.upload),
+                        download: r(B.download, U.download),
+                        upload: r(B.upload, U.upload)
                     }, this.eventEmitter.emit(c.d, this.peerconnection, {
                         bandwidth: this.conferenceStats.bandwidth,
                         bitrate: this.conferenceStats.bitrate,
@@ -20088,7 +20382,7 @@
             function s(e) {
                 try {
                     var t = JSON.parse(e);
-                    if (t && "object" === (void 0 === t ? "undefined" : S(t))) {
+                    if (t && "object" === (void 0 === t ? "undefined" : _(t))) {
                         var n = t[E[0]],
                             r = t[E[1]];
                         if (("string" == typeof n || n instanceof String) && r) return t;
@@ -20111,7 +20405,7 @@
                 g = n.n(v),
                 y = n(98),
                 b = n(48),
-                _ = function() {
+                S = function() {
                     function e(e, t) {
                         for (var n = 0; n < t.length; n++) {
                             var r = t[n];
@@ -20122,7 +20416,7 @@
                         return n && e(t.prototype, n), r && e(t, r), t
                     }
                 }(),
-                S = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
+                _ = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
                     return typeof e
                 } : function(e) {
                     return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
@@ -20160,7 +20454,7 @@
                             conference: c.options
                         }), c.initPresenceMap(s), c.lastPresences = {}, c.phoneNumber = null, c.phonePin = null, c.connectionTimes = {}, c.participantPropertyListener = null, c.locked = !1, c.transcriptionStatus = p.OFF, c
                     }
-                    return o(t, e), _(t, [{
+                    return o(t, e), S(t, [{
                         key: "initPresenceMap",
                         value: function() {
                             var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -20337,13 +20631,13 @@
                                     case "transcription-status":
                                         var b = v.attributes;
                                         if (!b) break;
-                                        var _ = b.status;
-                                        _ && _ !== this.transcriptionStatus && (this.transcriptionStatus = _, this.eventEmitter.emit(g.a.TRANSCRIPTION_STATUS_CHANGED, _));
+                                        var S = b.status;
+                                        S && S !== this.transcriptionStatus && (this.transcriptionStatus = S, this.eventEmitter.emit(g.a.TRANSCRIPTION_STATUS_CHANGED, S));
                                         break;
                                     case "call-control":
-                                        var S = v.attributes;
-                                        if (!S) break;
-                                        this.phoneNumber = S.phone || null, this.phonePin = S.pin || null, this.eventEmitter.emit(g.a.PHONE_NUMBER_CHANGED);
+                                        var _ = v.attributes;
+                                        if (!_) break;
+                                        this.phoneNumber = _.phone || null, this.phonePin = _.pin || null, this.eventEmitter.emit(g.a.PHONE_NUMBER_CHANGED);
                                         break;
                                     default:
                                         this.processNode(v, t)
@@ -20374,7 +20668,7 @@
                             }
                         }
                     }, {
-                        key: "sendOfMeet",			// BAO
+                        key: "sendOfMeet",          // BAO
                         value: function(t) {
                             var n = Object(u.$msg)({
                                 to: this.roomjid,
@@ -20926,7 +21220,7 @@
             }
 
             function a(e, t, n) {
-                c.Strophe.addConnectionPlugin("jingle", new S(e, t, n))
+                c.Strophe.addConnectionPlugin("jingle", new _(e, t, n))
             }
             t.a = a;
             var s = n(0),
@@ -20962,8 +21256,8 @@
                     var a = i.get;
                     return void 0 !== a ? a.call(r) : void 0
                 },
-                _ = Object(s.getLogger)(e),
-                S = function(e) {
+                S = Object(s.getLogger)(e),
+                _ = function(e) {
                     function t(e, n, o) {
                         r(this, t);
                         var a = i(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this));
@@ -20971,7 +21265,7 @@
                             iceServers: []
                         }, a.p2pIceConfig = {
                             iceServers: []
-                        }, Array.isArray(o) && (_.info("Configured STUN servers: ", o), a.p2pIceConfig.iceServers = o), a.mediaConstraints = {
+                        }, Array.isArray(o) && (S.info("Configured STUN servers: ", o), a.p2pIceConfig.iceServers = o), a.mediaConstraints = {
                             mandatory: {
                                 OfferToReceiveAudio: !0,
                                 OfferToReceiveVideo: !0
@@ -20994,7 +21288,7 @@
                                     to: r,
                                     id: e.getAttribute("id")
                                 });
-                            _.log("on jingle " + n + " from " + r, e);
+                            S.log("on jingle " + n + " from " + r, e);
                             var o = this.sessions[t];
                             if ("session-initiate" !== n) {
                                 if (!o) return i.attrs({
@@ -21005,8 +21299,8 @@
                                     xmlns: "urn:ietf:params:xml:ns:xmpp-stanzas"
                                 }).up().c("unknown-session", {
                                     xmlns: "urn:xmpp:jingle:errors:1"
-                                }), _.warn("invalid session id", e), this.connection.send(i), !0;
-                                if (r !== o.peerjid) return _.warn("jid mismatch for session id", t, o.peerjid, e), i.attrs({
+                                }), S.warn("invalid session id", e), this.connection.send(i), !0;
+                                if (r !== o.remoteJid) return S.warn("jid mismatch for session id", t, o.remoteJid, e), i.attrs({
                                     type: "error"
                                 }), i.c("error", {
                                     type: "cancel"
@@ -21021,11 +21315,11 @@
                                 type: "cancel"
                             }).c("service-unavailable", {
                                 xmlns: "urn:ietf:params:xml:ns:xmpp-stanzas"
-                            }).up(), _.warn("duplicate session id", t, e), this.connection.send(i), !0;
+                            }).up(), S.warn("duplicate session id", t, e), this.connection.send(i), !0;
                             var a = window.performance.now();
                             switch (n) {
                                 case "session-initiate":
-                                    _.log("(TIME) received session-initiate:\t", a);
+                                    S.log("(TIME) received session-initiate:\t", a);
                                     var s = $(e).find("jingle>startmuted");
                                     if (s && s.length > 0) {
                                         var u = s.attr("audio"),
@@ -21033,7 +21327,7 @@
                                         this.eventEmitter.emit(l.a.START_MUTED_FROM_FOCUS, "true" === u, "true" === d)
                                     }
                                     var h = "focus" !== c.Strophe.getResourceFromJid(r);
-                                    _.info("Marking session from " + r + " as " + (h ? "" : "*not*") + " P2P"), o = new v.a($(e).find("jingle").attr("sid"), $(e).attr("to"), r, this.connection, this.mediaConstraints, h ? this.p2pIceConfig : this.jvbIceConfig, h, !1, this.xmpp.options), this.sessions[o.sid] = o, this.eventEmitter.emit(l.a.CALL_INCOMING, o, $(e).find(">jingle"), a), m.a.analytics.sendEvent("xmpp.session-initiate", {
+                                    S.info("Marking session from " + r + " as " + (h ? "" : "*not*") + " P2P"), o = new v.a($(e).find("jingle").attr("sid"), $(e).attr("to"), r, this.connection, this.mediaConstraints, h ? this.p2pIceConfig : this.jvbIceConfig, h, !1, this.xmpp.options), this.sessions[o.sid] = o, this.eventEmitter.emit(l.a.CALL_INCOMING, o, $(e).find(">jingle"), a), m.a.analytics.sendEvent("xmpp.session-initiate", {
                                         value: a
                                     });
                                     break;
@@ -21047,21 +21341,21 @@
                                     this.eventEmitter.emit(l.a.TRANSPORT_INFO, o, $(e).find(">jingle"));
                                     break;
                                 case "session-terminate":
-                                    _.log("terminating...", o.sid);
+                                    S.log("terminating...", o.sid);
                                     var f = null,
                                         g = null;
                                     $(e).find(">jingle>reason").length && (f = $(e).find(">jingle>reason>:first")[0].tagName, g = $(e).find(">jingle>reason>text").text()), this.terminate(o.sid, f, g), this.eventEmitter.emit(l.a.CALL_ENDED, o, f, g);
                                     break;
                                 case "transport-replace":
-                                    _.info("(TIME) Start transport replace", a), m.a.analytics.sendEvent("xmpp.transport-replace.start", {
+                                    S.info("(TIME) Start transport replace", a), m.a.analytics.sendEvent("xmpp.transport-replace.start", {
                                         value: a
                                     }), o.replaceTransport($(e).find(">jingle"), function() {
                                         var e = window.performance.now();
-                                        _.info("(TIME) Transport replace success!", e), m.a.analytics.sendEvent("xmpp.transport-replace.success", {
+                                        S.info("(TIME) Transport replace success!", e), m.a.analytics.sendEvent("xmpp.transport-replace.success", {
                                             value: e
                                         })
                                     }, function(e) {
-                                        p.a.callErrorHandler(e), _.error("Transport replace failed", e), o.sendTransportReject()
+                                        p.a.callErrorHandler(e), S.error("Transport replace failed", e), o.sendTransportReject()
                                     });
                                     break;
                                 case "addsource":
@@ -21073,7 +21367,7 @@
                                     o.removeRemoteStream($(e).find(">jingle>content"));
                                     break;
                                 default:
-                                    _.warn("jingle action not implemented", n), i.attrs({
+                                    S.warn("jingle action not implemented", n), i.attrs({
                                         type: "error"
                                     }), i.c("error", {
                                         type: "cancel"
@@ -21133,7 +21427,7 @@
                                 var r = e.xmpp.options;
                                 r.useStunTurn && (e.jvbIceConfig.iceServers = n), r.p2p && r.p2p.useStunTurn && (e.p2pIceConfig.iceServers = n)
                             }, function(e) {
-                                _.warn("getting turn credentials failed", e), _.warn("is mod_turncredentials or similar installed?")
+                                S.warn("getting turn credentials failed", e), S.warn("is mod_turncredentials or similar installed?")
                             })
                         }
                     }, {
@@ -21182,17 +21476,18 @@
                 c = n(0),
                 u = (n.n(c), n(2)),
                 l = (n.n(u), n(102)),
-                d = n(50),
-                p = n(51),
-                h = n(103),
-                f = n(12),
-                m = n(104),
-                v = n(5),
-                g = n(7),
-                y = n.n(g),
-                b = n(3),
-                _ = n.n(b),
-                S = function() {
+                d = (n.n(l), n(103)),
+                p = n(50),
+                h = n(51),
+                f = n(104),
+                m = n(12),
+                v = n(105),
+                g = n(5),
+                y = n(7),
+                b = n.n(y),
+                S = n(3),
+                _ = n.n(S),
+                T = function() {
                     function e(e, t) {
                         for (var n = 0; n < t.length; n++) {
                             var r = t[n];
@@ -21203,14 +21498,14 @@
                         return n && e(t.prototype, n), r && e(t, r), t
                     }
                 }(),
-                T = Object(c.getLogger)(e),
-                C = function(e) {
+                C = Object(c.getLogger)(e),
+                E = function(e) {
                     function t(e, n, o, a, c, u, l, d, p) {
                         r(this, t);
                         var h = i(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e, n, o, a, c, u));
-                        return h._iceCheckingStartedTimestamp = null, h._gatheringStartedTimestamp = null, h._localVideoActive = !0, h._remoteVideoActive = !0, h._gatheringReported = !1, h.lasticecandidate = !1, h.closed = !1, h.isInitiator = d, h.isP2P = l, h.signalingLayer = new m.a, h.webrtcIceUdpDisable = Boolean(p.webrtcIceUdpDisable), h.webrtcIceTcpDisable = Boolean(p.webrtcIceTcpDisable), h.failICE = Boolean(p.failICE), h.modificationQueue = s.a.queue(h._processQueueTasks.bind(h), 1), h.wasConnected = !1, h.establishmentDuration = void 0, h
+                        return h._iceCheckingStartedTimestamp = null, h._gatheringStartedTimestamp = null, h._localVideoActive = !0, h._remoteVideoActive = !0, h._gatheringReported = !1, h.lasticecandidate = !1, h.closed = !1, h.isInitiator = d, h.isP2P = l, h.signalingLayer = new v.a, h.webrtcIceUdpDisable = Boolean(p.webrtcIceUdpDisable), h.webrtcIceTcpDisable = Boolean(p.webrtcIceTcpDisable), h.failICE = Boolean(p.failICE), h.modificationQueue = s.a.queue(h._processQueueTasks.bind(h), 1), h.wasConnected = !1, h.establishmentDuration = void 0, h
                     }
-                    return o(t, e), S(t, null, [{
+                    return o(t, e), T(t, null, [{
                         key: "parseVideoSenders",
                         value: function(e) {
                             var t = e.find('>content[name="video"]');
@@ -21220,27 +21515,25 @@
                             }
                             return null
                         }
-                    }]), S(t, [{
+                    }]), T(t, [{
                         key: "_assertNotEnded",
                         value: function(e) {
-                            return this.state !== d.b || (T.log("The session has ended - cancelling action: " + e), !1)
+                            return this.state !== p.b || (C.log("The session has ended - cancelling action: " + e), !1)
                         }
                     }, {
                         key: "doInitialize",
                         value: function() {
                             var e = this;
-                            this.lasticecandidate = !1, this.isreconnect = !1, this.wasstable = !1, this.isP2P ? this.peerconnection = this.rtc.createPeerConnection(this.signalingLayer, this.iceConfig, this.isP2P, {
-                                disableSimulcast: !0,
-                                disableRtx: this.room.options.disableRtx,
-                                disableH264: this.room.options.p2p && this.room.options.p2p.disableH264,
-                                preferH264: this.room.options.p2p && this.room.options.p2p.preferH264
-                            }) : this.peerconnection = this.rtc.createPeerConnection(this.signalingLayer, this.iceConfig, this.isP2P, {
-                                disableSimulcast: this.room.options.disableSimulcast || this.room.options.preferH264 && !this.room.options.disableH264,
-                                disableRtx: this.room.options.disableRtx,
-                                disableH264: this.room.options.disableH264,
-                                preferH264: this.room.options.preferH264,
-                                enableFirefoxSimulcast: this.room.options.testing && this.room.options.testing.enableFirefoxSimulcast
-                            }), this.peerconnection.onicecandidate = function(t) {
+                            this.lasticecandidate = !1, this.isreconnect = !1, this.wasstable = !1;
+                            var t = {
+                                disableRtx: this.room.options.disableRtx
+                            };
+                            if (this.isP2P) {
+                                t.disableSimulcast = !0, t.disableH264 = this.room.options.p2p && this.room.options.p2p.disableH264, t.preferH264 = this.room.options.p2p && this.room.options.p2p.preferH264;
+                                var n = this._abtestSuspendVideoEnabled();
+                                void 0 !== n && (t.abtestSuspendVideo = n)
+                            } else t.disableSimulcast = this.room.options.disableSimulcast || this.room.options.preferH264 && !this.room.options.disableH264, t.preferH264 = this.room.options.preferH264, t.enableFirefoxSimulcast = this.room.options.testing && this.room.options.testing.enableFirefoxSimulcast;
+                            this.peerconnection = this.rtc.createPeerConnection(this.signalingLayer, this.iceConfig, this.isP2P, t), this.peerconnection.onicecandidate = function(t) {
                                 if (t) {
                                     var n = t.candidate,
                                         r = window.performance.now();
@@ -21253,94 +21546,94 @@
                                             } else if ("udp" === i && e.webrtcIceUdpDisable) return
                                     } else if (!e._gatheringReported) {
                                         var o = e.isP2P ? "p2p.ice." : "ice.";
-                                        o += e.isInitiator ? "initiator" : "responder", o += ".gatheringDuration", v.a.analytics.sendEvent(o, {
+                                        o += e.isInitiator ? "initiator" : "responder", o += ".gatheringDuration", g.a.analytics.sendEvent(o, {
                                             value: r - e._gatheringStartedTimestamp
                                         }), e._gatheringReported = !0
                                     }
                                     e.sendIceCandidate(n)
                                 }
                             }, this.peerconnection.onsignalingstatechange = function() {
-                                e.peerconnection && ("stable" === e.peerconnection.signalingState ? e.wasstable = !0 : "closed" !== e.peerconnection.signalingState && "closed" !== e.peerconnection.connectionState || e.closed || e.room.eventEmitter.emit(y.a.SUSPEND_DETECTED, e))
+                                e.peerconnection && ("stable" === e.peerconnection.signalingState ? e.wasstable = !0 : "closed" !== e.peerconnection.signalingState && "closed" !== e.peerconnection.connectionState || e.closed || e.room.eventEmitter.emit(b.a.SUSPEND_DETECTED, e))
                             }, this.peerconnection.oniceconnectionstatechange = function() {
                                 if (e.peerconnection && e._assertNotEnded("oniceconnectionstatechange")) {
                                     var t = window.performance.now();
-                                    switch (e.isP2P || (e.room.connectionTimes["ice.state." + e.peerconnection.iceConnectionState] = t), T.log("(TIME) ICE " + e.peerconnection.iceConnectionState + " P2P? " + e.isP2P + ":\t", t), v.a.analytics.sendEvent((e.isP2P ? "p2p.ice." : "ice.") + e.peerconnection.iceConnectionState, {
+                                    switch (e.isP2P || (e.room.connectionTimes["ice.state." + e.peerconnection.iceConnectionState] = t), C.log("(TIME) ICE " + e.peerconnection.iceConnectionState + " P2P? " + e.isP2P + ":\t", t), g.a.analytics.sendEvent((e.isP2P ? "p2p.ice." : "ice.") + e.peerconnection.iceConnectionState, {
                                         value: t
-                                    }), e.room.eventEmitter.emit(y.a.ICE_CONNECTION_STATE_CHANGED, e, e.peerconnection.iceConnectionState), e.peerconnection.iceConnectionState) {
+                                    }), e.room.eventEmitter.emit(b.a.ICE_CONNECTION_STATE_CHANGED, e, e.peerconnection.iceConnectionState), e.peerconnection.iceConnectionState) {
                                         case "checking":
                                             e._iceCheckingStartedTimestamp = t;
                                             break;
                                         case "connected":
-                                            if ("stable" === e.peerconnection.signalingState && e.isreconnect && e.room.eventEmitter.emit(y.a.CONNECTION_RESTORED, e), !e.wasConnected && e.wasstable) {
+                                            if ("stable" === e.peerconnection.signalingState && e.isreconnect && e.room.eventEmitter.emit(b.a.CONNECTION_RESTORED, e), !e.wasConnected && e.wasstable) {
                                                 var n = e.isP2P ? "p2p.ice." : "ice.";
-                                                n += e.isInitiator ? "initiator." : "responder.", v.a.analytics.sendEvent(n + "checksDuration", {
+                                                n += e.isInitiator ? "initiator." : "responder.", g.a.analytics.sendEvent(n + "checksDuration", {
                                                     value: t - e._iceCheckingStartedTimestamp
                                                 });
                                                 var r = Math.min(e._iceCheckingStartedTimestamp, e._gatheringStartedTimestamp);
-                                                e.establishmentDuration = t - r, v.a.analytics.sendEvent(n + "establishmentDuration", {
+                                                e.establishmentDuration = t - r, g.a.analytics.sendEvent(n + "establishmentDuration", {
                                                     value: e.establishmentDuration
-                                                }), e.wasConnected = !0, e.room.eventEmitter.emit(y.a.CONNECTION_ESTABLISHED, e)
+                                                }), e.wasConnected = !0, e.room.eventEmitter.emit(b.a.CONNECTION_ESTABLISHED, e)
                                             }
                                             e.isreconnect = !1;
                                             break;
                                         case "disconnected":
                                             if (e.closed) break;
-                                            e.isreconnect = !0, e.wasstable && e.room.eventEmitter.emit(y.a.CONNECTION_INTERRUPTED, e);
+                                            e.isreconnect = !0, e.wasstable && e.room.eventEmitter.emit(b.a.CONNECTION_INTERRUPTED, e);
                                             break;
                                         case "failed":
-                                            e.room.eventEmitter.emit(y.a.CONNECTION_ICE_FAILED, e), e.room.eventEmitter.emit(y.a.CONFERENCE_SETUP_FAILED, e, new Error("ICE fail"))
+                                            e.room.eventEmitter.emit(b.a.CONNECTION_ICE_FAILED, e), e.room.eventEmitter.emit(b.a.CONFERENCE_SETUP_FAILED, e, new Error("ICE fail"))
                                     }
                                 }
                             }, this.peerconnection.onnegotiationneeded = function() {
-                                e.room.eventEmitter.emit(y.a.PEERCONNECTION_READY, e)
+                                e.room.eventEmitter.emit(b.a.PEERCONNECTION_READY, e)
                             }, this.signalingLayer.setChatRoom(this.room)
                         }
                     }, {
                         key: "sendIceCandidate",
                         value: function(e) {
                             var t = this,
-                                n = new p.a(this.peerconnection.localDescription.sdp);
+                                n = new h.a(this.peerconnection.localDescription.sdp);
                             if (e && !this.lasticecandidate) {
-                                var r = f.a.iceparams(n.media[e.sdpMLineIndex], n.session),
-                                    i = f.a.candidateToJingle(e.candidate);
-                                if (!r || !i) return _.a.callErrorHandler(new Error("failed to get ice && jcand")), void T.error("failed to get ice && jcand");
+                                var r = m.a.iceparams(n.media[e.sdpMLineIndex], n.session),
+                                    i = m.a.candidateToJingle(e.candidate);
+                                if (!r || !i) return _.a.callErrorHandler(new Error("failed to get ice && jcand")), void C.error("failed to get ice && jcand");
                                 r.xmlns = "urn:xmpp:jingle:transports:ice-udp:1", this.usedrip ? (0 === this.dripContainer.length && setTimeout(function() {
                                     0 !== t.dripContainer.length && (t.sendIceCandidates(t.dripContainer), t.dripContainer = [])
                                 }, 20), this.dripContainer.push(e)) : this.sendIceCandidates([e])
-                            } else T.log("sendIceCandidate: last candidate."), this.lasticecandidate = !0
+                            } else C.log("sendIceCandidate: last candidate."), this.lasticecandidate = !0
                         }
                     }, {
                         key: "sendIceCandidates",
                         value: function(e) {
                             var t = this;
                             if (this._assertNotEnded("sendIceCandidates")) {
-                                T.log("sendIceCandidates", e);
+                                C.log("sendIceCandidates", e);
                                 for (var n = Object(u.$iq)({
-                                        to: this.peerjid,
+                                        to: this.remoteJid,
                                         type: "set"
                                     }).c("jingle", {
                                         xmlns: "urn:xmpp:jingle:1",
                                         action: "transport-info",
                                         initiator: this.initiator,
                                         sid: this.sid
-                                    }), r = new p.a(this.peerconnection.localDescription.sdp), i = 0; i < r.media.length; i++) ! function(i) {
+                                    }), r = new h.a(this.peerconnection.localDescription.sdp), i = 0; i < r.media.length; i++) ! function(i) {
                                     var o = e.filter(function(e) {
                                             return e.sdpMLineIndex === i
                                         }),
-                                        a = f.a.parseMLine(r.media[i].split("\r\n")[0]);
+                                        a = m.a.parseMLine(r.media[i].split("\r\n")[0]);
                                     if (o.length > 0) {
-                                        var s = f.a.iceparams(r.media[i], r.session);
+                                        var s = m.a.iceparams(r.media[i], r.session);
                                         s.xmlns = "urn:xmpp:jingle:transports:ice-udp:1", n.c("content", {
                                             creator: t.initiator === t.localJid ? "initiator" : "responder",
                                             name: o[0].sdpMid ? o[0].sdpMid : a.media
                                         }).c("transport", s);
                                         for (var c = 0; c < o.length; c++) {
-                                            var u = f.a.candidateToJingle(o[c].candidate);
+                                            var u = m.a.candidateToJingle(o[c].candidate);
                                             t.failICE && (u.ip = "1.1.1.1"), n.c("candidate", u).up()
                                         }
-                                        var l = f.a.findLine(r.media[i], "a=fingerprint:", r.session);
+                                        var l = m.a.findLine(r.media[i], "a=fingerprint:", r.session);
                                         if (l) {
-                                            var d = f.a.parseFingerprint(l);
+                                            var d = m.a.parseFingerprint(l);
                                             d.required = !0, n.c("fingerprint", {
                                                 xmlns: "urn:xmpp:jingle:apps:dtls:0"
                                             }).t(d.fingerprint), delete d.fingerprint, n.attrs(d), n.up()
@@ -21355,10 +21648,10 @@
                         key: "addIceCandidates",
                         value: function(e) {
                             var t = this;
-                            if ("closed" === this.peerconnection.signalingState) return void T.warn("Ignored add ICE candidate when in closed state");
+                            if ("closed" === this.peerconnection.signalingState) return void C.warn("Ignored add ICE candidate when in closed state");
                             var n = [];
                             if (e.find(">content>transport>candidate").each(function(e, t) {
-                                    var r = f.a.candidateFromJingle(t);
+                                    var r = m.a.candidateFromJingle(t);
                                     r = r.replace("\r\n", "").replace("a=", "");
                                     var i = new RTCIceCandidate({
                                         sdpMLineIndex: 0,
@@ -21366,7 +21659,7 @@
                                         candidate: r
                                     });
                                     n.push(i)
-                                }), !n.length) return void T.error("No ICE candidates to add ?", e[0] && e[0].outerHTML);
+                                }), !n.length) return void C.error("No ICE candidates to add ?", e[0] && e[0].outerHTML);
                             var r = function(e) {
                                 var r = !0,
                                     i = !1,
@@ -21375,9 +21668,9 @@
                                     for (var a, s = n[Symbol.iterator](); !(r = (a = s.next()).done); r = !0) {
                                         var c = a.value;
                                         t.peerconnection.addIceCandidate(c, function() {
-                                            T.debug("addIceCandidate ok!")
+                                            C.debug("addIceCandidate ok!")
                                         }, function(e) {
-                                            T.error("addIceCandidate failed!", e)
+                                            C.error("addIceCandidate failed!", e)
                                         })
                                     }
                                 } catch (e) {
@@ -21391,7 +21684,7 @@
                                 }
                                 e()
                             };
-                            T.debug("Queued add (" + n.length + ") ICE candidates task..."), this.modificationQueue.push(r)
+                            C.debug("Queued add (" + n.length + ") ICE candidates task..."), this.modificationQueue.push(r)
                         }
                     }, {
                         key: "readSsrcInfo",
@@ -21399,16 +21692,16 @@
                             var t = this;
                             $(e).find('>description>source[xmlns="urn:xmpp:jingle:apps:rtp:ssma:0"]').each(function(e, n) {
                                 var r = Number(n.getAttribute("ssrc"));
-                                t.isP2P ? t.signalingLayer.setSSRCOwner(r, u.Strophe.getResourceFromJid(t.peerjid)) : $(n).find('>ssrc-info[xmlns="http://jitsi.org/jitmeet"]').each(function(e, n) {
+                                t.isP2P ? t.signalingLayer.setSSRCOwner(r, u.Strophe.getResourceFromJid(t.remoteJid)) : $(n).find('>ssrc-info[xmlns="http://jitsi.org/jitmeet"]').each(function(e, n) {
                                     var i = n.getAttribute("owner");
-                                    i && i.length && (isNaN(r) || r < 0 ? T.warn("Invalid SSRC " + r + " value received for " + i) : t.signalingLayer.setSSRCOwner(r, u.Strophe.getResourceFromJid(i)))
+                                    i && i.length && (isNaN(r) || r < 0 ? C.warn("Invalid SSRC " + r + " value received for " + i) : t.signalingLayer.setSSRCOwner(r, u.Strophe.getResourceFromJid(i)))
                                 })
                             })
                         }
                     }, {
                         key: "generateRecvonlySsrc",
                         value: function() {
-                            this.peerconnection ? this.peerconnection.generateRecvonlySsrc() : T.error("Unable to generate recvonly SSRC - no peerconnection")
+                            this.peerconnection ? this.peerconnection.generateRecvonlySsrc() : C.error("Unable to generate recvonly SSRC - no peerconnection")
                         }
                     }, {
                         key: "acceptOffer",
@@ -21445,21 +21738,21 @@
                                     t.peerconnection.setLocalDescription(e, function() {
                                         t.sendSessionInitiate(t.peerconnection.localDescription.sdp), n()
                                     }, function(t) {
-                                        T.error("Failed to set local SDP", t, e), n(t)
+                                        C.error("Failed to set local SDP", t, e), n(t)
                                     })
                                 }, function(e) {
-                                    T.error("Failed to create an offer", e, t.mediaConstraints), n(e)
+                                    C.error("Failed to create an offer", e, t.mediaConstraints), n(e)
                                 }, t.mediaConstraints)
                             };
                             this.modificationQueue.push(n, function(e) {
-                                e ? T.error("invite error", e) : T.debug("invite executed - OK")
+                                e ? C.error("invite error", e) : C.debug("invite executed - OK")
                             })
                         }
                     }, {
                         key: "sendSessionInitiate",
                         value: function(e) {
                             var t = Object(u.$iq)({
-                                to: this.peerjid,
+                                to: this.remoteJid,
                                 type: "set"
                             }).c("jingle", {
                                 xmlns: "urn:xmpp:jingle:1",
@@ -21467,10 +21760,10 @@
                                 initiator: this.initiator,
                                 sid: this.sid
                             });
-                            new p.a(e).toJingle(t, this.initiator === this.me ? "initiator" : "responder"), t = t.tree(), T.info("Session-initiate: ", t), this.connection.sendIQ(t, function() {
-                                T.info('Got RESULT for "session-initiate"')
+                            new h.a(e).toJingle(t, this.initiator === this.me ? "initiator" : "responder"), t = t.tree(), C.info("Session-initiate: ", t), this.connection.sendIQ(t, function() {
+                                C.info('Got RESULT for "session-initiate"')
                             }, function(e) {
-                                T.error('"session-initiate" error', e)
+                                C.error('"session-initiate" error', e)
                             }, 1e4)
                         }
                     }, {
@@ -21478,9 +21771,9 @@
                         value: function(e) {
                             if (!this.isInitiator) throw new Error("Trying to set an answer on the responder session");
                             this.setOfferAnswerCycle(e, function() {
-                                T.info("setAnswer - succeeded")
+                                C.info("setAnswer - succeeded")
                             }, function(e) {
-                                T.error("setAnswer failed: ", e)
+                                C.error("setAnswer failed: ", e)
                             })
                         }
                     }, {
@@ -21507,16 +21800,16 @@
                                             }
                                         }
                                     }
-                                    var h = o._processNewJingleOfferIq(e),
+                                    var d = o._processNewJingleOfferIq(e),
                                         f = o.peerconnection.localDescription.sdp;
-                                    o._renegotiate(h.raw).then(function() {
-                                        if (o.state === d.c && (o.state = d.a, o.isP2P && !o._localVideoActive && o.sendContentModify(o._localVideoActive)), f) {
-                                            var e = new p.a(o.peerconnection.localDescription.sdp);
-                                            o.notifyMySSRCUpdate(new p.a(f), e)
+                                    o._renegotiate(d.raw).then(function() {
+                                        if (o.state === p.c && (o.state = p.a, o.isP2P && !o._localVideoActive && o.sendContentModify(o._localVideoActive)), f) {
+                                            var e = new h.a(o.peerconnection.localDescription.sdp);
+                                            o.notifyMySSRCUpdate(new h.a(f), e)
                                         }
                                         n()
                                     }, function(e) {
-                                        T.error("Error renegotiating after setting new remote " + (o.isInitiator ? "answer: " : "offer: ") + e, h), t.onJingleFatalError(o, e), n(e)
+                                        C.error("Error renegotiating after setting new remote " + (o.isInitiator ? "answer: " : "offer: ") + e, d), t.onJingleFatalError(o, e), n(e)
                                     })
                                 };
                             this.modificationQueue.push(a, function(e) {
@@ -21527,11 +21820,11 @@
                         key: "replaceTransport",
                         value: function(e, t, n) {
                             var r = this;
-                            this.room.eventEmitter.emit(y.a.ICE_RESTARTING, this);
+                            this.room.eventEmitter.emit(b.a.ICE_RESTARTING, this);
                             var i = e.clone();
                             e.find(">content[name='data']").remove(), this.setOfferAnswerCycle(e, function() {
                                 r.setOfferAnswerCycle(i, function() {
-                                    var e = new p.a(r.peerconnection.localDescription.sdp);
+                                    var e = new h.a(r.peerconnection.localDescription.sdp);
                                     r.sendTransportAccept(e, t, n)
                                 }, n)
                             }, n)
@@ -21540,9 +21833,9 @@
                         key: "sendSessionAccept",
                         value: function(e, t) {
                             var n = this,
-                                r = new p.a(this.peerconnection.localDescription.sdp),
+                                r = new h.a(this.peerconnection.localDescription.sdp),
                                 i = Object(u.$iq)({
-                                    to: this.peerjid,
+                                    to: this.remoteJid,
                                     type: "set"
                                 }).c("jingle", {
                                     xmlns: "urn:xmpp:jingle:1",
@@ -21551,8 +21844,8 @@
                                     responder: this.responder,
                                     sid: this.sid
                                 });
-                            this.webrtcIceTcpDisable && (r.removeTcpCandidates = !0), this.webrtcIceUdpDisable && (r.removeUdpCandidates = !0), this.failICE && (r.failICE = !0), r.toJingle(i, this.initiator === this.localJid ? "initiator" : "responder", null), i = i.tree(), T.info("Sending session-accept", i), this.connection.sendIQ(i, e, this.newJingleErrorHandler(i, function(e) {
-                                t(e), n.room.eventEmitter.emit(y.a.SESSION_ACCEPT_TIMEOUT, n)
+                            this.webrtcIceTcpDisable && (r.removeTcpCandidates = !0), this.webrtcIceUdpDisable && (r.removeUdpCandidates = !0), this.failICE && (r.failICE = !0), r.toJingle(i, this.initiator === this.localJid ? "initiator" : "responder", null), i = i.tree(), C.info("Sending session-accept", i), this.connection.sendIQ(i, e, this.newJingleErrorHandler(i, function(e) {
+                                t(e), n.room.eventEmitter.emit(b.a.SESSION_ACCEPT_TIMEOUT, n)
                             }), 1e4)
                         }
                     }, {
@@ -21560,7 +21853,7 @@
                         value: function(e) {
                             var t = e ? "both" : "none",
                                 n = Object(u.$iq)({
-                                    to: this.peerjid,
+                                    to: this.remoteJid,
                                     type: "set"
                                 }).c("jingle", {
                                     xmlns: "urn:xmpp:jingle:1",
@@ -21571,14 +21864,14 @@
                                     name: "video",
                                     senders: t
                                 });
-                            T.info("Sending content-modify, video senders: " + t), this.connection.sendIQ(n, null, this.newJingleErrorHandler(n), 1e4)
+                            C.info("Sending content-modify, video senders: " + t), this.connection.sendIQ(n, null, this.newJingleErrorHandler(n), 1e4)
                         }
                     }, {
                         key: "sendTransportAccept",
                         value: function(e, t, n) {
                             var r = this,
                                 i = Object(u.$iq)({
-                                    to: this.peerjid,
+                                    to: this.remoteJid,
                                     type: "set"
                                 }).c("jingle", {
                                     xmlns: "urn:xmpp:jingle:1",
@@ -21587,18 +21880,18 @@
                                     sid: this.sid
                                 });
                             e.media.forEach(function(t, n) {
-                                var o = f.a.parseMLine(t.split("\r\n")[0]);
+                                var o = m.a.parseMLine(t.split("\r\n")[0]);
                                 i.c("content", {
                                     creator: r.initiator === r.localJid ? "initiator" : "responder",
                                     name: o.media
                                 }), e.transportToJingle(n, i), i.up()
-                            }), i = i.tree(), T.info("Sending transport-accept: ", i), this.connection.sendIQ(i, t, this.newJingleErrorHandler(i, n), 1e4)
+                            }), i = i.tree(), C.info("Sending transport-accept: ", i), this.connection.sendIQ(i, t, this.newJingleErrorHandler(i, n), 1e4)
                         }
                     }, {
                         key: "sendTransportReject",
                         value: function(e, t) {
                             var n = Object(u.$iq)({
-                                to: this.peerjid,
+                                to: this.remoteJid,
                                 type: "set"
                             }).c("jingle", {
                                 xmlns: "urn:xmpp:jingle:1",
@@ -21606,15 +21899,15 @@
                                 initiator: this.initiator,
                                 sid: this.sid
                             });
-                            n = n.tree(), T.info("Sending 'transport-reject", n), this.connection.sendIQ(n, e, this.newJingleErrorHandler(n, t), 1e4)
+                            n = n.tree(), C.info("Sending 'transport-reject", n), this.connection.sendIQ(n, e, this.newJingleErrorHandler(n, t), 1e4)
                         }
                     }, {
                         key: "terminate",
                         value: function(e, t, n) {
-                            if (this.state !== d.b) {
+                            if (this.state !== p.b) {
                                 if (!n || Boolean(n.sendSessionTerminate)) {
                                     var r = Object(u.$iq)({
-                                        to: this.peerjid,
+                                        to: this.remoteJid,
                                         type: "set"
                                     }).c("jingle", {
                                         xmlns: "urn:xmpp:jingle:1",
@@ -21622,15 +21915,15 @@
                                         initiator: this.initiator,
                                         sid: this.sid
                                     }).c("reason").c(n && n.reason || "success");
-                                    n && n.reasonDescription && r.up().c("text").t(n.reasonDescription), r = r.tree(), T.info("Sending session-terminate", r), this.connection.sendIQ(r, e, this.newJingleErrorHandler(r, t), 1e4)
-                                } else T.info("Skipped sending session-terminate for " + this);
+                                    n && n.reasonDescription && r.up().c("text").t(n.reasonDescription), r = r.tree(), C.info("Sending session-terminate", r), this.connection.sendIQ(r, e, this.newJingleErrorHandler(r, t), 1e4)
+                                } else C.info("Skipped sending session-terminate for " + this);
                                 this.connection.jingle.terminate(this.sid)
                             }
                         }
                     }, {
                         key: "onTerminated",
                         value: function(e, t) {
-                            this.state = d.b, this.establishmentDuration = void 0, T.info("Session terminated " + this, e, t), this.close()
+                            this.state = p.b, this.establishmentDuration = void 0, C.info("Session terminated " + this, e, t), this.close()
                         }
                     }, {
                         key: "_parseSsrcInfoFromSourceAdd",
@@ -21647,12 +21940,12 @@
                                     t.length && (o += "a=ssrc-group:" + e + " " + t.join(" ") + "\r\n")
                                 }), $(r).find('source[xmlns="urn:xmpp:jingle:apps:rtp:ssma:0"]').each(function() {
                                     var e = $(this).attr("ssrc");
-                                    if (t.containsSSRC(e)) return void T.warn("Source-add request for existing SSRC: " + e);
+                                    if (t.containsSSRC(e)) return void C.warn("Source-add request for existing SSRC: " + e);
                                     $(this).find(">parameter").each(function() {
                                         o += "a=ssrc:" + e + " " + $(this).attr("name"), $(this).attr("value") && $(this).attr("value").length && (o += ":" + $(this).attr("value")), o += "\r\n"
                                     })
                                 }), t.media.forEach(function(e, t) {
-                                    f.a.findLine(e, "a=mid:" + i) && (n[t] || (n[t] = ""), n[t] += o)
+                                    m.a.findLine(e, "a=mid:" + i) && (n[t] || (n[t] = ""), n[t] += o)
                                 })
                             }), n
                         }
@@ -21675,18 +21968,18 @@
                             var i = function(i) {
                                 if (!n.peerconnection.localDescription || !n.peerconnection.localDescription.sdp) {
                                     var o = r + " - localDescription not ready yet";
-                                    return T.error(o), void i(o)
+                                    return C.error(o), void i(o)
                                 }
-                                T.log("Processing " + r), T.log("ICE connection state: ", n.peerconnection.iceConnectionState);
-                                var a = new p.a(n.peerconnection.localDescription.sdp),
-                                    s = new p.a(n.peerconnection.remoteDescription.sdp),
+                                C.log("Processing " + r), C.log("ICE connection state: ", n.peerconnection.iceConnectionState);
+                                var a = new h.a(n.peerconnection.localDescription.sdp),
+                                    s = new h.a(n.peerconnection.remoteDescription.sdp),
                                     c = e ? n._parseSsrcInfoFromSourceAdd(t, s) : n._parseSsrcInfoFromSourceRemove(t, s),
                                     u = e ? n._processRemoteAddSource(c) : n._processRemoteRemoveSource(c);
                                 n._renegotiate(u.raw).then(function() {
-                                    var e = new p.a(n.peerconnection.localDescription.sdp);
-                                    T.log(r + " - OK, SDPs: ", a, e), n.notifyMySSRCUpdate(a, e), i()
+                                    var e = new h.a(n.peerconnection.localDescription.sdp);
+                                    C.log(r + " - OK, SDPs: ", a, e), n.notifyMySSRCUpdate(a, e), i()
                                 }, function(e) {
-                                    T.error(r + " failed:", e), i(e)
+                                    C.error(r + " failed:", e), i(e)
                                 })
                             };
                             this.modificationQueue.push(i)
@@ -21699,13 +21992,13 @@
                     }, {
                         key: "_processNewJingleOfferIq",
                         value: function(e) {
-                            var t = new p.a("");
+                            var t = new h.a("");
                             return this.webrtcIceTcpDisable && (t.removeTcpCandidates = !0), this.webrtcIceUdpDisable && (t.removeUdpCandidates = !0), this.failICE && (t.failICE = !0), t.fromJingle(e), this.readSsrcInfo($(e).find(">content")), t
                         }
                     }, {
                         key: "_processRemoteRemoveSource",
                         value: function(e) {
-                            var t = new p.a(this.peerconnection.remoteDescription.sdp);
+                            var t = new h.a(this.peerconnection.remoteDescription.sdp);
                             return e.forEach(function(e, n) {
                                 e = e.split("\r\n"), e.pop(), e.forEach(function(e) {
                                     t.media[n] = t.media[n].replace(e + "\r\n", "")
@@ -21715,7 +22008,7 @@
                     }, {
                         key: "_processRemoteAddSource",
                         value: function(e) {
-                            var t = new p.a(this.peerconnection.remoteDescription.sdp);
+                            var t = new h.a(this.peerconnection.remoteDescription.sdp);
                             return e.forEach(function(e, n) {
                                 t.media[n] += e
                             }), t.raw = t.session + t.media.join(""), t
@@ -21739,9 +22032,9 @@
                         key: "_responderRenegotiate",
                         value: function(e, t, n) {
                             var r = this;
-                            T.debug("Renegotiate: setting remote description"), this.peerconnection.setRemoteDescription(e, function() {
-                                T.debug("Renegotiate: creating answer"), r.peerconnection.createAnswer(function(e) {
-                                    T.debug("Renegotiate: setting local description"), r.peerconnection.setLocalDescription(e, function() {
+                            C.debug("Renegotiate: setting remote description"), this.peerconnection.setRemoteDescription(e, function() {
+                                C.debug("Renegotiate: creating answer"), r.peerconnection.createAnswer(function(e) {
+                                    C.debug("Renegotiate: setting local description"), r.peerconnection.setLocalDescription(e, function() {
                                         t()
                                     }, function(e) {
                                         n("setLocalDescription failed: " + e)
@@ -21757,13 +22050,13 @@
                         key: "_initiatorRenegotiate",
                         value: function(e, t, n) {
                             var r = this;
-                            "have-local-offer" === this.peerconnection.signalingState ? (T.debug("Renegotiate: setting remote description"), this.peerconnection.setRemoteDescription(e, function() {
+                            "have-local-offer" === this.peerconnection.signalingState ? (C.debug("Renegotiate: setting remote description"), this.peerconnection.setRemoteDescription(e, function() {
                                 r._initiatorRenegotiate(e, t, n)
                             }, function(e) {
                                 return n("setRemoteDescription failed: " + e)
-                            })) : (T.debug("Renegotiate: creating offer"), this.peerconnection.createOffer(function(i) {
-                                T.debug("Renegotiate: setting local description"), r.peerconnection.setLocalDescription(i, function() {
-                                    T.debug("Renegotiate: setting remote description"), r.peerconnection.setRemoteDescription(e, function() {
+                            })) : (C.debug("Renegotiate: creating offer"), this.peerconnection.createOffer(function(i) {
+                                C.debug("Renegotiate: setting local description"), r.peerconnection.setLocalDescription(i, function() {
+                                    C.debug("Renegotiate: setting remote description"), r.peerconnection.setRemoteDescription(e, function() {
                                         t()
                                     }, function(e) {
                                         return n("setRemoteDescription failed: " + e)
@@ -21782,13 +22075,13 @@
                                 r = function(r) {
                                     if ("closed" === n.peerconnection.signalingState || "closed" === n.peerconnection.connectionState || n.closed) return void r();
                                     var i = n.peerconnection.localDescription.sdp;
-                                    !e && t && t.isVideoTrack() ? n.peerconnection.clearRecvonlySsrc() : e && e.isVideoTrack() && !t && (n.peerconnection.clearRecvonlySsrc(), n.peerconnection.generateRecvonlySsrc()), e && n.peerconnection.removeTrack(e), t && n.peerconnection.addTrack(t), (e || t) && n.state === d.a ? n._renegotiate().then(function() {
-                                        var e = new p.a(n.peerconnection.localDescription.sdp);
-                                        n.notifyMySSRCUpdate(new p.a(i), e), r()
+                                    !e && t && t.isVideoTrack() ? n.peerconnection.clearRecvonlySsrc() : e && e.isVideoTrack() && !t && (n.peerconnection.clearRecvonlySsrc(), n.peerconnection.generateRecvonlySsrc()), e && n.peerconnection.removeTrack(e), t && n.peerconnection.addTrack(t), (e || t) && n.state === p.a ? n._renegotiate().then(function() {
+                                        var e = new h.a(n.peerconnection.localDescription.sdp);
+                                        n.notifyMySSRCUpdate(new h.a(i), e), r()
                                     }, r) : r()
                                 };
                             this.modificationQueue.push(r, function(e) {
-                                e ? T.error("Replace track error:", e) : T.info("Replace track done!")
+                                e ? C.error("Replace track error:", e) : C.info("Replace track done!")
                             })
                         }
                     }, {
@@ -21810,8 +22103,8 @@
                                     var e = $(this).attr("ssrc");
                                     a.push(e)
                                 }), t.media.forEach(function(e, t) {
-                                    f.a.findLine(e, "a=mid:" + i) && (n[t] || (n[t] = ""), a.forEach(function(r) {
-                                        var i = f.a.findLines(e, "a=ssrc:" + r);
+                                    m.a.findLine(e, "a=mid:" + i) && (n[t] || (n[t] = ""), a.forEach(function(r) {
+                                        var i = m.a.findLines(e, "a=ssrc:" + r);
                                         i.length && (n[t] += i.join("\r\n") + "\r\n")
                                     }), n[t] += o)
                                 })
@@ -21820,13 +22113,13 @@
                     }, {
                         key: "_verifyNoSSRCChanged",
                         value: function(e, t) {
-                            var n = new p.a(this.peerconnection.localDescription.sdp),
-                                r = new h.a(t, n),
+                            var n = new h.a(this.peerconnection.localDescription.sdp),
+                                r = new f.a(t, n),
                                 i = r.getNewMedia();
-                            if (Object.keys(i).length) return T.error(this + " - some SSRC were added on " + e, i), !1;
-                            r = new h.a(n, t);
+                            if (Object.keys(i).length) return C.error(this + " - some SSRC were added on " + e, i), !1;
+                            r = new f.a(n, t);
                             var o = r.getNewMedia();
-                            return !Object.keys(o).length || (T.error(this + " - some SSRCs were removed on " + e, o), !1)
+                            return !Object.keys(o).length || (C.error(this + " - some SSRCs were removed on " + e, o), !1)
                         }
                     }, {
                         key: "addTrackAsUnmute",
@@ -21849,7 +22142,7 @@
                                     if (!o) return void i("Error:  tried " + r + " track with no active peerconnection");
                                     var a = o.localDescription.sdp;
                                     (e ? o.removeTrackMute.bind(o, t) : o.addTrackUnmute.bind(o, t))() ? a && o.remoteDescription.sdp ? n._renegotiate().then(function() {
-                                        n._verifyNoSSRCChanged(r, new p.a(a)), i()
+                                        n._verifyNoSSRCChanged(r, new h.a(a)), i()
                                     }, i) : i(): i(r + " failed!")
                                 };
                             return new Promise(function(e, t) {
@@ -21865,9 +22158,9 @@
                             if (!this.peerconnection) return Promise.reject('Can not modify transfer active state, before "initialize" is called');
                             var r = e ? "audio active" : "audio inactive",
                                 i = t ? "video active" : "video inactive";
-                            T.info("Queued make " + i + ", " + r + " task...");
+                            C.info("Queued make " + i + ", " + r + " task...");
                             var o = function(r) {
-                                var i = n.state === d.a,
+                                var i = n.state === p.a,
                                     o = n.peerconnection.setAudioTransferActive(e);
                                 n._localVideoActive !== t && (n._localVideoActive = t, n.isP2P && i && n.sendContentModify(t));
                                 var a = n.peerconnection.setVideoTransferActive(n._localVideoActive && n._remoteVideoActive);
@@ -21884,27 +22177,27 @@
                         value: function(e) {
                             var n = this,
                                 r = t.parseVideoSenders(e);
-                            if (null === r) return void T.error(this + ' - failed to parse video "senders" attribute in"content-modify" action');
+                            if (null === r) return void C.error(this + ' - failed to parse video "senders" attribute in"content-modify" action');
                             var i = function(e) {
                                 n._assertNotEnded("content-modify") && n._modifyRemoteVideoActive(r) ? n._renegotiate().then(e, e) : e()
                             };
-                            T.debug(this + ' queued "content-modify" task(video senders="' + r + '")'), this.modificationQueue.push(i, function(e) {
-                                e && T.error('"content-modify" failed', e)
+                            C.debug(this + ' queued "content-modify" task(video senders="' + r + '")'), this.modificationQueue.push(i, function(e) {
+                                e && C.error('"content-modify" failed', e)
                             })
                         }
                     }, {
                         key: "_modifyRemoteVideoActive",
                         value: function(e) {
                             var t = "both" === e || "initiator" === e && this.isInitiator || "responder" === e && !this.isInitiator;
-                            return t !== this._remoteVideoActive && (T.debug(this + " new remote video active: " + t), this._remoteVideoActive = t), this.peerconnection.setVideoTransferActive(this._localVideoActive && this._remoteVideoActive)
+                            return t !== this._remoteVideoActive && (C.debug(this + " new remote video active: " + t), this._remoteVideoActive = t), this.peerconnection.setVideoTransferActive(this._localVideoActive && this._remoteVideoActive)
                         }
                     }, {
                         key: "notifyMySSRCUpdate",
                         value: function(e, t) {
-                            if (this.state !== d.a) return void T.warn("Skipping SSRC update in '" + this.state + " ' state.");
-                            var n = new h.a(t, e),
+                            if (this.state !== p.a) return void C.warn("Skipping SSRC update in '" + this.state + " ' state.");
+                            var n = new f.a(t, e),
                                 r = Object(u.$iq)({
-                                    to: this.peerjid,
+                                    to: this.remoteJid,
                                     type: "set"
                                 }).c("jingle", {
                                     xmlns: "urn:xmpp:jingle:1",
@@ -21912,9 +22205,9 @@
                                     initiator: this.initiator,
                                     sid: this.sid
                                 });
-                            n.toJingle(r) ? (T.info("Sending source-remove", r.tree()), this.connection.sendIQ(r, null, this.newJingleErrorHandler(r), 1e4)) : T.log("removal not necessary"), n = new h.a(e, t);
+                            n.toJingle(r) ? (C.info("Sending source-remove", r.tree()), this.connection.sendIQ(r, null, this.newJingleErrorHandler(r), 1e4)) : C.log("removal not necessary"), n = new f.a(e, t);
                             var i = Object(u.$iq)({
-                                to: this.peerjid,
+                                to: this.remoteJid,
                                 type: "set"
                             }).c("jingle", {
                                 xmlns: "urn:xmpp:jingle:1",
@@ -21922,7 +22215,7 @@
                                 initiator: this.initiator,
                                 sid: this.sid
                             });
-                            n.toJingle(i) ? (T.info("Sending source-add", i.tree()), this.connection.sendIQ(i, null, this.newJingleErrorHandler(i), 1e4)) : T.log("addition not necessary")
+                            n.toJingle(i) ? (C.info("Sending source-add", i.tree()), this.connection.sendIQ(i, null, this.newJingleErrorHandler(i), 1e4)) : C.log("addition not necessary")
                         }
                     }, {
                         key: "newJingleErrorHandler",
@@ -21938,7 +22231,7 @@
                                     var a = i.find(">text");
                                     a.length && (r.msg = a.text())
                                 }
-                                e || (r.reason = "timeout"), r.session = n.toString(), t ? t(r) : n.state === d.b && "item-not-found" === r.reason ? T.debug("Jingle error: " + JSON.stringify(r)) : _.a.callErrorHandler(new Error("Jingle error: " + JSON.stringify(r)))
+                                e || (r.reason = "timeout"), r.session = n.toString(), t ? t(r) : n.state === p.b && "item-not-found" === r.reason ? C.debug("Jingle error: " + JSON.stringify(r)) : _.a.callErrorHandler(new Error("Jingle error: " + JSON.stringify(r)))
                             }
                         }
                     }, {
@@ -21956,14 +22249,22 @@
                         value: function() {
                             return "JingleSessionPC[p2p=" + this.isP2P + ",initiator=" + this.isInitiator + ",sid=" + this.sid + "]"
                         }
+                    }, {
+                        key: "_abtestSuspendVideoEnabled",
+                        value: function() {
+                            if (this.room.options.abTesting && this.room.options.abTesting.enableSuspendVideoTest) {
+                                var e = this._getInitiatorJid();
+                                return Object(l.integerHash)(e) % 2 == 0
+                            }
+                        }
                     }], [{
                         key: "onJingleFatalError",
                         value: function(e, t) {
-                            this.room && (this.room.eventEmitter.emit(y.a.CONFERENCE_SETUP_FAILED, e, t), this.room.eventEmitter.emit(y.a.JINGLE_FATAL_ERROR, e, t))
+                            this.room && (this.room.eventEmitter.emit(b.a.CONFERENCE_SETUP_FAILED, e, t), this.room.eventEmitter.emit(b.a.JINGLE_FATAL_ERROR, e, t))
                         }
                     }]), t
-                }(l.a);
-            t.a = C
+                }(d.a);
+            t.a = E
         }).call(t, "modules/xmpp/JingleSessionPC.js")
     }, function(e, t, n) {
         (function(n, r) {
@@ -22065,7 +22366,7 @@
                             return e.apply(null, [u.eachSeries].concat(t))
                         }
                     },
-                    _ = function(e, t, n, r) {
+                    S = function(e, t, n, r) {
                         if (t = h(t, function(e, t) {
                                 return {
                                     index: t,
@@ -22086,11 +22387,11 @@
                             })
                         })
                     };
-                u.map = g(_), u.mapSeries = b(_), u.mapLimit = function(e, t, n, r) {
-                    return S(t)(e, n, r)
+                u.map = g(S), u.mapSeries = b(S), u.mapLimit = function(e, t, n, r) {
+                    return _(t)(e, n, r)
                 };
-                var S = function(e) {
-                    return y(e, _)
+                var _ = function(e) {
+                    return y(e, S)
                 };
                 u.reduce = function(e, t, n, r) {
                     u.eachSeries(e, function(e, r) {
@@ -22304,7 +22605,7 @@
                     }, e, t)
                 }, u.parallelLimit = function(e, t, n) {
                     w({
-                        map: S(t),
+                        map: _(t),
                         each: v(t)
                     }, e, n)
                 }, u.series = function(e, t) {
@@ -22591,6 +22892,18 @@
                 }.apply(t, i)) && (e.exports = o))
             }()
         }).call(t, n(32), n(38).setImmediate)
+    }, function(e, t) {
+        function n(e) {
+            if (!e) return 0;
+            var t = void 0,
+                n = 0,
+                r = void 0;
+            for (r = 0; r < e.length; r++) t = e.charCodeAt(r), n += t * Math.pow(31, e.length - 1 - r), n = Math.abs(0 | n);
+            return n
+        }
+        e.exports = {
+            integerHash: n
+        }
     }, function(e, t, n) {
         "use strict";
         (function(e) {
@@ -22613,7 +22926,7 @@
                 s = Object(i.getLogger)(e),
                 c = function() {
                     function e(t, n, i, o, a, s) {
-                        r(this, e), this.sid = t, this.localJid = n, this.peerjid = i, this.connection = o, this.mediaConstraints = a, this.iceConfig = s, this.usedrip = !0, this.dripContainer = [], this.room = null, this.state = null, this.rtc = null
+                        r(this, e), this.sid = t, this.localJid = n, this.remoteJid = i, this.connection = o, this.mediaConstraints = a, this.iceConfig = s, this.usedrip = !0, this.dripContainer = [], this.room = null, this.state = null, this.rtc = null
                     }
                     return a(e, [{
                         key: "initialize",
@@ -22622,7 +22935,7 @@
                                 var r = "attempt to initiate on session " + this.sid + "\n                   in state " + this.state;
                                 throw s.error(r), new Error(r)
                             }
-                            this.room = t, this.rtc = n, this.state = o.c, this.initiator = e ? this.localJid : this.peerjid, this.responder = e ? this.peerjid : this.localJid, this.doInitialize()
+                            this.room = t, this.rtc = n, this.state = o.c, this.initiator = e ? this.localJid : this.remoteJid, this.responder = e ? this.remoteJid : this.localJid, this.doInitialize()
                         }
                     }, {
                         key: "doInitialize",
@@ -22647,6 +22960,11 @@
                     }, {
                         key: "acceptOffer",
                         value: function(e, t, n) {}
+                    }, {
+                        key: "_getInitiatorJid",
+                        value: function() {
+                            return this.isInitiator ? this.localJid : this.remoteJid
+                        }
                     }]), e
                 }();
             t.a = c
@@ -22774,7 +23092,7 @@
             var a = n(0),
                 s = (n.n(a), n(4)),
                 c = n(52),
-                u = n(105),
+                u = n(106),
                 l = function() {
                     function e(e, t) {
                         for (var n = 0; n < t.length; n++) {
@@ -23418,7 +23736,7 @@
             var i = n(2),
                 o = (n.n(i), n(47)),
                 a = n.n(o),
-                s = n(112),
+                s = n(113),
                 c = n.n(s),
                 u = n(0),
                 l = (n.n(u), n(30)),
@@ -24020,8 +24338,8 @@
                 g = n(27),
                 y = n(5),
                 b = n(16),
-                _ = n.n(b),
-                S = function() {
+                S = n.n(b),
+                _ = function() {
                     function e(e, t) {
                         for (var n = 0; n < t.length; n++) {
                             var r = t[n];
@@ -24066,7 +24384,7 @@
                             }) || (y._trackEnded = !0)
                         }, y.isAudioTrack() && g.a.isDeviceChangeAvailable("output") && (y._onAudioOutputDeviceChanged = y.setAudioOutput.bind(y), g.a.addListener(v.a.AUDIO_OUTPUT_DEVICE_CHANGED, y._onAudioOutputDeviceChanged)), g.a.addListener(v.a.DEVICE_LIST_CHANGED, y._onDeviceListChanged), y._initNoDataFromSourceHandlers(), y
                     }
-                    return o(t, e), S(t, [{
+                    return o(t, e), _(t, [{
                         key: "isEnded",
                         value: function() {
                             return "ended" === this.getTrack().readyState || this._trackEnded
@@ -24075,7 +24393,7 @@
                         key: "_initNoDataFromSourceHandlers",
                         value: function() {
                             var e = this;
-                            if (this.isVideoTrack() && this.videoType === _.a.CAMERA) {
+                            if (this.isVideoTrack() && this.videoType === S.a.CAMERA) {
                                 var t = this._onNoDataFromSourceError.bind(this);
                                 this._setHandler("track_mute", function() {
                                     if (e._checkForCameraIssues()) {
@@ -24149,7 +24467,7 @@
                                 r = function() {
                                     return C.info("Mute " + t + ": " + e)
                                 };
-                            if (this.isAudioTrack() || this.videoType === _.a.DESKTOP || !f.a.doesVideoMuteByStreamRemove()) r(), this.track && (this.track.enabled = !e);
+                            if (this.isAudioTrack() || this.videoType === S.a.DESKTOP || !f.a.doesVideoMuteByStreamRemove()) r(), this.track && (this.track.enabled = !e);
                             else if (e) n = new Promise(function(e, n) {
                                 r(), t._removeStreamFromConferenceAsMute(function() {
                                     t._unregisterHandlers(), t._stopStream(), t._setStream(null), e()
@@ -24259,7 +24577,7 @@
                     }, {
                         key: "getCameraFacingMode",
                         value: function() {
-                            if (this.isVideoTrack() && this.videoType === _.a.CAMERA) {
+                            if (this.isVideoTrack() && this.videoType === S.a.CAMERA) {
                                 var e = void 0;
                                 try {
                                     e = this.track.getSettings()
@@ -24280,12 +24598,12 @@
                     }, {
                         key: "_switchCamera",
                         value: function() {
-                            this.isVideoTrack() && this.videoType === _.a.CAMERA && "function" == typeof this.track._switchCamera && (this.track._switchCamera(), this._facingMode = this._facingMode === s.a.ENVIRONMENT ? s.a.USER : s.a.ENVIRONMENT)
+                            this.isVideoTrack() && this.videoType === S.a.CAMERA && "function" == typeof this.track._switchCamera && (this.track._switchCamera(), this._facingMode = this._facingMode === s.a.ENVIRONMENT ? s.a.USER : s.a.ENVIRONMENT)
                         }
                     }, {
                         key: "_checkForCameraIssues",
                         value: function() {
-                            return !(!this.isVideoTrack() || this._stopStreamInProgress || this.videoType === _.a.DESKTOP || this._isReceivingData())
+                            return !(!this.isVideoTrack() || this._stopStreamInProgress || this.videoType === S.a.DESKTOP || this._isReceivingData())
                         }
                     }, {
                         key: "_isReceivingData",
@@ -24327,11 +24645,11 @@
                 }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t)
             }
             var a = n(0),
-                s = (n.n(a), n(120)),
+                s = (n.n(a), n(121)),
                 c = n.n(s),
-                u = n(123),
-                l = n(126),
-                d = n(127),
+                u = n(124),
+                l = n(127),
+                d = n(128),
                 p = n(19),
                 h = n.n(p),
                 f = n(12),
@@ -24383,8 +24701,8 @@
                     gathering: "gathering",
                     complete: "complete"
                 },
-                _ = "jitsi-ortc-cname-" + h.a.randomInt(1e4, 99999),
-                S = function(e) {
+                S = "jitsi-ortc-cname-" + h.a.randomInt(1e4, 99999),
+                _ = function(e) {
                     function t(e) {
                         r(this, t);
                         var n = i(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this));
@@ -24645,15 +24963,15 @@
                                         v = m(f, 2),
                                         y = v[0],
                                         b = v[1],
-                                        _ = b.rtpSender.track;
-                                    if ("ended" === _.readyState) {
-                                        g.warn("_addStream() an already handled track was stopped, track.id:" + _.id);
+                                        S = b.rtpSender.track;
+                                    if ("ended" === S.readyState) {
+                                        g.warn("_addStream() an already handled track was stopped, track.id:" + S.id);
                                         try {
                                             b.rtpSender.stop()
                                         } catch (e) {
                                             g.warn("rtpSender.stop() failed:" + e)
                                         }
-                                        this._localTrackInfos.delete(_.id)
+                                        this._localTrackInfos.delete(S.id)
                                     } else if (b.stream === e && !e.getTrackById(y)) {
                                         g.warn("_addStream() a track in this stream was removed, track.id:" + y);
                                         try {
@@ -24661,7 +24979,7 @@
                                         } catch (e) {
                                             g.warn("rtpSender.stop() failed:" + e)
                                         }
-                                        this._localTrackInfos.delete(_.id)
+                                        this._localTrackInfos.delete(S.id)
                                     }
                                 }
                             } catch (e) {
@@ -24721,11 +25039,11 @@
                                 if (u.endOfCandidates = "end-of-candidates", u.setup = "offer" === e ? "actpass" : "server" === a.role ? "active" : "passive", "audio" === o || "video" === o) {
                                     u.rtp = [], u.rtcpFb = [], u.fmtp = [];
                                     var b = [],
-                                        S = !0,
+                                        _ = !0,
                                         T = !1,
                                         C = void 0;
                                     try {
-                                        for (var E, w = s.codecs[Symbol.iterator](); !(S = (E = w.next()).done); S = !0) {
+                                        for (var E, w = s.codecs[Symbol.iterator](); !(_ = (E = w.next()).done); _ = !0) {
                                             var R = E.value;
                                             if (!R.kind || R.kind === o) {
                                                 b.push(R.preferredPayloadType);
@@ -24763,11 +25081,11 @@
                                                     j = void 0;
                                                 try {
                                                     for (var F, U = (R.rtcpFeedback || [])[Symbol.iterator](); !(L = (F = U.next()).done); L = !0) {
-                                                        var H = F.value;
+                                                        var B = F.value;
                                                         u.rtcpFb.push({
                                                             payload: R.preferredPayloadType,
-                                                            subtype: H.parameter || void 0,
-                                                            type: H.type
+                                                            subtype: B.parameter || void 0,
+                                                            type: B.type
                                                         })
                                                     }
                                                 } catch (e) {
@@ -24785,17 +25103,17 @@
                                         T = !0, C = e
                                     } finally {
                                         try {
-                                            !S && w.return && w.return()
+                                            !_ && w.return && w.return()
                                         } finally {
                                             if (T) throw C
                                         }
                                     }
                                     0 === b.length ? (u.payloads = "9", u.port = 0, u.direction = "inactive") : u.payloads = b.join(" "), u.ssrcs = [], u.ssrcGroups = [];
-                                    var B = !0,
+                                    var H = !0,
                                         G = !1,
                                         J = void 0;
                                     try {
-                                        for (var V, W = c.values()[Symbol.iterator](); !(B = (V = W.next()).done); B = !0) {
+                                        for (var V, W = c.values()[Symbol.iterator](); !(H = (V = W.next()).done); H = !0) {
                                             var q = V.value,
                                                 K = q.rtpSender,
                                                 z = q.stream.id,
@@ -24806,7 +25124,7 @@
                                                 Q && !q.rtxSsrc && (q.rtxSsrc = q.ssrc + 1), u.ssrcs.push({
                                                     attribute: "cname",
                                                     id: q.ssrc,
-                                                    value: _
+                                                    value: S
                                                 }), u.ssrcs.push({
                                                     attribute: "msid",
                                                     id: q.ssrc,
@@ -24822,7 +25140,7 @@
                                                 }), Q && (u.ssrcs.push({
                                                     attribute: "cname",
                                                     id: q.rtxSsrc,
-                                                    value: _
+                                                    value: S
                                                 }), u.ssrcs.push({
                                                     attribute: "msid",
                                                     id: q.rtxSsrc,
@@ -24845,7 +25163,7 @@
                                         G = !0, J = e
                                     } finally {
                                         try {
-                                            !B && W.return && W.return()
+                                            !H && W.return && W.return()
                                         } finally {
                                             if (G) throw J
                                         }
@@ -24923,11 +25241,11 @@
                                     if (p) throw h
                                 }
                             }
-                            var S = !0,
+                            var _ = !0,
                                 T = !1,
                                 C = void 0;
                             try {
-                                for (var E, w = this._mids[Symbol.iterator](); !(S = (E = w.next()).done); S = !0) {
+                                for (var E, w = this._mids[Symbol.iterator](); !(_ = (E = w.next()).done); _ = !0) {
                                     var R = E.value,
                                         k = m(R, 2),
                                         I = k[0],
@@ -24938,7 +25256,7 @@
                                 T = !0, C = e
                             } finally {
                                 try {
-                                    !S && w.return && w.return()
+                                    !_ && w.return && w.return()
                                 } finally {
                                     if (T) throw C
                                 }
@@ -25113,15 +25431,15 @@
                                     g = void 0;
                                 try {
                                     for (var y, b = o.codecs[Symbol.iterator](); !(m = (y = b.next()).done); m = !0) {
-                                        var _ = y.value;
-                                        if (_.kind === e && "rtx" === _.name) {
+                                        var S = y.value;
+                                        if (S.kind === e && "rtx" === S.name) {
                                             s.push({
-                                                clockRate: _.clockRate,
-                                                mimeType: _.mimeType,
+                                                clockRate: S.clockRate,
+                                                mimeType: S.mimeType,
                                                 name: "rtx",
-                                                parameters: _.parameters,
-                                                payloadType: _.preferredPayloadType,
-                                                rtcpFeedback: _.rtcpFeedback
+                                                parameters: S.parameters,
+                                                payloadType: S.preferredPayloadType,
+                                                rtcpFeedback: S.rtcpFeedback
                                             });
                                             break
                                         }
@@ -25137,14 +25455,14 @@
                                 }
                             }
                             a.codecs = s;
-                            var S = {
+                            var _ = {
                                 active: !0,
                                 codecPayloadType: c,
                                 ssrc: n
                             };
-                            r && (S.rtx = {
+                            r && (_.rtx = {
                                 ssrc: r
-                            }), a.encodings.push(S);
+                            }), a.encodings.push(_);
                             var T = !0,
                                 C = !1,
                                 E = void 0;
@@ -25173,7 +25491,7 @@
                         value: function(e, t) {
                             var n = t.ssrc,
                                 r = t.rtxSsrc,
-                                i = _,
+                                i = S,
                                 o = this._localCapabilities,
                                 a = {
                                     codecs: [],
@@ -25226,15 +25544,15 @@
                                     g = void 0;
                                 try {
                                     for (var y, b = o.codecs[Symbol.iterator](); !(m = (y = b.next()).done); m = !0) {
-                                        var S = y.value;
-                                        if (S.kind === e && "rtx" === S.name) {
+                                        var _ = y.value;
+                                        if (_.kind === e && "rtx" === _.name) {
                                             s.push({
-                                                clockRate: S.clockRate,
-                                                mimeType: S.mimeType,
+                                                clockRate: _.clockRate,
+                                                mimeType: _.mimeType,
                                                 name: "rtx",
-                                                parameters: S.parameters,
-                                                payloadType: S.preferredPayloadType,
-                                                rtcpFeedback: S.rtcpFeedback
+                                                parameters: _.parameters,
+                                                payloadType: _.preferredPayloadType,
+                                                rtcpFeedback: _.rtcpFeedback
                                             });
                                             break
                                         }
@@ -25314,8 +25632,8 @@
                             try {
                                 for (var g, y = this._remoteTrackInfos.values()[Symbol.iterator](); !(f = (g = y.next()).done); f = !0) {
                                     var b = g.value,
-                                        _ = b.rtpReceiver;
-                                    i.push(_)
+                                        S = b.rtpReceiver;
+                                    i.push(S)
                                 }
                             } catch (e) {
                                 m = !0, v = e
@@ -25333,11 +25651,11 @@
                             })), "function" == typeof n.msGetStats && o.push(n.msGetStats().catch(function() {
                                 return null
                             })));
-                            var S = !0,
+                            var _ = !0,
                                 T = !1,
                                 C = void 0;
                             try {
-                                for (var E, w = r[Symbol.iterator](); !(S = (E = w.next()).done); S = !0) {
+                                for (var E, w = r[Symbol.iterator](); !(_ = (E = w.next()).done); _ = !0) {
                                     var h = E.value;
                                     ! function(e) {
                                         var t = "audio" === e.track.kind;
@@ -25372,7 +25690,7 @@
                                 T = !0, C = e
                             } finally {
                                 try {
-                                    !S && w.return && w.return()
+                                    !_ && w.return && w.return()
                                 } finally {
                                     if (T) throw C
                                 }
@@ -25382,7 +25700,7 @@
                                 I = void 0;
                             try {
                                 for (var P, A = i[Symbol.iterator](); !(R = (P = A.next()).done); R = !0) {
-                                    var _ = P.value;
+                                    var S = P.value;
                                     ! function(e) {
                                         var t = "audio" === e.track.kind;
                                         o.push(e.getStats().then(function(e) {
@@ -25410,7 +25728,7 @@
                                         }).catch(function() {
                                             return null
                                         }))
-                                    }(_)
+                                    }(S)
                                 }
                             } catch (e) {
                                 k = !0, I = e
@@ -25517,8 +25835,8 @@
                                         var v = f.kind,
                                             y = f.rtxSsrc,
                                             b = f.streamId,
-                                            _ = f.trackId,
-                                            S = f.cname,
+                                            S = f.trackId,
+                                            _ = f.cname,
                                             T = !this._remoteStreams.has(b),
                                             C = void 0;
                                         T ? (g.debug("_receiveMedia() new remote stream, id:" + b), C = new MediaStream, C.jitsiRemoteId = b, n.set(b, C), this._remoteStreams.set(b, C)) : C = this._remoteStreams.get(b);
@@ -25526,7 +25844,7 @@
                                             w = this._getParametersForRtpReceiver(v, {
                                                 ssrc: h,
                                                 rtxSsrc: y,
-                                                cname: S
+                                                cname: _
                                             });
                                         f.track = E.track, E.onerror = function(e) {
                                             g.error('rtpReceiver "error" event, event:'), g.error(e)
@@ -25534,7 +25852,7 @@
                                         try {
                                             E.receive(w);
                                             var R = f.track;
-                                            R.jitsiRemoteId = _, C.addTrack(R), n.has(b) || r.set(R, C)
+                                            R.jitsiRemoteId = S, C.addTrack(R), n.has(b) || r.set(R, C)
                                         } catch (e) {
                                             g.error("rtpReceiver.receive() failed:" + e.message), g.error(e)
                                         }
@@ -25583,10 +25901,10 @@
                                 j = void 0;
                             try {
                                 for (var F, U = r[Symbol.iterator](); !(L = (F = U.next()).done); L = !0) {
-                                    var H = F.value,
-                                        B = m(H, 2),
-                                        N = B[0],
-                                        C = B[1],
+                                    var B = F.value,
+                                        H = m(B, 2),
+                                        N = H[0],
+                                        C = H[1],
                                         G = new Event("addtrack");
                                     G.track = N, C.dispatchEvent(G)
                                 }
@@ -25927,12 +26245,12 @@
                         }
                     }]), t
                 }(c.a.EventTarget);
-            t.a = S
+            t.a = _
         }).call(t, "modules/RTC/ortc/RTCPeerConnection.js")
     }, function(e, t, n) {
         e.exports = {
-            EventTarget: n(121),
-            Event: n(122)
+            EventTarget: n(122),
+            Event: n(123)
         }
     }, function(e, t) {
         function n() {
@@ -26235,21 +26553,21 @@
                         }
                         var y = !0,
                             b = !1,
-                            _ = void 0;
+                            S = void 0;
                         try {
-                            for (var S, T = (c.fmtp || [])[Symbol.iterator](); !(y = (S = T.next()).done); y = !0) {
-                                var C = S.value,
+                            for (var _, T = (c.fmtp || [])[Symbol.iterator](); !(y = (_ = T.next()).done); y = !0) {
+                                var C = _.value,
                                     E = p.a.parseFmtpConfig(C.config),
                                     g = t.get(C.payload);
                                 g && (g.parameters = E)
                             }
                         } catch (e) {
-                            b = !0, _ = e
+                            b = !0, S = e
                         } finally {
                             try {
                                 !y && T.return && T.return()
                             } finally {
-                                if (b) throw _
+                                if (b) throw S
                             }
                         }
                         var w = !0,
@@ -26444,11 +26762,11 @@
                                 if (p) throw h
                             }
                         }
-                        var _ = !0,
-                            S = !1,
+                        var S = !0,
+                            _ = !1,
                             T = void 0;
                         try {
-                            for (var C, E = (u.ssrcs || [])[Symbol.iterator](); !(_ = (C = E.next()).done); _ = !0) {
+                            for (var C, E = (u.ssrcs || [])[Symbol.iterator](); !(S = (C = E.next()).done); S = !0) {
                                 var w = C.value,
                                     y = w.id;
                                 if (!r.has(y)) {
@@ -26478,12 +26796,12 @@
                                 }
                             }
                         } catch (e) {
-                            S = !0, T = e
+                            _ = !0, T = e
                         } finally {
                             try {
-                                !_ && E.return && E.return()
+                                !S && E.return && E.return()
                             } finally {
-                                if (S) throw T
+                                if (_) throw T
                             }
                         }
                     }
@@ -26544,9 +26862,9 @@
                                 try {
                                     for (var g, y = Object.keys(o.parameters)[Symbol.iterator](); !(f = (g = y.next()).done); f = !0) {
                                         var b = g.value,
-                                            _ = o.parameters[b];
-                                        if (b === p && _ === h) {
-                                            a.parameters[b] = _;
+                                            S = o.parameters[b];
+                                        if (b === p && S === h) {
+                                            a.parameters[b] = S;
                                             break
                                         }
                                     }
@@ -26569,11 +26887,11 @@
                                 if (c) throw u
                             }
                         }
-                        var S = !0,
+                        var _ = !0,
                             T = !1,
                             C = void 0;
                         try {
-                            for (var E, w = e.rtcpFeedback[Symbol.iterator](); !(S = (E = w.next()).done); S = !0) {
+                            for (var E, w = e.rtcpFeedback[Symbol.iterator](); !(_ = (E = w.next()).done); _ = !0) {
                                 var R = E.value;
                                 ! function(e) {
                                     var t = o.rtcpFeedback.find(function(t) {
@@ -26586,7 +26904,7 @@
                             T = !0, C = e
                         } finally {
                             try {
-                                !S && w.return && w.return()
+                                !_ && w.return && w.return()
                             } finally {
                                 if (T) throw C
                             }
@@ -26636,10 +26954,10 @@
             }
             var y = !0,
                 b = !1,
-                _ = void 0;
+                S = void 0;
             try {
-                for (var S, T = e.headerExtensions[Symbol.iterator](); !(y = (S = T.next()).done); y = !0) {
-                    var C = S.value;
+                for (var _, T = e.headerExtensions[Symbol.iterator](); !(y = (_ = T.next()).done); y = !0) {
+                    var C = _.value;
                     ! function(e) {
                         var r = t.headerExtensions.find(function(t) {
                             return t.kind === e.kind && t.uri === e.uri
@@ -26656,12 +26974,12 @@
                     }(C)
                 }
             } catch (e) {
-                b = !0, _ = e
+                b = !0, S = e
             } finally {
                 try {
                     !y && T.return && T.return()
                 } finally {
-                    if (b) throw _
+                    if (b) throw S
                 }
             }
             var E = !0,
@@ -26764,17 +27082,17 @@
                 }
             }
 
-			// BAO
+            // BAO
 
             function a(e, t) {
                 return void e(true, false);
             }
 
             function s(e, t, n) {
-				chrome.desktopCapture.chooseDesktopMedia(e.desktopSharingChromeSources, null, function(streamId)
-				{
-					d({ streamId: streamId }, t, n);
-				});
+                chrome.desktopCapture.chooseDesktopMedia(e.desktopSharingChromeSources, null, function(streamId)
+                {
+                    d({ streamId: streamId }, t, n);
+                });
             }
 
             function c(e) {
@@ -26820,13 +27138,13 @@
             }
 
             function p(e) {
-                if (!e.desktopSharingFirefoxDisabled && !1 !== _ && !0 !== _) {
-                    if (!e.desktopSharingFirefoxExtId) return void(_ = !1);
+                if (!e.desktopSharingFirefoxDisabled && !1 !== S && !0 !== S) {
+                    if (!e.desktopSharingFirefoxExtId) return void(S = !1);
                     var t = document.createElement("img");
                     t.onload = function() {
-                        v.log("Detected firefox screen sharing extension."), _ = !0
+                        v.log("Detected firefox screen sharing extension."), S = !0
                     }, t.onerror = function() {
-                        v.log("Detected lack of firefox screen sharing extension."), _ = !1
+                        v.log("Detected lack of firefox screen sharing extension."), S = !1
                     };
                     var n = e.desktopSharingFirefoxExtId.replace("@", "."),
                         r = document.location.hostname,
@@ -26841,8 +27159,8 @@
                 g = n(3),
                 y = !1,
                 b = !1,
-                _ = null,
-                S = !1,
+                S = null,
+                _ = !1,
                 T = null,
                 C = {
                     intChromeExtPromise: null,
@@ -26882,9 +27200,9 @@
                         var i = this,
                             o = !1,
                             a = this.options.desktopSharingFirefoxMaxVersionExtRequired;
-                        return (-1 === a || a >= 0 && m.a.getFirefoxVersion() <= a) && (o = !0, v.log("Jidesha extension required on firefox version " + m.a.getFirefoxVersion())), o && !0 !== _ ? (S && (S = !1, p(this.options)), null === _ ? (window.setTimeout(function() {
-                            null === _ && (_ = !1), i.obtainScreenOnFirefox(t, n)
-                        }, 300), void v.log("Waiting for detection of jidesha on firefox to finish.")) : (_ = null, S = !0, void n(new h.a(f.FIREFOX_EXTENSION_NEEDED)))) : void r(e, t, n)
+                        return (-1 === a || a >= 0 && m.a.getFirefoxVersion() <= a) && (o = !0, v.log("Jidesha extension required on firefox version " + m.a.getFirefoxVersion())), o && !0 !== S ? (_ && (_ = !1, p(this.options)), null === S ? (window.setTimeout(function() {
+                            null === S && (S = !1), i.obtainScreenOnFirefox(t, n)
+                        }, 300), void v.log("Waiting for detection of jidesha on firefox to finish.")) : (S = null, _ = !0, void n(new h.a(f.FIREFOX_EXTENSION_NEEDED)))) : void r(e, t, n)
                     },
                     obtainScreenOnElectron: function() {
                         var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
@@ -26956,7 +27274,7 @@
     }, function(e, t, n) {
         "use strict";
         (function(t) {
-            var r = n(130);
+            var r = n(131);
             e.exports = r({
                 window: t.window
             })
@@ -26981,11 +27299,11 @@
                     disableLog: r.disableLog,
                     disableWarnings: r.disableWarnings
                 },
-                l = n(131) || null,
-                d = n(133) || null,
-                p = n(137) || null,
-                h = n(139) || null,
-                f = n(140) || null;
+                l = n(132) || null,
+                d = n(134) || null,
+                p = n(138) || null,
+                h = n(140) || null,
+                f = n(141) || null;
             switch (c.browser) {
                 case "chrome":
                     if (!l || !l.shimPeerConnection || !o.shimChrome) return s("Chrome shim is not included in this adapter release."), u;
@@ -27362,7 +27680,7 @@
             shimGetSendersWithDtmf: a.shimGetSendersWithDtmf,
             shimSourceObject: a.shimSourceObject,
             shimPeerConnection: a.shimPeerConnection,
-            shimGetUserMedia: n(132)
+            shimGetUserMedia: n(133)
         }
     }, function(e, t, n) {
         "use strict";
@@ -27523,9 +27841,9 @@
     }, function(e, t, n) {
         "use strict";
         var r = n(10),
-            i = n(134);
+            i = n(135);
         e.exports = {
-            shimGetUserMedia: n(136),
+            shimGetUserMedia: n(137),
             shimPeerConnection: function(e) {
                 var t = r.detectBrowser(e);
                 if (e.RTCIceGatherer && (e.RTCIceCandidate || (e.RTCIceCandidate = function(e) {
@@ -27555,12 +27873,12 @@
         "use strict";
 
         function r(e, t, n, r, i) {
-            var o = c.writeRtpDescription(e.kind, t);
-            if (o += c.writeIceParameters(e.iceGatherer.getLocalParameters()), o += c.writeDtlsParameters(e.dtlsTransport.getLocalParameters(), "offer" === n ? "actpass" : i || "active"), o += "a=mid:" + e.mid + "\r\n", e.direction ? o += "a=" + e.direction + "\r\n" : e.rtpSender && e.rtpReceiver ? o += "a=sendrecv\r\n" : e.rtpSender ? o += "a=sendonly\r\n" : e.rtpReceiver ? o += "a=recvonly\r\n" : o += "a=inactive\r\n", e.rtpSender) {
+            var o = l.writeRtpDescription(e.kind, t);
+            if (o += l.writeIceParameters(e.iceGatherer.getLocalParameters()), o += l.writeDtlsParameters(e.dtlsTransport.getLocalParameters(), "offer" === n ? "actpass" : i || "active"), o += "a=mid:" + e.mid + "\r\n", e.rtpSender && e.rtpReceiver ? o += "a=sendrecv\r\n" : e.rtpSender ? o += "a=sendonly\r\n" : e.rtpReceiver ? o += "a=recvonly\r\n" : o += "a=inactive\r\n", e.rtpSender) {
                 var a = "msid:" + r.id + " " + e.rtpSender.track.id + "\r\n";
                 o += "a=" + a, o += "a=ssrc:" + e.sendEncodingParameters[0].ssrc + " " + a, e.sendEncodingParameters[0].rtx && (o += "a=ssrc:" + e.sendEncodingParameters[0].rtx.ssrc + " " + a, o += "a=ssrc-group:FID " + e.sendEncodingParameters[0].ssrc + " " + e.sendEncodingParameters[0].rtx.ssrc + "\r\n")
             }
-            return o += "a=ssrc:" + e.sendEncodingParameters[0].ssrc + " cname:" + c.localCName + "\r\n", e.rtpSender && e.sendEncodingParameters[0].rtx && (o += "a=ssrc:" + e.sendEncodingParameters[0].rtx.ssrc + " cname:" + c.localCName + "\r\n"), o
+            return o += "a=ssrc:" + e.sendEncodingParameters[0].ssrc + " cname:" + l.localCName + "\r\n", e.rtpSender && e.sendEncodingParameters[0].rtx && (o += "a=ssrc:" + e.sendEncodingParameters[0].rtx.ssrc + " cname:" + l.localCName + "\r\n"), o
         }
 
         function i(e, t) {
@@ -27574,7 +27892,6 @@
                         return 0 !== e.indexOf("turn:") || -1 === e.indexOf("transport=udp") || -1 !== e.indexOf("turn:[") || n ? 0 === e.indexOf("stun:") && t >= 14393 && -1 === e.indexOf("?transport=udp") : (n = !0, !0)
                     }), delete e.url, e.urls = i ? r[0] : r, !!r.length
                 }
-                return !1
             })
         }
 
@@ -27637,7 +27954,19 @@
             });
             return n || e.addRemoteCandidate(t), !n
         }
-        var c = n(56);
+
+        function c(e, t) {
+            t.addTrack(e);
+            var n = new Event("addtrack");
+            n.track = e, t.dispatchEvent(n)
+        }
+
+        function u(e, t) {
+            t.removeTrack(e);
+            var n = new Event("removetrack");
+            n.track = e, t.dispatchEvent(n)
+        }
+        var l = n(56);
         e.exports = function(e, t) {
             var n = function(n) {
                 var r = this,
@@ -27669,7 +27998,7 @@
                         gatherPolicy: n.iceTransportPolicy
                     });
                 else n.iceCandidatePoolSize = 0;
-                this._config = n, this.transceivers = [], this._sdpSessionId = c.generateSessionId(), this._sdpSessionVersion = 0, this._dtlsRole = void 0
+                this._config = n, this.transceivers = [], this._sdpSessionId = l.generateSessionId(), this._sdpSessionVersion = 0, this._dtlsRole = void 0
             };
             return n.prototype._emitGatheringStateChange = function() {
                 var e = new Event("icegatheringstatechange");
@@ -27696,6 +28025,7 @@
                         sendEncodingParameters: null,
                         recvEncodingParameters: null,
                         stream: null,
+                        associatedRemoteMediaStreams: [],
                         wantReceive: !0
                     };
                 if (this.usingBundle && t) n.iceTransport = this.transceivers[0].iceTransport, n.dtlsTransport = this.transceivers[0].dtlsTransport;
@@ -27723,9 +28053,27 @@
                         n.addTrack(e, r)
                     })
                 }
+            }, n.prototype.removeTrack = function(t) {
+                if (!(t instanceof e.RTCRtpSender)) throw new TypeError("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.");
+                var n = this.transceivers.find(function(e) {
+                    return e.rtpSender === t
+                });
+                if (!n) {
+                    var r = new Error("Sender was not created by this connection.");
+                    throw r.name = "InvalidAccessError", r
+                }
+                var i = n.stream;
+                n.rtpSender.stop(), n.rtpSender = null, n.track = null, n.stream = null, -1 === this.transceivers.map(function(e) {
+                    return e.stream
+                }).indexOf(i) && this.localStreams.indexOf(i) > -1 && this.localStreams.splice(this.localStreams.indexOf(i), 1), this._maybeFireNegotiationNeeded()
             }, n.prototype.removeStream = function(e) {
-                var t = this.localStreams.indexOf(e);
-                t > -1 && (this.localStreams.splice(t, 1), this._maybeFireNegotiationNeeded())
+                var t = this;
+                e.getTracks().forEach(function(e) {
+                    var n = t.getSenders().find(function(t) {
+                        return t.track === e
+                    });
+                    n && t.removeTrack(n)
+                })
             }, n.prototype.getSenders = function() {
                 return this.transceivers.filter(function(e) {
                     return !!e.rtpSender
@@ -27767,13 +28115,13 @@
                             };
                             var a = e.candidate,
                                 s = !a || 0 === Object.keys(a).length;
-                            s ? "new" !== i.state && "gathering" !== i.state || (i.state = "completed") : ("new" === i.state && (i.state = "gathering"), a.component = 1, o.candidate.candidate = c.writeCandidate(a));
-                            var u = c.splitSections(r.localDescription.sdp);
-                            u[o.candidate.sdpMLineIndex + 1] += s ? "a=end-of-candidates\r\n" : "a=" + o.candidate.candidate + "\r\n", r.localDescription.sdp = u.join("");
-                            var l = r.transceivers.every(function(e) {
+                            s ? "new" !== i.state && "gathering" !== i.state || (i.state = "completed") : ("new" === i.state && (i.state = "gathering"), a.component = 1, o.candidate.candidate = l.writeCandidate(a));
+                            var c = l.splitSections(r.localDescription.sdp);
+                            c[o.candidate.sdpMLineIndex + 1] += s ? "a=end-of-candidates\r\n" : "a=" + o.candidate.candidate + "\r\n", r.localDescription.sdp = c.join("");
+                            var u = r.transceivers.every(function(e) {
                                 return e.iceGatherer && "completed" === e.iceGatherer.state
                             });
-                            "gathering" !== r.iceGatheringState && (r.iceGatheringState = "gathering", r._emitGatheringStateChange()), s || (r.dispatchEvent(o), "function" == typeof r.onicecandidate && r.onicecandidate(o)), l && (r.dispatchEvent(new Event("icecandidate")), "function" == typeof r.onicecandidate && r.onicecandidate(new Event("icecandidate")), r.iceGatheringState = "complete", r._emitGatheringStateChange())
+                            "gathering" !== r.iceGatheringState && (r.iceGatheringState = "gathering", r._emitGatheringStateChange()), s || (r.dispatchEvent(o), "function" == typeof r.onicecandidate && r.onicecandidate(o)), u && (r.dispatchEvent(new Event("icecandidate")), "function" == typeof r.onicecandidate && r.onicecandidate(new Event("icecandidate")), r.iceGatheringState = "complete", r._emitGatheringStateChange())
                         }
                     }, e.setTimeout(function() {
                         o.forEach(function(e) {
@@ -27810,7 +28158,7 @@
             }, n.prototype._transceive = function(e, n, r) {
                 var i = o(e.localCapabilities, e.remoteCapabilities);
                 n && e.rtpSender && (i.encodings = e.sendEncodingParameters, i.rtcp = {
-                    cname: c.localCName,
+                    cname: l.localCName,
                     compound: e.rtcpParameters.compound
                 }, e.recvEncodingParameters.length && (i.rtcp.ssrc = e.recvEncodingParameters[0].ssrc), e.rtpSender.send(i)), r && e.rtpReceiver && i.codecs.length > 0 && ("video" === e.kind && e.recvEncodingParameters && t < 15019 && e.recvEncodingParameters.forEach(function(e) {
                     delete e.rtx
@@ -27826,26 +28174,26 @@
                     o.name = "InvalidStateError", n.length > 2 && "function" == typeof n[2] && n[2].apply(null, [o]), i(o)
                 });
                 var r, i;
-                if ("offer" === e.type) r = c.splitSections(e.sdp), i = r.shift(), r.forEach(function(e, n) {
-                    var r = c.parseRtpParameters(e);
+                if ("offer" === e.type) r = l.splitSections(e.sdp), i = r.shift(), r.forEach(function(e, n) {
+                    var r = l.parseRtpParameters(e);
                     t.transceivers[n].localCapabilities = r
                 }), this.transceivers.forEach(function(e, n) {
                     t._gather(e.mid, n)
                 });
                 else if ("answer" === e.type) {
-                    r = c.splitSections(t.remoteDescription.sdp), i = r.shift();
-                    var s = c.matchPrefix(i, "a=ice-lite").length > 0;
+                    r = l.splitSections(t.remoteDescription.sdp), i = r.shift();
+                    var s = l.matchPrefix(i, "a=ice-lite").length > 0;
                     r.forEach(function(e, n) {
                         var r = t.transceivers[n],
                             a = r.iceGatherer,
-                            u = r.iceTransport,
-                            l = r.dtlsTransport,
+                            c = r.iceTransport,
+                            u = r.dtlsTransport,
                             d = r.localCapabilities,
                             p = r.remoteCapabilities;
-                        if (!(c.isRejected(e) && 1 === !c.matchPrefix(e, "a=bundle-only").length || r.isDatachannel)) {
-                            var h = c.getIceParameters(e, i),
-                                f = c.getDtlsParameters(e, i);
-                            s && (f.role = "server"), t.usingBundle && 0 !== n || (t._gather(r.mid, n), "new" === u.state && u.start(a, h, s ? "controlling" : "controlled"), "new" === l.state && l.start(f));
+                        if (!(l.isRejected(e) && 1 === !l.matchPrefix(e, "a=bundle-only").length || r.isDatachannel)) {
+                            var h = l.getIceParameters(e, i),
+                                f = l.getDtlsParameters(e, i);
+                            s && (f.role = "server"), t.usingBundle && 0 !== n || (t._gather(r.mid, n), "new" === c.state && c.start(a, h, s ? "controlling" : "controlled"), "new" === u.state && u.start(f));
                             var m = o(d, p);
                             t._transceive(r, m.codecs.length > 0, !1)
                         }
@@ -27864,9 +28212,9 @@
                     default:
                         throw new TypeError('unsupported type "' + e.type + '"')
                 }
-                var u = arguments.length > 1 && "function" == typeof arguments[1] && arguments[1];
+                var c = arguments.length > 1 && "function" == typeof arguments[1] && arguments[1];
                 return new Promise(function(e) {
-                    u && u.apply(null), e()
+                    c && c.apply(null), e()
                 })
             }, n.prototype.setRemoteDescription = function(n) {
                 var r = this,
@@ -27879,59 +28227,66 @@
                 this.remoteStreams.forEach(function(e) {
                     o[e.id] = e
                 });
-                var u = [],
-                    l = c.splitSections(n.sdp),
-                    d = l.shift(),
-                    p = c.matchPrefix(d, "a=ice-lite").length > 0,
-                    h = c.matchPrefix(d, "a=group:BUNDLE ").length > 0;
-                this.usingBundle = h;
-                var f = c.matchPrefix(d, "a=ice-options:")[0];
-                switch (this.canTrickleIceCandidates = !!f && f.substr(14).split(" ").indexOf("trickle") >= 0, l.forEach(function(i, a) {
-                    var l = c.splitLines(i),
-                        f = c.getKind(i),
-                        m = c.isRejected(i) && 1 === !c.matchPrefix(i, "a=bundle-only").length,
-                        v = l[0].substr(2).split(" ")[2],
-                        g = c.getDirection(i, d),
-                        y = c.parseMsid(i),
-                        b = c.getMid(i) || c.generateIdentifier();
-                    if ("application" === f && "DTLS/SCTP" === v) return void(r.transceivers[a] = {
-                        mid: b,
+                var d = [],
+                    p = l.splitSections(n.sdp),
+                    h = p.shift(),
+                    f = l.matchPrefix(h, "a=ice-lite").length > 0,
+                    m = l.matchPrefix(h, "a=group:BUNDLE ").length > 0;
+                this.usingBundle = m;
+                var v = l.matchPrefix(h, "a=ice-options:")[0];
+                switch (this.canTrickleIceCandidates = !!v && v.substr(14).split(" ").indexOf("trickle") >= 0, p.forEach(function(i, a) {
+                    var p = l.splitLines(i),
+                        v = l.getKind(i),
+                        g = l.isRejected(i) && 1 === !l.matchPrefix(i, "a=bundle-only").length,
+                        y = p[0].substr(2).split(" ")[2],
+                        b = l.getDirection(i, h),
+                        S = l.parseMsid(i),
+                        _ = l.getMid(i) || l.generateIdentifier();
+                    if ("application" === v && "DTLS/SCTP" === y) return void(r.transceivers[a] = {
+                        mid: _,
                         isDatachannel: !0
                     });
-                    var _, S, T, C, E, w, R, k, I, P, A, O = c.parseRtpParameters(i);
-                    m || (P = c.getIceParameters(i, d), A = c.getDtlsParameters(i, d), A.role = "client"), R = c.parseRtpEncodingParameters(i);
-                    var D = c.parseRtcpParameters(i),
-                        x = c.matchPrefix(i, "a=end-of-candidates", d).length > 0,
-                        N = c.matchPrefix(i, "a=candidate:").map(function(e) {
-                            return c.parseCandidate(e)
+                    var T, C, E, w, R, k, I, P, A, O, D, x = l.parseRtpParameters(i);
+                    g || (O = l.getIceParameters(i, h), D = l.getDtlsParameters(i, h), D.role = "client"), I = l.parseRtpEncodingParameters(i);
+                    var N = l.parseRtcpParameters(i),
+                        L = l.matchPrefix(i, "a=end-of-candidates", h).length > 0,
+                        M = l.matchPrefix(i, "a=candidate:").map(function(e) {
+                            return l.parseCandidate(e)
                         }).filter(function(e) {
                             return 1 === e.component
                         });
-                    if (("offer" === n.type || "answer" === n.type) && !m && h && a > 0 && r.transceivers[a] && (r._disposeIceAndDtlsTransports(a), r.transceivers[a].iceGatherer = r.transceivers[0].iceGatherer, r.transceivers[a].iceTransport = r.transceivers[0].iceTransport, r.transceivers[a].dtlsTransport = r.transceivers[0].dtlsTransport, r.transceivers[a].rtpSender && r.transceivers[a].rtpSender.setTransport(r.transceivers[0].dtlsTransport), r.transceivers[a].rtpReceiver && r.transceivers[a].rtpReceiver.setTransport(r.transceivers[0].dtlsTransport)), "offer" !== n.type || m) "answer" !== n.type || m || (_ = r.transceivers[a], S = _.iceGatherer, T = _.iceTransport, C = _.dtlsTransport, E = _.rtpReceiver, w = _.sendEncodingParameters, k = _.localCapabilities, r.transceivers[a].recvEncodingParameters = R, r.transceivers[a].remoteCapabilities = O, r.transceivers[a].rtcpParameters = D, N.length && "new" === T.state && (!p && !x || h && 0 !== a ? N.forEach(function(e) {
-                        s(_.iceTransport, e)
-                    }) : T.setRemoteCandidates(N)), h && 0 !== a || ("new" === T.state && T.start(S, P, "controlling"), "new" === C.state && C.start(A)), r._transceive(_, "sendrecv" === g || "recvonly" === g, "sendrecv" === g || "sendonly" === g), !E || "sendrecv" !== g && "sendonly" !== g ? delete _.rtpReceiver : (I = E.track, y ? (o[y.stream] || (o[y.stream] = new e.MediaStream), o[y.stream].addTrack(I), u.push([I, E, o[y.stream]])) : (o.default || (o.default = new e.MediaStream), o.default.addTrack(I), u.push([I, E, o.default]))));
+                    if (("offer" === n.type || "answer" === n.type) && !g && m && a > 0 && r.transceivers[a] && (r._disposeIceAndDtlsTransports(a), r.transceivers[a].iceGatherer = r.transceivers[0].iceGatherer, r.transceivers[a].iceTransport = r.transceivers[0].iceTransport, r.transceivers[a].dtlsTransport = r.transceivers[0].dtlsTransport, r.transceivers[a].rtpSender && r.transceivers[a].rtpSender.setTransport(r.transceivers[0].dtlsTransport), r.transceivers[a].rtpReceiver && r.transceivers[a].rtpReceiver.setTransport(r.transceivers[0].dtlsTransport)), "offer" !== n.type || g) "answer" !== n.type || g || (T = r.transceivers[a], C = T.iceGatherer, E = T.iceTransport, w = T.dtlsTransport, R = T.rtpReceiver, k = T.sendEncodingParameters, P = T.localCapabilities, r.transceivers[a].recvEncodingParameters = I, r.transceivers[a].remoteCapabilities = x, r.transceivers[a].rtcpParameters = N, M.length && "new" === E.state && (!f && !L || m && 0 !== a ? M.forEach(function(e) {
+                        s(T.iceTransport, e)
+                    }) : E.setRemoteCandidates(M)), m && 0 !== a || ("new" === E.state && E.start(C, O, "controlling"), "new" === w.state && w.start(D)), r._transceive(T, "sendrecv" === b || "recvonly" === b, "sendrecv" === b || "sendonly" === b), !R || "sendrecv" !== b && "sendonly" !== b ? delete T.rtpReceiver : (A = R.track, S ? (o[S.stream] || (o[S.stream] = new e.MediaStream), c(A, o[S.stream]), d.push([A, R, o[S.stream]])) : (o.default || (o.default = new e.MediaStream), c(A, o.default), d.push([A, R, o.default]))));
                     else {
-                        _ = r.transceivers[a] || r._createTransceiver(f), _.mid = b, _.iceGatherer || (_.iceGatherer = r._createIceGatherer(a, h)), N.length && "new" === _.iceTransport.state && (!x || h && 0 !== a ? N.forEach(function(e) {
-                            s(_.iceTransport, e)
-                        }) : _.iceTransport.setRemoteCandidates(N)), k = e.RTCRtpReceiver.getCapabilities(f), t < 15019 && (k.codecs = k.codecs.filter(function(e) {
+                        T = r.transceivers[a] || r._createTransceiver(v), T.mid = _, T.iceGatherer || (T.iceGatherer = r._createIceGatherer(a, m)), M.length && "new" === T.iceTransport.state && (!L || m && 0 !== a ? M.forEach(function(e) {
+                            s(T.iceTransport, e)
+                        }) : T.iceTransport.setRemoteCandidates(M)), P = e.RTCRtpReceiver.getCapabilities(v), t < 15019 && (P.codecs = P.codecs.filter(function(e) {
                             return "rtx" !== e.name
-                        })), w = _.sendEncodingParameters || [{
+                        })), k = T.sendEncodingParameters || [{
                             ssrc: 1001 * (2 * a + 2)
                         }];
-                        var L = !1;
-                        if (("sendrecv" === g || "sendonly" === g) && (L = !_.rtpReceiver, E = _.rtpReceiver || new e.RTCRtpReceiver(_.dtlsTransport, f), L)) {
-                            var M;
-                            I = E.track, y ? (o[y.stream] || (o[y.stream] = new e.MediaStream, Object.defineProperty(o[y.stream], "id", {
-                                get: function() {
-                                    return y.stream
-                                }
-                            })), Object.defineProperty(I, "id", {
-                                get: function() {
-                                    return y.track
-                                }
-                            }), M = o[y.stream]) : (o.default || (o.default = new e.MediaStream), M = o.default), M.addTrack(I), u.push([I, E, M])
-                        }
-                        _.localCapabilities = k, _.remoteCapabilities = O, _.rtpReceiver = E, _.rtcpParameters = D, _.sendEncodingParameters = w, _.recvEncodingParameters = R, r._transceive(r.transceivers[a], !1, L)
+                        var j = !1;
+                        if ("sendrecv" === b || "sendonly" === b) {
+                            if (j = !T.rtpReceiver, R = T.rtpReceiver || new e.RTCRtpReceiver(T.dtlsTransport, v), j) {
+                                var F;
+                                A = R.track, S ? (o[S.stream] || (o[S.stream] = new e.MediaStream, Object.defineProperty(o[S.stream], "id", {
+                                    get: function() {
+                                        return S.stream
+                                    }
+                                })), Object.defineProperty(A, "id", {
+                                    get: function() {
+                                        return S.track
+                                    }
+                                }), F = o[S.stream]) : (o.default || (o.default = new e.MediaStream), F = o.default), c(A, F), d.push([A, R, F]), T.associatedRemoteMediaStreams.push(F)
+                            }
+                        } else T.rtpReceiver && T.rtpReceiver.track && (T.associatedRemoteMediaStreams.forEach(function(e) {
+                            var t = e.getTracks().find(function(e) {
+                                return e.id === T.rtpReceiver.track.id
+                            });
+                            t && u(t, e)
+                        }), T.associatedRemoteMediaStreams = []);
+                        T.localCapabilities = P, T.remoteCapabilities = x, T.rtpReceiver = R, T.rtcpParameters = N, T.sendEncodingParameters = k, T.recvEncodingParameters = I, r._transceive(r.transceivers[a], !1, j)
                     }
                 }), void 0 === this._dtlsRole && (this._dtlsRole = "offer" === n.type ? "active" : "passive"), this.remoteDescription = {
                     type: n.type,
@@ -27956,7 +28311,7 @@
                                 r.dispatchEvent(i), "function" == typeof r.onaddstream && r.onaddstream(i)
                             })
                         }
-                        u.forEach(function(t) {
+                        d.forEach(function(t) {
                             var i = t[0],
                                 o = t[1];
                             if (n.id === t[2].id) {
@@ -28028,47 +28383,47 @@
                 for (this.transceivers.forEach(function(e) {
                         "audio" === e.kind ? --a < 0 && (e.wantReceive = !1) : "video" === e.kind && --s < 0 && (e.wantReceive = !1)
                     }); a > 0 || s > 0;) a > 0 && (this._createTransceiver("audio"), a--), s > 0 && (this._createTransceiver("video"), s--);
-                var u = c.writeSessionBoilerplate(this._sdpSessionId, this._sdpSessionVersion++);
+                var c = l.writeSessionBoilerplate(this._sdpSessionId, this._sdpSessionVersion++);
                 this.transceivers.forEach(function(n, r) {
                     var o = n.track,
                         a = n.kind,
-                        s = c.generateIdentifier();
+                        s = l.generateIdentifier();
                     n.mid = s, n.iceGatherer || (n.iceGatherer = i._createIceGatherer(r, i.usingBundle));
-                    var u = e.RTCRtpSender.getCapabilities(a);
-                    t < 15019 && (u.codecs = u.codecs.filter(function(e) {
+                    var c = e.RTCRtpSender.getCapabilities(a);
+                    t < 15019 && (c.codecs = c.codecs.filter(function(e) {
                         return "rtx" !== e.name
-                    })), u.codecs.forEach(function(e) {
+                    })), c.codecs.forEach(function(e) {
                         "H264" === e.name && void 0 === e.parameters["level-asymmetry-allowed"] && (e.parameters["level-asymmetry-allowed"] = "1")
                     });
-                    var l = n.sendEncodingParameters || [{
+                    var u = n.sendEncodingParameters || [{
                         ssrc: 1001 * (2 * r + 1)
                     }];
-                    o && t >= 15019 && "video" === a && !l[0].rtx && (l[0].rtx = {
-                        ssrc: l[0].ssrc + 1
-                    }), n.wantReceive && (n.rtpReceiver = new e.RTCRtpReceiver(n.dtlsTransport, a)), n.localCapabilities = u, n.sendEncodingParameters = l
-                }), "max-compat" !== this._config.bundlePolicy && (u += "a=group:BUNDLE " + this.transceivers.map(function(e) {
+                    o && t >= 15019 && "video" === a && !u[0].rtx && (u[0].rtx = {
+                        ssrc: u[0].ssrc + 1
+                    }), n.wantReceive && (n.rtpReceiver = new e.RTCRtpReceiver(n.dtlsTransport, a)), n.localCapabilities = c, n.sendEncodingParameters = u
+                }), "max-compat" !== this._config.bundlePolicy && (c += "a=group:BUNDLE " + this.transceivers.map(function(e) {
                     return e.mid
-                }).join(" ") + "\r\n"), u += "a=ice-options:trickle\r\n", this.transceivers.forEach(function(e, t) {
-                    u += r(e, e.localCapabilities, "offer", e.stream, i._dtlsRole), u += "a=rtcp-rsize\r\n", !e.iceGatherer || "new" === i.iceGatheringState || 0 !== t && i.usingBundle || (e.iceGatherer.getLocalCandidates().forEach(function(e) {
-                        e.component = 1, u += "a=" + c.writeCandidate(e) + "\r\n"
-                    }), "completed" === e.iceGatherer.state && (u += "a=end-of-candidates\r\n"))
+                }).join(" ") + "\r\n"), c += "a=ice-options:trickle\r\n", this.transceivers.forEach(function(e, t) {
+                    c += r(e, e.localCapabilities, "offer", e.stream, i._dtlsRole), c += "a=rtcp-rsize\r\n", !e.iceGatherer || "new" === i.iceGatheringState || 0 !== t && i.usingBundle || (e.iceGatherer.getLocalCandidates().forEach(function(e) {
+                        e.component = 1, c += "a=" + l.writeCandidate(e) + "\r\n"
+                    }), "completed" === e.iceGatherer.state && (c += "a=end-of-candidates\r\n"))
                 });
-                var l = new e.RTCSessionDescription({
+                var u = new e.RTCSessionDescription({
                     type: "offer",
-                    sdp: u
+                    sdp: c
                 });
                 return new Promise(function(e) {
-                    if (o.length > 0 && "function" == typeof o[0]) return o[0].apply(null, [l]), void e();
-                    e(l)
+                    if (o.length > 0 && "function" == typeof o[0]) return o[0].apply(null, [u]), void e();
+                    e(u)
                 })
             }, n.prototype.createAnswer = function() {
                 var n = this,
                     i = arguments,
-                    a = c.writeSessionBoilerplate(this._sdpSessionId, this._sdpSessionVersion++);
+                    a = l.writeSessionBoilerplate(this._sdpSessionId, this._sdpSessionVersion++);
                 this.usingBundle && (a += "a=group:BUNDLE " + this.transceivers.map(function(e) {
                     return e.mid
                 }).join(" ") + "\r\n");
-                var s = c.splitSections(this.remoteDescription.sdp).length - 1;
+                var s = l.splitSections(this.remoteDescription.sdp).length - 1;
                 this.transceivers.forEach(function(e, i) {
                     if (!(i + 1 > s)) {
                         if (e.isDatachannel) return void(a += "m=application 0 DTLS/SCTP 5000\r\nc=IN IP4 0.0.0.0\r\na=mid:" + e.mid + "\r\n");
@@ -28084,13 +28439,13 @@
                         }).length && e.sendEncodingParameters[0].rtx && delete e.sendEncodingParameters[0].rtx, a += r(e, u, "answer", e.stream, n._dtlsRole), e.rtcpParameters && e.rtcpParameters.reducedSize && (a += "a=rtcp-rsize\r\n")
                     }
                 });
-                var u = new e.RTCSessionDescription({
+                var c = new e.RTCSessionDescription({
                     type: "answer",
                     sdp: a
                 });
                 return new Promise(function(e) {
-                    if (i.length > 0 && "function" == typeof i[0]) return i[0].apply(null, [u]), void e();
-                    e(u)
+                    if (i.length > 0 && "function" == typeof i[0]) return i[0].apply(null, [c]), void e();
+                    e(c)
                 })
             }, n.prototype.addIceCandidate = function(e) {
                 var t, n;
@@ -28107,17 +28462,17 @@
                         var o = this.transceivers[r];
                         if (o) {
                             if (o.isDatachannel) return Promise.resolve();
-                            var a = Object.keys(e.candidate).length > 0 ? c.parseCandidate(e.candidate) : {};
+                            var a = Object.keys(e.candidate).length > 0 ? l.parseCandidate(e.candidate) : {};
                             if ("tcp" === a.protocol && (0 === a.port || 9 === a.port)) return Promise.resolve();
                             if (a.component && 1 !== a.component) return Promise.resolve();
                             if ((0 === r || r > 0 && o.iceTransport !== this.transceivers[0].iceTransport) && (s(o.iceTransport, a) || (t = new Error("Can not add ICE candidate"), t.name = "OperationError")), !t) {
-                                var u = e.candidate.trim();
-                                0 === u.indexOf("a=") && (u = u.substr(2)), n = c.splitSections(this.remoteDescription.sdp), n[r + 1] += "a=" + (a.type ? u : "end-of-candidates") + "\r\n", this.remoteDescription.sdp = n.join("")
+                                var c = e.candidate.trim();
+                                0 === c.indexOf("a=") && (c = c.substr(2)), n = l.splitSections(this.remoteDescription.sdp), n[r + 1] += "a=" + (a.type ? c : "end-of-candidates") + "\r\n", this.remoteDescription.sdp = n.join("")
                             }
                         } else t = new Error("Can not add ICE candidate"), t.name = "OperationError"
                     } else t = new Error("Can not add ICE candidate without a remote description"), t.name = "InvalidStateError"
                 } else
-                    for (var l = 0; l < this.transceivers.length && (this.transceivers[l].isDatachannel || (this.transceivers[l].iceTransport.addRemoteCandidate({}), n = c.splitSections(this.remoteDescription.sdp), n[l + 1] += "a=end-of-candidates\r\n", this.remoteDescription.sdp = n.join(""), !this.usingBundle)); l++);
+                    for (var u = 0; u < this.transceivers.length && (this.transceivers[u].isDatachannel || (this.transceivers[u].iceTransport.addRemoteCandidate({}), n = l.splitSections(this.remoteDescription.sdp), n[u + 1] += "a=end-of-candidates\r\n", this.remoteDescription.sdp = n.join(""), !this.usingBundle)); u++);
                 var d = arguments;
                 return new Promise(function(e, n) {
                     t ? (d.length > 2 && "function" == typeof d[2] && d[2].apply(null, [t]), n(t)) : (d.length > 1 && "function" == typeof d[1] && d[1].apply(null), e())
@@ -28302,7 +28657,7 @@
             shimOnTrack: o.shimOnTrack,
             shimSourceObject: o.shimSourceObject,
             shimPeerConnection: o.shimPeerConnection,
-            shimGetUserMedia: n(138)
+            shimGetUserMedia: n(139)
         }
     }, function(e, t, n) {
         "use strict";
@@ -28681,14 +29036,14 @@
         (function(e) {
             function r(e, t, r, i, o, a, s) {
                 var c = this;
-                this.audioTransferActive = !0, this.videoTransferActive = !0, this.rtc = e, this.id = t, this.isP2P = a, this.remoteTracks = new Map, this.localTracks = new Map, this._addedStreams = new Set, this.localSSRCs = new Map, this.localUfrag = null, this.remoteUfrag = null, this.signalingLayer = r, this._peerVideoTypeChanged = this._peerVideoTypeChanged.bind(this), this.signalingLayer.on(C.b, this._peerVideoTypeChanged), this._peerMutedChanged = this._peerMutedChanged.bind(this), this.signalingLayer.on(C.a, this._peerMutedChanged), this.options = s, this.peerconnection = new f.a.RTCPeerConnectionType(i, o), this.updateLog = [], this.stats = {}, this.statsinterval = null, this.maxstats = 0;
-                var u = n(146).Interop;
+                this.audioTransferActive = !0, this.videoTransferActive = !0, this.rtc = e, this.id = t, this.isP2P = a, this.remoteTracks = new Map, this.localTracks = new Map, this._addedStreams = [], this.localSSRCs = new Map, this.localUfrag = null, this.remoteUfrag = null, this.signalingLayer = r, this._peerVideoTypeChanged = this._peerVideoTypeChanged.bind(this), this.signalingLayer.on(C.b, this._peerVideoTypeChanged), this._peerMutedChanged = this._peerMutedChanged.bind(this), this.signalingLayer.on(C.a, this._peerMutedChanged), this.options = s, this.peerconnection = new f.a.RTCPeerConnectionType(i, o), this.updateLog = [], this.stats = {}, this.statsinterval = null, this.maxstats = 0;
+                var u = n(147).Interop;
                 this.interop = new u;
-                var l = n(150);
+                var l = n(151);
                 this.simulcast = new l({
                     numOfLayers: R,
                     explodeRemoteSimulcast: !1
-                }), this.sdpConsistency = new _.a(this.toString()), this.localSdpMunger = new p.a(this), this.eventEmitter = e.eventEmitter, this.rtxModifier = new y.a, this.trace = function(e, t) {
+                }), this.sdpConsistency = new S.a(this.toString()), this.localSdpMunger = new p.a(this), this.eventEmitter = e.eventEmitter, this.rtxModifier = new y.a, this.trace = function(e, t) {
                     c.updateLog.push({
                         time: new Date,
                         type: e,
@@ -28765,8 +29120,8 @@
                                 }
                             }
                             var b = !0,
-                                _ = !1,
-                                S = void 0;
+                                S = !1,
+                                _ = void 0;
                             try {
                                 for (var T, C = l.ssrcs[Symbol.iterator](); !(b = (T = C.next()).done); b = !0) {
                                     var R = T.value;
@@ -28802,12 +29157,12 @@
                                     }
                                 }
                             } catch (e) {
-                                _ = !0, S = e
+                                S = !0, _ = e
                             } finally {
                                 try {
                                     !b && C.return && C.return()
                                 } finally {
-                                    if (_) throw S
+                                    if (S) throw _
                                 }
                             }
                         }
@@ -28832,18 +29187,18 @@
                 s = (n.n(a), n(13)),
                 c = n.n(s),
                 u = n(3),
-                l = (n.n(u), n(142)),
+                l = (n.n(u), n(143)),
                 d = n(4),
-                p = n(143),
+                p = n(144),
                 h = n(26),
                 f = n(27),
                 m = n(1),
                 v = n(8),
                 g = n.n(v),
-                y = n(144),
+                y = n(145),
                 b = n(51),
-                _ = n(145),
-                S = n(28),
+                S = n(146),
+                _ = n(28),
                 T = n(12),
                 C = n(52),
                 E = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
@@ -29155,14 +29510,16 @@
                     })
                 },
                 A = function(e) {
-                    if (e && e.sdp) {
-                        var t = new S.a(e.sdp),
-                            n = t.selectMedia("audio"),
-                            r = !1;
-                        n && "sendrecv" !== n.direction && (n.direction = "sendrecv", r = !0);
-                        var i = t.selectMedia("video");
-                        i && "sendrecv" !== i.direction && (i.direction = "sendrecv", r = !0), r && (e.sdp = t.toRawSDP())
-                    }
+                    if (!e) throw new Error("No local description passed in.");
+                    var t = new _.a(e.sdp),
+                        n = t.selectMedia("audio"),
+                        r = !1;
+                    n && "sendrecv" !== n.direction && (n.direction = "sendrecv", r = !0);
+                    var i = t.selectMedia("video");
+                    return i && "sendrecv" !== i.direction && (i.direction = "sendrecv", r = !0), r ? new RTCSessionDescription({
+                        type: e.type,
+                        sdp: t.toRawSDP()
+                    }) : e
                 };
             r.prototype.getLocalSSRC = function(e) {
                 var t = this._getSSRC(e.rtcId);
@@ -29184,7 +29541,10 @@
                         ssrcs: r.join(" ")
                     })
                 }
-                return e.sdp = c.a.write(t), e
+                return new RTCSessionDescription({
+                    type: e.type,
+                    sdp: c.a.write(t)
+                })
             };
             var O = {
                 signalingState: function() {
@@ -29195,7 +29555,7 @@
                 },
                 localDescription: function() {
                     var e = this.peerconnection.localDescription;
-                    return this.trace("getLocalDescription::preTransform", I(e)), e && m.a.usesUnifiedPlan() && (e = this.interop.toPlanB(e), this.trace("getLocalDescription::postTransform (Plan B)", I(e)), e = this._injectSsrcGroupForUnifiedSimulcast(e), this.trace("getLocalDescription::postTransform (inject ssrc group)", I(e))), m.a.doesVideoMuteByStreamRemove() && (this.localSdpMunger.maybeMungeLocalSdp(e), w.debug("getLocalDescription::postTransform (munge local SDP)", e)), A(e), e || {}
+                    return e ? (this.trace("getLocalDescription::preTransform", I(e)), m.a.usesUnifiedPlan() && (e = this.interop.toPlanB(e), this.trace("getLocalDescription::postTransform (Plan B)", I(e)), e = this._injectSsrcGroupForUnifiedSimulcast(e), this.trace("getLocalDescription::postTransform (inject ssrc group)", I(e))), m.a.doesVideoMuteByStreamRemove() && (e = this.localSdpMunger.maybeAddMutedLocalVideoTracksToSDP(e), w.debug("getLocalDescription::postTransform (munge local SDP)", e)), e = A(e)) : (w.debug("getLocalDescription no localDescription found"), {})
                 },
                 remoteDescription: function() {
                     var e = this.peerconnection.remoteDescription;
@@ -29238,14 +29598,16 @@
                 var t = e.getOriginalStream();
                 return t ? (this._addStream(t), !0) : (w.error("Unable to add " + e + " as unmute to " + this + " - no WebRTC stream"), !1)
             }, r.prototype._addStream = function(e) {
-                this.peerconnection.addStream(e), this._addedStreams.add(e)
+                this.peerconnection.addStream(e), this._addedStreams.push(e)
             }, r.prototype._removeStream = function(e) {
-                m.a.isFirefox() ? this._handleFirefoxRemoveStream(e) : this.peerconnection.removeStream(e), this._addedStreams.delete(e)
+                m.a.isFirefox() ? this._handleFirefoxRemoveStream(e) : this.peerconnection.removeStream(e), this._addedStreams = this._addedStreams.filter(function(t) {
+                    return t !== e
+                })
             }, r.prototype._assertTrackBelongs = function(e, t) {
                 var n = this.localTracks.has(t.rtcId);
                 return n || w.error(e + ": " + t + " does not belong to " + this), n
             }, r.prototype.isMediaStreamInPc = function(e) {
-                return this._addedStreams.has(e)
+                return this._addedStreams.indexOf(e) > -1
             }, r.prototype.removeTrack = function(e) {
                 var t = e.getOriginalStream();
                 this.trace("removeStream", e.rtcId, t ? t.id : void 0), this._assertTrackBelongs("removeStream", e) && (this.localTracks.delete(e.rtcId), this.localSSRCs.delete(e.rtcId), t && (m.a.isFirefox() ? this._handleFirefoxRemoveStream(t) : this.peerconnection.removeStream(t)))
@@ -29268,15 +29630,17 @@
                     n = t.indexOf("m=video"),
                     r = t.indexOf("a=ssrc-group:SIM", n),
                     i = t.lastIndexOf("a=ssrc-group");
-                if (-1 !== r && -1 !== i && i !== r) {
-                    var o = t.indexOf("\r\n", r),
-                        a = t.substring(r, o + 2);
-                    t = t.replace(a, ""), i = t.lastIndexOf("a=ssrc-group");
-                    var s = t.indexOf("\r\n", i);
-                    t = t.slice(0, s) + "\r\n" + a.trim() + t.slice(s), e.sdp = t
-                }
+                if (-1 === r || -1 === i || i === r) return e;
+                var o = t.indexOf("\r\n", r),
+                    a = t.substring(r, o + 2);
+                t = t.replace(a, ""), i = t.lastIndexOf("a=ssrc-group");
+                var s = t.indexOf("\r\n", i);
+                return t = t.slice(0, s) + "\r\n" + a.trim() + t.slice(s), new RTCSessionDescription({
+                    type: e.type,
+                    sdp: t
+                })
             }, r.prototype._adjustLocalMediaDirection = function(e) {
-                var t = new S.a(e.sdp),
+                var t = new _.a(e.sdp),
                     n = !1,
                     r = t.selectMedia("audio");
                 if (r) {
@@ -29288,7 +29652,10 @@
                     var a = this._getDesiredMediaDirection(d.b);
                     o.direction !== a && (o.direction = a, w.info("Adjusted local video direction to " + a), n = !0)
                 } else w.warn('No "video" media found in the local description');
-                n && (e.sdp = t.toRawSDP())
+                return n ? new RTCSessionDescription({
+                    type: e.type,
+                    sdp: t.toRawSDP()
+                }) : e
             }, r.prototype.setLocalDescription = function(e, t, n) {
                 var r = this,
                     i = e;
@@ -29297,9 +29664,12 @@
                         a = o.media.find(function(e) {
                             return "video" === e.type
                         });
-                    this.options.disableH264 ? T.a.stripVideoCodec(a, "h264") : T.a.preferVideoCodec(a, "h264"), i.sdp = c.a.write(o), this.trace("setLocalDescription::postTransform (H264)", I(i))
+                    this.options.disableH264 ? T.a.stripVideoCodec(a, "h264") : T.a.preferVideoCodec(a, "h264"), i = new RTCSessionDescription({
+                        type: i.type,
+                        sdp: c.a.write(o)
+                    }), this.trace("setLocalDescription::postTransform (H264)", I(i))
                 }
-                this._adjustLocalMediaDirection(i), this._ensureSimulcastGroupIsLast(i), m.a.usesUnifiedPlan() && (i = this.interop.toUnifiedPlan(i), this.trace("setLocalDescription::postTransform (Unified Plan)", I(i))), this.peerconnection.setLocalDescription(i, function() {
+                i = this._adjustLocalMediaDirection(i), i = this._ensureSimulcastGroupIsLast(i), m.a.usesUnifiedPlan() && (i = this.interop.toUnifiedPlan(i), this.trace("setLocalDescription::postTransform (Unified Plan)", I(i))), this.peerconnection.setLocalDescription(i, function() {
                     r.trace("setLocalDescriptionOnSuccess");
                     var e = T.a.getUfrag(i.sdp);
                     e !== r.localUfrag && (r.localUfrag = e, r.eventEmitter.emit(g.a.LOCAL_UFRAG_CHANGED, r, e)), t()
@@ -29326,7 +29696,10 @@
                     direction: "recv"
                 }], n.simulcast_03 = {
                     value: "recv rid=" + k.join(";")
-                }, e.sdp = c.a.write(t), e
+                }, new RTCSessionDescription({
+                    type: e.type,
+                    sdp: c.a.write(t)
+                })
             }, r.prototype.setRemoteDescription = function(e, t, n) {
                 var r = this;
                 if (this.trace("setRemoteDescription::preTransform", I(e)), e = this.simulcast.mungeRemoteDescription(e), this.trace("setRemoteDescription::postTransform (simulcast)", I(e)), this.options.preferH264) {
@@ -29334,15 +29707,46 @@
                         o = i.media.find(function(e) {
                             return "video" === e.type
                         });
-                    T.a.preferVideoCodec(o, "h264"), e.sdp = c.a.write(i)
+                    T.a.preferVideoCodec(o, "h264"), e = new RTCSessionDescription({
+                        type: e.type,
+                        sdp: c.a.write(i)
+                    })
                 }
-                m.a.usesUnifiedPlan() ? (e.sdp = this.rtxModifier.stripRtx(e.sdp), this.trace("setRemoteDescription::postTransform (stripRtx)", I(e)), e = this.interop.toUnifiedPlan(e), this.trace("setRemoteDescription::postTransform (Plan A)", I(e)), this.isSimulcastOn() && (e = this._insertUnifiedPlanSimulcastReceive(e), this.trace("setRemoteDescription::postTransform (sim receive)", I(e)))) : e = P(e), this.peerconnection.setRemoteDescription(e, function() {
+                m.a.usesUnifiedPlan() ? (e = new RTCSessionDescription({
+                    type: e.type,
+                    sdp: this.rtxModifier.stripRtx(e.sdp)
+                }), this.trace("setRemoteDescription::postTransform (stripRtx)", I(e)), e = this.interop.toUnifiedPlan(e), this.trace("setRemoteDescription::postTransform (Plan A)", I(e)), this.isSimulcastOn() && (e = this._insertUnifiedPlanSimulcastReceive(e), this.trace("setRemoteDescription::postTransform (sim receive)", I(e)))) : e = P(e), m.a.isSafariWithWebrtc() && (w.debug("Maybe injecting H264 into the remote description"), e = this._injectH264IfNotPresent(e)), this.peerconnection.setRemoteDescription(e, function() {
                     r.trace("setRemoteDescriptionOnSuccess");
                     var n = T.a.getUfrag(e.sdp);
                     n !== r.remoteUfrag && (r.remoteUfrag = n, r.eventEmitter.emit(g.a.REMOTE_UFRAG_CHANGED, r, n)), t()
                 }, function(e) {
                     r.trace("setRemoteDescriptionOnFailure", e), r.eventEmitter.emit(g.a.SET_REMOTE_DESCRIPTION_FAILED, e, r), n(e)
                 })
+            }, r.prototype._injectH264IfNotPresent = function(e) {
+                var t = c.a.parse(e.sdp),
+                    n = t.media.find(function(e) {
+                        return "video" === e.type
+                    });
+                if (!n) return w.debug("No videoMLine found, no need to inject H264."), e;
+                if (n.rtp.some(function(e) {
+                        return "h264" === e.codec.toLowerCase()
+                    })) return w.debug("H264 codec found in video mLine, no need to inject."), e;
+                for (var r = n.fmtp, i = n.payloads, o = n.rtp, a = i.toString().split(" "), s = void 0, u = 127; u >= 96; u--)
+                    if (!a.includes(u)) {
+                        s = u, a.push(u), n.payloads = a.join(" ");
+                        break
+                    }
+                return void 0 === s ? (w.error("Could not find valid payload type to inject."), e) : (o.push({
+                    codec: "H264",
+                    payload: s,
+                    rate: 9e4
+                }), r.push({
+                    config: "level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f",
+                    payload: s
+                }), w.debug("Injecting H264 payload type " + s + " into video mLine."), new RTCSessionDescription({
+                    type: e.type,
+                    sdp: c.a.write(t)
+                }))
             }, r.prototype.setVideoTransferActive = function(e) {
                 w.debug(this + " video transfer active: " + e);
                 var t = this.videoTransferActive !== e;
@@ -29387,7 +29791,7 @@
                         if (t) throw n
                     }
                 }
-                this.remoteTracks.clear(), this._addedStreams.clear(), this.rtc._removePeerConnection(this) || w.error("RTC._removePeerConnection returned false"), null !== this.statsinterval && (window.clearInterval(this.statsinterval), this.statsinterval = null), w.info("Closing " + this + "..."), this.peerconnection.close()
+                this.remoteTracks.clear(), this._addedStreams = [], this.rtc._removePeerConnection(this) || w.error("RTC._removePeerConnection returned false"), null !== this.statsinterval && (window.clearInterval(this.statsinterval), this.statsinterval = null), w.info("Closing " + this + "..."), this.peerconnection.close()
             };
             var D = function(e, t) {
                 m.a.isChrome() && e && t && e.media && t.media && e.media.length === t.media.length && (t.media.forEach(function(n, r) {
@@ -29421,10 +29825,19 @@
                 this.trace("create" + a, JSON.stringify(r, null, " "));
                 var s = function(r) {
                         try {
-                            if (o.trace("create" + a + "OnSuccess::preTransform", I(r)), m.a.usesUnifiedPlan() && (r = o.interop.toPlanB(r), o.trace("create" + a + "OnSuccess::postTransform (Plan B)", I(r)), o.isSimulcastOn() && (r = o._injectSsrcGroupForUnifiedSimulcast(r), o.trace("create" + a + "OnSuccess::postTransform(inject ssrc group)", I(r)))), m.a.isFirefox() || (o.hasAnyTracksOfType(d.b) || o.sdpConsistency.hasPrimarySsrcCached() || o.generateRecvonlySsrc(), r.sdp = o.sdpConsistency.makeVideoPrimarySsrcsConsistent(r.sdp), o.trace("create" + a + "OnSuccess::postTransform (make primary audio/video ssrcs consistent)", I(r))), o.isSimulcastOn() && (r = o.simulcast.mungeLocalDescription(r), o.trace("create" + a + "OnSuccess::postTransform (simulcast)", I(r))), !o.options.disableRtx && m.a.supportsRtx() && (r.sdp = o.rtxModifier.modifyRtxSsrcs(r.sdp), o.trace("create" + a + "OnSuccess::postTransform (rtx modifier)", I(r))), !e) {
+                            if (o.trace("create" + a + "OnSuccess::preTransform", I(r)), m.a.usesUnifiedPlan() && (r = o.interop.toPlanB(r), o.trace("create" + a + "OnSuccess::postTransform (Plan B)", I(r)), o.isSimulcastOn() && (r = o._injectSsrcGroupForUnifiedSimulcast(r), o.trace("create" + a + "OnSuccess::postTransform(inject ssrc group)", I(r)))), m.a.isFirefox() || (o.hasAnyTracksOfType(d.b) || o.sdpConsistency.hasPrimarySsrcCached() || o.generateRecvonlySsrc(), r = new RTCSessionDescription({
+                                    type: r.type,
+                                    sdp: o.sdpConsistency.makeVideoPrimarySsrcsConsistent(r.sdp)
+                                }), o.trace("create" + a + "OnSuccess::postTransform (make primary audio/video ssrcs consistent)", I(r))), o.isSimulcastOn() && (r = o.simulcast.mungeLocalDescription(r), o.trace("create" + a + "OnSuccess::postTransform (simulcast)", I(r))), !o.options.disableRtx && m.a.supportsRtx() && (r = new RTCSessionDescription({
+                                    type: r.type,
+                                    sdp: o.rtxModifier.modifyRtxSsrcs(r.sdp)
+                                }), o.trace("create" + a + "OnSuccess::postTransform (rtx modifier)", I(r))), !e) {
                                 var s = new b.a(o.remoteDescription.sdp),
                                     c = new b.a(r.sdp);
-                                D(s, c), r.sdp = c.raw
+                                D(s, c), r = new RTCSessionDescription({
+                                    type: r.type,
+                                    sdp: c.raw
+                                })
                             }
                             var u = i(r);
                             w.debug("Got local SSRCs MAP: ", u), o._processLocalSSRCsMap(u), t(r)
@@ -29467,7 +29880,7 @@
             }, r.prototype.addIceCandidate = function(e, t, n) {
                 this.trace("addIceCandidate", JSON.stringify(e, null, " ")), this.peerconnection.addIceCandidate(e, t, n)
             }, r.prototype.getStats = function(e, t) {
-                m.a.isFirefox() || m.a.isTemasysPluginUsed() || m.a.isReactNative() ? this.peerconnection.getStats(null, e, t || function() {}) : this.peerconnection.getStats(e)
+                m.a.isFirefox() || m.a.isTemasysPluginUsed() || m.a.isReactNative() ? this.peerconnection.getStats(null, e, t || function() {}) : m.a.isSafariWithWebrtc() || this.peerconnection.getStats(e)
             }, r.prototype.generateNewStreamSSRCInfo = function(e) {
                 var t = e.rtcId,
                     n = this._getSSRC(t);
@@ -29668,7 +30081,7 @@
                             if (!t.length) return !1;
                             1 !== t.length && c.error(this.tpc + " there is more than 1 video track ! Strange things may happen !", t);
                             var n = e.selectMedia("video");
-                            if (!n) return c.error(this.tpc + ' unable to hack local video track SDP- no "video" media'), !1;
+                            if (!n) return c.debug(this.tpc + ' unable to hack local video track SDP- no "video" media'), !1;
                             var r = !1,
                                 i = !0,
                                 a = !1,
@@ -29687,8 +30100,8 @@
                                             var g = v[0],
                                                 y = "injected-" + g,
                                                 b = !0,
-                                                _ = !1,
-                                                S = void 0;
+                                                S = !1,
+                                                _ = void 0;
                                             try {
                                                 for (var T, C = v[Symbol.iterator](); !(b = (T = C.next()).done); b = !0) {
                                                     var E = T.value;
@@ -29703,12 +30116,12 @@
                                                     })
                                                 }
                                             } catch (e) {
-                                                _ = !0, S = e
+                                                S = !0, _ = e
                                             } finally {
                                                 try {
                                                     !b && C.return && C.return()
                                                 } finally {
-                                                    if (_) throw S
+                                                    if (S) throw _
                                                 }
                                             }
                                             if (v.length > 1) {
@@ -29734,12 +30147,14 @@
                             return r
                         }
                     }, {
-                        key: "maybeMungeLocalSdp",
+                        key: "maybeAddMutedLocalVideoTracksToSDP",
                         value: function(e) {
-                            if (e && e.sdp) {
-                                var t = new a.a(e.sdp);
-                                this._addMutedLocalVideoTracksToSDP(t) && (e.sdp = t.toRawSDP())
-                            }
+                            if (!e) throw new Error("No local description passed in.");
+                            var t = new a.a(e.sdp);
+                            return this._addMutedLocalVideoTracksToSDP(t) ? new RTCSessionDescription({
+                                type: e.type,
+                                sdp: t.toRawSDP()
+                            }) : e
                         }
                     }]), e
                 }();
@@ -29806,7 +30221,7 @@
                         value: function(e) {
                             var t = new a.a(e),
                                 n = t.selectMedia("video");
-                            return n ? this.modifyRtxSsrcs2(n) ? t.toRawSDP() : e : (u.error("No 'video' media found in the sdp: " + e), e)
+                            return n ? this.modifyRtxSsrcs2(n) ? t.toRawSDP() : e : (u.debug("No 'video' media found in the sdp: " + e), e)
                         }
                     }, {
                         key: "modifyRtxSsrcs2",
@@ -29853,7 +30268,7 @@
                         value: function(e) {
                             var t = new a.a(e),
                                 n = t.selectMedia("video");
-                            if (!n) return u.error("No 'video' media found in the sdp: " + e), e;
+                            if (!n) return u.debug("No 'video' media found in the sdp: " + e), e;
                             if ("recvonly" === n.direction) return u.debug("RtxModifier doing nothing, video m line is recvonly"), e;
                             if (n.getSSRCCount() < 1) return u.debug("RtxModifier doing nothing, no video ssrcs present"), e;
                             if (!n.containsAnySSRCGroups()) return u.debug("RtxModifier doing nothing, no video ssrcGroups present"), e;
@@ -29928,7 +30343,7 @@
                         value: function(e) {
                             var t = new o.a(e),
                                 n = t.selectMedia("video");
-                            if (!n) return s.error(this.logPrefix + " no 'video' media found in the sdp: " + e), e;
+                            if (!n) return s.debug(this.logPrefix + " no 'video' media found in the sdp: " + e), e;
                             if ("recvonly" === n.direction) this.cachedPrimarySsrc && this.injectRecvOnly ? n.addSSRCAttribute({
                                 id: this.cachedPrimarySsrc,
                                 attribute: "cname",
@@ -29970,7 +30385,7 @@
             t.a = c
         }).call(t, "modules/xmpp/SdpConsistency.js")
     }, function(e, t, n) {
-        t.Interop = n(147)
+        t.Interop = n(148)
     }, function(e, t, n) {
         "use strict";
 
@@ -29985,8 +30400,8 @@
             } : function(e) {
                 return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
             },
-            o = n(148),
-            a = n(149);
+            o = n(149),
+            a = n(150);
         e.exports = r, r.prototype.candidateToUnifiedPlan = function(e) {
             var t = new RTCIceCandidate(e);
             return t.sdpMLineIndex = this.cache.mlB2UMap[t.sdpMLineIndex], t
@@ -30272,7 +30687,7 @@
             }))
         }
         var p = n(13),
-            h = n(151),
+            h = n(152),
             f = h.parseSsrcs,
             m = h.writeSsrcs,
             v = 3;
@@ -30492,7 +30907,7 @@
             }
         }
         var s = n(57),
-            c = n(155),
+            c = n(156),
             u = "before";
         r.prototype.start = function() {
             if (this.state !== u) throw new Error("The transcription can only start when it's in the \"" + u + '" state. It\'s currently in the "' + this.state + '" state');
@@ -30559,8 +30974,8 @@
                 console.log(e)
             }
         }
-        var i = n(156),
-            o = n(157),
+        var i = n(157),
+            o = n(158),
             a = n(57),
             s = function() {
                 this.url = r()
@@ -30625,7 +31040,7 @@
                 if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function")
             }
             var i = n(0),
-                o = (n.n(i), n(159)),
+                o = (n.n(i), n(160)),
                 a = n(36),
                 s = n(7),
                 c = n.n(s),
@@ -30811,7 +31226,7 @@
             if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function")
         }
         var i = n(6),
-            o = n(161),
+            o = n(162),
             a = n.n(o),
             s = function() {
                 function e(e, t) {
@@ -31007,6 +31422,9 @@
                 emitEvent: function(e) {
                     for (var t = arguments.length, n = Array(t > 1 ? t - 1 : 0), i = 1; i < t; i++) n[i - 1] = arguments[i];
                     f.emit.apply(f, [e].concat(r(n)))
+                },
+                supportsVideo: function() {
+                    return l.a.supportsVideo()
                 }
             };
         u.a.addListener(p.a.DEVICE_LIST_CHANGED, function(e) {

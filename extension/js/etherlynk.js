@@ -180,7 +180,7 @@ var etherlynk = (function(lynk)
                     lynk.recognition.start();
                     console.log("Etherlynk recognition started ok");
 
-                    if (pade.enableSip && params.sip) dial(name);
+                    if (pade.enableSip) dial(name);
                 }
 
                 return;
@@ -534,7 +534,7 @@ var etherlynk = (function(lynk)
             setupSpeechRecognition();
 
 			// TODO - merge with ofmeet SIP
-            //if (pade.enableSip) connectSIP();
+            if (pade.enableSip) connectSIP();
 
         }).catch(function (error) {
             console.log(error);

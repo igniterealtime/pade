@@ -6,7 +6,7 @@ window.addEventListener("unload", function()
  	console.log("popup unloaded");
 });
 
-window.addEventListener("load", function()
+window.addEventListener("DOMContentLoaded", function()
 {
 	chrome.runtime.getBackgroundPage(function(win)
 	{
