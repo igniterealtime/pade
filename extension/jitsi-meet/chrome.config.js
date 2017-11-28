@@ -8,7 +8,7 @@ var connUrl = "https://" + __server + "/http-bind/";
 
 if (getSetting("useWebsocket", false))
 {
-	connUrl = "wss://" + __server + "/ws/";
+    connUrl = "wss://" + __server + "/ws/";
 }
 
 var config = {
@@ -16,7 +16,7 @@ var config = {
   "videoBandwidth": 512,
   "useNicks": false,
   "desktopSharingFirefoxMaxVersionExtRequired": 51,
-  "disableAudioLevels": false,
+  "disableAudioLevels": getSetting("disableAudioLevels", false),
   "audioMixer": false,
   "useIPv6": false,
   "defaultSipNumber": "",
@@ -29,7 +29,7 @@ var config = {
   "enableRecording": false,
   "resolution": 720,
   "hiddenDomain": "recorder." + __domain + "",
-  "enableLipSync": false,
+  "enableLipSync": getSetting("enableLipSync", false),
   "minHDHeight": 540,
   "useRoomAsSharedDocumentName": false,
   "recordingType": "colibri",
@@ -45,11 +45,11 @@ var config = {
   "adaptiveLastN": false,
   "desktopSharingChromeExtId": "blnhgbeilkjpcadckjogfflfijeblbpo",
   "hosts": {
-	"domain": __domain + "",
-	"focus": "focus." + __domain + "",
-	"muc": "conference." + __domain + "",
-	"callcontrol": "callcontrol." + __domain,
-	"bridge": "jitsi-videobridge." + __domain + ""
+    "domain": __domain + "",
+    "focus": "focus." + __domain + "",
+    "muc": "conference." + __domain + "",
+    "callcontrol": "callcontrol." + __domain,
+    "bridge": "jitsi-videobridge." + __domain + ""
   },
   "logStats": false,
   "useRtcpMux": true,
@@ -62,8 +62,8 @@ var config = {
   "disableRtx": true,
   "disableAdaptiveSimulcast": true,
   "desktopSharingChromeSources": [
-	"screen",
-	"window"
+    "screen",
+    "window"
   ],
   "disableSimulcast": false,
   "startAudioOnly": false,

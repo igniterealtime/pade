@@ -107,7 +107,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Use Jabra Speak")
         },
-        {
+        {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
             "name": "disableAudioLevels",
@@ -159,7 +159,7 @@ this.manifest = {
             "label": i18n.get("Min HD Height"),
             "text": i18n.get("540"),
         },
-        {
+        {                                               // ofmeet ui
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
             "name": "VERTICAL_FILMSTRIP",
