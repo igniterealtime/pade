@@ -24,10 +24,7 @@ window.addEventListener("load", function()
     console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
-    chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Chat", contexts: ["browser_action"],  onclick: function()
-    {
-        openChatWindow("groupchat/index.html");
-    }});
+	addChatMenu();
 
     chrome.runtime.onConnect.addListener(function(port)
     {
@@ -177,7 +174,7 @@ window.addEventListener("load", function()
 
                 pade.jabraPort.postMessage({ message: "getdevices" });
                 pade.jabraPort.postMessage({ message: "getactivedevice" });
-                pade.jabraPort.postMessage({ message: "onhook" });                
+                pade.jabraPort.postMessage({ message: "onhook" });
             }
         }
 
@@ -942,7 +939,7 @@ function processInvitation(title, label, room, autoaccept)
 
         // jabra
         pade.activeRoom = {title: title, label: label, room: room};
-        sendToJabra("ring");        
+        sendToJabra("ring");
 
     } else {
         acceptCall(title, label, room);
@@ -1054,8 +1051,8 @@ function handleJabraMessage(message)
         if (pade.activeRoom)
         {
             stopTone();
-            clearNotification(pade.activeRoom.room);            
-            sendToJabra("onhook");            
+            clearNotification(pade.activeRoom.room);
+            sendToJabra("onhook");
             pade.activeRoom = null;
         }
     }
@@ -1126,4 +1123,20 @@ function getSetting(name, defaultValue)
     }
 
     return value;
+}
+
+function addChatMenu()
+{
+	if (getSetting("enableChat", false))
+	{
+		chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Chat", contexts: ["browser_action"],  onclick: function()
+		{
+			openChatWindow("groupchat/index.html");
+		}});
+	}
+}
+
+function removeChatMenu()
+{
+    chrome.contextMenus.remove("pade_chat");
 }

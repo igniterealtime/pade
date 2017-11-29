@@ -107,6 +107,13 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Use Jabra Speak")
         },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "enableChat",
+            "type": "checkbox",
+            "label": i18n.get("Enable Candy Chat")
+        },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),

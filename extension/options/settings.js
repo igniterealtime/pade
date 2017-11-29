@@ -45,12 +45,23 @@ window.addEvent("domready", function () {
 
         settings.manifest.popupWindow.addEvent("action", function ()
         {
-            if (window.localStorage["store.settings.popupWindow"] && JSON.parse(window.localStorage["store.settings.popupWindow"]))
+            if (getSetting("popupWindow"))
             {
                 chrome.browserAction.setPopup({popup: ""});
 
             } else {
                 chrome.browserAction.setPopup({popup: "popup.html"});
+            }
+        });
+
+        settings.manifest.enableChat.addEvent("action", function ()
+        {
+            if (getSetting("enableChat"))
+            {
+                background.addChatMenu();
+
+            } else {
+               background.removeChatMenu();
             }
         });
 
@@ -91,11 +102,12 @@ window.addEvent("domready", function () {
 function doDefaults()
 {
     // preferences
-    setSetting("popupWindow", false);
+    setSetting("popupWindow", true);
     setSetting("useJabra", false);
     setSetting("useWebsocket", false);
-    setSetting("disableAudioLevels", false);        
-    setSetting("enableLipSync", false);    
+    setSetting("disableAudioLevels", false);
+    setSetting("enableLipSync", false);
+    setSetting("enableChat", false);
 
     // config
     setSetting("startWithAudioMuted", false);
@@ -114,4 +126,17 @@ function setSetting(name, defaultValue)
     {
         if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }
+}
+
+function getSetting(name)
+{
+    //console.log("getSetting", name);
+    var value = null;
+
+	if (window.localStorage["store.settings." + name])
+	{
+		value = JSON.parse(window.localStorage["store.settings." + name]);
+	}
+
+    return value;
 }

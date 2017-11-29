@@ -546,12 +546,12 @@ var ofmeet = (function(of)
         }
     }
 
-    config.dialInNumbersUrl     = 'https://' + OFMEET_CONFIG.hostname + '/meet/phonenumberlist.json';
-    config.dialInConfCodeUrl    = 'https://' + OFMEET_CONFIG.hostname + '/meet/conferencemapper.json';
-    config.dialOutCodesUrl      = 'https://' + OFMEET_CONFIG.hostname + '/meet/countrycodes.json';
-    config.dialOutAuthUrl       = 'https://' + OFMEET_CONFIG.hostname + '/meet/authorizephone.json';
-    config.peopleSearchUrl      = 'https://' + OFMEET_CONFIG.hostname + '/meet/peoplesearch.json';
-    config.inviteServiceUrl     = 'https://' + OFMEET_CONFIG.hostname + '/meet/inviteservice.json';
+    config.dialInNumbersUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/phonenumberlist.json';
+    config.dialInConfCodeUrl    = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/conferencemapper.json';
+    config.dialOutCodesUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/countrycodes.json';
+    config.dialOutAuthUrl       = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/authorizephone.json';
+    config.peopleSearchUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/peoplesearch.json';
+    config.inviteServiceUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/inviteservice.json';
 
     config.p2p = {
         enabled: true,
