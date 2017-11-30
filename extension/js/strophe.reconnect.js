@@ -27,7 +27,7 @@ Strophe.addConnectionPlugin('connectionmanager', {
 
         receiveTimeout: 20, // in seconds
         pingTimeout: 10, // in seconds
-        reconnectInterval: 10, // in seconds - interval at which to attempt reconnection
+        reconnectInterval: 60, // in seconds - interval at which to attempt reconnection
         onEnqueueElement: null,
         onDequeueElement: null,
         onReceiveTimeout: null,

@@ -68,9 +68,9 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
-            "name": "audioOnly",
+            "name": "showOnlyOnlineUsers",
             "type": "checkbox",
-            "label": i18n.get("Audioconference Only")
+            "label": i18n.get("Show Only Online Users")
         },
         {
             "tab": i18n.get("general"),
@@ -78,13 +78,6 @@ this.manifest = {
             "name": "popupWindow",
             "type": "checkbox",
             "label": i18n.get("Popup Window")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
-            "name": "enableSip",
-            "type": "checkbox",
-            "label": i18n.get("Enable FreeSWITCH Audio")
         },
         {
             "tab": i18n.get("general"),
@@ -105,7 +98,7 @@ this.manifest = {
             "group": i18n.get("Preferences"),
             "name": "useJabra",
             "type": "checkbox",
-            "label": i18n.get("Use Jabra Speak")
+            "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
         },
         {
             "tab": i18n.get("general"),
@@ -113,6 +106,20 @@ this.manifest = {
             "name": "enableChat",
             "type": "checkbox",
             "label": i18n.get("Enable Candy Chat")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "enableSip",
+            "type": "checkbox",
+            "label": i18n.get("Enable FreeSWITCH Audio")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "audioOnly",
+            "type": "checkbox",
+            "label": i18n.get("Audioconference Only")
         },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
@@ -190,12 +197,26 @@ this.manifest = {
             "text": i18n.get("80"),
         },
         {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Candy Chat"),
+            "name": "chatWithOnlineContacts",
+            "type": "checkbox",
+            "label": i18n.get("Chat with Online Contacts")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Candy Chat"),
+            "name": "notifyWhenMentioned",
+            "type": "checkbox",
+            "label": i18n.get("Notify/Highlight when mentioned")
+        },
+        {											// user directory
             "tab": i18n.get("User Directory"),
             "group": i18n.get("User Directory"),
             "name": "searchString",
             "type": "text",
             "label": i18n.get(""),
-            "text": i18n.get("Enter the partial username, name or email address"),
+            "text": i18n.get("Enter the partial name or email address"),
         },
         {
             "tab": i18n.get("User Directory"),

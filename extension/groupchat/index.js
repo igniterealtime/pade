@@ -60,18 +60,26 @@ window.addEventListener("load", function()
 				}
 			});
 
-			CandyShop.Roster.init();
+			if (getSetting("chatWithOnlineContacts", true))
+			{
+				CandyShop.Roster.init();
+			}
+
 			CandyShop.SlashCommands.defaultConferenceDomain = "conference." + domain;
 			CandyShop.SlashCommands.init();
 			CandyShop.Timeago.init();
 			CandyShop.TypingNotifications.init();
 			CandyShop.Colors.init();
-			CandyShop.OfMeet.init();
+			CandyShop.OfMeet.init(win);
 			CandyShop.Mam.init();
 			CandyShop.Fastpath.init();
 
-			Candy.Core.connect(username + "@" + domain + "/" + username  + "-" + Math.random().toString(36).substr(2,9), password, displayname);
-			CandyShop.NotifyMe.init();
+			Candy.Core.connect(username + "@" + domain + "/" + username  + "-" + Math.random().toString(36).substr(2,9), password, username);
+
+			if (getSetting("notifyWhenMentioned", true))
+			{
+				CandyShop.NotifyMe.init(win, null);
+			}
 
 		}
 	});

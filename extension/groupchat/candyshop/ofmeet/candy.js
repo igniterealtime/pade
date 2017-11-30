@@ -2,20 +2,49 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.OfMeet = (function(self, Candy, $) {
 
-	self.init = function() {
+	self.init = function(win) {
 		var html = '<li id="ofmeet-control-icon" data-tooltip="Openfire Meetings"><img id="ofmeet-control" src="candyshop/ofmeet/webcam.png"></span></li>';
 		$('#emoticons-icon').after(html);
 
+		var makeRoomName = function makeRoomName(me, contact)
+		{
+			if (me <= contact)
+			{
+				return me + "-" + contact;
+			}
+			else return contact + "-" + me;
+		}
+
 		$('#ofmeet-control-icon').click(function(event)
 		{
-			var roomJid = Candy.View.getCurrent().roomJid;
-
-			if (!Strophe.getResourceFromJid(roomJid))
+			if (win)
 			{
-				Candy.Core.Action.Jabber.Room.Leave(roomJid);
-			}
+				win.closeVideoWindow();
 
-			self.showOfMeet(roomJid);
+				var roomJid = Candy.View.getCurrent().roomJid;
+				var privateChat = Strophe.escapeNode(Strophe.getResourceFromJid(roomJid));
+				var imChat = Strophe.escapeNode(Strophe.getNodeFromJid(roomJid));
+				var meUser = Strophe.escapeNode(Candy.Core.getUser().getNick());
+				var domain = Strophe.getDomainFromJid(roomJid);
+				var room = Strophe.getNodeFromJid(roomJid);
+
+				if (privateChat)
+				{
+					// Private Chat
+					room = makeRoomName(meUser, privateChat);
+				}
+				else
+
+				if (domain == win.pade.domain)
+				{
+					// IM Chat
+					room = makeRoomName(meUser, room);
+				}
+				else {
+					Candy.Core.Action.Jabber.Room.Leave(roomJid);
+				}
+				self.showOfMeet(room);
+			}
 		});
 
 		var html2 = '<div id="video-modal"><a id="video-modal-cancel" class="close" href="#">×</a><span id="video-modal-body"></span></div><div id="video-modal-overlay"></div>';
@@ -33,18 +62,8 @@ CandyShop.OfMeet = (function(self, Candy, $) {
 
 	};
 
-	self.showOfMeet = function(roomJid)
+	self.showOfMeet = function(room)
 	{
-		var room = Strophe.getNodeFromJid(roomJid);
-
-		if (Strophe.getResourceFromJid(roomJid))
-		{
-			var fromUser = Strophe.escapeNode(Strophe.getResourceFromJid(roomJid));
-			var toUser = Strophe.escapeNode(Candy.Core.getUser().getNick());
-
-			room = fromUser > toUser ? toUser + fromUser : fromUser + toUser;
-		}
-
 		$("#video-modal-cancel").show().click(function(e)
 		{
 			$("#video-modal").fadeOut("fast", function() {

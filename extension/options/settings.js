@@ -65,6 +65,12 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
+        {
+            background.reloadApp();
+        });
+
+
         function reloadApp(){
 
             openAppWindow()
@@ -102,12 +108,14 @@ window.addEvent("domready", function () {
 function doDefaults()
 {
     // preferences
+    setSetting("showOnlyOnlineUsers", true)
     setSetting("popupWindow", true);
     setSetting("useJabra", false);
     setSetting("useWebsocket", false);
     setSetting("disableAudioLevels", false);
     setSetting("enableLipSync", false);
     setSetting("enableChat", false);
+    setSetting("audioOnly", false);
 
     // config
     setSetting("startWithAudioMuted", false);
@@ -116,6 +124,10 @@ function doDefaults()
     // user interface
     setSetting("VERTICAL_FILMSTRIP", true);
     setSetting("FILM_STRIP_MAX_HEIGHT", 90);
+
+    // candy chat
+    setSetting("chatWithOnlineContacts", true);
+    setSetting("notifyWhenMentioned", true);
 }
 
 function setSetting(name, defaultValue)

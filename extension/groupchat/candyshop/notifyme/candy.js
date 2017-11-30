@@ -34,10 +34,10 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	 * Parameters:
 	 *   (Object) options - The options to apply to this plugin
 	 */
-	self.init = function(options) {
+	self.init = function(win, options) {
 		// apply the supplied options to the defaults specified
 		$.extend(true, _options, options);
-		
+
 		// get the nick from the current user
 		var nick = Candy.Core.getUser().getNick();
 
@@ -48,26 +48,32 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-show', function(e, args) {
 			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
-			
+
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
+
 			if (searchRegExp.test(args.message) && args.name != nick) {
 				// play the sound if specified
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
 				}
-				
+
+				if (win && win.pade.minimised)
+				{
+					win.notifyText(args.message, args.name);
+				}
+
 				// Save that I'm mentioned in args
 				args.forMe = true;
 			}
-			
+
 			return args.message;
 		});
-		
+
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
 			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
-			
+
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
 			if (searchRegExp.test(args.templateData.message) && args.templateData.name != nick) {

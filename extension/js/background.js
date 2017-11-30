@@ -112,6 +112,24 @@ window.addEventListener("load", function()
     });
 
 
+    chrome.windows.onFocusChanged.addListener(function(win)
+    {
+		if (pade.chatWindow)
+		{
+			if (win == -1) pade.minimised = true;
+			if (win == pade.chatWindow.id) pade.minimised = false;
+		}
+		else
+
+		if (pade.videoWindow)
+		{
+			if (win == -1) pade.minimised = true;
+			if (win == pade.videoWindow.id) pade.minimised = false;
+		}
+
+		//console.log("minimised", pade.minimised);
+	});
+
     chrome.windows.onRemoved.addListener(function(win)
     {
         //console.log("closing window ", win);
@@ -119,6 +137,7 @@ window.addEventListener("load", function()
         if (pade.chatWindow && win == pade.chatWindow.id)
         {
             pade.chatWindow = null;
+            pade.minimised = false;
         }
 
         if (pade.videoWindow && win == pade.videoWindow.id)
@@ -126,6 +145,7 @@ window.addEventListener("load", function()
             sendToJabra("onhook");
 
             pade.videoWindow = null;
+            pade.minimised = false;
             pade.connection.send($pres());  // needed because JitsiMeet send unavailable
         }
     });
@@ -162,7 +182,7 @@ window.addEventListener("load", function()
 
                 pade.jabraPort.onMessage.addListener(function(data)
                 {
-                    console.log("jabra incoming", data);
+                    //console.log("jabra incoming", data);
                     handleJabraMessage(data.message);
                 });
 
@@ -243,6 +263,7 @@ function handleContact(contact)
             pade.activeUrl = contact.url; // default
         }
 
+		contact.created = true;
         chrome.contextMenus.create({parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick});
 
     }
@@ -257,6 +278,7 @@ function handleContact(contact)
         }
 
         pade.participants[contact.jid] = contact;
+        contact.created = true;
         chrome.contextMenus.create({parentId: "pade_rooms", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleContactClick});
     }
     else
@@ -269,8 +291,12 @@ function handleContact(contact)
             if (!pade.activeContact) setActiveContact(contact);
         }
 
-        pade.participants[contact.jid] = contact;
-        chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+		if (showUser(contact))
+		{
+        	pade.participants[contact.jid] = contact;
+        	contact.created = true;
+        	chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+		}
     }
     else
 
@@ -283,6 +309,7 @@ function handleContact(contact)
         }
 
         pade.participants[contact.jid] = contact;
+        contact.created = true;
         chrome.contextMenus.create({parentId: "pade_workgroups", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleWorkgroupClick});
     }
 }
@@ -613,9 +640,17 @@ function addHandlers()
 
         if (contact)
         {
+			if (contact.created) chrome.contextMenus.remove(from);
+            contact.created = false;
+
             contact.presence = pres;
-            chrome.contextMenus.update(from, {title: contact.name + " - " + contact.presence});
-        }
+
+			if (showUser(contact))
+			{
+				contact.created = true;
+				chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+			}
+         }
 
         return true;
 
@@ -770,7 +805,7 @@ function fetchContacts(callback)
                 id: contactCount++,
                 type: "conversation",
                 name: name,
-                room: pade.username + "-" + node,
+                room: makeRoomName(pade.username, node),
                 node: node,
                 jid: jid,
                 presence: pade.presence[jid] ? pade.presence[jid] : "unavailable",
@@ -847,7 +882,7 @@ function fetchContacts(callback)
 
 function findUsers(search, callback)
 {
-    console.log('findUsers', search);
+    //console.log('findUsers', search);
 
     var iq = $iq({type: 'set', to: "search." + pade.connection.domain}).c('query', {xmlns: 'jabber:iq:search'}).c('x').t(search).up().c('email').t(search).up().c('nick').t(search);
 
@@ -863,9 +898,9 @@ function findUsers(search, callback)
 
             var name = current.find('nick').text();
             var email = current.find('email').text();
-            var room = pade.username + "-" + username;
+            var room = makeRoomName(pade.username, username);
 
-            console.log('findUsers response', name, jid, room);
+            //console.log('findUsers response', name, jid, room);
 
             users.push({username: username, name: name, email: email, jid: jid, room: room});
         });
@@ -879,7 +914,7 @@ function findUsers(search, callback)
 
 function inviteToConference(jid, room)
 {
-    console.log("inviteToConference", jid, room);
+    //console.log("inviteToConference", jid, room);
 
     try {
         var invite = "Please join me in https://" + pade.server + "/ofmeet/" + room;
@@ -1072,24 +1107,18 @@ function handleJabraMessage(message)
 
 function sendToJabra(message)
 {
-
     if (pade.jabraPort)
     {
-        console.log("sendToJabra " + message);
+        //console.log("sendToJabra " + message);
         pade.jabraPort.postMessage({ message: message });
     }
-}
-
-function isAudioOnly()
-{
-    return getSetting("audioOnly", false);
 }
 
 function clearNotification(room)
 {
     chrome.notifications.clear(room, function(wasCleared)
     {
-        console.log("notification cleared", room, wasCleared);
+        //console.log("notification cleared", room, wasCleared);
     });
 }
 
@@ -1110,7 +1139,7 @@ function joinAudioCall(title, label, room)
 
 function getSetting(name, defaultValue)
 {
-    console.log("getSetting", name, defaultValue);
+    //console.log("getSetting", name, defaultValue);
 
     var value = defaultValue;
 
@@ -1140,3 +1169,23 @@ function removeChatMenu()
 {
     chrome.contextMenus.remove("pade_chat");
 }
+
+function isAudioOnly()
+{
+    return getSetting("audioOnly", false);
+}
+
+function showUser(contact)
+{
+	return !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
+}
+
+function makeRoomName(me, contact)
+{
+	if (me <= contact)
+	{
+		return me + "-" + contact;
+	}
+	else return contact + "-" + me;
+}
+
