@@ -65,11 +65,15 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
+        settings.manifest.enableSip.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
+        settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
+        {
+            background.reloadApp();
+        });
 
         function reloadApp(){
 
@@ -116,6 +120,7 @@ function doDefaults()
     setSetting("enableLipSync", false);
     setSetting("enableChat", false);
     setSetting("audioOnly", false);
+    setSetting("enableSip", false);    
 
     // config
     setSetting("startWithAudioMuted", false);
@@ -145,10 +150,10 @@ function getSetting(name)
     //console.log("getSetting", name);
     var value = null;
 
-	if (window.localStorage["store.settings." + name])
-	{
-		value = JSON.parse(window.localStorage["store.settings." + name]);
-	}
+    if (window.localStorage["store.settings." + name])
+    {
+        value = JSON.parse(window.localStorage["store.settings." + name]);
+    }
 
     return value;
 }

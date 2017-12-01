@@ -112,7 +112,7 @@ this.manifest = {
             "group": i18n.get("Preferences"),
             "name": "enableSip",
             "type": "checkbox",
-            "label": i18n.get("Enable FreeSWITCH Audio")
+            "label": i18n.get("Enable SIP Phone")
         },
         {
             "tab": i18n.get("general"),
@@ -210,7 +210,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Notify/Highlight when mentioned")
         },
-        {											// user directory
+        {                                           // user directory
             "tab": i18n.get("User Directory"),
             "group": i18n.get("User Directory"),
             "name": "searchString",

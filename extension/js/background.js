@@ -3,8 +3,7 @@ var callbacks = {}
 
 window.addEventListener("beforeunload", function ()
 {
-    if (pade.videoWindow) chrome.windows.remove(pade.videoWindow.id);
-    if (pade.connection) pade.connection.disconnect();
+
 });
 
 
@@ -12,11 +11,12 @@ window.addEventListener("unload", function ()
 {
     console.log("pade unloaded");
 
-    etherlynk.connect();
+    etherlynk.disconnect();
     if (pade.connection) pade.connection.disconnect();
 
     closeChatWindow();
     closeVideoWindow();
+    closePhoneWindow();    
 });
 
 window.addEventListener("load", function()
@@ -24,7 +24,10 @@ window.addEventListener("load", function()
     console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
-	addChatMenu();
+    chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});    
+    chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+    
+    addChatMenu();
 
     chrome.runtime.onConnect.addListener(function(port)
     {
@@ -114,21 +117,21 @@ window.addEventListener("load", function()
 
     chrome.windows.onFocusChanged.addListener(function(win)
     {
-		if (pade.chatWindow)
-		{
-			if (win == -1) pade.minimised = true;
-			if (win == pade.chatWindow.id) pade.minimised = false;
-		}
-		else
+        if (pade.chatWindow)
+        {
+            if (win == -1) pade.minimised = true;
+            if (win == pade.chatWindow.id) pade.minimised = false;
+        }
+        else
 
-		if (pade.videoWindow)
-		{
-			if (win == -1) pade.minimised = true;
-			if (win == pade.videoWindow.id) pade.minimised = false;
-		}
+        if (pade.videoWindow)
+        {
+            if (win == -1) pade.minimised = true;
+            if (win == pade.videoWindow.id) pade.minimised = false;
+        }
 
-		//console.log("minimised", pade.minimised);
-	});
+        //console.log("minimised", pade.minimised);
+    });
 
     chrome.windows.onRemoved.addListener(function(win)
     {
@@ -139,6 +142,11 @@ window.addEventListener("load", function()
             pade.chatWindow = null;
             pade.minimised = false;
         }
+        
+        if (pade.sip.window && win == pade.sip.window.id)
+        {
+            pade.sip.window = null;
+        }        
 
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
@@ -202,6 +210,7 @@ window.addEventListener("load", function()
         chrome.browserAction.setBadgeText({ text: 'off' });
 
         // setup SIP
+        pade.sip = {};               
         pade.enableSip = getSetting("enableSip", false);
 
         var connUrl = "https://" + pade.server + "/http-bind/";
@@ -245,9 +254,6 @@ window.addEventListener("load", function()
 
         });
 
-        // etherlynk for audio only
-        etherlynk.connect();
-
     } else doOptions();
 });
 
@@ -263,7 +269,7 @@ function handleContact(contact)
             pade.activeUrl = contact.url; // default
         }
 
-		contact.created = true;
+        contact.created = true;
         chrome.contextMenus.create({parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick});
 
     }
@@ -273,7 +279,6 @@ function handleContact(contact)
     {
         if (contact.id == 0)
         {
-            chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
             setActiveContact(contact);
         }
 
@@ -287,16 +292,15 @@ function handleContact(contact)
     {
         if (contact.id == 0)
         {
-            chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
             if (!pade.activeContact) setActiveContact(contact);
         }
 
-		if (showUser(contact))
-		{
-        	pade.participants[contact.jid] = contact;
-        	contact.created = true;
-        	chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
-		}
+        if (showUser(contact))
+        {
+            pade.participants[contact.jid] = contact;
+            contact.created = true;
+            chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+        }
     }
     else
 
@@ -510,6 +514,32 @@ function notifyList(message, context, items, buttons, callback)
     });
 };
 
+function closePhoneWindow()
+{
+    if (pade.sip.window != null)
+    {
+        chrome.windows.remove(pade.sip.window.id);
+        pade.sip.window = null;
+    }
+}
+
+function openPhoneWindow(focus)
+{
+    var url = chrome.extension.getURL("phone/index-ext.html");
+
+    if (pade.sip.window == null)
+    {
+        chrome.windows.create({url: url, focused: focus, type: "popup"}, function (win) 
+        {
+            pade.sip.window = win;
+            chrome.windows.update(pade.sip.window.id, {drawAttention: focus, width: 350, height: 725});
+        });
+
+    } else {
+        chrome.windows.update(pade.sip.window.id, {drawAttention: true, width: 350, height: 725});       
+    }   
+}
+
 function closeChatWindow()
 {
     if (pade.chatWindow)
@@ -640,16 +670,19 @@ function addHandlers()
 
         if (contact)
         {
-			if (contact.created) chrome.contextMenus.remove(from);
+            if (contact.created && (contact.type == "conversation" || contact.type == "workgroup"))
+            {
+                chrome.contextMenus.remove(from);
+            }
+            
             contact.created = false;
-
             contact.presence = pres;
 
-			if (showUser(contact))
-			{
-				contact.created = true;
-				chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
-			}
+            if (showUser(contact))
+            {
+                contact.created = true;
+                chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+            }
          }
 
         return true;
@@ -876,7 +909,37 @@ function fetchContacts(callback)
     }, function (error) {
         console.warn("Fastpath not available");
     });
+    
+    if (pade.enableSip)
+    {
+        pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).tree(), function(resp)
+        {
+            $(resp).find('jid').each(function()                 {pade.sip.jid = $(this).text();});
+            $(resp).find('username').each(function()            {pade.sip.username = $(this).text();});
+            $(resp).find('authUsername').each(function()        {pade.sip.authUsername = $(this).text();});
+            $(resp).find('displayPhoneNum').each(function()     {pade.sip.displayPhoneNum = $(this).text();});
+            $(resp).find('password').each(function()            {pade.sip.password = $(this).text();});
+            $(resp).find('server').each(function()              {pade.sip.server = $(this).text();});
+            $(resp).find('enabled').each(function()             {pade.sip.enabled = $(this).text();});
+            $(resp).find('outboundproxy').each(function()       {pade.sip.outboundproxy = $(this).text();});
+            $(resp).find('promptCredentials').each(function()   {pade.sip.promptCredentials = $(this).text();});
 
+            console.log("get sip profile", pade.sip);
+            etherlynk.connect();
+            
+            if (pade.sip.authUsername)
+            {
+                chrome.contextMenus.create({id: "pade_phone", type: "normal", title: "Phone", contexts: ["browser_action"],  onclick: function()
+                {
+                    openPhoneWindow(true);
+                }});    
+            }
+
+        }, function (error) {
+            console.warn("SIP profile not available");
+            etherlynk.connect();
+        });    
+    }
 
 }
 
@@ -1156,13 +1219,13 @@ function getSetting(name, defaultValue)
 
 function addChatMenu()
 {
-	if (getSetting("enableChat", false))
-	{
-		chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Chat", contexts: ["browser_action"],  onclick: function()
-		{
-			openChatWindow("groupchat/index.html");
-		}});
-	}
+    if (getSetting("enableChat", false))
+    {
+        chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Chat", contexts: ["browser_action"],  onclick: function()
+        {
+            openChatWindow("groupchat/index.html");
+        }});
+    }
 }
 
 function removeChatMenu()
@@ -1177,15 +1240,50 @@ function isAudioOnly()
 
 function showUser(contact)
 {
-	return !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
+    return !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
 }
 
 function makeRoomName(me, contact)
 {
-	if (me <= contact)
-	{
-		return me + "-" + contact;
-	}
-	else return contact + "-" + me;
+    if (me <= contact)
+    {
+        return me + "-" + contact;
+    }
+    else return contact + "-" + me;
 }
+
+function setSipStatus(status)
+{
+    pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).c('status').t(status).tree(), function(resp)
+    {
+        console.log("setSipStatus", status);          
+
+    }, function (error) {
+        console.error("setSipStatus", error);
+    });
+}
+
+function logCall(target, direction, duration)
+{
+    if (direction == "dialed")
+    {
+        numA = pade.sip.username;
+        numB = target;
+    }
+    else {
+        numB = pade.sip.username;
+        numA = target;    
+    }
+    
+/*
+    pade.connection.sendIQ($iq({type: 'get', to: "logger." + pade.connection.domain}).c('logger', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/log"}).c('callLog').c('numA').t(numA).up().c('numB').t(numB).up().c('direction').t(direction).up().c('duration').t(duration).up().tree(), function(resp)
+    {
+        console.log("logCall", numA, numB, direction, duration);          
+
+    }, function (error) {
+        console.error("logCall", error);
+    });
+*/
+}
+
 
