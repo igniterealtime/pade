@@ -25,13 +25,6 @@ To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/deta
 On your [Openfire] server, you will need at least the two [Openfire Meetings] plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins.jsp) plugin. If you are running an [Openfire] server lower than 4.2, you will also need the websocket plugin. For the advanced telephony features with SIP and a REST API, you will need the [Etherlynk version of Openfire Meetings which includes the ofswitch and ofchat plugins](https://github.com/Traderlynk/ofmeet-openfire-plugin)
 
 -------
-
-[Ignite Realtime] is an Open Source community composed of end-users and developers around the world who 
-are interested in applying innovative, open-standards-based Real Time Collaboration to their businesses and organizations. 
-We're aimed at disrupting proprietary, non-open standards-based systems and invite you to participate in what's already one 
-of the biggest and most active Open Source communities.
-
--------
 [Openfire Meetings]:http://community.igniterealtime.org/community/plugins/commplugins/openfire-meetings
 [P&agrave;d&eacute;]: https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en-GB
 [Openfire]:http://www.igniterealtime.org/projects/openfire/index.jsp
