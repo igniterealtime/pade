@@ -1,7 +1,13 @@
 P&agrave;d&eacute;
 =====
 
-[P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is based on the Jitsi Meet web application running inside a chrome extension.
+[P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is a unified communications client for Openfire Meetings and uses the following front end web applications.
+
+* [Jitsi Meet](https://jitsi.org/jitsi-meet/) for audio/video conferencing
+* [ctxPhone](https://collecttix.github.io/ctxSip/) for SIP based telephony
+* [Candy Chat](https://candy-chat.github.io/candy/) for instant messaging and group chat
+
+All applications run from within a chrome extension and together provide:
 
 * Modern HTML5 user interface;
 * Openfire user authentication;
@@ -16,21 +22,7 @@ P&agrave;d&eacute;
 
 To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en)
 
-On your [Openfire] server, you will need at least the two [Openfire Meetings] plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins.jsp) plugin. If you are running an [Openfire] server lower than 4.2, you will also need the websocket plugin.
-
-P&agrave;d&eacute; will fetch the logged in user's contact roster as well as all the bookmarks configured for the user. To see, the contacts, conference rooms and web page urls, right click on the Openfire icon.
-
-<img width="320" src="https://discourse.igniterealtime.org/uploads/default/original/2X/d/d23c2faf64f4f869793ba906a0f789af7b4bde09.png" />
-
-A normal left click on the Openfire icon causes P&agrave;d&eacute; to open into a Jitsi Meet video-conference with the currently selected contact or multi-chat room. 
-
-<img width="640" src="https://discourse.igniterealtime.org/uploads/default/optimized/2X/f/f72271aaeb1d188f7b9aa6389ea14f85e49624e3_1_480x231.jpg"/>
-
-If the meeting is with a contact, then the meeting is sent to the contact as a standard. chat message. When P&agrave;d&eacute; receives such a message, it displays a notification to the user.
-
-<img width="320" src="https://discourse.igniterealtime.org/uploads/default/optimized/2X/4/4346b0a326c38463f45524d5ca42683961806cc0_1_300x197.png" />
-
-Accepting the invitation opens the Jitsi Meet video-conference window.
+On your [Openfire] server, you will need at least the two [Openfire Meetings] plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins.jsp) plugin. If you are running an [Openfire] server lower than 4.2, you will also need the websocket plugin. For the advanced telephony features with SIP and a REST API, you will need the [Etherlynk version of Openfire Meetings which includes the ofswitch and ofchat plugins](https://github.com/Traderlynk/ofmeet-openfire-plugin)
 
 -------
 
