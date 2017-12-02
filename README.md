@@ -3,7 +3,7 @@ P&agrave;d&eacute;
 
 [P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is a unified communications client for Openfire Meetings and uses the following front end web applications.
 
-* [Jitsi Meet](https://jitsi.org/jitsi-meet/) for audio/video conferencing
+* [Jitsi Meet](https://jitsi.org/jitsi-meet/) for audio/video conferencing, screen share and real-time application collaboration
 * [ctxPhone](https://collecttix.github.io/ctxSip/) for SIP based telephony
 * [Candy Chat](https://candy-chat.github.io/candy/) for instant messaging and group chat
 
