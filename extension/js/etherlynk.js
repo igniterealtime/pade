@@ -179,9 +179,9 @@ var etherlynk = (function(lynk)
                 {
                     lynk.recognition.start();
                     console.log("Etherlynk recognition started ok");
-
-                    if (pade.enableSip) dial(name);
                 }
+
+                if (pade.enableSip) dial(name);
 
                 return;
             }
@@ -416,14 +416,14 @@ var etherlynk = (function(lynk)
 
             return stunServers;
         }
-        
-        var getUserMediaSuccess = function(stream) 
-        {   
+
+        var getUserMediaSuccess = function(stream)
+        {
             pade.sip.localAudioStream = stream;
             if (pade.sip.window == null) accept();
         }
 
-        var getUserMediaFailure = function(e) 
+        var getUserMediaFailure = function(e)
         {
             console.error('getUserMedia failed:', e);
             doOptions();
@@ -436,16 +436,16 @@ var etherlynk = (function(lynk)
                 stream      : pade.sip.localAudioStream,
                 constraints : { audio : true, video : false },
                 render      : { remote : new Audio()},
-                }                   
+                }
             });
 
-            notifyText("SIP Phone", "Connected",null,null,null,"sip-notify");       
+            notifyText("SIP Phone", "Connected",null,null,null,"sip-notify");
         }
-        
-        
+
+
         var uri = 'sip:default@' + lynk.options.hosts.sip;
         var wsServers = "wss://" + lynk.options.hosts.server + "/sip/proxy?url=ws://" + lynk.options.hosts.sip + ":5066";
-        
+
         if (pade.sip.authUsername)
         {
             uri = 'sip:' + pade.sip.authUsername + '@' + pade.sip.server;
@@ -455,12 +455,12 @@ var etherlynk = (function(lynk)
         lynk.sip.sipUI = new SIP.UA(
         {
             password        : pade.sip.password,
-            displayName     : pade.sip.displayPhoneNum ? pade.sip.displayPhoneNum:  lynk.options.nickName,        
+            displayName     : pade.sip.displayPhoneNum ? pade.sip.displayPhoneNum:  lynk.options.nickName,
             uri             : uri,
             wsServers       : wsServers,
             turnServers     : getTurnServers(),
             stunServers     : getStunServers(),
-            //rtcpMuxPolicy   : "negotiate",                
+            //rtcpMuxPolicy   : "negotiate",
             registerExpires : 30,
             traceSip        : true,
             log             : {
@@ -469,37 +469,37 @@ var etherlynk = (function(lynk)
         });
 
         lynk.sip.sipUI.on('connected', function(e) {
-            console.log("SIP Connected");            
-            pade.sip.registered = false;              
+            console.log("SIP Connected");
+            pade.sip.registered = false;
         });
 
         lynk.sip.sipUI.on('disconnected', function(e) {
             console.log("SIP Disconnected");
-            pade.sip.registered = false;               
+            pade.sip.registered = false;
         });
 
         lynk.sip.sipUI.on('registered', function(e) {
             console.log("SIP Registered");
-            
+
             if (!pade.sip.registered)
             {
                 notifyText("SIP Phone", "Registered",null,null,null,"sip-notify");
-                pade.sip.registered = true; 
-                
+                pade.sip.registered = true;
+
                 if (pade.sip.authUsername) setSipStatus("Registered");
-            }            
+            }
         });
 
         lynk.sip.sipUI.on('registrationFailed', function(e) {
             console.log("Error: Registration Failed");
-            pade.sip.registered = false; 
-            if (pade.sip.authUsername) setSipStatus("Registered");            
+            pade.sip.registered = false;
+            if (pade.sip.authUsername) setSipStatus("Registered");
         });
 
         lynk.sip.sipUI.on('unregistered', function(e) {
             console.log("Error: Unregistered");
-            pade.sip.registered = false; 
-            if (pade.sip.authUsername) setSipStatus("Registered");            
+            pade.sip.registered = false;
+            if (pade.sip.authUsername) setSipStatus("Registered");
         });
 
         lynk.sip.sipUI.on('message', function(message) {
@@ -519,11 +519,11 @@ var etherlynk = (function(lynk)
                 }
             }
         });
-        
+
         lynk.sip.sipUI.on('invite', function (incomingSession) {
             console.log("SIP Invite", incomingSession.request);
 
-            pade.sip.incomingSession = incomingSession;          
+            pade.sip.incomingSession = incomingSession;
 
             if (pade.sip.localAudioStream)
             {
@@ -531,15 +531,15 @@ var etherlynk = (function(lynk)
 
             } else {
                 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-                navigator.getUserMedia({ audio : true, video : false }, getUserMediaSuccess, getUserMediaFailure);              
+                navigator.getUserMedia({ audio : true, video : false }, getUserMediaSuccess, getUserMediaFailure);
             }
-        });         
+        });
     }
 
     function accept()
     {
-        if (pade.sip.incomingSession.request.headers["Call-Info"] && 
-            pade.sip.incomingSession.request.headers["Call-Info"][0] && 
+        if (pade.sip.incomingSession.request.headers["Call-Info"] &&
+            pade.sip.incomingSession.request.headers["Call-Info"][0] &&
             pade.sip.incomingSession.request.headers["Call-Info"][0].raw.indexOf("answer-after=0") > -1)
         {
             acceptCall();
@@ -549,10 +549,10 @@ var etherlynk = (function(lynk)
         if (pade.sip.window == null)
         {
             openPhoneWindow(false);
-            pade.sip.incomingCall = true;                    
-        }    
+            pade.sip.incomingCall = true;
+        }
     }
-    
+
     function dial(name)
     {
         console.log("dial", name);
@@ -684,7 +684,7 @@ var etherlynk = (function(lynk)
             console.log("Etherlynk leave " + name);
         }
     }
-    
+
 
     lynk.getSipWebRtc = function()
     {
@@ -708,7 +708,7 @@ var etherlynk = (function(lynk)
                 lynk.sip.sipUI.emit("uiinvite", pade.sip.incomingSession);
             } catch (e) {}
         }
-    }    
+    }
 
     lynk.remoteAudioTracks = {};
     lynk.localAudioTracks = {};
