@@ -1,6 +1,6 @@
 var interfaceConfig = {
   "ACTIVE_SPEAKER_AVATAR_SIZE": 100,
-  "SHOW_CONTACTLIST_AVATARS": false,
+  "SHOW_CONTACTLIST_AVATARS": true,
   "SHOW_POWERED_BY": false,
   "APP_NAME": "Pade - Openfire Meetings",
   "filmStripOnly": false,
@@ -24,11 +24,9 @@ var interfaceConfig = {
     "invite",
     "fullscreen",
     "fodeviceselection",
-    "hangup",
     "profile",
     "addtocall",
     "contacts",
-    /*"info",*/
     "chat",
     "recording",
     "etherpad",
@@ -62,8 +60,7 @@ var interfaceConfig = {
     "camera",
     "desktop",
     "invite",
-    "fullscreen",
-    "hangup"
+    "fullscreen"
   ],
   "DEFAULT_LOCAL_DISPLAY_NAME": "Me",
   "INITIAL_TOOLBAR_TIMEOUT": 20000

@@ -136,6 +136,8 @@ var ofmeet = (function(of)
 							OFMEET_CONFIG.documentShare = false;
 							OFMEET_CONFIG.documentUser = null;
 							OFMEET_CONFIG.largeVideoContainer = null;
+
+							window.location.href= "chrome.index.html?room=" + OFMEET_CONFIG.room;
 						}
 					}
                     else
@@ -591,6 +593,8 @@ function ofmeetEtherpadClicked()
 				document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
 
 				APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
+
+				window.location.href= "chrome.index.html?room=" + OFMEET_CONFIG.room;
 			}
 		}
 		else {
