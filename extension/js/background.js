@@ -16,7 +16,7 @@ window.addEventListener("unload", function ()
 
     closeChatWindow();
     closeVideoWindow();
-    closePhoneWindow();    
+    closePhoneWindow();
 });
 
 window.addEventListener("load", function()
@@ -24,9 +24,9 @@ window.addEventListener("load", function()
     console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
-    chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});    
+    chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
     chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
-    
+
     addChatMenu();
 
     chrome.runtime.onConnect.addListener(function(port)
@@ -142,11 +142,11 @@ window.addEventListener("load", function()
             pade.chatWindow = null;
             pade.minimised = false;
         }
-        
+
         if (pade.sip.window && win == pade.sip.window.id)
         {
             pade.sip.window = null;
-        }        
+        }
 
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
@@ -210,7 +210,7 @@ window.addEventListener("load", function()
         chrome.browserAction.setBadgeText({ text: 'off' });
 
         // setup SIP
-        pade.sip = {};               
+        pade.sip = {};
         pade.enableSip = getSetting("enableSip", false);
 
         var connUrl = "https://" + pade.server + "/http-bind/";
@@ -529,15 +529,15 @@ function openPhoneWindow(focus)
 
     if (pade.sip.window == null)
     {
-        chrome.windows.create({url: url, focused: focus, type: "popup"}, function (win) 
+        chrome.windows.create({url: url, focused: focus, type: "popup"}, function (win)
         {
             pade.sip.window = win;
             chrome.windows.update(pade.sip.window.id, {drawAttention: focus, width: 350, height: 725});
         });
 
     } else {
-        chrome.windows.update(pade.sip.window.id, {drawAttention: true, width: 350, height: 725});       
-    }   
+        chrome.windows.update(pade.sip.window.id, {drawAttention: true, width: 350, height: 725});
+    }
 }
 
 function closeChatWindow()
@@ -660,30 +660,30 @@ function addHandlers()
         var type = $(presence).attr('type');
         var from = Strophe.getBareJidFromJid($(presence).attr('from'));
 
-        //console.log("presence handler", from, to, type);
+		//console.log("presence handler", from, to, type);
 
-        var pres = "online";
-        if (type == "unavailable") pres = "unavailable";
+		var pres = "online";
+		if (type == "unavailable") pres = "unavailable";
 
-        pade.presence[from] = pres;
-        var contact = pade.participants[from];
+		pade.presence[from] = pres;
+		var contact = pade.participants[from];
 
-        if (contact)
-        {
-            if (contact.created && (contact.type == "conversation" || contact.type == "workgroup"))
-            {
-                chrome.contextMenus.remove(from);
-            }
-            
-            contact.created = false;
-            contact.presence = pres;
+		if (contact && contact.type == "conversation")
+		{
+			if (contact.created)
+			{
+				chrome.contextMenus.remove(from);
+			}
 
-            if (showUser(contact))
-            {
-                contact.created = true;
-                chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
-            }
-         }
+			contact.created = false;
+			contact.presence = pres;
+
+			if (showUser(contact))
+			{
+				contact.created = true;
+				chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+			}
+		 }
 
         return true;
 
@@ -909,7 +909,7 @@ function fetchContacts(callback)
     }, function (error) {
         console.warn("Fastpath not available");
     });
-    
+
     if (pade.enableSip)
     {
         pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).tree(), function(resp)
@@ -926,19 +926,19 @@ function fetchContacts(callback)
 
             console.log("get sip profile", pade.sip);
             etherlynk.connect();
-            
+
             if (pade.sip.authUsername)
             {
                 chrome.contextMenus.create({id: "pade_phone", type: "normal", title: "Phone", contexts: ["browser_action"],  onclick: function()
                 {
                     openPhoneWindow(true);
-                }});    
+                }});
             }
 
         }, function (error) {
             console.warn("SIP profile not available");
             etherlynk.connect();
-        });    
+        });
     }
 
 }
@@ -1256,7 +1256,7 @@ function setSipStatus(status)
 {
     pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).c('status').t(status).tree(), function(resp)
     {
-        console.log("setSipStatus", status);          
+        console.log("setSipStatus", status);
 
     }, function (error) {
         console.error("setSipStatus", error);
@@ -1272,13 +1272,13 @@ function logCall(target, direction, duration)
     }
     else {
         numB = pade.sip.username;
-        numA = target;    
+        numA = target;
     }
-    
+
 /*
     pade.connection.sendIQ($iq({type: 'get', to: "logger." + pade.connection.domain}).c('logger', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/log"}).c('callLog').c('numA').t(numA).up().c('numB').t(numB).up().c('direction').t(direction).up().c('duration').t(duration).up().tree(), function(resp)
     {
-        console.log("logCall", numA, numB, direction, duration);          
+        console.log("logCall", numA, numB, direction, duration);
 
     }, function (error) {
         console.error("logCall", error);
