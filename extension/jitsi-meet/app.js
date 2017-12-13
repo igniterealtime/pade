@@ -8,14 +8,8 @@ import './react/features/base/react/prop-types-polyfill.js';
 
 import 'jquery';
 import 'jquery-contextmenu';
-import 'jquery-ui';
 import 'jQuery-Impromptu';
 import 'autosize';
-
-import 'aui';
-import 'aui-experimental';
-import 'aui-css';
-import 'aui-experimental-css';
 
 import conference from './conference';
 import API from './modules/API';

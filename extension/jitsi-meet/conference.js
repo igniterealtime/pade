@@ -15,7 +15,21 @@ import UIEvents from './service/UI/UIEvents';
 import UIUtil from './modules/UI/util/UIUtil';
 import * as JitsiMeetConferenceEvents from './ConferenceEvents';
 
-import { initAnalytics, sendAnalyticsEvent } from './react/features/analytics';
+import {
+    CONFERENCE_AUDIO_INITIALLY_MUTED,
+    CONFERENCE_SHARING_DESKTOP_START,
+    CONFERENCE_SHARING_DESKTOP_STOP,
+    CONFERENCE_VIDEO_INITIALLY_MUTED,
+    DEVICE_LIST_CHANGED_AUDIO_MUTED,
+    DEVICE_LIST_CHANGED_VIDEO_MUTED,
+    SELECT_PARTICIPANT_FAILED,
+    SETTINGS_CHANGE_DEVICE_AUDIO_OUT,
+    SETTINGS_CHANGE_DEVICE_AUDIO_IN,
+    SETTINGS_CHANGE_DEVICE_VIDEO,
+    STREAM_SWITCH_DELAY,
+    initAnalytics,
+    sendAnalyticsEvent
+} from './react/features/analytics';
 
 import EventEmitter from 'events';
 
@@ -25,12 +39,13 @@ import {
     conferenceFailed,
     conferenceJoined,
     conferenceLeft,
+    conferenceWillJoin,
     dataChannelOpened,
     EMAIL_COMMAND,
     lockStateChanged,
+    onStartMutedPolicyChanged,
     p2pStatusChanged,
-    sendLocalParticipant,
-    toggleAudioOnly
+    sendLocalParticipant
 } from './react/features/base/conference';
 import { updateDeviceList } from './react/features/base/devices';
 import {
@@ -77,6 +92,7 @@ import {
 import { getLocationContextRoot } from './react/features/base/util';
 import { statsEmitter } from './react/features/connection-indicator';
 import { showDesktopPicker } from './react/features/desktop-picker';
+import { appendSuffix } from './react/features/display-name';
 import { maybeOpenFeedbackDialog } from './react/features/feedback';
 import {
     mediaPermissionPromptVisibilityChanged,
@@ -554,11 +570,6 @@ export default {
 
         let tryCreateLocalTracks;
 
-        // Enable audio only mode
-        if (config.startAudioOnly) {
-            APP.store.dispatch(toggleAudioOnly());
-        }
-
         // FIXME is there any simpler way to rewrite this spaghetti below ?
         if (options.startScreenSharing) {
             tryCreateLocalTracks = this._createDesktopTrack()
@@ -637,11 +648,16 @@ export default {
                 });
         }
 
+        // Hide the permissions prompt/overlay as soon as the tracks are
+        // created. Don't wait for the connection to be made, since in some
+        // cases, when auth is rquired, for instance, that won't happen until
+        // the user inputs their credentials, but the dialog would be
+        // overshadowed by the overlay.
+        tryCreateLocalTracks.then(() =>
+            APP.store.dispatch(mediaPermissionPromptVisibilityChanged(false)));
+
         return Promise.all([ tryCreateLocalTracks, connect(roomName) ])
             .then(([ tracks, con ]) => {
-                APP.store.dispatch(
-                    mediaPermissionPromptVisibilityChanged(false));
-
                 // FIXME If there will be microphone error it will cover any
                 // screensharing dialog, but it's still better than in
                 // the reverse order where the screensharing dialog will
@@ -722,12 +738,12 @@ export default {
             .then(([ tracks, con ]) => {
                 tracks.forEach(track => {
                     if (track.isAudioTrack() && this.isLocalAudioMuted()) {
-                        sendAnalyticsEvent('conference.audio.initiallyMuted');
+                        sendAnalyticsEvent(CONFERENCE_AUDIO_INITIALLY_MUTED);
                         logger.log('Audio mute: initially muted');
                         track.mute();
                     } else if (track.isVideoTrack()
                                     && this.isLocalVideoMuted()) {
-                        sendAnalyticsEvent('conference.video.initiallyMuted');
+                        sendAnalyticsEvent(CONFERENCE_VIDEO_INITIALLY_MUTED);
                         logger.log('Video mute: initially muted');
                         track.mute();
                     }
@@ -1255,6 +1271,7 @@ export default {
             = connection.initJitsiConference(
                 APP.conference.roomName,
                 this._getConferenceOptions());
+        APP.store.dispatch(conferenceWillJoin(room));
         this._setLocalAudioVideoStreams(localTracks);
         this._room = room; // FIXME do not use this
 
@@ -1431,8 +1448,7 @@ export default {
             promise = createLocalTracksF({ devices: [ 'video' ] })
                 .then(([ stream ]) => this.useVideoStream(stream))
                 .then(() => {
-                    sendAnalyticsEvent(
-                        'conference.sharingDesktop.stop');
+                    sendAnalyticsEvent(CONFERENCE_SHARING_DESKTOP_STOP);
                     logger.log('switched back to local video');
                     if (!this.localVideo && wasVideoMuted) {
                         return Promise.reject('No local video to be muted!');
@@ -1611,7 +1627,7 @@ export default {
             .then(stream => this.useVideoStream(stream))
             .then(() => {
                 this.videoSwitchInProgress = false;
-                sendAnalyticsEvent('conference.sharingDesktop.start');
+                sendAnalyticsEvent(CONFERENCE_SHARING_DESKTOP_START);
                 logger.log('sharing local desktop');
             })
             .catch(error => {
@@ -1706,11 +1722,7 @@ export default {
     _setupListeners() {
         // add local streams when joined to the conference
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
-            APP.store.dispatch(conferenceJoined(room));
-
-            APP.UI.mucJoined();
-            APP.API.notifyConferenceJoined(APP.conference.roomName);
-            APP.UI.markVideoInterrupted(false);
+            this._onConferenceJoined();
         });
 
         room.on(
@@ -1728,15 +1740,20 @@ export default {
             if (user.isHidden()) {
                 return;
             }
+            const displayName = user.getDisplayName();
 
             APP.store.dispatch(participantJoined({
                 id,
-                name: user.getDisplayName(),
+                name: displayName,
                 role: user.getRole()
             }));
 
             logger.log('USER %s connnected', id, user);
-            APP.API.notifyUserJoined(id);
+            APP.API.notifyUserJoined(id, {
+                displayName,
+                formattedDisplayName: appendSuffix(
+                    displayName || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME)
+            });
             APP.UI.addUser(user);
 
             // check the roles for the new user and reflect them
@@ -1894,6 +1911,7 @@ export default {
             }
 
             APP.UI.addListener(UIEvents.SELECTED_ENDPOINT, id => {
+                APP.API.notifyOnStageParticipantChanged(id);
                 try {
                     // do not try to select participant if there is none (we
                     // are alone in the room), otherwise an error will be
@@ -1905,8 +1923,7 @@ export default {
 
                     room.selectParticipant(id);
                 } catch (e) {
-                    sendAnalyticsEvent(
-                        'selectParticipant.failed');
+                    sendAnalyticsEvent(SELECT_PARTICIPANT_FAILED);
                     reportError(e);
                 }
             });
@@ -1940,7 +1957,13 @@ export default {
                     id,
                     name: formattedDisplayName
                 }));
-                APP.API.notifyDisplayNameChanged(id, formattedDisplayName);
+                APP.API.notifyDisplayNameChanged(id, {
+                    displayName: formattedDisplayName,
+                    formattedDisplayName:
+                        appendSuffix(
+                            formattedDisplayName
+                                || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME)
+                });
                 APP.UI.changeDisplayName(id, formattedDisplayName);
             }
         );
@@ -2081,18 +2104,11 @@ export default {
         APP.UI.addListener(UIEvents.NICKNAME_CHANGED,
             this.changeLocalDisplayName.bind(this));
 
-        APP.UI.addListener(UIEvents.START_MUTED_CHANGED,
-            (startAudioMuted, startVideoMuted) => {
-                room.setStartMutedPolicy({
-                    audio: startAudioMuted,
-                    video: startVideoMuted
-                });
-            }
-        );
         room.on(
             JitsiConferenceEvents.START_MUTED_POLICY_CHANGED,
             ({ audio, video }) => {
-                APP.UI.onStartMutedChanged(audio, video);
+                APP.store.dispatch(
+                    onStartMutedPolicyChanged(audio, video));
             }
         );
         room.on(JitsiConferenceEvents.STARTED_MUTED, () => {
@@ -2147,7 +2163,7 @@ export default {
                 // Longer delays will be caused by something else and will just
                 // poison the data.
                 if (delay < 2000) {
-                    sendAnalyticsEvent('stream.switch.delay', { value: delay });
+                    sendAnalyticsEvent(STREAM_SWITCH_DELAY, { value: delay });
                 }
             });
 
@@ -2165,14 +2181,6 @@ export default {
             APP.UI.setSubject(subject);
         });
 
-        APP.UI.addListener(UIEvents.USER_KICKED, id => {
-            room.kickParticipant(id);
-        });
-
-        APP.UI.addListener(UIEvents.REMOTE_AUDIO_MUTED, id => {
-            room.muteParticipant(id);
-        });
-
         APP.UI.addListener(UIEvents.AUTH_CLICKED, () => {
             AuthHandler.authenticate(room);
         });
@@ -2182,7 +2190,7 @@ export default {
             cameraDeviceId => {
                 const videoWasMuted = this.isLocalVideoMuted();
 
-                sendAnalyticsEvent('settings.changeDevice.video');
+                sendAnalyticsEvent(SETTINGS_CHANGE_DEVICE_VIDEO);
                 createLocalTracksF({
                     devices: [ 'video' ],
                     cameraDeviceId,
@@ -2221,8 +2229,7 @@ export default {
             micDeviceId => {
                 const audioWasMuted = this.isLocalAudioMuted();
 
-                sendAnalyticsEvent(
-                    'settings.changeDevice.audioIn');
+                sendAnalyticsEvent(SETTINGS_CHANGE_DEVICE_AUDIO_IN);
                 createLocalTracksF({
                     devices: [ 'audio' ],
                     cameraDeviceId: null,
@@ -2252,8 +2259,7 @@ export default {
         APP.UI.addListener(
             UIEvents.AUDIO_OUTPUT_DEVICE_CHANGED,
             audioOutputDeviceId => {
-                sendAnalyticsEvent(
-                    'settings.changeDevice.audioOut');
+                sendAnalyticsEvent(SETTINGS_CHANGE_DEVICE_AUDIO_OUT);
                 APP.settings.setAudioOutputDeviceId(audioOutputDeviceId)
                     .then(() => logger.log('changed audio output device'))
                     .catch(err => {
@@ -2344,6 +2350,70 @@ export default {
                     APP.UI.onSharedVideoUpdate(id, value, attributes);
                 }
             });
+    },
+
+    /**
+     * Callback invoked when the conference has been successfully joined.
+     * Initializes the UI and various other features.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onConferenceJoined() {
+        if (APP.logCollector) {
+            // Start the LogCollector's periodic "store logs" task
+            APP.logCollector.start();
+            APP.logCollectorStarted = true;
+
+            // Make an attempt to flush in case a lot of logs have been
+            // cached, before the collector was started.
+            APP.logCollector.flush();
+
+            // This event listener will flush the logs, before
+            // the statistics module (CallStats) is stopped.
+            //
+            // NOTE The LogCollector is not stopped, because this event can
+            // be triggered multiple times during single conference
+            // (whenever statistics module is stopped). That includes
+            // the case when Jicofo terminates the single person left in the
+            // room. It will then restart the media session when someone
+            // eventually join the room which will start the stats again.
+            APP.conference.addConferenceListener(
+                JitsiConferenceEvents.BEFORE_STATISTICS_DISPOSED,
+                () => {
+                    if (APP.logCollector) {
+                        APP.logCollector.flush();
+                    }
+                }
+            );
+        }
+
+        APP.UI.initConference();
+
+        APP.keyboardshortcut.init();
+
+        if (config.requireDisplayName
+                && !APP.conference.getLocalDisplayName()) {
+            APP.UI.promptDisplayName();
+        }
+
+        APP.store.dispatch(conferenceJoined(room));
+
+        APP.UI.mucJoined();
+        const displayName = APP.settings.getDisplayName();
+
+        APP.API.notifyConferenceJoined(
+            this.roomName,
+            this._room.myUserId(),
+            {
+                displayName,
+                formattedDisplayName: appendSuffix(
+                    displayName,
+                    interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME),
+                avatarURL: APP.UI.getAvatarUrl()
+            }
+        );
+        APP.UI.markVideoInterrupted(false);
     },
 
     /**
@@ -2454,7 +2524,7 @@ export default {
                     // If audio was muted before, or we unplugged current device
                     // and selected new one, then mute new audio track.
                     if (audioWasMuted) {
-                        sendAnalyticsEvent('deviceListChanged.audio.muted');
+                        sendAnalyticsEvent(DEVICE_LIST_CHANGED_AUDIO_MUTED);
                         logger.log('Audio mute: device list changed');
                         muteLocalAudio(true);
                     }
@@ -2462,7 +2532,7 @@ export default {
                     // If video was muted before, or we unplugged current device
                     // and selected new one, then mute new video track.
                     if (!this.isSharingScreen && videoWasMuted) {
-                        sendAnalyticsEvent('deviceListChanged.video.muted');
+                        sendAnalyticsEvent(DEVICE_LIST_CHANGED_VIDEO_MUTED);
                         logger.log('Video mute: device list changed');
                         muteLocalVideo(true);
                     }
@@ -2713,6 +2783,14 @@ export default {
         }));
 
         APP.settings.setDisplayName(formattedNickname);
+        APP.API.notifyDisplayNameChanged(id, {
+            displayName: formattedNickname,
+            formattedDisplayName:
+                appendSuffix(
+                    formattedNickname,
+                    interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME)
+        });
+
         if (room) {
             room.setDisplayName(formattedNickname);
             APP.UI.changeDisplayName(id, formattedNickname);

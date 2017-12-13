@@ -26611,13 +26611,13 @@
             }
 
             function o(e, t) {
-				e(true, true);	// BAO
+                e(true, true);  // BAO
             }
 
             function a(e, t, n) {
                 chrome.desktopCapture.chooseDesktopMedia(e.desktopSharingChromeSources, null, function(streamId)
                 {
-                    u({streamId}, t, n);	// BAO
+                    u({streamId}, t, n);    // BAO
                 });
             }
 

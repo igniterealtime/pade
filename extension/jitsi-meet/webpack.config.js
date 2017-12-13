@@ -1,9 +1,8 @@
 /* global __dirname */
 
 const process = require('process');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
-
-const auiCSS = `${__dirname}/node_modules/@atlassian/aui/dist/aui/css/`;
 
 /**
  * The URL of the Jitsi Meet deployment to be proxy to in the context of
@@ -35,11 +34,10 @@ if (minimize) {
         }
     }));
     plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: true
-        },
+    plugins.push(new UglifyJsPlugin({
+        cache: true,
         extractComments: true,
+        parallel: true,
         sourceMap: true
     }));
 }
@@ -87,7 +85,7 @@ const config = {
         }, {
             // Expose jquery as the globals $ and jQuery because it is expected
             // to be available in such a form by multiple jitsi-meet
-            // dependencies including AUI, lib-jitsi-meet.
+            // dependencies including lib-jitsi-meet.
 
             loader: 'expose-loader?$!expose-loader?jQuery',
             test: /\/node_modules\/jquery\/.*\.js$/
@@ -104,17 +102,6 @@ const config = {
                 'style-loader',
                 'css-loader'
             ]
-        }, {
-            // Emit the static assets of AUI such as images that are referenced
-            // by CSS into the output path.
-
-            include: auiCSS,
-            loader: 'file-loader',
-            options: {
-                context: auiCSS,
-                name: '[path][name].[ext]'
-            },
-            test: /\.(gif|png|svg)$/
         } ]
     },
     node: {
@@ -172,7 +159,12 @@ module.exports = [
     // JitsiMeetExternalAPI).
     Object.assign({}, config, {
         entry: {
-            'external_api': './modules/API/external/index.js'
+            'external_api': [
+
+                // XXX Required by at least IE11 at the time of this writing.
+                'babel-polyfill',
+                './modules/API/external/index.js'
+            ]
         },
         output: Object.assign({}, config.output, {
             library: 'JitsiMeetExternalAPI',
