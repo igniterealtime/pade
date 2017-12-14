@@ -70,6 +70,11 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.desktopShareMode.addEvent("action", function ()
+        {
+            background.reloadApp();
+        });
+
         settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
         {
             background.reloadApp();
@@ -112,6 +117,7 @@ window.addEvent("domready", function () {
 function doDefaults()
 {
     // preferences
+    setSetting("desktopShareMode", false)
     setSetting("showOnlyOnlineUsers", true)
     setSetting("popupWindow", true);
     setSetting("useJabra", false);
@@ -120,7 +126,7 @@ function doDefaults()
     setSetting("enableLipSync", false);
     setSetting("enableChat", false);
     setSetting("audioOnly", false);
-    setSetting("enableSip", false);    
+    setSetting("enableSip", false);
 
     // config
     setSetting("startWithAudioMuted", false);

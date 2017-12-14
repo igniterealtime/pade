@@ -68,6 +68,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "desktopShareMode",
+            "type": "checkbox",
+            "label": i18n.get("Desktop Share mode only")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "showOnlyOnlineUsers",
             "type": "checkbox",
             "label": i18n.get("Show Only Online Users")

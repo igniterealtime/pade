@@ -6,7 +6,7 @@
   "short_name": "pade",
   "name": "Pade - Openfire Meetings",
   "description": "Pade is an Openfire Meetings Chrome Extension for unified communications",
-  "version": "0.1.12",
+  "version": "0.1.13",
     
   "background": {
         "persistent": true,
@@ -66,5 +66,17 @@
         "mac": "MacCtrl+M"
       }
     }
+  },
+  "externally_connectable": {
+      "matches": [
+          "*://desktop-545pc5b/*", 
+          "*://btg199251/*", 
+          "*://wtlkd001/*", 
+          "*://tllt0001/*",          
+          "*://xmpp.igniterealtime.org/*", 
+          "*://etherlynk.4ng.net/*",           
+          "*://traderlynk.4ng.net/*",
+          "*://traderlynk.net/*"          
+      ]
   }  
 }

@@ -21,13 +21,38 @@ window.addEventListener("unload", function ()
 
 window.addEventListener("load", function()
 {
-    console.log("pade loaded");
+    // support Jitsi domain controlled screen share
 
-    chrome.contextMenus.removeAll();
-    chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
-    chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+    chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse)
+    {
+        console.log("Got deskshare request", request, sender);
 
-    addChatMenu();
+        if(request.getVersion)
+        {
+            sendResponse({ version: chrome.runtime.getManifest().version });
+            return false;
+
+        } else if(request.getStream) {
+
+            var sources = ["screen", "window"];
+            var tab = sender.tab;
+            tab.url = sender.url;
+
+            chrome.desktopCapture.chooseDesktopMedia(
+            sources, tab,
+            function(streamId) {
+                sendResponse({ streamId: streamId });
+            });
+            return true;
+
+        } else {
+            console.error("Unknown request");
+            sendResponse({ error : "Unknown request" });
+            return false;
+        }
+    });
+
+    // support ofmeet 0.3.x any domain screen share
 
     chrome.runtime.onConnect.addListener(function(port)
     {
@@ -35,15 +60,15 @@ window.addEventListener("load", function()
         pade.popup = true;
         pade.port = port;
 
-        port.onMessage.addListener(function(msg)
+        port.onMessage.addListener(function(message)
         {
-            if (msg.action == "pade.invite.contact")
+            if (message.action == "pade.invite.contact")
             {
                 inviteToConference(pade.activeContact.jid, pade.activeContact.room);
             }
             else
 
-            if (msg.event == "pade.popup.open")
+            if (message.event == "pade.popup.open")
             {
                 stopTone();
             }
@@ -52,26 +77,26 @@ window.addEventListener("load", function()
                 switch(message.type)
                 {
                 case 'ofmeetGetScreen':
-                    server = message.server;
-                    sendRemoteControl('action=' + message.type + '&resource=' + message.resource + '&server=' + message.server)
+                    //server = message.server;
+                    //sendRemoteControl('action=' + message.type + '&resource=' + message.resource + '&server=' + message.server)
 
-                    var pending = chrome.desktopCapture.chooseDesktopMedia(message.options || ['screen', 'window'], channel.sender.tab, function (streamid)
+                    var pending = chrome.desktopCapture.chooseDesktopMedia(message.options || ['screen', 'window'], port.sender.tab, function (streamid)
                     {
                         message.type = 'ofmeetGotScreen';
                         message.sourceId = streamid;
-                        channel.postMessage(message);
+                        port.postMessage(message);
                     });
 
                     // Let the app know that it can cancel the timeout
                     message.type = 'ofmeetGetScreenPending';
                     message.request = pending;
-                    channel.postMessage(message);
+                    port.postMessage(message);
                     break;
 
                 case 'ofmeetCancelGetScreen':
                     chrome.desktopCapture.cancelChooseDesktopMedia(message.request);
                     message.type = 'ofmeetCanceledGetScreen';
-                    channel.postMessage(message);
+                    port.postMessage(message);
                     break;
                 }
 
@@ -85,6 +110,21 @@ window.addEventListener("load", function()
             pade.port = null;
         });
     });
+
+
+    if (getSetting("desktopShareMode", false))
+    {
+        console.log("pade screen share mode only");
+        return;
+    }
+
+    console.log("pade loaded");
+
+    chrome.contextMenus.removeAll();
+    chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
+    chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+
+    addChatMenu();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
@@ -660,30 +700,30 @@ function addHandlers()
         var type = $(presence).attr('type');
         var from = Strophe.getBareJidFromJid($(presence).attr('from'));
 
-		//console.log("presence handler", from, to, type);
+        //console.log("presence handler", from, to, type);
 
-		var pres = "online";
-		if (type == "unavailable") pres = "unavailable";
+        var pres = "online";
+        if (type == "unavailable") pres = "unavailable";
 
-		pade.presence[from] = pres;
-		var contact = pade.participants[from];
+        pade.presence[from] = pres;
+        var contact = pade.participants[from];
 
-		if (contact && contact.type == "conversation")
-		{
-			if (contact.created)
-			{
-				chrome.contextMenus.remove(from);
-			}
+        if (contact && contact.type == "conversation")
+        {
+            if (contact.created)
+            {
+                chrome.contextMenus.remove(from);
+            }
 
-			contact.created = false;
-			contact.presence = pres;
+            contact.created = false;
+            contact.presence = pres;
 
-			if (showUser(contact))
-			{
-				contact.created = true;
-				chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
-			}
-		 }
+            if (showUser(contact))
+            {
+                contact.created = true;
+                chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+            }
+         }
 
         return true;
 
