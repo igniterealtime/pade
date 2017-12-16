@@ -1,0 +1,36 @@
+#upload-control {
+    position: relative;
+}
+
+#upload-control-indicator {
+    display: inline-block;
+    height: 6px;
+    width: 6px;
+    border: 1px solid white;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    margin: -8px 0 0 -8px;
+}
+
+#context-menu .upload {
+    padding-left: 5px;
+    width: 200px;
+    white-space: normal;
+}
+
+#context-menu .upload:hover {
+    background-color: inherit;
+}
+
+#context-menu .upload span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid white;
+    margin: 3px;
+}
+
+.message-pane span.colored {
+    background-color: transparent !important;
+}
