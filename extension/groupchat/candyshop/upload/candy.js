@@ -34,7 +34,7 @@ CandyShop.Upload = (function(self, Candy, $)
 
         $(Candy).on('candy:view.room.after-hide', function(ev, obj)
         {
-            var pane_html = Candy.View.Pane.Room.getPane(Candy.View.getCurrent().roomJid);
+            var pane_html = Candy.View.Pane.Room.getPane(obj.roomJid);
             var dropZone = $(pane_html).find('.message-pane-wrapper')[0];
 
             dropZone.removeEventListener('dragover', CandyShop.Upload.handleDragOver, false);

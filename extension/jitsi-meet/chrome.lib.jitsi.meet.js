@@ -12499,6 +12499,8 @@
                 this.room && this.room.sendMessage(e)
             }, r.prototype.sendOfMeet = function(e) {       // BAO
                 this.room && this.room.sendOfMeet(e)
+            }, r.prototype.sendOfUpload = function(file, cb, ecb) {       // BAO
+                this.room && this.room.sendOfUpload(file, cb, ecb)
             }, r.prototype.sendCommand = function(e, t) {
                 this.room && (this.room.addToPresence(e, t), this.room.sendPresence())
             }, r.prototype.sendCommandOnce = function(e, t) {
@@ -20336,6 +20338,18 @@
                             });
                             n.c("ofmeet", {xmlns: "jabber:x:ofmeet"}).t(t);
                             this.connection.send(n);
+                        }
+                    }, {
+                        key: "sendOfUpload",          // BAO
+                        value: function(file, callback, errorCallback) {
+                            var iq = Object(o.$iq)({
+                                    type: "get",
+                                    to: "httpfileupload." + this.connection.domain
+                                }).c("request", {
+                                    xmlns: "urn:xmpp:http:upload:0"
+                                }).c('filename').t(file.name).up().c('size').t(file.size);
+
+                            this.connection.sendIQ(iq, callback, errorCallback)
                         }
                     }, {
                         key: "sendMessage",

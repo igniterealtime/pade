@@ -20,50 +20,50 @@ var ofmeet = (function(of)
         __init();
 
 
-		window.addEventListener('message', function (event)
-		{
-			//console.log("addListener message", event.data);
+        window.addEventListener('message', function (event)
+        {
+            //console.log("addListener message", event.data);
 
-			if (APP && APP.connection && OFMEET_CONFIG.bgWin && OFMEET_CONFIG.bgWin.pade.activeUrl && event.data)
-			{
-				event.data.from = OFMEET_CONFIG.nickName;
-				event.data.username = OFMEET_CONFIG.username;
+            if (APP && APP.connection && OFMEET_CONFIG.bgWin && OFMEET_CONFIG.bgWin.pade.activeUrl && event.data)
+            {
+                event.data.from = OFMEET_CONFIG.nickName;
+                event.data.username = OFMEET_CONFIG.username;
 
-				if (event.data.event == "ofmeet.event.pdf.ready" || event.data.event == "ofmeet.event.pdf.goto")
-				{
-					if (OFMEET_CONFIG.documentOwner)
-					{
-						event.data.owner = OFMEET_CONFIG.username;
-						event.data.url = OFMEET_CONFIG.bgWin.pade.activeUrl + "#" + event.data.page;
-						OFMEET_CONFIG.currentUrl = event.data.url;
-						APP.conference._room.sendOfMeet(JSON.stringify(event.data));
-					}
-				}
-				else
+                if (event.data.event == "ofmeet.event.pdf.ready" || event.data.event == "ofmeet.event.pdf.goto")
+                {
+                    if (OFMEET_CONFIG.documentOwner)
+                    {
+                        event.data.owner = OFMEET_CONFIG.username;
+                        event.data.url = OFMEET_CONFIG.bgWin.pade.activeUrl + "#" + event.data.page;
+                        OFMEET_CONFIG.currentUrl = event.data.url;
+                        APP.conference._room.sendOfMeet(JSON.stringify(event.data));
+                    }
+                }
+                else
 
-				if (event.data.event == "ofmeet.event.url.ready")
-				{
-					console.log("addListener message collab", event.data);
+                if (event.data.event == "ofmeet.event.url.ready")
+                {
+                    console.log("addListener message collab", event.data);
 
-					if (OFMEET_CONFIG.documentOwner)
-					{
-						event.data.owner = OFMEET_CONFIG.username;
-						OFMEET_CONFIG.currentUrl = event.data.url;
-						APP.conference._room.sendOfMeet(JSON.stringify(event.data));
-					}
+                    if (OFMEET_CONFIG.documentOwner)
+                    {
+                        event.data.owner = OFMEET_CONFIG.username;
+                        OFMEET_CONFIG.currentUrl = event.data.url;
+                        APP.conference._room.sendOfMeet(JSON.stringify(event.data));
+                    }
 
-					var ofMeetContent = document.getElementById("ofmeet-content");
+                    var ofMeetContent = document.getElementById("ofmeet-content");
 
-					if (ofMeetContent)
-					{
-						ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.setup', owner: event.data.owner, room: APP.conference.roomName, user: OFMEET_CONFIG.nickName, username: OFMEET_CONFIG.username}, '*');
-					}
-				}
-				else {
-					APP.conference._room.sendOfMeet(JSON.stringify(event.data));
-				}
-			}
-		});
+                    if (ofMeetContent)
+                    {
+                        ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.setup', owner: event.data.owner, room: APP.conference.roomName, user: OFMEET_CONFIG.nickName, username: OFMEET_CONFIG.username}, '*');
+                    }
+                }
+                else {
+                    APP.conference._room.sendOfMeet(JSON.stringify(event.data));
+                }
+            }
+        });
 
         this.connection = APP.connection.xmpp.connection;
         of.connection = connection;
@@ -91,81 +91,81 @@ var ofmeet = (function(of)
 
                     if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready" || json.event == "ofmeet.event.url.ready")
                     {
-						console.log("ofmeet.js document share", json);
+                        console.log("ofmeet.js document share", json);
 
-						var url = json.url;
+                        var url = json.url;
 
-						if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready")
-						{
-							url = chrome.extension.getURL("pdf/index.html?pdf=" + json.url);
-						}
+                        if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready")
+                        {
+                            url = chrome.extension.getURL("pdf/index.html?pdf=" + json.url);
+                        }
 
-						var ofMeetContent = document.getElementById("ofmeet-content");
+                        var ofMeetContent = document.getElementById("ofmeet-content");
 
-						if (!ofMeetContent)
-						{
-							OFMEET_CONFIG.documentShare = true;
-							OFMEET_CONFIG.documentUser = json.owner;
-							OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
+                        if (!ofMeetContent)
+                        {
+                            OFMEET_CONFIG.documentShare = true;
+                            OFMEET_CONFIG.documentUser = json.owner;
+                            OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
 
-							document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.iframe(url);
-							ofMeetContent = document.getElementById("ofmeet-content");
-						}
+                            document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.iframe(url);
+                            ofMeetContent = document.getElementById("ofmeet-content");
+                        }
 
-						if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready")
-						{
-							// for PDF, we need echo to move page for owner
-							ofMeetContent.contentWindow.location.href = url;
-						}
-						else
+                        if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready")
+                        {
+                            // for PDF, we need echo to move page for owner
+                            ofMeetContent.contentWindow.location.href = url;
+                        }
+                        else
 
-						if (!OFMEET_CONFIG.documentOwner)
-						{
-							// for URLs, ignore echo for owner
-							ofMeetContent.contentWindow.location.href = url;
-						}
+                        if (!OFMEET_CONFIG.documentOwner)
+                        {
+                            // for URLs, ignore echo for owner
+                            ofMeetContent.contentWindow.location.href = url;
+                        }
                     }
                     else
 
                     if (json.event == "ofmeet.event.url.end")
                     {
-						if (OFMEET_CONFIG.largeVideoContainer && OFMEET_CONFIG.documentShare)
-						{
-							document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
+                        if (OFMEET_CONFIG.largeVideoContainer && OFMEET_CONFIG.documentShare)
+                        {
+                            document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
 
-							OFMEET_CONFIG.documentShare = false;
-							OFMEET_CONFIG.documentUser = null;
-							OFMEET_CONFIG.largeVideoContainer = null;
+                            OFMEET_CONFIG.documentShare = false;
+                            OFMEET_CONFIG.documentUser = null;
+                            OFMEET_CONFIG.largeVideoContainer = null;
 
-							// above code does not work properly
-							// brute force solution is to reload
-							window.location.href = "chrome.index.html?room=" + OFMEET_CONFIG.room;
-						}
-					}
+                            // above code does not work properly
+                            // brute force solution is to reload
+                            window.location.href = "chrome.index.html?room=" + OFMEET_CONFIG.room;
+                        }
+                    }
                     else
 
                     if (json.event == "ofmeet.event.pdf.message")
                     {
-						var ofMeetContent = document.getElementById("ofmeet-content");
+                        var ofMeetContent = document.getElementById("ofmeet-content");
 
-						if (ofMeetContent && (OFMEET_CONFIG.showSharedCursor || !OFMEET_CONFIG.showSharedCursor && json.from != OFMEET_CONFIG.nickName))
-						{
-							console.log("ofmeet.event.pdf.message", json);
-							ofMeetContent.contentWindow.handlePdfShare(json.msg, json.from);
-						}
-					}
+                        if (ofMeetContent && (OFMEET_CONFIG.showSharedCursor || !OFMEET_CONFIG.showSharedCursor && json.from != OFMEET_CONFIG.nickName))
+                        {
+                            console.log("ofmeet.event.pdf.message", json);
+                            ofMeetContent.contentWindow.handlePdfShare(json.msg, json.from);
+                        }
+                    }
                     else
 
                     if (json.event == "ofmeet.event.url.message")
                     {
-						var ofMeetContent = document.getElementById("ofmeet-content");
+                        var ofMeetContent = document.getElementById("ofmeet-content");
 
-						if (ofMeetContent)
-						{
-							//console.log("ofmeet.event.url.message", json);
-							ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.share', json: json}, '*');
-						}
-					}
+                        if (ofMeetContent)
+                        {
+                            //console.log("ofmeet.event.url.message", json);
+                            ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.share', json: json}, '*');
+                        }
+                    }
 
 
                 } catch (e) {}
@@ -184,6 +184,8 @@ var ofmeet = (function(of)
         {
             console.log("Connection Disconnected!")
         });
+
+        setupHttpFileUpload();
     }
 
     function __init()
@@ -245,7 +247,7 @@ var ofmeet = (function(of)
 
         if (APP.conference.roomName && OFMEET_CONFIG.isSwitchAvailable)
         {
-			of.dialstring = APP.conference.roomName;
+            of.dialstring = APP.conference.roomName;
             connectSIP();
         }
 
@@ -304,10 +306,10 @@ var ofmeet = (function(of)
                 });
             });
 
-			if (of.session == null)
-			{
-				setTimeout(function() { dial(); }, 250);
-			}
+            if (of.session == null)
+            {
+                setTimeout(function() { dial(); }, 250);
+            }
         }
 
         console.log("ofmeet.js. SIP", OFMEET_CONFIG.sip, config.iceServers);
@@ -460,40 +462,133 @@ var ofmeet = (function(of)
             return Math.random().toString(36).substr(2, 9);
     }
 
-	function refreshShare(id)
-	{
-		if (OFMEET_CONFIG.documentShare && OFMEET_CONFIG.documentOwner && id.indexOf(OFMEET_CONFIG.username + "-") == -1)
-		{
-			var data = {event: "ofmeet.event.url.ready"};
+    function refreshShare(id)
+    {
+        if (OFMEET_CONFIG.documentShare && OFMEET_CONFIG.documentOwner && id.indexOf(OFMEET_CONFIG.username + "-") == -1)
+        {
+            var data = {event: "ofmeet.event.url.ready"};
 
-			if (OFMEET_CONFIG.bgWin.pade.activeUrl.indexOf(".pdf") > -1)
-			{
-				data.event = "ofmeet.event.pdf.ready";
-			}
+            if (OFMEET_CONFIG.bgWin.pade.activeUrl.indexOf(".pdf") > -1)
+            {
+                data.event = "ofmeet.event.pdf.ready";
+            }
 
-			data.from = OFMEET_CONFIG.nickName;
-			data.username = OFMEET_CONFIG.username;
-			data.url = OFMEET_CONFIG.currentUrl;
-			data.owner = data.username;
+            data.from = OFMEET_CONFIG.nickName;
+            data.username = OFMEET_CONFIG.username;
+            data.url = OFMEET_CONFIG.currentUrl;
+            data.owner = data.username;
 
-			console.log("ofmeet.js refreshShare", id, data);
+            console.log("ofmeet.js refreshShare", id, data);
 
-			setTimeout(function()
-			{
-				APP.conference._room.sendOfMeet(JSON.stringify(data));
+            setTimeout(function()
+            {
+                APP.conference._room.sendOfMeet(JSON.stringify(data));
 
-			}, 3000);
-		}
-	}
+            }, 3000);
+        }
+    }
 
-	function checkIfDocOwnerGone(id)
-	{
-		if (OFMEET_CONFIG.documentUser && id.indexOf(OFMEET_CONFIG.documentUser + "-") > -1)
-		{
-			// owner gone, end
-			APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
-		}
-	}
+    function checkIfDocOwnerGone(id)
+    {
+        if (OFMEET_CONFIG.documentUser && id.indexOf(OFMEET_CONFIG.documentUser + "-") > -1)
+        {
+            // owner gone, end
+            APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
+        }
+    }
+
+    function setupHttpFileUpload()
+    {
+        var dropZone = document.getElementById("chatconversation");
+
+        if (dropZone)
+        {
+            dropZone.addEventListener('dragover', handleDragOver, false);
+            dropZone.addEventListener('drop', handleDropFileSelect, false);
+        }
+    }
+
+    function handleDragOver(evt)
+    {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy';
+    }
+
+    function handleDropFileSelect(evt)
+    {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        var files = evt.dataTransfer.files;
+
+        for (var i = 0, f; f = files[i]; i++)
+        {
+            uploadFile(f);
+        }
+    }
+
+    function uploadFile(file)
+    {
+        console.log("uploadFile", file);
+
+        var getUrl = null;
+        var putUrl = null;
+        var errorText = null;
+
+        APP.conference._room.sendOfUpload(file, function(response)
+        {
+            console.log("uploadFile response", response);
+
+            $(response).find('slot').each(function()
+            {
+                $(response).find('put').each(function()
+                {
+                    putUrl = $(this).text();
+                });
+
+                $(response).find('get').each(function()
+                {
+                    getUrl = $(this).text();
+                });
+
+                console.log("uploadFile", putUrl, getUrl);
+
+                if (putUrl != null & getUrl != null)
+                {
+                    var req = new XMLHttpRequest();
+
+                    req.onreadystatechange = function()
+                    {
+                      if (this.readyState == 4 && this.status >= 200 && this.status < 400)
+                      {
+                        console.log("uploadFile ok", this.statusText);
+                        APP.conference._room.sendTextMessage(getUrl, OFMEET_CONFIG.username);
+                      }
+                      else
+
+                      if (this.readyState == 4 && this.status >= 400)
+                      {
+                        console.error("uploadFile error", this.statusText);
+                        APP.conference._room.sendTextMessage(this.statusText, OFMEET_CONFIG.username);
+                       }
+
+                    };
+                    req.open("PUT", putUrl, true);
+                    req.send(file);
+                }
+            });
+
+        }, function(error) {
+
+            $(error).find('text').each(function()
+            {
+                errorText = $(this).text();
+                console.log("uploadFile error", errorText);
+                APP.conference._room.sendTextMessage(errorText, OFMEET_CONFIG.username);
+            });
+        });
+    }
 
     window.addEventListener("beforeunload", function(e)
     {
@@ -579,42 +674,42 @@ var ofmeet = (function(of)
 
 function ofmeetEtherpadClicked()
 {
-	console.log("ofmeet.etherpadClicked", OFMEET_CONFIG.bgWin.pade.activeUrl);
+    console.log("ofmeet.etherpadClicked", OFMEET_CONFIG.bgWin.pade.activeUrl);
 
-	if (OFMEET_CONFIG.bgWin.pade.activeUrl)
-	{
-		if (OFMEET_CONFIG.documentShare)
-		{
-			if (OFMEET_CONFIG.documentOwner)
-			{
-				OFMEET_CONFIG.documentShare = false;
-				OFMEET_CONFIG.documentOwner = false;
-				OFMEET_CONFIG.documentUser = null;
-				OFMEET_CONFIG.largeVideoContainer = null;
+    if (OFMEET_CONFIG.bgWin.pade.activeUrl)
+    {
+        if (OFMEET_CONFIG.documentShare)
+        {
+            if (OFMEET_CONFIG.documentOwner)
+            {
+                OFMEET_CONFIG.documentShare = false;
+                OFMEET_CONFIG.documentOwner = false;
+                OFMEET_CONFIG.documentUser = null;
+                OFMEET_CONFIG.largeVideoContainer = null;
 
-				document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
+                document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.largeVideoContainer;
 
-				// above code does not work properly
-				// brute force solution is to reload
+                // above code does not work properly
+                // brute force solution is to reload
 
-				APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
-				window.location.href = "chrome.index.html?room=" + OFMEET_CONFIG.room;
-			}
-		}
-		else {
-			OFMEET_CONFIG.documentShare = true;
-			OFMEET_CONFIG.documentOwner = true;
+                APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
+                window.location.href = "chrome.index.html?room=" + OFMEET_CONFIG.room;
+            }
+        }
+        else {
+            OFMEET_CONFIG.documentShare = true;
+            OFMEET_CONFIG.documentOwner = true;
 
-			OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
+            OFMEET_CONFIG.largeVideoContainer = document.getElementById("largeVideoContainer").innerHTML;
 
-			var url = OFMEET_CONFIG.bgWin.pade.activeUrl;
+            var url = OFMEET_CONFIG.bgWin.pade.activeUrl;
 
-			if (OFMEET_CONFIG.bgWin.pade.activeUrl.indexOf(".pdf") > -1)
-			{
-				url = chrome.extension.getURL("pdf/index.html?pdf=" + OFMEET_CONFIG.bgWin.pade.activeUrl);
-			}
+            if (OFMEET_CONFIG.bgWin.pade.activeUrl.indexOf(".pdf") > -1)
+            {
+                url = chrome.extension.getURL("pdf/index.html?pdf=" + OFMEET_CONFIG.bgWin.pade.activeUrl);
+            }
 
-			document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.iframe(url);
-		}
-	}
+            document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.iframe(url);
+        }
+    }
 }
