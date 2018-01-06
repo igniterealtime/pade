@@ -17,6 +17,7 @@ window.addEventListener("unload", function ()
     closeChatWindow();
     closeVideoWindow();
     closePhoneWindow();
+    closeBlogWindow();
 });
 
 window.addEventListener("load", function()
@@ -125,6 +126,7 @@ window.addEventListener("load", function()
     chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
 
     addChatMenu();
+    addBlogMenu();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
@@ -186,6 +188,11 @@ window.addEventListener("load", function()
         if (pade.sip.window && win == pade.sip.window.id)
         {
             pade.sip.window = null;
+        }
+
+        if (pade.blogWindow && win == pade.blogWindow.id)
+        {
+            pade.blogWindow = null;
         }
 
         if (pade.videoWindow && win == pade.videoWindow.id)
@@ -630,6 +637,32 @@ function openVideoWindow(room)
 
         sendToJabra("offhook");
     });
+}
+
+function closeBlogWindow()
+{
+    if (pade.blogWindow != null)
+    {
+        try {
+            chrome.windows.remove(pade.blogWindow.id);
+        } catch (e) {}
+    }
+}
+
+function openBlogWindow()
+{
+    if (!pade.blogWindow)
+    {
+        var url = "https://" + pade.server + "/" + getSetting("blogName", "solo") + "/admin-index.do#main";
+
+        chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
+        {
+            pade.blogWindow = win;
+            chrome.windows.update(pade.blogWindow.id, {drawAttention: true});
+        });
+    } else {
+        chrome.windows.update(pade.blogWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+    }
 }
 
 function doOptions()
@@ -1270,7 +1303,25 @@ function addChatMenu()
 
 function removeChatMenu()
 {
+    closeChatWindow();
     chrome.contextMenus.remove("pade_chat");
+}
+
+function addBlogMenu()
+{
+    if (getSetting("enableBlog", false))
+    {
+        chrome.contextMenus.create({id: "pade_blog", type: "normal", title: "Blogger", contexts: ["browser_action"],  onclick: function()
+        {
+            openBlogWindow();
+        }});
+    }
+}
+
+function removeBlogMenu()
+{
+    closeBlogWindow();
+    chrome.contextMenus.remove("pade_blog");
 }
 
 function isAudioOnly()

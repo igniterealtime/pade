@@ -18,7 +18,10 @@ CandyShop.Upload = (function(self, Candy, $)
         $(Candy).on('candy:view.message.before-render', function(e, args)
         {
             var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-            args.templateData.message = args.templateData.message.replace(exp, "<a target='_blank' href='$1'>$1</a>");
+            try {
+                var temp = args.templateData.message.replace(exp, "<a target='_blank' href='$1'>$1</a>");
+                if (temp && temp != "") args.templateData.message = temp;
+            } catch (e) {}
         });
 
         $(Candy).on('candy:view.room.after-show', function(ev, obj)

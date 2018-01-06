@@ -70,6 +70,17 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.enableBlog.addEvent("action", function ()
+        {
+            if (getSetting("enableBlog"))
+            {
+                background.addBlogMenu();
+
+            } else {
+               background.removeBlogMenu();
+            }
+        });
+
         settings.manifest.desktopShareMode.addEvent("action", function ()
         {
             background.reloadApp();
@@ -127,6 +138,7 @@ function doDefaults()
     setSetting("enableChat", false);
     setSetting("audioOnly", false);
     setSetting("enableSip", false);
+    setSetting("enableBlog", false);
 
     // config
     setSetting("startWithAudioMuted", false);
@@ -139,6 +151,7 @@ function doDefaults()
     // candy chat
     setSetting("chatWithOnlineContacts", true);
     setSetting("notifyWhenMentioned", true);
+
 }
 
 function setSetting(name, defaultValue)

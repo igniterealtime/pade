@@ -128,6 +128,13 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Audioconference Only")
         },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "enableBlog",
+            "type": "checkbox",
+            "label": i18n.get("Enable Blogging")
+        },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
@@ -216,6 +223,14 @@ this.manifest = {
             "name": "notifyWhenMentioned",
             "type": "checkbox",
             "label": i18n.get("Notify/Highlight when mentioned")
+        },
+        {                                           // blogger
+            "tab": i18n.get("Blogging"),
+            "group": i18n.get("Blogger"),
+            "name": "blogName",
+            "type": "text",
+            "label": i18n.get("Blog Name"),
+            "text": i18n.get("solo"),
         },
         {                                           // user directory
             "tab": i18n.get("User Directory"),
