@@ -6,7 +6,7 @@
   "short_name": "pade",
   "name": "Pade - Openfire Meetings",
   "description": "Pade is an Openfire Meetings Chrome Extension for unified communications",
-  "version": "0.1.16",
+  "version": "0.1.17",
     
   "background": {
         "persistent": true,
