@@ -105,7 +105,7 @@ window.addEvent("domready", function () {
             lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
             lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
             lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
-            lynks.password = JSON.parse(window.localStorage["store.settings.password"]);
+            lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
 
             if (lynks.server && lynks.domain && lynks.username && lynks.password)
             {
@@ -175,4 +175,13 @@ function getSetting(name)
     }
 
     return value;
+}
+
+function getPassword(password)
+{
+    if (!password || password == "") return null;
+    if (password.startsWith("token-")) return atob(password.substring(6));
+
+    window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
+    return password;
 }
