@@ -61,18 +61,29 @@ function urlParam(name)
 
 function getSetting(name, defaultValue)
 {
-	console.log("getSetting", name, defaultValue);
+    //console.log("getSetting", name, defaultValue);
 
-	var value = defaultValue;
+    var value = defaultValue;
 
-	if (window.localStorage["store.settings." + name])
-	{
-		value = JSON.parse(window.localStorage["store.settings." + name]);
+    if (window.localStorage["store.settings." + name])
+    {
+        value = JSON.parse(window.localStorage["store.settings." + name]);
 
-	} else {
-		if (defaultValue) window.localStorage["store.settings." + name] = JSON.parse(defaultValue);
-	}
+        if (name == "password") value = getPassword(value);
 
-	return value;
-};
+    } else {
+        if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
+    }
+
+    return value;
+}
+
+function getPassword(password)
+{
+    if (!password || password == "") return null;
+    if (password.startsWith("token-")) return atob(password.substring(6));
+
+    window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
+    return password;
+}
 
