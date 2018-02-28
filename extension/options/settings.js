@@ -238,9 +238,9 @@ function removeSetting(name)
 function getPassword(password)
 {
     if (!password || password == "") return null;
-
     if (password.startsWith("token-")) return atob(password.substring(6));
 
     window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
     return password;
 }
+

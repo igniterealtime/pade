@@ -176,3 +176,4 @@ function getPassword(password)
     window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
     return password;
 }
+
