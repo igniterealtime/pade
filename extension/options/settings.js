@@ -6,6 +6,8 @@ window.addEvent("domready", function () {
     {
         var background = chrome.extension.getBackgroundPage();
 
+        settings.manifest.password.element.disabled = settings.manifest.useClientCert.element.checked;
+
         settings.manifest.connect.addEvent("action", function ()
         {
             reloadApp()
@@ -70,6 +72,24 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.useTotp.addEvent("action", function ()
+        {
+            background.reloadApp();
+        });
+
+        settings.manifest.useClientCert.addEvent("action", function ()
+        {
+            settings.manifest.password.element.disabled = false;
+
+            if (settings.manifest.useClientCert.element.checked)
+            {
+                settings.manifest.password.element.disabled = true;
+                settings.manifest.password.element.value = settings.manifest.username.element.value;
+            }
+
+            background.reloadApp();
+        });
+
         settings.manifest.enableBlog.addEvent("action", function ()
         {
             if (getSetting("enableBlog"))
@@ -91,6 +111,22 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.qrcode.addEvent("action", function ()
+        {
+            if (window.localStorage["store.settings.server"])
+            {
+                var host = JSON.parse(window.localStorage["store.settings.server"]);
+                var url = "https://" + host + "/meet/qrcode.jsp";
+
+                chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
+                {
+                    chrome.windows.update(win.id, {drawAttention: true, width: 380, height: 270});
+                });
+            }
+        });
+
+
+
         function reloadApp(){
 
             openAppWindow()
@@ -105,11 +141,29 @@ window.addEvent("domready", function () {
             lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
             lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
             lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
-            lynks.password = JSON.parse(window.localStorage["store.settings.password"]);
+            lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
 
             if (lynks.server && lynks.domain && lynks.username && lynks.password)
             {
-                background.reloadApp();
+                var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
+
+                connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
+                {
+                    //console.log("status", status);
+
+                    if (status === 5)
+                    {
+                        background.reloadApp();
+                    }
+                    else
+
+                    if (status === 4)
+                    {
+                        removeSetting("password");
+                        settings.manifest.password.element.value = "";
+                        settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
+                    }
+                });
             }
             else {
                 if (!lynks.server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
@@ -118,7 +172,7 @@ window.addEvent("domready", function () {
                 if (!lynks.password) settings.manifest.status.element.innerHTML = '<b>bad password</b>';
             }
 
-            } else settings.manifest.status.element.innerHTML = '<b>bad bad server, domain, username or password</b>';
+        } else settings.manifest.status.element.innerHTML = '<b>bad server, domain, username or password</b>';
     }
     });
 
@@ -151,7 +205,6 @@ function doDefaults()
     // candy chat
     setSetting("chatWithOnlineContacts", true);
     setSetting("notifyWhenMentioned", true);
-
 }
 
 function setSetting(name, defaultValue)
@@ -175,4 +228,19 @@ function getSetting(name)
     }
 
     return value;
+}
+
+function removeSetting(name)
+{
+    localStorage.removeItem("store.settings." + name);
+}
+
+function getPassword(password)
+{
+    if (!password || password == "") return null;
+
+    if (password.startsWith("token-")) return atob(password.substring(6));
+
+    window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
+    return password;
 }

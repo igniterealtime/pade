@@ -1,6 +1,65 @@
 var pade = {}
 var callbacks = {}
 
+// strophe SASL
+
+if (getSetting("useClientCert", false))
+{
+    console.log("useClientCert enabled");
+
+    Strophe.addConnectionPlugin('externalsasl',
+    {
+        init: function (connection)
+        {
+            Strophe.SASLExternal = function() {};
+            Strophe.SASLExternal.prototype = new Strophe.SASLMechanism("EXTERNAL", true, 2000);
+
+            Strophe.SASLExternal.test = function (connection)
+            {
+                return connection.authcid !== null;
+            };
+
+            Strophe.SASLExternal.prototype.onChallenge = function(connection)
+            {
+                return connection.authcid === connection.authzid ? '' : connection.authzid;
+            };
+
+            connection.mechanisms[Strophe.SASLExternal.prototype.name] = Strophe.SASLExternal;
+            console.log("strophe plugin: externalsasl enabled");
+        }
+    });
+}
+
+if (getSetting("useTotp", false))
+{
+    console.log("useTotp enabled");
+
+    Strophe.addConnectionPlugin('ofchatsasl',
+    {
+        init: function (connection)
+        {
+            Strophe.SASLOFChat = function () { };
+            Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+
+            Strophe.SASLOFChat.test = function (connection)
+            {
+                return getSetting("password", null) !== null;
+            };
+
+            Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+            {
+                var token = getSetting("username", null) + ":" + getSetting("password", null);
+                console.log("Strophe.SASLOFChat", token);
+                return token;
+            };
+
+            connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
+            console.log("strophe plugin: ofchatsasl enabled");
+        }
+    });
+}
+
+
 window.addEventListener("beforeunload", function ()
 {
 
@@ -210,6 +269,10 @@ window.addEventListener("load", function()
     pade.username = getSetting("username", null);
     pade.password = getSetting("password", null);
 
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
+    chrome.browserAction.setBadgeText({ text: 'off' });
+
+
     if (pade.server && pade.domain && pade.username && pade.password)
     {
         pade.jid = pade.username + "@" + pade.domain;
@@ -253,9 +316,6 @@ window.addEventListener("load", function()
             }
         }
 
-        chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
-        chrome.browserAction.setBadgeText({ text: 'off' });
-
         // setup SIP
         pade.sip = {};
         pade.enableSip = getSetting("enableSip", false);
@@ -267,7 +327,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + pade.server + "/ws/";
         }
 
-        pade.connection = new Strophe.Connection(connUrl);
+        pade.connection = getConnection(connUrl);
 
         pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username, pade.password, function (status)
         {
@@ -298,11 +358,23 @@ window.addEventListener("load", function()
                 chrome.browserAction.setBadgeText({ text: "off" });
                 chrome.browserAction.setTitle({title: "Pade - Disconnected"});
             }
+            else
+
+            if (status === Strophe.Status.AUTHFAIL)
+            {
+               removeSetting("password");
+               doOptions();
+            }
 
         });
 
     } else doOptions();
 });
+
+function getConnection(connUrl)
+{
+    return new Strophe.Connection(connUrl);
+}
 
 function handleContact(contact)
 {
@@ -563,7 +635,7 @@ function notifyList(message, context, items, buttons, callback)
 
 function closePhoneWindow()
 {
-    if (pade.sip.window != null)
+    if (pade.sip && pade.sip.window != null)
     {
         chrome.windows.remove(pade.sip.window.id);
         pade.sip.window = null;
@@ -1273,6 +1345,11 @@ function joinAudioCall(title, label, room)
     }, room);
 }
 
+function removeSetting(name)
+{
+    localStorage.removeItem("store.settings." + name);
+}
+
 function getSetting(name, defaultValue)
 {
     //console.log("getSetting", name, defaultValue);
@@ -1283,11 +1360,22 @@ function getSetting(name, defaultValue)
     {
         value = JSON.parse(window.localStorage["store.settings." + name]);
 
+        if (name == "password") value = getPassword(value);
+
     } else {
         if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }
 
     return value;
+}
+
+function getPassword(password)
+{
+    if (!password || password == "") return null;
+    if (password.startsWith("token-")) return atob(password.substring(6));
+
+    window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
+    return password;
 }
 
 function addChatMenu()

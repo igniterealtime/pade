@@ -27,6 +27,27 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("connection"),
+            "name": "useClientCert",
+            "type": "checkbox",
+            "label": i18n.get("Use Client Certificate (No password required)")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("connection"),
+            "name": "useTotp",
+            "type": "checkbox",
+            "label": i18n.get("Time based One-Time Password (TOTP) - Use OfChat and FreeOTP or Google Authernticator App")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("connection"),
+            "name": "qrcode",
+            "type": "button",
+            "text": i18n.get("QR Code")
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("login"),
             "name": "displayname",
             "type": "text",
@@ -55,7 +76,6 @@ this.manifest = {
             "group": i18n.get("login"),
             "name": "connect",
             "type": "button",
-            "label": i18n.get("connect"),
             "text": i18n.get("login")
         },
         {

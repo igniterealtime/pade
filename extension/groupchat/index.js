@@ -1,6 +1,62 @@
 var config = {};
 var bgWindow = null;
 
+if (getSetting("useClientCert", false))
+{
+    console.log("useClientCert enabled");
+
+    Strophe.addConnectionPlugin('externalsasl',
+    {
+        init: function (connection)
+        {
+            Strophe.SASLExternal = function() {};
+            Strophe.SASLExternal.prototype = new Strophe.SASLMechanism("EXTERNAL", true, 2000);
+
+            Strophe.SASLExternal.test = function (connection)
+            {
+                return connection.authcid !== null;
+            };
+
+            Strophe.SASLExternal.prototype.onChallenge = function(connection)
+            {
+                return connection.authcid === connection.authzid ? '' : connection.authzid;
+            };
+
+            connection.mechanisms[Strophe.SASLExternal.prototype.name] = Strophe.SASLExternal;
+            console.log("strophe plugin: externalsasl enabled");
+        }
+    });
+}
+
+if (getSetting("useTotp", false))
+{
+    console.log("useTotp enabled");
+
+    Strophe.addConnectionPlugin('ofchatsasl',
+    {
+        init: function (connection)
+        {
+            Strophe.SASLOFChat = function () { };
+            Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+
+            Strophe.SASLOFChat.test = function (connection)
+            {
+                return getSetting("password", null) !== null;
+            };
+
+            Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+            {
+                var token = getSetting("username", null) + ":" + getSetting("password", null);
+                console.log("Strophe.SASLOFChat", token);
+                return token;
+            };
+
+            connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
+            console.log("strophe plugin: ofchatsasl enabled");
+        }
+    });
+}
+
 window.addEventListener("load", function()
 {
     function getUniqueID()
@@ -95,7 +151,7 @@ function urlParam(name)
 
 function getSetting(name, defaultValue)
 {
-    console.log("getSetting", name, defaultValue);
+    //console.log("getSetting", name, defaultValue);
 
     var value = defaultValue;
 
@@ -103,9 +159,20 @@ function getSetting(name, defaultValue)
     {
         value = JSON.parse(window.localStorage["store.settings." + name]);
 
+        if (name == "password") value = getPassword(value);
+
     } else {
         if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }
 
     return value;
+}
+
+function getPassword(password)
+{
+    if (!password || password == "") return null;
+    if (password.startsWith("token-")) return atob(password.substring(6));
+
+    window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
+    return password;
 }

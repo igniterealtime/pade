@@ -94,7 +94,7 @@ var config = {
 
     // w3c spec-compliant video constraints to use for video capture. Currently
     // used by browsers that return true from lib-jitsi-meet's
-    // RTCBrowserType#usesNewGumFlow. The constraints are independency from
+    // util#browser#usesNewGumFlow. The constraints are independency from
     // this config's resolution value. Defaults to requesting an ideal aspect
     // ratio of 16:9 with an ideal resolution of 1080p.
     // constraints: {
@@ -307,21 +307,24 @@ var config = {
         // backToP2PDelay: 5
     },
 
+    // A list of scripts to load as lib-jitsi-meet "analytics handlers".
+    // analyticsScriptUrls: [
+    //      "libs/analytics-ga.js", // google-analytics
+    //      "https://example.com/my-custom-analytics.js"
+    // ],
 
     // Information about the jitsi-meet instance we are connecting to, including
     // the user region as seen by the server.
-    //
-
     deploymentInfo: {
         // shard: "shard1",
         // region: "europe",
         // userRegion: "asia"
     }
 
+
     // List of undocumented settings used in jitsi-meet
     /**
      alwaysVisibleToolbar
-     analyticsScriptUrls
      autoEnableDesktopSharing
      autoRecord
      autoRecordToken

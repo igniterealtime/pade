@@ -223,7 +223,9 @@
         "grantedToUnknown": "Moderator rights granted to $t(notify.somebody)!",
         "muted": "You have started the conversation muted.",
         "mutedTitle": "You're muted!",
-        "raisedHand": "Would like to speak."
+        "raisedHand": "Would like to speak.",
+        "suboptimalExperienceTitle": "Browser Warning",
+        "suboptimalExperienceDescription": "Eer... we are afraid your experience with __appName__ isn't going to be that great here. We are looking for ways to improve this but, until then, please try using one of the <a href='static/recommendedBrowsers.html' target='_blank'>fully supported browsers</a>."
     },
     "dialog": {
         "add": "Add",
@@ -535,5 +537,15 @@
         "invite": "Invite in __app__",
         "title": "Call access info",
         "tooltip": "Get access info about the meeting"
+    },
+    "profileModal": {
+        "conferenceSection": "Conference",
+        "displayName": "Display name",
+        "email": "Email",
+        "header": "Settings",
+        "profileSection": "Profile",
+        "serverURL": "Server URL",
+        "startWithAudioMuted": "Start with audio muted",
+        "startWithVideoMuted": "Start with video muted"
     }
 }

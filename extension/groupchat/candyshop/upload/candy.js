@@ -112,7 +112,7 @@ CandyShop.Upload = (function(self, Candy, $)
         //console.log("CandyShop.Upload.uploadFile", file);
         var connection = Candy.Core.getConnection();
 
-        var iq = $iq({type: 'get', to: "httpfileupload." + connection.domain}).c('request', {xmlns: "urn:xmpp:http:upload:0"}).c('filename').t(file.name).up().c('size').t(file.size);
+        var iq = $iq({type: 'get', to: "httpfileupload." + connection.domain}).c('request', {xmlns: "urn:xmpp:http:upload"}).c('filename').t(file.name).up().c('size').t(file.size);
         var getUrl = null;
         var putUrl = null;
         var errorText = null;

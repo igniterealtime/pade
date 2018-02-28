@@ -429,20 +429,6 @@ var etherlynk = (function(lynk)
             doOptions();
         }
 
-        var acceptCall = function()
-        {
-            pade.sip.incomingSession.accept({
-                media : {
-                stream      : pade.sip.localAudioStream,
-                constraints : { audio : true, video : false },
-                render      : { remote : new Audio()},
-                }
-            });
-
-            notifyText("SIP Phone", "Connected",null,null,null,"sip-notify");
-        }
-
-
         var uri = 'sip:default@' + lynk.options.hosts.sip;
         var wsServers = "wss://" + lynk.options.hosts.server + "/sip/proxy?url=ws://" + lynk.options.hosts.sip + ":5066";
 
@@ -536,13 +522,26 @@ var etherlynk = (function(lynk)
         });
     }
 
+    function acceptSipCall()
+    {
+        pade.sip.incomingSession.accept({
+            media : {
+            stream      : pade.sip.localAudioStream,
+            constraints : { audio : true, video : false },
+            render      : { remote : new Audio()},
+            }
+        });
+
+        notifyText("SIP Phone", "Connected",null,null,null,"sip-notify");
+    }
+
     function accept()
     {
         if (pade.sip.incomingSession.request.headers["Call-Info"] &&
             pade.sip.incomingSession.request.headers["Call-Info"][0] &&
             pade.sip.incomingSession.request.headers["Call-Info"][0].raw.indexOf("answer-after=0") > -1)
         {
-            acceptCall();
+            acceptSipCall();
         }
         else
 
@@ -617,7 +616,8 @@ var etherlynk = (function(lynk)
             setupSpeechRecognition();
 
             // TODO - merge with ofmeet SIP
-            if (pade.enableSip) connectSIP();
+            // Issue with SIP and JitsiMeet chat
+            //if (pade.enableSip) connectSIP();
 
         }).catch(function (error) {
             console.log(error);
