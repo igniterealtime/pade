@@ -27,24 +27,31 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("connection"),
+            "group": i18n.get("TOTP"),
+            "name": "useTotp",
+            "type": "checkbox",
+            "label": i18n.get("Time based One-Time Password - Use OfChat and FreeOTP or Google Authernticator App")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("TOTP"),
+            "name": "qrcode",
+            "type": "button",
+            "text": i18n.get("QR Code")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Certificate"),
             "name": "useClientCert",
             "type": "checkbox",
             "label": i18n.get("Use Client Certificate (No password required)")
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("connection"),
-            "name": "useTotp",
-            "type": "checkbox",
-            "label": i18n.get("Time based One-Time Password (TOTP) - Use OfChat and FreeOTP or Google Authernticator App")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("connection"),
-            "name": "qrcode",
+            "group": i18n.get("Certificate"),
+            "name": "certificate",
             "type": "button",
-            "text": i18n.get("QR Code")
+            "text": i18n.get("Download")
         },
         {
             "tab": i18n.get("general"),
@@ -133,6 +140,13 @@ this.manifest = {
             "name": "enableChat",
             "type": "checkbox",
             "label": i18n.get("Enable Candy Chat")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "enableInverse",
+            "type": "checkbox",
+            "label": i18n.get("Enable Inverse Client")
         },
         {
             "tab": i18n.get("general"),

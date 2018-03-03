@@ -6,7 +6,7 @@
   "short_name": "pade",
   "name": "Pade - Openfire Meetings",
   "description": "Pade is an Openfire Meetings Chrome Extension for unified communications",
-  "version": "0.1.19",
+  "version": "0.1.20",
     
   "background": {
         "persistent": true,
@@ -47,6 +47,7 @@
   
   "permissions": [
     "background", 
+    "downloads",
     "contextMenus", 
     "desktopCapture",
     "nativeMessaging",
@@ -59,13 +60,34 @@
   ],
   
   "commands": {
-    "_execute_browser_action": {
-      "description": "Open Pade - Openfire Meetings",     
-      "suggested_key": {
-        "default": "Ctrl+M",
-        "mac": "MacCtrl+M"
-      }
-    }
+    "activate_meeting": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+1"
+        },
+        "description": "Activate Meeting",
+        "global": true
+    },  
+    "activate_chat": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+2"
+        },
+        "description": "Activate Inverse Client",
+        "global": true
+    },    
+    "activate_blogger": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+3"
+        },
+        "description": "Activate Blogger",
+        "global": true
+    }, 
+    "activate_phone": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+4"
+        },
+        "description": "Activate SIP Phone",
+        "global": true
+    }    
   },
   "externally_connectable": {
       "matches": [

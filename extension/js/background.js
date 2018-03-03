@@ -185,6 +185,7 @@ window.addEventListener("load", function()
     chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
 
     addChatMenu();
+    addInverseMenu();
     addBlogMenu();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
@@ -215,6 +216,17 @@ window.addEventListener("load", function()
         doJitsiMeet();
     });
 
+    chrome.commands.onCommand.addListener(function(command)
+    {
+        console.log('Command:', command);
+
+        if (command == "activate_chat" && getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
+        if (command == "activate_chat" && getSetting("enableChat", false)) openChatWindow("groupchat/index.html");
+        if (command == "activate_blogger") openBlogWindow();
+        if (command == "activate_phone") openPhoneWindow(true)
+        if (command == "activate_meeting") openVideoWindow(pade.activeContact.room);
+
+    });
 
     chrome.windows.onFocusChanged.addListener(function(win)
     {
@@ -362,7 +374,6 @@ window.addEventListener("load", function()
 
             if (status === Strophe.Status.AUTHFAIL)
             {
-               removeSetting("password");
                doOptions();
             }
 
@@ -675,11 +686,11 @@ function openChatWindow(url)
         chrome.windows.create({url: chrome.extension.getURL(url), focused: true, type: "popup"}, function (win)
         {
             pade.chatWindow = win;
-            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 800, height: 600});
+            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 1024, height: 800});
         });
 
     } else {
-        chrome.windows.update(pade.chatWindow.id, {drawAttention: true, focused: true, width: 800, height: 600});
+        chrome.windows.update(pade.chatWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
     }
 }
 
@@ -1378,11 +1389,12 @@ function getPassword(password)
     return password;
 }
 
+
 function addChatMenu()
 {
     if (getSetting("enableChat", false))
     {
-        chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Chat", contexts: ["browser_action"],  onclick: function()
+        chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Candy Chat", contexts: ["browser_action"],  onclick: function()
         {
             openChatWindow("groupchat/index.html");
         }});
@@ -1393,6 +1405,23 @@ function removeChatMenu()
 {
     closeChatWindow();
     chrome.contextMenus.remove("pade_chat");
+}
+
+function addInverseMenu()
+{
+    if (getSetting("enableInverse", false))
+    {
+        chrome.contextMenus.create({id: "pade_inverse", type: "normal", title: "Inverse Client", contexts: ["browser_action"],  onclick: function()
+        {
+            openChatWindow("inverse/index.html");
+        }});
+    }
+}
+
+function removeInverseMenu()
+{
+    closeChatWindow();
+    chrome.contextMenus.remove("pade_inverse");
 }
 
 function addBlogMenu()

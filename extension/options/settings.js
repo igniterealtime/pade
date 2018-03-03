@@ -6,7 +6,7 @@ window.addEvent("domready", function () {
     {
         var background = chrome.extension.getBackgroundPage();
 
-        settings.manifest.password.element.disabled = settings.manifest.useClientCert.element.checked;
+        setDefaultPassword(settings);
 
         settings.manifest.connect.addEvent("action", function ()
         {
@@ -67,6 +67,17 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.enableInverse.addEvent("action", function ()
+        {
+            if (getSetting("enableInverse"))
+            {
+                background.addInverseMenu();
+
+            } else {
+               background.removeInverseMenu();
+            }
+        });
+
         settings.manifest.enableSip.addEvent("action", function ()
         {
             background.reloadApp();
@@ -79,14 +90,7 @@ window.addEvent("domready", function () {
 
         settings.manifest.useClientCert.addEvent("action", function ()
         {
-            settings.manifest.password.element.disabled = false;
-
-            if (settings.manifest.useClientCert.element.checked)
-            {
-                settings.manifest.password.element.disabled = true;
-                settings.manifest.password.element.value = settings.manifest.username.element.value;
-            }
-
+            setDefaultPassword(settings);
             background.reloadApp();
         });
 
@@ -125,6 +129,30 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.certificate.addEvent("action", function ()
+        {
+            if (window.localStorage["store.settings.server"])
+            {
+                var host = JSON.parse(window.localStorage["store.settings.server"]);
+                var username = JSON.parse(window.localStorage["store.settings.username"]);
+                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+                var url =  "https://" + host + "/rest/api/restapi/v1/chat/certificate";
+                var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password)}};
+
+                console.log("fetch", url, options);
+
+                fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
+                {
+                    chrome.downloads.download({url: URL.createObjectURL(blob)});
+
+                }).catch(function (err) {
+                    console.error('connection error', err);
+                });
+
+            }
+        });
+
 
 
         function reloadApp(){
@@ -159,8 +187,7 @@ window.addEvent("domready", function () {
 
                     if (status === 4)
                     {
-                        removeSetting("password");
-                        settings.manifest.password.element.value = "";
+                        setDefaultPassword(settings);
                         settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
                     }
                 });
@@ -205,6 +232,17 @@ function doDefaults()
     // candy chat
     setSetting("chatWithOnlineContacts", true);
     setSetting("notifyWhenMentioned", true);
+}
+
+function setDefaultPassword(settings)
+{
+    settings.manifest.password.element.disabled = false;
+
+    if (settings.manifest.useClientCert.element.checked)
+    {
+        settings.manifest.password.element.disabled = true;
+        setSetting("password", settings.manifest.username.element.value);
+    }
 }
 
 function setSetting(name, defaultValue)
