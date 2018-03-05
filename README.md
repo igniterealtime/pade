@@ -5,7 +5,8 @@ P&agrave;d&eacute;
 
 * [Jitsi Meet](https://jitsi.org/jitsi-meet/) for audio/video conferencing, screen share and real-time application collaboration
 * [ctxPhone](https://collecttix.github.io/ctxSip/) for SIP based telephony with FreeSWITCH
-* [Candy Chat](https://candy-chat.github.io/candy/) for instant messaging and group chat
+* [Converse](https://https://conversejs.org/) for XMPP chat client
+* [Candy Chat](https://candy-chat.github.io/candy/) for dedicated group chat
 
 All applications run from within a chrome extension and together provide:
 
