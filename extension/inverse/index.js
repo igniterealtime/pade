@@ -90,18 +90,19 @@ window.addEventListener("load", function()
               password: getSetting("password", null),
               auto_away: 300,
               domain_placeholder: domain,
-              debug: true,
+              debug: false,
               message_archiving: "always",
               notify_all_room_messages: [],
               i18n: "en",
               registration_domain: domain,
               locked_domain: domain,
-              whitelisted_plugins: ["converse-singleton", "converse-inverse"],
+              whitelisted_plugins: ["converse-singleton", "converse-inverse", "pade"],
               message_carbons: true,
               blacklisted_plugins: ["converse-minimize", "converse-dragresize"],
               bosh_service_url: connUrl,
               auto_reconnect: true,
-              roster_groups: true
+              roster_groups: true,
+              allow_non_roster_messaging: true
             };
 
             converse.initialize( config );
