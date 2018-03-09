@@ -116,7 +116,7 @@ window.addEventListener("load", function()
 
     chrome.runtime.onConnect.addListener(function(port)
     {
-        //console.log("popup connect");
+        console.log("popup connect");
         pade.popup = true;
         pade.port = port;
 
@@ -165,7 +165,7 @@ window.addEventListener("load", function()
 
         port.onDisconnect.addListener(function()
         {
-            //console.log("popup disconnect");
+            console.log("popup disconnect");
             pade.popup = false;
             pade.port = null;
         });
@@ -187,6 +187,7 @@ window.addEventListener("load", function()
     addChatMenu();
     addInverseMenu();
     addBlogMenu();
+    addTouchPadMenu();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
@@ -213,7 +214,19 @@ window.addEventListener("load", function()
 
     chrome.browserAction.onClicked.addListener(function()
     {
-        doJitsiMeet();
+        if (getSetting("enableTouchPad", false))
+        {
+            if (getSetting("popupWindow", false))
+            {
+                chrome.browserAction.setPopup({popup: ""});
+                openApcWindow();
+
+            } else {
+                chrome.browserAction.setPopup({popup: "popup.html"});
+            }
+        } else {
+          doJitsiMeet();
+        }
     });
 
     chrome.commands.onCommand.addListener(function(command)
@@ -222,7 +235,10 @@ window.addEventListener("load", function()
 
         if (command == "activate_chat" && getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
         if (command == "activate_chat" && getSetting("enableChat", false)) openChatWindow("groupchat/index.html");
-        if (command == "activate_blogger") openBlogWindow();
+
+        if (command == "activate_blogger_communicator" && getSetting("enableTouchPad", false)) openApcWindow();
+        if (command == "activate_blogger_communicator" && !getSetting("enableTouchPad", false)) openBlogWindow();
+
         if (command == "activate_phone") openPhoneWindow(true)
         if (command == "activate_meeting") openVideoWindow(pade.activeContact.room);
 
@@ -241,6 +257,13 @@ window.addEventListener("load", function()
         {
             if (win == -1) pade.minimised = true;
             if (win == pade.videoWindow.id) pade.minimised = false;
+        }
+        else
+
+        if (pade.apcWindow)
+        {
+            if (win == -1) pade.minimised = true;
+            if (win == pade.apcWindow.id) pade.minimised = false;
         }
 
         //console.log("minimised", pade.minimised);
@@ -273,6 +296,12 @@ window.addEventListener("load", function()
             pade.videoWindow = null;
             pade.minimised = false;
             pade.connection.send($pres());  // needed because JitsiMeet send unavailable
+        }
+
+        if (pade.apcWindow && win == pade.apcWindow.id)
+        {
+            pade.apcWindow = null;
+            pade.minimised = false;
         }
     });
 
@@ -343,6 +372,8 @@ window.addEventListener("load", function()
 
         pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username, pade.password, function (status)
         {
+            console.log("pade.connection ===>", status);
+
             if (status === Strophe.Status.CONNECTED)
             {
                 addHandlers();
@@ -644,6 +675,30 @@ function notifyList(message, context, items, buttons, callback)
     });
 };
 
+function closeApcWindow()
+{
+    if (pade.apcWindow != null)
+    {
+        chrome.windows.remove(pade.apcWindow.id);
+        pade.apcWindow = null;
+    }
+}
+
+function openApcWindow()
+{
+    if (pade.apcWindow == null)
+    {
+        chrome.windows.create({url: chrome.extension.getURL("apc.html"), focused: true, type: "popup"}, function (win)
+        {
+            pade.apcWindow = win;
+            chrome.windows.update(pade.apcWindow.id, {drawAttention: true, width: 820, height: 640});
+        });
+
+    } else {
+        chrome.windows.update(pade.apcWindow.id, {drawAttention: true, focused: true, width: 820, height: 640});
+    }
+}
+
 function closePhoneWindow()
 {
     if (pade.sip && pade.sip.window != null)
@@ -679,10 +734,12 @@ function closeChatWindow()
     }
 }
 
-function openChatWindow(url)
+function openChatWindow(url, update)
 {
-    if (!pade.chatWindow)
+    if (!pade.chatWindow || update)
     {
+        if (update && pade.chatWindow != null) chrome.windows.remove(pade.chatWindow.id);
+
         chrome.windows.create({url: chrome.extension.getURL(url), focused: true, type: "popup"}, function (win)
         {
             pade.chatWindow = win;
@@ -858,7 +915,7 @@ function addHandlers()
         var room = null;
         var autoaccept = null;
 
-        //console.log("message handler", from, to, type)
+        console.log("message handler", from, to, type)
 
         $(message).find('body').each(function ()
         {
@@ -868,7 +925,7 @@ function addHandlers()
 
             offerer = Strophe.getBareJidFromJid(from);
 
-            //console.log("message handler body", body, offerer);
+            console.log("message handler body", body, offerer);
 
             if ( pos1 > -1 && pos2 > -1 )
             {
@@ -1066,6 +1123,8 @@ function fetchContacts(callback)
         console.warn("Fastpath not available");
     });
 
+    etherlynk.connect();
+
     if (pade.enableSip)
     {
         pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).tree(), function(resp)
@@ -1081,7 +1140,6 @@ function fetchContacts(callback)
             $(resp).find('promptCredentials').each(function()   {pade.sip.promptCredentials = $(this).text();});
 
             console.log("get sip profile", pade.sip);
-            etherlynk.connect();
 
             if (pade.sip.authUsername)
             {
@@ -1093,7 +1151,6 @@ function fetchContacts(callback)
 
         }, function (error) {
             console.warn("SIP profile not available");
-            etherlynk.connect();
         });
     }
 
@@ -1361,6 +1418,12 @@ function removeSetting(name)
     localStorage.removeItem("store.settings." + name);
 }
 
+function setSetting(name, value)
+{
+    //console.log("setSetting", name, value);
+    window.localStorage["store.settings." + name] = JSON.stringify(value);
+}
+
 function getSetting(name, defaultValue)
 {
     //console.log("getSetting", name, defaultValue);
@@ -1439,6 +1502,23 @@ function removeBlogMenu()
 {
     closeBlogWindow();
     chrome.contextMenus.remove("pade_blog");
+}
+
+function addTouchPadMenu()
+{
+    if (getSetting("enableTouchPad", false))
+    {
+        chrome.contextMenus.create({id: "pade_apc", type: "normal", title: "Communicator TouchPad", contexts: ["browser_action"],  onclick: function()
+        {
+            openApcWindow();
+        }});
+    }
+}
+
+function removeTouchPadMenu()
+{
+    closeApcWindow();
+    chrome.contextMenus.remove("pade_apc");
 }
 
 function isAudioOnly()

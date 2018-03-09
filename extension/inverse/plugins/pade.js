@@ -69,7 +69,8 @@
                     'emoji': true,
                     'call': true,
                     'clear': true
-                }
+                },
+                hide_open_bookmarks: false
             });
 
             /* The user can then pass in values for the configuration

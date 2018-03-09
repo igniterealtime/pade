@@ -6,7 +6,7 @@
   "short_name": "pade",
   "name": "Pade - Openfire Meetings",
   "description": "Pade is an Openfire Meetings Chrome Extension for unified communications",
-  "version": "0.1.23",
+  "version": "0.1.24",
     
   "background": {
         "persistent": true,
@@ -71,14 +71,14 @@
         "suggested_key": {
           "default": "Ctrl+Shift+2"
         },
-        "description": "Activate Inverse Client",
+        "description": "Activate Candy/Inverse Client",
         "global": true
     },    
-    "activate_blogger": {
+    "activate_blogger_communicator": {
         "suggested_key": {
           "default": "Ctrl+Shift+3"
         },
-        "description": "Activate Blogger",
+        "description": "Activate Blogger/Communicator",
         "global": true
     }, 
     "activate_phone": {
@@ -98,6 +98,7 @@
           "*://xmpp.igniterealtime.org/*", 
           "*://etherlynk.4ng.net/*",           
           "*://traderlynk.4ng.net/*",
+          "*://portal.bizie.com/*",          
           "*://traderlynk.net/*"          
       ]
   }  

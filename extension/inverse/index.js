@@ -75,7 +75,7 @@ window.addEventListener("load", function()
             var password = getSetting("password", null);
             var displayname = getSetting("displayname", username);
 
-            var connUrl = "https://" + server + "/http-bind/";
+            var connUrl = undefined;
 
             if (getSetting("useWebsocket", false))
             {
@@ -86,6 +86,7 @@ window.addEventListener("load", function()
             {
               authentication: "login",
               auto_login: true,
+              muc_domain: "conference." + getSetting("domain", null),
               jid : getSetting("username", null) + "@" + getSetting("domain", null),
               password: getSetting("password", null),
               auto_away: 300,
@@ -99,8 +100,9 @@ window.addEventListener("load", function()
               whitelisted_plugins: ["converse-singleton", "converse-inverse", "pade"],
               message_carbons: true,
               blacklisted_plugins: ["converse-minimize", "converse-dragresize"],
-              bosh_service_url: connUrl,
-              auto_reconnect: true,
+              bosh_service_url: "https://" + server + "/http-bind/",
+              websocket_url: connUrl,
+              auto_reconnect: false,
               roster_groups: true,
               allow_non_roster_messaging: true
             };

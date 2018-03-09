@@ -169,6 +169,13 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Blogging")
         },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "enableTouchPad",
+            "type": "checkbox",
+            "label": i18n.get("Enable Communicator TouchPad")
+        },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
@@ -288,6 +295,53 @@ this.manifest = {
             "name": "searchResults",
             "text": i18n.get(""),
             "type": "description"
+        },
+        {                                           // soft turret
+            "tab": i18n.get("TouchPad Page:1"),
+            "group": i18n.get("General"),
+            "name": "pageLabel_1",
+            "type": "text",
+            "label": i18n.get("Label"),
+            "text": i18n.get("Enter the label for page 1"),
+        },
+        {
+            "tab": i18n.get("TouchPad Page:2"),
+            "group": i18n.get("General"),
+            "name": "pageLabel_2",
+            "type": "text",
+            "label": i18n.get("Label"),
+            "text": i18n.get("Enter the label for page 2"),
+        },
+        {
+            "tab": i18n.get("TouchPad Page:3"),
+            "group": i18n.get("General"),
+            "name": "pageLabel_3",
+            "type": "text",
+            "label": i18n.get("Label"),
+            "text": i18n.get("Enter the label for page 3"),
+        },
+        {
+            "tab": i18n.get("TouchPad Page:4"),
+            "group": i18n.get("General"),
+            "name": "pageLabel_4",
+            "type": "text",
+            "label": i18n.get("Label"),
+            "text": i18n.get("Enter the label for page 4"),
+        },
+        {
+            "tab": i18n.get("TouchPad Page:5"),
+            "group": i18n.get("General"),
+            "name": "pageLabel_5",
+            "type": "text",
+            "label": i18n.get("Label"),
+            "text": i18n.get("Enter the label for page 5"),
+        },
+        {
+            "tab": i18n.get("TouchPad Speakers"),
+            "group": i18n.get("General"),
+            "name": "speakersEnabled",
+            "type": "checkbox",
+            "label": i18n.get("Enable Speakers"),
         }
     ],
     "alignment": [
@@ -311,3 +365,82 @@ this.manifest = {
         ]
     ]
 };
+
+for (var p=1; p<6; p++)
+{
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("TouchPad Page:" + p),
+        "group": i18n.get("General"),
+        "name": "pageEnabled_" + p,
+        "type": "checkbox",
+        "label": i18n.get("Enable page " + p),
+    });
+
+    for (var i=1; i<8; i++)     // row 8 is soft key area
+    {
+        for (var j=1; j<9; j++)
+        {
+            this.manifest.settings.push(
+            {
+                "tab": i18n.get("TouchPad Page:" + p),
+                "group": i18n.get("Cell " + i + "/" + j),
+                "name": "cellEnabled_" + p + "_" + i + "_" + j,
+                "type": "checkbox",
+                "label": i18n.get("Enable row " + i + " col " + j),
+            });
+
+            this.manifest.settings.push(
+            {
+                "tab": i18n.get("TouchPad Page:" + p),
+                "group": i18n.get("Cell " + i + "/" + j),
+                "name": "cellLabel_" + p + "_" + i + "_" + j,
+                "type": "text",
+                "label": i18n.get("Label"),
+                "text": i18n.get("Enter the label for row " + i + " col " + j),
+            });
+
+            this.manifest.settings.push(
+            {
+                "tab": i18n.get("TouchPad Page:" + p),
+                "group": i18n.get("Cell " + i + "/" + j),
+                "name": "cellValue_" + p + "_" + i + "_" + j,
+                "type": "text",
+                "label": i18n.get("Value"),
+                "text": i18n.get("Enter the value for row " + i + " col " + j),
+            });
+        }
+    }
+}
+
+for (var s=1; s<9; s++)
+{
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("TouchPad Speakers"),
+        "group": i18n.get("Speaker " + s),
+        "name": "speakerEnabled_" + s,
+        "type": "checkbox",
+        "label": i18n.get("Enable speaker " + s),
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("TouchPad Speakers"),
+        "group": i18n.get("Speaker " + s),
+        "name": "speakerLabel_" + s,
+        "type": "text",
+        "label": i18n.get("Label"),
+        "text": i18n.get("Enter the label for speaker " + s),
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("TouchPad Speakers"),
+        "group": i18n.get("Speaker " + s),
+        "name": "speakerValue_" + s,
+        "type": "text",
+        "label": i18n.get("Value"),
+        "text": i18n.get("Enter the value for speaker " + s),
+    });
+}

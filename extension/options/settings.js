@@ -78,6 +78,17 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.enableTouchPad.addEvent("action", function ()
+        {
+            if (getSetting("enableTouchPad"))
+            {
+                background.addTouchPadMenu();
+
+            } else {
+               background.removeTouchPadMenu();
+            }
+        });
+
         settings.manifest.enableSip.addEvent("action", function ()
         {
             background.reloadApp();
