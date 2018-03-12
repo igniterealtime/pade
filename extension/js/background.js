@@ -183,6 +183,7 @@ window.addEventListener("load", function()
     chrome.contextMenus.removeAll();
     chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
     chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+    chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
 
     addChatMenu();
     addInverseMenu();
@@ -381,7 +382,7 @@ window.addEventListener("load", function()
                 chrome.browserAction.setBadgeText({ text: "" });
                 pade.connection.send($pres());
 
-                chrome.browserAction.setTitle({title: "Pade - Connected"});
+                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
 
                 pade.presence = {};
                 pade.participants = {};
@@ -399,7 +400,7 @@ window.addEventListener("load", function()
             if (status === Strophe.Status.DISCONNECTED)
             {
                 chrome.browserAction.setBadgeText({ text: "off" });
-                chrome.browserAction.setTitle({title: "Pade - Disconnected"});
+                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
             }
             else
 
@@ -482,7 +483,7 @@ function handleContact(contact)
 function setActiveContact(contact)
 {
     pade.activeContact = contact;
-    chrome.browserAction.setTitle({title: "Pade - " + pade.activeContact.name + " (" + pade.activeContact.type + ")"});
+    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - " + pade.activeContact.name + " (" + pade.activeContact.type + ")"});
 }
 
 function setActiveWorkgroup(contact)
@@ -599,8 +600,8 @@ function notifyText(message, context, iconUrl, buttons, callback, notifyId)
 {
     var opt = {
       type: "basic",
-      title: "Pade - Openfire Meetings",
-      iconUrl: iconUrl ? iconUrl : chrome.extension.getURL("ignite_dl_openfire.png"),
+      title: chrome.i18n.getMessage('manifest_extensionName'),
+      iconUrl: iconUrl ? iconUrl : chrome.extension.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -619,8 +620,8 @@ function notifyImage(message, context, imageUrl, buttons, callback)
 {
     var opt = {
       type: "image",
-      title: "Pade - Openfire Meetings",
-      iconUrl: chrome.extension.getURL("ignite_dl_openfire.png"),
+      title: chrome.i18n.getMessage('manifest_extensionName'),
+      iconUrl: chrome.extension.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -639,8 +640,8 @@ function notifyProgress(message, context, progress, buttons, callback)
 {
     var opt = {
       type: "progress",
-      title: "Pade - Openfire Meetings",
-      iconUrl: chrome.extension.getURL("ignite_dl_openfire.png"),
+      title: chrome.i18n.getMessage('manifest_extensionName'),
+      iconUrl: chrome.extension.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -660,8 +661,8 @@ function notifyList(message, context, items, buttons, callback)
 {
     var opt = {
       type: "list",
-      title: "Pade - Openfire Meetings",
-      iconUrl: chrome.extension.getURL("ignite_dl_openfire.png"),
+      title: chrome.i18n.getMessage('manifest_extensionName'),
+      iconUrl: chrome.extension.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -1143,7 +1144,9 @@ function fetchContacts(callback)
 
             if (pade.sip.authUsername)
             {
-                chrome.contextMenus.create({id: "pade_phone", type: "normal", title: "Phone", contexts: ["browser_action"],  onclick: function()
+                etherlynk.connectSIP();
+
+                chrome.contextMenus.create({parentId: "pade_applications", id: "pade_phone", type: "normal", title: "Phone", contexts: ["browser_action"],  onclick: function()
                 {
                     openPhoneWindow(true);
                 }});
@@ -1151,6 +1154,7 @@ function fetchContacts(callback)
 
         }, function (error) {
             console.warn("SIP profile not available");
+            connectSIP();
         });
     }
 
@@ -1220,6 +1224,8 @@ function handleInvitation(invite)
     else {
         processInvitation("Unknown User", invite.offerer, invite.room);
     }
+
+    if (pade.port) pade.port.postMessage({event: "invited", id : invite.offerer, name: invite.room});
 }
 
 function processInvitation(title, label, room, autoaccept)
@@ -1230,7 +1236,7 @@ function processInvitation(title, label, room, autoaccept)
     {
         startTone("Diggztone_Vibe");
 
-        notifyText(title, label, null, [{title: "Accept Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject Pade - Openfire Meeting?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+        notifyText(title, label, null, [{title: "Accept " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
         {
             //console.log("handleAction callback", notificationId, buttonIndex);
 
@@ -1457,7 +1463,7 @@ function addChatMenu()
 {
     if (getSetting("enableChat", false))
     {
-        chrome.contextMenus.create({id: "pade_chat", type: "normal", title: "Candy Chat", contexts: ["browser_action"],  onclick: function()
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_chat", type: "normal", title: "Candy Chat", contexts: ["browser_action"],  onclick: function()
         {
             openChatWindow("groupchat/index.html");
         }});
@@ -1474,7 +1480,7 @@ function addInverseMenu()
 {
     if (getSetting("enableInverse", false))
     {
-        chrome.contextMenus.create({id: "pade_inverse", type: "normal", title: "Inverse Client", contexts: ["browser_action"],  onclick: function()
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_inverse", type: "normal", title: "Inverse Client", contexts: ["browser_action"],  onclick: function()
         {
             openChatWindow("inverse/index.html");
         }});
@@ -1491,7 +1497,7 @@ function addBlogMenu()
 {
     if (getSetting("enableBlog", false))
     {
-        chrome.contextMenus.create({id: "pade_blog", type: "normal", title: "Blogger", contexts: ["browser_action"],  onclick: function()
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_blog", type: "normal", title: "Blogger", contexts: ["browser_action"],  onclick: function()
         {
             openBlogWindow();
         }});

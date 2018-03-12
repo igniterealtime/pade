@@ -2,7 +2,7 @@ var interfaceConfig = {
   "ACTIVE_SPEAKER_AVATAR_SIZE": 100,
   "SHOW_CONTACTLIST_AVATARS": true,
   "SHOW_POWERED_BY": false,
-  "APP_NAME": "Pade - Openfire Meetings",
+  "APP_NAME": chrome.i18n.getMessage('manifest_extensionName'),
   "filmStripOnly": false,
   "SHADOW_COLOR": "#ffffff",
   "JITSI_WATERMARK_LINK": "",

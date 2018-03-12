@@ -3,10 +3,10 @@
   "minimum_chrome_version": "34",  
   "options_page": "options/index.html",  
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data: http: https:",  
-  "short_name": "pade",
-  "name": "Pade - Openfire Meetings",
-  "description": "Pade is an Openfire Meetings Chrome Extension for unified communications",
-  "version": "0.1.24",
+  "short_name": "__MSG_manifest_shortExtensionName__",
+  "name": "__MSG_manifest_extensionName__",
+  "description": "__MSG_manifest_extensionDescription__",
+  "version": "0.3.0",
     
   "background": {
         "persistent": true,
@@ -24,15 +24,15 @@
    
   "browser_action": {
       "default_icon": {
-         "19": "ofmeet.png",
-         "38": "ofmeet.png"
+         "19": "icon.png",
+         "38": "icon.png"
       }   
   },
 
    "icons": {
-      "128": "ignite_dl_openfire.png",
-      "16": "ofmeet.png",
-      "48": "ignite_dl_openfire.png"
+      "128": "image.png",
+      "16": "icon.png",
+      "48": "image.png"
    }, 
   
   "web_accessible_resources": [
@@ -101,5 +101,6 @@
           "*://portal.bizie.com/*",          
           "*://traderlynk.net/*"          
       ]
-  }  
+  },
+  "default_locale": "en"  
 }

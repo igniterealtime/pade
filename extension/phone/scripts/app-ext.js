@@ -7,24 +7,26 @@ var sessionid = null;
 
 window.addEventListener("beforeunload", function(e) {
     e.returnValue = 'Ok';
-    console.log("sip-phone beforeunload");        
+    console.log("sip-phone beforeunload");
 });
 
 window.addEventListener("unload", function() {
-    console.log("sip-phone unload", sessionid);   
-    
-    if (sessionid) ctxSip.sipHangUp(sessionid);    
+    console.log("sip-phone unload", sessionid);
+
+    if (sessionid) ctxSip.sipHangUp(sessionid);
 });
 
-window.addEventListener("load", function() 
+window.addEventListener("load", function()
 {
+    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Phone";
+
     function urlParam(name)
     {
-    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (!results) { return undefined; }
-    return unescape(results[1] || undefined);
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (!results) { return undefined; }
+        return unescape(results[1] || undefined);
     }
-    
+
     function doIt() {
         ctxSip = {
             localStorage: localStorage,
@@ -127,7 +129,7 @@ window.addEventListener("load", function()
                     if (ctxSip.callActiveID && ctxSip.callActiveID !== newSess.ctxid) {
                         ctxSip.phoneHoldButtonPressed(ctxSip.callActiveID);
                     }
-                    
+
                     ctxSip.stopRingbackTone();
                     ctxSip.stopRingTone();
                     ctxSip.setCallSessionStatus('Answered');
@@ -252,14 +254,14 @@ window.addEventListener("load", function()
 
                 if (status === 'ended') {
                     calllog[log.id].stop = log.time;
-                    
+
                     var item = calllog[log.id];
-                    if (bgWindow)  bgWindow.logCall(item.clid, item.flow === "incoming" ? "received": "dialed", Math.floor((item.stop - item.start)/1000));                     
+                    if (bgWindow)  bgWindow.logCall(item.clid, item.flow === "incoming" ? "received": "dialed", Math.floor((item.stop - item.start)/1000));
                 }
 
                 if (status === 'ended' && calllog[log.id].status === 'ringing') {
                     calllog[log.id].status = 'missed';
-                    if (bgWindow)  bgWindow.logCall(calllog[log.id].clid, "missed", "0");                     
+                    if (bgWindow)  bgWindow.logCall(calllog[log.id].clid, "missed", "0");
                 } else {
                     calllog[log.id].status = status;
                 }
@@ -291,7 +293,7 @@ window.addEventListener("load", function()
                         callClass = 'list-group-item-danger';
                         if (item.flow === "incoming") { callIcon = 'fa-chevron-left'; }
                         if (item.flow === "outgoing") { callIcon = 'fa-chevron-right'; }
-                                             
+
                         break;
 
                     case 'holding':
@@ -308,7 +310,7 @@ window.addEventListener("load", function()
                     case 'ended':
                         if (item.flow === "incoming") { callIcon = 'fa-chevron-left'; }
                         if (item.flow === "outgoing") { callIcon = 'fa-chevron-right'; }
-                                           
+
                         break;
                 }
 
@@ -592,7 +594,7 @@ window.addEventListener("load", function()
 
         var onInvite = function(incomingSession) {
             console.log("onInvite", incomingSession);
-            
+
         var s = incomingSession;
 
         s.direction = 'incoming';
@@ -606,7 +608,7 @@ window.addEventListener("load", function()
         }
 
         var closePhone = function() {
-            console.log("closePhone");               
+            console.log("closePhone");
             // stop the phone on unload
             ctxSip.localStorage.removeItem('ctxPhone');
             //ctxSip.phone.stop();

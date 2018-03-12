@@ -1,7 +1,7 @@
 // SAMPLE
 this.i18n = {
     "settings": {
-        "en": "Pade",
+        "en": chrome.i18n.getMessage('manifest_shortExtensionName'),
         "de": "Optionen"
     },
     "search": {
@@ -86,7 +86,7 @@ this.i18n = {
         "de": "Trennen:"
     },
     "ofmeet": {
-        "en": "Openfire Meetings",
+        "en": "Meetings",
         "de": "Optionen"
     },
     "config": {

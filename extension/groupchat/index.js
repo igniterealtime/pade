@@ -59,6 +59,12 @@ if (getSetting("useTotp", false))
 
 window.addEventListener("load", function()
 {
+    setTimeout(function()
+    {
+        document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Group Chat";
+
+    }, 1000);
+
     function getUniqueID()
     {
         return Math.random().toString(36).substr(2, 9);

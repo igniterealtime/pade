@@ -1,5 +1,7 @@
 window.addEvent("domready", function () {
 
+    document.getElementById("settings-label").innerHTML = chrome.i18n.getMessage('manifest_shortExtensionName')
+
     doDefaults();
 
     new FancySettings.initWithManifest(function (settings)

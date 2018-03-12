@@ -1,6 +1,6 @@
 this.manifest = {
-    "name": "Pade - Openfire Meetings",
-    "icon": "../ofmeet.png",
+    "name": chrome.i18n.getMessage('manifest_extensionName'),
+    "icon": "../icon.png",
     "settings": [
         {
             "tab": i18n.get("general"),

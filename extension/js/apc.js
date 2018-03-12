@@ -14,6 +14,8 @@ window.addEventListener("beforeunload", function(e)
 
 window.addEventListener("load", function()
 {
+    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Communicator";
+
     chrome.runtime.getBackgroundPage(function(win)
     {
         bgWindow = win;
@@ -150,7 +152,7 @@ function setupCall(page, index, label, value)
 {
     console.log("setupCall", page, index, label, value);
 
-    var call = {page: page, index: index, label: label, value: value, state: "bye", count: 0, missed: 0};
+    var call = {page: page, index: index, label: label, value: value, state: "disconnected", count: 0, missed: 0};
 
     active.calls[getName(value)] = call;
     active.buttons[index] = call;
@@ -160,7 +162,7 @@ function setupConference(index, label, value)
 {
     console.log("setupConference", index, label, value);
 
-    var conference = {page: 0, index: index, label: label, value: value, state: "bye"};
+    var conference = {page: 0, index: index, label: label, value: value, state: "disconnected"};
 
     active.calls[getName(value)] = conference;
     active.buttons[index] = conference;
@@ -177,7 +179,7 @@ function clearAllCalls()
     {
         var call = active.calls[getName(items[z])];
 
-        if (call.state == "accepted" || call.state == "muted")
+        if (call.state == "connected" || call.state == "muted")
         {
             bgWindow.etherlynk.leave(call.value);
         }
@@ -311,32 +313,33 @@ function handleSlider(slider, value)
 
 function handleButtonState(message)
 {
-    // connecting=yellow, accepted=green, bye=off
-
     console.log("handleButtonState", message);
 
-    if (message.event == "accepted" || message.event == "bye")
-    {
-        var call = active.calls[message.name];
+    var call = active.calls[message.name];
 
-        if (call)
+    if (call)
+    {
+        if (active.page == call.page || call.page == 0)
         {
             console.log("handleButtonState call", call);
             var color = call.page != 0 ? "green" : "red";
 
-            if (message.event == "accepted")
+            // XMPP
+
+            if (message.event == "connected")
             {
                 etherlynkobj.setbutton([call.index, color, call.label]);
                 if (call.page != 0) active.call = call.value;
-                call.count == 0
+                call.count = 0;
                 call.state = message.event;
             }
             else
 
-            if (message.event == "bye")
+            if (message.event == "disconnected")
             {
                 etherlynkobj.setbutton([call.index, null, call.label]);
                 active.call = null;
+                call.count = 0;
                 call.state = message.event;
             }
             else
@@ -344,15 +347,59 @@ function handleButtonState(message)
             if (message.event == "joined")
             {
                 call.count++;
-                etherlynkobj.setbutton([call.index, color, call.label, call.count]);
+                if (call.count > 0) etherlynkobj.setbutton([call.index, color, call.label, call.count]);
             }
             else
 
             if (message.event == "left")
             {
                 call.count--;
-                etherlynkobj.setbutton([call.index, color, call.label, call.count]);
+                if (call.count > 0) etherlynkobj.setbutton([call.index, color, call.label, call.count]);
             }
+
+            else
+
+            if (message.event == "invited")
+            {
+                etherlynkobj.setbutton([call.index, color + "flash", call.label]);
+                call.state = message.event;
+            }
+
+            // SIP
+
+            if (message.event == "connecting")
+            {
+                etherlynkobj.setbutton([call.index, "greenflash", call.label]);
+                call.state = message.event;
+            }
+            else
+
+            if (message.event == "accepted")
+            {
+                if (call.page == 0)     // speaker
+                {
+                    var muted = bgWindow.etherlynk.muteLocal(message.id, true);
+                    etherlynkobj.setbutton([call.index, muted ? "red": "redflash", call.label]);
+                    call.state = muted ? "muted": message.event;
+
+                } else {
+                    active.call = call.value;
+                    call.missed--;
+                    etherlynkobj.setbutton([call.index, "green", call.label]);
+                    call.state = message.event;
+                }
+            }
+            else
+
+            if (message.event == "bye" || message.event == "rejected" || message.event == "failed")
+            {
+                if (call.page != 0 && active.call == message.id) active.call = null;
+                etherlynkobj.setbutton([call.index, call.count == 0 ? null : "yellow", call.label]);
+                call.state = message.event;
+            }
+
+        } else {
+            // soft keys TODO
         }
     }
 }
@@ -396,7 +443,7 @@ function handleConferenceAction(button)
         var call = active.buttons[button];
         var badge = call.count > 1 ? call.count : null;
 
-        if (call.state == "bye")
+        if (call.state == "disconnected")
         {
             bgWindow.etherlynk.join(call.value, {mute: true});
         }
@@ -408,7 +455,7 @@ function handleConferenceAction(button)
         }
         else
 
-        if (call.state == "accepted")
+        if (call.state == "connected")
         {
             var muted = bgWindow.etherlynk.muteLocal(call.value, true);
             etherlynkobj.setbutton([call.index, muted ? "red" : "redflash", call.label, badge]);
@@ -423,7 +470,7 @@ function handleConferenceAction(button)
 
             if (!muted)
             {
-                call.state = "accepted";
+                call.state = "connected";
             }
         }
     }
@@ -438,17 +485,23 @@ function handleCallAction(button)
         var call = active.buttons[button];
         var badge = call.count > 1 ? call.count : null;
 
-        if (call.state == "bye")
+        if (call.state == "disconnected" || call.state == "invited")
         {
             if (notAudio(button, call) == false)
             {
                 muteActiveCall(call);
-                bgWindow.etherlynk.join(call.value, {});
+                bgWindow.etherlynk.join(call.value, {}, call.state);
             }
         }
         else
 
-        if (call.state == "accepted")
+        if (call.state == "connecting" || call.state == "progress")
+        {
+            bgWindow.etherlynk.leave(call.value);
+        }
+        else
+
+        if (call.state == "connected")
         {
             var muted = bgWindow.etherlynk.muteLocal(call.value, true);
             etherlynkobj.setbutton([call.index, muted ? "red" : "green", call.label, badge]);
@@ -465,7 +518,7 @@ function handleCallAction(button)
 
             if (!muted)
             {
-                call.state = "accepted";
+                call.state = "connected";
                 active.call = call.value;
             }
         }
@@ -474,7 +527,9 @@ function handleCallAction(button)
 
 function getName(name)
 {
-    return name.startsWith("https://") || name.startsWith("http://") ? name.split("/")[3] : name;
+    if (name.startsWith("https://") || name.startsWith("http://")) return name.split("/")[3];
+    if (name.startsWith("tel:")) return name.substring(4);
+    return name;
 }
 
 function getKeyColor(button)

@@ -2,6 +2,8 @@ var bgWindow = null;
 
 window.addEventListener("load", function()
 {
+    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse";
+
     function getUniqueID()
     {
         return Math.random().toString(36).substr(2, 9);

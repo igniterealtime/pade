@@ -1,0 +1,18 @@
+{
+  "browserAction_title": {
+    "message": "Pade",
+    "description": "A pop-up title when user hovers on Browser Action button (browserAction_title)"
+  },
+  "manifest_extensionName": {
+    "message": "Pade - Openfire Meetings",
+    "description": "Extension name in the Manifest file (manifest_extensionName)"
+  },
+  "manifest_shortExtensionName": {
+    "message": "Pade",
+    "description": "Short extension name in the Manifest file (manifest_shortExtensionName)"
+  },
+  "manifest_extensionDescription": {
+    "message": "Pade is an Openfire Meetings Chrome Extension for unified communications",
+    "description": "Extension description in the Manifest file (manifest_extensionDescription)"
+  }
+}
