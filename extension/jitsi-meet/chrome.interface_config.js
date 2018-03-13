@@ -1,5 +1,5 @@
 var interfaceConfig = {
-  "ACTIVE_SPEAKER_AVATAR_SIZE": 100,
+  "ACTIVE_SPEAKER_AVATAR_SIZE": getSetting("ACTIVE_SPEAKER_AVATAR_SIZE", 100),
   "SHOW_CONTACTLIST_AVATARS": true,
   "SHOW_POWERED_BY": false,
   "APP_NAME": chrome.i18n.getMessage('manifest_extensionName'),

@@ -1,18 +1,122 @@
 {
-  "browserAction_title": {
-    "message": "Pade",
-    "description": "A pop-up title when user hovers on Browser Action button (browserAction_title)"
-  },
-  "manifest_extensionName": {
-    "message": "Pade - Openfire Meetings",
-    "description": "Extension name in the Manifest file (manifest_extensionName)"
-  },
-  "manifest_shortExtensionName": {
-    "message": "Pade",
-    "description": "Short extension name in the Manifest file (manifest_shortExtensionName)"
-  },
-  "manifest_extensionDescription": {
-    "message": "Pade is an Openfire Meetings Chrome Extension for unified communications",
-    "description": "Extension description in the Manifest file (manifest_extensionDescription)"
-  }
+    "browserAction_title": {
+        "message": "Pade",
+        "description": "A pop-up title when user hovers on Browser Action button (browserAction_title)"
+    },
+    "manifest_extensionName": {
+        "message": "Pade - Openfire Meetings",
+        "description": "Extension name in the Manifest file (manifest_extensionName)"
+    },
+    "manifest_shortExtensionName": {
+        "message": "Pade",
+        "description": "Short extension name in the Manifest file (manifest_shortExtensionName)"
+    },
+    "manifest_extensionDescription": {
+        "message": "Pade is an Openfire Meetings Chrome Extension for unified communications",
+        "description": "Extension description in the Manifest file (manifest_extensionDescription)"
+    },
+    "settings": {
+        "message": "Pade",
+        "description": "Title for settings"
+    },
+    "search": {
+        "message": "Search",
+        "description": "Title for search"
+    },
+    "nothing_found": {
+        "message": "No matches were found.",
+        "description": "No matches were found."
+    },
+    "information": {
+        "message": "Information",
+        "description": "Information"
+    },
+    "ui": {
+        "message": "User Interface",
+        "description": "User Interface"
+    },
+    "intercom": {
+        "message": "Intercom",
+        "description": "Intercom"
+    },
+    "general": {
+        "message": "General",
+        "description": "General"
+    },
+    "login": {
+        "message": "Login",
+        "description": "Login"
+    },
+    "connection": {
+        "message": "Connection",
+        "description": "Connection"
+    },
+    "username": {
+        "message": "Username:",
+        "description": "Username"
+    },
+    "displayname": {
+        "message": "Display Name:",
+        "description": "Display Name"
+    },
+    "server": {
+        "message": "Server",
+        "description": "Server"
+    },
+    "domain": {
+        "message": "Domain:",
+        "description": "Domain:"
+    },
+    "password": {
+        "message": "Password:",
+        "description": "Password"
+    },
+    "x_characters": {
+        "message": "6 - 12 characters",
+        "description": "Label for x charcaters"
+    },
+    "x_characters_pw": {
+        "message": "10 - 18 characters",
+        "description": "Label for 10 -18 charcaters"
+    },
+    "description": {
+        "message": "",
+        "description": ""
+    },
+    "logout": {
+        "message": "Logout",
+        "description": "Logout"
+    },
+    "enable": {
+        "message": "Enable",
+        "description": "Enable"
+    },
+    "connect": {
+        "message": "Connect:",
+        "description": "Connect"
+    },
+    "disconnect": {
+        "message": "Disconnect:",
+        "description": "Disconnect"
+    },
+    "ofmeet": {
+        "message": "Applications",
+        "description": "Label for application group including ofmeet, candy, converse, blogger and phone"
+    },
+    "config": {
+        "message": "Meeting Settings",
+        "description": "Label for Meetings Configuration"
+    },
+    "ui": {
+        "message": "Meeting UI",
+        "description": "Label for Meetings User Interface"
+    },
+    "upload_app": {
+        "message": "Pack application into a zip file and select",
+        "description": "Label for uploading collaboration application"
+    },    
+    "TOTP": {
+        "message": "TOTP",
+        "description": "Time based One Time Password"
+    }      
 }

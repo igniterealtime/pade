@@ -91,22 +91,23 @@ window.addEventListener("load", function()
               muc_domain: "conference." + getSetting("domain", null),
               jid : getSetting("username", null) + "@" + getSetting("domain", null),
               password: getSetting("password", null),
-              auto_away: 300,
               domain_placeholder: domain,
-              debug: false,
-              message_archiving: "always",
-              notify_all_room_messages: [],
-              i18n: "en",
               registration_domain: domain,
               locked_domain: domain,
               whitelisted_plugins: ["converse-singleton", "converse-inverse", "pade"],
-              message_carbons: true,
               blacklisted_plugins: ["converse-minimize", "converse-dragresize"],
               bosh_service_url: "https://" + server + "/http-bind/",
               websocket_url: connUrl,
-              auto_reconnect: false,
-              roster_groups: true,
-              allow_non_roster_messaging: true
+
+              auto_away: 300,
+              message_archiving: "always",
+              i18n: "en",
+              debug: getSetting("converseDebug", false),
+              notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
+              message_carbons: getSetting("messageCarbons", false),
+              auto_reconnect: getSetting("autoReconnect", true),
+              roster_groups: getSetting("rosterGroups", true),
+              allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true)
             };
 
             converse.initialize( config );

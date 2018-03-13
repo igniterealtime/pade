@@ -8,6 +8,55 @@ window.addEvent("domready", function () {
     {
         var background = chrome.extension.getBackgroundPage();
 
+        settings.manifest.uploadApp.element.innerHTML = "<input id='uploadApplication' type='file' name='files[]'>";
+
+        document.getElementById("uploadApplication").addEventListener('change', function(event)
+        {
+            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
+            {
+                var files = event.target.files;
+                var server = JSON.parse(window.localStorage["store.settings.server"]);
+                var username = JSON.parse(window.localStorage["store.settings.username"]);
+                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+                for (var i = 0, file; file = files[i]; i++)
+                {
+                    console.log("upload", file);
+
+                    if (file.name.endsWith(".zip"))
+                    {
+                        var putUrl = "https://" + server + "/chat/upload?name=" + file.name + "&username=" + username;
+                        var req = new XMLHttpRequest();
+
+                        req.onreadystatechange = function()
+                        {
+                          if (this.readyState == 4 && this.status >= 200 && this.status < 400)
+                          {
+                            console.log("pade.upload.app", this.statusText);
+                            settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+                          }
+                          else
+
+                          if (this.readyState == 4 && this.status >= 400)
+                          {
+                            console.error("pade.upload.error", this.statusText);
+                            settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+                          }
+
+                        };
+                        req.open("PUT", putUrl, true);
+                        req.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
+                        req.send(file);
+                    } else {
+                        settings.manifest.uploadStatus.element.innerHTML = '<b>application file must be a zip file</b>';
+                    }
+                }
+
+            } else {
+                settings.manifest.uploadStatus.element.innerHTML = '<b>user not configured</b>';
+            }
+        });
+
         setDefaultPassword(settings);
 
         settings.manifest.connect.addEvent("action", function ()
@@ -173,47 +222,47 @@ window.addEvent("domready", function () {
             openAppWindow()
         }
 
-    function openAppWindow()
-    {
-        if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
+        function openAppWindow()
         {
-            var lynks = {};
-
-            lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
-            lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
-            lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
-            lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
-
-            if (lynks.server && lynks.domain && lynks.username && lynks.password)
+            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
             {
-                var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
+                var lynks = {};
 
-                connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
+                lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
+                lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
+                lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
+                lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+                if (lynks.server && lynks.domain && lynks.username && lynks.password)
                 {
-                    //console.log("status", status);
+                    var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
 
-                    if (status === 5)
+                    connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
                     {
-                        background.reloadApp();
-                    }
-                    else
+                        //console.log("status", status);
 
-                    if (status === 4)
-                    {
-                        setDefaultPassword(settings);
-                        settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
-                    }
-                });
-            }
-            else {
-                if (!lynks.server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
-                if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b>bad domain</b>';
-                if (!lynks.username) settings.manifest.status.element.innerHTML = '<b>bad username</b>';
-                if (!lynks.password) settings.manifest.status.element.innerHTML = '<b>bad password</b>';
-            }
+                        if (status === 5)
+                        {
+                            background.reloadApp();
+                        }
+                        else
 
-        } else settings.manifest.status.element.innerHTML = '<b>bad server, domain, username or password</b>';
-    }
+                        if (status === 4)
+                        {
+                            setDefaultPassword(settings);
+                            settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
+                        }
+                    });
+                }
+                else {
+                    if (!lynks.server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
+                    if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b>bad domain</b>';
+                    if (!lynks.username) settings.manifest.status.element.innerHTML = '<b>bad username</b>';
+                    if (!lynks.password) settings.manifest.status.element.innerHTML = '<b>bad password</b>';
+                }
+
+            } else settings.manifest.status.element.innerHTML = '<b>bad server, domain, username or password</b>';
+        }
     });
 
 
@@ -222,12 +271,7 @@ window.addEvent("domready", function () {
 function doDefaults()
 {
     // preferences
-    setSetting("desktopShareMode", false)
-    setSetting("showOnlyOnlineUsers", true)
     setSetting("popupWindow", true);
-    setSetting("useJabra", false);
-    setSetting("useWebsocket", false);
-    setSetting("disableAudioLevels", false);
     setSetting("enableLipSync", false);
     setSetting("enableChat", false);
     setSetting("audioOnly", false);
@@ -245,6 +289,13 @@ function doDefaults()
     // candy chat
     setSetting("chatWithOnlineContacts", true);
     setSetting("notifyWhenMentioned", true);
+
+    // converse
+    setSetting("enableInverse", true);
+    setSetting("notifyAllRoomMessages", true);
+    setSetting("allowNonRosterMessaging", true);
+    setSetting("rosterGroups", true);
+    setSetting("autoReconnect", true);
 }
 
 function setDefaultPassword(settings)

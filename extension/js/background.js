@@ -81,6 +81,13 @@ window.addEventListener("unload", function ()
 
 window.addEventListener("load", function()
 {
+    chrome.runtime.onInstalled.addListener(function(details)
+    {
+        //doExtensionPage("changelog.html");
+
+    });
+
+
     // support Jitsi domain controlled screen share
 
     chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse)
@@ -371,7 +378,7 @@ window.addEventListener("load", function()
 
         pade.connection = getConnection(connUrl);
 
-        pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username, pade.password, function (status)
+        pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
         {
             console.log("pade.connection ===>", status);
 
@@ -406,12 +413,12 @@ window.addEventListener("load", function()
 
             if (status === Strophe.Status.AUTHFAIL)
             {
-               doOptions();
+               doExtensionPage("options/index.html");
             }
 
         });
 
-    } else doOptions();
+    } else doExtensionPage("options/index.html");
 });
 
 function getConnection(connUrl)
@@ -764,12 +771,17 @@ function closeVideoWindow()
 
 function openVideoWindow(room)
 {
+    var url = chrome.extension.getURL("jitsi-meet/chrome.index.html");
+    if (room) url = url + "?room=" + room;
+    openVideoWindowUrl(url);
+}
+
+function openVideoWindowUrl(url)
+{
     if (pade.videoWindow != null)
     {
         chrome.windows.remove(pade.videoWindow.id);
     }
-    var url = chrome.extension.getURL("jitsi-meet/chrome.index.html");
-    if (room) url = url + "?room=" + room;
 
     chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
     {
@@ -806,11 +818,11 @@ function openBlogWindow()
     }
 }
 
-function doOptions()
+function doExtensionPage(url)
 {
     chrome.tabs.getAllInWindow(null, function(tabs)
     {
-        var setupUrl = chrome.extension.getURL('options/index.html');
+        var setupUrl = chrome.extension.getURL(url);
 
         if (tabs)
         {

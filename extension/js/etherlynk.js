@@ -714,6 +714,34 @@ var etherlynk = (function(lynk)
         }
     }
 
+    function startJitsiAudio(name, params, state)
+    {
+        var url = name.split("/");
+
+        if (url.length == 4)
+        {
+            var jid = url[2].split(":");
+            var domain = jid[0];
+            var host = url[2];
+
+            if (jid[0].indexOf("@") > -1)
+            {
+                domain = jid[0].split("@")[1];
+                host = url[2].split("@")[1];
+
+                // conversation, alert far party
+                inviteToConference(jid[0], url[3]);
+            }
+
+            connectXMPP(url[3], params, setupConfig(host, domain));
+
+        } else {
+            var msg = "Bad jitsi-meet conference room: " + name + ", expecting https://domain:port/room";
+            console.error(msg, url);
+            notifyText("Communicator", msg);
+        }
+    }
+
     //-------------------------------------------------------
     //
     //  etherlynk xmpp public
@@ -781,29 +809,12 @@ var etherlynk = (function(lynk)
 
             if (name.startsWith("https://") || name.startsWith("http://"))
             {
-                var url = name.split("/");
-
-                if (url.length == 4)
+                if (name.indexOf(pade.server) > -1)         // own videobridge
                 {
-                    var jid = url[2].split(":");
-                    var domain = jid[0];
-                    var host = url[2];
-
-                    if (jid[0].indexOf("@") > -1)
-                    {
-                        domain = jid[0].split("@")[1];
-                        host = url[2].split("@")[1];
-
-                        // conversation, alert far party
-                        inviteToConference(jid[0], url[3]);
-                    }
-
-                    connectXMPP(url[3], params, setupConfig(host, domain));
+                    startJitsiAudio(name, params, state);
 
                 } else {
-                    var msg = "Bad jitsi-meet conference room: " + name + ", expecting https://domain:port/room";
-                    console.error(msg, url);
-                    notifyText("Communicator", msg);
+                    openVideoWindowUrl(name);
                 }
             }
             else connectXMPP(name, params);

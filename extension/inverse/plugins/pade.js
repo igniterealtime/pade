@@ -148,11 +148,6 @@
                             room.save('bookmarked', true);
                         });
 
-                        $('#pade-upload-file').change(function(event)
-                        {
-                            doUpload();
-                        });
-
                         console.log("pade plugin ready");
 
                     }, function(error){
@@ -238,9 +233,9 @@
         }
     });
 
-    var doUpload = function doUpload()
+    var doUpload = function doUpload(event)
     {
-        console.log("doUpload");
+        console.log("doUpload", event);
 
         _converse.chatboxviews.each(function (view)
         {
