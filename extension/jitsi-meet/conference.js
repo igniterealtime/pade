@@ -7,7 +7,7 @@ import Recorder from './modules/recorder/Recorder';
 
 import mediaDeviceHelper from './modules/devices/mediaDeviceHelper';
 
-import { reload, reportError } from './modules/util/helpers';
+import { reportError } from './modules/util/helpers';
 
 import * as RemoteControlEvents
     from './service/remotecontrol/RemoteControlEvents';
@@ -24,6 +24,10 @@ import {
     initAnalytics,
     sendAnalytics
 } from './react/features/analytics';
+import {
+    redirectWithStoredParams,
+    reloadWithStoredParams
+} from './react/features/app';
 
 import EventEmitter from 'events';
 
@@ -62,6 +66,7 @@ import {
     setVideoAvailable,
     setVideoMuted
 } from './react/features/base/media';
+import { showNotification } from './react/features/notifications';
 import {
     dominantSpeakerChanged,
     getAvatarURLByParticipantId,
@@ -203,7 +208,7 @@ function muteLocalVideo(muted) {
  *
  * @param {object} options used to decide which particular close page to show
  * or if close page is disabled, whether we should show the thankyou dialog
- * @param {boolean} options.thankYouDialogVisible - whether we should
+ * @param {boolean} options.showThankYou - whether we should
  * show thank you dialog
  * @param {boolean} options.feedbackSubmitted - whether feedback was submitted
  */
@@ -215,24 +220,25 @@ function maybeRedirectToWelcomePage(options) {
         // save whether current user is guest or not, before navigating
         // to close page
         window.sessionStorage.setItem('guest', isGuest);
-        assignWindowLocationPathname(`static/${
+        redirectToStaticPage(`static/${
             options.feedbackSubmitted ? 'close.html' : 'close2.html'}`);
 
         return;
     }
 
     // else: show thankYou dialog only if there is no feedback
-    if (options.thankYouDialogVisible) {
-        APP.UI.messageHandler.openMessageDialog(
-            null, 'dialog.thankYou', { appName: interfaceConfig.APP_NAME });
+    if (options.showThankYou) {
+        APP.store.dispatch(showNotification({
+            titleArguments: { appName: interfaceConfig.APP_NAME },
+            titleKey: 'dialog.thankYou'
+        }));
     }
 
     // if Welcome page is enabled redirect to welcome page after 3 sec.
     if (config.enableWelcomePage) {
         setTimeout(
             () => {
-                APP.settings.setWelcomePageEnabled(true);
-                assignWindowLocationPathname('./');
+                APP.store.dispatch(redirectWithStoredParams('/'));
             },
             3000);
     }
@@ -248,7 +254,7 @@ function maybeRedirectToWelcomePage(options) {
  * assigning it to window.location.pathname.
  * @return {void}
  */
-function assignWindowLocationPathname(pathname) {
+function redirectToStaticPage(pathname) {
     const windowLocation = window.location;
     let newPathname = pathname;
 
@@ -308,7 +314,7 @@ class ConferenceConnector {
 
         case JitsiConferenceErrors.NOT_ALLOWED_ERROR: {
             // let's show some auth not allowed page
-            assignWindowLocationPathname('static/authError.html');
+            redirectToStaticPage('static/authError.html');
             break;
         }
 
@@ -376,7 +382,7 @@ class ConferenceConnector {
             break;
 
         case JitsiConferenceErrors.INCOMPATIBLE_SERVER_VERSIONS:
-            reload();
+            APP.store.dispatch(reloadWithStoredParams());
             break;
 
         default:
@@ -1334,17 +1340,33 @@ export default {
             replaceLocalTrack(this.localVideo, newStream, room))
             .then(() => {
                 this.localVideo = newStream;
-
+                this._setSharingScreen(newStream);
                 if (newStream) {
-                    this.isSharingScreen = newStream.videoType === 'desktop';
-
                     APP.UI.addLocalStream(newStream);
-                } else {
-                    this.isSharingScreen = false;
                 }
                 this.setVideoMuteStatus(this.isLocalVideoMuted());
-                APP.UI.updateDesktopSharingButtons();
             });
+    },
+
+    /**
+     * Sets `this.isSharingScreen` depending on provided video stream.
+     * In case new screen sharing status is not equal previous one
+     * it updates desktop sharing buttons in UI
+     * and notifies external application.
+     *
+     * @param {JitsiLocalTrack} [newStream] new stream to use or null
+     * @private
+     * @returns {void}
+     */
+    _setSharingScreen(newStream) {
+        const wasSharingScreen = this.isSharingScreen;
+
+        this.isSharingScreen = newStream && newStream.videoType === 'desktop';
+
+        if (wasSharingScreen !== this.isSharingScreen) {
+            APP.UI.updateDesktopSharingButtons();
+            APP.API.notifyScreenSharingStatusChanged(this.isSharingScreen);
+        }
     },
 
     /**
@@ -1763,6 +1785,9 @@ export default {
         });
 
         room.on(JitsiConferenceEvents.USER_LEFT, (id, user) => {
+            if (user.isHidden()) {
+                return;
+            }
             APP.store.dispatch(participantLeft(id, user));
             logger.log('USER %s LEFT', id, user);
             APP.API.notifyUserLeft(id);
@@ -2620,6 +2645,7 @@ export default {
      */
     hangup(requestFeedback = false) {
         eventEmitter.emit(JitsiMeetConferenceEvents.BEFORE_HANGUP);
+        APP.UI.removeLocalMedia();
 
         let requestFeedbackPromise;
 

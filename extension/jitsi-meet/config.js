@@ -167,6 +167,12 @@ var config = {
     // The URL to the Firefox extension for desktop sharing.
     desktopSharingFirefoxExtensionURL: null,
 
+    // Optional desktop sharing frame rate options. Default value: min:5, max:5.
+    // desktopSharingFrameRate: {
+    //     min: 5,
+    //     max: 5
+    // },
+
     // Try to start calls with screen-sharing instead of camera video.
     // startScreenSharing: false,
 
@@ -239,8 +245,11 @@ var config = {
     // Stats
     //
 
-    // Whether to enable stats collection or not.
-    // disableStats: false,
+    // Whether to enable stats collection or not in the TraceablePeerConnection.
+    // This can be useful for debugging purposes (post-processing/analysis of
+    // the webrtc stats) as it is done in the jitsi-meet-torture bandwidth
+    // estimation tests.
+    // gatherStats: false,
 
     // To enable sending statistics to callstats.io you must provide the
     // Application ID and Secret.
@@ -312,6 +321,9 @@ var config = {
     //      "libs/analytics-ga.js", // google-analytics
     //      "https://example.com/my-custom-analytics.js"
     // ],
+
+    // The Google Analytics Tracking ID
+    // googleAnalyticsTrackingId = 'your-tracking-id-here-UA-123456-1',
 
     // Information about the jitsi-meet instance we are connecting to, including
     // the user region as seen by the server.

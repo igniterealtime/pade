@@ -46,46 +46,19 @@
         "showSpeakerStats": "Show speaker stats"
     },
     "welcomepage":{
-        "disable": "Don't show this page again",
-        "feature1": {
-            "content": "No downloads required. __app__ works directly within your browser. Simply share your conference URL with others to get started.",
-            "title": "Simple to use"
-        },
-        "feature2": {
-            "content": "Multi-party video conferences work with as little as 128Kbps. Screen-sharing and audio-only conferences are possible with far less.",
-            "title": "Low bandwidth"
-        },
-        "feature3": {
-            "content": "__app__ is licensed under the Apache License. You are free to download, use, modify, and share it as per this license.",
-            "title": "Open source"
-        },
-        "feature4": {
-            "content": "There are no artificial restrictions on the number of users or conference members. Server power and bandwidth are the only limiting factors.",
-            "title": "Unlimited users"
-        },
-        "feature5": {
-            "content": "It's easy to share your screen with others. __app__ is ideal for on-line presentations, lectures, and tech support sessions.",
-            "title": "Screen sharing"
-        },
-        "feature6": {
-            "content": "Need some privacy? __app__ conference rooms can be secured with a password in order to exclude unwanted guests and prevent interruptions.",
-            "title": "Secure rooms"
-        },
-        "feature7": {
-            "content": "__app__ features Etherpad, a real-time collaborative text editor that's great for meeting minutes, writing articles, and more.",
-            "title": "Shared notes"
-        },
-        "feature8": {
-            "content": "Learn about your users through easy integration with Piwik, Google Analytics, and other usage monitoring and statistics systems.",
-            "title": "Usage statistics"
+        "appDescription": "Go ahead, video chat with the whole team. In fact, invite everyone you know. __app__ is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.",
+        "audioVideoSwitch": {
+            "audio": "Voice",
+            "video": "Video"
         },
         "go": "GO",
         "join": "JOIN",
         "privacy": "Privacy",
         "roomname": "Enter room name",
-        "roomnamePlaceHolder": "room name",
+        "roomnameHint": "Enter the name or URL of the room you want to join. You may make a name up, just let the people you are meeting know it so that they enter the same name.",
         "sendFeedback": "Send feedback",
-        "terms": "Terms"
+        "terms": "Terms",
+        "title": "More secure, more flexible, and completely free video conferencing"
     },
     "startupoverlay": {
         "policyText": " ",
@@ -103,7 +76,6 @@
         "videomute": "Start / Stop camera",
         "authenticate": "Authenticate",
         "lock": "Lock / Unlock room",
-        "invite": "Share the link",
         "chat": "Open / Close chat",
         "etherpad": "Open / Close shared document",
         "sharedvideo": "Share a YouTube video",
@@ -228,7 +200,6 @@
         "suboptimalExperienceDescription": "Eer... we are afraid your experience with __appName__ isn't going to be that great here. We are looking for ways to improve this but, until then, please try using one of the <a href='static/recommendedBrowsers.html' target='_blank'>fully supported browsers</a>."
     },
     "dialog": {
-        "add": "Add",
         "allow": "Allow",
         "kickMessage": "Ouch! You have been kicked out of the meet!",
         "popupErrorTitle": "Pop-up blocked",
@@ -243,7 +214,6 @@
         "copy": "Copy",
         "contactSupport": "Contact support",
         "error": "Error",
-        "createPassword": "Create password",
         "detectext": "Error when trying to detect desktopsharing extension.",
         "failedpermissions": "Failed to obtain permissions to use the local microphone and/or camera.",
         "conferenceReloadTitle": "Unfortunately, something went wrong.",
@@ -294,10 +264,6 @@
         "Save": "Save",
         "recording": "Recording",
         "recordingToken": "Enter recording token",
-        "passwordCheck": "Are you sure you would like to remove your password?",
-        "passwordMsg": "Set a password to lock your room",
-        "shareLink": "Share the link to the call",
-        "yourPassword": "Enter new password",
         "Back": "Back",
         "serviceUnavailable": "Service unavailable",
         "gracefulShutdown": "Our service is currently down for maintenance. Please try again later.",
@@ -468,19 +434,6 @@
         "selectADevice": "Select a device",
         "testAudio": "Test sound"
     },
-    "invite": {
-        "addPassword": "Add password",
-        "callNumber": "Call __number__",
-        "enterID": "Enter Meeting ID: __conferenceID__ following by # to dial in from a phone",
-        "howToDialIn": "To dial in, use one of the following numbers and meeting ID",
-        "hidePassword": "Hide password",
-        "inviteTo": "Invite people to __conferenceName__",
-        "invitedYouTo": "__userName__ has invited you to the __inviteURL__ conference",
-        "invitePeople": "Invite",
-        "locked": "This call is locked. New callers must have the link and enter the password to join.",
-        "showPassword": "Show password",
-        "unlocked": "This call is unlocked. Any new caller with the link may join the call."
-    },
     "videoStatus": {
         "callQuality": "Call Quality",
         "hd": "HD",
@@ -499,17 +452,24 @@
         "qualityButtonTip": "Change received video quality"
     },
     "dialOut": {
-        "dial": "Dial",
-        "dialOut": "Call a #",
-        "statusMessage": "is now __status__",
-        "enterPhone": "Enter phone number",
-        "phoneNotAllowed": "Oh, we don't support that destination yet! Sorry!"
+        "statusMessage": "is now __status__"
     },
     "addPeople": {
         "add": "Add",
+        "countryNotSupported": "We do not support this destination yet.",
+        "countryReminder": "Calling outside the US? Please make sure you start with the country code!",
+        "disabled": "You can't invite people.",
+        "invite": "Invite",
+        "loading": "Searching for people and phone numbers",
+        "loadingNumber": "Validating phone number",
+        "loadingPeople": "Searching for people to invite",
         "noResults": "No matching search results",
-        "searchPlaceholder": "Search for people and rooms to add",
-        "title": "Add people to your call",
+        "noValidNumbers": "Please enter a phone number",
+        "searchNumbers": "Enter a phone number to invite",
+        "searchPeople": "Enter a name to invite",
+        "searchPeopleAndNumbers": "Enter a name or phone number to invite",
+        "telephone": "Telephone: __number__",
+        "title": "Invite people to your meeting",
         "failedToAdd": "Failed to add members"
     },
     "inlineDialogFailure": {
@@ -533,12 +493,31 @@
         "veryGood": "Very Good"
     },
     "info": {
-        "copy": "Copy link",
-        "invite": "Invite in __app__",
-        "title": "Call access info",
+        "addPassword": "Add password",
+        "cancelPassword": "Cancel password",
+        "conferenceURL": "Link: __url__",
+        "country": "Country",
+        "dialANumber": "To join your meeting, dial one of these numbers and then enter this PIN: __conferenceID__#",
+        "dialInNumber": "Dial-in: __phoneNumber__",
+        "dialInConferenceID": "PIN: __conferenceID__#",
+        "dialInNotSupported": "Sorry, dialing in is currently not suppported.",
+        "genericError": "Whoops, something went wrong.",
+        "invitePhone": "To join by phone, dial __number__ and enter this PIN: __pin__#",
+        "invitePhoneAlternatives": "To view more phone numbers, click this link: __url__",
+        "inviteURL": "To join the video meeting, click this link: __url__",
+        "moreNumbers": "More numbers",
+        "noNumbers": "No dial-in numbers.",
+        "noPassword": "None",
+        "noRoom": "No room was specified to dial-in into.",
+        "numbers": "Dial-in Numbers",
+        "password": "Password:",
+        "title": "Call info",
         "tooltip": "Get access info about the meeting"
     },
-    "profileModal": {
+    "settingsView": {
+        "alertOk": "OK",
+        "alertTitle": "Warning",
+        "alertURLText": "The entered server URL is invalid",
         "conferenceSection": "Conference",
         "displayName": "Display name",
         "email": "Email",

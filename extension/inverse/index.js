@@ -3,6 +3,7 @@ var bgWindow = null;
 window.addEventListener("load", function()
 {
     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse";
+    document.getElementById("brand-heading").innerHTML = "<img src='../image.png' />&nbsp;&nbsp;" + document.title;
 
     function getUniqueID()
     {

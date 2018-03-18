@@ -120,7 +120,8 @@ var ofmeet = (function(of)
         if (APP.conference.roomName && OFMEET_CONFIG.isSwitchAvailable)
         {
             of.dialstring = APP.conference.roomName;
-            connectSIP();
+            // Issue with SIP and JitsiMeet chat
+            //connectSIP();
         }
     }
 

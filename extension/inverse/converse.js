@@ -34472,7 +34472,6 @@ Strophe.SASLOAuthBearer.prototype.onChallenge = function(connection) {
  *  authenticate the client. The external means may be, for instance,
  *  TLS services.
  */
-// BAO
 //Strophe.SASLExternal = function() {};
 //Strophe.SASLExternal.prototype = new Strophe.SASLMechanism("EXTERNAL", true, 10);
 
@@ -41279,7 +41278,6 @@ return Backbone.BrowserStorage;
         if (!this.connection.reconnecting) {
           this.connection.reset();
         }
-console.log("ZZZZZZZZZZZZZZZZZZ", this.jid, password);
 
         this.connection.connect(this.jid, password, this.onConnectStatusChanged);
       }
@@ -47679,8 +47677,7 @@ return __p
 
       if (contact) {
         contact.save({
-          // BAO
-          //'fullname': fullname || _.get(contact, 'fullname', jid),
+          'fullname': fullname || _.get(contact, 'fullname', jid),
           'image_type': img_type,
           'image': img,
           'url': url,
