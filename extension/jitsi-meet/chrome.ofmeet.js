@@ -402,43 +402,6 @@ var ofmeet = (function(of)
         }
     }
 
-    function createAvatar()
-    {
-        if (!OFMEET_CONFIG.userAvatar && OFMEET_CONFIG.nickName)
-        {
-            var canvas = document.createElement('canvas');
-            canvas.style.display = 'none';
-            canvas.width = '32';
-            canvas.height = '32';
-            document.body.appendChild(canvas);
-            var context = canvas.getContext('2d');
-            context.fillStyle = "#777";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            context.font = "16px Arial";
-            context.fillStyle = "#fff";
-
-            var first, last;
-            var name = OFMEET_CONFIG.nickName.split(" ");
-
-            if (name && name[0] && name.first != '')
-            {
-                first = name[0][0];
-                last = name[1] && name[1] != '' ? name[1][0] : null;
-
-                if (last) {
-                    var initials = first + last;
-                    context.fillText(initials.toUpperCase(), 3, 23);
-                } else {
-                    var initials = first;
-                    context.fillText(initials.toUpperCase(), 10, 23);
-                }
-                var data = canvas.toDataURL();
-                document.body.removeChild(canvas);
-                OFMEET_CONFIG.userAvatar = data;
-            }
-        }
-    }
-
     function hangup()
     {
         if (of.session)
@@ -620,16 +583,6 @@ var ofmeet = (function(of)
     window.addEventListener("DOMContentLoaded", function()
     {
         console.log("ofmeet.js load");
-
-        if (OFMEET_CONFIG)
-        {
-            createAvatar();
-
-            if (OFMEET_CONFIG.emailAddress)    APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
-            if (OFMEET_CONFIG.nickName)        APP.conference.changeLocalDisplayName(OFMEET_CONFIG.nickName);
-            if (OFMEET_CONFIG.userAvatar)      APP.conference.changeLocalAvatarUrl(OFMEET_CONFIG.userAvatar);
-        }
-
         setTimeout(function() {setup();}, 1000);
     });
 

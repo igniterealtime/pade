@@ -83,8 +83,20 @@ window.addEventListener("load", function()
 {
     chrome.runtime.onInstalled.addListener(function(details)
     {
-        //doExtensionPage("changelog.html");
+        if (details.reason == "install")
+        {
+            console.log("This is a first install!");
+            doExtensionPage("changelog.html");
 
+        } else if (details.reason == "update"){
+            var thisVersion = chrome.runtime.getManifest().version;
+            console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
+
+            if (thisVersion != details.previousVersion)
+            {
+                doExtensionPage("changelog.html");
+            }
+        }
     });
 
 
@@ -1590,6 +1602,31 @@ function logCall(target, direction, duration)
         console.error("logCall", error);
     });
 */
+}
+
+function getVCard(jid, callback, errorback)
+{
+    pade.connection.vCard.get(jid, function(vCard)
+    {
+        if (callback) callback(vCard);
+
+    }, function(error) {
+        if (errorback) errorback(error);
+        console.error(error);
+    });
+
+}
+
+function setVCard(vCard, callback, errorback)
+{
+    pade.connection.vCard.set(vCard, function(resp)
+    {
+        if (callback) callback(resp);
+
+    }, function(error) {
+        if (errorback) errorback(error);
+        console.error(error);
+    });
 }
 
 

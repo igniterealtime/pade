@@ -8,53 +8,20 @@ window.addEvent("domready", function () {
     {
         var background = chrome.extension.getBackgroundPage();
 
+        if (background.pade.avatar) document.getElementById("avatar").innerHTML = "<img src='" + background.pade.avatar + "' />";
+
+        settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
+
+        document.getElementById("uploadAvatar").addEventListener('change', function(event)
+        {
+            uploadAvatar(event, settings);
+        });
+
         settings.manifest.uploadApp.element.innerHTML = "<input id='uploadApplication' type='file' name='files[]'>";
 
         document.getElementById("uploadApplication").addEventListener('change', function(event)
         {
-            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
-            {
-                var files = event.target.files;
-                var server = JSON.parse(window.localStorage["store.settings.server"]);
-                var username = JSON.parse(window.localStorage["store.settings.username"]);
-                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
-
-                for (var i = 0, file; file = files[i]; i++)
-                {
-                    console.log("upload", file);
-
-                    if (file.name.endsWith(".zip"))
-                    {
-                        var putUrl = "https://" + server + "/chat/upload?name=" + file.name + "&username=" + username;
-                        var req = new XMLHttpRequest();
-
-                        req.onreadystatechange = function()
-                        {
-                          if (this.readyState == 4 && this.status >= 200 && this.status < 400)
-                          {
-                            console.log("pade.upload.app", this.statusText);
-                            settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
-                          }
-                          else
-
-                          if (this.readyState == 4 && this.status >= 400)
-                          {
-                            console.error("pade.upload.error", this.statusText);
-                            settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
-                          }
-
-                        };
-                        req.open("PUT", putUrl, true);
-                        req.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
-                        req.send(file);
-                    } else {
-                        settings.manifest.uploadStatus.element.innerHTML = '<b>application file must be a zip file</b>';
-                    }
-                }
-
-            } else {
-                settings.manifest.uploadStatus.element.innerHTML = '<b>user not configured</b>';
-            }
+            uploadApplication(event, settings);
         });
 
         setDefaultPassword(settings);
@@ -344,5 +311,108 @@ function getPassword(password)
 
     window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
     return password;
+}
+
+function uploadApplication(event, settings)
+{
+    //console.log("uploadApplication", event);
+
+    if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
+    {
+        var files = event.target.files;
+        var server = JSON.parse(window.localStorage["store.settings.server"]);
+        var username = JSON.parse(window.localStorage["store.settings.username"]);
+        var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+        for (var i = 0, file; file = files[i]; i++)
+        {
+            console.log("upload", file);
+
+            if (file.name.endsWith(".zip"))
+            {
+                var putUrl = "https://" + server + "/chat/upload?name=" + file.name + "&username=" + username;
+                var req = new XMLHttpRequest();
+
+                req.onreadystatechange = function()
+                {
+                  if (this.readyState == 4 && this.status >= 200 && this.status < 400)
+                  {
+                    console.log("pade.upload.app", this.statusText);
+                    settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+                  }
+                  else
+
+                  if (this.readyState == 4 && this.status >= 400)
+                  {
+                    console.error("pade.upload.error", this.statusText);
+                    settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+                  }
+
+                };
+                req.open("PUT", putUrl, true);
+                req.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
+                req.send(file);
+            } else {
+                settings.manifest.uploadStatus.element.innerHTML = '<b>application file must be a zip file</b>';
+            }
+        }
+
+    } else {
+        settings.manifest.uploadStatus.element.innerHTML = '<b>user not configured</b>';
+    }
+}
+
+function uploadAvatar(event, settings)
+{
+    var files = event.target.files;
+    var background = chrome.extension.getBackgroundPage();
+
+    var domain = JSON.parse(window.localStorage["store.settings.domain"]);
+    var username = JSON.parse(window.localStorage["store.settings.username"]);
+    var jid = username + "@" + domain
+
+    for (var i = 0, file; file = files[i]; i++)
+    {
+        if (file.name.endsWith(".png") || file.name.endsWith(".jpg"))
+        {
+            var reader = new FileReader();
+
+            reader.onload = function(event)
+            {
+                dataUri = event.target.result;
+                console.log("uploadAvatar", dataUri);
+
+                background.getVCard(jid, function(vCard)
+                {
+                    console.log("uploadAvatar - get vcard", vCard);
+                    vCard.avatar = dataUri;
+
+                    background.setVCard(vCard, function(resp)
+                    {
+                        console.log("uploadAvatar - set vcard", resp);
+                        settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>image uploaded ok</b>';
+
+                    }, avatarError);
+                }, avatarError);
+            };
+
+            reader.onerror = function(event) {
+                console.error("uploadAvatar - error", event);
+                settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>File could not be read! Code ' + event.target.error.code;
+            };
+
+            reader.readAsDataURL(file);
+
+        } else {
+            settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>image file must be a png or jpg file</b>';
+        }
+    }
+}
+
+
+function avatarError(error)
+{
+    console.error("uploadAvatar - error", error);
+    settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>picture/avatar cannot be uploaded and saved</b>';
 }
 

@@ -94,6 +94,27 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("Avatar/Picture"),
+            "name": "uploadAvatarLabel",
+            "type": "description",
+            "text": i18n.get("upload_avatar")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Avatar/Picture"),
+            "name": "uploadAvatar",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Avatar/Picture"),
+            "name": "uploadAvatarStatus",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
             "name": "desktopShareMode",
             "type": "checkbox",

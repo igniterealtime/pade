@@ -114,6 +114,10 @@
     "upload_app": {
         "message": "Pack application into a zip file and select",
         "description": "Label for uploading collaboration application"
+    },     
+    "upload_avatar": {
+        "message": "Create a suitable PNG/JPEG image and select",
+        "description": "Label for uploading avatar"
     },    
     "TOTP": {
         "message": "TOTP",
