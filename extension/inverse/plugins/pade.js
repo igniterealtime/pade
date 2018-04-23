@@ -140,12 +140,12 @@
                             _converse.bookmarks.create({
                                 'jid': $(this).attr("jid"),
                                 'name': $(this).attr('name'),
-                                'autojoin': $(this).attr('autojoin') === 'true',
+                                'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
                                 'nick': Strophe.getNodeFromJid(_converse.bare_jid)
                             });
 
                             var room = _converse.chatboxes.get($(this).attr("jid"));
-                            room.save('bookmarked', true);
+                            if (room) room.save('bookmarked', true);
                         });
 
                         console.log("pade plugin ready");

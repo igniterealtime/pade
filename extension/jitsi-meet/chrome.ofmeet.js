@@ -14,7 +14,7 @@ var ofmeet = (function(of)
 
         if (!APP.connection || !OFMEET_CONFIG.bgWin)
         {
-            setTimeout(function() {setup();}, 1000);
+            setTimeout(function() {setup();}, 1500);
             return;
         }
         __init();
@@ -191,6 +191,7 @@ var ofmeet = (function(of)
     function __init()
     {
         console.log("ofmeet.js __init");
+        of.subtitles = document.getElementById("subtitles");
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_JOINED, function()
         {
@@ -200,7 +201,24 @@ var ofmeet = (function(of)
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_LEFT, function()
         {
             console.log("ofmeet.js me left");
+            OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
             hangup();
+
+            if (of.recognition)
+            {
+                of.recognitionActive = false;
+                of.recognition.stop();
+            }
+        });
+
+        APP.conference.addConferenceListener(JitsiMeetJS.events.conference.MESSAGE_RECEIVED , function(id, text, ts)
+        {
+            //console.log("ofmeet.js message", id, text, ts);
+
+            if (OFMEET_CONFIG.enableCaptions && text.startsWith("https://") == false)
+            {
+                of.subtitles.innerHTML = id.split("-")[0] + " : " + text;
+            }
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.USER_LEFT, function(id)
@@ -222,12 +240,15 @@ var ofmeet = (function(of)
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_REMOVED, function(track)
         {
-            console.log("ofmeet.js track removed", track.getParticipantId(), track.getType());
+            //console.log("ofmeet.js track removed", APP.conference.getMyUserId(), track.getParticipantId(), track.getType());
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_ADDED, function(track)
         {
-            console.log("ofmeet.js track added", track.getParticipantId(), track.getType());
+            if (APP.conference.getMyUserId() == track.getParticipantId())
+            {
+                console.log("ofmeet.js track added", track.getParticipantId(), track.getType());
+            }
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, function(track)
@@ -249,6 +270,36 @@ var ofmeet = (function(of)
         {
             of.dialstring = APP.conference.roomName;
             //connectSIP();
+
+            if (OFMEET_CONFIG.recordAudio || OFMEET_CONFIG.recordVideo)
+            {
+                OFMEET_CONFIG.bgWin.etherlynk.startRecorder(APP.conference.localAudio.stream, APP.conference.localVideo.stream, OFMEET_CONFIG.room, APP.conference.getMyUserId());
+
+                var audioFileName = OFMEET_CONFIG.room + "." + APP.conference.getMyUserId() + ".audio.webm";
+                var videoFileName = OFMEET_CONFIG.room + "." + APP.conference.getMyUserId() + ".video.webm";
+
+                var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
+                var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
+
+                if (OFMEET_CONFIG.recordAudio)
+                {
+                    APP.conference._room.sendTextMessage(audioFileUrl, OFMEET_CONFIG.nickName);
+                }
+                else
+
+                if (OFMEET_CONFIG.recordVideo)
+                {
+                    APP.conference._room.sendTextMessage(audioFileUrl, OFMEET_CONFIG.nickName);
+                    APP.conference._room.sendTextMessage(videoFileUrl, OFMEET_CONFIG.nickName);
+                }
+            }
+
+            if (OFMEET_CONFIG.enableTranscription)
+            {
+                setupSpeechRecognition();
+                of.recognition.start();
+            }
+
         }
 
         document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
@@ -266,7 +317,7 @@ var ofmeet = (function(of)
         var getUserMediaSuccess = function(stream)
         {
             of.localStream = stream;
-            of.sipUI = OFMEET_CONFIG.bgWin.etherlynk.sip.sipUI;
+            of.sipUI = OFMEET_CONFIG.bgWin.etherof.sip.sipUI;
 
             of.sipUI.on('connected', function(e) {
                 console.log("SIP Connected");
@@ -553,9 +604,74 @@ var ofmeet = (function(of)
         });
     }
 
+
+
+    function setupSpeechRecognition()
+    {
+        console.log("setupSpeechRecognition", event);
+
+        of.recognition = new webkitSpeechRecognition();
+        of.recognition.lang = "en-GB";
+        of.recognition.continuous = true;
+        of.recognition.interimResults = false;
+
+        of.recognition.onresult = function(event)
+        {
+            //console.log("Speech recog event", event)
+
+            if(event.results[event.resultIndex].isFinal==true)
+            {
+                var transcript = event.results[event.resultIndex][0].transcript;
+                console.log("Speech recog transcript", transcript);
+                sendSpeechRecognition(transcript);
+            }
+        }
+
+        of.recognition.onspeechend  = function(event)
+        {
+            //console.log("Speech recog onspeechend", event);
+        }
+
+        of.recognition.onstart = function(event)
+        {
+            //console.log("Speech to text started", event);
+            of.recognitionActive = true;
+        }
+
+        of.recognition.onend = function(event)
+        {
+            //console.log("Speech to text ended", event);
+
+            if (of.recognitionActive)
+            {
+                //console.warn("Speech to text restarted");
+                of.recognition.start();
+            }
+        }
+
+        of.recognition.onerror = function(event)
+        {
+            //console.error("Speech to text error", event);
+        }
+    }
+
+    function sendSpeechRecognition(result)
+    {
+        if (result != "" && APP.conference && APP.conference._room)
+        {
+            var message = "[" + result + "]";
+            console.log("Speech recog result", APP.conference._room, message,  OFMEET_CONFIG.username);
+
+            APP.conference._room.sendTextMessage(message, OFMEET_CONFIG.nickName);
+            of.currentTranslation = [];
+        }
+    }
+
     window.addEventListener("beforeunload", function(e)
     {
         console.log("ofmeet.js beforeunload");
+
+        e.returnValue = 'Ok';
 
         localStorage.removeItem("xmpp_username_override");
         localStorage.removeItem("xmpp_password_override");
@@ -569,7 +685,7 @@ var ofmeet = (function(of)
             of.connection.disconnect();
         }
 
-        //e.returnValue = 'Ok';
+        OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
     });
 
     window.addEventListener("unload", function (e)

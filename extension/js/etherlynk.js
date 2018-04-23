@@ -199,8 +199,8 @@ var etherlynk = (function(lynk)
             {
                 if (Object.getOwnPropertyNames(lynk.conferences).length == 1)
                 {
-                    lynk.recognition.start();
-                    console.log("Etherlynk recognition started ok");
+                    // TODO voice recongnition
+                    //console.log("Etherlynk recognition started ok");
                 }
 
                 // TODO fix conflict with Jisti
@@ -317,66 +317,6 @@ var etherlynk = (function(lynk)
             bosh: domain.startsWith("meet.jit.si") ? "https://" + server + "/http-bind" : "wss://" + server + "/ws/",
             clientNode: 'etherlynk'
         };
-    }
-
-    function setupSpeechRecognition()
-    {
-        lynk.recognition = new webkitSpeechRecognition();
-        lynk.recognition.lang = "en-GB";
-        lynk.recognition.continuous = true;
-        lynk.recognition.interimResults = true;
-        lynk.currentTranslation = [];
-
-        lynk.recognition.onresult = function(event)
-        {
-            //console.log("Speech recog event", event)
-
-            lynk.currentTranslation = [];
-
-            for (var i = 0; i < event.results.length; i++)
-            {
-                if(event.results[i].isFinal==true)
-                {
-                    var transcript = event.results[i][0].transcript;
-                    //console.log("Speech recog transcript", transcript);
-                    lynk.currentTranslation.push(transcript);
-                }
-            }
-        }
-
-        lynk.recognition.onspeechend  = function(event)
-        {
-            //console.log("Speech recog ","speechend", event);
-            sendSpeechRecognition()
-        }
-
-        lynk.recognition.onerror = function(event)
-        {
-            console.error("Speech to text error", event);
-            sendSpeechRecognition()
-        }
-    }
-
-    function sendSpeechRecognition()
-    {
-        var result = lynk.currentTranslation.length ==1 ? lynk.currentTranslation[0] : lynk.currentTranslation.join();
-
-        if (result != "")
-        {
-            var items = Object.getOwnPropertyNames(lynk.conferences);
-
-            for(var z = 0; z<items.length; z++)
-            {
-                var conn = lynk.conferences[items[z]].xmpp.connection;
-                var room = Object.getOwnPropertyNames(conn.emuc.rooms)[0];
-                var message = "<" + pade.displayName + " says: " + result + ">"
-
-                conn.send($msg({to:room, type:"groupchat"}).c("body").t(message).up());
-                //console.log("Speech recog result", room, conn.jid, result);
-            }
-
-            lynk.currentTranslation = [];
-        }
     }
 
     //-------------------------------------------------------
@@ -742,6 +682,127 @@ var etherlynk = (function(lynk)
         }
     }
 
+    function uploadFile(file, room)
+    {
+        var putUrl = "https://" + pade.server + "/dashboard/upload?name=" + file.name + "&username=" + pade.username;
+
+        var req = new XMLHttpRequest();
+
+        req.onreadystatechange = function()
+        {
+          if (this.readyState == 4 && this.status >= 200 && this.status < 400)
+          {
+            console.log("uploadFile", this.statusText);
+          }
+          else
+
+          if (this.readyState == 4 && this.status >= 400)
+          {
+            console.error("uploadFile", this.statusText);
+          }
+
+        };
+        req.open("PUT", putUrl, true);
+        req.setRequestHeader("Authorization", 'Basic ' + btoa(pade.username+':'+pade.password));
+        req.send(file);
+    }
+
+    function dataUrlToFile(dataUrl, name)
+    {
+        //console.log("dataUrlToFile", dataUrl, name);
+
+        var binary = atob(dataUrl.split(',')[1]),
+        data = [];
+
+        for (var i = 0; i < binary.length; i++)
+        {
+            data.push(binary.charCodeAt(i));
+        }
+
+        return new File([new Uint8Array(data)], name, {type: 'video/webm'});
+    }
+
+    //-------------------------------------------------------
+    //
+    //  etherlynk media public
+    //
+    //-------------------------------------------------------
+
+    lynk.stopRecorder = function()
+    {
+        console.log("stopRecorder");
+
+        if (lynk.audioRecorder) lynk.audioRecorder.stop();
+        if (lynk.videoRecorder) lynk.videoRecorder.stop();
+    }
+
+    lynk.startRecorder = function(localAudioStream, localVideoStream, room, nickname)
+    {
+        console.log("startRecorder", nickname, room, localAudioStream, localVideoStream);
+
+        if (getSetting("recordAudio", false) || getSetting("recordVideo", false))
+        {
+            lynk.audioRecorder = new MediaRecorder(localAudioStream);
+            lynk.audioChunks = [];
+
+            lynk.audioRecorder.ondataavailable = function(e)
+            {
+                if (e.data.size > 0)
+                {
+                    console.log("startRecorder push audio ", e.data);
+                    lynk.audioChunks.push(e.data);
+                }
+            }
+
+            lynk.audioRecorder.onstop = function(e)
+            {
+                var audioReader = new FileReader();
+
+                audioReader.onload = function()
+                {
+                    var file = dataUrlToFile(audioReader.result, room + "." + nickname + ".audio.webm");
+                    console.log("audioReader.onload", file);
+                    uploadFile(file, room);
+                };
+
+                audioReader.readAsDataURL(new Blob(lynk.audioChunks, {type: 'video/webm'}));
+            }
+
+            lynk.audioRecorder.start();
+        }
+
+        if (getSetting("recordVideo", false))
+        {
+            lynk.videoRecorder = new MediaRecorder(localVideoStream);
+            lynk.videoChunks = [];
+
+            lynk.videoRecorder.ondataavailable = function(e)
+            {
+                if (e.data.size > 0)
+                {
+                    console.log("startRecorder push video ", e.data);
+                    lynk.videoChunks.push(e.data);
+                }
+            }
+
+            lynk.videoRecorder.onstop = function(e)
+            {
+                var videoReader = new FileReader();
+
+                videoReader.onload = function()
+                {
+                    var file = dataUrlToFile(videoReader.result, room + "." + nickname + ".video.webm");
+                    console.log("videoReader.onload", file);
+                    uploadFile(file, room);
+                };
+
+                videoReader.readAsDataURL(new Blob(lynk.videoChunks, {type: 'video/webm'}));
+            }
+
+            lynk.videoRecorder.start();
+        }
+    }
+
     //-------------------------------------------------------
     //
     //  etherlynk xmpp public
@@ -755,8 +816,6 @@ var etherlynk = (function(lynk)
         JitsiMeetJS.init({disableAudioLevels: true}).then(function()
         {
             console.log("etherlynk connect");
-
-            setupSpeechRecognition();
 
             // TODO - merge with ofmeet SIP
             // Issue with SIP and JitsiMeet chat
@@ -866,9 +925,8 @@ var etherlynk = (function(lynk)
             try {
                 if (Object.getOwnPropertyNames(lynk.conferences).length == 0)
                 {
-                    sendSpeechRecognition()
-                    lynk.recognition.stop();
-                    console.log("Etherlynk recognition stopped");
+                    // TODO voice recognition
+                    //console.log("Etherlynk recognition stopped");
                 }
 
             } catch (e) {

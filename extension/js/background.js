@@ -77,6 +77,7 @@ window.addEventListener("unload", function ()
     closeVideoWindow();
     closePhoneWindow();
     closeBlogWindow();
+    closeBlastWindow();
 });
 
 window.addEventListener("load", function()
@@ -207,6 +208,8 @@ window.addEventListener("load", function()
     addChatMenu();
     addInverseMenu();
     addBlogMenu();
+    addBlastMenu();
+    addVertoMenu();
     addTouchPadMenu();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
@@ -259,7 +262,9 @@ window.addEventListener("load", function()
         if (command == "activate_blogger_communicator" && getSetting("enableTouchPad", false)) openApcWindow();
         if (command == "activate_blogger_communicator" && !getSetting("enableTouchPad", false)) openBlogWindow();
 
-        if (command == "activate_phone") openPhoneWindow(true)
+        if (command == "activate_phone" && getSetting("enableVerto", false)) openVertoWindow(true)
+        if (command == "activate_phone" && !getSetting("enableVerto", false)) openPhoneWindow(true)
+
         if (command == "activate_meeting") openVideoWindow(pade.activeContact.room);
 
     });
@@ -307,6 +312,16 @@ window.addEventListener("load", function()
         if (pade.blogWindow && win == pade.blogWindow.id)
         {
             pade.blogWindow = null;
+        }
+
+        if (pade.blastWindow && win == pade.blastWindow.id)
+        {
+            pade.blastWindow = null;
+        }
+
+        if (pade.vertoWindow && win == pade.vertoWindow.id)
+        {
+            pade.vertoWindow = null;
         }
 
         if (pade.videoWindow && win == pade.videoWindow.id)
@@ -830,6 +845,58 @@ function openBlogWindow()
     }
 }
 
+function closeBlastWindow()
+{
+    if (pade.blastWindow != null)
+    {
+        try {
+            chrome.windows.remove(pade.blastWindow.id);
+        } catch (e) {}
+    }
+}
+
+function openBlastWindow()
+{
+    if (!pade.blastWindow)
+    {
+        var url = "https://" + pade.server + "/dashboard/blast";
+
+        chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
+        {
+            pade.blastWindow = win;
+            chrome.windows.update(pade.blastWindow.id, {drawAttention: true});
+        });
+    } else {
+        chrome.windows.update(pade.blastWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+    }
+}
+
+function closeVertoWindow()
+{
+    if (pade.vertoWindow != null)
+    {
+        try {
+            chrome.windows.remove(pade.vertoWindow.id);
+        } catch (e) {}
+    }
+}
+
+function openVertoWindow()
+{
+    if (!pade.vertoWindow)
+    {
+        var url = "https://" + pade.server + "/dashboard/verto";
+
+        chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
+        {
+            pade.vertoWindow = win;
+            chrome.windows.update(pade.vertoWindow.id, {drawAttention: true});
+        });
+    } else {
+        chrome.windows.update(pade.vertoWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+    }
+}
+
 function doExtensionPage(url)
 {
     chrome.tabs.getAllInWindow(null, function(tabs)
@@ -1228,6 +1295,21 @@ function inviteToConference(jid, room)
     }
 }
 
+function injectMessage(message, room, nickname)
+{
+    //console.log("injectMessage", message, room);
+
+    try {
+        var msg = $msg({to: room + "@conference." + pade.domain, type: "groupchat"});
+        msg.c("body", message).up();
+        msg.c("nick", {xmlns: "http://jabber.org/protocol/nick"}).t(nickname).up().up();
+        pade.connection.send(msg);
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 function handleInvitation(invite)
 {
     //console.log("handleInvitation", invite);
@@ -1532,6 +1614,40 @@ function removeBlogMenu()
 {
     closeBlogWindow();
     chrome.contextMenus.remove("pade_blog");
+}
+
+function addBlastMenu()
+{
+    if (getSetting("enableBlast", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_blast", type: "normal", title: "Message Blast", contexts: ["browser_action"],  onclick: function()
+        {
+            openBlastWindow();
+        }});
+    }
+}
+
+function removeBlastMenu()
+{
+    closeBlastWindow();
+    chrome.contextMenus.remove("pade_blast");
+}
+
+function addVertoMenu()
+{
+    if (getSetting("enableVerto", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_verto", type: "normal", title: "Verto Communicator", contexts: ["browser_action"],  onclick: function()
+        {
+            openVertoWindow();
+        }});
+    }
+}
+
+function removeVertoMenu()
+{
+    closeVertoWindow();
+    chrome.contextMenus.remove("pade_verto");
 }
 
 function addTouchPadMenu()
