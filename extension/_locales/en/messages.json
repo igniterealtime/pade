@@ -18,7 +18,21 @@
     "settings": {
         "message": "Pade",
         "description": "Title for settings"
-    },
+    },   
+    
+    "uport_client_id": {
+        "message": "2p1psGHt9J5NBdPDQejSVhpsECXLxLaVQSo",
+        "description": "uPort application id"
+    }, 
+    "uport_signer": {
+        "message": "46445273c02e4c0594ef6a441ecbcd327f0f78ba58b3139e027f0b23c199ea5f",
+        "description": "uPort signer id"
+    }, 
+    "uport_ethereum_network": {
+        "message": "rinkeby",
+        "description": "Ethereum network name"
+    },  
+        
     "search": {
         "message": "Search",
         "description": "Title for search"
@@ -47,6 +61,22 @@
         "message": "Login",
         "description": "Login"
     },
+    "contact": {
+        "message": "Contact",
+        "description": "Contact details"
+    },   
+    "phone": {
+        "message": "Phone",
+        "description": "Contact telephone number"
+    }, 
+    "email": {
+        "message": "Email",
+        "description": "Contact email address"
+    }, 
+    "country": {
+        "message": "Contact",
+        "description": "Contact country location"
+    },     
     "connection": {
         "message": "Connection",
         "description": "Connection"
@@ -111,6 +141,7 @@
         "message": "Meeting UI",
         "description": "Label for Meetings User Interface"
     },
+    
     "upload_app": {
         "message": "Pack application into a zip file and select",
         "description": "Label for uploading collaboration application"
@@ -118,7 +149,8 @@
     "upload_avatar": {
         "message": "Create a suitable PNG/JPEG image and select",
         "description": "Label for uploading avatar"
-    },    
+    },
+
     "TOTP": {
         "message": "TOTP",
         "description": "Time based One Time Password"

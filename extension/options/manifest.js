@@ -3,7 +3,7 @@ this.manifest = {
     "icon": "../icon.png",
     "settings": [
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
             "name": "server",
             "type": "text",
@@ -11,7 +11,7 @@ this.manifest = {
             "text": "server name:port"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
             "name": "domain",
             "type": "text",
@@ -19,42 +19,56 @@ this.manifest = {
             "text": "domain name"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
             "name": "useWebsocket",
             "type": "checkbox",
             "label": i18n.get("Use Websockets")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
+            "group": i18n.get("uPort"),
+            "name": "useUport",
+            "type": "checkbox",
+            "label": i18n.get("Open Identity System for the Decentralized Web")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("uPort"),
+            "name": "uport",
+            "type": "button",
+            "text": i18n.get("QR Code")
+        },
+        {
+            "tab": i18n.get("connection"),
             "group": i18n.get("TOTP"),
             "name": "useTotp",
             "type": "checkbox",
             "label": i18n.get("Time based One-Time Password - Use OfChat and FreeOTP or Google Authernticator App")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("TOTP"),
             "name": "qrcode",
             "type": "button",
             "text": i18n.get("QR Code")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("Certificate"),
             "name": "useClientCert",
             "type": "checkbox",
             "label": i18n.get("Use Client Certificate (No password required)")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("Certificate"),
             "name": "certificate",
             "type": "button",
             "text": i18n.get("Download")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("login"),
             "name": "displayname",
             "type": "text",
@@ -62,7 +76,7 @@ this.manifest = {
             "text": i18n.get("x_characters")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("login"),
             "name": "username",
             "type": "text",
@@ -70,7 +84,7 @@ this.manifest = {
             "text": i18n.get("x_characters")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("login"),
             "name": "password",
             "type": "text",
@@ -79,18 +93,42 @@ this.manifest = {
             "masked": true
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("login"),
             "name": "connect",
             "type": "button",
             "text": i18n.get("login")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("connection"),
             "group": i18n.get("login"),
             "name": "status",
             "text": i18n.get(""),
             "type": "description"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("contact"),
+            "name": "email",
+            "type": "text",
+            "label": i18n.get("email"),
+            "text": "name@domain"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("contact"),
+            "name": "phone",
+            "type": "text",
+            "label": i18n.get("phone"),
+            "text": "+447925488496"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("contact"),
+            "name": "country",
+            "type": "text",
+            "label": i18n.get("country"),
+            "text": "Country code: GB, US"
         },
         {
             "tab": i18n.get("general"),
@@ -162,13 +200,6 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Audioconference Only")
         },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
-            "name": "enableTouchPad",
-            "type": "checkbox",
-            "label": i18n.get("Enable Communicator TouchPad")
-        },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
@@ -196,6 +227,27 @@ this.manifest = {
             "name": "startWithVideoMuted",
             "type": "checkbox",
             "label": i18n.get("Start with Video Muted")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("config"),
+            "name": "recordAudio",
+            "type": "checkbox",
+            "label": i18n.get("Record Audio")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("config"),
+            "name": "recordVideo",
+            "type": "checkbox",
+            "label": i18n.get("Record Audio/Video")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("config"),
+            "name": "enableTranscription",
+            "type": "checkbox",
+            "label": i18n.get("Enable Voice-to-Text Transcription")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -231,6 +283,13 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
+            "name": "CAPTIONS_SUBTITLES",
+            "type": "checkbox",
+            "label": i18n.get("Enable Captions/Sub Titles")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ui"),
             "name": "ACTIVE_SPEAKER_AVATAR_SIZE",
             "type": "text",
             "label": i18n.get("Active Speaker Avatar Size"),
@@ -244,12 +303,26 @@ this.manifest = {
             "label": i18n.get("Filmstrip Maximium Height"),
             "text": i18n.get("80"),
         },
+        {                                       // touchpad
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("TouchPad"),
+            "name": "enableTouchPad",
+            "type": "checkbox",
+            "label": i18n.get("Enable Communicator TouchPad")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("TouchPad"),
+            "name": "touchPadAutoStart",
+            "type": "checkbox",
+            "label": i18n.get("Auto Start Communicator Touchpad")
+        },
         {                                      // candy chat
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Candy Chat"),
             "name": "enableChat",
             "type": "checkbox",
-            "label": i18n.get("Enable Candy Chat")
+            "label": i18n.get("Enable Candy")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -275,16 +348,16 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Converse"),
-            "name": "converseDebug",
+            "name": "converseAutoStart",
             "type": "checkbox",
-            "label": i18n.get("Enable Debug")
+            "label": i18n.get("Auto Start Converse")
         },
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Converse"),
-            "name": "notifyAllRoomMessages",
+            "name": "converseDebug",
             "type": "checkbox",
-            "label": i18n.get("Notify all room messages")
+            "label": i18n.get("Enable Debug")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -314,6 +387,87 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Allow non roster messaging")
         },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "notifyAllRoomMessages",
+            "type": "checkbox",
+            "label": i18n.get("Notify all room messages")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "notifyOnInterests",
+            "type": "checkbox",
+            "label": i18n.get("Notify on any interest")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "interestList",
+            "type": "text",
+            "label": i18n.get("Interests"),
+            "text": i18n.get("List of coma seperated interest words. For example, xmpp, sip"),
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "ofmeetInvitation",
+            "type": "text",
+            "label": i18n.get("Invitation"),
+            "text": i18n.get("Please join meeting at"),
+        },
+        {                                       // hosted web apps
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "enableOffice365Business",
+            "type": "checkbox",
+            "label": i18n.get("Enable Office 365 Business")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "enableOffice365Personal",
+            "type": "checkbox",
+            "label": i18n.get("Enable Office 365 Personal")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "of365AutoStart",
+            "type": "checkbox",
+            "label": i18n.get("Auto Start Hosted Apps")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "enableWebApps",
+            "type": "checkbox",
+            "label": i18n.get("Enable Web Apps")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "webApps",
+            "type": "text",
+            "label": i18n.get("Web Apps"),
+            "text": i18n.get("Enter list of web app urls"),
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "enableGmail",
+            "type": "checkbox",
+            "label": i18n.get("Enable Gmail")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Hosted Apps"),
+            "name": "gmailAccounts",
+            "type": "text",
+            "label": i18n.get("Gmail"),
+            "text": i18n.get("Enter list of email accounts"),
+        },
         {                                       // blogger
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Blogger"),
@@ -329,12 +483,33 @@ this.manifest = {
             "label": i18n.get("Blog Name"),
             "text": i18n.get("solo"),
         },
+        {                                       // message blast
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Message Blast"),
+            "name": "enableBlast",
+            "type": "checkbox",
+            "label": i18n.get("Enable Message Blast")
+        },
         {
             "tab": i18n.get("ofmeet"),
-            "group": i18n.get("SIP Phone"),
+            "group": i18n.get("Phone"),
             "name": "enableSip",
             "type": "checkbox",
             "label": i18n.get("Enable SIP Phone")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Phone"),
+            "name": "enableVerto",
+            "type": "checkbox",
+            "label": i18n.get("Enable Verto Communicator")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Phone"),
+            "name": "sipAutoStart",
+            "type": "checkbox",
+            "label": i18n.get("Auto Start Phone")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -437,6 +612,11 @@ this.manifest = {
             "username",
             "displayname",
             "password"
+        ],
+        [
+            "email",
+            "phone",
+            "country"
         ],
         [
             "startBitrate",

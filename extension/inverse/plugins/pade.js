@@ -22,6 +22,7 @@
         moment = converse.env.moment;
 
      var _converse = null;
+     var padeReady = false;
 
     // The following line registers your plugin.
     converse.plugins.add("pade", {
@@ -70,6 +71,7 @@
                     'call': true,
                     'clear': true
                 },
+                ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
                 hide_open_bookmarks: false
             });
 
@@ -140,12 +142,12 @@
                             _converse.bookmarks.create({
                                 'jid': $(this).attr("jid"),
                                 'name': $(this).attr('name'),
-                                'autojoin': $(this).attr('autojoin') === 'true',
+                                'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
                                 'nick': Strophe.getNodeFromJid(_converse.bare_jid)
                             });
 
                             var room = _converse.chatboxes.get($(this).attr("jid"));
-                            room.save('bookmarked', true);
+                            if (room) room.save('bookmarked', true);
                         });
 
                         console.log("pade plugin ready");
@@ -173,14 +175,63 @@
                 toggleCall: function toggleCall(ev) {
                     ev.stopPropagation();
 
-                    var room = this.model.attributes.name || Strophe.getNodeFromJid(this.model.attributes.jid);
+                    var room = Strophe.getNodeFromJid(this.model.attributes.jid) + Math.random().toString(36).substr(2,9);
+                    var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
                     console.log('callButtonClicked', {connection: _converse.connection,  room});
 
-                    this.onMessageSubmitted("https://" + bgWindow.pade.server + "/ofmeet/" + room);
+                    this.onMessageSubmitted(_converse.api.settings.get("ofmeet_invitation") + ' ' + url);
                     bgWindow.openVideoWindow(room);
                 },
 
                 renderMessage: function renderMessage(attrs) {
+                    //console.log("render", attrs, this.model);
+
+                    var id = this.model.attributes.id;
+                    var text = attrs.fullname + " says " + attrs.message;
+                    var room = this.model.attributes.jid + "<br/>" + this.model.attributes.description;
+
+                    var notifyMe = function()
+                    {
+                        _converse.playSoundNotification();
+
+                        bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
+                        {
+                            if (buttonIndex == 0)
+                            {
+                                bgWindow.openChatWindow("inverse/index.html");
+                            }
+
+                        }, id);
+                    }
+
+                    if (bgWindow.pade.minimised)
+                    {
+                        if (getSetting("notifyAllRoomMessages", false))
+                        {
+                            notifyMe();
+                        }
+
+                        if (getSetting("notifyOnInterests", false))
+                        {
+                            var interestList = (getSetting("username", "") + "," + getSetting("interestList", "")).split(",");
+                            var foundInterest = false;
+
+                            for (var i=0; i<interestList.length; i++)
+                            {
+                                if (interestList[i] != "")
+                                {
+                                    var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+
+                                    if (searchRegExp.test(attrs.message))
+                                    {
+                                        notifyMe();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     return this.__super__.renderMessage.apply(this, arguments);
                 },
 
@@ -189,21 +240,21 @@
 
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    var dropZone = this.$el.find('.chat-body')[0];
+                    var dropZone = $(this.el).find('.chat-body')[0];
                     dropZone.removeEventListener('dragover', handleDragOver);
                     dropZone.removeEventListener('drop', handleDropFileSelect);
                     dropZone.addEventListener('dragover', handleDragOver, false);
                     dropZone.addEventListener('drop', handleDropFileSelect, false);
 
                     var id = this.model.get("box_id");
-                    var html = '<li title="Upload"><input id="file-' + id + '" type="file" name="files[]" multiple /></li>';
-                    var upload = this.$el.find('.toggle-call').after(html);
+
+                    var html = '<li title="Upload"><label class="custom-file-upload"><input id="file-' + id + '" type="file" name="files[]" multiple /><i class="icon-attachment"></i></label></li>';
+                    $(this.el).find('.toggle-call').after(html);
 
                     setTimeout(function()
                     {
                         var fileButton = document.getElementById("file-" + id);
                         fileButton.addEventListener('change', doUpload, false);
-
                     });
 
                     return result;

@@ -1,5 +1,17 @@
-var pade = {}
+var pade = {gmailWindow: [], webAppsWindow: []}
 var callbacks = {}
+
+// uPort
+
+function uportRequestedCredentials(creds)
+{
+    console.log("uportRequestedCredentials", creds.publicEncKey, creds.address, creds.name);
+}
+
+function uportError(error)
+{
+    console.error("uportError", error);
+}
 
 // strophe SASL
 
@@ -60,23 +72,37 @@ if (getSetting("useTotp", false))
 }
 
 
-window.addEventListener("beforeunload", function ()
-{
-
-});
-
-
 window.addEventListener("unload", function ()
 {
     console.log("pade unloaded");
-
-    etherlynk.disconnect();
-    if (pade.connection) pade.connection.disconnect();
 
     closeChatWindow();
     closeVideoWindow();
     closePhoneWindow();
     closeBlogWindow();
+    closeBlastWindow();
+    closeVertoWindow();
+    closeWebAppsWindow();
+    closeApcWindow();
+    closeOffice365Window(true);
+    closeOffice365Window(false);
+
+    var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+    for (var i=0; i<gmailAccounts.length; i++)
+    {
+        closeGmailWindow(gmailAccounts[i]);
+    }
+
+    var webApps = getSetting("webApps", "").split(",");
+
+    for (var i=0; i<webApps.length; i++)
+    {
+        closeWebAppsWindow(webApps[i]);
+    }
+
+    etherlynk.disconnect();
+    if (pade.connection) pade.connection.disconnect();
 });
 
 window.addEventListener("load", function()
@@ -99,6 +125,45 @@ window.addEventListener("load", function()
         }
     });
 
+    chrome.runtime.onStartup.addListener(function()
+    {
+        console.log("onStartup");
+
+        if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false))
+            openChatWindow("inverse/index.html", null, "minimized");
+
+        if (getSetting("enableVerto", false) && getSetting("sipAutoStart", false))
+            openVertoWindow("minimized");
+
+        if (getSetting("enableTouchPad", false) && getSetting("touchPadAutoStart", false))
+            openApcWindow("minimized");
+
+        if (getSetting("enableOffice365Business", false) && getSetting("of365AutoStart", false))
+            openOffice365Window(true, "minimized");
+
+        if (getSetting("enableOffice365Personal", false) && getSetting("of365AutoStart", false))
+            openOffice365Window(false, "minimized");
+
+        if (getSetting("enableWebApps", false) && getSetting("of365AutoStart", false))
+        {
+            var webApps = getSetting("webApps", "").split(",");
+
+            for (var i=0; i<webApps.length; i++)
+            {
+                openWebAppsWindow(webApps[i], "minimized");
+            }
+        }
+
+        if (getSetting("enableGmail", false) && getSetting("of365AutoStart", false))
+        {
+            var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+            for (var i=0; i<gmailAccounts.length; i++)
+            {
+                openGmailWindow(gmailAccounts[i], "minimized");
+            }
+        }
+    });
 
     // support Jitsi domain controlled screen share
 
@@ -197,6 +262,12 @@ window.addEventListener("load", function()
         return;
     }
 
+    pade.server = getSetting("server", null);
+    pade.domain = getSetting("domain", null);
+    pade.username = getSetting("username", null);
+    pade.password = getSetting("password", null);
+    pade.avatar = getSetting("avatar", null);
+
     console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
@@ -207,7 +278,13 @@ window.addEventListener("load", function()
     addChatMenu();
     addInverseMenu();
     addBlogMenu();
+    addBlastMenu();
+    addVertoMenu();
     addTouchPadMenu();
+    addOffice365Business();
+    addOffice365Personal();
+    addWebApps();
+    addGmail();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
@@ -259,7 +336,9 @@ window.addEventListener("load", function()
         if (command == "activate_blogger_communicator" && getSetting("enableTouchPad", false)) openApcWindow();
         if (command == "activate_blogger_communicator" && !getSetting("enableTouchPad", false)) openBlogWindow();
 
-        if (command == "activate_phone") openPhoneWindow(true)
+        if (command == "activate_phone" && getSetting("enableVerto", false)) openVertoWindow()
+        if (command == "activate_phone" && !getSetting("enableVerto", false)) openPhoneWindow(true)
+
         if (command == "activate_meeting") openVideoWindow(pade.activeContact.room);
 
     });
@@ -271,6 +350,7 @@ window.addEventListener("load", function()
             if (win == -1) pade.minimised = true;
             if (win == pade.chatWindow.id) pade.minimised = false;
         }
+
         else
 
         if (pade.videoWindow)
@@ -286,7 +366,7 @@ window.addEventListener("load", function()
             if (win == pade.apcWindow.id) pade.minimised = false;
         }
 
-        //console.log("minimised", pade.minimised);
+        //console.log("minimised", win, pade.minimised, pade.chatWindow);
     });
 
     chrome.windows.onRemoved.addListener(function(win)
@@ -309,6 +389,16 @@ window.addEventListener("load", function()
             pade.blogWindow = null;
         }
 
+        if (pade.blastWindow && win == pade.blastWindow.id)
+        {
+            pade.blastWindow = null;
+        }
+
+        if (pade.vertoWindow && win == pade.vertoWindow.id)
+        {
+            pade.vertoWindow = null;
+        }
+
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
             sendToJabra("onhook");
@@ -323,12 +413,42 @@ window.addEventListener("load", function()
             pade.apcWindow = null;
             pade.minimised = false;
         }
-    });
 
-    pade.server = getSetting("server", null);
-    pade.domain = getSetting("domain", null);
-    pade.username = getSetting("username", null);
-    pade.password = getSetting("password", null);
+        if (pade.of365BWindow && win == pade.of365BWindow.id)
+        {
+            pade.of365BWindow = null;
+        }
+
+        if (pade.of365PWindow && win == pade.of365PWindow.id)
+        {
+            pade.of365PWindow = null;
+        }
+
+        if (pade.skypeWindow && win == pade.skypeWindow.id)
+        {
+            pade.skypeWindow = null;
+        }
+
+        var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+        for (var i=0; i<gmailAccounts.length; i++)
+        {
+            if (pade.gmailWindow[gmailAccounts[i]] && win == pade.gmailWindow[gmailAccounts[i]].id)
+            {
+                delete pade.gmailWindow[gmailAccounts[i]];
+            }
+        }
+
+        var webApps = getSetting("webApps", "").split(",");
+
+        for (var i=0; i<webApps.length; i++)
+        {
+            if (pade.webAppsWindow[webApps[i]] && win == pade.webAppsWindow[webApps[i]].id)
+            {
+                delete pade.webAppsWindow[webApps[i]];
+            }
+        }
+    });
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
     chrome.browserAction.setBadgeText({ text: 'off' });
@@ -412,6 +532,8 @@ window.addEventListener("load", function()
                     {
                         handleContact(contact);
                     });
+
+                    updateAvatar();
                 });
             }
             else
@@ -695,6 +817,51 @@ function notifyList(message, context, items, buttons, callback)
     });
 };
 
+
+function closeOffice365Window(business)
+{
+    if (business && pade.of365BWindow != null)
+    {
+        chrome.windows.remove(pade.of365BWindow.id);
+        pade.of365BWindow = null;
+    }
+
+    if (!business && pade.of365PWindow != null)
+    {
+        chrome.windows.remove(pade.of365PWindow.id);
+        pade.of365PWindow = null;
+    }
+}
+
+function openOffice365Window(business, state)
+{
+    var data = {url: "https://mail.office365.com", type: "popup", focused: true, incognito: !business};
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
+
+    if ((business && pade.of365BWindow == null) || (!business && pade.of365PWindow == null))
+    {
+        chrome.windows.create(data, function (win)
+        {
+            if (win)
+            {
+                if (business) pade.of365BWindow = win;
+                if (!business) pade.of365PWindow = win;
+
+                chrome.windows.update(win.id, {drawAttention: true});
+            }
+        });
+
+    } else {
+        if (business) chrome.windows.update(pade.of365BWindow.id, {drawAttention: true, focused: true});
+        if (!business) chrome.windows.update(pade.of365PWindow.id, {drawAttention: true, focused: true});
+    }
+}
+
 function closeApcWindow()
 {
     if (pade.apcWindow != null)
@@ -704,20 +871,101 @@ function closeApcWindow()
     }
 }
 
-function openApcWindow()
+function openApcWindow(state)
 {
+    var data = {url: chrome.extension.getURL("apc.html"), type: "popup", focused: true};
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
+
     if (pade.apcWindow == null)
     {
-        chrome.windows.create({url: chrome.extension.getURL("apc.html"), focused: true, type: "popup"}, function (win)
+        chrome.windows.create(data, function (win)
         {
             pade.apcWindow = win;
             chrome.windows.update(pade.apcWindow.id, {drawAttention: true, width: 820, height: 640});
         });
 
     } else {
-        chrome.windows.update(pade.apcWindow.id, {drawAttention: true, focused: true, width: 820, height: 640});
+        chrome.windows.update(pade.apcWindow.id, {drawAttention: true, focused: true});
     }
 }
+
+function closeGmailWindow(window)
+{
+    if (pade.gmailWindow[window] != null)
+    {
+        chrome.windows.remove(pade.gmailWindow[window].id);
+        delete pade.gmailWindow[window];
+    }
+}
+
+function openGmailWindow(email, state)
+{
+    var domain = email.indexOf("@") > -1 ? email.split("@")[1] : email;
+    var url = domain == "gmail.com" ? "https://mail.google.com" : "https://mail.google.com/a/" + domain.trim();
+
+    var data = {url: url, type: "popup", focused: true};
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
+
+    if (pade.gmailWindow[email] == null)
+    {
+        chrome.windows.create(data, function (win)
+        {
+            pade.gmailWindow[email] = win;
+            chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: true, width: 640, height: 1024});
+        });
+
+    } else {
+        chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: true, focused: true});
+    }
+}
+
+function closeWebAppsWindow(window)
+{
+    if (pade.webAppsWindow[window] != null)
+    {
+        chrome.windows.remove(pade.webAppsWindow[window].id);
+        delete pade.webAppsWindow[window];
+    }
+}
+
+function openWebAppsWindow(url, state)
+{
+    if (url.startsWith("_")) url = url.substring(1);
+    var httpUrl = url.startsWith("http") ? url.trim() : "https://" + url.trim();
+    var data = {url: httpUrl, type: "popup", focused: true};
+
+    console.log("openWebAppsWindow", data);
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
+
+    if (pade.webAppsWindow[url] == null)
+    {
+        chrome.windows.create(data, function (win)
+        {
+            pade.webAppsWindow[url] = win;
+            chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: true, width: 640, height: 1024});
+        });
+
+    } else {
+        chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: true, focused: true});
+    }
+}
+
+
 
 function closePhoneWindow()
 {
@@ -728,20 +976,26 @@ function closePhoneWindow()
     }
 }
 
-function openPhoneWindow(focus)
+function openPhoneWindow(focus, state)
 {
-    var url = chrome.extension.getURL("phone/index-ext.html");
+    var data = {url: chrome.extension.getURL("phone/index-ext.html"), type: "popup", focused: focus};
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
 
     if (pade.sip.window == null)
     {
-        chrome.windows.create({url: url, focused: focus, type: "popup"}, function (win)
+        chrome.windows.create(data, function (win)
         {
             pade.sip.window = win;
             chrome.windows.update(pade.sip.window.id, {drawAttention: focus, width: 350, height: 725});
         });
 
     } else {
-        chrome.windows.update(pade.sip.window.id, {drawAttention: true, width: 350, height: 725});
+        chrome.windows.update(pade.sip.window.id, {drawAttention: focus, focused: focus, width: 350, height: 725});
     }
 }
 
@@ -754,20 +1008,28 @@ function closeChatWindow()
     }
 }
 
-function openChatWindow(url, update)
+function openChatWindow(url, update, state)
 {
+    var data = {url: chrome.extension.getURL(url), type: "popup", focused: true};
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
+
     if (!pade.chatWindow || update)
     {
         if (update && pade.chatWindow != null) chrome.windows.remove(pade.chatWindow.id);
 
-        chrome.windows.create({url: chrome.extension.getURL(url), focused: true, type: "popup"}, function (win)
+        chrome.windows.create(data, function (win)
         {
             pade.chatWindow = win;
             chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 1024, height: 800});
         });
 
     } else {
-        chrome.windows.update(pade.chatWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+        chrome.windows.update(pade.chatWindow.id, {drawAttention: true, focused: true});
     }
 }
 
@@ -795,10 +1057,10 @@ function openVideoWindowUrl(url)
         chrome.windows.remove(pade.videoWindow.id);
     }
 
-    chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
+    chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
     {
         pade.videoWindow = win;
-        chrome.windows.update(pade.videoWindow.id, {drawAttention: true});
+        chrome.windows.update(pade.videoWindow.id, {width: 1024, height: 800, drawAttention: true});
 
         sendToJabra("offhook");
     });
@@ -820,13 +1082,71 @@ function openBlogWindow()
     {
         var url = "https://" + pade.server + "/" + getSetting("blogName", "solo") + "/admin-index.do#main";
 
-        chrome.windows.create({url: url, width: 1024, height: 800, focused: true, type: "popup"}, function (win)
+        chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blogWindow = win;
-            chrome.windows.update(pade.blogWindow.id, {drawAttention: true});
+            chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800, drawAttention: true});
         });
     } else {
         chrome.windows.update(pade.blogWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+    }
+}
+
+function closeBlastWindow()
+{
+    if (pade.blastWindow != null)
+    {
+        try {
+            chrome.windows.remove(pade.blastWindow.id);
+        } catch (e) {}
+    }
+}
+
+function openBlastWindow()
+{
+    if (!pade.blastWindow)
+    {
+        var url = "https://" + pade.server + "/dashboard/blast";
+
+        chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
+        {
+            pade.blastWindow = win;
+            chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800, drawAttention: true});
+        });
+    } else {
+        chrome.windows.update(pade.blastWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+    }
+}
+
+function closeVertoWindow()
+{
+    if (pade.vertoWindow != null)
+    {
+        try {
+            chrome.windows.remove(pade.vertoWindow.id);
+        } catch (e) {}
+    }
+}
+
+function openVertoWindow(state)
+{
+    var data = {url: "https://" + pade.server + "/dashboard/verto", type: "popup", focused: true};
+
+    if (state == "minimized")
+    {
+        delete data.focused;
+        data.state = state;
+    }
+
+    if (!pade.vertoWindow)
+    {
+        chrome.windows.create(data, function (win)
+        {
+            pade.vertoWindow = win;
+            chrome.windows.update(pade.vertoWindow.id, {width: 1024, height: 800, drawAttention: true});
+        });
+    } else {
+        chrome.windows.update(pade.vertoWindow.id, {drawAttention: true, focused: true});
     }
 }
 
@@ -1092,24 +1412,6 @@ function fetchContacts(callback)
         console.error(error);
     });
 
-    pade.connection.sendIQ($iq({type: "get"}).c("vCard", {xmlns: "vcard-temp"}).tree(), function(resp)
-    {
-        var vCard = $(resp).find("vCard");
-        var img = vCard.find('BINVAL').text();
-        var type = vCard.find('TYPE').text();
-        var img_src = 'data:'+type+';base64,'+img;
-
-        //console.log("get vcard", img_src);
-
-        if (img_src != 'data:;base64,')
-        {
-            pade.avatar = img_src;
-        }
-
-    }, function (error) {
-        console.error(error);
-    });
-
     pade.connection.sendIQ($iq({type: 'get', to: "workgroup." + pade.connection.domain}).c('workgroups', {jid: pade.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"}).tree(), function(resp)
     {
         $(resp).find('workgroup').each(function()
@@ -1223,6 +1525,21 @@ function inviteToConference(jid, room)
     try {
         var invite = "Please join me in https://" + pade.server + "/ofmeet/" + room;
         pade.connection.send($msg({type: "chat", to: jid}).c("body").t(invite));
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function injectMessage(message, room, nickname)
+{
+    //console.log("injectMessage", message, room);
+
+    try {
+        var msg = $msg({to: room + "@conference." + pade.domain, type: "groupchat"});
+        msg.c("body", message).up();
+        msg.c("nick", {xmlns: "http://jabber.org/protocol/nick"}).t(nickname).up().up();
+        pade.connection.send(msg);
+
     } catch (e) {
         console.error(e);
     }
@@ -1504,7 +1821,7 @@ function addInverseMenu()
 {
     if (getSetting("enableInverse", false))
     {
-        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_inverse", type: "normal", title: "Inverse Client", contexts: ["browser_action"],  onclick: function()
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_inverse", type: "normal", title: "Converse Client", contexts: ["browser_action"],  onclick: function()
         {
             openChatWindow("inverse/index.html");
         }});
@@ -1534,6 +1851,40 @@ function removeBlogMenu()
     chrome.contextMenus.remove("pade_blog");
 }
 
+function addBlastMenu()
+{
+    if (getSetting("enableBlast", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_blast", type: "normal", title: "Message Blast", contexts: ["browser_action"],  onclick: function()
+        {
+            openBlastWindow();
+        }});
+    }
+}
+
+function removeBlastMenu()
+{
+    closeBlastWindow();
+    chrome.contextMenus.remove("pade_blast");
+}
+
+function addVertoMenu()
+{
+    if (getSetting("enableVerto", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_verto", type: "normal", title: "Verto Communicator", contexts: ["browser_action"],  onclick: function()
+        {
+            openVertoWindow();
+        }});
+    }
+}
+
+function removeVertoMenu()
+{
+    closeVertoWindow();
+    chrome.contextMenus.remove("pade_verto");
+}
+
 function addTouchPadMenu()
 {
     if (getSetting("enableTouchPad", false))
@@ -1549,6 +1900,94 @@ function removeTouchPadMenu()
 {
     closeApcWindow();
     chrome.contextMenus.remove("pade_apc");
+}
+
+function addOffice365Business()
+{
+    if (getSetting("enableOffice365Business", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_of365_business", type: "normal", title: "Office 365 Business", contexts: ["browser_action"],  onclick: function()
+        {
+            openOffice365Window(true);
+        }});
+    }
+}
+
+function removeOffice365Business()
+{
+    closeOffice365Window(true);
+    chrome.contextMenus.remove("pade_of365_business");
+}
+
+function addOffice365Personal()
+{
+    if (getSetting("enableOffice365Personal", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_of365_personal", type: "normal", title: "Office 365 Personal", contexts: ["browser_action"],  onclick: function()
+        {
+            openOffice365Window(false);
+        }});
+    }
+}
+
+function removeOffice365Personal()
+{
+    closeOffice365Window(false);
+    chrome.contextMenus.remove("pade_of365_personal");
+}
+
+function addGmail()
+{
+    if (getSetting("enableGmail", false))
+    {
+        var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+        for (var i=0; i<gmailAccounts.length; i++)
+        {
+            chrome.contextMenus.create({parentId: "pade_applications", id: "pade_gmail_" + gmailAccounts[i], type: "normal", title: "Gmail - " + gmailAccounts[i], contexts: ["browser_action"],  onclick: function(info)
+            {
+                openGmailWindow(info.menuItemId.substring(11));
+            }});
+        }
+    }
+}
+
+function removeGmail()
+{
+    var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+    for (var i=0; i<gmailAccounts.length; i++)
+    {
+        closeGmailWindow(gmailAccounts[i]);
+        chrome.contextMenus.remove("pade_gmail_" + gmailAccounts[i]);
+    }
+}
+
+function addWebApps()
+{
+    if (getSetting("enableWebApps", false))
+    {
+        var webApps = getSetting("webApps", "").split(",");
+
+        for (var i=0; i<webApps.length; i++)
+        {
+            chrome.contextMenus.create({parentId: "pade_applications", id: "pade_webapp_" + webApps[i], type: "normal", title: "App - " + webApps[i], contexts: ["browser_action"],  onclick: function(info)
+            {
+                openWebAppsWindow(info.menuItemId.substring(11));
+            }});
+        }
+    }
+}
+
+function removeWebApps()
+{
+    var webApps = getSetting("webApps", "").split(",");
+
+    for (var i=0; i<webApps.length; i++)
+    {
+        closeWebAppsWindow(webApps[i]);
+        chrome.contextMenus.remove("pade_webapp_" + webApps[i]);
+    }
 }
 
 function isAudioOnly()
@@ -1629,4 +2068,45 @@ function setVCard(vCard, callback, errorback)
     });
 }
 
+function updateAvatar()
+{
+    console.log("updateAvatar");
 
+    var avatar = getSetting("avatar", null);
+
+    if (avatar)
+    {
+        var avatarError = function (error)
+        {
+            console.error("uploadAvatar - error", error);
+        }
+
+        var jid = pade.username + "@" + pade.domain;
+
+        getVCard(jid, function(vCard)
+        {
+            if (!vCard.avatar || vCard.avatar == "")
+            {
+                var sourceImage = new Image();
+
+                sourceImage.onload = function() {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = 32;
+                    canvas.height = 32;
+                    canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
+
+                    vCard.avatar = canvas.toDataURL();
+
+                    setVCard(vCard, function(resp)
+                    {
+                        console.log("uploadAvatar - set vcard", resp);
+
+                    }, avatarError);
+                }
+
+                sourceImage.src = credentials.avatar.uri;
+            }
+
+        }, avatarError);
+    }
+}

@@ -1,4 +1,23 @@
+var uportWin = null;
+
+window.addEventListener("unload", function ()
+{
+    if (uportWin)
+    {
+        chrome.windows.remove(uportWin.id);
+        uportWin = null;
+    }
+});
+
 window.addEvent("domready", function () {
+
+    chrome.windows.onRemoved.addListener(function(win)
+    {
+        if (uportWin && win == uportWin.id)
+        {
+            uportWin = null;
+        }
+    });
 
     document.getElementById("settings-label").innerHTML = chrome.i18n.getMessage('manifest_shortExtensionName')
 
@@ -7,8 +26,12 @@ window.addEvent("domready", function () {
     new FancySettings.initWithManifest(function (settings)
     {
         var background = chrome.extension.getBackgroundPage();
+        var avatar = getSetting("avatar");
 
-        if (background.pade.avatar) document.getElementById("avatar").innerHTML = "<img src='" + background.pade.avatar + "' />";
+        if (avatar)
+        {
+            document.getElementById("avatar").innerHTML = "<img style='width: 64px;' src='" + avatar + "' />";
+        }
 
         settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
 
@@ -107,6 +130,50 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.enableOffice365Business.addEvent("action", function ()
+        {
+            if (getSetting("enableOffice365Business"))
+            {
+                background.addOffice365Business();
+
+            } else {
+               background.removeOffice365Business();
+            }
+        });
+
+        settings.manifest.enableOffice365Personal.addEvent("action", function ()
+        {
+            if (getSetting("enableOffice365Personal"))
+            {
+                background.addOffice365Personal();
+
+            } else {
+               background.removeOffice365Personal();
+            }
+        });
+
+        settings.manifest.enableWebApps.addEvent("action", function ()
+        {
+            if (getSetting("enableWebApps"))
+            {
+                background.addWebApps();
+
+            } else {
+               background.removeWebApps();
+            }
+        });
+
+        settings.manifest.enableGmail.addEvent("action", function ()
+        {
+            if (getSetting("enableGmail"))
+            {
+                background.addGmail();
+
+            } else {
+               background.removeGmail();
+            }
+        });
+
         settings.manifest.enableSip.addEvent("action", function ()
         {
             background.reloadApp();
@@ -134,6 +201,28 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.enableBlast.addEvent("action", function ()
+        {
+            if (getSetting("enableBlast"))
+            {
+                background.addBlastMenu();
+
+            } else {
+               background.removeBlastMenu();
+            }
+        });
+
+        settings.manifest.enableVerto.addEvent("action", function ()
+        {
+            if (getSetting("enableVerto"))
+            {
+                background.addVertoMenu();
+
+            } else {
+               background.removeVertoMenu();
+            }
+        });
+
         settings.manifest.desktopShareMode.addEvent("action", function ()
         {
             background.reloadApp();
@@ -155,6 +244,26 @@ window.addEvent("domready", function () {
                 {
                     chrome.windows.update(win.id, {drawAttention: true, width: 380, height: 270});
                 });
+            }
+        });
+
+        settings.manifest.uport.addEvent("action", function ()
+        {
+            if (getSetting("useUport"))
+            {
+                if (uportWin)
+                {
+                    chrome.windows.update(uportWin.id, {drawAttention: true, focused: true});
+
+                } else {
+                    var url = chrome.extension.getURL("uport/index.html");
+
+                    chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
+                    {
+                        uportWin = win;
+                        chrome.windows.update(win.id, {drawAttention: true, width: 500, height: 650});
+                    });
+                }
             }
         });
 
@@ -246,10 +355,11 @@ function doDefaults()
     setSetting("enableBlog", false);
 
     // config
-    setSetting("startWithAudioMuted", false);
-    setSetting("startWithVideoMuted", false);
+    setSetting("enableTranscription", true);
+
 
     // user interface
+    setSetting("CAPTIONS_SUBTITLES", true);
     setSetting("VERTICAL_FILMSTRIP", true);
     setSetting("FILM_STRIP_MAX_HEIGHT", 90);
 
@@ -263,6 +373,9 @@ function doDefaults()
     setSetting("allowNonRosterMessaging", true);
     setSetting("rosterGroups", true);
     setSetting("autoReconnect", true);
+
+    // web apps
+    setSetting("webApps", "web.skype.com, web.whatsapp.com");
 }
 
 function setDefaultPassword(settings)
@@ -330,7 +443,7 @@ function uploadApplication(event, settings)
 
             if (file.name.endsWith(".zip"))
             {
-                var putUrl = "https://" + server + "/chat/upload?name=" + file.name + "&username=" + username;
+                var putUrl = "https://" + server + "/dashboard/upload?name=" + file.name + "&username=" + username;
                 var req = new XMLHttpRequest();
 
                 req.onreadystatechange = function()
@@ -364,6 +477,8 @@ function uploadApplication(event, settings)
 
 function uploadAvatar(event, settings)
 {
+    settings.manifest.uploadAvatarStatus.element.innerHTML = "Please wait...";
+
     var files = event.target.files;
     var background = chrome.extension.getBackgroundPage();
 
@@ -382,18 +497,32 @@ function uploadAvatar(event, settings)
                 dataUri = event.target.result;
                 console.log("uploadAvatar", dataUri);
 
-                background.getVCard(jid, function(vCard)
-                {
-                    console.log("uploadAvatar - get vcard", vCard);
-                    vCard.avatar = dataUri;
+                window.localStorage["store.settings.avatar"] = JSON.stringify(dataUri);
 
-                    background.setVCard(vCard, function(resp)
+                var sourceImage = new Image();
+
+                sourceImage.onload = function() {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = 32;
+                    canvas.height = 32;
+                    canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
+
+                    background.getVCard(jid, function(vCard)
                     {
-                        console.log("uploadAvatar - set vcard", resp);
-                        settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>image uploaded ok</b>';
+                        console.log("uploadAvatar - get vcard", vCard);
+                        vCard.avatar = canvas.toDataURL();
+
+                        background.setVCard(vCard, function(resp)
+                        {
+                            console.log("uploadAvatar - set vcard", resp);
+                            setTimeout(function() {location.reload();}, 500);
+
+                        }, avatarError);
 
                     }, avatarError);
-                }, avatarError);
+                }
+
+                sourceImage.src = dataUri;
             };
 
             reader.onerror = function(event) {
