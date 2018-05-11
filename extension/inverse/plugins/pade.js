@@ -22,7 +22,6 @@
         moment = converse.env.moment;
 
      var _converse = null;
-     var padeReady = false;
 
     // The following line registers your plugin.
     converse.plugins.add("pade", {
@@ -65,14 +64,7 @@
             });
 
             _converse.api.settings.update({
-                'initialize_message': 'Initializing pade',
-                'visible_toolbar_buttons': {
-                    'emoji': true,
-                    'call': true,
-                    'clear': true
-                },
-                ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
-                hide_open_bookmarks: false
+                ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at')
             });
 
             /* The user can then pass in values for the configuration
@@ -83,7 +75,50 @@
              *           "initialize_message": "My plugin has been initialized"
              *      });
              */
-            console.log(this._converse.initialize_message);
+
+            _converse.on('messageAdded', function (data) {
+                // The message is at `data.message`
+                // The original chatbox is at `data.chatbox`.
+
+                var message = data.message;
+
+                if (bgWindow.pade.minimised && message.attributes.message)
+                {
+                    //console.log("messageAdded", message);
+
+                    var from = message.vcard.attributes.fullname || message.attributes.from;
+                    var text = message.attributes.type ? message.attributes.type + " : " + message.attributes.message: message.attributes.message;
+
+                    if (getSetting("notifyAllRoomMessages", false))
+                    {
+                        // TODO move to background page
+                        notifyMe(text, from, message.attributes.message);
+                    }
+
+                    if (getSetting("notifyOnInterests", false))
+                    {
+                        var interestList = (getSetting("username", "") + "," + getSetting("interestList", "")).split(",");
+                        var foundInterest = false;
+
+                        for (var i=0; i<interestList.length; i++)
+                        {
+                            if (interestList[i] != "")
+                            {
+                                var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+
+                                if (searchRegExp.test(message.attributes.message))
+                                {
+                                    // TODO move to background page
+                                    notifyMe(text, from, message.attributes.message);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            console.log("pade is ready");
 
             /* Besides `_converse.api.settings.update`, there is also a
              * `_converse.api.promises.add` method, which allows you to
@@ -137,17 +172,23 @@
 
                         $(iq).find('conference').each(function()
                         {
-                            console.log('pade BookmarksReceived', {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
+                            var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
 
-                            _converse.bookmarks.create({
-                                'jid': $(this).attr("jid"),
-                                'name': $(this).attr('name'),
-                                'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
-                                'nick': Strophe.getNodeFromJid(_converse.bare_jid)
-                            });
+                            //console.log('pade BookmarksReceived', _converse, myNick, {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
 
-                            var room = _converse.chatboxes.get($(this).attr("jid"));
-                            if (room) room.save('bookmarked', true);
+                            if (_converse.bookmarks)
+                            {
+                                _converse.bookmarks.create({
+                                    'jid': $(this).attr("jid"),
+                                    'name': $(this).attr('name'),
+                                    'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
+                                    'nick': myNick
+                                });
+
+                                var room = _converse.chatboxes.get($(this).attr("jid"));
+                                if (room) room.save('bookmarked', true);
+                            }
+
                         });
 
                         console.log("pade plugin ready");
@@ -158,8 +199,7 @@
                     });
                 }
 
-                Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('roomsPanelRendered')]).then(initPade);
-
+                Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
 
                 // You can access the original function being overridden
                 // via the __super__ attribute.
@@ -168,97 +208,6 @@
                 _converse.__super__.onConnected.apply(this, arguments);
 
                 // Your custom code can come here ...
-            },
-
-            ChatBoxView: {
-
-                toggleCall: function toggleCall(ev) {
-                    ev.stopPropagation();
-
-                    var room = Strophe.getNodeFromJid(this.model.attributes.jid) + Math.random().toString(36).substr(2,9);
-                    var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
-                    console.log('callButtonClicked', {connection: _converse.connection,  room});
-
-                    this.onMessageSubmitted(_converse.api.settings.get("ofmeet_invitation") + ' ' + url);
-                    bgWindow.openVideoWindow(room);
-                },
-
-                renderMessage: function renderMessage(attrs) {
-                    //console.log("render", attrs, this.model);
-
-                    var id = this.model.attributes.id;
-                    var text = attrs.fullname + " says " + attrs.message;
-                    var room = this.model.attributes.jid + "<br/>" + this.model.attributes.description;
-
-                    var notifyMe = function()
-                    {
-                        _converse.playSoundNotification();
-
-                        bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
-                        {
-                            if (buttonIndex == 0)
-                            {
-                                bgWindow.openChatWindow("inverse/index.html");
-                            }
-
-                        }, id);
-                    }
-
-                    if (bgWindow.pade.minimised)
-                    {
-                        if (getSetting("notifyAllRoomMessages", false))
-                        {
-                            notifyMe();
-                        }
-
-                        if (getSetting("notifyOnInterests", false))
-                        {
-                            var interestList = (getSetting("username", "") + "," + getSetting("interestList", "")).split(",");
-                            var foundInterest = false;
-
-                            for (var i=0; i<interestList.length; i++)
-                            {
-                                if (interestList[i] != "")
-                                {
-                                    var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
-
-                                    if (searchRegExp.test(attrs.message))
-                                    {
-                                        notifyMe();
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    return this.__super__.renderMessage.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    console.log('pade - renderToolbar', this.model);
-
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var dropZone = $(this.el).find('.chat-body')[0];
-                    dropZone.removeEventListener('dragover', handleDragOver);
-                    dropZone.removeEventListener('drop', handleDropFileSelect);
-                    dropZone.addEventListener('dragover', handleDragOver, false);
-                    dropZone.addEventListener('drop', handleDropFileSelect, false);
-
-                    var id = this.model.get("box_id");
-
-                    var html = '<li title="Upload"><label class="custom-file-upload"><input id="file-' + id + '" type="file" name="files[]" multiple /><i class="icon-attachment"></i></label></li>';
-                    $(this.el).find('.toggle-call').after(html);
-
-                    setTimeout(function()
-                    {
-                        var fileButton = document.getElementById("file-" + id);
-                        fileButton.addEventListener('change', doUpload, false);
-                    });
-
-                    return result;
-                }
             },
 
             /* Override converse.js's XMPPStatus Backbone model so that we can override the
@@ -284,117 +233,18 @@
         }
     });
 
-    var doUpload = function doUpload(event)
+    var notifyMe = function(text, room, id)
     {
-        console.log("doUpload", event);
+        _converse.playSoundNotification();
 
-        _converse.chatboxviews.each(function (view)
+        bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
         {
-            var chatType = view.model.get('type');
-
-            if ((chatType === "chatroom" || chatType === "chatbox") && !view.model.get('hidden'))
+            if (buttonIndex == 0)
             {
-                console.log("pade-upload", view.model.get('id'));
-
-                var files = event.target.files;
-
-                for (var i = 0, f; f = files[i]; i++)
-                {
-                    uploadFile(f, view);
-                }
-                done = true;
+                bgWindow.openChatWindow("inverse/index.html");
             }
-        });
+
+        }, id);
     }
 
-    var handleDragOver = function handleDragOver(evt)
-    {
-        //console.log("handleDragOver");
-
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy';
-    };
-
-    var handleDropFileSelect = function handleDropFileSelect(evt)
-    {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        _converse.chatboxviews.each(function (view)
-        {
-            console.log("handleDropFileSelect", view.model.get('type'));
-
-            if ((view.model.get('type') === "chatroom" || view.model.get('type') === "chatbox") && !view.model.get('hidden'))
-            {
-                var files = evt.dataTransfer.files;
-
-                for (var i = 0, f; f = files[i]; i++)
-                {
-                    uploadFile(f, view);
-                }
-            }
-        });
-    };
-
-    var uploadFile = function uploadFile(file, view)
-    {
-        console.log("uploadFile", file);
-
-        var iq = $iq({type: 'get', to: "httpfileupload." + _converse.connection.domain}).c('request', {xmlns: "urn:xmpp:http:upload"}).c('filename').t(file.name).up().c('size').t(file.size);
-        var getUrl = null;
-        var putUrl = null;
-        var errorText = null;
-
-        _converse.connection.sendIQ(iq, function(response)
-        {
-            $(response).find('slot').each(function()
-            {
-                $(response).find('put').each(function()
-                {
-                    putUrl = $(this).text();
-                });
-
-                $(response).find('get').each(function()
-                {
-                    getUrl = $(this).text();
-                });
-
-                console.log("pade.uploadFile", putUrl, getUrl);
-
-                if (putUrl != null & getUrl != null)
-                {
-                    var req = new XMLHttpRequest();
-
-                    req.onreadystatechange = function()
-                    {
-                      if (this.readyState == 4 && this.status >= 200 && this.status < 400)
-                      {
-                        console.log("pade.upload.ok", this.statusText, getUrl);
-                        view.onMessageSubmitted(getUrl);
-                      }
-                      else
-
-                      if (this.readyState == 4 && this.status >= 400)
-                      {
-                        console.error("pade.upload.error", this.statusText);
-                        view.onMessageSubmitted(this.statusText);
-                      }
-
-                    };
-                    req.open("PUT", putUrl, true);
-                    req.send(file);
-                }
-            });
-
-        }, function(error) {
-
-            $(error).find('text').each(function()
-            {
-                errorText = $(this).text();
-                console.log("pade.upload.uploadFile error", errorText);
-                view.onMessageSubmitted(errorText);
-            });
-        });
-    };
 }));

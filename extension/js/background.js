@@ -1025,7 +1025,7 @@ function openChatWindow(url, update, state)
         chrome.windows.create(data, function (win)
         {
             pade.chatWindow = win;
-            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 1024, height: 800});
+            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 1300, height: 900});
         });
 
     } else {

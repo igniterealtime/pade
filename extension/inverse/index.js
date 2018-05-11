@@ -3,7 +3,6 @@ var bgWindow = null;
 window.addEventListener("load", function()
 {
     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse";
-    document.getElementById("brand-heading").innerHTML = "<img src='../image.png' />&nbsp;&nbsp;" + document.title;
 
     function getUniqueID()
     {
@@ -93,13 +92,11 @@ window.addEventListener("load", function()
               jid : getSetting("username", null) + "@" + getSetting("domain", null),
               password: getSetting("password", null),
               domain_placeholder: domain,
-              registration_domain: domain,
+              default_domain: domain,
               locked_domain: domain,
-              whitelisted_plugins: ["converse-singleton", "converse-inverse", "pade"],
-              blacklisted_plugins: ["converse-minimize", "converse-dragresize"],
+              whitelisted_plugins: ["webmeet", "pade"],
               bosh_service_url: "https://" + server + "/http-bind/",
               websocket_url: connUrl,
-
               auto_away: 300,
               message_archiving: "always",
               i18n: "en",
@@ -108,7 +105,11 @@ window.addEventListener("load", function()
               message_carbons: getSetting("messageCarbons", false),
               auto_reconnect: getSetting("autoReconnect", true),
               roster_groups: getSetting("rosterGroups", true),
-              allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true)
+              allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
+              allow_public_bookmarks: true,
+              play_sounds: true,
+              ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
+              view_mode: 'fullscreen'
             };
 
             converse.initialize( config );
