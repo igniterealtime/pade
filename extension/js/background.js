@@ -533,7 +533,7 @@ window.addEventListener("load", function()
                         handleContact(contact);
                     });
 
-                    updateAvatar();
+                    updateVCard();
                 });
             }
             else
@@ -978,6 +978,8 @@ function closePhoneWindow()
 
 function openPhoneWindow(focus, state)
 {
+    console.log("openPhoneWindow", focus, state);
+
     var data = {url: chrome.extension.getURL("phone/index-ext.html"), type: "popup", focused: focus};
 
     if (state == "minimized")
@@ -995,7 +997,7 @@ function openPhoneWindow(focus, state)
         });
 
     } else {
-        chrome.windows.update(pade.sip.window.id, {drawAttention: focus, focused: focus, width: 350, height: 725});
+        chrome.windows.update(pade.sip.window.id, {drawAttention: focus, focused: focus5});
     }
 }
 
@@ -1088,7 +1090,7 @@ function openBlogWindow()
             chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800, drawAttention: true});
         });
     } else {
-        chrome.windows.update(pade.blogWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+        chrome.windows.update(pade.blogWindow.id, {drawAttention: true, focused: true});
     }
 }
 
@@ -1114,7 +1116,7 @@ function openBlastWindow()
             chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800, drawAttention: true});
         });
     } else {
-        chrome.windows.update(pade.blastWindow.id, {drawAttention: true, focused: true, width: 1024, height: 800});
+        chrome.windows.update(pade.blastWindow.id, {drawAttention: true, focused: true});
     }
 }
 
@@ -2068,45 +2070,90 @@ function setVCard(vCard, callback, errorback)
     });
 }
 
-function updateAvatar()
+function updateVCard()
 {
-    console.log("updateAvatar");
+    console.log("updateVCard");
 
-    var avatar = getSetting("avatar", null);
+    var displayname = getSetting("displayname", Strophe.getNodeFromJid(pade.connection.jid));
+    var avatar = getSetting("avatar", createAvatar(null, displayname));
+    var email = getSetting("email", "");
+    var phone = getSetting("phone", "");
+    var country = getSetting("country", "");
+    var url = getSetting("url", "");
+    var role = getSetting("role", (getSetting("useUport", false) ? "uport," : "") + chrome.i18n.getMessage('manifest_shortExtensionName'));
 
-    if (avatar)
+    var avatarError = function (error)
     {
-        var avatarError = function (error)
-        {
-            console.error("uploadAvatar - error", error);
+        console.error("uploadAvatar - error", error);
+    }
+
+    var jid = pade.username + "@" + pade.domain;
+
+    getVCard(jid, function(vCard)
+    {
+        vCard.name = displayname;
+        vCard.nickname = displayname;
+        vCard.email = email;
+        vCard.workPhone = phone;
+        vCard.country = country;
+        vCard.role = role;
+        vCard.url = url;
+
+        var sourceImage = new Image();
+
+        sourceImage.onload = function() {
+            var canvas = document.createElement("canvas");
+            canvas.width = 32;
+            canvas.height = 32;
+            canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
+
+            vCard.avatar = canvas.toDataURL();
+
+            setVCard(vCard, function(resp)
+            {
+                console.log("uploadAvatar - set vcard", resp);
+
+            }, avatarError);
         }
 
-        var jid = pade.username + "@" + pade.domain;
+        sourceImage.src = avatar;
 
-        getVCard(jid, function(vCard)
-        {
-            if (!vCard.avatar || vCard.avatar == "")
-            {
-                var sourceImage = new Image();
+    }, avatarError);
+}
 
-                sourceImage.onload = function() {
-                    var canvas = document.createElement("canvas");
-                    canvas.width = 32;
-                    canvas.height = 32;
-                    canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
+var createAvatar = function(avatar, nickname)
+{
+    var canvas = document.createElement('canvas');
+    canvas.style.display = 'none';
+    canvas.width = '32';
+    canvas.height = '32';
+    document.body.appendChild(canvas);
+    var context = canvas.getContext('2d');
+    context.fillStyle = "#777";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.font = "16px Arial";
+    context.fillStyle = "#fff";
 
-                    vCard.avatar = canvas.toDataURL();
+    var first, last;
+    var name = nickname.split(" ");
+    var l = name.length - 1;
 
-                    setVCard(vCard, function(resp)
-                    {
-                        console.log("uploadAvatar - set vcard", resp);
+    if (name && name[0] && name.first != '')
+    {
+        first = name[0][0];
+        last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
 
-                    }, avatarError);
-                }
-
-                sourceImage.src = credentials.avatar.uri;
-            }
-
-        }, avatarError);
+        if (last) {
+            var initials = first + last;
+            context.fillText(initials.toUpperCase(), 3, 23);
+        } else {
+            var initials = first;
+            context.fillText(initials.toUpperCase(), 10, 23);
+        }
+        var data = canvas.toDataURL();
+        document.body.removeChild(canvas);
+        avatar = data.split(";base64,")[1];
     }
+
+    return avatar;
 }

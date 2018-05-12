@@ -31,7 +31,7 @@
     "uport_ethereum_network": {
         "message": "rinkeby",
         "description": "Ethereum network name"
-    },  
+    },    
         
     "search": {
         "message": "Search",
@@ -74,9 +74,13 @@
         "description": "Contact email address"
     }, 
     "country": {
-        "message": "Contact",
+        "message": "Country",
         "description": "Contact country location"
-    },     
+    },    
+    "url": {
+        "message": "Url",
+        "description": "Home Page UL"
+    },    
     "connection": {
         "message": "Connection",
         "description": "Connection"

@@ -18,6 +18,7 @@ function updateIdentity()
         background.reloadApp();
 
     }).catch(function (err) {
+        document.getElementById("loader").style.display = "none";
         console.error('attestCredentials error', err);
         status.innerHTML = err;
     });
@@ -40,6 +41,8 @@ window.addEventListener("load", function()
 
         uport.requestCredentials({notifications: true, verified: ['registration'], requested: ['name', 'email', 'phone', 'country', 'avatar']}).then((credentials) => {
             console.log("Credentials", credentials);
+
+            document.getElementById("loader").style.display = "inline";
 
             window.localStorage["store.settings.publicKey"] =   JSON.stringify(credentials.publicKey);
             window.localStorage["store.settings.address"] =     JSON.stringify(credentials.address);
@@ -94,22 +97,26 @@ window.addEventListener("load", function()
                         updateIdentity();
 
                     } catch (e) {
+                        document.getElementById("loader").style.display = "none";
                         console.error('Credentials error', e);
                         status.innerHTML = "uport registration failed";
                     }
 
                 }).catch(function (err) {
+                    document.getElementById("loader").style.display = "none";
                     console.error('Credentials error', err);
                     status.innerHTML = err;
                 });
             }
 
         }, function(err) {
+            document.getElementById("loader").style.display = "none";
             console.error("Credentials", err);
             status.innerHTML = err;
         });
 
     } else {
+       document.getElementById("loader").style.display = "none";
        status.innerHTML = i18n.get("Please provide server and domain");
     }
 });

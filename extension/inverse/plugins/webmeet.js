@@ -23,6 +23,7 @@
 
      var _converse = null;
      var messageCount = 0;
+     var currentRoom = null;
 
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -189,11 +190,7 @@
                                 _converse.connection.sendIQ( setVCard(vCard), function(resp)
                                 {
                                     console.log("set vcard ok", resp);
-
-                                    setTimeout(function()
-                                    {
-                                        _converse.__super__.onConnected.apply(this, arguments);
-                                    });
+                                    _converse.__super__.onConnected.apply(this, arguments);
 
                                 }, function(err) {
                                     console.log("set vcard error", err);
@@ -215,43 +212,53 @@
             ChatBoxView: {
 
                 toggleCall: function toggleCall(ev) {
-                   //console.log("toggleCall", this.model);
+                    console.log("toggleCall", this.model);
 
                     ev.stopPropagation();
 
-                    var room = Strophe.getNodeFromJid(this.model.attributes.jid) + Math.random().toString(36).substr(2,9);
-                    var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
-                    console.log('callButtonClicked', {connection: _converse.connection,  room});
+                    if (_converse.view_mode === 'embedded')
+                    {
+                        var url = "../phone/index.html";
+                        var converseDiv = document.getElementById("conversejs");
+                        var jitsiDiv = document.getElementById("jitsimeet");
 
-                    this.onMessageSubmitted(_converse.api.settings.get("ofmeet_invitation") + ' ' + url);
-                    bgWindow.openVideoWindow(room);
+                        iframeURLChange(jitsiDiv, function (newURL)
+                        {
+                            if (newURL.indexOf("jitsimeet") == -1 && newURL.indexOf("phone") == -1)
+                            {
+                                converseDiv.style.display = "inline";
+                                jitsiDiv.style.display = "none";
+                                jitsiDiv.src = "about:blank";
+                            }
+                        });
 
+                        converseDiv.style.display = "none";
+                        jitsiDiv.src = url;
+                        jitsiDiv.style.display = "inline";
+
+                    } else {
+                        console.log('callButtonClicked', {connection: _converse.connection});
+                        bgWindow.openPhoneWindow();
+                    }
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    //console.log('webmeet - renderToolbar', this.model);
+                    console.log('webmeet - renderToolbar', this.model);
+
+                    currentRoom = this;
+
+                    var result = this.__super__.renderToolbar.apply(this, arguments);
+
+                    var id = this.model.get("box_id");
+                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conferennce"></a></li>';
+                    $(this.el).find('.toggle-call').after(html);
 
                     if (_converse.view_mode === 'embedded')
                     {
                         this.model.set({'hidden_occupants': true});
-                    }
 
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    if (_converse.view_mode === 'embedded')
-                    {
-                        // exit button for webmeet
-
-                        var id = this.model.get("box_id");
                         var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
                         $(this.el).find('.toggle-call').after(html);
-
-                        setTimeout(function()
-                        {
-                            var exitButton = document.getElementById("webmeet-exit-webchat-" + id);
-                            exitButton.addEventListener('click', doExit, false);
-
-                        });
 
                     } else {
                         // file upload by drag & drop
@@ -262,6 +269,15 @@
                         dropZone.addEventListener('dragover', handleDragOver, false);
                         dropZone.addEventListener('drop', handleDropFileSelect, false);
                     }
+
+                    setTimeout(function()
+                    {
+                        var exitButton = document.getElementById("webmeet-exit-webchat-" + id);
+                        if (exitButton) exitButton.addEventListener('click', doExit, false);
+
+                        var exitJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
+                        if (exitJitsiMeet) exitJitsiMeet.addEventListener('click', doVideo, false);
+                    });
 
                     return result;
                 }
@@ -289,6 +305,59 @@
             }
         }
     });
+
+    var doVideo = function doExit(event)
+    {
+        console.log("doVideo", event);
+
+        if (_converse.view_mode === 'embedded')
+        {
+            var url = "../verto/index.html";
+            var converseDiv = document.getElementById("conversejs");
+            var jitsiDiv = document.getElementById("jitsimeet");
+
+            if (_converse.api.settings.get("ofswitch") == false)
+            {
+                var url = "../jitsimeet/index.html?room=";
+                var room = Strophe.getNodeFromJid(currentRoom.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+                url = url + room;
+
+                var a = document.createElement('a');
+                a.href = url;
+                url = a.href;
+
+                currentRoom.onMessageSubmitted(_converse.api.settings.get("webmeet_invitation") + ' ' + url);
+
+                //window.open(url, location.href);
+
+                iframeURLChange(jitsiDiv, function (newURL)
+                {
+                    if (newURL.indexOf("jitsimeet") == -1)
+                    {
+                        converseDiv.style.display = "inline";
+                        jitsiDiv.style.display = "none";
+                        jitsiDiv.src = "about:blank";
+                    }
+                });
+
+                converseDiv.style.display = "none";
+                jitsiDiv.src = url;
+                jitsiDiv.style.display = "inline";
+
+            } else {
+                window.open(url, location.href);
+            }
+
+        } else {
+            var room = Strophe.getNodeFromJid(currentRoom.model.attributes.jid) + Math.random().toString(36).substr(2,9);
+            var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
+
+            console.log('callButtonClicked', {connection: _converse.connection,  room});
+
+            currentRoom.onMessageSubmitted(_converse.api.settings.get("ofmeet_invitation") + ' ' + url);
+            bgWindow.openVideoWindow(room);
+        }
+    }
 
     var doExit = function doExit(event)
     {
@@ -387,6 +456,41 @@
             });
         });
     };
+
+    var iframeURLChange = function(iframe, callback) {
+        var lastDispatched = null;
+
+        var dispatchChange = function () {
+            var newHref = iframe.contentWindow.location.href;
+
+            if (newHref !== lastDispatched) {
+                callback(newHref);
+                lastDispatched = newHref;
+            }
+        };
+
+        var unloadHandler = function () {
+            // Timeout needed because the URL changes immediately after
+            // the `unload` event is dispatched.
+            setTimeout(dispatchChange, 0);
+        };
+
+        function attachUnload() {
+            // Remove the unloadHandler in case it was already attached.
+            // Otherwise, there will be two handlers, which is unnecessary.
+            iframe.contentWindow.removeEventListener("unload", unloadHandler);
+            iframe.contentWindow.addEventListener("unload", unloadHandler);
+        }
+
+        iframe.addEventListener("load", function () {
+            attachUnload();
+
+            // Just in case the change wasn't dispatched during the unload event...
+            dispatchChange();
+        });
+
+        attachUnload();
+    }
 
     var createAvatar = function(avatar, nickname)
     {

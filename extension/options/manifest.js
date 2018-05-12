@@ -132,6 +132,22 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("contact"),
+            "name": "role",
+            "type": "text",
+            "label": i18n.get("role"),
+            "text": "List of coma sperated roles"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("contact"),
+            "name": "url",
+            "type": "text",
+            "label": i18n.get("url"),
+            "text": "http://my-home-page.com"
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("Avatar/Picture"),
             "name": "uploadAvatarLabel",
             "type": "description",
