@@ -261,7 +261,7 @@ window.addEvent("domready", function () {
                     chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
                     {
                         uportWin = win;
-                        chrome.windows.update(win.id, {drawAttention: true, width: 500, height: 650});
+                        chrome.windows.update(win.id, {drawAttention: true, width: 500, height: 700});
                     });
                 }
             }
@@ -369,7 +369,6 @@ function doDefaults()
 
     // converse
     setSetting("enableInverse", true);
-    setSetting("notifyAllRoomMessages", true);
     setSetting("allowNonRosterMessaging", true);
     setSetting("rosterGroups", true);
     setSetting("autoReconnect", true);

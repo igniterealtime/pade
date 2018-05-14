@@ -2074,8 +2074,14 @@ function updateVCard()
 {
     console.log("updateVCard");
 
-    var displayname = getSetting("displayname", Strophe.getNodeFromJid(pade.connection.jid));
-    var avatar = getSetting("avatar", createAvatar(null, displayname));
+    var avatar = getSetting("avatar", null);
+
+    if (!avatar)
+    {
+        avatar = createAvatar(pade.displayName);
+        setSetting("avatar", avatar);
+    }
+
     var email = getSetting("email", "");
     var phone = getSetting("phone", "");
     var country = getSetting("country", "");
@@ -2091,8 +2097,8 @@ function updateVCard()
 
     getVCard(jid, function(vCard)
     {
-        vCard.name = displayname;
-        vCard.nickname = displayname;
+        vCard.name = pade.displayName;
+        vCard.nickname = pade.displayName;
         vCard.email = email;
         vCard.workPhone = phone;
         vCard.country = country;
@@ -2121,7 +2127,7 @@ function updateVCard()
     }, avatarError);
 }
 
-var createAvatar = function(avatar, nickname)
+var createAvatar = function(nickname)
 {
     var canvas = document.createElement('canvas');
     canvas.style.display = 'none';
@@ -2152,8 +2158,7 @@ var createAvatar = function(avatar, nickname)
         }
         var data = canvas.toDataURL();
         document.body.removeChild(canvas);
-        avatar = data.split(";base64,")[1];
     }
 
-    return avatar;
+    return canvas.toDataURL();
 }
