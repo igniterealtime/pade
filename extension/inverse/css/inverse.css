@@ -7652,12 +7652,14 @@ body {
   margin: 0 0.3em; }
 #conversejs.fullscreen .flyout {
   border-radius: 0;
-  border: 1.2em solid #3AA569;
+  border: 1px solid #ccc;
   border-top: 0.8em solid #3AA569;
   bottom: 0; }
 #conversejs.fullscreen .chat-head {
   font-size: 20px;
-  padding: 0; }
+  /*padding: 0; */
+  padding: 0 12px 0 12px;
+  }
   #conversejs.fullscreen .chat-head .user-custom-message {
     font-size: 50%;
     height: auto;
@@ -7688,8 +7690,8 @@ body {
     box-shadow: none; }
   #conversejs.fullscreen .chatbox .chat-body {
     background-color: #3AA569;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px; }
+    /*border-top-left-radius: 4px;*/
+    /*border-top-right-radius: 4px;*/ }
     #conversejs.fullscreen .chatbox .chat-body .chat-message {
       line-height: 22px;
       font-size: 14px; }
@@ -7701,8 +7703,9 @@ body {
           height: 22px;
           margin-bottom: -5.5px; }
   #conversejs.fullscreen .chatbox .chat-content {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px; }
+    /*border-top-left-radius: 4px;*/
+    /*border-top-right-radius: 4px;*/ 
+  }
   #conversejs.fullscreen .chatbox .chat-title {
     font-size: 26px;
     line-height: 30px; }
@@ -7974,7 +7977,13 @@ body {
   #conversejs #controlbox .controlbox-panes {
     height: 100%;
     overflow-y: auto;
-    background-color: white; }
+    background-color: white; 
+  }
+
+  #conversejs #controlbox .controlbox-panes::-webkit-scrollbar {
+    display: none;
+  }
+
   #conversejs #controlbox .controlbox-pane {
     padding: 1.2em;
     background-color: white;
@@ -8549,23 +8558,23 @@ body {
 #conversejs.converse-fullscreen .chatroom .box-flyout,
 #conversejs.converse-mobile .chatroom .box-flyout {
   background-color: #E77051;
-  border: 1.2em solid #E77051;
+  /*border: 1.2em solid #E77051;*/
   border-top: 0.8em solid #E77051;
   width: 100%; }
   #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body,
   #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px; }
+    /*border-top-left-radius: 4px;*/
+    /*border-top-right-radius: 4px;*/ }
     #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body .chatroom-form-container,
     #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .chatroom-form-container {
       border-radius: 4px; }
     #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body .chat-area,
     #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .chat-area {
-      border-top-left-radius: 4px;
+      /*border-top-left-radius: 4px;*/
       min-width: auto; }
       #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body .chat-area .chat-content,
       #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .chat-area .chat-content {
-        border-top-left-radius: 4px; }
+        /*border-top-left-radius: 4px;*/ }
       #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body .chat-area.full,
       #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .chat-area.full {
         max-width: 100%; }
@@ -8574,7 +8583,7 @@ body {
           max-width: 100%; }
     #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body .occupants,
     #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .occupants {
-      border-top-right-radius: 4px;
+      /*border-top-right-radius: 4px;*/
       padding: 1em; }
       #conversejs.converse-fullscreen .chatroom .box-flyout .chatroom-body .occupants .occupants-heading,
       #conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .occupants .occupants-heading {

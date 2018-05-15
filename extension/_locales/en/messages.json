@@ -80,10 +80,14 @@
     "url": {
         "message": "Url",
         "description": "Home Page UL"
-    },    
+    },  
     "connection": {
         "message": "Connection",
         "description": "Connection"
+    },    
+    "permission": {
+        "message": "Permission",
+        "description": "Access/permission key required for REST"
     },
     "username": {
         "message": "Username:",

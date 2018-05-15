@@ -346,6 +346,9 @@ window.addEvent("domready", function () {
 
 function doDefaults()
 {
+    // connection
+    setSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));        
+    
     // preferences
     setSetting("popupWindow", true);
     setSetting("enableLipSync", false);

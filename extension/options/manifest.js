@@ -17,7 +17,15 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("domain"),
             "text": "domain name"
-        },
+        },        
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("connection"),
+            "name": "uportPermission",
+            "type": "text",
+            "label": i18n.get("permission"),
+            "text": i18n.get("uport_permission")
+        },        
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
@@ -622,6 +630,7 @@ this.manifest = {
     "alignment": [
         [
             "server",
+            "uportPermission",
             "domain"
         ],
         [
