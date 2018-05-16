@@ -28,9 +28,9 @@ window.addEventListener("load", function()
     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " uPort Identity";
 
     background = chrome.extension.getBackgroundPage();
-    
+
     var server = background.getSetting("server", null);
-    domain = background.getSetting("domain", server);    
+    domain = background.getSetting("domain", server);
 
     if (server)
     {
@@ -77,10 +77,10 @@ window.addEventListener("load", function()
                         window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(credentials.registration.access));
 
                         setTimeout(function(){background.reloadApp();}, 500);
-                        
+
                     } else {
                         console.error('Login error', error);
-                        document.getElementById("uport_status").innerHTML = "uPort credentials are not for server " + server + ", found " + credentials.registration.xmpp;                    
+                        document.getElementById("uport_status").innerHTML = "uPort credentials are not for server " + server + ", found " + credentials.registration.xmpp;
                     }
 
                 } else {
@@ -108,7 +108,7 @@ window.addEventListener("load", function()
                             console.log('Account:' + account);
 
                             var url = "https://" + server + "/rest/api/restapi/v1/ask/uport/register";
-                            var options = {method: "POST", headers: {"authorization": permission}, body: JSON.stringify({name: credentials.name, email: credentials.email, phone: credentials.phone, country: credentials.country, address: credentials.address, publicKey: credentials.publicKey, avatar: avatar, password: password, account: account})};
+                            var options = {method: "POST", headers: {"authorization": permission}, body: JSON.stringify({name: credentials.name, email: credentials.email, phone: credentials.phone, country: credentials.country, address: credentials.address, publicKey: credentials.publicKey, avatar: credentials.avatar, password: password, account: account})};
 
                             console.log("uport rest", url, options);
 

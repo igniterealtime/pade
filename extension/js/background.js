@@ -1267,6 +1267,7 @@ function addHandlers()
         $(message).find('body').each(function ()
         {
             var body = $(this).text();
+            var pos0 = body.indexOf("/jitsimeet/index.html?room=")
             var pos1 = body.indexOf("/ofmeet/");
             var pos2 = body.indexOf("https://" + pade.server)
 
@@ -1274,11 +1275,19 @@ function addHandlers()
 
             console.log("message handler body", body, offerer);
 
+            if ( pos0 > -1 && pos2 > -1 )
+            {
+                room = body.substring(pos0 + 27);
+                handleInvitation({room: room, offerer: offerer});
+            }
+            else
+
             if ( pos1 > -1 && pos2 > -1 )
             {
                 room = body.substring(pos1 + 8);
                 handleInvitation({room: room, offerer: offerer});
             }
+
         });
 
         $(message).find('x').each(function ()

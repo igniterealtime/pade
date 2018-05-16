@@ -72,7 +72,12 @@
                 hide_open_bookmarks: true,
                 ofswitch: false,
                 uport_data: {avatar: "", name: "", email: "", phone: "", country: ""},
-                webmeet_invitation: 'Please join meeting at:'
+                webmeet_record: false,
+                webmeet_record_audio: false,
+                webmeet_record_video: false,
+                webmeet_transcription: false,
+                webmeet_captions: false,
+                webmeet_invitation: 'Please join meeting in room '
             });
 
             /* The user can then pass in values for the configuration
@@ -87,25 +92,6 @@
             _converse.on('messageAdded', function (data) {
                 // The message is at `data.message`
                 // The original chatbox is at `data.chatbox`.
-
-                var message = data.message;
-
-                if (message.attributes.message)
-                {
-                    //console.log("messageAdded", message);
-
-                    if (message.attributes.nick && !message.vcard.attributes.fullname) // no vcard
-                    {
-                        message.vcard.attributes.image = createAvatar(message.vcard.attributes.image, message.attributes.nick);
-                    }
-
-                    if (!document.hasFocus() && window.parent && window.parent.ofmeet)
-                    {
-                        window.parent.ofmeet.doBadge(++messageCount);
-                    } else {
-                        messageCount = 0;
-                    }
-                }
             });
 
             console.log("webmeet plugin is ready");
@@ -155,10 +141,13 @@
                 // Your custom code can come here ...
 
                 var uPort = _converse.api.settings.get("uport_data");
+                var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
                 //console.log("Found uport data", uPort);
 
-                if (uPort && uPort.name != "" && uPort.avatar != "")
+                // only save avatar if user has success with uport
+
+                if (username && username != "" && uPort && uPort.name != "" && uPort.avatar != "")
                 {
                     var stanza = $iq({type: 'get', to: Strophe.getBareJidFromJid(_converse.connection.jid)}).c('vCard', {xmlns: 'vcard-temp'});
 
@@ -194,6 +183,7 @@
 
                                 }, function(err) {
                                     console.log("set vcard error", err);
+                                    _converse.__super__.onConnected.apply(this, arguments);
                                 });
                             }
 
@@ -209,10 +199,82 @@
                 }
             },
 
+            MessageView: {
+
+                renderChatMessage: function renderChatMessage()
+                {
+                    //console.log('webmeet - renderChatMessage', this.model);
+
+                    var body = this.model.get('message');
+                    var nick = this.model.getDisplayName();
+
+                    if (nick && !this.model.vcard.attributes.fullname) // no vcard
+                    {
+                        this.model.vcard.attributes.image = createAvatar(this.model.vcard.attributes.image, nick);
+                    }
+
+                    if (!document.hasFocus() && window.parent && window.parent.ofmeet)
+                    {
+                        window.parent.ofmeet.doBadge(++messageCount);
+                    } else {
+                        messageCount = 0;
+                    }
+
+                    var pos = body.indexOf("https://" + _converse.api.settings.get("bosh_service_url").split("/")[2])
+
+                    if (pos > -1)
+                    {
+                        var setupHandler = function(chat, room)
+                        {
+                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + _converse.api.settings.get("webmeet_invitation") + room + '</a></span> <div class="chat-msg-media"></div> </div>';
+                            chat.replaceElement(msg_content);
+
+                            setTimeout(function()
+                            {
+                                document.getElementById(room).onclick = function()
+                                {
+                                    doAVConference(room);
+                                }
+                            });
+
+                        }
+
+                        var pos0 = body.indexOf("/jitsimeet/index.html?room=")
+                        var pos1 = body.indexOf("/ofmeet/");
+
+                        var moment_time = moment(this.model.get('time'));
+                        var pretty_time = moment_time.format(_converse.time_format);
+                        var time = moment_time.format();
+
+                        var msg_content = document.createElement("div");
+                        msg_content.setAttribute("class", "message chat-msg groupchat");
+                        msg_content.setAttribute("data-isodate", time);
+
+                        if ( pos0 > -1)
+                        {
+                            //console.log("audio/video invite", body);
+                            setupHandler(this, body.substring(pos0 + 27));
+                        }
+                        else
+
+                        if ( pos1 > -1)
+                        {
+                            //console.log("audio/video invite", body);
+                            setupHandler(this, body.substring(pos1 + 8));
+
+                        } else {
+                            this.__super__.renderChatMessage.apply(this, arguments);
+                        }
+                    } else {
+                        this.__super__.renderChatMessage.apply(this, arguments);
+                    }
+                }
+            },
+
             ChatBoxView: {
 
                 toggleCall: function toggleCall(ev) {
-                    console.log("toggleCall", this.model);
+                    //console.log("toggleCall", this.model);
 
                     ev.stopPropagation();
 
@@ -224,7 +286,7 @@
 
                         iframeURLChange(jitsiDiv, function (newURL)
                         {
-                            if (newURL.indexOf("jitsimeet") == -1 && newURL.indexOf("phone") == -1)
+                            if (newURL.indexOf("/jitsimeet/") == -1 && newURL.indexOf("/phone/") == -1)
                             {
                                 converseDiv.style.display = "inline";
                                 jitsiDiv.style.display = "none";
@@ -237,13 +299,13 @@
                         jitsiDiv.style.display = "inline";
 
                     } else {
-                        console.log('callButtonClicked', {connection: _converse.connection});
-                        bgWindow.openPhoneWindow();
+                        //console.log('callButtonClicked');
+                        bgWindow.openPhoneWindow(true);
                     }
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    console.log('webmeet - renderToolbar', this.model);
+                    //console.log('webmeet - renderToolbar', this.model);
 
                     currentRoom = this;
 
@@ -306,9 +368,10 @@
         }
     });
 
-    var doVideo = function doExit(event)
+    var doAVConference = function doAVConference(room)
     {
-        console.log("doVideo", event);
+        //console.log("doAVConference", room);
+        var url = null;
 
         if (_converse.view_mode === 'embedded')
         {
@@ -319,20 +382,15 @@
             if (_converse.api.settings.get("ofswitch") == false)
             {
                 var url = "../jitsimeet/index.html?room=";
-                var room = Strophe.getNodeFromJid(currentRoom.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
                 url = url + room;
 
                 var a = document.createElement('a');
                 a.href = url;
                 url = a.href;
 
-                currentRoom.onMessageSubmitted(_converse.api.settings.get("webmeet_invitation") + ' ' + url);
-
-                //window.open(url, location.href);
-
                 iframeURLChange(jitsiDiv, function (newURL)
                 {
-                    if (newURL.indexOf("jitsimeet") == -1)
+                    if (newURL.indexOf("/jitsimeet/") == -1 && newURL.indexOf("/phone/") == -1)
                     {
                         converseDiv.style.display = "inline";
                         jitsiDiv.style.display = "none";
@@ -349,13 +407,23 @@
             }
 
         } else {
-            var room = Strophe.getNodeFromJid(currentRoom.model.attributes.jid) + Math.random().toString(36).substr(2,9);
             var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
-
-            console.log('callButtonClicked', {connection: _converse.connection,  room});
-
-            currentRoom.onMessageSubmitted(_converse.api.settings.get("ofmeet_invitation") + ' ' + url);
             bgWindow.openVideoWindow(room);
+        }
+        return url;
+    }
+
+    var doVideo = function doVideo(event)
+    {
+        //console.log("doVideo", event, room);
+
+        var room = Strophe.getNodeFromJid(currentRoom.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+        url = doAVConference(room);
+
+        if (_converse.api.settings.get("ofswitch") == false)
+        {
+            var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
+            currentRoom.onMessageSubmitted(inviteMsg);
         }
     }
 
@@ -451,7 +519,7 @@
             $(error).find('text').each(function()
             {
                 errorText = $(this).text();
-                //console.log("webmeet.upload.uploadFile error", errorText);
+                //console.error("webmeet.upload.uploadFile error", errorText);
                 view.onMessageSubmitted(errorText);
             });
         });
