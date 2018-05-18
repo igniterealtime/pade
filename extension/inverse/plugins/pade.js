@@ -80,42 +80,6 @@
                 // The message is at `data.message`
                 // The original chatbox is at `data.chatbox`.
 
-                var message = data.message;
-
-                if (bgWindow.pade.minimised && message.attributes.message)
-                {
-                    //console.log("messageAdded", message);
-
-                    var from = message.vcard.attributes.fullname || message.attributes.from;
-                    var text = message.attributes.type ? message.attributes.type + " : " + message.attributes.message: message.attributes.message;
-
-                    if (getSetting("notifyAllRoomMessages", false))
-                    {
-                        // TODO move to background page
-                        notifyMe(text, from, message.attributes.message);
-                    }
-
-                    if (getSetting("notifyOnInterests", false))
-                    {
-                        var interestList = (getSetting("username", "") + "," + getSetting("interestList", "")).split(",");
-                        var foundInterest = false;
-
-                        for (var i=0; i<interestList.length; i++)
-                        {
-                            if (interestList[i] != "")
-                            {
-                                var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
-
-                                if (searchRegExp.test(message.attributes.message))
-                                {
-                                    // TODO move to background page
-                                    notifyMe(text, from, message.attributes.message);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
             });
 
             console.log("pade is ready");
@@ -208,6 +172,51 @@
                 _converse.__super__.onConnected.apply(this, arguments);
 
                 // Your custom code can come here ...
+            },
+
+            MessageView: {
+
+                renderChatMessage: function renderChatMessage()
+                {
+                    this.__super__.renderChatMessage.apply(this, arguments);
+
+                    var body = this.model.get('message');
+                    var from = this.model.getDisplayName();
+
+                    if (bgWindow.pade.minimised && body)
+                    {
+                        //console.log("messageAdded", body);
+
+                        var text = this.model.get('type') ? this.model.get('type') + " : " + body : body;
+
+                        if (getSetting("notifyAllRoomMessages", false))
+                        {
+                            // TODO move to background page
+                            notifyMe(text, from, from);
+                        }
+
+                        if (getSetting("notifyOnInterests", false))
+                        {
+                            var interestList = (getSetting("username", "") + "," + getSetting("interestList", "")).split(",");
+                            var foundInterest = false;
+
+                            for (var i=0; i<interestList.length; i++)
+                            {
+                                if (interestList[i] != "")
+                                {
+                                    var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+
+                                    if (searchRegExp.test(body))
+                                    {
+                                        // TODO move to background page
+                                        notifyMe(text, from, from);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
 
             /* Override converse.js's XMPPStatus Backbone model so that we can override the

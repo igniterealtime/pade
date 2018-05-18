@@ -1287,6 +1287,13 @@ function addHandlers()
                 room = body.substring(pos1 + 8);
                 handleInvitation({room: room, offerer: offerer});
             }
+            else
+
+            if (!pade.chatWindow)
+            {
+                // converse/inverse is closed generate notification
+                processChatNotification(from, body);
+            }
 
         });
 
@@ -1613,6 +1620,18 @@ function processInvitation(title, label, room, autoaccept)
     } else {
         acceptCall(title, label, room);
     }
+}
+
+function processChatNotification(from, body)
+{
+    notifyText(body, from, null, [{title: "View", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+    {
+        if (buttonIndex == 0)   // accept
+        {
+            if (getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
+            if (getSetting("enableChat", false)) openChatWindow("groupchat/index.html");
+        }
+    }, from);
 }
 
 function acceptCall(title, label, room)

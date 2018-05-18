@@ -23,7 +23,6 @@
 
      var _converse = null;
      var messageCount = 0;
-     var currentRoom = null;
 
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -307,10 +306,9 @@
                 renderToolbar: function renderToolbar(toolbar, options) {
                     //console.log('webmeet - renderToolbar', this.model);
 
-                    currentRoom = this;
-
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
+                    var view = this;
                     var id = this.model.get("box_id");
                     var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conferennce"></a></li>';
                     $(this.el).find('.toggle-call').after(html);
@@ -338,7 +336,15 @@
                         if (exitButton) exitButton.addEventListener('click', doExit, false);
 
                         var exitJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
-                        if (exitJitsiMeet) exitJitsiMeet.addEventListener('click', doVideo, false);
+
+                        if (exitJitsiMeet)
+                        {
+                            exitJitsiMeet.addEventListener('click', function()
+                            {
+                                doVideo(view);
+
+                            }, false);
+                        }
                     });
 
                     return result;
@@ -413,17 +419,17 @@
         return url;
     }
 
-    var doVideo = function doVideo(event)
+    var doVideo = function doVideo(view)
     {
-        //console.log("doVideo", event, room);
+        //console.log("doVideo", view);
 
-        var room = Strophe.getNodeFromJid(currentRoom.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
         url = doAVConference(room);
 
         if (_converse.api.settings.get("ofswitch") == false)
         {
             var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
-            currentRoom.onMessageSubmitted(inviteMsg);
+            view.onMessageSubmitted(inviteMsg);
         }
     }
 
