@@ -2,6 +2,8 @@ window.addEventListener("load", function()
 {
     console.log(chrome.i18n.getMessage('manifest_shortExtensionName') + " is trying to get permissions to use your video/audio devices");
 
+    // webrtc permission for mic and webcam
+
     navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(function(stream)
     {
         console.log(chrome.i18n.getMessage('manifest_shortExtensionName') + " now has permissions to use your video/audio devices");
@@ -21,6 +23,8 @@ window.addEventListener("load", function()
         console.error("Error trying to get the stream:: " + err.message);
     });
 
+    // register MIDI permissions for APC
+
     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 
     function onMIDISuccess(midiAccess) {
@@ -30,5 +34,4 @@ window.addEventListener("load", function()
     function onMIDIFailure(e) {
         console.error("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + e);
     }
-
 });

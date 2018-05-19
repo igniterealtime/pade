@@ -2,6 +2,23 @@ var bgWindow = null;
 
 window.addEventListener("load", function()
 {
+    var url = urlParam("url");
+    var domain = getSetting("domain", null);
+
+    if (url && (url.indexOf("im:") == 0 || url.indexOf("xmpp:") == 0) && window.location.hash == "")
+    {
+        var href = "index.html#converse/chat?jid=" + url.substring(3);
+        if (url.indexOf("xmpp:") == 0) href = "index.html#converse/room?jid=" + url.substring(5);
+
+        if (href.indexOf("@") == -1 && domain != null)
+        {
+            href = href + "@" + (url.indexOf("xmpp:") == 0 ? "conference." + domain : domain);
+        }
+
+
+        location.href = href;
+    }
+
     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse";
 
     function getUniqueID()
@@ -84,6 +101,15 @@ window.addEventListener("load", function()
                 connUrl = "wss://" + server + "/ws/";
             }
 
+            var whitelistedPlugins = ["webmeet", "pade"];
+            var viewMode = 'fullscreen';
+
+            if (window.location.hash.length > 1)    // single conversation mode
+            {
+                whitelistedPlugins = ["webmeet"];
+                viewMode = 'mobile';
+            }
+
             var config =
             {
               authentication: "login",
@@ -94,7 +120,7 @@ window.addEventListener("load", function()
               domain_placeholder: domain,
               default_domain: domain,
               locked_domain: domain,
-              whitelisted_plugins: ["webmeet", "pade"],
+              whitelisted_plugins: whitelistedPlugins,
               bosh_service_url: "https://" + server + "/http-bind/",
               websocket_url: connUrl,
               auto_away: 300,
@@ -109,7 +135,7 @@ window.addEventListener("load", function()
               allow_public_bookmarks: true,
               play_sounds: true,
               ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
-              view_mode: 'fullscreen'
+              view_mode: viewMode
             };
 
             converse.initialize( config );

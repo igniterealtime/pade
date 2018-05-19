@@ -17,15 +17,7 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("domain"),
             "text": "domain name"
-        },        
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
-            "name": "uportPermission",
-            "type": "text",
-            "label": i18n.get("permission"),
-            "text": i18n.get("uport_permission")
-        },        
+        },
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
@@ -46,6 +38,14 @@ this.manifest = {
             "name": "uport",
             "type": "button",
             "text": i18n.get("QR Code")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("uPort"),
+            "name": "uportPermission",
+            "type": "text",
+            "label": i18n.get("permission"),
+            "text": i18n.get("uport_permission")
         },
         {
             "tab": i18n.get("connection"),
@@ -223,6 +223,13 @@ this.manifest = {
             "name": "audioOnly",
             "type": "checkbox",
             "label": i18n.get("Audioconference Only")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
+            "name": "registerUrlProtocols",
+            "type": "checkbox",
+            "label": i18n.get("Register Url Protocols im: (chat) and xmpp: (meeting)")
         },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),

@@ -306,6 +306,11 @@
                 renderToolbar: function renderToolbar(toolbar, options) {
                     //console.log('webmeet - renderToolbar', this.model);
 
+                    if (_converse.view_mode === 'mobile')
+                    {
+                         document.title = this.model.attributes.jid;
+                    }
+
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
                     var view = this;

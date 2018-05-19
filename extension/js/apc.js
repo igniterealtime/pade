@@ -324,7 +324,7 @@ function handleButtonState(message)
             console.log("handleButtonState call", call);
             var color = call.page != 0 ? "green" : "red";
 
-            // XMPP
+            // XMPP - COLIBRI
 
             if (message.event == "connected")
             {
@@ -487,6 +487,47 @@ function handleCallAction(button)
 
         if (call.state == "disconnected" || call.state == "invited")
         {
+            if (call.value.indexOf("im:") == 0)
+            {
+                var jid = call.value.substring(3);
+
+                if (jid.indexOf("@") == -1)
+                {
+                    var domain = bgWindow.getSetting("domain", null);
+                    jid = jid + "@" + domain;
+                }
+
+                if (bgWindow.pade.chatsWindow[jid])
+                {
+                    bgWindow.closeChatsWindow(jid);
+
+                } else {
+                    bgWindow.openChatsWindow("inverse/index.html#converse/chat?jid=" + jid, jid);
+                }
+            }
+            else
+
+            if (call.value.indexOf("xmpp:") == 0)
+            {
+                var jid = call.value.substring(5);
+
+                if (jid.indexOf("@") == -1)
+                {
+                    var domain = bgWindow.getSetting("domain", null);
+                    jid = jid + "@conference." + domain;
+                }
+
+                if (bgWindow.pade.chatsWindow[jid])
+                {
+                    bgWindow.closeChatsWindow(jid);
+
+                } else {
+                    bgWindow.openChatsWindow("inverse/index.html#converse/room?jid=" + jid, jid);
+                }
+
+            }
+            else
+
             if (notAudio(button, call) == false)
             {
                 muteActiveCall(call);
@@ -564,10 +605,14 @@ function notAudio(button, call)
 
     if (getKeyColor(89) == "green")
     {
-       var url = getInverseUrl(call.value);
-       console.log("notAudio", url, button, call);
-       bgWindow.openChatWindow(url, true);
-       return true;
+       var link = getInverseUrl(call.value);
+       console.log("notAudio", link, button, call);
+
+       if (link)
+       {
+            bgWindow.openChatsWindow(link.url, link.id);
+            return false
+       }
     }
 
     return false;
@@ -586,12 +631,19 @@ function getInverseUrl(name)
 
             if (jid[0].indexOf("@") > -1)
             {
-                return "inverse/index.html#converse/chat?jid=" + jid[0];
+                return {url: "inverse/index.html#converse/chat?jid=" + jid[0], id: jid[0]};
 
             } else {
-                return "inverse/index.html#converse/room?jid=" + url[3] + "@conference." + domain;
+                return {url: "inverse/index.html#converse/room?jid=" + url[3] + "@conference." + domain, id: url[3]};
             }
         }
     }
-    return "inverse/index.html#converse/room?jid=" + name + "@conference." + bgWindow.pade.domain;
+    else
+
+    if (name.startsWith("tel:") || name.startsWith("sip:"))
+    {
+        return null;
+    }
+
+    return {url: "inverse/index.html#converse/room?jid=" + name + "@conference." + bgWindow.pade.domain, id: name};
 }

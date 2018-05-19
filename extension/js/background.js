@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: []}
+var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: []}
 var callbacks = {}
 
 // uPort
@@ -82,7 +82,6 @@ window.addEventListener("unload", function ()
     closeBlogWindow();
     closeBlastWindow();
     closeVertoWindow();
-    closeWebAppsWindow();
     closeApcWindow();
     closeOffice365Window(true);
     closeOffice365Window(false);
@@ -99,6 +98,16 @@ window.addEventListener("unload", function ()
     for (var i=0; i<webApps.length; i++)
     {
         closeWebAppsWindow(webApps[i]);
+    }
+
+    var chats = Object.getOwnPropertyNames(pade.chatsWindow);
+
+    for (var y = 0; y<chats.length; y++)
+    {
+        if (pade.chatsWindow[chats[y]] && win == pade.chatsWindow[chats[y]].id)
+        {
+           closeChatsWindow(chats[y]);
+        }
     }
 
     etherlynk.disconnect();
@@ -448,6 +457,17 @@ window.addEventListener("load", function()
                 delete pade.webAppsWindow[webApps[i]];
             }
         }
+
+        var chats = Object.getOwnPropertyNames(pade.chatsWindow);
+
+        for (var y = 0; y<chats.length; y++)
+        {
+            if (pade.chatsWindow[chats[y]] && win == pade.chatsWindow[chats[y]].id)
+            {
+               delete pade.chatsWindow[chats[y]];
+            }
+        }
+
     });
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
@@ -965,7 +985,31 @@ function openWebAppsWindow(url, state)
     }
 }
 
+function closeChatsWindow(window)
+{
+    if (pade.chatsWindow[window] != null)
+    {
+        chrome.windows.remove(pade.chatsWindow[window].id);
+        delete pade.chatsWindow[window];
+    }
+}
 
+function openChatsWindow(url, from)
+{
+    var data = {url: chrome.extension.getURL(url), type: "popup", focused: true};
+
+    if (!pade.chatsWindow[from])
+    {
+        chrome.windows.create(data, function (win)
+        {
+            pade.chatsWindow[from] = win;
+            chrome.windows.update(pade.chatsWindow[from].id, {drawAttention: true, width: 761, height: 900});
+        });
+
+    } else {
+        chrome.windows.update(pade.chatsWindow[from].id, {drawAttention: true, focused: true});
+    }
+}
 
 function closePhoneWindow()
 {
@@ -1013,6 +1057,9 @@ function closeChatWindow()
 function openChatWindow(url, update, state)
 {
     var data = {url: chrome.extension.getURL(url), type: "popup", focused: true};
+    var width = 1300;
+
+    if (url.indexOf("#") > -1) width = 761;    // width of mobile view_mode
 
     if (state == "minimized")
     {
@@ -1027,7 +1074,7 @@ function openChatWindow(url, update, state)
         chrome.windows.create(data, function (win)
         {
             pade.chatWindow = win;
-            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: 1300, height: 900});
+            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: width, height: 900});
         });
 
     } else {
@@ -1289,10 +1336,10 @@ function addHandlers()
             }
             else
 
-            if (!pade.chatWindow)
+            if (!pade.chatWindow && !pade.chatsWindow[offerer])
             {
                 // converse/inverse is closed generate notification
-                processChatNotification(from, body);
+                processChatNotification(offerer, body);
             }
 
         });
@@ -1628,7 +1675,7 @@ function processChatNotification(from, body)
     {
         if (buttonIndex == 0)   // accept
         {
-            if (getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
+            if (getSetting("enableInverse", false)) openChatsWindow("inverse/index.html#converse/chat?jid=" + from, from);
             if (getSetting("enableChat", false)) openChatWindow("groupchat/index.html");
         }
     }, from);

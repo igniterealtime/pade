@@ -247,6 +247,13 @@ window.addEvent("domready", function () {
             }
         });
 
+
+        settings.manifest.registerUrlProtocols.addEvent("action", function ()
+        {
+            navigator.registerProtocolHandler("im",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Conversation");
+            navigator.registerProtocolHandler("xmpp",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Meeting");
+        });
+
         settings.manifest.uport.addEvent("action", function ()
         {
             if (getSetting("useUport"))
@@ -347,8 +354,8 @@ window.addEvent("domready", function () {
 function doDefaults()
 {
     // connection
-    setSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));        
-    
+    setSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
+
     // preferences
     setSetting("popupWindow", true);
     setSetting("enableLipSync", false);
