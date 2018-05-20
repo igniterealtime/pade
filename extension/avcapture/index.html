@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+-->
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <title>A/V Capture</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/record.css">
+</head>
+
+<body>
+  <div id="container">
+
+    <div class="select">
+      <label for="videoSource">Video input: </label><br/><select id="videoSource"></select>
+    </div>
+
+    <div class="select">
+      <label for="audioSource">Audio input: </label><br/><select id="audioSource"></select>
+    </div>
+
+    <div class="select">
+      <label for="audioOutput">Audio output: </label><br/><select id="audioOutput"></select>
+    </div>
+
+    <video id="gum" autoplay muted></video>
+    <video id="recorded" autoplay controls></video>
+
+    <div>
+      <button id="start">Start</button>
+      <button id="record" disabled>Start Recording</button>
+      <button id="play" disabled>Play</button><br/>
+      <button id="download" disabled>Download</button>
+      <input id="filename" type="text" value="memo.webm" />
+    </div>
+  </div>
+
+  <script src="js/adapter.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

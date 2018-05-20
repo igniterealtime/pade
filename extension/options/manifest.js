@@ -521,7 +521,14 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Message Blast")
         },
-        {
+        {                                       // a/v capture
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("A/V Capture"),
+            "name": "enableAVCapture",
+            "type": "checkbox",
+            "label": i18n.get("Enable Audio/Video Capture")
+        },
+        {                                       // sip phone
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Phone"),
             "name": "enableSip",

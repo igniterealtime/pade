@@ -212,6 +212,17 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.enableAVCapture.addEvent("action", function ()
+        {
+            if (getSetting("enableAVCapture"))
+            {
+                background.addAVCaptureMenu();
+
+            } else {
+               background.removeAVCaptureMenu();
+            }
+        });
+
         settings.manifest.enableVerto.addEvent("action", function ()
         {
             if (getSetting("enableVerto"))

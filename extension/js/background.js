@@ -80,6 +80,7 @@ window.addEventListener("unload", function ()
     closeVideoWindow();
     closePhoneWindow();
     closeBlogWindow();
+    closeAVCaptureWindow();
     closeBlastWindow();
     closeVertoWindow();
     closeApcWindow();
@@ -288,6 +289,7 @@ window.addEventListener("load", function()
     addInverseMenu();
     addBlogMenu();
     addBlastMenu();
+    addAVCaptureMenu();
     addVertoMenu();
     addTouchPadMenu();
     addOffice365Business();
@@ -396,6 +398,10 @@ window.addEventListener("load", function()
         if (pade.blogWindow && win == pade.blogWindow.id)
         {
             pade.blogWindow = null;
+        }
+        if (pade.avCaptureWindow && win == pade.avCaptureWindow.id)
+        {
+            pade.avCaptureWindow = null;
         }
 
         if (pade.blastWindow && win == pade.blastWindow.id)
@@ -1138,6 +1144,32 @@ function openBlogWindow()
         });
     } else {
         chrome.windows.update(pade.blogWindow.id, {drawAttention: true, focused: true});
+    }
+}
+
+function closeAVCaptureWindow()
+{
+    if (pade.avCaptureWindow != null)
+    {
+        try {
+            chrome.windows.remove(pade.avCaptureWindow.id);
+        } catch (e) {}
+    }
+}
+
+function openAVCaptureWindow()
+{
+    if (!pade.avCaptureWindow)
+    {
+        var url = chrome.extension.getURL("avcapture/index.html");
+
+        chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
+        {
+            pade.avCaptureWindow = win;
+            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 600, drawAttention: true});
+        });
+    } else {
+        chrome.windows.update(pade.avCaptureWindow.id, {drawAttention: true, focused: true});
     }
 }
 
@@ -1922,6 +1954,23 @@ function addBlogMenu()
     }
 }
 
+function removeAVCaptureMenu()
+{
+    closeAVCaptureWindow();
+    chrome.contextMenus.remove("pade_avcapture");
+}
+
+function addAVCaptureMenu()
+{
+    if (getSetting("enableAVCapture", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_avcapture", type: "normal", title: "Audio/Video Capture", contexts: ["browser_action"],  onclick: function()
+        {
+            openAVCaptureWindow();
+        }});
+    }
+}
+
 function removeBlogMenu()
 {
     closeBlogWindow();
@@ -1938,7 +1987,6 @@ function addBlastMenu()
         }});
     }
 }
-
 function removeBlastMenu()
 {
     closeBlastWindow();
