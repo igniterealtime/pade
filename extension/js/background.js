@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: []}
+var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: [], vcards: {}}
 var callbacks = {}
 
 // uPort
@@ -495,13 +495,6 @@ window.addEventListener("load", function()
             chrome.browserAction.setPopup({popup: "popup.html"});
         }
 
-        // setup stream deck
-
-        if (getSetting("useStreamDeck", false))
-        {
-            setupStreamDeck();
-        }
-
         // setup jabra speak
 
         if (getSetting("useJabra", false))
@@ -546,6 +539,8 @@ window.addEventListener("load", function()
                     });
 
                     updateVCard();
+                    setupStreamDeck();
+
                 });
             }
             else
@@ -2338,6 +2333,11 @@ function createStreamDeckImage(text, fill)
 
 function setupStreamDeck()
 {
+    if (!getSetting("useStreamDeck", false))
+    {
+        return;
+    }
+
     pade.streamDeckPort = chrome.runtime.connectNative("pade.stream.deck");
 
     if (pade.streamDeckPort)
@@ -2388,19 +2388,58 @@ function setupStreamDeck()
 
         for (var b=5; b<15; b++)
         {
-            var p = pade.streamDeckPage;                  // page 91-5)
-            var i = b < 13 ? 1 : 2;     // row 1 - 2 (2x10 = 20)
-            var j = ((b - 5) % 8) + 1;  // cols 1 - 8 plus 2 = 10
+            setupStreadDeckKey(b);
+        }
+    }
+}
 
-            if (getSetting("cellEnabled_" + p + "_" + i + "_" + j, false))
+function setupStreadDeckKey(b)
+{
+    var p = pade.streamDeckPage;                    // page 91-5)
+    var i = b < 13 ? 1 : 2;                         // row 1 - 2 (2x10 = 20)
+    var j = ((b - 5) % 8) + 1;                      // cols 1 - 8 plus 2 = 10
+
+    if (getSetting("cellEnabled_" + p + "_" + i + "_" + j, false))
+    {
+        var label = getSetting("cellLabel_" + p + "_" + i + "_" + j, null);
+        var value = getSetting("cellValue_" + p + "_" + i + "_" + j, null);
+
+        if (value && value.indexOf("im:") == 0)
+        {
+            var jid = value.substring(3);
+
+            if (jid.indexOf("@") == -1)
             {
-                var label = getSetting("cellLabel_" + p + "_" + i + "_" + j, null);
-
-                if (label)
-                {
-                    pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: createStreamDeckImage(label)});
-                }
+                var domain = getSetting("domain", null);
+                jid = jid + "@" + domain;
             }
+
+            getVCard(jid, function(vCard)
+            {
+                if (vCard.avatar)
+                {
+                    var sourceImage = new Image();
+
+                    sourceImage.onload = function()
+                    {
+                        var canvas = document.createElement("canvas");
+                        canvas.width = 72;
+                        canvas.height = 72;
+                        canvas.getContext("2d").drawImage(sourceImage, 0, 0, 72, 72);
+                        vCard.avatar = canvas.toDataURL();
+                        pade.vcards[jid] = vCard;
+
+                        pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: pade.vcards[jid].avatar});
+                    }
+                    sourceImage.src = vCard.avatar;
+                }
+
+            });
+        }
+
+        if (label)
+        {
+            pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: createStreamDeckImage(label)});
         }
     }
 }
@@ -2499,7 +2538,7 @@ function doStreamDeckUrl(url, jid, label, key)
     if (pade.chatsWindow[jid])
     {
         closeChatsWindow(jid);
-        pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: createStreamDeckImage(label, "#070")});
+        pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: pade.vcards[jid] ? pade.vcards[jid].avatar : createStreamDeckImage(label, "#070")});
 
     } else {
         openChatsWindow(url, jid);
