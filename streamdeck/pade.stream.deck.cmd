@@ -1,0 +1,2 @@
+@echo off
+java -cp .;./hid4java-0.5.0-modified.jar;./jna-4.2.2.jar;./streamdeckjava-0.1.0.jar;./jackson-databind-2.8.4.jar;./jackson-core-2.8.4.jar;./jackson-annotations-2.8.4.jar org.ifsoft.protocol.StreamDeck

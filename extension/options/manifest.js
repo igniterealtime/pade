@@ -220,6 +220,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "useStreamDeck",
+            "type": "checkbox",
+            "label": i18n.get("Use Stream Deck as a TouchPad")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "audioOnly",
             "type": "checkbox",
             "label": i18n.get("Audioconference Only")

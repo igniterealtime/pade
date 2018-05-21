@@ -495,32 +495,18 @@ window.addEventListener("load", function()
             chrome.browserAction.setPopup({popup: "popup.html"});
         }
 
+        // setup stream deck
+
+        if (getSetting("useStreamDeck", false))
+        {
+            setupStreamDeck();
+        }
+
         // setup jabra speak
 
         if (getSetting("useJabra", false))
         {
-            pade.jabraPort = chrome.runtime.connectNative("pade.igniterealtime.org");
-
-            if (pade.jabraPort)
-            {
-                console.log("jabra connected");
-
-                pade.jabraPort.onMessage.addListener(function(data)
-                {
-                    //console.log("jabra incoming", data);
-                    handleJabraMessage(data.message);
-                });
-
-                pade.jabraPort.onDisconnect.addListener(function()
-                {
-                    console.log("jabra disconnected");
-                    pade.jabraPort = null;
-                });
-
-                pade.jabraPort.postMessage({ message: "getdevices" });
-                pade.jabraPort.postMessage({ message: "getactivedevice" });
-                pade.jabraPort.postMessage({ message: "onhook" });
-            }
+            setupJabra();
         }
 
         // setup SIP
@@ -1765,6 +1751,34 @@ function acceptRejectOffer(properties)
         console.warn("workgroup offer from unknown source", properties.workgroupJid);
     }
 }
+
+
+function setupJabra()
+{
+    pade.jabraPort = chrome.runtime.connectNative("pade.igniterealtime.org");
+
+    if (pade.jabraPort)
+    {
+        console.log("jabra connected");
+
+        pade.jabraPort.onMessage.addListener(function(data)
+        {
+            //console.log("jabra incoming", data);
+            handleJabraMessage(data.message);
+        });
+
+        pade.jabraPort.onDisconnect.addListener(function()
+        {
+            console.log("jabra disconnected");
+            pade.jabraPort = null;
+        });
+
+        pade.jabraPort.postMessage({ message: "getdevices" });
+        pade.jabraPort.postMessage({ message: "getactivedevice" });
+        pade.jabraPort.postMessage({ message: "onhook" });
+    }
+}
+
 function handleJabraMessage(message)
 {
     if (message.startsWith("Event: Version ")) {
@@ -2250,17 +2264,21 @@ function updateVCard()
     }, avatarError);
 }
 
-var createAvatar = function(nickname)
+function createAvatar(nickname, width, height, font)
 {
+    if (!width) width = 32;
+    if (!height) height = 32;
+    if (!font) font = "16px Arial";
+
     var canvas = document.createElement('canvas');
     canvas.style.display = 'none';
-    canvas.width = '32';
-    canvas.height = '32';
+    canvas.width = width;
+    canvas.height = height;
     document.body.appendChild(canvas);
     var context = canvas.getContext('2d');
     context.fillStyle = "#777";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = "16px Arial";
+    context.font = font;
     context.fillStyle = "#fff";
 
     var first, last;
@@ -2284,4 +2302,207 @@ var createAvatar = function(nickname)
     }
 
     return canvas.toDataURL();
+}
+
+function createStreamDeckImage(text, fill)
+{
+    if (!fill) fill = "#070";
+
+    var canvas = document.createElement('canvas');
+    canvas.style.display = 'none';
+    canvas.width = 72;
+    canvas.height = 72;
+    document.body.appendChild(canvas);
+    var context = canvas.getContext('2d');
+    context.fillStyle = fill;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "#fff";
+
+    if (text.indexOf(" ") > -1)
+    {
+       context.font = "16px Arial";
+       texts = text.split(" ");
+       context.fillText(texts[0], 3, 32);
+       context.fillText(texts[1], 3, 48);
+
+    } else {
+       context.font = "24px Arial";
+       context.fillText(text, 3, 48);
+    }
+
+    var data = canvas.toDataURL();
+    document.body.removeChild(canvas);
+
+    return canvas.toDataURL();
+}
+
+function setupStreamDeck()
+{
+    pade.streamDeckPort = chrome.runtime.connectNative("pade.stream.deck");
+
+    if (pade.streamDeckPort)
+    {
+        console.log("stream deck connected");
+
+        pade.streamDeckPort.onMessage.addListener(function(data)
+        {
+            //console.log("stream deck incoming", data);
+
+            if (data.message == "keypress")
+            {
+                if (data.key < 5)
+                {
+                    handleStreamDeckPage(data.key + 1)
+                } else {
+                    handleStreamDeckKey(data.key);
+                }
+            }
+
+        });
+
+        pade.streamDeckPort.onDisconnect.addListener(function()
+        {
+            console.log("stream deck disconnected");
+            pade.streamDeckPort = null;
+        });
+
+        pade.streamDeckPage = 1;
+
+        for (var b=0; b<15; b++)
+        {
+           pade.streamDeckPort.postMessage({ message: "setColor", key: b, color: 0 });
+        }
+
+        for (var p=1; p<6; p++)
+        {
+            if (getSetting("pageEnabled_" + p, false))
+            {
+                var label = getSetting("pageLabel_" + p, null);
+
+                if (label)
+                {
+                    pade.streamDeckPort.postMessage({ message: "setImage", key: p-1, data: createStreamDeckImage(label, p==pade.streamDeckPage ? "#700" : "#070")});
+                }
+            }
+        }
+
+        for (var b=5; b<15; b++)
+        {
+            var p = pade.streamDeckPage;                  // page 91-5)
+            var i = b < 13 ? 1 : 2;     // row 1 - 2 (2x10 = 20)
+            var j = ((b - 5) % 8) + 1;  // cols 1 - 8 plus 2 = 10
+
+            if (getSetting("cellEnabled_" + p + "_" + i + "_" + j, false))
+            {
+                var label = getSetting("cellLabel_" + p + "_" + i + "_" + j, null);
+
+                if (label)
+                {
+                    pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: createStreamDeckImage(label)});
+                }
+            }
+        }
+    }
+}
+
+function handleStreamDeckPage(p)
+{
+    for (var z=1; z<6; z++)
+    {
+        if (getSetting("pageEnabled_" + z, false))
+        {
+            var label = getSetting("pageLabel_" + z, null);
+
+            if (label)
+            {
+                pade.streamDeckPort.postMessage({ message: "setImage", key: z-1, data: createStreamDeckImage(label, "#070")});
+            }
+        }
+    }
+
+    pade.streamDeckPage = p;
+
+    if (getSetting("pageEnabled_" + p, false))
+    {
+        var label = getSetting("pageLabel_" + p, null);
+
+        if (label)
+        {
+            pade.streamDeckPort.postMessage({ message: "setImage", key: p-1, data: createStreamDeckImage(label, "#700")});
+        }
+
+        for (var b=5; b<15; b++)
+        {
+            pade.streamDeckPort.postMessage({ message: "setColor", key: b, color: 0 });
+
+            var i = b < 13 ? 1 : 2;     // row 1 - 2 (2x10 = 20)
+            var j = ((b - 5) % 8) + 1;  // cols 1 - 8 plus 2 = 10
+
+            if (getSetting("cellEnabled_" + p + "_" + i + "_" + j, false))
+            {
+                var label = getSetting("cellLabel_" + p + "_" + i + "_" + j, null);
+
+                if (label)
+                {
+                    pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: createStreamDeckImage(label)});
+                }
+            }
+        }
+    }
+}
+
+function handleStreamDeckKey(key)
+{
+    var p = pade.streamDeckPage;
+    var i = key < 13 ? 1 : 2;
+    var j = ((key - 5) % 8) + 1;
+
+    if (getSetting("cellEnabled_" + p + "_" + i + "_" + j, false))
+    {
+        var label = getSetting("cellLabel_" + p + "_" + i + "_" + j, null);
+        var value = getSetting("cellValue_" + p + "_" + i + "_" + j, null);
+
+        if (value)
+        {
+            if (value.indexOf("im:") == 0)
+            {
+                var jid = value.substring(3);
+
+                if (jid.indexOf("@") == -1)
+                {
+                    var domain = getSetting("domain", null);
+                    jid = jid + "@" + domain;
+                }
+
+                doStreamDeckUrl("inverse/index.html#converse/chat?jid=" + jid, jid, label, key);
+            }
+            else
+
+            if (value.indexOf("xmpp:") == 0)
+            {
+                var jid = value.substring(5);
+
+                if (jid.indexOf("@") == -1)
+                {
+                    var domain = getSetting("domain", null);
+                    jid = jid + "@conference." + domain;
+                }
+
+                doStreamDeckUrl("inverse/index.html#converse/room?jid=" + jid, jid, label, key);
+            }
+        }
+    }
+}
+
+function doStreamDeckUrl(url, jid, label, key)
+{
+    if (pade.chatsWindow[jid])
+    {
+        closeChatsWindow(jid);
+        pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: createStreamDeckImage(label, "#070")});
+
+    } else {
+        openChatsWindow(url, jid);
+        pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: createStreamDeckImage(label, "#700")});
+    }
 }

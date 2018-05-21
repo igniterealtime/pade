@@ -1,0 +1,12 @@
+{
+  "name": "pade.stream.deck",
+  "description": "Stream Deck Native Messaging Application",
+  "path": "pade.stream.deck.cmd",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://bfifigomgmgjnlfhdkphhijegjongifa/",
+    "chrome-extension://fmgnibblgekonbgjhkjicekgacgoagmm/",
+    "chrome-extension://fohfnhgabmicpkjcpjpjongpijcffaba/",
+    "chrome-extension://gifmdjgohogdoakiopknadhiddjfejio/" 
+  ]
+}
