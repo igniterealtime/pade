@@ -7,6 +7,9 @@ var ofmeet = (function(of)
     var firstTime = true;
     var firstTrack = true;
     var participants = {}
+    var largeVideo = null;
+    var isRemoteControl = true;
+    var farParty = "deleo@desktop-545pc5b"
 
     function setup()
     {
@@ -213,11 +216,22 @@ var ofmeet = (function(of)
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.MESSAGE_RECEIVED , function(id, text, ts)
         {
-            //console.log("ofmeet.js message", id, text, ts);
+            console.log("ofmeet.js message", id, text, ts);
 
-            if (OFMEET_CONFIG.enableCaptions && text.startsWith("https://") == false)
+            if (OFMEET_CONFIG.enableCaptions && text.indexOf("https://") == -1)
             {
                 of.subtitles.innerHTML = id.split("-")[0] + " : " + text;
+            }
+
+            if (text.indexOf("/rc on") == 0)
+            {
+                enableRemoteControl();
+            }
+            else
+
+            if (text.indexOf("/rc off") == 0)
+            {
+                disableRemoteControl();
             }
         });
 
@@ -306,6 +320,145 @@ var ofmeet = (function(of)
         }
 
         document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
+
+        document.addEventListener('ofmeet.screenshare.started', function(e)
+        {
+            console.log("ofmeet.screenshare.started");
+            OFMEET_CONFIG.bgWin.pade.screenShare = true;
+
+        });
+
+        document.addEventListener('ofmeet.screenshare.stopped', function(e)
+        {
+            console.log("ofmeet.screenshare.stopped");
+            OFMEET_CONFIG.bgWin.pade.screenShare = false;
+        });
+    }
+
+    function enableRemoteControl()
+    {
+        console.log("ofmeet.remotecontrol.enabled");
+
+        if (!largeVideo)
+        {
+            largeVideo = {};
+            largeVideo.el = document.querySelector('#largeVideo')
+            largeVideo.videoSize = largeVideo.el.getBoundingClientRect();
+        }
+
+        if (largeVideo.el)
+        {
+            largeVideo.el.addEventListener('contextmenu', contextMenu);
+            largeVideo.el.addEventListener('mousemove', mouseMove);
+            largeVideo.el.addEventListener('mouseup', mouseUp);
+            largeVideo.el.addEventListener('mousedown', mouseDown);
+            largeVideo.el.addEventListener('mousewheel', mouseWheel);
+            largeVideo.el.addEventListener('keydown', keyDown);
+            largeVideo.el.addEventListener('keyup', keyUp);
+        } else {
+            console.error("Jitsi Meet is not running, can't find largeVideo");
+        }
+    }
+
+    function disableRemoteControl()
+    {
+        console.log("ofmeet.remotecontrol.disabled");
+
+        if (largeVideo.el)
+        {
+            largeVideo.el.removeEventListener('contextmenu', contextMenu);
+            largeVideo.el.removeEventListener('mousemove', mouseMove);
+            largeVideo.el.removeEventListener('mouseup', mouseUp);
+            largeVideo.el.removeEventListener('mousedown', mouseDown);
+            largeVideo.el.removeEventListener('mousewheel', mouseWheel);
+            largeVideo.el.removeEventListener('keydown', keyDown);
+            largeVideo.el.removeEventListener('keyup', keyUp);
+        }
+    }
+
+
+    function getMouseData(e)
+    {
+        var data = {}
+
+        if (largeVideo)
+        {
+            data.x = e.clientX;
+            data.y = e.clientY;
+            data.height = largeVideo.videoSize.height;
+            data.width = largeVideo.videoSize.width;
+        }
+        return data
+    }
+
+    function contextMenu(e)  // Block context menu so right-click gets sent properly
+    {
+        e.preventDefault();
+
+    }
+
+    function mouseMove(e)
+    {
+        if (isRemoteControl && farParty)
+        {
+            var data = getMouseData(e)
+            console.log('send mosemove', data)
+            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.mousemove", "x": ' + data.x + ', "y": ' + data.y + ', "width": ' + data.width + ', "height": ' + data.height + '}');
+        }
+    }
+
+    function mouseUp(e)
+    {
+        if (isRemoteControl && farParty)
+        {
+            var data = getMouseData(e)
+            console.log('send mouseup', data)
+            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.mouseup", "button": ' + e.button + ', "x": ' + data.x + ', "y": ' + data.y + ', "width": ' + data.width + ', "height": ' + data.height + '}');
+        }
+    }
+
+    function mouseDown(e)
+    {
+        if (isRemoteControl && farParty)
+        {
+            var data = getMouseData(e)
+            console.log('send mousedown', data)
+            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.mousedown", "button": ' + e.button + ', "x": ' + data.x + ', "y": ' + data.y + ', "width": ' + data.width + ', "height": ' + data.height + '}');
+        }
+    }
+
+    function mouseWheel(e)
+    {
+        if (isRemoteControl && farParty)
+        {
+            //console.log('send mousewheel', e.wheelDelta)
+            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.wheel", "key": ' + e.wheelDelta + '}');
+        }
+    }
+
+    function keyDown(e)
+    {
+        if (isRemoteControl && farParty)
+        {
+            e.preventDefault()
+            console.log('send key', e)
+            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.keydown", "key": ' + e.keyCode + ', "shift": ' + e.shiftKey + ', "crtl": ' + e.ctrlKey + ', "alt": ' + e.altKey + ', "meta": ' + e.metaKey + '}');
+        }
+    }
+
+    function keyUp(e)
+    {
+        if (isRemoteControl && farParty)
+        {
+            e.preventDefault()
+            console.log('send key', e)
+            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.keyup", "key": ' + e.keyCode + ', "shift": ' + e.shiftKey + ', "crtl": ' + e.ctrlKey + ', "alt": ' + e.altKey + ', "meta": ' + e.metaKey + '}');
+        }
+    }
+
+    function scale (x, fromLow, fromHigh, toLow, toHigh)
+    {
+        return (x - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
     }
 
     function connectSIP()

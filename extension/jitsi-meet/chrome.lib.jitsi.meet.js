@@ -12769,6 +12769,8 @@
                 this.room && this.room.sendMessage(e)
             }, r.prototype.sendPrivateTextMessage = function(e, t) {
                 this.room && this.room.sendPrivateMessage(e, t)
+            }, r.prototype.sendOfMessage = function(e, t) {       // BAO
+                this.room && this.room.sendOfMessage(e, t)
             }, r.prototype.sendOfMeet = function(e) {       // BAO
                 this.room && this.room.sendOfMeet(e)
             }, r.prototype.sendOfUpload = function(file, cb, ecb) {       // BAO
@@ -21064,6 +21066,15 @@
                             var n = Object(o.$msg)({
                                 to: this.roomjid,
                                 type: "groupchat"
+                            });
+                            n.c("ofmeet", {xmlns: "jabber:x:ofmeet"}).t(t);
+                            this.connection.send(n);
+                        }
+                    }, {
+                        key: "sendOfMessage",          // BAO
+                        value: function(e, t) {
+                            var n = Object(o.$msg)({
+                                to: e
                             });
                             n.c("ofmeet", {xmlns: "jabber:x:ofmeet"}).t(t);
                             this.connection.send(n);

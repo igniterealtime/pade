@@ -502,6 +502,13 @@ window.addEventListener("load", function()
             setupJabra();
         }
 
+        // setup remote control
+
+        if (getSetting("enableRemoteControl", false))
+        {
+            enableRemoteControl();
+        }
+
         // setup SIP
         pade.sip = {};
         pade.enableSip = getSetting("enableSip", false);
@@ -1322,7 +1329,23 @@ function addHandlers()
         var room = null;
         var autoaccept = null;
 
-        console.log("message handler", from, to, type)
+        console.log("message handler", from, to, message)
+
+        $(message).find('ofmeet').each(function ()
+        {
+            var json = JSON.parse($(this).text());
+
+            if (json.event.indexOf("ofmeet.remote.") == 0)
+            {
+                if (pade.screenShare && pade.remoteControlPort)
+                {
+                    console.log("ofmeet.js remote.control", json);
+                    pade.remoteControlPort.postMessage(json);
+                }
+
+                return true;
+            }
+        });
 
         $(message).find('body').each(function ()
         {
@@ -2543,5 +2566,28 @@ function doStreamDeckUrl(url, jid, label, key)
     } else {
         openChatsWindow(url, jid);
         pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: createStreamDeckImage(label, "#700")});
+    }
+}
+
+function enableRemoteControl()
+{
+    pade.remoteControlPort = chrome.runtime.connectNative("pade.remote.control");
+
+    if (pade.remoteControlPort)
+    {
+        console.log("remote control host connected");
+
+        pade.remoteControlPort.onMessage.addListener(function(data)
+        {
+            console.log("remote control incoming", data);
+        });
+
+        pade.remoteControlPort.onDisconnect.addListener(function()
+        {
+            console.log("remote control host disconnected");
+            pade.remoteControlPort = null;
+        });
+
+        pade.remoteControlPort.postMessage({ event: "ofmeet.remote.hello" });
     }
 }

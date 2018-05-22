@@ -1,0 +1,12 @@
+{
+  "name": "pade.remote.control",
+  "description": "Remote Control Native Messaging Application",
+  "path": "pade.remote.control.cmd",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://bfifigomgmgjnlfhdkphhijegjongifa/",
+    "chrome-extension://fmgnibblgekonbgjhkjicekgacgoagmm/",
+    "chrome-extension://fohfnhgabmicpkjcpjpjongpijcffaba/",
+    "chrome-extension://gifmdjgohogdoakiopknadhiddjfejio/" 
+  ]
+}

@@ -213,6 +213,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "enableRemoteControl",
+            "type": "checkbox",
+            "label": i18n.get("Enable Remote Control")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "useJabra",
             "type": "checkbox",
             "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
