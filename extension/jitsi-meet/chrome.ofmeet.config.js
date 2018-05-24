@@ -32,7 +32,7 @@ OFMEET_CONFIG = {
     recordVideo: getSetting("recordVideo", false),
     enableCaptions: getSetting("enableCaptions", true),
     iframe: function(url) {
-        return '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 45px; padding-top: 90px;">';
+        return '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 0px; padding-top: 0px;">';
     },
 };
 

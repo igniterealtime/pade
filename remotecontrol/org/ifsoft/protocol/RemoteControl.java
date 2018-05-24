@@ -51,21 +51,24 @@ public class RemoteControl
             {
                 mouseRelease(request.getButton());
             }
-
             else
 
             if ("ofmeet.remote.mousemove".equals(request.getEvent()))
             {
-                mouseMove(request.getX(), request.getY(), request.getWidth(), request.getHeight());
+                mouseMove(request.getX(), request.getY());
             }
+            else
 
+            if ("ofmeet.remote.mousedblclick".equals(request.getEvent()))
+            {
+                doubleClick(request.getX(), request.getY());
+            }
             else
 
             if ("ofmeet.remote.wheel".equals(request.getEvent()))
             {
-                mouseWheel(request.getKey());
+                mouseWheel(request.getButton());
             }
-
             else
 
             if ("ofmeet.remote.hello".equals(request.getEvent()))
@@ -122,8 +125,6 @@ public class RemoteControl
     {
         if (robot != null)
         {
-            postMessage("mousePress " + button);
-
             if (button == 1) robot.mousePress(InputEvent.BUTTON1_MASK);
             if (button == 2) robot.mousePress(InputEvent.BUTTON2_MASK);
             if (button == 3) robot.mousePress(InputEvent.BUTTON3_MASK);
@@ -134,22 +135,18 @@ public class RemoteControl
     {
         if (robot != null)
         {
-            postMessage("mouseRelease " + button);
-
             if (button == 1) robot.mouseRelease(InputEvent.BUTTON1_MASK);
             if (button == 2) robot.mouseRelease(InputEvent.BUTTON2_MASK);
             if (button == 3) robot.mouseRelease(InputEvent.BUTTON3_MASK);
         }
     }
 
-    public static void doubleClick(int x, int y, int width, int height) throws IOException
+    public static void doubleClick(double x, double y) throws IOException
     {
         if (robot != null)
         {
-            postMessage("doubleClick " + x + " " + y + " " + width + " " + height);
-
-            int newX = (int)((x/width*capture.width));
-            int newY = (int)((y/height*capture.height));
+            int newX = (int)((x*capture.width));
+            int newY = (int)((y*capture.height));
 
             robot.mouseMove(newX, newY);
             robot.mousePress(InputEvent.BUTTON1_MASK);
@@ -159,35 +156,42 @@ public class RemoteControl
         }
     }
 
-    public static void keyPress(int key) throws IOException
+    public static void keyPress(String key) throws IOException
     {
-        int newKey = translateKey(key);
-
         if (robot != null)
         {
-            postMessage("keyPress " + key);
-            robot.keyPress(newKey);
+            if ("shift".equals(key)) robot.keyPress(KeyEvent.VK_SHIFT); else
+            if ("command".equals(key)) robot.keyPress(KeyEvent.VK_META); else
+            if ("alt".equals(key)) robot.keyPress(KeyEvent.VK_ALT); else
+            if ("control".equals(key)) robot.keyPress(KeyEvent.VK_CONTROL);
+
+            else {
+                robot.keyPress(getKeyEvent(key));
+            }
         }
     }
 
-    public static void keyRelease(int key) throws IOException
+    public static void keyRelease(String key) throws IOException
     {
-        int newKey = translateKey(key);
-
         if (robot != null)
         {
-            postMessage("keyRelease " + key);
-            robot.keyRelease(newKey);
+            if ("shift".equals(key)) robot.keyRelease(KeyEvent.VK_SHIFT); else
+            if ("command".equals(key)) robot.keyRelease(KeyEvent.VK_META); else
+            if ("alt".equals(key)) robot.keyRelease(KeyEvent.VK_ALT); else
+            if ("control".equals(key)) robot.keyRelease(KeyEvent.VK_CONTROL);
+
+            else {
+                robot.keyRelease(getKeyEvent(key));
+            }
         }
     }
 
-    public static void mouseMove(int x, int y, int width, int height) throws IOException
+    public static void mouseMove(double x, double y) throws IOException
     {
         if (robot != null)
         {
-            postMessage("mouseMove " + x + " " + y + " " + width + " " + height);
-            int newX = (int)((x/width*capture.width));
-            int newY = (int)((y/height*capture.height));
+            int newX = (int)((x*capture.width));
+            int newY = (int)((y*capture.height));
 
             robot.mouseMove(newX, newY);
         }
@@ -197,17 +201,88 @@ public class RemoteControl
     {
         if (robot != null)
         {
-            postMessage("mouseWheel " + delta);
             robot.mouseWheel(delta);
         }
     }
 
-    private static int translateKey(int key)
+    public static int getKeyEvent(String key)
     {
-        if (key == 13)
-            return 10;
-        else
-            return (int) key;
+        char character = key.charAt(0);
+
+        try {
+            switch (character)
+            {
+                case 'a': return(KeyEvent.VK_A);
+                case 'b': return(KeyEvent.VK_B);
+                case 'c': return(KeyEvent.VK_C);
+                case 'd': return(KeyEvent.VK_D);
+                case 'e': return(KeyEvent.VK_E);
+                case 'f': return(KeyEvent.VK_F);
+                case 'g': return(KeyEvent.VK_G);
+                case 'h': return(KeyEvent.VK_H);
+                case 'i': return(KeyEvent.VK_I);
+                case 'j': return(KeyEvent.VK_J);
+                case 'k': return(KeyEvent.VK_K);
+                case 'l': return(KeyEvent.VK_L);
+                case 'm': return(KeyEvent.VK_M);
+                case 'n': return(KeyEvent.VK_N);
+                case 'o': return(KeyEvent.VK_O);
+                case 'p': return(KeyEvent.VK_P);
+                case 'q': return(KeyEvent.VK_Q);
+                case 'r': return(KeyEvent.VK_R);
+                case 's': return(KeyEvent.VK_S);
+                case 't': return(KeyEvent.VK_T);
+                case 'u': return(KeyEvent.VK_U);
+                case 'v': return(KeyEvent.VK_V);
+                case 'w': return(KeyEvent.VK_W);
+                case 'x': return(KeyEvent.VK_X);
+                case 'y': return(KeyEvent.VK_Y);
+                case 'z': return(KeyEvent.VK_Z);
+                case '`': return(KeyEvent.VK_BACK_QUOTE);
+                case '0': return(KeyEvent.VK_0);
+                case '1': return(KeyEvent.VK_1);
+                case '2': return(KeyEvent.VK_2);
+                case '3': return(KeyEvent.VK_3);
+                case '4': return(KeyEvent.VK_4);
+                case '5': return(KeyEvent.VK_5);
+                case '6': return(KeyEvent.VK_6);
+                case '7': return(KeyEvent.VK_7);
+                case '8': return(KeyEvent.VK_8);
+                case '9': return(KeyEvent.VK_9);
+                case '-': return(KeyEvent.VK_MINUS);
+                case '=': return(KeyEvent.VK_EQUALS);
+                case '!': return(KeyEvent.VK_EXCLAMATION_MARK);
+                case '@': return(KeyEvent.VK_AT);
+                case '#': return(KeyEvent.VK_NUMBER_SIGN);
+                case '$': return(KeyEvent.VK_DOLLAR);
+                case '^': return(KeyEvent.VK_CIRCUMFLEX);
+                case '&': return(KeyEvent.VK_AMPERSAND);
+                case '*': return(KeyEvent.VK_ASTERISK);
+                case '(': return(KeyEvent.VK_LEFT_PARENTHESIS);
+                case ')': return(KeyEvent.VK_RIGHT_PARENTHESIS);
+                case '_': return(KeyEvent.VK_UNDERSCORE);
+                case '+': return(KeyEvent.VK_PLUS);
+                case '\t': return(KeyEvent.VK_TAB);
+                case '\n': return(KeyEvent.VK_ENTER);
+                case '[': return(KeyEvent.VK_OPEN_BRACKET);
+                case ']': return(KeyEvent.VK_CLOSE_BRACKET);
+                case '\\': return(KeyEvent.VK_BACK_SLASH);
+                case ';': return(KeyEvent.VK_SEMICOLON);
+                case ':': return(KeyEvent.VK_COLON);
+                case '\'': return(KeyEvent.VK_QUOTE);
+                case '"': return(KeyEvent.VK_QUOTEDBL);
+                case ',': return(KeyEvent.VK_COMMA);
+                case '<': return(KeyEvent.VK_LESS);
+                case '.': return(KeyEvent.VK_PERIOD);
+                case '>': return(KeyEvent.VK_GREATER);
+                case '/': return(KeyEvent.VK_SLASH);
+                case ' ': return(KeyEvent.VK_SPACE);
+                default:
+                    return(KeyEvent.VK_SPACE);
+            }
+        } catch (Exception e) {
+            return(KeyEvent.VK_SPACE);
+        }
     }
 }
 

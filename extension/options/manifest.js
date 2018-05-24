@@ -262,16 +262,16 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
-            "name": "startWithAudioMuted",
+            "name": "p2pMode",
             "type": "checkbox",
-            "label": i18n.get("Start with Audio Muted")
+            "label": i18n.get("Enable P2P Mode - Does not work properly with screen share or remote control")
         },
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
-            "name": "startWithVideoMuted",
+            "name": "startWithAudioMuted",
             "type": "checkbox",
-            "label": i18n.get("Start with Video Muted")
+            "label": i18n.get("Start with Audio Muted")
         },
         {
             "tab": i18n.get("ofmeet"),

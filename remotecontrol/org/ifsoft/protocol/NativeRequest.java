@@ -8,22 +8,16 @@ public class NativeRequest {
     private String event;
 
     @XmlElement(name = "key")
-    private int key;
+    private String key;
 
     @XmlElement(name = "button")
     private int button;
 
-    @XmlElement(name = "width")
-    private int width;
-
-    @XmlElement(name = "height")
-    private int height;
-
     @XmlElement(name = "x")
-    private int x;
+    private double x;
 
     @XmlElement(name = "y")
-    private int y;
+    private double y;
 
     public NativeRequest() {
         super();
@@ -37,11 +31,11 @@ public class NativeRequest {
         this.event = event;
     }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
@@ -53,35 +47,19 @@ public class NativeRequest {
         this.button = button;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 }

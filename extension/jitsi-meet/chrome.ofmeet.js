@@ -8,8 +8,8 @@ var ofmeet = (function(of)
     var firstTrack = true;
     var participants = {}
     var largeVideo = null;
-    var isRemoteControl = true;
-    var farParty = "deleo@desktop-545pc5b"
+    var remoteController = null;
+    var remoteControlPort = null;
 
     function setup()
     {
@@ -22,10 +22,42 @@ var ofmeet = (function(of)
         }
         __init();
 
-
         window.addEventListener('message', function (event)
         {
             //console.log("addListener message", event.data);
+
+            // messages from remote control
+            // {"postis":true,"scope":"jitsi-remote-control","method":"message","params":{"type":"request","data":{"name":"remote-control","type":"start","sourceId":"8Ppvxxlv3Zgncd5uiKx6zA=="},"id":1}}
+            // {"postis":true,"scope":"jitsi-remote-control","method":"message","params":{"type":"event","data":{"name":"remote-control","type":"stop"}}}
+
+            if (event.data.indexOf("jitsi-remote-control") > -1)
+            {
+                var eventData = JSON.parse(event.data);
+
+                if (eventData)
+                {
+                    var data = eventData.params.data;
+
+                    if (data.type == "start" && remoteController != null)
+                    {
+                        console.log("addListener start", data);
+
+                        APP.remoteControl.receiver.sendRemoteControlEndpointMessage(remoteController._id, {
+                            type: "permissions",
+                            action: remoteControlPort ? "grant" : "deny"
+                        })
+                    }
+                    else
+
+                    if (data.type == "stop")
+                    {
+                        remoteController = null;
+                    }
+                }
+
+            }
+
+            // these are messages from the collaboration app in the shadow DOM content page
 
             if (APP && APP.connection && OFMEET_CONFIG.bgWin && OFMEET_CONFIG.bgWin.pade.activeUrl && event.data)
             {
@@ -46,7 +78,10 @@ var ofmeet = (function(of)
 
                 if (event.data.event == "ofmeet.event.url.ready")
                 {
-                    console.log("addListener message collab", event.data);
+                    //console.log("addListener message collab", event.data);
+
+                    // Starts here. When content page is ready and we have content to share,
+                    // we start mouse/key event feed
 
                     if (OFMEET_CONFIG.documentOwner)
                     {
@@ -78,6 +113,8 @@ var ofmeet = (function(of)
             $(message).find('ofmeet').each(function ()
             {
                 try {
+                    // these are messages from ofchat
+
                     var json = JSON.parse($(this).text());
 
                     if (json.event == "ofmeet.event.sip.join")
@@ -92,9 +129,11 @@ var ofmeet = (function(of)
                     }
                     else
 
+                    // these are p2p messages from users collaborating
+
                     if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready" || json.event == "ofmeet.event.url.ready")
                     {
-                        console.log("ofmeet.js document share", json);
+                        //console.log("ofmeet.js document share", json);
 
                         var url = json.url;
 
@@ -153,7 +192,7 @@ var ofmeet = (function(of)
 
                         if (ofMeetContent && (OFMEET_CONFIG.showSharedCursor || !OFMEET_CONFIG.showSharedCursor && json.from != OFMEET_CONFIG.nickName))
                         {
-                            console.log("ofmeet.event.pdf.message", json);
+                            //console.log("ofmeet.event.pdf.message", json);
                             ofMeetContent.contentWindow.handlePdfShare(json.msg, json.from);
                         }
                     }
@@ -196,6 +235,78 @@ var ofmeet = (function(of)
         console.log("ofmeet.js __init");
         of.subtitles = document.getElementById("subtitles");
 
+        remoteControlPort = OFMEET_CONFIG.bgWin.pade.remoteControlPort;
+
+        if (remoteControlPort)
+        {
+            APP.remoteControl.receiver._onRemoteControlSupported();
+        }
+
+        APP.conference.addConferenceListener(JitsiMeetJS.events.conference.ENDPOINT_MESSAGE_RECEIVED, function(participant, message)
+        {
+            if (message.type != "stats")
+            {
+                console.log("ofmeet.js endpoint_message", participant._id, message);
+
+                if (message.type == "permissions")
+                {
+                    remoteController = participant;
+                }
+                else
+
+                if (message.type == "keydown")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.keydown", key: message.key});
+                }
+                else
+
+                if (message.type == "keyup")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.keyup", key: message.key});
+                }
+                else
+                if (message.type == "mousemove")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.mousemove", x: message.x, y: message.y});
+                }
+                else
+
+                if (message.type == "mousedown")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.mousedown", button: message.button});
+                }
+                else
+
+                if (message.type == "mouseup")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.mouseup", button: message.button});
+                }
+                else
+
+                if (message.type == "mousedblclick")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.mousedblclick", button: message.button});
+                }
+                else
+
+                if (message.type == "mousescroll")
+                {
+                    remoteControlPort.postMessage({event: "ofmeet.remote.wheel", button: message.deltaY});
+                }
+                else
+
+                if (message.type == "stop")
+                {
+                    if (remoteController)
+                    {
+                        APP.remoteControl.receiver.sendRemoteControlEndpointMessage(remoteController._id, {
+                            type: "stop"
+                        });
+                    }
+                }
+            }
+        });
+
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_JOINED, function()
         {
             console.log("ofmeet.js me joined");
@@ -221,17 +332,6 @@ var ofmeet = (function(of)
             if (OFMEET_CONFIG.enableCaptions && text.indexOf("https://") == -1)
             {
                 of.subtitles.innerHTML = id.split("-")[0] + " : " + text;
-            }
-
-            if (text.indexOf("/rc on") == 0)
-            {
-                enableRemoteControl();
-            }
-            else
-
-            if (text.indexOf("/rc off") == 0)
-            {
-                disableRemoteControl();
             }
         });
 
@@ -320,145 +420,6 @@ var ofmeet = (function(of)
         }
 
         document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
-
-        document.addEventListener('ofmeet.screenshare.started', function(e)
-        {
-            console.log("ofmeet.screenshare.started");
-            OFMEET_CONFIG.bgWin.pade.screenShare = true;
-
-        });
-
-        document.addEventListener('ofmeet.screenshare.stopped', function(e)
-        {
-            console.log("ofmeet.screenshare.stopped");
-            OFMEET_CONFIG.bgWin.pade.screenShare = false;
-        });
-    }
-
-    function enableRemoteControl()
-    {
-        console.log("ofmeet.remotecontrol.enabled");
-
-        if (!largeVideo)
-        {
-            largeVideo = {};
-            largeVideo.el = document.querySelector('#largeVideo')
-            largeVideo.videoSize = largeVideo.el.getBoundingClientRect();
-        }
-
-        if (largeVideo.el)
-        {
-            largeVideo.el.addEventListener('contextmenu', contextMenu);
-            largeVideo.el.addEventListener('mousemove', mouseMove);
-            largeVideo.el.addEventListener('mouseup', mouseUp);
-            largeVideo.el.addEventListener('mousedown', mouseDown);
-            largeVideo.el.addEventListener('mousewheel', mouseWheel);
-            largeVideo.el.addEventListener('keydown', keyDown);
-            largeVideo.el.addEventListener('keyup', keyUp);
-        } else {
-            console.error("Jitsi Meet is not running, can't find largeVideo");
-        }
-    }
-
-    function disableRemoteControl()
-    {
-        console.log("ofmeet.remotecontrol.disabled");
-
-        if (largeVideo.el)
-        {
-            largeVideo.el.removeEventListener('contextmenu', contextMenu);
-            largeVideo.el.removeEventListener('mousemove', mouseMove);
-            largeVideo.el.removeEventListener('mouseup', mouseUp);
-            largeVideo.el.removeEventListener('mousedown', mouseDown);
-            largeVideo.el.removeEventListener('mousewheel', mouseWheel);
-            largeVideo.el.removeEventListener('keydown', keyDown);
-            largeVideo.el.removeEventListener('keyup', keyUp);
-        }
-    }
-
-
-    function getMouseData(e)
-    {
-        var data = {}
-
-        if (largeVideo)
-        {
-            data.x = e.clientX;
-            data.y = e.clientY;
-            data.height = largeVideo.videoSize.height;
-            data.width = largeVideo.videoSize.width;
-        }
-        return data
-    }
-
-    function contextMenu(e)  // Block context menu so right-click gets sent properly
-    {
-        e.preventDefault();
-
-    }
-
-    function mouseMove(e)
-    {
-        if (isRemoteControl && farParty)
-        {
-            var data = getMouseData(e)
-            console.log('send mosemove', data)
-            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.mousemove", "x": ' + data.x + ', "y": ' + data.y + ', "width": ' + data.width + ', "height": ' + data.height + '}');
-        }
-    }
-
-    function mouseUp(e)
-    {
-        if (isRemoteControl && farParty)
-        {
-            var data = getMouseData(e)
-            console.log('send mouseup', data)
-            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.mouseup", "button": ' + e.button + ', "x": ' + data.x + ', "y": ' + data.y + ', "width": ' + data.width + ', "height": ' + data.height + '}');
-        }
-    }
-
-    function mouseDown(e)
-    {
-        if (isRemoteControl && farParty)
-        {
-            var data = getMouseData(e)
-            console.log('send mousedown', data)
-            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.mousedown", "button": ' + e.button + ', "x": ' + data.x + ', "y": ' + data.y + ', "width": ' + data.width + ', "height": ' + data.height + '}');
-        }
-    }
-
-    function mouseWheel(e)
-    {
-        if (isRemoteControl && farParty)
-        {
-            //console.log('send mousewheel', e.wheelDelta)
-            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.wheel", "key": ' + e.wheelDelta + '}');
-        }
-    }
-
-    function keyDown(e)
-    {
-        if (isRemoteControl && farParty)
-        {
-            e.preventDefault()
-            console.log('send key', e)
-            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.keydown", "key": ' + e.keyCode + ', "shift": ' + e.shiftKey + ', "crtl": ' + e.ctrlKey + ', "alt": ' + e.altKey + ', "meta": ' + e.metaKey + '}');
-        }
-    }
-
-    function keyUp(e)
-    {
-        if (isRemoteControl && farParty)
-        {
-            e.preventDefault()
-            console.log('send key', e)
-            APP.conference._room.sendOfMessage(farParty, '{"event": "ofmeet.remote.keyup", "key": ' + e.keyCode + ', "shift": ' + e.shiftKey + ', "crtl": ' + e.ctrlKey + ', "alt": ' + e.altKey + ', "meta": ' + e.metaKey + '}');
-        }
-    }
-
-    function scale (x, fromLow, fromHigh, toLow, toHigh)
-    {
-        return (x - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
     }
 
     function connectSIP()
@@ -878,7 +839,7 @@ var ofmeet = (function(of)
     config.inviteServiceUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/inviteservice.json';
 
     config.p2p = {
-        enabled: true,
+        enabled: getSetting("p2pMode", false),
         stunServers: [
             { urls: "stun:stun.l.google.com:19302" },
             { urls: "stun:stun1.l.google.com:19302" },

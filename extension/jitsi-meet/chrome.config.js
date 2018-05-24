@@ -27,7 +27,7 @@ var config = {
   "enableRtpStats": true,
   "bosh": connUrl,
   "enableRecording": false,
-  "resolution": 720,
+  "resolution": 320,
   "hiddenDomain": "recorder." + __domain + "",
   "enableLipSync": getSetting("enableLipSync", false),
   "minHDHeight": 540,

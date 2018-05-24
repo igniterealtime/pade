@@ -137,7 +137,12 @@
                 // inner "_converse" object.
                 var _converse = this;
 
-                // Your custom code can come here ...
+                _converse.connection.xmlInput = function(b) {
+                    //console.log("xmlInput", b);
+                };
+                _converse.connection.xmlOutput = function(b) {
+                    //console.log("xmlOutput", b);
+                };
 
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);

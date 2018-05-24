@@ -502,13 +502,6 @@ window.addEventListener("load", function()
             setupJabra();
         }
 
-        // setup remote control
-
-        if (getSetting("enableRemoteControl", false))
-        {
-            enableRemoteControl();
-        }
-
         // setup SIP
         pade.sip = {};
         pade.enableSip = getSetting("enableSip", false);
@@ -547,8 +540,9 @@ window.addEventListener("load", function()
 
                     updateVCard();
                     setupStreamDeck();
+                    enableRemoteControl();
 
-                });
+                }, 3000);
             }
             else
 
@@ -1330,22 +1324,6 @@ function addHandlers()
         var autoaccept = null;
 
         console.log("message handler", from, to, message)
-
-        $(message).find('ofmeet').each(function ()
-        {
-            var json = JSON.parse($(this).text());
-
-            if (json.event.indexOf("ofmeet.remote.") == 0)
-            {
-                if (pade.screenShare && pade.remoteControlPort)
-                {
-                    console.log("ofmeet.js remote.control", json);
-                    pade.remoteControlPort.postMessage(json);
-                }
-
-                return true;
-            }
-        });
 
         $(message).find('body').each(function ()
         {
@@ -2356,62 +2334,60 @@ function createStreamDeckImage(text, fill)
 
 function setupStreamDeck()
 {
-    if (!getSetting("useStreamDeck", false))
+    if (getSetting("useStreamDeck", false))
     {
-        return;
-    }
+        pade.streamDeckPort = chrome.runtime.connectNative("pade.stream.deck");
 
-    pade.streamDeckPort = chrome.runtime.connectNative("pade.stream.deck");
-
-    if (pade.streamDeckPort)
-    {
-        console.log("stream deck connected");
-
-        pade.streamDeckPort.onMessage.addListener(function(data)
+        if (pade.streamDeckPort)
         {
-            //console.log("stream deck incoming", data);
+            console.log("stream deck connected");
 
-            if (data.message == "keypress")
+            pade.streamDeckPort.onMessage.addListener(function(data)
             {
-                if (data.key < 5)
+                //console.log("stream deck incoming", data);
+
+                if (data.message == "keypress")
                 {
-                    handleStreamDeckPage(data.key + 1)
-                } else {
-                    handleStreamDeckKey(data.key);
+                    if (data.key < 5)
+                    {
+                        handleStreamDeckPage(data.key + 1)
+                    } else {
+                        handleStreamDeckKey(data.key);
+                    }
+                }
+
+            });
+
+            pade.streamDeckPort.onDisconnect.addListener(function()
+            {
+                console.log("stream deck disconnected");
+                pade.streamDeckPort = null;
+            });
+
+            pade.streamDeckPage = 1;
+
+            for (var b=0; b<15; b++)
+            {
+               pade.streamDeckPort.postMessage({ message: "setColor", key: b, color: 0 });
+            }
+
+            for (var p=1; p<6; p++)
+            {
+                if (getSetting("pageEnabled_" + p, false))
+                {
+                    var label = getSetting("pageLabel_" + p, null);
+
+                    if (label)
+                    {
+                        pade.streamDeckPort.postMessage({ message: "setImage", key: p-1, data: createStreamDeckImage(label, p==pade.streamDeckPage ? "#700" : "#070")});
+                    }
                 }
             }
 
-        });
-
-        pade.streamDeckPort.onDisconnect.addListener(function()
-        {
-            console.log("stream deck disconnected");
-            pade.streamDeckPort = null;
-        });
-
-        pade.streamDeckPage = 1;
-
-        for (var b=0; b<15; b++)
-        {
-           pade.streamDeckPort.postMessage({ message: "setColor", key: b, color: 0 });
-        }
-
-        for (var p=1; p<6; p++)
-        {
-            if (getSetting("pageEnabled_" + p, false))
+            for (var b=5; b<15; b++)
             {
-                var label = getSetting("pageLabel_" + p, null);
-
-                if (label)
-                {
-                    pade.streamDeckPort.postMessage({ message: "setImage", key: p-1, data: createStreamDeckImage(label, p==pade.streamDeckPage ? "#700" : "#070")});
-                }
+                setupStreadDeckKey(b);
             }
-        }
-
-        for (var b=5; b<15; b++)
-        {
-            setupStreadDeckKey(b);
         }
     }
 }
@@ -2571,23 +2547,26 @@ function doStreamDeckUrl(url, jid, label, key)
 
 function enableRemoteControl()
 {
-    pade.remoteControlPort = chrome.runtime.connectNative("pade.remote.control");
-
-    if (pade.remoteControlPort)
+    if (getSetting("enableRemoteControl", false))
     {
-        console.log("remote control host connected");
+        pade.remoteControlPort = chrome.runtime.connectNative("pade.remote.control");
 
-        pade.remoteControlPort.onMessage.addListener(function(data)
+        if (pade.remoteControlPort)
         {
-            console.log("remote control incoming", data);
-        });
+            console.log("remote control host connected");
 
-        pade.remoteControlPort.onDisconnect.addListener(function()
-        {
-            console.log("remote control host disconnected");
-            pade.remoteControlPort = null;
-        });
+            pade.remoteControlPort.onMessage.addListener(function(data)
+            {
+                console.log("remote control incoming", data);
+            });
 
-        pade.remoteControlPort.postMessage({ event: "ofmeet.remote.hello" });
+            pade.remoteControlPort.onDisconnect.addListener(function()
+            {
+                console.log("remote control host disconnected");
+                pade.remoteControlPort = null;
+            });
+
+            pade.remoteControlPort.postMessage({ event: "ofmeet.remote.hello" });
+        }
     }
 }

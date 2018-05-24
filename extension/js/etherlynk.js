@@ -408,7 +408,6 @@ var etherlynk = (function(lynk)
         });
 
         lynk.sip.sipUI.on('registered', function(e) {
-            console.log("SIP Registered");
 
             if (!pade.sip.registered)
             {
@@ -416,6 +415,8 @@ var etherlynk = (function(lynk)
                 pade.sip.registered = true;
 
                 if (pade.sip.authUsername) setSipStatus("Registered");
+
+                console.log("SIP Registered");
             }
         });
 

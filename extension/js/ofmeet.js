@@ -540,6 +540,8 @@
 
   function mouseMove(event)
   {
+    if (!enableCursor) return;
+
     var now = Date.now();
     if (now - lastTime < MIN_TIME) {
       return;
@@ -722,6 +724,8 @@
   var MIN_KEYDOWN_TIME = 500;
 
   function documentKeydown(event) {
+    if (!enableCursor) return;
+
     setTimeout(function () {
       var now = Date.now();
       if (now - lastKeydown < MIN_KEYDOWN_TIME) {
@@ -800,7 +804,7 @@
 
   window.addEventListener('message', function (event) {
 
-    //console.log("remote message", event.data);
+    console.log("remote message", event.data);
 
     if (!event.data) return;
 
