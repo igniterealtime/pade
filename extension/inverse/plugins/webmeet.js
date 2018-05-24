@@ -320,7 +320,7 @@
 
                     var view = this;
                     var id = this.model.get("box_id");
-                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conferennce"></a></li>';
+                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conference"></a></li>';
                     $(this.el).find('.toggle-call').after(html);
 
                     if (_converse.view_mode === 'embedded')
