@@ -804,7 +804,7 @@
 
   window.addEventListener('message', function (event) {
 
-    console.log("remote message", event.data);
+    //console.log("remote message", event.data);
 
     if (!event.data) return;
 

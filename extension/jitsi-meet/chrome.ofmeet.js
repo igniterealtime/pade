@@ -24,13 +24,13 @@ var ofmeet = (function(of)
 
         window.addEventListener('message', function (event)
         {
-            //console.log("addListener message", event.data);
+            console.log("addListener message", event.data);
 
             // messages from remote control
             // {"postis":true,"scope":"jitsi-remote-control","method":"message","params":{"type":"request","data":{"name":"remote-control","type":"start","sourceId":"8Ppvxxlv3Zgncd5uiKx6zA=="},"id":1}}
             // {"postis":true,"scope":"jitsi-remote-control","method":"message","params":{"type":"event","data":{"name":"remote-control","type":"stop"}}}
 
-            if (event.data.indexOf("jitsi-remote-control") > -1)
+            if (event.data && typeof event.data === 'string' && event.data.indexOf("jitsi-remote-control") > -1)
             {
                 var eventData = JSON.parse(event.data);
 
@@ -56,6 +56,7 @@ var ofmeet = (function(of)
                 }
 
             }
+            else
 
             // these are messages from the collaboration app in the shadow DOM content page
 
@@ -369,13 +370,27 @@ var ofmeet = (function(of)
         {
             console.log("ofmeet.js track muted", track.getParticipantId(), track.getType(), track.isMuted());
 
-            if (APP.conference.getMyUserId() == track.getParticipantId() && of.localStream)
+            if (APP.conference.getMyUserId() == track.getParticipantId())
             {
-                var tracks = of.localStream.getAudioTracks();
-
-                for (var i=0; i<tracks.length; i++)
+                if (of.localStream)     // SIP synch
                 {
-                    tracks[i].enabled = !track.isMuted();
+                    var tracks = of.localStream.getAudioTracks();
+
+                    for (var i=0; i<tracks.length; i++)
+                    {
+                        tracks[i].enabled = !track.isMuted();
+                    }
+                }
+
+                if (track.isMuted())    // speech recog synch
+                {
+                    console.log("muted, stopping speech transcription");
+                    of.recognitionActive = false;
+                    of.recognition.stop();
+
+                } else {
+                    console.log("unmuted, starting speech transcription");
+                    of.recognition.start();
                 }
             }
         });

@@ -376,7 +376,6 @@ function doDefaults()
     setSetting("enableBlog", false);
 
     // config
-    setSetting("enableTranscription", true);
 
 
     // user interface
