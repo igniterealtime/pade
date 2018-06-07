@@ -22,7 +22,9 @@
         moment = converse.env.moment;
 
      var _converse = null;
+     var baseUrl = null;
      var messageCount = 0;
+     var h5pViews = {};
 
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -50,6 +52,7 @@
              * `_converse` object.
              */
             _converse = this._converse;
+            baseUrl = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2];
             _converse.log("The \"webmeet\" plugin is being initialized");
 
             /* From the `_converse` object you can get any configuration
@@ -91,6 +94,46 @@
             _converse.on('messageAdded', function (data) {
                 // The message is at `data.message`
                 // The original chatbox is at `data.chatbox`.
+
+                if (data.message.get("message"))
+                {
+                    var body = data.message.get("message");
+                    var pos = body.indexOf("/h5p/")
+
+                    if (pos > -1)
+                    {
+                        var id = body.substring(pos + 11);
+                        //console.log("messageAdded h5p", id);
+                        h5pViews[id] = data.chatbox;
+                    }
+                }
+            });
+
+            window.addEventListener('message', function (event)
+            {
+                if (event.data.event == "ofmeet.event.xapi")
+                {
+                    //console.log("webmeet xpi handler", h5pViews, event.data);
+
+                    if (event.data.action == "completed")
+                    {
+                        if (h5pViews[event.data.id])
+                        {
+                            var view = h5pViews[event.data.id];
+                            var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
+
+                            if (view.get("message_type") == "groupchat")
+                            {
+                                nick = view.get("nick");
+                            }
+                            var msg = nick + " completed " + event.data.category + " in " + event.data.id + " and scored " + Math.round(event.data.value * 100) / 100 + "%";
+
+                            var attrs = view.getOutgoingMessageAttributes(msg);
+                            view.sendMessage(attrs);
+                        }
+                    }
+                }
+
             });
 
             console.log("webmeet plugin is ready");
@@ -182,11 +225,11 @@
 
                                 _converse.connection.sendIQ( setVCard(vCard), function(resp)
                                 {
-                                    console.log("set vcard ok", resp);
+                                    //console.log("set vcard ok", resp);
                                     _converse.__super__.onConnected.apply(this, arguments);
 
                                 }, function(err) {
-                                    console.log("set vcard error", err);
+                                    console.error("set vcard error", err);
                                     _converse.__super__.onConnected.apply(this, arguments);
                                 });
                             }
@@ -224,27 +267,30 @@
                         messageCount = 0;
                     }
 
-                    var pos = body.indexOf("https://" + _converse.api.settings.get("bosh_service_url").split("/")[2])
+                    var pos = body.indexOf(baseUrl)
 
                     if (pos > -1)
                     {
-                        var setupHandler = function(chat, room)
+                        var setupHandler = function(chat, room, content)
                         {
-                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + _converse.api.settings.get("webmeet_invitation") + room + '</a></span> <div class="chat-msg-media"></div> </div>';
+                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + content + '</a></span> <div class="chat-msg-media"></div> </div>';
                             chat.replaceElement(msg_content);
 
-                            setTimeout(function()
+                            if (room)
                             {
-                                document.getElementById(room).onclick = function()
+                                setTimeout(function()
                                 {
-                                    doAVConference(room);
-                                }
-                            });
-
+                                    document.getElementById(room).onclick = function()
+                                    {
+                                        doAVConference(room);
+                                    }
+                                });
+                            }
                         }
 
                         var pos0 = body.indexOf("/jitsimeet/index.html?room=")
                         var pos1 = body.indexOf("/ofmeet/");
+                        var pos2 = body.indexOf("/h5p/");
 
                         var moment_time = moment(this.model.get('time'));
                         var pretty_time = moment_time.format(_converse.time_format);
@@ -257,16 +303,31 @@
                         if ( pos0 > -1)
                         {
                             //console.log("audio/video invite", body);
-                            setupHandler(this, body.substring(pos0 + 27));
+                            var link_room = body.substring(pos0 + 27);
+                            var link_content = _converse.api.settings.get("webmeet_invitation") + link_room;
+                            setupHandler(this, link_room, link_content);
                         }
                         else
 
                         if ( pos1 > -1)
                         {
                             //console.log("audio/video invite", body);
-                            setupHandler(this, body.substring(pos1 + 8));
+                            var link_room = body.substring(pos1 + 8);
+                            var link_content = _converse.api.settings.get("webmeet_invitation") + link_room;
+                            setupHandler(this, link_room, link_content);
 
-                        } else {
+                        }
+                        else
+
+                        if ( pos2 > -1)
+                        {
+                            //console.log("h5p content", this.model.attributes);
+                            var path = body.substring(pos2 + 11);
+                            var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
+                            var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
+                            setupHandler(this, null, h5p_content);
+                        }
+                        else {
                             this.__super__.renderChatMessage.apply(this, arguments);
                         }
                     } else {
@@ -338,12 +399,31 @@
                         dropZone.removeEventListener('drop', handleDropFileSelect);
                         dropZone.addEventListener('dragover', handleDragOver, false);
                         dropZone.addEventListener('drop', handleDropFileSelect, false);
+
+                        // h5p content button
+
+                        if (bgWindow.pade.activeH5p)
+                        {
+                            var html = '<li id="h5p-' + id + '"><a class="fa fa-html5" title="Add H5P Content"></a></li>';
+                            $(this.el).find('.toggle-call').after(html);
+                        }
                     }
 
                     setTimeout(function()
                     {
                         var exitButton = document.getElementById("webmeet-exit-webchat-" + id);
                         if (exitButton) exitButton.addEventListener('click', doExit, false);
+
+                        var h5pButton = document.getElementById("h5p-" + id);
+
+                        if (h5pButton)
+                        {
+                            h5pButton.addEventListener('click', function()
+                            {
+                                doH5p(view, id);
+
+                            }, false);
+                        }
 
                         var exitJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
 
@@ -448,6 +528,12 @@
         //console.log("doExit", event);
         if (window.parent && window.parent.ofmeet) window.parent.ofmeet.doExit();
         messageCount = 0;
+    }
+
+    var doH5p = function doH5p(view, id)
+    {
+        //console.log("doH5p", view);
+        view.onMessageSubmitted(bgWindow.pade.activeH5p);
     }
 
     var handleDragOver = function handleDragOver(evt)

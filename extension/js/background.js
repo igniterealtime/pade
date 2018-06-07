@@ -454,7 +454,7 @@ window.addEventListener("load", function()
             }
         }
 
-        var webApps = getSetting("webApps", "").split(",");
+        var webApps = Object.getOwnPropertyNames(pade.webAppsWindow);
 
         for (var i=0; i<webApps.length; i++)
         {
@@ -523,7 +523,7 @@ window.addEventListener("load", function()
             {
                 addHandlers();
 
-                chrome.browserAction.setBadgeText({ text: "" });
+                chrome.browserAction.setBadgeText({ text: "Wait.." });
                 pade.connection.send($pres());
 
                 chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
@@ -541,6 +541,8 @@ window.addEventListener("load", function()
                     updateVCard();
                     setupStreamDeck();
                     enableRemoteControl();
+
+                    chrome.browserAction.setBadgeText({ text: "" });
 
                 }, 3000);
             }
@@ -577,12 +579,25 @@ function handleContact(contact)
         if (contact.id == 0)
         {
             chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
-            pade.activeUrl = contact.url; // default
+
+            chrome.contextMenus.create({id: "pade_h5p", type: "normal", title: "H5P Interactive Content", contexts: ["browser_action"]});
+            chrome.contextMenus.create({parentId: "pade_h5p", type: "normal", id: "pade_h5p_viewer", title: "H5P Content Viewer", contexts: ["browser_action"],  onclick: handleH5pViewerClick});
         }
 
         contact.created = true;
-        chrome.contextMenus.create({parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick});
+        var urlMenu = null;
 
+        if (contact.url.indexOf("/h5p/") > -1)
+        {
+            urlMenu = {parentId: "pade_h5p", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleH5pClick};
+            if (!pade.activeH5p) pade.activeH5p = contact.url;
+
+        } else {
+            urlMenu = {parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick};
+            if (!pade.activeUrl) pade.activeUrl = contact.url; // default
+        }
+
+        chrome.contextMenus.create(urlMenu);
     }
     else
 
@@ -712,6 +727,18 @@ function handleUrlClick(info)
 {
     //console.log("handleUrlClick", info);
     pade.activeUrl = info.menuItemId;
+}
+
+function handleH5pClick(info)
+{
+    //console.log("handleH5pClick", info);
+    pade.activeH5p = info.menuItemId;
+}
+
+function handleH5pViewerClick(info)
+{
+    console.log("handleH5pViewerClick", info);
+    if (pade.activeH5p) openWebAppsWindow(pade.activeH5p, null, 800, 600)
 }
 
 function reloadApp()
@@ -946,8 +973,11 @@ function closeWebAppsWindow(window)
     }
 }
 
-function openWebAppsWindow(url, state)
+function openWebAppsWindow(url, state, width, height)
 {
+    if (!width) width = 1024;
+    if (!height) height = 768;
+
     if (url.startsWith("_")) url = url.substring(1);
     var httpUrl = url.startsWith("http") ? url.trim() : "https://" + url.trim();
     var data = {url: httpUrl, type: "popup", focused: true};
@@ -965,7 +995,7 @@ function openWebAppsWindow(url, state)
         chrome.windows.create(data, function (win)
         {
             pade.webAppsWindow[url] = win;
-            chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: true, width: 640, height: 1024});
+            chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: true, width: width, height: height});
         });
 
     } else {
@@ -984,19 +1014,15 @@ function closeChatsWindow(window)
 
 function openChatsWindow(url, from)
 {
+    closeChatsWindow(from)
+
     var data = {url: chrome.extension.getURL(url), type: "popup", focused: true};
 
-    if (!pade.chatsWindow[from])
+    chrome.windows.create(data, function (win)
     {
-        chrome.windows.create(data, function (win)
-        {
-            pade.chatsWindow[from] = win;
-            chrome.windows.update(pade.chatsWindow[from].id, {drawAttention: true, width: 761, height: 900});
-        });
-
-    } else {
-        chrome.windows.update(pade.chatsWindow[from].id, {drawAttention: true, focused: true});
-    }
+        pade.chatsWindow[from] = win;
+        chrome.windows.update(pade.chatsWindow[from].id, {drawAttention: true, width: 761, height: 900});
+    });
 }
 
 function closePhoneWindow()
@@ -1396,7 +1422,7 @@ function addHandlers()
                     });
                 }
 
-                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept});
+                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept, id: id});
             }
         });
 
@@ -1633,24 +1659,26 @@ function handleInvitation(invite)
     if (pade.participants[jid])
     {
         var participant = pade.participants[jid];
-        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept);
+        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept, invite.id);
     }
     else
 
     if (invite.offerer == pade.domain)
     {
-        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept);
+        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept, invite.id);
     }
     else {
-        processInvitation("Unknown User", invite.offerer, invite.room);
+        processInvitation("Unknown User", invite.offerer, invite.room, invite.id);
     }
 
-    if (pade.port) pade.port.postMessage({event: "invited", id : invite.offerer, name: invite.room});
+    // inform touchpad
+
+    if (pade.port) pade.port.postMessage({event: "invited", id : invite.offerer, name: invite.room, jid: invite.id});
 }
 
-function processInvitation(title, label, room, autoaccept)
+function processInvitation(title, label, room, autoaccept, id)
 {
-    //console.log("processInvitation", title, label, room);
+    //console.log("processInvitation", title, label, room, id);
 
     if (!autoaccept || autoaccept != "true")
     {
@@ -1663,7 +1691,7 @@ function processInvitation(title, label, room, autoaccept)
             if (buttonIndex == 0)   // accept
             {
                 stopTone();
-                acceptCall(title, label, room);
+                acceptCall(title, label, room, id);
             }
             else
 
@@ -1675,11 +1703,11 @@ function processInvitation(title, label, room, autoaccept)
         }, room);
 
         // jabra
-        pade.activeRoom = {title: title, label: label, room: room};
+        pade.activeRoom = {title: title, label: label, room: room, id: id};
         sendToJabra("ring");
 
     } else {
-        acceptCall(title, label, room);
+        acceptCall(title, label, room, id);
     }
 }
 
@@ -1695,7 +1723,7 @@ function processChatNotification(from, body)
     }, from);
 }
 
-function acceptCall(title, label, room)
+function acceptCall(title, label, room, id)
 {
     //console.log("acceptCall", title, label, room);
 
@@ -1704,7 +1732,14 @@ function acceptCall(title, label, room)
         joinAudioCall(title, label, room);
 
     } else {
-        openVideoWindow(room);
+
+        if (!id)    // ofmeet
+        {
+            openVideoWindow(room);
+
+        } else {
+            openChatsWindow("inverse/index.html#converse/room?jid=" + id, label);
+        }
     }
 }
 

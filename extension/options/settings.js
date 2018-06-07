@@ -44,7 +44,7 @@ window.addEvent("domready", function () {
 
         document.getElementById("uploadApplication").addEventListener('change', function(event)
         {
-            uploadApplication(event, settings);
+            uploadApplication(event, settings, background);
         });
 
         setDefaultPassword(settings);
@@ -445,7 +445,7 @@ function getPassword(password)
     return password;
 }
 
-function uploadApplication(event, settings)
+function uploadApplication(event, settings, background)
 {
     //console.log("uploadApplication", event);
 
@@ -460,7 +460,7 @@ function uploadApplication(event, settings)
         {
             console.log("upload", file);
 
-            if (file.name.endsWith(".zip"))
+            if (file.name.endsWith(".zip") || file.name.endsWith(".h5p"))
             {
                 var putUrl = "https://" + server + "/dashboard/upload?name=" + file.name + "&username=" + username;
                 var req = new XMLHttpRequest();
@@ -471,6 +471,12 @@ function uploadApplication(event, settings)
                   {
                     console.log("pade.upload.app", this.statusText);
                     settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+
+                    setTimeout(function()
+                    {
+                         background.reloadApp();
+
+                    }, 2000);
                   }
                   else
 

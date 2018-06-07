@@ -79,7 +79,7 @@ var ofmeet = (function(of)
 
                 if (event.data.event == "ofmeet.event.url.ready")
                 {
-                    //console.log("addListener message collab", event.data);
+                    console.log("addListener message collab", event.data);
 
                     // Starts here. When content page is ready and we have content to share,
                     // we start mouse/key event feed

@@ -17,7 +17,7 @@
     send: function(msg)
     {
         //console.log("session send", msg);
-        window.parent.postMessage({ event: 'ofmeet.event.url.message', msg: msg}, '*');
+        window.top.postMessage({ event: 'ofmeet.event.url.message', msg: msg}, '*');
     }
   };
 
@@ -837,13 +837,13 @@
 
     if (event.data.action == 'ofmeet.action.get.cursor')
     {
-        window.parent.postMessage({ event: 'ofmeet.event.got.cursor', content: Cursor.getClient(event.data.user)}, '*');
+        window.top.postMessage({ event: 'ofmeet.event.got.cursor', content: Cursor.getClient(event.data.user)}, '*');
     }
     else
 
     if (event.data.action == 'ofmeet.action.get.cursor')
     {
-        window.parent.postMessage({ event: 'ofmeet.event.got.mycursor', content: Cursor.getClient(user)}, '*');
+        window.top.postMessage({ event: 'ofmeet.event.got.mycursor', content: Cursor.getClient(user)}, '*');
     }
 
   });
@@ -865,4 +865,4 @@
     $(window).scroll(scroll);
     scroll();
 
-    window.parent.postMessage({ event: 'ofmeet.event.url.ready', url: window.location.href}, '*');
+    window.top.postMessage({ event: 'ofmeet.event.url.ready', url: window.location.href}, '*');
