@@ -7,6 +7,7 @@ var __displayname = getSetting("displayname");
 var __username = getSetting("username");
 var __password = getSetting("password");
 var __domain = getSetting("domain");
+var __email = getSetting("email", "");
 
 // optional
 var __enableSip = getSetting("enableSip", false);
@@ -14,7 +15,7 @@ var __showSharedCursor = getSetting("showSharedCursor", true);
 
 
 OFMEET_CONFIG = {
-    emailAddress:'',
+    emailAddress: __email,
     nickName:__displayname ? __displayname : __username,
     username:__username,
     userAvatar: null,
@@ -53,10 +54,11 @@ window.addEventListener("DOMContentLoaded", function()
         createAvatar();     // default avatar
 
         OFMEET_CONFIG.activeUrl = win.pade.activeUrl;
+        APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
 
         win.findUsers(__username, function(users)
         {
-            if (users[0] && users[0].email)
+            if (users[0] && users[0].email && users[0].email != "")
             {
                 OFMEET_CONFIG.emailAddress = users[0].email;
                 APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);

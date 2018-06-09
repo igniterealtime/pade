@@ -1,5 +1,4 @@
 var interfaceConfig = {
-  "ACTIVE_SPEAKER_AVATAR_SIZE": getSetting("ACTIVE_SPEAKER_AVATAR_SIZE", 100),
   "SHOW_CONTACTLIST_AVATARS": true,
   "SHOW_POWERED_BY": false,
   "APP_NAME": chrome.i18n.getMessage('manifest_extensionName'),
@@ -48,7 +47,7 @@ var interfaceConfig = {
   "ENABLE_FEEDBACK_ANIMATION": false,
   "INVITATION_POWERED_BY": true,
   "DEFAULT_REMOTE_DISPLAY_NAME": "",
-  "TOOLBAR_TIMEOUT": 4000,
+  "TOOLBAR_TIMEOUT": getSetting("TOOLBAR_TIMEOUT", 4000),
   "INVITE_OPTIONS": [
     "invite",
     "dialout",
@@ -63,5 +62,5 @@ var interfaceConfig = {
     "fullscreen"
   ],
   "DEFAULT_LOCAL_DISPLAY_NAME": "Me",
-  "INITIAL_TOOLBAR_TIMEOUT": 20000
+  "INITIAL_TOOLBAR_TIMEOUT": getSetting("INITIAL_TOOLBAR_TIMEOUT", 20000)
 };

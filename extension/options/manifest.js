@@ -115,6 +115,20 @@ this.manifest = {
             "type": "description"
         },
         {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("About"),
+            "name": "changelog",
+            "type": "button",
+            "text": i18n.get("Change Log")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("About"),
+            "name": "help",
+            "type": "button",
+            "text": i18n.get("Help")
+        },
+        {
             "tab": i18n.get("general"),
             "group": i18n.get("contact"),
             "name": "email",
@@ -298,25 +312,31 @@ this.manifest = {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
             "name": "startBitrate",
-            "type": "text",
+            "type": "slider",
             "label": i18n.get("Start Bitrate"),
-            "text": i18n.get("800"),
+            "max": 1600,
+            "min": 800,
+            "step": 100
         },
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
             "name": "resolution",
-            "type": "text",
+            "type": "slider",
             "label": i18n.get("Resolution"),
-            "text": i18n.get("720"),
+            "max": 1080,
+            "min": 320,
+            "step": 160
         },
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
             "name": "minHDHeight",
-            "type": "text",
+            "type": "slider",
             "label": i18n.get("Min HD Height"),
-            "text": i18n.get("540"),
+            "max": 1000,
+            "min": 0,
+            "step": 100
         },
         {                                               // ofmeet ui
             "tab": i18n.get("ofmeet"),
@@ -335,18 +355,32 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
-            "name": "ACTIVE_SPEAKER_AVATAR_SIZE",
-            "type": "text",
-            "label": i18n.get("Active Speaker Avatar Size"),
-            "text": i18n.get("100"),
+            "name": "INITIAL_TOOLBAR_TIMEOUT",
+            "type": "slider",
+            "label": i18n.get("Initial Toolbar Timeout"),
+            "max": 50000,
+            "min": 10000,
+            "step": 10000
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ui"),
+            "name": "TOOLBAR_TIMEOUT",
+            "type": "slider",
+            "label": i18n.get("Toolbar Timeout"),
+            "max": 10000,
+            "min": 2000,
+            "step": 1000
         },
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
             "name": "FILM_STRIP_MAX_HEIGHT",
-            "type": "text",
+            "type": "slider",
             "label": i18n.get("Filmstrip Maximium Height"),
-            "text": i18n.get("80"),
+            "max": 160,
+            "min": 80,
+            "step": 10
         },
         {                                       // touchpad
             "tab": i18n.get("ofmeet"),
@@ -431,6 +465,13 @@ this.manifest = {
             "name": "allowNonRosterMessaging",
             "type": "checkbox",
             "label": i18n.get("Allow non roster messaging")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "autoListRooms",
+            "type": "checkbox",
+            "label": i18n.get("Auto List Rooms")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -670,15 +711,6 @@ this.manifest = {
             "email",
             "phone",
             "country"
-        ],
-        [
-            "startBitrate",
-            "resolution",
-            "minHDHeight"
-        ],
-        [
-            "ACTIVE_SPEAKER_AVATAR_SIZE",
-            "FILM_STRIP_MAX_HEIGHT"
         ]
     ]
 };

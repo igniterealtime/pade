@@ -151,7 +151,7 @@
     },
     
     "upload_app": {
-        "message": "Pack application into a zip file and select",
+        "message": "Upload a collaboration zip file or H5P inteactive conent ",
         "description": "Label for uploading collaboration application"
     },     
     "upload_avatar": {

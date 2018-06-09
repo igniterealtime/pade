@@ -174,6 +174,16 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.changelog.addEvent("action", function ()
+        {
+            location.href = "../changelog.html";
+        });
+
+        settings.manifest.help.addEvent("action", function ()
+        {
+            location.href = chrome.runtime.getManifest().homepage_url;
+        });
+
         settings.manifest.enableSip.addEvent("action", function ()
         {
             background.reloadApp();
@@ -376,12 +386,16 @@ function doDefaults()
     setSetting("enableBlog", false);
 
     // config
+    setSetting("startBitrate", 800);
+    setSetting("resolution", 720);
+    setSetting("minHDHeight", 540);
 
-
-    // user interface
+    // meeting
     setSetting("CAPTIONS_SUBTITLES", true);
     setSetting("VERTICAL_FILMSTRIP", true);
     setSetting("FILM_STRIP_MAX_HEIGHT", 90);
+    setSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
+    setSetting("TOOLBAR_TIMEOUT", 4000);
 
     // candy chat
     setSetting("chatWithOnlineContacts", true);
