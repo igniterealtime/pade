@@ -210,9 +210,13 @@ window.addEventListener("load", function()
 
     chrome.runtime.onConnect.addListener(function(port)
     {
-        console.log("popup connect");
-        pade.popup = true;
-        pade.port = port;
+        console.log("popup connect", port.sender.url);
+
+        if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
+        {
+            pade.popup = true;
+            pade.port = port;
+        }
 
         port.onMessage.addListener(function(message)
         {
@@ -260,8 +264,12 @@ window.addEventListener("load", function()
         port.onDisconnect.addListener(function()
         {
             console.log("popup disconnect");
-            pade.popup = false;
-            pade.port = null;
+
+            if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
+            {
+                pade.popup = false;
+                pade.port = null;
+            }
         });
     });
 
@@ -1143,7 +1151,7 @@ function openBlogWindow()
 {
     if (!pade.blogWindow)
     {
-        var url = "https://" + pade.server + "/" + getSetting("blogName", "solo") + "/admin-index.do#main";
+        var url = "https://" + pade.username + ":" + pade.password + "@" + pade.server + "/" + getSetting("blogName", "solo") + "/admin-index.do#main";
 
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
@@ -1169,12 +1177,12 @@ function openAVCaptureWindow()
 {
     if (!pade.avCaptureWindow)
     {
-        var url = chrome.extension.getURL("avcapture/index.html");
+        var url = chrome.extension.getURL("webcam/index.html");
 
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.avCaptureWindow = win;
-            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 600, drawAttention: true});
+            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 640, drawAttention: true});
         });
     } else {
         chrome.windows.update(pade.avCaptureWindow.id, {drawAttention: true, focused: true});
@@ -1195,7 +1203,7 @@ function openBlastWindow()
 {
     if (!pade.blastWindow)
     {
-        var url = "https://" + pade.server + "/dashboard/blast";
+        var url = "https://" + pade.username + ":" + pade.password + "@" + pade.server + "/dashboard/blast";
 
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
@@ -1219,7 +1227,7 @@ function closeVertoWindow()
 
 function openVertoWindow(state)
 {
-    var data = {url: "https://" + pade.server + "/dashboard/verto", type: "popup", focused: true};
+    var data = {url: "https://" + pade.username + ":" + pade.password + "@" + pade.server + "/dashboard/verto", type: "popup", focused: true};
 
     if (state == "minimized")
     {
@@ -1533,10 +1541,10 @@ function fetchContacts(callback)
                 type: "room",
                 jid: room,
                 presence: "room",
-                name: name,
+                name: 'workgroup-' + name,
                 pinned: true,
                 open: true,
-                room: room,
+                room: 'workgroup-' + name,
                 domain: pade.connection.domain
             });
 

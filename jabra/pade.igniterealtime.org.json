@@ -7,6 +7,8 @@
   "allowed_origins": [
     "chrome-extension://bfifigomgmgjnlfhdkphhijegjongifa/",
     "chrome-extension://aacfpaoagoknaeppmnpgcckknfdboaka/",
-    "chrome-extension://fohfnhgabmicpkjcpjpjongpijcffaba/" 
+    "chrome-extension://fohfnhgabmicpkjcpjpjongpijcffaba/",
+    "chrome-extension://bnpcmbchlolcacobijgniohdofagbhnd/", 
+    "chrome-extension://pkfgidplaooledifdlpeandbibakplkk/"     
   ]
 }

@@ -4,6 +4,7 @@ var ctxSip;
 var log = null;
 var bgWindow = null;
 var sessionid = null;
+var firstTime = true;
 
 window.addEventListener("beforeunload", function(e) {
     e.returnValue = 'Ok';
@@ -204,6 +205,17 @@ window.addEventListener("load", function()
 
             getUserMediaSuccess: function(stream) {
                 ctxSip.Stream = stream;
+
+                var url = urlParam("url");
+
+                if (url)
+                {
+                    if (url.indexOf("tel:") == 0 || url.indexOf("sip:") == 0)
+                    {
+                        $("#numDisplay").val(url.substring(4));
+                        ctxSip.phoneCallButtonPressed();
+                    }
+                }
             },
 
             /**
@@ -552,6 +564,11 @@ window.addEventListener("load", function()
 
         var onConnected = function(e) {
             ctxSip.setStatus("Connected");
+
+            if (firstTime)
+            {
+                firstTime = false;
+            }
         };
 
         var onDisconnected = function(e) {
@@ -568,18 +585,11 @@ window.addEventListener("load", function()
 
         var onRegistered = function(e) {
 
-
-
             // This key is set to prevent multiple windows.
             ctxSip.localStorage.setItem('ctxPhone', 'true');
 
             $("#mldError").modal('hide');
             ctxSip.setStatus("Ready");
-
-            // Get the userMedia and cache the stream
-            if (bgWindow.etherlynk.getSipWebRtc().isSupported()) {
-                bgWindow.etherlynk.getSipWebRtc().getUserMedia({ audio: true, video: true }, ctxSip.getUserMediaSuccess, ctxSip.getUserMediaFailure);
-            }
         };
 
         var onRegistrationFailed = function(e) {
@@ -634,6 +644,11 @@ window.addEventListener("load", function()
         ctxSip.phone.on('unregistered', onUnregistered);
         ctxSip.phone.on('invite', onInvite);
         ctxSip.phone.on('uiinvite', onInvite);
+
+        // Get the userMedia and cache the stream
+        if (bgWindow.etherlynk.getSipWebRtc().isSupported()) {
+            bgWindow.etherlynk.getSipWebRtc().getUserMedia({ audio: true, video: true }, ctxSip.getUserMediaSuccess, ctxSip.getUserMediaFailure);
+        }
 
         // Auto-focus number input on backspace.
         $('#sipClient').keydown(function(event) {

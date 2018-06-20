@@ -271,8 +271,30 @@ window.addEvent("domready", function () {
 
         settings.manifest.registerUrlProtocols.addEvent("action", function ()
         {
-            navigator.registerProtocolHandler("im",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Conversation");
-            navigator.registerProtocolHandler("xmpp",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Meeting");
+            if (getSetting("registerIMProtocol"))
+            {
+                navigator.registerProtocolHandler("im",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Conversation");
+            }
+
+            if (getSetting("registerXMPPProtocol"))
+            {
+                navigator.registerProtocolHandler("xmpp",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Meeting");
+            }
+
+            if (getSetting("registerSIPProtocol"))
+            {
+                navigator.registerProtocolHandler("sip",  chrome.extension.getURL("phone/index-ext.html?url=%s"), "Pade - Phone");
+            }
+
+            if (getSetting("registerTELProtocol"))
+            {
+                navigator.registerProtocolHandler("tel",  chrome.extension.getURL("phone/index-ext.html?url=%s"), "Pade - Phone");
+            }
+
+            if (getSetting("registerMEETProtocol"))
+            {
+                navigator.registerProtocolHandler("web+meet",  chrome.extension.getURL("jitsi-meet/chrome.index.html?url=%s"), "Pade - Meeting");
+            }
         });
 
         settings.manifest.uport.addEvent("action", function ()
@@ -376,6 +398,9 @@ function doDefaults()
 {
     // connection
     setSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
+    setSetting("server", chrome.i18n.getMessage("openfire_server"));
+    setSetting("domain", chrome.i18n.getMessage("openfire_domain"));
+    setSetting("useWebsocket", true);
 
     // preferences
     setSetting("popupWindow", true);
@@ -391,7 +416,6 @@ function doDefaults()
     setSetting("minHDHeight", 540);
 
     // meeting
-    setSetting("CAPTIONS_SUBTITLES", true);
     setSetting("VERTICAL_FILMSTRIP", true);
     setSetting("FILM_STRIP_MAX_HEIGHT", 90);
     setSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);

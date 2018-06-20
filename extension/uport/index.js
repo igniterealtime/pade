@@ -38,7 +38,7 @@ window.addEventListener("load", function()
         var permission = i18n.get("uport_permission");
         var avatar = null;
 
-        var url = "https://" + server + "/rest/api/restapi/v1/ask/uport/pade/" + i18n.get("uport_client_id");
+        var url = "https://" + server + "/rest/api/restapi/v1/ask/uport/" + i18n.get("manifest_shortExtensionName").toLowerCase() + "/" + i18n.get("uport_client_id");
         var options = {method: "GET", headers: {"authorization": permission}};
 
         fetch(url, options).then(function(response){ return response.text()}).then(function(signer)

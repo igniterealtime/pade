@@ -26,7 +26,7 @@ OFMEET_CONFIG = {
     callcontrol:'callcontrol.' + __domain,
     sip:__server,
     hostname: __server,
-    room: urlParam("room"),
+    room: urlParam("room") || getUrl(),
     domain:__domain,
     enableTranscription: getSetting("enableTranscription", true),
     recordAudio: getSetting("recordAudio", false),
@@ -72,6 +72,17 @@ window.addEventListener("DOMContentLoaded", function()
 
     });
 });
+
+function getUrl()
+{
+    var url = urlParam("url");
+
+    if (url && url.indexOf("web+meet:") == 0)
+    {
+        url = url.substring(9);
+    }
+    return url;
+}
 
 function urlParam(name)
 {

@@ -241,23 +241,51 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
-            "name": "useStreamDeck",
-            "type": "checkbox",
-            "label": i18n.get("Use Stream Deck as a TouchPad")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
             "name": "audioOnly",
             "type": "checkbox",
             "label": i18n.get("Audioconference Only")
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
-            "name": "registerUrlProtocols",
+            "group": i18n.get("URL Protocol Handlers"),
+            "name": "registerIMProtocol",
             "type": "checkbox",
-            "label": i18n.get("Register Url Protocols im: (chat) and xmpp: (meeting)")
+            "label": i18n.get("IM: user@domain")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("URL Protocol Handlers"),
+            "name": "registerXMPPProtocol",
+            "type": "checkbox",
+            "label": i18n.get("XMPP: chat-room")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("URL Protocol Handlers"),
+            "name": "registerSIPProtocol",
+            "type": "checkbox",
+            "label": i18n.get("SIP: destination@domain")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("URL Protocol Handlers"),
+            "name": "registerTELProtocol",
+            "type": "checkbox",
+            "label": i18n.get("TEL: destination@domain")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("URL Protocol Handlers"),
+            "name": "registerMEETProtocol",
+            "type": "checkbox",
+            "label": i18n.get("WEB+MEET: meeting-room")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("URL Protocol Handlers"),
+            "name": "registerUrlProtocols",
+            "type": "button",
+            "text": i18n.get("Register URL Protocols")
         },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
@@ -388,6 +416,13 @@ this.manifest = {
             "name": "enableTouchPad",
             "type": "checkbox",
             "label": i18n.get("Enable Communicator TouchPad")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("TouchPad"),
+            "name": "useStreamDeck",
+            "type": "checkbox",
+            "label": i18n.get("Use Stream Deck as a TouchPad")
         },
         {
             "tab": i18n.get("ofmeet"),

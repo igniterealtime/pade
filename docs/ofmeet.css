@@ -1,0 +1,335 @@
+@charset "UTF-8";
+.ofmeet-button {
+  font-family: "Segoe UI Local", "Segoe WP", "Segoe UI Web", "Segoe UI Arabic Web", "Segoe UI Cyrillic Web", "Segoe UI Greek Web", "Segoe UI Hebrew Web", Tahoma, "Helvetica Neue", Helvetica, "Meiryo UI", Meiryo, Arial Unicode MS, sans-serif;
+  cursor: pointer;
+  position: relative; }
+  .ofmeet-button.icononly .lwc-button-text {
+    display: inherit; }
+  .ofmeet-button.textonly .lwc-button-icon {
+    visibility: hidden; }
+  .ofmeet-button.textonly.icononly {
+    display: inherit;
+    display: inherit; }
+
+.lwc-chat-button {
+  border-radius: 0;
+  background-color: orange;
+  display: inline-flex;
+  font-size: 12px;
+  padding: 4px 12px;
+  text-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -ms-flex-align: center;
+  line-height: 26px;
+  cursor: pointer;
+  color: white;
+  fill: transparent;
+  box-sizing: content-box;
+  z-index: 2147483647;
+  position: relative; }
+  .lwc-chat-button #message-icon {
+    fill: #FEFEFE; }
+  .lwc-chat-button #circle {
+    fill: transparent; }
+  .lwc-chat-button.theme-black #circle {
+    fill: #1f1f1f; }
+  .lwc-chat-button .unreadMessageIndicator {
+    visibility: hidden;
+    background-color: #f49126;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 12px;
+    width: 20px;
+    height: 20px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-self: center;
+    align-self: center;
+    -ms-flex-item-align: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -ms-flex-pack: center;
+    box-sizing: border-box; }
+    .lwc-chat-button .unreadMessageIndicator .heading {
+      padding: 0;
+      color: white;
+      margin: 0;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 11px;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+
+.lwc-button-icon {
+  box-sizing: content-box;
+  margin-right: 8px;
+  align-items: center;
+  width: 20px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; }
+
+.lwc-button-text {
+  letter-spacing: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  font-size: 15px; }
+
+.bubble .lwc-chat-button {
+  position: fixed;
+  padding: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  right: 20px;
+  bottom: 50px; }
+
+.bubble .lwc-button-icon {
+  padding: 14px;
+  margin-right: 0;
+  width: 32px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -ms-flex-align: center; }
+
+.bubble .lwc-button-text {
+  opacity: 0;
+  max-width: 0; }
+
+.tab .lwc-chat-button {
+  position: fixed;
+  bottom: 0;
+  min-width: 200px;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  right: 20px; }
+
+.tab .lwc-chat-button:after {
+  content: '\2197';
+  position: absolute;
+  right: 10px;
+  font-size: 20px; }
+
+.tab .lwc-chat-button {
+  padding-right: 30px; }
+
+.tab .unreadMessageIndicator {
+  top: -5px;
+  right: -5px; }
+
+.rounded .lwc-chat-button {
+  border-radius: 30px; }
+
+.lwc-chat:hover {
+  border-color: #B6B6B6;
+  background-color: #EEE; }
+
+.lwc-chat-frame {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  max-height: 590px;
+  height: calc(100vh - 75px);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: max-height .2s, width .2s, height .2s, bottom .2s, right .2s;
+  box-shadow: 0 0 0 0;
+  z-index: 2147483647;
+  background: #fff;
+  box-shadow: 0px 0px 7px 1px #ababab; }
+  .lwc-chat-frame.collapsed {
+    height: 75px; }
+
+.fullscreen .lwc-chat-frame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 0; }
+
+.fullscreen html.swc-chat, .fullscreen html.swc-chat body, .fullscreen #main, .fullscreen .conversation, .fullscreen .dragAndDropContainer {
+  border-radius: 0; }
+
+.inline .lwc-chat-frame {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  right: 0;
+  left: 0;
+  max-height: none;
+  border-radius: 0; }
+
+.inline html.swc-chat, .inline html.swc-chat body, .inline #main, .inline .conversation, .inline .dragAndDropContainer {
+  border-radius: 0; }
+
+.sidebar.right .lwc-chat-frame {
+  right: 0; }
+
+.sidebar.left .lwc-chat-frame {
+  left: 0; }
+
+.sidebar .lwc-chat-frame {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  max-height: none;
+  border-radius: 0; }
+
+.sidebar html.swc-chat, .sidebar html.swc-chat body, .sidebar #main, .sidebar .conversation, .sidebar .dragAndDropContainer {
+  border-radius: 0; }
+
+.swc-recents-frame {
+  visibility: visible;
+  width: 100%;
+  height: 100%; }
+
+.open-button {
+  animation: open-tab-anim 400ms cubic-bezier(0, 0, 0, 1) both; }
+
+.close-button {
+  animation: close-tab-anim 400ms 360ms cubic-bezier(0, 0, 0, 1) both; }
+
+.bubble.open-button {
+  animation: open-bubble-anim 400ms cubic-bezier(0, 0, 0, 1) both; }
+
+.bubble.close-button {
+  animation: close-bubble-anim 400ms cubic-bezier(0, 0, 0, 1) both; }
+
+@keyframes open-tab-anim {
+  0% {
+    opacity: 1;
+    transform: translateY(0); }
+  99% {
+    opacity: 0;
+    transform: translateY(20px);
+    display: auto; }
+  100% {
+    visibility: hidden;
+    opacity: 0; } }
+
+@keyframes close-tab-anim {
+  0% {
+    visibility: hidden;
+    opacity: 0; }
+  1% {
+    opacity: 0;
+    transform: translateY(20px);
+    display: auto; }
+  100% {
+    opacity: 1;
+    transform: translateY(0); } }
+
+@keyframes open-bubble-anim {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0); }
+  99% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.6) rotate(45deg);
+    display: auto; }
+  100% {
+    visibility: hidden;
+    opacity: 0; } }
+
+@keyframes close-bubble-anim {
+  0% {
+    visibility: hidden;
+    opacity: 0; }
+  1% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.6) rotate(45deg);
+    display: auto; }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0); } }
+
+.open-chat {
+  transform-origin: bottom right;
+  animation: open-chat-anim 460ms 200ms cubic-bezier(0, 0, 0, 1) both; }
+
+.close-chat {
+  transform-origin: bottom right;
+  animation: close-chat-anim 460ms cubic-bezier(0, 0, 0, 1) both; }
+
+@keyframes open-chat-anim {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    visibility: visible; }
+  1% {
+    display: auto;
+    transform: scale(0.8);
+    opacity: 0;
+    box-shadow: 0 6px 20px transparent; }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); } }
+
+@keyframes close-chat-anim {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    display: auto; }
+  99% {
+    transform: scale(0.8);
+    opacity: 0;
+    box-shadow: 0 6px 20px transparent;
+    display: auto; }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    visibility: collapse; } }
+
+.canvasContainer {
+  background-color: #8FD3C5 100%;
+  /* Fallback Color */
+  background-image: -webkit-gradient(135deg, from(#1686D9 0%), to(#8FD3C5 100%));
+  /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(135deg, #1686D9 0%, #8FD3C5 100%);
+  /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image: -moz-linear-gradient(135deg, #1686D9 0%, #8FD3C5 100%);
+  /* FF3.6 */
+  background-image: -ms-linear-gradient(135deg, #1686D9 0%, #8FD3C5 100%);
+  /* IE10 */
+  background-image: -o-linear-gradient(135deg, #1686D9 0%, #8FD3C5 100%);
+  /* Opera 11.10+ */
+  background-image: linear-gradient(135deg, #1686D9 0%, #8FD3C5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient GradientType=0, StartColorStr=#1686D9 0%, EndColorStr=#8FD3C5 100%;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden; }
+
+.loaderCanvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  visibility: visible; }

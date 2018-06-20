@@ -38,7 +38,7 @@
                 <div class="branding">
                     <h1 class="logo">
                         <a href="index.html">
-                            <span aria-hidden="true" class="icon"><img src="favicon.ico" /></span>
+                            <span aria-hidden="true" class="icon"><img src="favicon.ico" width="32px"/></span>
                             <span class="text-highlight">Pàdé</span>
                         </a>
                     </h1>
@@ -53,18 +53,58 @@
             <div class="container">
                 <div id="doc-header" class="doc-header text-center">
                     <h1 class="doc-title"><span aria-hidden="true" class="icon icon_document_alt"></span> Features</h1>
-                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: Jan 25th, 2016</div>
+                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: June 12th, 2018</div>
                 </div><!--//doc-header-->
                 <div id="showcase" class="doc-body">
                     <div class="doc-content">
                         <div class="content-inner">
+
+                            <section id="contacts-section" class="doc-section">
+                                <h2 class="section-title">Contacts</h2>
+                                <p>In order to start communicating with someone, you first need to add them as a contact.</p>
+                                <div id="adding-contact"  class="section-block">
+                                    <h3 class="block-title">Adding a Contact</h3>
+                                   <p>To do this, first open the Pàdé Converse window if not already opened. Next, click the Add a contact link in the Contacts tab.</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/add_contact.jpg"><img class="img-responsive" src="assets/images/add_contact.jpg" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/add_contact.jpg"></a>
+                                    </div>
+                                    <p>This will open a popup window in which you can type the username of the person you'd like to add.</p>
+                                    <p>Remember, an XMPP username (also called a JID or Jabber ID) is similar to an email address, in that you have both the user's handle and the domain name of the enterprise, separated with an @ sign.</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/add_contact_1.jpg"><img class="img-responsive" src="assets/images/add_contact_1.jpg" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/add_contact_1.jpg"></a>
+                                    </div>
+                                    <p>Once you've typed the username and clicked submit, your request will be sent to this person. If they are online, they will immediately be notified of your request, otherwise they'll see it next time they come online.</p>
+                                    <p>Technically, when you add someone as a contact, you're doing two things. Firstly, you are adding the contact to your roster (think of it as an address book) and secondly you are asking to be notified whenever that person comes online.</p>
+                                    <p>The person you are adding as a contact has the option to either accept or decline your request. Until that decision has been made, they will appear in your roster as a so-called pending contact. In other words, their final status is pending on whether they accept or decline your request.</p>
+                                    <p>If the person accepts your contact request, they will get a chat status indicator in your roster and will also become clickable. Clicking on the name of the user will open a chatbox in which you can then start chatting with that user.</p>
+                                </div><!--//section-block-->
+
+                                <div id="removing-contact"  class="section-block">
+                                    <h3 class="block-title">Removing a Contact</h3>
+                                    <p>To remove a contact, hover your mouse over their name and then click on the trash icon. You will be prompted to confirm, and if you do, the contact will no longer be visible in your contacts list.</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/remove_contact.jpg"><img class="img-responsive" src="assets/images/remove_contact.jpg" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/remove_contact.jpg"></a>
+                                    </div>
+                                </div><!--//section-block-->
+
+
+                            </section><!--//doc-section-->
 
                         </div><!--//content-inner-->
                     </div><!--//doc-content-->
                     <div class="doc-sidebar">
                         <nav id="doc-nav">
                             <ul id="doc-menu" class="nav doc-menu hidden-xs" data-spy="affix">
-
+                                <li>
+                                    <a class="scrollto" href="#contacts-section">Contacts</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#adding-contact">Adding a Contact</a></li>
+                                        <li><a class="scrollto" href="#removing-contact">Removing a Contact</a></li>
+                                    </ul><!--//nav-->
+                                </li>
                             </ul><!--//doc-menu-->
                         </nav>
                     </div><!--//doc-sidebar-->
