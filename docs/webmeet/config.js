@@ -2,7 +2,7 @@ var config = {
     authentication: 'anonymous',
     auto_login: true,
     auto_join_rooms: [
-        'open_chat@conference.igniterealtime.org',
+        'pade@conference.igniterealtime.org',
     ],
     play_sounds: true,
     sounds_path: "sounds/",
