@@ -764,6 +764,7 @@ function startTone(name)
         {
             pade.ringtone = new Audio();
             pade.ringtone.loop = true;
+            pade.ringtone.volume = 1;
         }
 
         pade.ringtone.src = chrome.extension.getURL("ringtones/" + name + ".mp3");
@@ -987,7 +988,7 @@ function openWebAppsWindow(url, state, width, height)
     if (!height) height = 768;
 
     if (url.startsWith("_")) url = url.substring(1);
-    var httpUrl = url.startsWith("http") ? url.trim() : "https://" + url.trim();
+    var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : "https://" + url.trim());
     var data = {url: httpUrl, type: "popup", focused: true};
 
     console.log("openWebAppsWindow", data);
@@ -1509,7 +1510,7 @@ function fetchContacts(callback)
                 id: contactCount++,
                 type: "conversation",
                 name: name,
-                room: makeRoomName(pade.username, node),
+                room: makeRoomName(node),
                 node: node,
                 jid: jid,
                 presence: pade.presence[jid] ? pade.presence[jid] : "unavailable",
@@ -1617,7 +1618,7 @@ function findUsers(search, callback)
 
             var name = current.find('nick').text();
             var email = current.find('email').text();
-            var room = makeRoomName(pade.username, username);
+            var room = makeRoomName(username);
 
             //console.log('findUsers response', name, jid, room);
 
@@ -2178,13 +2179,13 @@ function showUser(contact)
     return !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
 }
 
-function makeRoomName(me, contact)
+function makeRoomName(contact)
 {
-    if (me <= contact)
+    if (pade.username <= contact)
     {
-        return me + "-" + contact;
+        return pade.username + "-" + contact;
     }
-    else return contact + "-" + me;
+    else return contact + "-" + pade.username;
 }
 
 function setSipStatus(status)

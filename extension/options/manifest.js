@@ -248,37 +248,44 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
+            "name": "unregisterUrlProtocols",
+            "type": "description",
+            "text": i18n.get("Goto chrome://settings/handlers to un-register protocol handlers")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("URL Protocol Handlers"),
             "name": "registerIMProtocol",
             "type": "checkbox",
-            "label": i18n.get("IM: user@domain")
+            "label": i18n.get("IM: user@domain - one-to-one instant messaging")
         },
         {
             "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerXMPPProtocol",
             "type": "checkbox",
-            "label": i18n.get("XMPP: chat-room")
+            "label": i18n.get("XMPP: chat-room - group-chat in a multi-user chat room")
         },
         {
             "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerSIPProtocol",
             "type": "checkbox",
-            "label": i18n.get("SIP: destination@domain")
+            "label": i18n.get("SIP: destination@domain - sip audio/video conference")
         },
         {
             "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerTELProtocol",
             "type": "checkbox",
-            "label": i18n.get("TEL: destination@domain")
+            "label": i18n.get("TEL: destination@domain - telephone call")
         },
         {
             "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerMEETProtocol",
             "type": "checkbox",
-            "label": i18n.get("WEB+MEET: meeting-room")
+            "label": i18n.get("WEB+MEET: meeting-room - openfire meeting")
         },
         {
             "tab": i18n.get("general"),

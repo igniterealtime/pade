@@ -483,11 +483,13 @@ var etherlynk = (function(lynk)
 
         newSess.on('connecting', function(e) {
             console.log("connecting", displayName, uri);
+            startTone("ringback-us");
             if (pade.port) pade.port.postMessage({event: "connecting", name: id, uri: uri, displayName: displayName});
         });
 
         newSess.on('accepted', function(e) {
             console.log("accepted", displayName, uri);
+            stopTone();
             if (pade.port) pade.port.postMessage({event: "connected", name: id, uri: uri, displayName: displayName});
         });
 
@@ -513,22 +515,26 @@ var etherlynk = (function(lynk)
 
         newSess.on('cancel', function(e) {
             console.log("cancel", displayName, uri);
+            stopTone();
             if (pade.port) pade.port.postMessage({event: "cancel", name: id, uri: uri, displayName: displayName});
         });
 
         newSess.on('bye', function(e) {
             console.log("bye", displayName, uri);
+            stopTone();
             cleanupMedia(id);
             if (pade.port) pade.port.postMessage({event: "disconnected", name: id, uri: uri, displayName: displayName});
         });
 
         newSess.on('failed', function(e) {
             console.log("failed", displayName, uri);
+            stopTone();
             if (pade.port) pade.port.postMessage({event: "failed", name: id, uri: uri, displayName: displayName});
         });
 
         newSess.on('rejected', function(e) {
             console.log("rejected", displayName, uri);
+            stopTone();
             if (pade.port) pade.port.postMessage({event: "rejected", name: id, uri: uri, displayName: displayName});
         });
     }

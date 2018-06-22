@@ -283,7 +283,7 @@ window.addEvent("domready", function () {
 
             if (getSetting("registerSIPProtocol"))
             {
-                navigator.registerProtocolHandler("sip",  chrome.extension.getURL("phone/index-ext.html?url=%s"), "Pade - Phone");
+                navigator.registerProtocolHandler("sip",  chrome.extension.getURL("webcam/sip-video.html?url=%s"), "Pade - SIP VideoConference");
             }
 
             if (getSetting("registerTELProtocol"))

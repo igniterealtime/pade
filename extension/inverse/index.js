@@ -112,6 +112,11 @@ window.addEventListener("load", function()
 
             var config =
             {
+              visible_toolbar_buttons: {
+                'emoji': true,
+                'call': getSetting("enableSip", false),
+                'clear': true
+              },
               allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
               allow_public_bookmarks: true,
               authentication: "login",

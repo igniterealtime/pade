@@ -119,6 +119,8 @@
                     {
                         if (h5pViews[event.data.id])
                         {
+                            //console.log("webmeet xpi handler", h5pViews, event.data);
+
                             var view = h5pViews[event.data.id];
                             var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
 
@@ -365,7 +367,14 @@
 
                     } else {
                         //console.log('callButtonClicked');
-                        bgWindow.openPhoneWindow(true);
+                        var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
+
+                        if (this.model.get("message_type") == "chat")
+                        {
+                            room = bgWindow.makeRoomName(room);
+                        }
+
+                        bgWindow.openWebAppsWindow(chrome.extension.getURL("webcam/sip-video.html?url=sip:" + room), null, 800, 640)
                     }
                 },
 
@@ -382,14 +391,14 @@
                     var view = this;
                     var id = this.model.get("box_id");
                     var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conferennce"></a></li>';
-                    $(this.el).find('.toggle-call').after(html);
+                    $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after(html);
 
                     if (_converse.view_mode === 'embedded')
                     {
                         this.model.set({'hidden_occupants': true});
 
                         var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
-                        $(this.el).find('.toggle-call').after(html);
+                        $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after(html);
 
                     } else {
                         // file upload by drag & drop
@@ -405,7 +414,7 @@
                         if (bgWindow.pade.activeH5p)
                         {
                             var html = '<li id="h5p-' + id + '"><a class="fa fa-html5" title="Add H5P Content"></a></li>';
-                            $(this.el).find('.toggle-call').after(html);
+                            $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after(html);
                         }
                     }
 

@@ -528,6 +528,21 @@ function handleCallAction(button)
             }
             else
 
+            if (call.value.indexOf("sip:") == 0)
+            {
+                var url = chrome.extension.getURL("webcam/sip-video.html?url=" + call.value);
+
+                if (bgWindow.pade.webAppsWindow[url])
+                {
+                    bgWindow.closeWebAppsWindow(url);
+
+                } else {
+                    bgWindow.openWebAppsWindow(url, null, 800, 640);
+                }
+
+            }
+            else
+
             if (notAudio(button, call) == false)
             {
                 muteActiveCall(call);
@@ -589,6 +604,11 @@ function getKeyColor(button)
 
 function notAudio(button, call)
 {
+    if (call.value.startsWith("tel:"))
+    {
+        return false;
+    }
+
     if (getKeyColor(87) == "green")
     {
         bgWindow.openVideoWindow(call.value)
@@ -640,7 +660,7 @@ function getInverseUrl(name)
     }
     else
 
-    if (name.startsWith("tel:") || name.startsWith("sip:"))
+    if (name.startsWith("tel:"))
     {
         return null;
     }
