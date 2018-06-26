@@ -1,3 +1,5 @@
+// version 0.4.11.1
+
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module called "pade"

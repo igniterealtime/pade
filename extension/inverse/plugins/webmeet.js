@@ -1,3 +1,5 @@
+// version 0.4.11.1
+
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module called "webmeet"
@@ -390,15 +392,19 @@
 
                     var view = this;
                     var id = this.model.get("box_id");
+
+                    $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after('<li id="place-holder"></li>');
+
                     var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conferennce"></a></li>';
-                    $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after(html);
+                    $(this.el).find('#place-holder').after(html);
+
 
                     if (_converse.view_mode === 'embedded')
                     {
                         this.model.set({'hidden_occupants': true});
 
                         var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
-                        $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after(html);
+                        $(this.el).find('#place-holder').after(html);
 
                     } else {
                         // file upload by drag & drop
@@ -414,7 +420,7 @@
                         if (bgWindow.pade.activeH5p)
                         {
                             var html = '<li id="h5p-' + id + '"><a class="fa fa-html5" title="Add H5P Content"></a></li>';
-                            $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after(html);
+                            $(this.el).find('#place-holder').after(html);
                         }
                     }
 
@@ -427,8 +433,9 @@
 
                         if (h5pButton)
                         {
-                            h5pButton.addEventListener('click', function()
+                            h5pButton.addEventListener('click', function(evt)
                             {
+                                evt.stopPropagation();
                                 doH5p(view, id);
 
                             }, false);
@@ -438,8 +445,9 @@
 
                         if (exitJitsiMeet)
                         {
-                            exitJitsiMeet.addEventListener('click', function()
+                            exitJitsiMeet.addEventListener('click', function(evt)
                             {
+                                evt.stopPropagation();
                                 doVideo(view);
 
                             }, false);
@@ -534,6 +542,7 @@
 
     var doExit = function doExit(event)
     {
+        event.stopPropagation();
         //console.log("doExit", event);
         if (window.parent && window.parent.ofmeet) window.parent.ofmeet.doExit();
         messageCount = 0;
