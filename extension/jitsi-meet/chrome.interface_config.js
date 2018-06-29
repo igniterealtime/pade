@@ -16,6 +16,7 @@ var interfaceConfig = {
   "DISABLE_FOCUS_INDICATOR": false,
   "VERTICAL_FILMSTRIP": getSetting("VERTICAL_FILMSTRIP", true),
   "LOCAL_THUMBNAIL_RATIO": 1.7777777777777777,
+
   "TOOLBAR_BUTTONS": [
     "microphone",
     "camera",
@@ -29,10 +30,16 @@ var interfaceConfig = {
     "chat",
     "recording",
     "etherpad",
+    "livestreaming",
     "sharedvideo",
     "settings",
     "raisehand",
+    "info",
     "videoquality",
+    'invite',
+    'feedback',
+    'stats',
+    'shortcuts',
     "filmstrip"
   ],
   "RANDOM_AVATAR_URL_PREFIX": "",

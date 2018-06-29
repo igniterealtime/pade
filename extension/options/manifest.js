@@ -325,6 +325,13 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
+            "name": "startWithVideoMuted",
+            "type": "checkbox",
+            "label": i18n.get("Start with Video Muted")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("config"),
             "name": "recordAudio",
             "type": "checkbox",
             "label": i18n.get("Record Audio")

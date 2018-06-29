@@ -13,6 +13,7 @@ var interfaceConfig = {
     DESKTOP_SHARING_BUTTON_DISABLED_TOOLTIP: null,
     INITIAL_TOOLBAR_TIMEOUT: 20000,
     TOOLBAR_TIMEOUT: 4000,
+    TOOLBAR_ALWAYS_VISIBLE: false,
     DEFAULT_REMOTE_DISPLAY_NAME: 'Fellow Jitster',
     DEFAULT_LOCAL_DISPLAY_NAME: 'me',
     SHOW_JITSI_WATERMARK: true,
@@ -23,9 +24,11 @@ var interfaceConfig = {
     SHOW_BRAND_WATERMARK: false,
     BRAND_WATERMARK_LINK: '',
     SHOW_POWERED_BY: false,
+    SHOW_DEEP_LINKING_IMAGE: false,
     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: true,
     DISPLAY_WELCOME_PAGE_CONTENT: true,
     APP_NAME: 'Jitsi Meet',
+    NATIVE_APP_NAME: 'Jitsi Meet',
     LANG_DETECTION: false, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: true,
 
@@ -35,31 +38,26 @@ var interfaceConfig = {
     AUTHENTICATION_ENABLE: true,
 
     /**
-     * the toolbar buttons line is intentionally left in one line, to be able
-     * to easily override values or remove them using regex
+     * The name of the toolbar buttons to display in the toolbar. If present,
+     * the button will display. Exceptions are "livestreaming" and "recording"
+     * which also require being a moderator and some values in config.js to be
+     * enabled. Also, the "profile" button will not display for user's with a
+     * jwt.
      */
     TOOLBAR_BUTTONS: [
-
-        // main toolbar
         'microphone', 'camera', 'desktop', 'fullscreen', 'fodeviceselection', 'hangup',
+        'profile', 'info', 'chat', 'recording', 'livestreaming', 'etherpad',
+        'sharedvideo', 'settings', 'raisehand', 'videoquality', 'filmstrip',
+        'invite', 'feedback', 'stats', 'shortcuts'
+    ],
 
-        // extended toolbar
-        'profile', 'contacts', 'info', 'chat', 'recording', 'etherpad', 'sharedvideo', 'settings', 'raisehand', 'videoquality', 'filmstrip' ],
-
-    /**
-     * Main Toolbar Buttons
-     * All of them should be in TOOLBAR_BUTTONS
-     */
-    MAIN_TOOLBAR_BUTTONS: [ 'microphone', 'camera', 'desktop', 'fullscreen', 'fodeviceselection', 'hangup' ],
     SETTINGS_SECTIONS: [ 'language', 'devices', 'moderator' ],
-    INVITE_OPTIONS: [ 'invite', 'dialout', 'addtocall' ],
 
     // Determines how the video would fit the screen. 'both' would fit the whole
     // screen, 'height' would fit the original video height to the height of the
     // screen, 'width' would fit the original video width to the width of the
     // screen respecting ratio.
     VIDEO_LAYOUT_FIT: 'both',
-    SHOW_CONTACTLIST_AVATARS: true,
 
     /**
      * Whether to only show the filmstrip (and hide the toolbar).
@@ -150,7 +148,17 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    VIDEO_QUALITY_LABEL_DISABLED: false
+    VIDEO_QUALITY_LABEL_DISABLED: false,
+
+    /**
+     * Temporary feature flag to debug performance with the large video
+     * background blur. On initial implementation, blur was always enabled so a
+     * falsy value here will be used to keep blur enabled, as will the value
+     * "video", and will render the blur over a video element. The value
+     * "canvas" will display the blur over a canvas element, while the value
+     * "off" will prevent the background from rendering.
+     */
+    _BACKGROUND_BLUR: 'off'
 
     /**
      * Specify custom URL for downloading android mobile app.
@@ -165,7 +173,7 @@ var interfaceConfig = {
     /**
      * Specify mobile app scheme for opening the app from the mobile browser.
      */
-    // MOBILE_APP_SCHEME: 'org.jitsi.meet'
+    // APP_SCHEME: 'org.jitsi.meet'
 };
 
 /* eslint-enable no-unused-vars, no-var, max-len */

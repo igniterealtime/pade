@@ -194,6 +194,11 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.enableRemoteControl.addEvent("action", function ()
+        {
+            background.reloadApp();
+        });
+
         settings.manifest.useClientCert.addEvent("action", function ()
         {
             setDefaultPassword(settings);

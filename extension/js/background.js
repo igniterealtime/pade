@@ -1478,7 +1478,9 @@ function fetchContacts(callback)
         {
             //console.log('ofmeet.bookmark.url.item', {name: $(this).attr("name"), url: $(this).attr("url")});
 
-            if (callback) callback(
+            var ignore = $(this).attr("name") == "Video conferencing web client";
+
+            if (callback && !ignore) callback(
             {
                 id: urlCount++,
                 type: "url",

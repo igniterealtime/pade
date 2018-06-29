@@ -24,6 +24,7 @@
         moment = converse.env.moment;
 
      var _converse = null;
+     var ready = false;
 
     // The following line registers your plugin.
     converse.plugins.add("pade", {
@@ -158,6 +159,7 @@
                         });
 
                         console.log("pade plugin ready");
+                        ready = true;
 
                     }, function(error){
                         console.error("bookmarks error", error);
@@ -194,7 +196,7 @@
                         if (getSetting("notifyAllRoomMessages", false))
                         {
                             // TODO move to background page
-                            notifyMe(text, from, from);
+                            if (ready) notifyMe(text, from, from);
                         }
 
                         if (getSetting("notifyOnInterests", false))
