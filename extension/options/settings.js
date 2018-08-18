@@ -97,14 +97,14 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableChat.addEvent("action", function ()
+        settings.manifest.enableCommunity.addEvent("action", function ()
         {
-            if (getSetting("enableChat"))
+            if (getSetting("enableCommunity"))
             {
-                background.addChatMenu();
+                background.addCommunityMenu();
 
             } else {
-               background.removeChatMenu();
+               background.removeCommunityMenu();
             }
         });
 
@@ -410,7 +410,7 @@ function doDefaults()
     // preferences
     setSetting("popupWindow", true);
     setSetting("enableLipSync", false);
-    setSetting("enableChat", false);
+    setSetting("enableCommunity", false);
     setSetting("audioOnly", false);
     setSetting("enableSip", false);
     setSetting("enableBlog", false);
@@ -426,7 +426,7 @@ function doDefaults()
     setSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
     setSetting("TOOLBAR_TIMEOUT", 4000);
 
-    // candy chat
+    // community
     setSetting("chatWithOnlineContacts", true);
     setSetting("notifyWhenMentioned", true);
 

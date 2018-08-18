@@ -74,7 +74,7 @@ if (getSetting("useTotp", false))
 
 window.addEventListener("unload", function ()
 {
-    console.log("pade unloaded");
+    console.log("pade unloading applications");
 
     closeChatWindow();
     closeVideoWindow();
@@ -84,35 +84,46 @@ window.addEventListener("unload", function ()
     closeBlastWindow();
     closeVertoWindow();
     closeApcWindow();
+
+    console.log("pade unloading office365 accounts");
+
     closeOffice365Window(true);
     closeOffice365Window(false);
 
-    var gmailAccounts = getSetting("gmailAccounts", "").split(",");
 
-    for (var i=0; i<gmailAccounts.length; i++)
-    {
-        closeGmailWindow(gmailAccounts[i]);
-    }
-
-    var webApps = getSetting("webApps", "").split(",");
+    var webApps = Object.getOwnPropertyNames(pade.webAppsWindow);
 
     for (var i=0; i<webApps.length; i++)
     {
-        closeWebAppsWindow(webApps[i]);
+        if (pade.webAppsWindow[webApps[i]])
+        {
+            console.log("pade unloading web app " + webApps[i]);
+            closeWebAppsWindow(webApps[i]);
+        }
     }
 
     var chats = Object.getOwnPropertyNames(pade.chatsWindow);
 
     for (var y = 0; y<chats.length; y++)
     {
-        if (pade.chatsWindow[chats[y]] && win == pade.chatsWindow[chats[y]].id)
+        if (pade.chatsWindow[chats[y]])
         {
-           closeChatsWindow(chats[y]);
+            console.log("pade unloading chat window " + chats[y]);
+            closeChatsWindow(chats[y]);
         }
     }
 
     etherlynk.disconnect();
     if (pade.connection) pade.connection.disconnect();
+
+    var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+    for (var i=0; i<gmailAccounts.length; i++)
+    {
+        console.log("pade unloading gmail account " + gmailAccounts[i]);
+        closeGmailWindow(gmailAccounts[i]);
+    }
+
 });
 
 window.addEventListener("load", function()
@@ -293,7 +304,7 @@ window.addEventListener("load", function()
     chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
 
-    addChatMenu();
+    addCommunityMenu();
     addInverseMenu();
     addBlogMenu();
     addBlastMenu();
@@ -341,7 +352,14 @@ window.addEventListener("load", function()
                 chrome.browserAction.setPopup({popup: "popup.html"});
             }
         } else {
-          doJitsiMeet();
+
+            if (getSetting("enableCommunity", false))
+            {
+                openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
+
+            } else {
+                doJitsiMeet();
+            }
         }
     });
 
@@ -350,7 +368,6 @@ window.addEventListener("load", function()
         console.log('Command:', command);
 
         if (command == "activate_chat" && getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
-        if (command == "activate_chat" && getSetting("enableChat", false)) openChatWindow("groupchat/index.html");
 
         if (command == "activate_blogger_communicator" && getSetting("enableTouchPad", false)) openApcWindow();
         if (command == "activate_blogger_communicator" && !getSetting("enableTouchPad", false)) openBlogWindow();
@@ -1729,7 +1746,6 @@ function processChatNotification(from, body)
         if (buttonIndex == 0)   // accept
         {
             if (getSetting("enableInverse", false)) openChatsWindow("inverse/index.html#converse/chat?jid=" + from, from);
-            if (getSetting("enableChat", false)) openChatWindow("groupchat/index.html");
         }
     }, from);
 }
@@ -1965,21 +1981,21 @@ function getPassword(password)
 }
 
 
-function addChatMenu()
+function addCommunityMenu()
 {
-    if (getSetting("enableChat", false))
+    if (getSetting("enableCommunity", false))
     {
-        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_chat", type: "normal", title: "Candy Chat", contexts: ["browser_action"],  onclick: function()
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_community", type: "normal", title: "CMS/Community Client", contexts: ["browser_action"],  onclick: function()
         {
-            openChatWindow("groupchat/index.html");
+            openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
         }});
     }
 }
 
-function removeChatMenu()
+function removeCommunityMenu()
 {
-    closeChatWindow();
-    chrome.contextMenus.remove("pade_chat");
+    closeWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki");
+    chrome.contextMenus.remove("pade_community");
 }
 
 function addInverseMenu()
@@ -2253,13 +2269,27 @@ function updateVCard()
 {
     console.log("updateVCard");
 
-    var avatar = getSetting("avatar", null);
+    var jid = pade.username + "@" + pade.domain;
 
-    if (!avatar)
+    getVCard(jid, function(vCard)
     {
+        avatar = vCard.avatar;
+        setSetting("avatar", avatar);
+
+    }, function(error) {
         avatar = createAvatar(pade.displayName);
         setSetting("avatar", avatar);
-    }
+
+        if (getSetting("updateAvatar", false))
+        {
+            updateVCardAvatar(jid, avatar)
+        }
+    });
+}
+
+function updateVCardAvatar(jid, avatar)
+{
+    console.log("updateVCardAvatar", avatar);
 
     var email = getSetting("email", "");
     var phone = getSetting("phone", "");
@@ -2271,8 +2301,6 @@ function updateVCard()
     {
         console.error("uploadAvatar - error", error);
     }
-
-    var jid = pade.username + "@" + pade.domain;
 
     getVCard(jid, function(vCard)
     {

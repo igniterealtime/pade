@@ -178,6 +178,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Avatar/Picture"),
+            "name": "updateAvatar",
+            "type": "checkbox",
+            "label": i18n.get("Update vcard with browser generated avatar")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Avatar/Picture"),
             "name": "uploadAvatar",
             "type": "description",
             "text": ""
@@ -445,26 +452,34 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Auto Start Communicator Touchpad")
         },
-        {                                      // candy chat
+        {                                      // community web app
             "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Candy Chat"),
-            "name": "enableChat",
+            "group": i18n.get("Community"),
+            "name": "enableCommunity",
             "type": "checkbox",
-            "label": i18n.get("Enable Candy")
+            "label": i18n.get("Enable Community")
         },
         {
             "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Candy Chat"),
+            "group": i18n.get("Community"),
             "name": "chatWithOnlineContacts",
             "type": "checkbox",
             "label": i18n.get("Chat with Online Contacts")
         },
         {
             "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Candy Chat"),
+            "group": i18n.get("Community"),
             "name": "notifyWhenMentioned",
             "type": "checkbox",
             "label": i18n.get("Notify/Highlight when mentioned")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Community"),
+            "name": "communityUrl",
+            "type": "text",
+            "label": i18n.get("Web Url"),
+            "text": i18n.get("https://my_server/tiki"),
         },
         {                                             // converse-inverse
             "tab": i18n.get("ofmeet"),
