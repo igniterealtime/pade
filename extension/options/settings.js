@@ -117,6 +117,8 @@ window.addEvent("domready", function () {
             } else {
                background.removeInverseMenu();
             }
+
+            background.reloadApp();
         });
 
         settings.manifest.enableTouchPad.addEvent("action", function ()

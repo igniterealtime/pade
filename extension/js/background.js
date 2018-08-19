@@ -300,8 +300,12 @@ window.addEventListener("load", function()
     console.log("pade loaded");
 
     chrome.contextMenus.removeAll();
-    chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
-    chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+
+    if (getSetting("enableInverse", false) == false)
+    {
+        chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
+        chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+    }
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
 
     addCommunityMenu();
@@ -358,7 +362,14 @@ window.addEventListener("load", function()
                 openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
 
             } else {
-                doJitsiMeet();
+
+                if (getSetting("enableInverse", false))
+                {
+                    openChatWindow("inverse/index.html");
+
+                } else {
+                    doJitsiMeet();
+                }
             }
         }
     });
@@ -375,7 +386,8 @@ window.addEventListener("load", function()
         if (command == "activate_phone" && getSetting("enableVerto", false)) openVertoWindow()
         if (command == "activate_phone" && !getSetting("enableVerto", false)) openPhoneWindow(true)
 
-        if (command == "activate_meeting") openVideoWindow(pade.activeContact.room);
+        if (command == "activate_meeting" && !getSetting("enableInverse", false)) openVideoWindow(pade.activeContact.room);
+        if (command == "activate_meeting" && getSetting("enableInverse", false)) openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
 
     });
 
@@ -626,7 +638,7 @@ function handleContact(contact)
     }
     else
 
-    if (contact.type == "room")
+    if (contact.type == "room" && getSetting("enableInverse", false) == false)
     {
         if (contact.id == 0)
         {
@@ -639,7 +651,7 @@ function handleContact(contact)
     }
     else
 
-    if (contact.type == "conversation")
+    if (contact.type == "conversation" && getSetting("enableInverse", false) == false)
     {
         if (contact.id == 0)
         {
@@ -1077,7 +1089,7 @@ function openPhoneWindow(focus, state)
         chrome.windows.create(data, function (win)
         {
             pade.sip.window = win;
-            chrome.windows.update(pade.sip.window.id, {drawAttention: focus, width: 350, height: 725});
+            chrome.windows.update(pade.sip.window.id, {drawAttention: focus, width: 400, height: 780});
         });
 
     } else {
@@ -1351,7 +1363,7 @@ function addHandlers()
             contact.created = false;
             contact.presence = pres;
 
-            if (showUser(contact))
+            if (showUser(contact) && getSetting("enableInverse", false) == false)
             {
                 contact.created = true;
                 chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});

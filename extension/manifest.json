@@ -6,7 +6,7 @@
   "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
   "description": "__MSG_manifest_extensionDescription__",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "homepage_url": "https://igniterealtime.github.io/Pade/",
     
   "background": {
@@ -65,14 +65,14 @@
         "suggested_key": {
           "default": "Ctrl+Shift+1"
         },
-        "description": "Activate Meeting",
+        "description": "Activate Meeting/Community App",
         "global": true
     },  
     "activate_chat": {
         "suggested_key": {
           "default": "Ctrl+Shift+2"
         },
-        "description": "Activate Candy/Inverse Client",
+        "description": "Activate Converse Client",
         "global": true
     },    
     "activate_blogger_communicator": {
