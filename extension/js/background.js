@@ -153,6 +153,9 @@ window.addEventListener("load", function()
         if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false))
             openChatWindow("inverse/index.html", null, "minimized");
 
+        if (getSetting("enableCommunity", false) && getSetting("communityAutoStart", false))
+            openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), "minimized", 1024, 800);
+
         if (getSetting("enableVerto", false) && getSetting("sipAutoStart", false))
             openVertoWindow("minimized");
 
@@ -359,7 +362,7 @@ window.addEventListener("load", function()
 
             if (getSetting("enableCommunity", false))
             {
-                openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
+                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
 
             } else {
 
@@ -387,7 +390,7 @@ window.addEventListener("load", function()
         if (command == "activate_phone" && !getSetting("enableVerto", false)) openPhoneWindow(true)
 
         if (command == "activate_meeting" && !getSetting("enableInverse", false)) openVideoWindow(pade.activeContact.room);
-        if (command == "activate_meeting" && getSetting("enableInverse", false)) openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
+        if (command == "activate_meeting" && getSetting("enableInverse", false)) openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
 
     });
 
@@ -1020,7 +1023,7 @@ function openWebAppsWindow(url, state, width, height)
     var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : "https://" + url.trim());
     var data = {url: httpUrl, type: "popup", focused: true};
 
-    console.log("openWebAppsWindow", data);
+    console.log("openWebAppsWindow", data, state, width, height);
 
     if (state == "minimized")
     {
@@ -1999,7 +2002,7 @@ function addCommunityMenu()
     {
         chrome.contextMenus.create({parentId: "pade_applications", id: "pade_community", type: "normal", title: "CMS/Community Client", contexts: ["browser_action"],  onclick: function()
         {
-            openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", 1024, 800);
+            openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", null, 1024, 800);
         }});
     }
 }

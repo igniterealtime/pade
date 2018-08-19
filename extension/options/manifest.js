@@ -462,6 +462,13 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Community"),
+            "name": "communityAutoStart",
+            "type": "checkbox",
+            "label": i18n.get("Auto Start Community")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Community"),
             "name": "chatWithOnlineContacts",
             "type": "checkbox",
             "label": i18n.get("Chat with Online Contacts")
