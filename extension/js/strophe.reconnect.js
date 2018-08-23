@@ -23,7 +23,7 @@ Strophe.addConnectionPlugin('connectionmanager', {
 
         // if true (default), will automatically empty queue on successfull reconnect
         // (+/- 20 stanzas per packet, 2 seconds apart)
-        autoResend: true,
+        autoResend: false,
 
         receiveTimeout: 20, // in seconds
         pingTimeout: 10, // in seconds
