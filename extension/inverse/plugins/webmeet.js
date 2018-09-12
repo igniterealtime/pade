@@ -395,7 +395,7 @@
 
                     $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after('<li id="place-holder"></li>');
 
-                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conferennce"></a></li>';
+                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conference"></a></li>';
                     $(this.el).find('#place-holder').after(html);
 
 
