@@ -158,7 +158,7 @@ this.manifest = {
             "name": "role",
             "type": "text",
             "label": i18n.get("role"),
-            "text": "List of coma sperated roles"
+            "text": "List of comma separated roles"
         },
         {
             "tab": i18n.get("general"),
@@ -180,7 +180,7 @@ this.manifest = {
             "group": i18n.get("Avatar/Picture"),
             "name": "updateAvatar",
             "type": "checkbox",
-            "label": i18n.get("Update vcard with browser generated avatar")
+            "label": i18n.get("Update vCard with browser generated avatar")
         },
         {
             "tab": i18n.get("general"),
@@ -278,7 +278,7 @@ this.manifest = {
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerSIPProtocol",
             "type": "checkbox",
-            "label": i18n.get("SIP: destination@domain - sip audio/video conference")
+            "label": i18n.get("SIP: destination@domain - SIP audio/video conference")
         },
         {
             "tab": i18n.get("general"),
@@ -292,7 +292,7 @@ this.manifest = {
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerMEETProtocol",
             "type": "checkbox",
-            "label": i18n.get("WEB+MEET: meeting-room - openfire meeting")
+            "label": i18n.get("WEB+MEET: meeting-room - Openfire meeting")
         },
         {
             "tab": i18n.get("general"),
@@ -426,7 +426,7 @@ this.manifest = {
             "group": i18n.get("ui"),
             "name": "FILM_STRIP_MAX_HEIGHT",
             "type": "slider",
-            "label": i18n.get("Filmstrip Maximium Height"),
+            "label": i18n.get("Filmstrip Maximum Height"),
             "max": 160,
             "min": 80,
             "step": 10
@@ -564,7 +564,7 @@ this.manifest = {
             "name": "interestList",
             "type": "text",
             "label": i18n.get("Interests"),
-            "text": i18n.get("List of coma seperated interest words. For example, xmpp, sip"),
+            "text": i18n.get("List of comma separated words of interest. For example, xmpp, sip"),
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -608,7 +608,7 @@ this.manifest = {
             "name": "webApps",
             "type": "text",
             "label": i18n.get("Web Apps"),
-            "text": i18n.get("Enter list of web app urls"),
+            "text": i18n.get("Enter list of web app URLs"),
         },
         {
             "tab": i18n.get("ofmeet"),
