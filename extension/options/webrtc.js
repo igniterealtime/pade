@@ -16,7 +16,7 @@ window.addEventListener("load", function()
                 track.stop();
             });
 
-        }, 120000);
+        }, 30000);
     })
     .catch(function(err) {
         alert("To experience the full functionality of " + chrome.i18n.getMessage('manifest_shortExtensionName') + ", please connect audio and video devices.");

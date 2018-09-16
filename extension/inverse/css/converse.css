@@ -9847,6 +9847,7 @@ body.reset {
     #conversejs #controlbox .controlbox-section .controlbox-heading {
       font-family: "Century Gothic", futura, "URW Gothic L", Verdana, sans-serif;
       margin: 0 0 0.5em 0;
+      color: red; /* BAO */
       text-transform: uppercase; }
   #conversejs #controlbox .dropdown a {
     width: 143px;

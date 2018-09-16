@@ -114,7 +114,7 @@ window.addEventListener("load", function()
             {
               visible_toolbar_buttons: {
                 'emoji': true,
-                'call': false, //getSetting("enableSip", false),
+                'call': getSetting("enableSip", false),
                 'clear': true
               },
               allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),

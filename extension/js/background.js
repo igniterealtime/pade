@@ -348,32 +348,38 @@ window.addEventListener("load", function()
 
     chrome.browserAction.onClicked.addListener(function()
     {
-        if (getSetting("enableTouchPad", false))
+        if (pade.connection && pade.connection.connected)
         {
-            if (getSetting("popupWindow", false))
+            if (getSetting("enableTouchPad", false))
             {
-                chrome.browserAction.setPopup({popup: ""});
-                openApcWindow();
-
-            } else {
-                chrome.browserAction.setPopup({popup: "popup.html"});
-            }
-        } else {
-
-            if (getSetting("enableCommunity", false))
-            {
-                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
-
-            } else {
-
-                if (getSetting("enableInverse", false))
+                if (getSetting("popupWindow", false))
                 {
-                    openChatWindow("inverse/index.html");
+                    chrome.browserAction.setPopup({popup: ""});
+                    openApcWindow();
 
                 } else {
-                    doJitsiMeet();
+                    chrome.browserAction.setPopup({popup: "popup.html"});
+                }
+            } else {
+
+                if (getSetting("enableCommunity", false))
+                {
+                    openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
+
+                } else {
+
+                    if (getSetting("enableInverse", false))
+                    {
+                        openChatWindow("inverse/index.html");
+
+                    } else {
+                        doJitsiMeet();
+                    }
                 }
             }
+
+        } else {
+            doExtensionPage("options/index.html");
         }
     });
 

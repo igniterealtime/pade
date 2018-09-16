@@ -150,13 +150,14 @@
 
                                 if (!room)
                                 {
-                                    room = _converse.bookmarks.create({
+                                    _converse.bookmarks.create({
                                         'jid': $(this).attr("jid"),
                                         'name': $(this).attr('name'),
                                         'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
                                         'nick': myNick
                                     });
 
+                                    room = _converse.chatboxes.get($(this).attr("jid"));
                                     if (room) room.save('bookmarked', true);
                                 }
                             }
