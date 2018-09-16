@@ -111,11 +111,11 @@
     },
     "x_characters": {
         "message": "6 - 12 characters",
-        "description": "Label for x charcaters"
+        "description": "Label for x characters"
     },
     "x_characters_pw": {
         "message": "10 - 18 characters",
-        "description": "Label for 10 -18 charcaters"
+        "description": "Label for 10 -18 characters"
     },
     "description": {
         "message": "",
@@ -139,7 +139,7 @@
     },
     "ofmeet": {
         "message": "Applications",
-        "description": "Label for application group including ofmeet, candy, converse, blogger and phone"
+        "description": "Label for application group including ofmeet, converse, blogger and phone"
     },
     "config": {
         "message": "Meeting Settings",
@@ -151,7 +151,7 @@
     },
     
     "upload_app": {
-        "message": "Upload a collaboration zip file or H5P inteactive conent ",
+        "message": "Upload a collaboration zip file or H5P interactive content ",
         "description": "Label for uploading collaboration application"
     },     
     "upload_avatar": {
