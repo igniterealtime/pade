@@ -1421,6 +1421,19 @@ function addHandlers()
             {
                 // converse/inverse is closed generate notification
                 processChatNotification(offerer, body);
+
+            } else {    // if inverse window open, change chatview
+
+                if (pade.chatWindow)
+                {
+                    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+                    {
+                        if (buttonIndex == 0)   // accept
+                        {
+                            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
+                        }
+                    }, from);
+                }
             }
 
         });

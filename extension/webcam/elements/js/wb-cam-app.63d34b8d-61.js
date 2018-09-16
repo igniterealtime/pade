@@ -109,10 +109,12 @@ Polymer({
             });
         this.fire("youtube-upload-start", e), this._uploadStartTime = Date.now(), i.upload(), this._transitionToThanks()
     },
+    /*
     _initializeMediaRecorder: function() {
         return this._mediaRecorder ? Promise.resolve() : navigator.mediaDevices.getUserMedia({
             audio: this.audio,
             video: this.video
+
         }).then(function(e) {
             this.$$("#get-user-media").src = URL.createObjectURL(e), this._recordedBlobs = [], this._mediaRecorder = new MediaRecorder(e, {
                 mimeType: this.mimeType
@@ -124,6 +126,36 @@ Polymer({
                 }), this.$$("#get-user-media").src = URL.createObjectURL(this._videoBlob), this._tearDownMediaRecorder()
             }.bind(this))
         }.bind(this))
+    },
+    */
+
+    _initializeMediaRecorder: function() {
+        console.log("_initializeMediaRecorder");
+
+        chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab', 'audio'], null, function(streamId)
+        {
+            console.log("_initializeMediaRecorder - chooseDesktopMedia", streamId);
+
+            return this._mediaRecorder ? Promise.resolve() : navigator.mediaDevices.getUserMedia({
+                audio: this.audio,
+                video: {
+                    mandatory: {
+                        chromeMediaSource: 'desktop',
+                        chromeMediaSourceId: streamId,
+                    }
+                }
+            }).then(function(e) {
+                this.$$("#get-user-media").src = URL.createObjectURL(e), this._recordedBlobs = [], this._mediaRecorder = new MediaRecorder(e, {
+                    mimeType: this.mimeType
+                }), this._mediaRecorder.addEventListener("dataavailable", function(e) {
+                    e.data.size > 0 && this._recordedBlobs.push(e.data)
+                }.bind(this)), this._mediaRecorder.addEventListener("stop", function() {
+                    this._videoBlob = new Blob(this._recordedBlobs, {
+                        type: this._mediaRecorder.mimeType
+                    }), this.$$("#get-user-media").src = URL.createObjectURL(this._videoBlob), this._tearDownMediaRecorder()
+                }.bind(this))
+            }.bind(this))
+        });
     },
     _tearDownMediaRecorder: function() {
         this._recordingState = "stopped", this._mediaRecorder && (this._mediaRecorder.stream.getAudioTracks().forEach(function(e) {
@@ -182,6 +214,7 @@ Polymer({
         this._selectedSection = "upload-file"
     },
     _transitionToRecordVideo: function() {
+        console.log("_transitionToRecordVideo");
         this._selectedSection = "record-video", this._initializeMediaRecorder().then(function() {
             this._recordingState = "not-started"
         }.bind(this))
@@ -193,6 +226,7 @@ Polymer({
         this.uploadFile(this._selectedFile)
     },
     _handleRecordClicked: function() {
+        console.log("_handleRecordClicked");
         this._initializeMediaRecorder().then(function() {
             this._mediaRecorder.start(100), this._recordingState = "started"
         }.bind(this))

@@ -69,7 +69,7 @@
                 'initialize_message': 'Initializing webmeet',
                 'visible_toolbar_buttons': {
                     'emoji': true,
-                    'call': true,
+                    'call': false,
                     'clear': true
                 },
 
@@ -277,7 +277,7 @@
                     {
                         var setupHandler = function(chat, room, content)
                         {
-                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + content + '</a></span> <div class="chat-msg-media"></div> </div>';
+                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + content + '</a></span> <div class="chat-msg-media"></div> </div>';
                             chat.replaceElement(msg_content);
 
                             if (room)
@@ -419,7 +419,7 @@
 
                         if (bgWindow.pade.activeH5p)
                         {
-                            var html = '<li id="h5p-' + id + '"><a class="fa fa-html5" title="Add H5P Content"></a></li>';
+                            var html = '<li id="h5p-' + id + '"><a class="fa fa-h-square" title="Add H5P Content"></a></li>';
                             $(this.el).find('#place-holder').after(html);
                         }
                     }

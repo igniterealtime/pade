@@ -114,11 +114,13 @@ window.addEventListener("load", function()
             {
               visible_toolbar_buttons: {
                 'emoji': true,
-                'call': getSetting("enableSip", false),
+                'call': false, //getSetting("enableSip", false),
                 'clear': true
               },
               allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
+              allow_bookmarks: true,
               allow_public_bookmarks: true,
+              hide_open_bookmarks: true,
               authentication: "login",
               auto_away: 300,
               auto_list_rooms: getSetting("allowNonRosterMessaging", false),
@@ -182,4 +184,16 @@ function getPassword(password)
 
     window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
     return password;
+}
+
+function openChat(from)
+{
+    if (_inverse)
+    {
+        name = from.split("@")[0];
+        if (name.indexOf("sms-") == 0) name = name.substring(4);
+
+        _inverse.roster.addAndSubscribe(from, name);
+        _inverse.api.chats.open(from);
+    }
 }

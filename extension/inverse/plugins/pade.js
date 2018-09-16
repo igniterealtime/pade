@@ -52,6 +52,7 @@
              * `_converse` object.
              */
             _converse = this._converse;
+            window._inverse = _converse;
             _converse.log("The \"pade\" plugin is being initialized");
 
             /* From the `_converse` object you can get any configuration
@@ -145,15 +146,19 @@
 
                             if (_converse.bookmarks)
                             {
-                                _converse.bookmarks.create({
-                                    'jid': $(this).attr("jid"),
-                                    'name': $(this).attr('name'),
-                                    'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
-                                    'nick': myNick
-                                });
-
                                 var room = _converse.chatboxes.get($(this).attr("jid"));
-                                if (room) room.save('bookmarked', true);
+
+                                if (!room)
+                                {
+                                    room = _converse.bookmarks.create({
+                                        'jid': $(this).attr("jid"),
+                                        'name': $(this).attr('name'),
+                                        'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
+                                        'nick': myNick
+                                    });
+
+                                    if (room) room.save('bookmarked', true);
+                                }
                             }
 
                         });
