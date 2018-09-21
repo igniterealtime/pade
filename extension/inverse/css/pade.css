@@ -1,0 +1,44 @@
+#conversejs.converse-fullscreen .flyout {
+  border-radius: 0;
+  border: 0.5px solid #3AA569;
+  border-top: 0.8em solid #3AA569;
+  bottom: 0; 
+}
+#conversejs.converse-fullscreen .chat-head {
+  height: 62px;
+  font-size: 20px;
+  padding: 0 12px 0 12px; 
+}
+#conversejs #controlbox .controlbox-section .controlbox-heading {
+  font-family: "Century Gothic", futura, "URW Gothic L", Verdana, sans-serif;
+  margin: 0 0 0.5em 0;
+  color: red;
+  text-transform: uppercase; 
+}
+
+#conversejs #controlbox .controlbox-panes::-webkit-scrollbar {
+    display: none;
+} 
+
+#conversejs.converse-mobile .chatroom .box-flyout {
+  background-color: #E77051; 
+  border-top: 0.8em solid #E77051;
+  width: 100%; 
+}
+
+#conversejs.converse-mobile .chatroom .box-flyout .chatroom-body {
+  border-top-right-radius: 4px;
+}
+#conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .chat-area {
+
+}
+#conversejs.converse-mobile .chatroom .box-flyout .chatroom-body .occupants {
+
+  padding: 1em; 
+}
+#conversejs.converse-fullscreen .chatroom .box-flyout, #conversejs.converse-mobile .chatroom .box-flyout {
+    background-color: #E77051;
+    border: 0.5px solid #E77051;
+    border-top: 0.8em solid #E77051;
+    width: 100%;
+}

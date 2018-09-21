@@ -28,6 +28,9 @@
      var messageCount = 0;
      var h5pViews = {};
 
+    // override converse for openfire
+    Strophe.addNamespace('MAM', 'urn:xmpp:mam:1');
+
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
 
@@ -383,6 +386,10 @@
                 renderToolbar: function renderToolbar(toolbar, options) {
                     //console.log('webmeet - renderToolbar', this.model);
 
+                    // hide occupants list by default
+
+                    this.model.set({'hidden_occupants': true});
+
                     if (_converse.view_mode === 'mobile')
                     {
                          document.title = this.model.attributes.jid;
@@ -401,8 +408,6 @@
 
                     if (_converse.view_mode === 'embedded')
                     {
-                        this.model.set({'hidden_occupants': true});
-
                         var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
                         $(this.el).find('#place-holder').after(html);
 

@@ -410,6 +410,7 @@ function doDefaults()
     setSetting("useWebsocket", true);
 
     // preferences
+    setSetting("language", "en");
     setSetting("popupWindow", true);
     setSetting("enableLipSync", false);
     setSetting("enableCommunity", false);
@@ -435,8 +436,9 @@ function doDefaults()
     // converse
     setSetting("enableInverse", true);
     setSetting("allowNonRosterMessaging", true);
-    setSetting("rosterGroups", true);
     setSetting("autoReconnect", true);
+    setSetting("messageCarbons", true);
+    setSetting("converseAutoStart", true);
 
     // web apps
     setSetting("webApps", "web.skype.com, web.whatsapp.com");

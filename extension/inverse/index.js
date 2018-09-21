@@ -96,7 +96,7 @@ window.addEventListener("load", function()
 
             var connUrl = undefined;
 
-            if (getSetting("useWebsocket", false))
+            if (getSetting("useWebsocket", true))
             {
                 connUrl = "wss://" + server + "/ws/";
             }
@@ -112,15 +112,9 @@ window.addEventListener("load", function()
 
             var config =
             {
-              visible_toolbar_buttons: {
-                'emoji': true,
-                'call': getSetting("enableSip", false),
-                'clear': true
-              },
-              allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
               allow_bookmarks: true,
+              allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
               allow_public_bookmarks: true,
-              hide_open_bookmarks: true,
               authentication: "login",
               auto_away: 300,
               auto_list_rooms: getSetting("allowNonRosterMessaging", false),
@@ -131,18 +125,22 @@ window.addEventListener("load", function()
               default_domain: domain,
               domain_placeholder: domain,
               fullname: getSetting("displayname", null),
-              i18n: "en",
+              hide_open_bookmarks: true,
+              i18n: getSetting("language", "en"),
               jid : getSetting("username", null) + "@" + getSetting("domain", null),
               locked_domain: domain,
+              // BAO stop MAM on MUC which breaks with MAM:1
               message_archiving: "always",
-              message_carbons: getSetting("messageCarbons", false),
+              message_carbons: getSetting("messageCarbons", true),
               muc_domain: "conference." + getSetting("domain", null),
               notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
               ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
               password: getSetting("password", null),
               play_sounds: true,
               roster_groups: getSetting("rosterGroups", true),
+              show_message_load_animation: false,
               view_mode: viewMode,
+              visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableSip", false), 'clear': true },
               websocket_url: connUrl,
               whitelisted_plugins: whitelistedPlugins
             };
