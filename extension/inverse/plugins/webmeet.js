@@ -27,6 +27,8 @@
      var baseUrl = null;
      var messageCount = 0;
      var h5pViews = {};
+     var pasteInputs = {};
+     var videoRecorder = null;
 
     // override converse for openfire
     Strophe.addNamespace('MAM', 'urn:xmpp:mam:1');
@@ -386,9 +388,40 @@
                 renderToolbar: function renderToolbar(toolbar, options) {
                     //console.log('webmeet - renderToolbar', this.model);
 
-                    // hide occupants list by default
+                    var view = this;
+                    var id = this.model.get("box_id");
 
+                    // hide occupants list by default
                     this.model.set({'hidden_occupants': true});
+
+                    // paste
+                    pasteInputs[id] = $(this.el).find('.chat-textarea');
+                    pasteInputs[id].pastableTextarea();
+
+                    pasteInputs[id].on('pasteImage', function(ev, data){
+                        console.log("pade - pasteImage", data);
+                        var file = new File([data.blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
+                        view.model.sendFiles([file]);
+
+                    }).on('pasteImageError', function(ev, data){
+                        console.error('pasteImageError', data);
+
+                    }).on('pasteText', function(ev, data){
+                        //console.log("pasteText", data);
+
+                    }).on('pasteTextRich', function(ev, data){
+                        //console.log("pasteTextRich", data);
+
+                    }).on('pasteTextHtml', function(ev, data){
+                        //console.log("pasteTextHtml", data);
+
+                    }).on('focus', function(){
+                        //console.log("paste - focus", id);
+
+                    }).on('blur', function(){
+                        //console.log("paste - blur", id);
+                    });
+
 
                     if (_converse.view_mode === 'mobile')
                     {
@@ -397,14 +430,13 @@
 
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    var view = this;
-                    var id = this.model.get("box_id");
-
                     $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after('<li id="place-holder"></li>');
 
                     var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conference"></a></li>';
                     $(this.el).find('#place-holder').after(html);
 
+                    html = '<li id="webmeet-screencast-' + id + '"><a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
+                    $(this.el).find('#place-holder').after(html);
 
                     if (_converse.view_mode === 'embedded')
                     {
@@ -457,6 +489,37 @@
 
                             }, false);
                         }
+
+                        var screencast = document.getElementById("webmeet-screencast-" + id);
+
+                        if (screencast)
+                        {
+                            screencast.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                if (videoRecorder == null)
+                                {
+                                    chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], null, function(streamId)
+                                    {
+                                        navigator.mediaDevices.getUserMedia({
+                                            audio: false,
+                                            video: {
+                                                mandatory: {
+                                                    chromeMediaSource: 'desktop',
+                                                    chromeMediaSourceId: streamId
+                                                }
+                                            }
+                                        }).then((stream) => handleStream(stream, view)).catch((e) => handleError(e))
+                                    })
+
+                                } else {
+                                    videoRecorder.stop();
+                                }
+
+                            }, false);
+                        }
+
                     });
 
                     return result;
@@ -580,73 +643,8 @@
             if ((view.model.get('type') === "chatroom" || view.model.get('type') === "chatbox") && !view.model.get('hidden'))
             {
                 var files = evt.dataTransfer.files;
-
-                for (var i = 0, f; f = files[i]; i++)
-                {
-                    uploadFile(f, view);
-                }
+                view.model.sendFiles(files);
             }
-        });
-    };
-
-    var uploadFile = function uploadFile(file, view)
-    {
-        //console.log("uploadFile", file, _converse.connection.domain);
-
-        var iq = $iq({type: 'get', to: "httpfileupload." + _converse.connection.domain}).c('request', {xmlns: "urn:xmpp:http:upload"}).c('filename').t(file.name).up().c('size').t(file.size);
-        var getUrl = null;
-        var putUrl = null;
-        var errorText = null;
-
-        _converse.connection.sendIQ(iq, function(response)
-        {
-            $(response).find('slot').each(function()
-            {
-                $(response).find('put').each(function()
-                {
-                    putUrl = $(this).text();
-                });
-
-                $(response).find('get').each(function()
-                {
-                    getUrl = $(this).text();
-                });
-
-                //console.log("webmeet.uploadFile", putUrl, getUrl);
-
-                if (putUrl != null & getUrl != null)
-                {
-                    var req = new XMLHttpRequest();
-
-                    req.onreadystatechange = function()
-                    {
-                      if (this.readyState == 4 && this.status >= 200 && this.status < 400)
-                      {
-                        //console.log("webmeet.upload.ok", this.statusText, getUrl);
-                        view.onMessageSubmitted(getUrl);
-                      }
-                      else
-
-                      if (this.readyState == 4 && this.status >= 400)
-                      {
-                        console.error("webmeet.upload.error", this.statusText);
-                        view.onMessageSubmitted(this.statusText);
-                      }
-
-                    };
-                    req.open("PUT", putUrl, true);
-                    req.send(file);
-                }
-            });
-
-        }, function(error) {
-
-            $(error).find('text').each(function()
-            {
-                errorText = $(this).text();
-                //console.error("webmeet.upload.uploadFile error", errorText);
-                view.onMessageSubmitted(errorText);
-            });
         });
     };
 
@@ -685,6 +683,26 @@
         attachUnload();
     }
 
+    var nickColors = {}
+
+    var getRandomColor = function getRandomColor(nickname)
+    {
+        if (nickColors[nickname])
+        {
+            return nickColors[nickname];
+        }
+        else {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            nickColors[nickname] = color;
+            return color;
+        }
+    }
+
     var createAvatar = function(avatar, nickname)
     {
         var canvas = document.createElement('canvas');
@@ -693,7 +711,7 @@
         canvas.height = '32';
         document.body.appendChild(canvas);
         var context = canvas.getContext('2d');
-        context.fillStyle = "#777";
+        context.fillStyle = getRandomColor(nickname);
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.font = "16px Arial";
         context.fillStyle = "#fff";
@@ -817,5 +835,65 @@
         .c("TITLE").t(user.title).up()
 */
         return iq;
+    }
+
+    var handleStream = function handleStream (stream, view)
+    {
+        navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((audioStream) => handleAudioStream(stream, audioStream, view)).catch((e) => handleError(e))
+    }
+
+    var handleAudioStream = function handleStream (stream, audioStream, view)
+    {
+        console.info("handleAudioStream - seperate", stream, audioStream);
+
+        stream.addTrack(audioStream.getAudioTracks()[0]);
+        audioStream.removeTrack(audioStream.getAudioTracks()[0]);
+
+        console.info("handleAudioStream - merged", stream);
+
+        var video = document.createElement('video');
+        video.playsinline = true;
+        video.autoplay = true;
+        video.muted = true;
+        video.srcObject = stream;
+        video.style.display = "none";
+
+        setTimeout(function()
+        {
+            videoRecorder = new MediaRecorder(stream);
+            videoChunks = [];
+
+            videoRecorder.ondataavailable = function(e)
+            {
+                console.info("handleStream - start", e);
+
+                if (e.data.size > 0)
+                {
+                    console.log("startRecorder push video ", e.data);
+                    videoChunks.push(e.data);
+                }
+            }
+
+            videoRecorder.onstop = function(e)
+            {
+                console.info("handleStream - stop", e);
+
+                stream.getTracks().forEach(track => track.stop());
+
+                var blob = new Blob(videoChunks, {type: 'video/webm;codecs=h264'});
+                var file = new File([blob], "screencast-" + Math.random().toString(36).substr(2,9) + ".webm", {type: 'video/webm;codecs=h264'});
+                view.model.sendFiles([file]);
+                videoRecorder = null;
+            }
+
+            videoRecorder.start();
+            console.info("handleStream", video, videoRecorder);
+
+        }, 1000);
+    }
+
+    var handleError = function handleError (e)
+    {
+        console.error(e)
     }
 }));

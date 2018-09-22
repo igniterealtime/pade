@@ -129,7 +129,6 @@ window.addEventListener("load", function()
               i18n: getSetting("language", "en"),
               jid : getSetting("username", null) + "@" + getSetting("domain", null),
               locked_domain: domain,
-              // BAO stop MAM on MUC which breaks with MAM:1
               message_archiving: "always",
               message_carbons: getSetting("messageCarbons", true),
               muc_domain: "conference." + getSetting("domain", null),
@@ -137,7 +136,7 @@ window.addEventListener("load", function()
               ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
               password: getSetting("password", null),
               play_sounds: true,
-              roster_groups: getSetting("rosterGroups", true),
+              roster_groups: getSetting("rosterGroups", false),
               show_message_load_animation: false,
               view_mode: viewMode,
               visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableSip", false), 'clear': true },

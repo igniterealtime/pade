@@ -61153,7 +61153,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           if (this.model.get('composing_spoiler')) {
             placeholder = __('Hidden message');
           } else {
-            placeholder = __('Message');
+            placeholder = __('Type message, drag and drop or paste picture here');  // BAO
           }
 
           const form_container = this.el.querySelector('.message-form-container');
@@ -76060,7 +76060,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       const LABEL_GROUPS = __('Groups');
 
-      const HEADER_CURRENT_CONTACTS = __('My contacts');
+      const HEADER_CURRENT_CONTACTS = __('Conversations');  // BAO
 
       const HEADER_PENDING_CONTACTS = __('Pending contacts');
 
@@ -81312,7 +81312,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           filename = uri.filename(),
           lower_filename = filename.toLowerCase();
 
-    if (!_.includes(["https", "http"], uri.protocol().toLowerCase()) || lower_filename.endsWith('mp3') || lower_filename.endsWith('mp4') || lower_filename.endsWith('jpg') || lower_filename.endsWith('jpeg') || lower_filename.endsWith('png') || lower_filename.endsWith('gif') || lower_filename.endsWith('svg')) {
+    // BAO
+
+    if (!_.includes(["https", "http"], uri.protocol().toLowerCase()) || lower_filename.endsWith('mp3') || lower_filename.endsWith('m4a') || lower_filename.endsWith('webm') || lower_filename.endsWith('mp4') || lower_filename.endsWith('jpg') || lower_filename.endsWith('jpeg') || lower_filename.endsWith('png') || lower_filename.endsWith('gif') || lower_filename.endsWith('svg')) {
       return url;
     }
 
@@ -81339,7 +81341,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   u.renderMovieURL = function (_converse, url) {
     const __ = _converse.__;
 
-    if (url.endsWith('mp4')) {
+    if (url.endsWith('mp4') || url.endsWith('webm')) {  // BAO
       return tpl_video({
         'url': url,
         'label_download': __('Download video file')
@@ -81352,7 +81354,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   u.renderAudioURL = function (_converse, url) {
     const __ = _converse.__;
 
-    if (url.endsWith('mp3')) {
+    if (url.endsWith('mp3') || url.endsWith('m4a')) {    // BAO
       return tpl_audio({
         'url': url,
         'label_download': __('Download audio file')
