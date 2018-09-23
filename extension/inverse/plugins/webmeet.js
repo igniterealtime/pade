@@ -432,7 +432,7 @@
 
                     $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after('<li id="place-holder"></li>');
 
-                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-video-camera" title="Audio/Video Conference"></a></li>';
+                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-users" title="Audio/Video Conference"></a></li>';
                     $(this.el).find('#place-holder').after(html);
 
                     html = '<li id="webmeet-screencast-' + id + '"><a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
@@ -473,7 +473,11 @@
                             h5pButton.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
-                                doH5p(view, id);
+
+                                if (confirm(bgWindow.pade.activeH5p + " " + chrome.i18n.getMessage("hp5Confirm")))
+                                {
+                                    doH5p(view, id);
+                                }
 
                             }, false);
                         }
@@ -485,7 +489,11 @@
                             exitJitsiMeet.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
-                                doVideo(view);
+
+                                if (confirm(chrome.i18n.getMessage("jitsiConfirm")))
+                                {
+                                    doVideo(view);
+                                }
 
                             }, false);
                         }
@@ -894,6 +902,6 @@
 
     var handleError = function handleError (e)
     {
-        console.error(e)
+        console.error("ScreenCast", e)
     }
 }));

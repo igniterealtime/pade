@@ -77439,7 +77439,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               const jid = model.get('jid');
 
               if (!jid) {
-                throw new Error("No JID to get vcard for!");
+                //throw new Error("No JID to get vcard for!");
+                return Promise.resolve({});   // BAO
               }
 
               return getVCard(_converse, jid);

@@ -32,11 +32,20 @@
         "message": "rinkeby",
         "description": "Ethereum network name"
     },    
-        
+
+    "hp5Confirm": {
+        "message": "will be add to this conversation. Are you sure?",
+        "description": "Title for hp5 content injection"
+    },
+    
+    "jitsiConfirm": {
+        "message": "Do you want to start an audio/video conference?",
+        "description": "Title for confirming jistsi-meet"
+    },
     "search": {
         "message": "Search",
         "description": "Title for search"
-    },
+    },    
     "nothing_found": {
         "message": "No matches were found.",
         "description": "No matches were found."
