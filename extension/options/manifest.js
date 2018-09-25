@@ -575,6 +575,13 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Converse"),
+            "name": "showGroupChatStatusMessages",
+            "type": "checkbox",
+            "label": i18n.get("Show GroupChat Status Messages")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",
             "label": i18n.get("Notify all room messages")
@@ -724,8 +731,8 @@ this.manifest = {
             "type": "description",
             "text": ""
         },
-        {                                           // user directory
-            "tab": i18n.get("User Directory"),
+        {                                           // search
+            "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),
             "name": "searchString",
             "type": "text",
@@ -733,7 +740,7 @@ this.manifest = {
             "text": i18n.get("Enter the partial name or email address"),
         },
         {
-            "tab": i18n.get("User Directory"),
+            "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),
             "name": "search",
             "type": "button",
@@ -741,9 +748,32 @@ this.manifest = {
             "text": i18n.get("search")
         },
         {
-            "tab": i18n.get("User Directory"),
+            "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),
             "name": "searchResults",
+            "text": i18n.get(""),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearchString",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter the keywords delimted by space"),
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearch",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("search")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearchResults",
             "text": i18n.get(""),
             "type": "description"
         },

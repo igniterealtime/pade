@@ -68366,11 +68366,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.model.on('configurationNeeded', this.getAndRenderConfigurationForm, this);
           this.model.on('destroy', this.hide, this);
           this.model.on('show', this.show, this);
-          this.model.occupants.on('add', this.showJoinNotification, this);
-          this.model.occupants.on('remove', this.showLeaveNotification, this);
-          this.model.occupants.on('change:show', this.showJoinOrLeaveNotification, this);
-          this.model.occupants.on('change:role', this.informOfOccupantsRoleChange, this);
-          this.model.occupants.on('change:affiliation', this.informOfOccupantsAffiliationChange, this);
+
+          // BAO
+
+          if (getSetting("showGroupChatStatusMessages", false))
+          {
+              this.model.occupants.on('add', this.showJoinNotification, this);
+              this.model.occupants.on('remove', this.showLeaveNotification, this);
+              this.model.occupants.on('change:show', this.showJoinOrLeaveNotification, this);
+              this.model.occupants.on('change:role', this.informOfOccupantsRoleChange, this);
+              this.model.occupants.on('change:affiliation', this.informOfOccupantsAffiliationChange, this);
+          }
+
           this.createEmojiPicker();
           this.createOccupantsView();
           this.render().insertIntoDOM();
@@ -79387,7 +79394,8 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><i class="icon-conversejs"></i>Converse</h1>\n        <p class="brand-subtitle"><a target="_blank" rel="nofollow" href="https://conversejs.org">Open Source</a> XMPP chat client brought to you by <a target="_blank" rel="nofollow" href="https://opkode.com">Opkode</a> </p>\n        <p class="brand-subtitle"><a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">Translate</a> it into your own language</p>\n    <div>\n</div>\n';
+// BAO
+__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><i class="icon-conversejs"></i>' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h1>\n        <p class="brand-subtitle"><a target="_blank" rel="nofollow" href="https://conversejs.org">Open Source</a> Browser extension of Converse.js brought to you by <a target="_blank" rel="nofollow" href="https://opkode.com">Opkode</a> </p>\n        <p class="brand-subtitle"><a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">Translate</a> it into your own language</p>\n    <div>\n</div>\n';
 return __p
 };
 

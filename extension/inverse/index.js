@@ -117,6 +117,7 @@ window.addEventListener("load", function()
               allow_public_bookmarks: true,
               authentication: "login",
               auto_away: 300,
+              auto_xa: 900,
               auto_list_rooms: getSetting("allowNonRosterMessaging", false),
               auto_login: true,
               auto_reconnect: getSetting("autoReconnect", true),
@@ -183,14 +184,22 @@ function getPassword(password)
     return password;
 }
 
-function openChat(from)
+function openChat(from, name)
 {
     if (_inverse)
     {
-        name = from.split("@")[0];
-        if (name.indexOf("sms-") == 0) name = name.substring(4);
+        if (!name)
+        {
+            name = from.split("@")[0];
+            if (name.indexOf("sms-") == 0) name = name.substring(4);
+        }
 
         _inverse.roster.addAndSubscribe(from, name);
         _inverse.api.chats.open(from);
     }
+}
+
+function openChatPanel(from)
+{
+    if (_inverse) _inverse.api.chats.open(from);
 }

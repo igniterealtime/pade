@@ -51,7 +51,39 @@ window.addEvent("domready", function () {
 
         settings.manifest.connect.addEvent("action", function ()
         {
-            reloadApp()
+            validateCredentials()
+        });
+
+        settings.manifest.convSearch.addEvent("action", function ()
+        {
+            var host = JSON.parse(window.localStorage["store.settings.server"]);
+            var username = JSON.parse(window.localStorage["store.settings.username"]);
+            var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+            var query = settings.manifest.convSearchString.element.value && settings.manifest.convSearchString.element.value != "" ? "?keywords=" + settings.manifest.convSearchString.element.value : "";
+            var url =  "https://" + host + "/rest/api/restapi/v1/chat/" + username + "/messages" + query;
+            var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password), "accept": "application/json"}};
+
+            console.log("fetch", url, options);
+
+            fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
+            {
+                console.log("convSearch", messages.conversation);
+
+                if (messages.conversation instanceof Array)
+                {
+                    processConvSearch(messages.conversation, settings, background);
+                }
+                else if (messages.conversation) {
+                    processConvSearch([messages.conversation], settings, background);
+                }
+                else {
+                    settings.manifest.convSearchResults.element.innerHTML = "<p/><p/>No conversations found";
+                }
+
+            }).catch(function (err) {
+                console.error('convSearch error', err);
+            });
         });
 
         settings.manifest.search.addEvent("action", function ()
@@ -77,10 +109,22 @@ window.addEvent("domready", function () {
                     document.getElementById(users[i].jid).addEventListener("click", function(e)
                     {
                         var user = e.target;
-                        console.log("findUsers click", user.id, user.title, user.name);
+                        //console.log("findUsers - click", user.id, user.name, user.title);
 
-                        background.acceptCall(user.title, user.id, user.name);
-                        background.inviteToConference(user.id, user.name);
+                        if (getSetting("enableInverse"))
+                        {
+                            if (background.pade.chatWindow)
+                            {
+                                chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(user.id, user.title);
+                            }
+                            else {
+                                background.openChatsWindow("inverse/index.html#converse/chat?jid=" + user.id, user.title);
+                            }
+                        }
+                        else {
+                            background.acceptCall(user.title, user.id, user.name);
+                            background.inviteToConference(user.id, user.name);
+                        }
                     });
                 }
             });
@@ -349,13 +393,7 @@ window.addEvent("domready", function () {
         });
 
 
-
-        function reloadApp(){
-
-            openAppWindow()
-        }
-
-        function openAppWindow()
+        function validateCredentials()
         {
             if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
             {
@@ -364,6 +402,7 @@ window.addEvent("domready", function () {
                 lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
                 lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
                 lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
+                lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
                 lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
 
                 if (lynks.server && lynks.domain && lynks.username && lynks.password)
@@ -372,7 +411,7 @@ window.addEvent("domready", function () {
 
                     connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
                     {
-                        //console.log("status", status);
+                        //console.log("status", status, lynks.username, lynks.password, lynks.displayname);
 
                         if (status === 5)
                         {
@@ -615,5 +654,63 @@ function avatarError(error)
 {
     console.error("uploadAvatar - error", error);
     settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>picture/avatar cannot be uploaded and saved</b>';
+}
+
+function processConvSearch(conversations, settings, background)
+{
+    if (!conversations || conversations.length == 0) return "No conversations found";
+
+    var html = "<table><tr><th>Date</th><th>Participants</th><th>Conversation</th></tr>";
+
+    for (var i=0; i<conversations.length; i++)
+    {
+        var conversation = conversations[i];
+
+        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[1].split("/")[0];
+        var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
+        var suffix = "</a>";
+
+        var date = moment(conversation.startDate).format('MMM DD YYYY hh:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('hh:mm:ss');
+        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom + suffix + "<br/>" + "Participants:" + conversation.participantList.length : prefix + conversation.participantList[0].split("/")[0] + suffix + "<br/>" + conversation.participantList[1];
+
+        var messages = conversation.messages.message;
+
+        if (!messages instanceof Array)
+        {
+            messages = [messages]
+        }
+
+        var convHtml = "";
+
+        for (var j=0; j<messages.length; j++)
+        {
+            convHtml = convHtml + "[" + moment(messages[j].sentDate).format('mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
+        }
+
+        html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";
+    }
+
+    html = html + "</table>";
+    settings.manifest.convSearchResults.element.innerHTML = "<p/><p/>" + html;
+
+    for (var i=0; i<conversations.length; i++)
+    {
+        document.getElementById("conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
+        {
+            e.stopPropagation();
+            //console.log("processConvSearch - click", e.target);
+
+            if (e.target.title && getSetting("enableInverse"))
+            {
+                if (background.pade.chatWindow)
+                {
+                    chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
+                }
+                else {
+                    background.openChatsWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
+                }
+            }
+        }, false);
+    }
 }
 
