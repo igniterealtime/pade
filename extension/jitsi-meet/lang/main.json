@@ -35,15 +35,16 @@
         "raiseHand": "Raise or lower your hand",
         "pushToTalk": "Push to talk",
         "toggleScreensharing": "Switch between camera and screen sharing",
-        "toggleFilmstrip": "Show or hide the videos",
-        "toggleShortcuts": "Show or hide this help menu",
+        "toggleFilmstrip": "Show or hide video thumbnails",
+        "toggleShortcuts": "Show or hide keyboard shortcuts",
         "focusLocal": "Focus on your video",
-        "focusRemote": "Focus on another caller's video",
+        "focusRemote": "Focus on another person's video",
         "toggleChat": "Open or close the chat",
         "mute": "Mute or unmute your microphone",
-        "fullScreen": "Enter or exit full screen",
+        "fullScreen": "View or exit full screen",
         "videoMute": "Start or stop your camera",
-        "showSpeakerStats": "Show speaker stats"
+        "showSpeakerStats": "Show speaker stats",
+        "localRecording": "Show or hide local recording controls"
     },
     "welcomepage":{
         "accessibilityLabel": {
@@ -56,15 +57,18 @@
             "video": "Video"
         },
         "calendar": "Calendar",
+        "connectCalendarText": "Connect your calendar to view all your meetings in __app__. Plus, add __app__ meetings to your calendar and start them with one click.",
+        "connectCalendarButton": "Connect your calendar",
         "go": "GO",
         "join": "JOIN",
         "privacy": "Privacy",
-        "recentList": "History",
+        "recentList": "Recent",
+        "recentListEmpty": "Your recent list is currently empty. Chat with your team and you will find all your recent meetings here.",
         "roomname": "Enter room name",
         "roomnameHint": "Enter the name or URL of the room you want to join. You may make a name up, just let the people you are meeting know it so that they enter the same name.",
         "sendFeedback": "Send feedback",
         "terms": "Terms",
-        "title": "More secure, more flexible, and completely free video conferencing"
+        "title": "More secure, more flexible, and completely free video conferencing."
     },
     "startupoverlay": {
         "policyText": " ",
@@ -78,14 +82,16 @@
     "toolbar": {
         "accessibilityLabel": {
             "audioOnly": "Toggle audio only",
-            "audioRoute": "Select the audio route",
+            "audioRoute": "Select the sound device",
             "callQuality": "Manage call quality",
             "chat": "Toggle chat window",
+            "cc": "Toggle subtitles",
             "document": "Toggle shared document",
             "feedback": "Leave feedback",
             "fullScreen": "Toggle full screen",
             "hangup": "Leave the call",
             "invite": "Invite people",
+            "localRecording": "Toggle local recording controls",
             "lockRoom": "Toggle room lock",
             "moreActions": "Toggle more actions menu",
             "moreActionsMenu": "More actions menu",
@@ -101,13 +107,14 @@
             "shortcuts": "Toggle shortcuts",
             "speakerStats": "Toggle speaker statistics",
             "toggleCamera": "Toggle camera",
+            "tileView": "Toggle tile view",
             "videomute": "Toggle mute video"
         },
         "addPeople": "Add people to your call",
         "audioonly": "Enable / Disable audio only mode (saves bandwidth)",
         "audioOnlyOn": "Enable audio only mode (saves bandwidth)",
         "audioOnlyOff": "Disable audio only mode",
-        "audioRoute": "Select the audio route",
+        "audioRoute": "Select the sound device",
         "callQuality": "Manage call quality",
         "enterFullScreen": "View full screen",
         "exitFullScreen": "Exit full screen",
@@ -143,6 +150,7 @@
         "raiseHand": "Raise / Lower your hand",
         "shortcuts": "View shortcuts",
         "speakerStats": "Speaker stats",
+        "tileViewToggle": "Toggle tile view",
         "invite": "Invite people"
     },
     "chat":{
@@ -152,8 +160,14 @@
         },
         "messagebox": "Enter text..."
     },
-    "settings":
-    {
+    "settings": {
+        "calendar": {
+            "about": "The __appName__ calendar integration is used to securely access your calendar so it can read upcoming events.",
+            "disconnect": "Disconnect",
+            "microsoftSignIn": "Sign in with Microsoft",
+            "signedIn": "Currently accessing calendar events for __email__. Click the Disconnect button below to stop accessing calendar events.",
+            "title": "Calendar"
+        },
         "title": "Settings",
         "update": "Update",
         "name": "Name",
@@ -163,11 +177,15 @@
         "selectMic": "Microphone",
         "selectAudioOutput": "Audio output",
         "followMe": "Everyone follows me",
+        "language": "Language",
+        "loggedIn": "Logged in as __name__",
         "noDevice": "None",
         "cameraAndMic": "Camera and microphone",
-        "moderator": "MODERATOR",
+        "moderator": "Moderator",
+        "more": "More",
         "password": "SET PASSWORD",
-        "audioVideo": "AUDIO AND VIDEO"
+        "audioVideo": "AUDIO AND VIDEO",
+        "devices": "Devices"
     },
     "profile": {
         "title": "Profile",
@@ -189,10 +207,13 @@
     "connectionindicator":
     {
         "header": "Connection data",
+        "connectedTo": "Connected to:",
         "bitrate": "Bitrate:",
+        "bridgeCount": "Server count: ",
         "packetloss": "Packet loss:",
         "resolution": "Resolution:",
         "framerate": "Frame rate:",
+        "e2e_rtt": "E2E RTT:",
         "less": "Show less",
         "more": "Show more",
         "address": "Address:",
@@ -230,7 +251,6 @@
         "focus": "Conference focus",
         "focusFail": "__component__ not available - retry in __ms__ sec",
         "grantedTo": "Moderator rights granted to __to__!",
-        "grantedToUnknown": "Moderator rights granted to $t(notify.somebody)!",
         "muted": "You have started the conversation muted.",
         "mutedTitle": "You're muted!",
         "raisedHand": "Would like to speak.",
@@ -244,6 +264,7 @@
         "allow": "Allow",
         "confirm": "Confirm",
         "kickMessage": "Ouch! You have been kicked out of the meet!",
+        "kickTitle": "Kicked from meeting",
         "popupErrorTitle": "Pop-up blocked",
         "popupError": "Your browser is blocking pop-up windows from this site. Please enable pop-ups in your browser's security settings and try again.",
         "passwordErrorTitle": "Password Error",
@@ -361,6 +382,10 @@
         "muteParticipantTitle": "Mute this member?",
         "muteParticipantBody": "You won't be able to unmute them, but they can unmute themselves at any time.",
         "muteParticipantButton": "Mute",
+        "liveStreamingDisabledTooltip": "Start live stream disabled.",
+        "liveStreamingDisabledForGuestTooltip": "Guests can't start live streaming.",
+        "recordingDisabledTooltip": "Start recording disabled.",
+        "recordingDisabledForGuestTooltip": "Guests can't start recordings.",
         "remoteControlTitle": "Remote desktop control",
         "remoteControlRequestMessage": "Will you allow __user__ to remotely control your desktop?",
         "remoteControlShareScreenWarning": "Note that if you press \"Allow\" you will share your screen!",
@@ -371,8 +396,11 @@
         "remoteControlStopMessage": "The remote control session ended!",
         "close": "Close",
         "shareYourScreen": "Share your screen",
+        "shareYourScreenDisabled": "Screen sharing disabled.",
+        "shareYourScreenDisabledForGuest": "Guests can't screen share.",
         "yourEntireScreen": "Your entire screen",
-        "applicationWindow": "Application window"
+        "applicationWindow": "Application window",
+        "transcribing": "Transcribing"
     },
     "email":
     {
@@ -401,6 +429,11 @@
             "Talk to you in a sec!"
         ],
         "and": "and"
+    },
+    "share":
+    {
+        "mainText": "Click the following link to join the meeting:\n__roomUrl__",
+        "dialInfoText": "\n\n=====\n\nJust want to dial in on your phone?\n\n__defaultDialInNumber__Click this link to see the dial in phone numbers for this meeting\n__dialInfoPageUrl__"
     },
     "connection":
     {
@@ -434,10 +467,28 @@
         "on": "Recording",
         "pending": "Preparing to record the meeting...",
         "rec": "REC",
+        "authDropboxText": "Upload your recording to Dropbox.",
+        "authDropboxCompletedText": "Your recording file will appear in your Dropbox shortly after the recording has finished.",
         "serviceName": "Recording service",
+        "signOut": "Sign Out",
+        "signIn": "sign in",
+        "loggedIn": "Logged in as __userName__",
+        "availableSpace": "Available space: __spaceLeft__ MB (approximately __duration__ minutes of recording)",
         "startRecordingBody": "Are you sure you would like to start recording?",
         "unavailable": "Oops! The __serviceName__ is currently unavailable. We're working on resolving the issue. Please try again later.",
         "unavailableTitle": "Recording unavailable"
+    },
+    "transcribing":
+    {
+        "pending" : "Preparing to transcribe the meeting...",
+        "off" : "Transcribing stopped",
+        "error": "Transcribing failed. Please try again.",
+        "failedToStart": "Transcribing failed to start",
+        "tr": "TR",
+        "labelToolTip": "The meeting is being transcribed",
+        "ccButtonTooltip": "Start / Stop showing subtitles",
+        "start": "Start showing subtitles",
+        "stop": "Stop showing subtitles"
     },
     "liveStreaming":
     {
@@ -456,9 +507,11 @@
         "on": "Live Streaming",
         "pending": "Starting Live Stream...",
         "serviceName": "Live Streaming service",
+        "signedInAs": "You are currently signed in as:",
         "signIn": "Sign in with Google",
+        "signOut": "Sign out",
         "signInCTA": "Sign in or enter your live stream key from YouTube.",
-        "start": "Start a livestream",
+        "start": "Start a live stream",
         "streamIdHelp": "What's this?",
         "unavailableTitle": "Live Streaming unavailable"
     },
@@ -521,6 +574,7 @@
         "countryNotSupported": "We do not support this destination yet.",
         "countryReminder": "Calling outside the US? Please make sure you start with the country code!",
         "disabled": "You can't invite people.",
+        "footerText": "Dialing out is disabled.",
         "invite": "Invite",
         "loading": "Searching for people and phone numbers",
         "loadingNumber": "Validating phone number",
@@ -595,18 +649,21 @@
         "startWithVideoMuted": "Start with video muted"
     },
     "calendarSync": {
-        "later": "Later",
-        "next": "Upcoming",
+        "addMeetingURL": "Add a meeting link",
+        "confirmAddLink": "Do you want to add a Jitsi link to this event?",
+        "confirmAddLinkTitle": "Calendar",
+        "join": "Join",
+        "joinTooltip": "Join the meeting",
         "nextMeeting": "next meeting",
-        "now": "Now",
+        "noEvents": "There are no upcoming events scheduled.",
         "ongoingMeeting": "ongoing meeting",
         "permissionButton": "Open settings",
-        "permissionMessage": "Calendar permission is required to list your meetings in the app."
+        "permissionMessage": "The Calendar permission is required to see your meetings in the app.",
+        "refresh": "Refresh calendar",
+        "today": "Today"
     },
     "recentList": {
-        "today": "Today",
-        "yesterday": "Yesterday",
-        "earlier": "Earlier"
+        "joinPastMeeting": "Join a past meeting"
     },
     "sectionList": {
         "pullToRefresh": "Pull to refresh"
@@ -622,16 +679,57 @@
     },
     "presenceStatus": {
         "invited": "Invited",
-        "ringing": "Ringing",
-        "calling": "Calling",
-        "initializingCall": "Initializing Call",
+        "ringing": "Ringing...",
+        "calling": "Calling...",
+        "initializingCall": "Initializing Call...",
         "connected": "Connected",
-        "connecting": "Connecting",
-        "connecting2": "Connecting*",
+        "connecting": "Connecting...",
+        "connecting2": "Connecting*...",
         "disconnected": "Disconnected",
         "busy": "Busy",
         "rejected": "Rejected",
         "ignored": "Ignored",
         "expired": "Expired"
+    },
+    "dateUtils": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "earlier": "Earlier"
+    },
+    "incomingCall": {
+        "answer": "Answer",
+        "audioCallTitle": "Incoming call",
+        "decline": "Dismiss",
+        "productLabel": "from Jitsi Meet",
+        "videoCallTitle": "Incoming video call"
+    },
+    "localRecording": {
+        "localRecording": "Local Recording",
+        "dialogTitle": "Local Recording Controls",
+        "start": "Start Recording",
+        "stop": "Stop Recording",
+        "moderator": "Moderator",
+        "me": "Me",
+        "duration": "Duration",
+        "durationNA": "N/A",
+        "encoding": "Encoding",
+        "participantStats": "Participant Stats",
+        "participant": "Participant",
+        "sessionToken": "Session Token",
+        "clientState": {
+            "on": "On",
+            "off": "Off",
+            "unknown": "Unknown"
+        },
+        "messages": {
+            "engaged": "Local recording engaged.",
+            "finished": "Recording session __token__ finished. Please send the recorded file to the moderator.",
+            "finishedModerator": "Recording session __token__ finished. The recording of the local track has been saved. Please ask the other participants to submit their recordings.",
+            "notModerator": "You are not the moderator. You cannot start or stop local recording."
+        },
+        "yes": "Yes",
+        "no": "No",
+        "label": "LOR",
+        "labelToolTip": "Local recording is engaged"
     }
 }

@@ -92,15 +92,17 @@ window.addEvent("domready", function () {
             {
                 //console.log("findUsers", users);
 
-                var html = "";
+                var html = "<table><tr><th>Name</th><th>Id</th></tr>";
+                var count = 0;
 
                 for (var i=0; i<users.length; i++)
                 {
                     var user = users[i];
-                    html = html + "<a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a><br/>";
+                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td></tr>";
                 }
+                html = html + "</table>"
 
-                if (html == "") html = "No user found";
+                if (users.length == 0) html = "No user found";
 
                 settings.manifest.searchResults.element.innerHTML = "<p/><p/>" + html;
 
@@ -108,7 +110,9 @@ window.addEvent("domready", function () {
                 {
                     document.getElementById(users[i].jid).addEventListener("click", function(e)
                     {
+                        e.stopPropagation();
                         var user = e.target;
+
                         //console.log("findUsers - click", user.id, user.name, user.title);
 
                         if (getSetting("enableInverse"))
@@ -174,6 +178,13 @@ window.addEvent("domready", function () {
             } else {
                background.removeTouchPadMenu();
             }
+
+            location.reload()
+        });
+
+        settings.manifest.useStreamDeck.addEvent("action", function ()
+        {
+            location.reload()
         });
 
         settings.manifest.enableOffice365Business.addEvent("action", function ()
@@ -670,7 +681,7 @@ function processConvSearch(conversations, settings, background)
         var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
         var suffix = "</a>";
 
-        var date = moment(conversation.startDate).format('MMM DD YYYY hh:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('hh:mm:ss');
+        var date = moment(conversation.startDate).format('MMM DD YYYY HH:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('HH:mm:ss');
         var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom + suffix + "<br/>" + "Participants:" + conversation.participantList.length : prefix + conversation.participantList[0].split("/")[0] + suffix + "<br/>" + conversation.participantList[1];
 
         var messages = conversation.messages.message;
@@ -684,7 +695,7 @@ function processConvSearch(conversations, settings, background)
 
         for (var j=0; j<messages.length; j++)
         {
-            convHtml = convHtml + "[" + moment(messages[j].sentDate).format('mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
+            convHtml = convHtml + "[" + moment(messages[j].sentDate).format('hh:mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
         }
 
         html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";

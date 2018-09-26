@@ -316,14 +316,6 @@ var ofmeet = (function(of)
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_LEFT, function()
         {
             console.log("ofmeet.js me left");
-            OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
-            hangup();
-
-            if (of.recognition)
-            {
-                of.recognitionActive = false;
-                of.recognition.stop();
-            }
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.MESSAGE_RECEIVED , function(id, text, ts)
@@ -382,15 +374,11 @@ var ofmeet = (function(of)
                     }
                 }
 
-                if (track.isMuted())    // speech recog synch
+                if (track.isMuted())
                 {
-                    console.log("muted, stopping speech transcription");
-                    of.recognitionActive = false;
-                    of.recognition.stop();
 
                 } else {
-                    console.log("unmuted, starting speech transcription");
-                    of.recognition.start();
+
                 }
             }
         });
@@ -405,31 +393,12 @@ var ofmeet = (function(of)
 
             if (OFMEET_CONFIG.recordAudio || OFMEET_CONFIG.recordVideo)
             {
-                OFMEET_CONFIG.bgWin.etherlynk.startRecorder(APP.conference.localAudio.stream, APP.conference.localVideo.stream, OFMEET_CONFIG.room, APP.conference.getMyUserId());
 
-                var audioFileName = OFMEET_CONFIG.room + "." + APP.conference.getMyUserId() + ".audio.webm";
-                var videoFileName = OFMEET_CONFIG.room + "." + APP.conference.getMyUserId() + ".video.webm";
-
-                var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
-                var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
-
-                if (OFMEET_CONFIG.recordAudio)
-                {
-                    APP.conference._room.sendTextMessage(audioFileUrl, OFMEET_CONFIG.nickName);
-                }
-                else
-
-                if (OFMEET_CONFIG.recordVideo)
-                {
-                    APP.conference._room.sendTextMessage(audioFileUrl, OFMEET_CONFIG.nickName);
-                    APP.conference._room.sendTextMessage(videoFileUrl, OFMEET_CONFIG.nickName);
-                }
             }
 
             if (OFMEET_CONFIG.enableTranscription)
             {
-                setupSpeechRecognition();
-                of.recognition.start();
+
             }
 
         }
@@ -737,68 +706,6 @@ var ofmeet = (function(of)
     }
 
 
-
-    function setupSpeechRecognition()
-    {
-        console.log("setupSpeechRecognition", event);
-
-        of.recognition = new webkitSpeechRecognition();
-        of.recognition.lang = "en-GB";
-        of.recognition.continuous = true;
-        of.recognition.interimResults = false;
-
-        of.recognition.onresult = function(event)
-        {
-            //console.log("Speech recog event", event)
-
-            if(event.results[event.resultIndex].isFinal==true)
-            {
-                var transcript = event.results[event.resultIndex][0].transcript;
-                console.log("Speech recog transcript", transcript);
-                sendSpeechRecognition(transcript);
-            }
-        }
-
-        of.recognition.onspeechend  = function(event)
-        {
-            //console.log("Speech recog onspeechend", event);
-        }
-
-        of.recognition.onstart = function(event)
-        {
-            //console.log("Speech to text started", event);
-            of.recognitionActive = true;
-        }
-
-        of.recognition.onend = function(event)
-        {
-            //console.log("Speech to text ended", event);
-
-            if (of.recognitionActive)
-            {
-                //console.warn("Speech to text restarted");
-                of.recognition.start();
-            }
-        }
-
-        of.recognition.onerror = function(event)
-        {
-            console.error("Speech to text error", event);
-        }
-    }
-
-    function sendSpeechRecognition(result)
-    {
-        if (result != "" && APP.conference && APP.conference._room)
-        {
-            var message = "[" + result + "]";
-            console.log("Speech recog result", APP.conference._room, message,  OFMEET_CONFIG.username);
-
-            APP.conference._room.sendTextMessage(message, OFMEET_CONFIG.nickName);
-            of.currentTranslation = [];
-        }
-    }
-
     window.addEventListener("beforeunload", function(e)
     {
         console.log("ofmeet.js beforeunload");
@@ -816,8 +723,6 @@ var ofmeet = (function(of)
         {
             of.connection.disconnect();
         }
-
-        OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
     });
 
     window.addEventListener("unload", function (e)
@@ -846,13 +751,14 @@ var ofmeet = (function(of)
         }
     }
 
+/*
     config.dialInNumbersUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/phonenumberlist.json';
     config.dialInConfCodeUrl    = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/conferencemapper.json';
     config.dialOutCodesUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/countrycodes.json';
     config.dialOutAuthUrl       = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/authorizephone.json';
     config.peopleSearchUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/peoplesearch.json';
     config.inviteServiceUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/inviteservice.json';
-
+*/
     config.p2p = {
         enabled: getSetting("p2pMode", false),
         stunServers: [
@@ -860,7 +766,7 @@ var ofmeet = (function(of)
             { urls: "stun:stun1.l.google.com:19302" },
             { urls: "stun:stun2.l.google.com:19302" }
         ],
-        preferH264: true
+        preferH264: false
     }
 
     // Suspending video might cause problems with audio playback. Disabling until these are fixed.

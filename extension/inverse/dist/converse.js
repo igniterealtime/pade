@@ -68946,7 +68946,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.model.addHandler('presence', 'ChatRoomView.onPresence', this.onPresence.bind(this)); // XXX instead of having a method showStatusMessages, we could instead
           // create message models in converse-muc.js and then give them views in this module.
 
-          this.model.addHandler('message', 'ChatRoomView.showStatusMessages', this.showStatusMessages.bind(this));
+          if (getSetting("showGroupChatStatusMessages", false))
+          {
+            this.model.addHandler('message', 'ChatRoomView.showStatusMessages', this.showStatusMessages.bind(this));
+          }
         },
 
         onPresence(pres) {

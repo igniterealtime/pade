@@ -11,64 +11,51 @@ if (getSetting("useWebsocket", false))
     connUrl = "wss://" + __server + "/ws/";
 }
 
+
 var config = {
-  "etherpad_base": 'https://' + __server + '/etherpad/p/',
-  "videoBandwidth": 512,
-  "useNicks": false,
-  "desktopSharingFirefoxMaxVersionExtRequired": 51,
-  "disableAudioLevels": getSetting("disableAudioLevels", false),
-  "audioMixer": false,
-  "useIPv6": false,
-  "defaultSipNumber": "",
-  "audioBandwidth": 64,
-  "startBitrate": getSetting("startBitrate", 800),
-  "enableWelcomePage": true,
-  "useStunTurn": false,
-  "enableRtpStats": true,
-  "bosh": connUrl,
-  "enableRecording": false,
-  "resolution": getSetting("resolution", 720),
-  "hiddenDomain": "recorder." + __domain + "",
-  "enableLipSync": getSetting("enableLipSync", false),
-  "minHDHeight": getSetting("minHDHeight", 540),
-  "useRoomAsSharedDocumentName": false,
-  "recordingType": "colibri",
-  "desktopSharingChromeMinExtVersion": "0.0.1",
-  "startAudioMuted": 9,
-  "desktopSharingFirefoxExtId": "jidesha@meet.jit.si",
-  "desktopSharingFirefoxExtensionURL": "https://" + __server + "/ofmeet/jidesha-0.1.1-fx.xpi",
-  "openSctp": true,
-  "clientNode": "http://igniterealtime.org/ofmeet/jitsi-meet/",
-  "conferences": [],
-  "channelLastN": -1,
-  "desktopSharingFirefoxDisabled": false,
-  "adaptiveLastN": false,
-  "desktopSharingChromeExtId": "blnhgbeilkjpcadckjogfflfijeblbpo",
-  "hosts": {
-    "domain": __domain + "",
-    "focus": "focus." + __domain + "",
-    "muc": "conference." + __domain + "",
-    "callcontrol": "callcontrol." + __domain,
-    "bridge": "jitsi-videobridge." + __domain + ""
-  },
-  "logStats": false,
-  "useRtcpMux": true,
-  "requireDisplayName": false,
-  "startVideoMuted": 9,
-  "adaptiveSimulcast": false,
-  "enforcedBridge": "jitsi-videobridge." + __domain + "",
-  "desktopSharingChromeMethod": "ext",
-  "useBundle": true,
-  "disableRtx": true,
-  "disableAdaptiveSimulcast": true,
-  "desktopSharingChromeSources": [
-    "screen",
-    "window"
-  ],
-  "disableSimulcast": false,
-  "startAudioOnly": false,
-  "startWithAudioMuted": getSetting("startWithAudioMuted", false),
-  "startWithVideoMuted": getSetting("startWithVideoMuted", false),
-  "stereo": false,
-  "focusUserJid": "focus@" + __domain + ""
+
+    hosts: {
+        "domain": __domain + "",
+        "muc": "conference." + __domain + ""
+    },
+
+    bosh: connUrl,
+    clientNode: "http://igniterealtime.org/pade/",
+
+    disableSuspendVideo: true,
+
+    desktopSharingChromeExtId: "blnhgbeilkjpcadckjogfflfijeblbpo",
+    desktopSharingChromeDisabled: false,
+    desktopSharingChromeSources: [ 'screen', 'window', 'tab' ],
+    desktopSharingChromeMinExtVersion: '0.1',
+    desktopSharingFirefoxDisabled: true,
+
+    channelLastN: -1,
+    enableWelcomePage: true,
+    minHDHeight: getSetting("minHDHeight", 540),
+    enableUserRolesBasedOnToken: false,
+
+    enableLipSync: getSetting("enableLipSync", false),
+    startWithAudioMuted: getSetting("startWithAudioMuted", false),
+    startWithVideoMuted: getSetting("startWithVideoMuted", false),
+
+    p2p: {
+        enabled: true,
+        stunServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:stun2.l.google.com:19302' }
+        ],
+        preferH264: false
+    },
+
+    deploymentInfo: {
+
+    },
+
+    localRecording: {
+         enabled: false,
+         format: 'flac'
+    }
+
 };

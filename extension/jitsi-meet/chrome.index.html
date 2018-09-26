@@ -1,29 +1,24 @@
 <html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
   <head>
-    <head><title></title>
     <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--#include virtual="base.html" -->
+
+    <link rel="stylesheet" href="css/all.css?v=3046">
+
     <script src="chrome.ofmeet.config.js"></script>
-    <script src="chrome.config.js"></script>
-    <script src="chrome.interface_config.js"></script>
-    <script src="chrome.lib.jitsi.meet.js"></script>
-    <script src="chrome.bundle.app.js"></script>
+    <script src="chrome.config.js?v=3046"></script>
+    <script src="chrome.interface_config.js?v=3046"></script>
+
+    <script src="libs/lib-jitsi-meet.min.js?v=3046"></script>
+    <script src="libs/app.bundle.min.js?v=3046"></script>
     <script src="chrome.ofmeet.js"></script>
 
-    <script src="libs/do_external_connect.min.js"></script>
-    <script src="logging_config.js"></script>
-
-    <link rel="stylesheet" href="css/all.css">
+    <script src="libs/do_external_connect.min.js?v=3046"></script>
+    <script src="logging_config.js?v=3046"></script>
   </head>
-  <body  style="width: 800px; height: 600px;">
+  <body>
     <div id="react"></div>
-    <div id="subtitles" style="position: absolute; bottom: 5%; left: 10%; z-index: 2; font-weight: 600; font-size: 24px; text-align: left; color: #FFF;   opacity: .80; text-shadow: 0px 0px 1px rgba(0,0,0,0.3),0px 1px 1px rgba(0,0,0,0.3),1px 0px 1px rgba(0,0,0,0.3),0px 0px 1px rgba(0,0,0,0.3)"></div>
-    <div id="keyboard-shortcuts" class="keyboard-shortcuts" style="display:none;">
-        <div class="content">
-            <ul id="keyboard-shortcuts-list" class="shortcuts-list">
-            </ul>
-        </div>
-    </div>
   </body>
 </html>
