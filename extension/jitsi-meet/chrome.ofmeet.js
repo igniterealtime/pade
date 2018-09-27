@@ -710,7 +710,7 @@ var ofmeet = (function(of)
     {
         console.log("ofmeet.js beforeunload");
 
-        e.returnValue = 'Ok';
+        //e.returnValue = 'Ok';
 
         localStorage.removeItem("xmpp_username_override");
         localStorage.removeItem("xmpp_password_override");

@@ -478,6 +478,7 @@ function doDefaults()
     setSetting("FILM_STRIP_MAX_HEIGHT", 90);
     setSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
     setSetting("TOOLBAR_TIMEOUT", 4000);
+    setSetting("p2pMode", true);
 
     // community
     setSetting("chatWithOnlineContacts", true);

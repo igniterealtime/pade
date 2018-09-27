@@ -348,7 +348,7 @@ this.manifest = {
             "group": i18n.get("config"),
             "name": "p2pMode",
             "type": "checkbox",
-            "label": i18n.get("Enable P2P Mode - Does not work properly with screen share or remote control")
+            "label": i18n.get("Enable P2P Mode")
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -364,6 +364,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Start with Video Muted")
         },
+/*
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
@@ -385,6 +386,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Voice-to-Text Transcription")
         },
+*/
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
@@ -422,6 +424,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Vertical Filmstrip")
         },
+/*
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
@@ -429,6 +432,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Captions/Sub Titles")
         },
+*/
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("ui"),
@@ -578,6 +582,13 @@ this.manifest = {
             "name": "showGroupChatStatusMessages",
             "type": "checkbox",
             "label": i18n.get("Show GroupChat Status Messages")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "enablePasting",
+            "type": "checkbox",
+            "label": i18n.get("Enable Clipboard pasting of URLs and images")
         },
         {
             "tab": i18n.get("ofmeet"),

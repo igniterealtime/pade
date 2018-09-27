@@ -15,11 +15,27 @@ if (getSetting("useWebsocket", false))
 var config = {
 
     hosts: {
-        "domain": __domain + "",
-        "muc": "conference." + __domain + ""
+        "domain": __domain,
+        "focus": "focus." + __domain,
+        "bridge": "jitsi-videobridge." + __domain,
+        "muc": "conference." + __domain
     },
-
+    disableSimulcast: false,
+    enableRemb: false,
+    enableTcc: true,
+    resolution: 720,
+    constraints: {
+        video: {
+            aspectRatio: 16 / 9,
+            height: {
+                ideal: 720,
+                max: 720,
+                min: 240
+            }
+        }
+    },
     bosh: connUrl,
+    enforcedBridge: "jitsi-videobridge." + __domain,
     clientNode: "http://igniterealtime.org/pade/",
 
     disableSuspendVideo: true,
@@ -31,6 +47,8 @@ var config = {
     desktopSharingFirefoxDisabled: true,
 
     channelLastN: -1,
+    startAudioMuted: 5,
+    startVideoMuted: 5,
     enableWelcomePage: true,
     minHDHeight: getSetting("minHDHeight", 540),
     enableUserRolesBasedOnToken: false,
@@ -41,12 +59,14 @@ var config = {
 
     p2p: {
         enabled: true,
+        useStunTurn: true,
         stunServers: [
             { urls: 'stun:stun.l.google.com:19302' },
             { urls: 'stun:stun1.l.google.com:19302' },
             { urls: 'stun:stun2.l.google.com:19302' }
         ],
-        preferH264: false
+        preferH264: true,
+        disableH264: true,
     },
 
     deploymentInfo: {
