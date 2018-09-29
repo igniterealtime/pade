@@ -13,65 +13,6 @@ function uportError(error)
     console.error("uportError", error);
 }
 
-// strophe SASL
-
-if (getSetting("useClientCert", false))
-{
-    console.log("useClientCert enabled");
-
-    Strophe.addConnectionPlugin('externalsasl',
-    {
-        init: function (connection)
-        {
-            Strophe.SASLExternal = function() {};
-            Strophe.SASLExternal.prototype = new Strophe.SASLMechanism("EXTERNAL", true, 2000);
-
-            Strophe.SASLExternal.test = function (connection)
-            {
-                return connection.authcid !== null;
-            };
-
-            Strophe.SASLExternal.prototype.onChallenge = function(connection)
-            {
-                return connection.authcid === connection.authzid ? '' : connection.authzid;
-            };
-
-            connection.mechanisms[Strophe.SASLExternal.prototype.name] = Strophe.SASLExternal;
-            console.log("strophe plugin: externalsasl enabled");
-        }
-    });
-}
-
-if (getSetting("useTotp", false))
-{
-    console.log("useTotp enabled");
-
-    Strophe.addConnectionPlugin('ofchatsasl',
-    {
-        init: function (connection)
-        {
-            Strophe.SASLOFChat = function () { };
-            Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
-
-            Strophe.SASLOFChat.test = function (connection)
-            {
-                return getSetting("password", null) !== null;
-            };
-
-            Strophe.SASLOFChat.prototype.onChallenge = function (connection)
-            {
-                var token = getSetting("username", null) + ":" + getSetting("password", null);
-                console.log("Strophe.SASLOFChat", token);
-                return token;
-            };
-
-            connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
-            console.log("strophe plugin: ofchatsasl enabled");
-        }
-    });
-}
-
-
 window.addEventListener("unload", function ()
 {
     console.log("pade unloading applications");
@@ -552,69 +493,11 @@ window.addEventListener("load", function()
         pade.sip = {};
         pade.enableSip = getSetting("enableSip", false);
 
-        var connUrl = "https://" + pade.server + "/http-bind/";
-
-        if (getSetting("useWebsocket", false))
-        {
-            connUrl = "wss://" + pade.server + "/ws/";
-        }
-
-        pade.connection = getConnection(connUrl);
-
-        pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
-        {
-            console.log("pade.connection ===>", status);
-
-            if (status === Strophe.Status.CONNECTED)
-            {
-                addHandlers();
-
-                chrome.browserAction.setBadgeText({ text: "Wait.." });
-                pade.connection.send($pres());
-
-                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
-
-                pade.presence = {};
-                pade.participants = {};
-
-                setTimeout(function()
-                {
-                    fetchContacts(function(contact)
-                    {
-                        handleContact(contact);
-                    });
-
-                    updateVCard();
-                    setupStreamDeck();
-                    enableRemoteControl();
-
-                    chrome.browserAction.setBadgeText({ text: "" });
-
-                }, 3000);
-            }
-            else
-
-            if (status === Strophe.Status.DISCONNECTED)
-            {
-                chrome.browserAction.setBadgeText({ text: "off" });
-                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
-            }
-            else
-
-            if (status === Strophe.Status.AUTHFAIL)
-            {
-               doExtensionPage("options/index.html");
-            }
-
-        });
+        doSetupStrophePlugins();
 
     } else doExtensionPage("options/index.html");
 });
 
-function getConnection(connUrl)
-{
-    return new Strophe.Connection(connUrl);
-}
 
 function handleContact(contact)
 {
@@ -2677,4 +2560,176 @@ function enableRemoteControl()
             pade.remoteControlPort.postMessage({ event: "ofmeet.remote.hello" });
         }
     }
+}
+
+function getConnection(connUrl)
+{
+    return new Strophe.Connection(connUrl);
+}
+
+function doPadeConnect()
+{
+    var connUrl = "https://" + pade.server + "/http-bind/";
+
+    if (getSetting("useWebsocket", false))
+    {
+        connUrl = "wss://" + pade.server + "/ws/";
+    }
+
+    pade.connection = getConnection(connUrl);
+
+    pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
+    {
+        console.log("pade.connection ===>", status);
+
+        if (status === Strophe.Status.CONNECTED)
+        {
+            addHandlers();
+
+            chrome.browserAction.setBadgeText({ text: "Wait.." });
+            pade.connection.send($pres());
+
+            chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
+
+            pade.presence = {};
+            pade.participants = {};
+
+            setTimeout(function()
+            {
+                fetchContacts(function(contact)
+                {
+                    handleContact(contact);
+                });
+
+                updateVCard();
+                setupStreamDeck();
+                enableRemoteControl();
+
+                chrome.browserAction.setBadgeText({ text: "" });
+
+            }, 3000);
+        }
+        else
+
+        if (status === Strophe.Status.DISCONNECTED)
+        {
+            chrome.browserAction.setBadgeText({ text: "off" });
+            chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
+        }
+        else
+
+        if (status === Strophe.Status.AUTHFAIL)
+        {
+           doExtensionPage("options/index.html");
+        }
+
+    });
+}
+
+function doSetupStrophePlugins()
+{
+    // strophe SASL
+
+    if (getSetting("useClientCert", false))
+    {
+        console.log("useClientCert enabled");
+
+        Strophe.addConnectionPlugin('externalsasl',
+        {
+            init: function (connection)
+            {
+                Strophe.SASLExternal = function() {};
+                Strophe.SASLExternal.prototype = new Strophe.SASLMechanism("EXTERNAL", true, 2000);
+
+                Strophe.SASLExternal.test = function (connection)
+                {
+                    return connection.authcid !== null;
+                };
+
+                Strophe.SASLExternal.prototype.onChallenge = function(connection)
+                {
+                    return connection.authcid === connection.authzid ? '' : connection.authzid;
+                };
+
+                connection.mechanisms[Strophe.SASLExternal.prototype.name] = Strophe.SASLExternal;
+                console.log("strophe plugin: externalsasl enabled");
+            }
+        });
+
+        doPadeConnect();
+    }
+    else
+
+    if (getSetting("useTotp", false) || getSetting("useWinSSO", false))
+    {
+        console.log("useTotp or useWinSSO enabled");
+
+        var setupSasl = function(token)
+        {
+            console.log("setupSasl", token);
+
+            Strophe.addConnectionPlugin('ofchatsasl',
+            {
+                init: function (connection)
+                {
+                    console.log("strophe plugin: ofchatsasl - init", token);
+
+                    Strophe.SASLOFChat = function () { };
+                    Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+
+                    Strophe.SASLOFChat.test = function (connection)
+                    {
+                        return getSetting("server", null) !== null;
+                    };
+
+                    Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+                    {
+                        return token;
+                    };
+
+                    connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
+                    console.log("strophe plugin: ofchatsasl enabled");
+                }
+            });
+
+            doPadeConnect();
+        }
+
+        if (getSetting("useWinSSO", false))
+        {
+            var server = getSetting("server", null);
+
+            if (server)
+            {
+                fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
+                {
+                    console.log("Strophe.SASLOFChat.WINSSO", accessToken);
+
+                    if (accessToken.indexOf(":") > -1 )
+                    {
+                        var userPass = accessToken.split(":");
+                        setSetting("username", userPass[0]);
+                        setSetting("password", userPass[1]);
+                    }
+
+                    setTimeout(function() { setupSasl(accessToken); })
+
+                }).catch(function (err) {
+                    console.error("Strophe.SASLOFChat.WINSSO", err);
+                    accessToken = "error:error";
+                    setTimeout(reloadApp, 10000);
+                });
+            }
+        }
+
+        else if(getSetting("useTotp", false))
+        {
+            var username = getSetting("username", null);
+            var password = getSetting("password", null);
+            var token = username + ":" + password;
+
+            setTimeout(function() { setupSasl(token); })
+        }
+    }
+    else doPadeConnect();
 }

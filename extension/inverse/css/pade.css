@@ -1,6 +1,6 @@
 #conversejs.converse-fullscreen .flyout {
   border-radius: 0;
-  border: 0.5px solid #3AA569;
+  border: 0.85px solid #3AA569;
   border-top: 0.8em solid #3AA569;
   bottom: 0; 
 }
@@ -38,7 +38,7 @@
 }
 #conversejs.converse-fullscreen .chatroom .box-flyout, #conversejs.converse-mobile .chatroom .box-flyout {
     background-color: #E77051;
-    border: 0.5px solid #E77051;
+    border: 0.85px solid #E77051;
     border-top: 0.8em solid #E77051;
     width: 100%;
 }

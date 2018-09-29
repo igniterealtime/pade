@@ -30,10 +30,8 @@ window.addEventListener("load", function()
     {
         bgWindow = win;
 
-        if (getSetting("useTotp", false))
+        if (getSetting("useTotp", false) || getSetting("useWinSSO", false))
         {
-            console.log("useTotp enabled");
-
             converse.env.Strophe.addConnectionPlugin('ofchatsasl',
             {
                 init: function (connection)

@@ -251,6 +251,12 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.useWinSSO.addEvent("action", function ()
+        {
+            setSetting("password", "__DEFAULT__WINSSO__")
+            background.reloadApp();
+        });
+
         settings.manifest.enableRemoteControl.addEvent("action", function ()
         {
             background.reloadApp();
@@ -321,7 +327,7 @@ window.addEvent("domready", function () {
             if (window.localStorage["store.settings.server"])
             {
                 var host = JSON.parse(window.localStorage["store.settings.server"]);
-                var url = "https://" + host + "/meet/qrcode.jsp";
+                var url = "https://" + host + "/dashboard/qrcode.jsp";
 
                 chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
                 {

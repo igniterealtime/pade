@@ -282,7 +282,7 @@
                     {
                         var setupHandler = function(chat, room, content)
                         {
-                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + content + '</a></span> <div class="chat-msg-media"></div> </div>';
+                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + content + '</a></span> <div class="chat-msg-media"></div> </div>';
                             chat.replaceElement(msg_content);
 
                             if (room)
@@ -446,6 +446,9 @@
                     html = '<li id="webmeet-screencast-' + id + '"><a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
                     $(this.el).find('#place-holder').after(html);
 
+                    html = '<li id="webmeet-scrolldown-' + id + '"><a class="fa fa-angle-double-down" title="Scroll to the bottom"></a></li>';
+                    $(this.el).find('#place-holder').after(html);
+
                     if (_converse.view_mode === 'embedded')
                     {
                         var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
@@ -532,6 +535,18 @@
                                 } else {
                                     videoRecorder.stop();
                                 }
+
+                            }, false);
+                        }
+
+                        var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
+
+                        if (scrolldown)
+                        {
+                            scrolldown.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+                                view.viewUnreadMessages()
 
                             }, false);
                         }

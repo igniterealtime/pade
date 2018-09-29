@@ -69242,8 +69242,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           if (!is_self) {
             if (code in _converse.muc.action_info_messages) {
-              nick = Strophe.getResourceFromJid(stanza.getAttribute('from'));
-              return __(_converse.muc.action_info_messages[code], nick);
+
+          // BAO
+
+              if (getSetting("showGroupChatStatusMessages", false))
+              {
+                  nick = Strophe.getResourceFromJid(stanza.getAttribute('from'));
+                  return __(_converse.muc.action_info_messages[code], nick);
+              }
             }
           } else if (code in _converse.muc.new_nickname_messages) {
             if (is_self && code === "210") {

@@ -27,6 +27,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("connection"),
+            "group": i18n.get("connection"),
+            "name": "useWinSSO",
+            "type": "checkbox",
+            "label": i18n.get("Use Windows Single Sign On (SSO)")
+        },
+        {
+            "tab": i18n.get("connection"),
             "group": i18n.get("uPort"),
             "name": "useUport",
             "type": "checkbox",
