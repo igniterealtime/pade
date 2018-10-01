@@ -201,3 +201,31 @@ function openChatPanel(from)
 {
     if (_inverse) _inverse.api.chats.open(from);
 }
+
+function openGroupChat(jid, label, nick, properties)
+{
+    if (_inverse)
+    {
+        _inverse.bookmarks.create({
+            'jid': jid,
+            'name': properties.name || properties.email || label,
+            'autojoin': true,
+            'nick': nick
+        });
+
+        if (properties.question)
+        {
+            setTimeout(function()
+            {
+                _inverse.connection.send(inverse.env.$msg({
+                    to: jid,
+                    from: _inverse.connection.jid,
+                    type: "groupchat"
+                }).c("subject", {
+                    xmlns: "jabber:client"
+                }).t(properties.question).tree());
+
+            }, 1000);
+        }
+    }
+}

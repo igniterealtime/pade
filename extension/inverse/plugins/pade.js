@@ -63,9 +63,6 @@
              * plugin, or override the default values of existing
              * configuration settings. This is done like so:
             */
-            _converse.api.settings.update({
-
-            });
 
             _converse.api.settings.update({
                 ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at')

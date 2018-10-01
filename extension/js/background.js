@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: [], vcards: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: [], vcards: {}, questions: {}}
 var callbacks = {}
 
 // uPort
@@ -1669,7 +1669,7 @@ function processChatNotification(from, body)
 
 function acceptCall(title, label, room, id)
 {
-    //console.log("acceptCall", title, label, room);
+    //console.log("acceptCall", title, label, room, pade.questions[label]);
 
     if (isAudioOnly())
     {
@@ -1682,7 +1682,13 @@ function acceptCall(title, label, room, id)
             openVideoWindow(room);
 
         } else {
-            openChatsWindow("inverse/index.html#converse/room?jid=" + id, label);
+
+            if (!pade.chatWindow)
+            {
+                openChatsWindow("inverse/index.html#converse/room?jid=" + id, label);
+            } else {
+                chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(id, label, pade.displayName, pade.questions[label])
+            }
         }
     }
 }
@@ -1691,15 +1697,15 @@ function acceptRejectOffer(properties)
 {
     if (pade.participants[properties.workgroupJid])
     {
-        var agent = pade.participants[properties.workgroupJid];
-
         var question = properties.question;
         if (!question) question = "Fastpath Assistance";
 
         var email = properties.email;
         if (!email) email = Strophe.getBareJidFromJid(properties.jid);
 
-        //console.log("acceptRejectOffer", question, email, agent);
+        pade.questions[properties.workgroupJid] = properties;
+
+        //console.log("acceptRejectOffer", question, email);
 
         startTone("Diggztone_DigitalSanity");
 
@@ -2584,11 +2590,10 @@ function doPadeConnect()
 
         if (status === Strophe.Status.CONNECTED)
         {
+            pade.connection.send($pres());
             addHandlers();
 
             chrome.browserAction.setBadgeText({ text: "Wait.." });
-            pade.connection.send($pres());
-
             chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
 
             pade.presence = {};
