@@ -60140,7 +60140,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           _.each(sizzle(`x[xmlns="${Strophe.NS.OUTOFBAND}"]`, stanza), xform => {
             attrs['oob_url'] = xform.querySelector('url').textContent;
-            attrs['oob_desc'] = xform.querySelector('url').textContent;
+            attrs['oob_desc'] = xform.querySelector('desc').textContent;    // BAO
           });
 
           if (spoiler) {
@@ -79864,8 +79864,8 @@ __e(o.__('Save and close')) +
  if (o._converse.pluggable.plugins['converse-omemo'].enabled(o._converse)) { ;
 __p += '\n                        <div class="tab-pane fade" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">\n                            <form class="converse-form fingerprint-removal">\n                                <ul class="list-group fingerprints">\n                                    <li class="list-group-item active">' +
 __e(o.__("This device's OMEMO fingerprint")) +
-'</li>\n                                    <li class="list-group-item">\n                                        ';
- if (o.view.current_device.get('bundle') && o.view.current_device.get('bundle').fingerprint) { ;
+'</li>\n                                    <li class="list-group-item">\n                                    ';
+ if (o.view.current_device && o.view.current_device.get('bundle') && o.view.current_device.get('bundle').fingerprint) { ;
 __p += '\n                                        <span class="fingerprint">' +
 __e(o.utils.formatFingerprint(o.view.current_device.get('bundle').fingerprint)) +
 '</span>\n                                        ';

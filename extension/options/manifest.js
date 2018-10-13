@@ -508,6 +508,21 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Community"),
+            "name": "embedCommunityChat",
+            "type": "checkbox",
+            "label": i18n.get("Embed Converse for Community chat")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Community"),
+            "name": "communitySidecar",
+            "type": "checkbox",
+            "label": i18n.get("Use a sidecar panel for Converse")
+        },
+/*
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Community"),
             "name": "chatWithOnlineContacts",
             "type": "checkbox",
             "label": i18n.get("Chat with Online Contacts")
@@ -519,6 +534,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Notify/Highlight when mentioned")
         },
+*/
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Community"),

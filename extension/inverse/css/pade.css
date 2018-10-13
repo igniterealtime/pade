@@ -42,3 +42,6 @@
     border-top: 0.8em solid #E77051;
     width: 100%;
 }
+.chat-msg-content {
+    width: 100%;
+}

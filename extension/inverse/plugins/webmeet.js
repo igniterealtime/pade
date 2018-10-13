@@ -23,6 +23,7 @@
         _ = converse.env._,
         moment = converse.env.moment;
 
+     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null;
      var baseUrl = null;
      var messageCount = 0;
@@ -59,6 +60,13 @@
              * `_converse` object.
              */
             _converse = this._converse;
+
+            if (bgWindow)
+            {
+                bgWindow._converse = _converse;
+                bgWindow.converse = converse;
+            }
+
             baseUrl = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2];
             _converse.log("The \"webmeet\" plugin is being initialized");
 
@@ -261,7 +269,6 @@
                 {
                     //console.log('webmeet - renderChatMessage', this.model);
 
-                    var body = this.model.get('message');
                     var nick = this.model.getDisplayName();
 
                     if (nick && !this.model.vcard.attributes.fullname) // no vcard
@@ -269,76 +276,69 @@
                         this.model.vcard.attributes.image = createAvatar(this.model.vcard.attributes.image, nick);
                     }
 
+/* REMOVE
                     if (!document.hasFocus() && window.parent && window.parent.ofmeet)
                     {
                         window.parent.ofmeet.doBadge(++messageCount);
                     } else {
                         messageCount = 0;
                     }
+*/
+                    var body = this.model.get('message');
+                    var oobUrl = this.model.get('oob_url');
+                    var oobDesc = this.model.get('oob_desc');
 
-                    var pos = body.indexOf(baseUrl)
+                    if (oobUrl && oobDesc) {
+                        var viewId = "oob-url-" + Math.random().toString(36).substr(2,9)
+                        var oob_content = '<a id="' + viewId + '" href="#">' + oobDesc + '</a>';
+                        setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId);
+                    }
+                    else
 
-                    if (pos > -1)
+                    if (body)
                     {
-                        var setupHandler = function(chat, room, content)
-                        {
-                            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text"><a id="' + room + '" href="#">' + content + '</a></span> <div class="chat-msg-media"></div> </div>';
-                            chat.replaceElement(msg_content);
+                        var pos = body.indexOf(baseUrl)
 
-                            if (room)
+                        if (pos > -1)
+                        {
+                            var pos0 = body.indexOf("/jitsimeet/index.html?room=")
+                            var pos1 = body.indexOf("/ofmeet/");
+                            var pos2 = body.indexOf("/h5p/");
+
+                            if ( pos0 > -1)
                             {
-                                setTimeout(function()
-                                {
-                                    document.getElementById(room).onclick = function()
-                                    {
-                                        doAVConference(room);
-                                    }
-                                });
+                                //console.log("audio/video invite", body);
+                                var link_room = body.substring(pos0 + 27);
+                                var link_content = '<a id="' + link_room + '" href="#">' + _converse.api.settings.get("webmeet_invitation") + link_room + '</a>';
+                                setupContentHandler(this, link_room, link_content, doAVConference, link_room);
                             }
-                        }
+                            else
 
-                        var pos0 = body.indexOf("/jitsimeet/index.html?room=")
-                        var pos1 = body.indexOf("/ofmeet/");
-                        var pos2 = body.indexOf("/h5p/");
+                            if ( pos1 > -1)
+                            {
+                                //console.log("audio/video invite", body);
+                                var link_room = body.substring(pos1 + 8);
+                                var link_content = '<a id="' + link_room + '" href="#">' + _converse.api.settings.get("webmeet_invitation") + link_room + '</a>';
+                                setupContentHandler(this, link_room, link_content, doAVConference, link_room);
 
-                        var moment_time = moment(this.model.get('time'));
-                        var pretty_time = moment_time.format(_converse.time_format);
-                        var time = moment_time.format();
+                            }
+                            else
 
-                        var msg_content = document.createElement("div");
-                        msg_content.setAttribute("class", "message chat-msg groupchat");
-                        msg_content.setAttribute("data-isodate", time);
-
-                        if ( pos0 > -1)
-                        {
-                            //console.log("audio/video invite", body);
-                            var link_room = body.substring(pos0 + 27);
-                            var link_content = _converse.api.settings.get("webmeet_invitation") + link_room;
-                            setupHandler(this, link_room, link_content);
-                        }
-                        else
-
-                        if ( pos1 > -1)
-                        {
-                            //console.log("audio/video invite", body);
-                            var link_room = body.substring(pos1 + 8);
-                            var link_content = _converse.api.settings.get("webmeet_invitation") + link_room;
-                            setupHandler(this, link_room, link_content);
-
-                        }
-                        else
-
-                        if ( pos2 > -1)
-                        {
-                            //console.log("h5p content", this.model.attributes);
-                            var path = body.substring(pos2 + 11);
-                            var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
-                            var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
-                            setupHandler(this, null, h5p_content);
-                        }
-                        else {
+                            if ( pos2 > -1)
+                            {
+                                //console.log("h5p content", this.model.attributes);
+                                var path = body.substring(pos2 + 11);
+                                var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
+                                var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
+                                setupContentHandler(this, null, h5p_content);
+                            }
+                            else {
+                                this.__super__.renderChatMessage.apply(this, arguments);
+                            }
+                        } else {
                             this.__super__.renderChatMessage.apply(this, arguments);
                         }
+
                     } else {
                         this.__super__.renderChatMessage.apply(this, arguments);
                     }
@@ -351,6 +351,12 @@
                     //console.log("toggleCall", this.model);
 
                     ev.stopPropagation();
+
+                    if ( _converse.view_mode === 'overlayed')
+                    {
+
+                    }
+                    else
 
                     if (_converse.view_mode === 'embedded')
                     {
@@ -372,7 +378,7 @@
                         jitsiDiv.src = url;
                         jitsiDiv.style.display = "inline";
 
-                    } else {
+                    } else  if (bgWindow) {
                         //console.log('callButtonClicked');
                         var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
 
@@ -386,10 +392,12 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    //console.log('webmeet - renderToolbar', this.model);
+                   //console.log('webmeet - renderToolbar', this.model);
 
                     var view = this;
                     var id = this.model.get("box_id");
+                    var jid = this.model.get("jid");
+                    var type = this.model.get("type");
 
                     // hide occupants list by default
                     this.model.set({'hidden_occupants': true});
@@ -440,15 +448,6 @@
 
                     $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after('<li id="place-holder"></li>');
 
-                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-users" title="Audio/Video Conference"></a></li>';
-                    $(this.el).find('#place-holder').after(html);
-
-                    html = '<li id="webmeet-screencast-' + id + '"><a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
-                    $(this.el).find('#place-holder').after(html);
-
-                    html = '<li id="webmeet-scrolldown-' + id + '"><a class="fa fa-angle-double-down" title="Scroll to the bottom"></a></li>';
-                    $(this.el).find('#place-holder').after(html);
-
                     if (_converse.view_mode === 'embedded')
                     {
                         var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
@@ -465,11 +464,29 @@
 
                         // h5p content button
 
-                        if (bgWindow.pade.activeH5p)
+                        if (bgWindow && bgWindow.pade.activeH5p)
                         {
                             var html = '<li id="h5p-' + id + '"><a class="fa fa-h-square" title="Add H5P Content"></a></li>';
                             $(this.el).find('#place-holder').after(html);
                         }
+
+                        if (bgWindow && bgWindow.pade.activeUrl)
+                        {
+                            var html = '<li id="oob-' + id + '"><a class="fa fa-file" title="Add Collaborative Document"></a></li>';
+                            $(this.el).find('#place-holder').after(html);
+                        }
+                    }
+
+                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-users" title="Audio/Video Conference"></a></li>';
+                    $(this.el).find('#place-holder').after(html);
+
+                    html = '<li id="webmeet-scrolldown-' + id + '"><a class="fa fa-angle-double-down" title="Scroll to the bottom"></a></li>';
+                    $(this.el).find('#place-holder').after(html);
+
+                    if (bgWindow)
+                    {
+                        html = '<li id="webmeet-screencast-' + id + '"><a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
+                        $(this.el).find('#place-holder').after(html);
                     }
 
                     setTimeout(function()
@@ -479,15 +496,31 @@
 
                         var h5pButton = document.getElementById("h5p-" + id);
 
-                        if (h5pButton)
+                        if (h5pButton && bgWindow)
                         {
                             h5pButton.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
 
-                                if (confirm(bgWindow.pade.activeH5p + " " + chrome.i18n.getMessage("hp5Confirm")))
+                                if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
                                 {
                                     doH5p(view, id);
+                                }
+
+                            }, false);
+                        }
+
+                        var oobButton = document.getElementById("oob-" + id);
+
+                        if (oobButton && bgWindow)
+                        {
+                            oobButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
+                                {
+                                    doooB(view, id, jid, type);
                                 }
 
                             }, false);
@@ -501,7 +534,7 @@
                             {
                                 evt.stopPropagation();
 
-                                if (confirm(chrome.i18n.getMessage("jitsiConfirm")))
+                                if (confirm(chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm"): "Jitsi Meeting?"))
                                 {
                                     doVideo(view);
                                 }
@@ -580,10 +613,45 @@
         }
     });
 
+    var setupContentHandler = function(chat, avRoom, content, callback, chatId)
+    {
+        var moment_time = moment(chat.model.get('time'));
+        var pretty_time = moment_time.format(_converse.time_format);
+        var time = moment_time.format();
+
+        var msg_content = document.createElement("div");
+        msg_content.setAttribute("class", "message chat-msg groupchat");
+        msg_content.setAttribute("data-isodate", time);
+
+        msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text">' + content + '</span> <div class="chat-msg-media"></div> </div>';
+        chat.replaceElement(msg_content);
+
+        if (avRoom && callback && chatId)
+        {
+            setTimeout(function()
+            {
+                if (document.getElementById(chatId)) document.getElementById(chatId).onclick = function()
+                {
+                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"));
+                }
+            });
+        }
+    }
+
     var doAVConference = function doAVConference(room)
     {
         //console.log("doAVConference", room);
         var url = null;
+
+        if ( _converse.view_mode === 'overlayed')
+        {
+            if (window.pade && window.pade.url)
+            {
+                url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
+                window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room, location.href);
+            }
+        }
+        else
 
         if (_converse.view_mode === 'embedded')
         {
@@ -619,18 +687,18 @@
             }
 
         } else {
-            var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
-            bgWindow.openVideoWindow(room);
+            url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
+            if (bgWindow) bgWindow.openVideoWindow(room);
         }
         return url;
     }
 
     var doVideo = function doVideo(view)
     {
-        //console.log("doVideo", view);
-
         var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
         url = doAVConference(room);
+
+        console.log("doVideo", room, url, view);
 
         if (_converse.api.settings.get("ofswitch") == false)
         {
@@ -645,6 +713,28 @@
         //console.log("doExit", event);
         if (window.parent && window.parent.ofmeet) window.parent.ofmeet.doExit();
         messageCount = 0;
+    }
+
+    var doOobSession = function doOobSession(url, jid, type)
+    {
+        console.log("doOobSession", url, jid, type);
+        bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=false&url=" + url + "&jid=" + jid + "&type=" + type), null, 1024, 800);
+    }
+
+    var doooB = function doooB(view, id, jid, type)
+    {
+        var activeDoc = bgWindow.pade.collabDocs[bgWindow.pade.activeUrl];
+        console.log("doooB", activeDoc, view, id, jid, type);
+
+        _converse.connection.send($msg(
+        {
+            'from': _converse.connection.jid,
+            'to': view.model.get('jid'),
+            'type': view.model.get('message_type'),
+            'id': _converse.connection.getUniqueId()
+        }).c('body').t(bgWindow.pade.activeUrl).up().c('x', {xmlns: 'jabber:x:oob'}).c('url').t(bgWindow.pade.activeUrl).up().c('desc').t(activeDoc));
+
+        bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=true&url=" + bgWindow.pade.activeUrl + "&jid=" + jid + "&type=" + type), null, 1024, 800);
     }
 
     var doH5p = function doH5p(view, id)

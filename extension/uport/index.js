@@ -25,7 +25,7 @@ function updateIdentity()
 
 window.addEventListener("load", function()
 {
-    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " uPort Identity";
+    document.title = chrome.i18n.getMessage('settings') + " uPort Identity";
 
     background = chrome.extension.getBackgroundPage();
 

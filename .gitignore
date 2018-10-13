@@ -1,0 +1,7 @@
+branding/home.zip
+branding/work.zip
+branding/home/
+branding/work/
+
+# Ignore MacOSX files
+.DS_Store

@@ -25,6 +25,7 @@
 
      var _converse = null;
      var ready = false;
+     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
 
     // The following line registers your plugin.
     converse.plugins.add("pade", {
@@ -53,6 +54,8 @@
              */
             _converse = this._converse;
             window._inverse = _converse;
+            window.inverse = converse;
+
             _converse.log("The \"pade\" plugin is being initialized");
 
             /* From the `_converse` object you can get any configuration
@@ -161,6 +164,13 @@
 
                         });
 
+                        if (bgWindow && bgWindow.pade.activeWorkgroup)
+                        {
+                            _converse.connection.send($pres({to: bgWindow.pade.activeWorkgroup.jid}).c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
+                            _converse.connection.send($pres({to: bgWindow.pade.activeWorkgroup.jid}).c("status").t("Online").up().c("priority").t("9"));
+                        }
+
+
                         console.log("pade plugin ready");
                         ready = true;
 
@@ -190,7 +200,7 @@
                     var body = this.model.get('message');
                     var from = this.model.getDisplayName();
 
-                    if (bgWindow.pade.minimised && body)
+                    if (bgWindow && bgWindow.pade.minimised && body)
                     {
                         //console.log("messageAdded", body);
 

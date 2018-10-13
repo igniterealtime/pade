@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: [], vcards: {}, questions: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}}
 var callbacks = {}
 
 // uPort
@@ -171,6 +171,19 @@ window.addEventListener("load", function()
         {
             pade.popup = true;
             pade.port = port;
+        }
+
+        var enableCommunity = getSetting("enableCommunity", false);
+        var enableInverse = getSetting("enableInverse", false);
+        var communitySidecar = getSetting("communitySidecar", false);
+        var embedCommunityChat = getSetting("embedCommunityChat", false);
+        var communityUrl = getSetting("communityUrl", "");
+
+
+        if (port.sender.url.indexOf(communityUrl) > -1 && enableCommunity && embedCommunityChat && !enableInverse)
+        {
+            // converse as sidecar only available if main converse window is not enabled
+            port.postMessage({community: true, url: chrome.runtime.getURL(""), id: chrome.runtime.id, sidecar: communitySidecar, domain: pade.domain, server: pade.server, username: pade.username, password: pade.password});
         }
 
         port.onMessage.addListener(function(message)
@@ -375,6 +388,7 @@ window.addEventListener("load", function()
         {
             pade.chatWindow = null;
             pade.minimised = false;
+            pade.converseChats = {};
         }
 
         if (pade.sip.window && win == pade.sip.window.id)
@@ -524,6 +538,7 @@ function handleContact(contact)
         } else {
             urlMenu = {parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick};
             if (!pade.activeUrl) pade.activeUrl = contact.url; // default
+            pade.collabDocs[contact.url] = contact.name;
         }
 
         chrome.contextMenus.create(urlMenu);
@@ -532,7 +547,7 @@ function handleContact(contact)
 
     if (contact.type == "room" && getSetting("enableInverse", false) == false)
     {
-        if (contact.id == 0)
+        if (!pade.activeContact)
         {
             setActiveContact(contact);
         }
@@ -545,9 +560,9 @@ function handleContact(contact)
 
     if (contact.type == "conversation" && getSetting("enableInverse", false) == false)
     {
-        if (contact.id == 0)
+        if (!pade.activeContact)
         {
-            if (!pade.activeContact) setActiveContact(contact);
+            setActiveContact(contact);
         }
 
         if (showUser(contact))
@@ -561,7 +576,7 @@ function handleContact(contact)
 
     if (contact.type == "workgroup")
     {
-        if (contact.id == 0)
+        if (!pade.activeWorkgroup)
         {
             chrome.contextMenus.create({id: "pade_workgroups", title: "Workgroups", contexts: ["browser_action"]});
             setActiveWorkgroup(contact);
@@ -583,13 +598,13 @@ function setActiveWorkgroup(contact)
 {
     if (pade.activeWorkgroup)
     {
-        pade.connection.send($pres({to: pade.activeWorkgroup.jid, type: "unavailable"}).c("status").t("Online").up().c("priority").t("1"));
+        //pade.connection.send($pres({to: pade.activeWorkgroup.jid, type: "unavailable"}).c("status").t("Online").up().c("priority").t("1"));
     }
 
     pade.activeWorkgroup = contact;
 
     pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
-    pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("status").t("Online").up().c("priority").t("1"));
+    pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("status").t("Online").up().c("priority").t("9"));
     pade.connection.sendIQ($iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"}));
 
 }
@@ -688,7 +703,7 @@ function startTone(name)
             pade.ringtone.volume = 1;
         }
 
-        pade.ringtone.src = chrome.extension.getURL("ringtones/" + name + ".mp3");
+        pade.ringtone.src = chrome.runtime.getURL("ringtones/" + name + ".mp3");
         pade.ringtone.play();
     }
 }
@@ -707,7 +722,7 @@ function notifyText(message, context, iconUrl, buttons, callback, notifyId)
     var opt = {
       type: "basic",
       title: chrome.i18n.getMessage('manifest_extensionName'),
-      iconUrl: iconUrl ? iconUrl : chrome.extension.getURL("image.png"),
+      iconUrl: iconUrl ? iconUrl : chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -727,7 +742,7 @@ function notifyImage(message, context, imageUrl, buttons, callback)
     var opt = {
       type: "image",
       title: chrome.i18n.getMessage('manifest_extensionName'),
-      iconUrl: chrome.extension.getURL("image.png"),
+      iconUrl: chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -747,7 +762,7 @@ function notifyProgress(message, context, progress, buttons, callback)
     var opt = {
       type: "progress",
       title: chrome.i18n.getMessage('manifest_extensionName'),
-      iconUrl: chrome.extension.getURL("image.png"),
+      iconUrl: chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -768,7 +783,7 @@ function notifyList(message, context, items, buttons, callback)
     var opt = {
       type: "list",
       title: chrome.i18n.getMessage('manifest_extensionName'),
-      iconUrl: chrome.extension.getURL("image.png"),
+      iconUrl: chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
@@ -838,7 +853,7 @@ function closeApcWindow()
 
 function openApcWindow(state)
 {
-    var data = {url: chrome.extension.getURL("apc.html"), type: "popup", focused: true};
+    var data = {url: chrome.runtime.getURL("apc.html"), type: "popup", focused: true};
 
     if (state == "minimized")
     {
@@ -946,7 +961,7 @@ function openChatsWindow(url, from)
 {
     closeChatsWindow(from)
 
-    var data = {url: chrome.extension.getURL(url), type: "popup", focused: true};
+    var data = {url: chrome.runtime.getURL(url), type: "popup", focused: true};
 
     chrome.windows.create(data, function (win)
     {
@@ -968,7 +983,7 @@ function openPhoneWindow(focus, state)
 {
     console.log("openPhoneWindow", focus, state);
 
-    var data = {url: chrome.extension.getURL("phone/index-ext.html"), type: "popup", focused: focus};
+    var data = {url: chrome.runtime.getURL("phone/index-ext.html"), type: "popup", focused: focus};
 
     if (state == "minimized")
     {
@@ -995,12 +1010,13 @@ function closeChatWindow()
     {
         chrome.windows.remove(pade.chatWindow.id);
         pade.chatWindow = null;
+        pade.converseChats = {};
     }
 }
 
 function openChatWindow(url, update, state)
 {
-    var data = {url: chrome.extension.getURL(url), type: "popup", focused: true};
+    var data = {url: chrome.runtime.getURL(url), type: "popup", focused: true};
     var width = 1300;
 
     if (url.indexOf("#") > -1) width = 761;    // width of mobile view_mode
@@ -1038,7 +1054,7 @@ function closeVideoWindow()
 
 function openVideoWindow(room)
 {
-    var url = chrome.extension.getURL("jitsi-meet/chrome.index.html");
+    var url = chrome.runtime.getURL("jitsi-meet/chrome.index.html");
     if (room) url = url + "?room=" + room;
     openVideoWindowUrl(url);
 }
@@ -1099,7 +1115,7 @@ function openAVCaptureWindow()
 {
     if (!pade.avCaptureWindow)
     {
-        var url = chrome.extension.getURL("webcam/index.html");
+        var url = chrome.runtime.getURL("webcam/index.html");
 
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
@@ -1173,7 +1189,7 @@ function doExtensionPage(url)
 {
     chrome.tabs.getAllInWindow(null, function(tabs)
     {
-        var setupUrl = chrome.extension.getURL(url);
+        var setupUrl = chrome.runtime.getURL(url);
 
         if (tabs)
         {
@@ -1281,6 +1297,15 @@ function addHandlers()
 
         console.log("message handler", from, to, message)
 
+        var encrypted = false;
+
+        $(message).find('body').each(function ()
+        {
+            encrypted = true;
+        });
+
+        if (encrypted) return true; // ignore
+
         $(message).find('body').each(function ()
         {
             var body = $(this).text();
@@ -1313,10 +1338,12 @@ function addHandlers()
 
             } else {    // if inverse window open, change chatview
 
-                if (pade.chatWindow)
+                if (pade.chatWindow && !pade.converseChats[offerer])
                 {
-                    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+                    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
                     {
+                        pade.converseChats[offerer] = from;
+
                         if (buttonIndex == 0)   // accept
                         {
                             chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
@@ -1629,7 +1656,7 @@ function processInvitation(title, label, room, autoaccept, id)
     {
         startTone("Diggztone_Vibe");
 
-        notifyText(title, label, null, [{title: "Accept " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+        notifyText(title, label, null, [{title: "Accept " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
         {
             //console.log("handleAction callback", notificationId, buttonIndex);
 
@@ -1658,7 +1685,7 @@ function processInvitation(title, label, room, autoaccept, id)
 
 function processChatNotification(from, body)
 {
-    notifyText(body, from, null, [{title: "View", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+    notifyText(body, from, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // accept
         {
@@ -1709,7 +1736,7 @@ function acceptRejectOffer(properties)
 
         startTone("Diggztone_DigitalSanity");
 
-        notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.extension.getURL("success-16x16.gif")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.extension.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+        notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
         {
             //console.log("handleAction callback", notificationId, buttonIndex);
 
@@ -1854,7 +1881,7 @@ function joinAudioCall(title, label, room)
     etherlynk.join(room);
     sendToJabra("offhook");
 
-    notifyText(title, label, null, [{title: "Clear Conversation?", iconUrl: chrome.extension.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
+    notifyText(title, label, null, [{title: "Clear Conversation?", iconUrl: chrome.runtime.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // terminate
         {

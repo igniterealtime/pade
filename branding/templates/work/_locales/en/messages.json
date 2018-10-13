@@ -1,14 +1,14 @@
 {
     "browserAction_title": {
-        "message": "Pade",
+        "message": "Pade@Work",
         "description": "A pop-up title when user hovers on Browser Action button (browserAction_title)"
     },
     "manifest_extensionName": {
-        "message": "Pade - Unified Communications",
+        "message": "Pade - Unified Communications for Business",
         "description": "Extension name in the Manifest file (manifest_extensionName)"
     },
     "manifest_shortExtensionName": {
-        "message": "Pade",
+        "message": "Pade@Work",
         "description": "Short extension name in the Manifest file (manifest_shortExtensionName)"
     },
     "manifest_extensionDescription": {
