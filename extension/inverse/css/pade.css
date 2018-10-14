@@ -45,3 +45,16 @@
 .chat-msg-content {
     width: 100%;
 }
+
+/* logo branding */
+
+.icon-conversejs {
+    padding-right: 2.0em;
+    background-size: 64px;   
+    background-image: url(../../image.png);
+    background-repeat: no-repeat, no-repeat;  
+}
+
+.icon-conversejs:before {
+  content: "";
+ }

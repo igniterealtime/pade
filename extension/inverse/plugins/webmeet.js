@@ -333,14 +333,14 @@
                                 setupContentHandler(this, null, h5p_content);
                             }
                             else {
-                                this.__super__.renderChatMessage.apply(this, arguments);
+                                renderSuperChatMessage(this, arguments);
                             }
                         } else {
-                            this.__super__.renderChatMessage.apply(this, arguments);
+                            renderSuperChatMessage(this, arguments);
                         }
 
                     } else {
-                        this.__super__.renderChatMessage.apply(this, arguments);
+                        renderSuperChatMessage(this, arguments);
                     }
                 }
             },
@@ -612,6 +612,11 @@
             }
         }
     });
+
+    var renderSuperChatMessage = function(chat, arguments)
+    {
+        chat.__super__.renderChatMessage.apply(chat, arguments);
+    }
 
     var setupContentHandler = function(chat, avRoom, content, callback, chatId)
     {

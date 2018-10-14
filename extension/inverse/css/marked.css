@@ -1,0 +1,56 @@
+ 
+.chat-msg__text h1 { 
+    font-size: 2em !important;    
+    font-weight: bold !important;
+}
+.chat-msg__text h2 {
+    font-size: 1.5em !important;   
+    font-weight: bold !important;
+}
+.chat-msg__text h3 { 
+    font-size: 1.17em !important;
+    font-weight: bold !important;
+}
+.chat-msg__text h4 { 
+    font-size: 1.00em !important;
+    font-weight: bold !important;
+}
+.chat-msg__text h5 { 
+    font-size: 0.83em !important;
+    font-weight: bold !important;
+}
+.chat-msg__text h6 { 
+    font-size: 0.67em !important;
+    font-weight: bold !important;
+}
+.chat-msg__text pre {
+    background-color: #F5F5F5 !important;
+    padding-left: 40px !important;    
+}
+.chat-msg__text blockquote {
+  margin-left: 50px !important;
+  padding-left: 15px !important;
+  background-color: #F5F5F5 !important;  
+  border-left: 3px solid #ccc !important;
+} 
+.chat-msg__text ul {
+    list-style-type: disc !important;
+}
+.chat-msg__text ol {
+    list-style-type: decimal !important;
+}
+.chat-msg__text li {
+    display: list-item !important;
+}
+.chat-msg__text ul, .chat-msg__text ol, .chat-msg__text dl {
+    display: block !important;
+    margin-bottom: 1em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 40px !important;
+}
+.chat-msg__text p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important; 
+  padding: 0px !important;  
+}

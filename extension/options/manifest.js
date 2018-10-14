@@ -616,6 +616,13 @@ this.manifest = {
         {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Converse"),
+            "name": "useMarkdown",
+            "type": "checkbox",
+            "label": i18n.get("Enable Markdown formatting in chat")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",
             "label": i18n.get("Notify all room messages")
