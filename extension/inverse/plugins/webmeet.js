@@ -409,7 +409,7 @@
                         pasteInputs[id].pastableTextarea();
 
                         pasteInputs[id].on('pasteImage', function(ev, data){
-                            console.log("pade - pasteImage", data);
+                            //console.log("pade - pasteImage", data);
                             var file = new File([data.blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
                             view.model.sendFiles([file]);
 
@@ -417,7 +417,7 @@
                             console.error('pasteImageError', data);
 
                         }).on('pasteText', function(ev, data){
-                            console.log("pasteText", data);
+                            //console.log("pasteText", data);
 
                             if (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0)
                             {
@@ -427,8 +427,14 @@
                         }).on('pasteTextRich', function(ev, data){
                             //console.log("pasteTextRich", data);
 
+                            if (bgWindow.getSetting("useMarkdown", false))
+                                pasteInputs[id][0].value = clipboard2Markdown.convert(data.text);
+
                         }).on('pasteTextHtml', function(ev, data){
                             //console.log("pasteTextHtml", data);
+
+                            if (bgWindow.getSetting("useMarkdown", false))
+                                pasteInputs[id][0].value = clipboard2Markdown.convert(data.text);
 
                         }).on('focus', function(){
                             //console.log("paste - focus", id);
