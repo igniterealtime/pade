@@ -17,6 +17,7 @@ window.addEventListener("unload", function ()
 {
     console.log("pade unloading applications");
 
+    closeCredsWindow();
     closeChatWindow();
     closeVideoWindow();
     closePhoneWindow();
@@ -177,13 +178,14 @@ window.addEventListener("load", function()
         var enableInverse = getSetting("enableInverse", false);
         var communitySidecar = getSetting("communitySidecar", false);
         var embedCommunityChat = getSetting("embedCommunityChat", false);
+        var disableChatButton = getSetting("disableChatButton", false);
         var communityUrl = getSetting("communityUrl", "");
 
 
         if (port.sender.url.indexOf(communityUrl) > -1 && enableCommunity && embedCommunityChat && !enableInverse)
         {
             // converse as sidecar only available if main converse window is not enabled
-            port.postMessage({community: true, url: chrome.runtime.getURL(""), id: chrome.runtime.id, sidecar: communitySidecar, domain: pade.domain, server: pade.server, username: pade.username, password: pade.password});
+            port.postMessage({community: true, url: chrome.runtime.getURL(""), id: chrome.runtime.id, sidecar: communitySidecar, domain: pade.domain, server: pade.server, username: pade.username, password: pade.password, disableButton: disableChatButton});
         }
 
         port.onMessage.addListener(function(message)
@@ -191,6 +193,30 @@ window.addEventListener("load", function()
             if (message.action == "pade.invite.contact")
             {
                 inviteToConference(pade.activeContact.jid, pade.activeContact.room);
+            }
+            else
+
+            if (message.action == 'pade.management.credential.api')
+            {
+                console.log("pade.management.credential.api", message);
+
+                if (message.creds)
+                {
+                    setSetting("username",  message.creds.username);
+                    setSetting("password", message.creds.secret);
+
+                    pade.username = message.creds.username;
+                    pade.password = message.creds.secret;
+
+                    var token = pade.username + ":" + pade.password;
+
+                    setTimeout(function() { setupSasl(token); })
+                }
+                else {
+                    console.error("pade.management.credential.api", message);
+                    doExtensionPage("options/index.html");
+                    closeCredsWindow();
+                }
             }
             else
 
@@ -2638,6 +2664,7 @@ function doPadeConnect()
                 enableRemoteControl();
 
                 chrome.browserAction.setBadgeText({ text: "" });
+                closeCredsWindow();
 
             }, 3000);
         }
@@ -2653,6 +2680,7 @@ function doPadeConnect()
         if (status === Strophe.Status.AUTHFAIL)
         {
            doExtensionPage("options/index.html");
+           closeCredsWindow();
         }
 
     });
@@ -2692,41 +2720,8 @@ function doSetupStrophePlugins()
     }
     else
 
-    if (getSetting("useTotp", false) || getSetting("useWinSSO", false))
+    if (getSetting("useTotp", false) || getSetting("useWinSSO", false)  || getSetting("useCredsMgrApi", false))
     {
-        console.log("useTotp or useWinSSO enabled");
-
-        var setupSasl = function(token)
-        {
-            console.log("setupSasl", token);
-
-            Strophe.addConnectionPlugin('ofchatsasl',
-            {
-                init: function (connection)
-                {
-                    console.log("strophe plugin: ofchatsasl - init", token);
-
-                    Strophe.SASLOFChat = function () { };
-                    Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
-
-                    Strophe.SASLOFChat.test = function (connection)
-                    {
-                        return getSetting("server", null) !== null;
-                    };
-
-                    Strophe.SASLOFChat.prototype.onChallenge = function (connection)
-                    {
-                        return token;
-                    };
-
-                    connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
-                    console.log("strophe plugin: ofchatsasl enabled");
-                }
-            });
-
-            doPadeConnect();
-        }
-
         if (getSetting("useWinSSO", false))
         {
             var server = getSetting("server", null);
@@ -2742,6 +2737,9 @@ function doSetupStrophePlugins()
                         var userPass = accessToken.split(":");
                         setSetting("username", userPass[0]);
                         setSetting("password", userPass[1]);
+
+                        pade.username = userPass[0];
+                        pade.password = userPass[1];
                     }
 
                     setTimeout(function() { setupSasl(accessToken); })
@@ -2762,6 +2760,63 @@ function doSetupStrophePlugins()
 
             setTimeout(function() { setupSasl(token); })
         }
+
+        else if(getSetting("useCredsMgrApi", false))
+        {
+            var screenWidth = screen.availWidth;
+            var screenHeight = screen.availHeight;
+            var width = 512;
+            var height = 384;
+
+            var server = getSetting("server", null);
+            var url = "https://" + server + "/apps/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
+
+            chrome.windows.create({url: url, type: "popup"}, function (win)
+            {
+                pade.credWin = win;
+                chrome.windows.update(win.id, {drawAttention: true, width: width, height: height, left: Math.round((screenWidth-width)/2), top: Math.round((screenHeight-height)/2)});
+            });
+        }
     }
     else doPadeConnect();
+}
+
+
+function closeCredsWindow()
+{
+    if (pade.credWin)
+    {
+        chrome.windows.remove(pade.credWin.id);
+        pade.credWin = null;
+    }
+}
+function setupSasl(token)
+{
+    console.log("setupSasl", token);
+
+    Strophe.addConnectionPlugin('ofchatsasl',
+    {
+        init: function (connection)
+        {
+            console.log("strophe plugin: ofchatsasl - init", token);
+
+            Strophe.SASLOFChat = function () { };
+            Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+
+            Strophe.SASLOFChat.test = function (connection)
+            {
+                return getSetting("server", null) !== null;
+            };
+
+            Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+            {
+                return token;
+            };
+
+            connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
+            console.log("strophe plugin: ofchatsasl enabled");
+        }
+    });
+
+    doPadeConnect();
 }

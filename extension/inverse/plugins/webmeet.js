@@ -402,7 +402,7 @@
                     // hide occupants list by default
                     this.model.set({'hidden_occupants': true});
 
-                    if (bgWindow && getSetting("enablePasting", true))
+                    if (bgWindow && bgWindow.getSetting("enablePasting", true))
                     {
                         // paste
                         pasteInputs[id] = $(this.el).find('.chat-textarea');

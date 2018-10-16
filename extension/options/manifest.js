@@ -34,6 +34,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("connection"),
+            "group": i18n.get("connection"),
+            "name": "useCredsMgrApi",
+            "type": "checkbox",
+            "label": i18n.get("Use Credential Management API")
+        },
+        {
+            "tab": i18n.get("connection"),
             "group": i18n.get("uPort"),
             "name": "useUport",
             "type": "checkbox",
@@ -518,6 +525,13 @@ this.manifest = {
             "name": "communitySidecar",
             "type": "checkbox",
             "label": i18n.get("Use a sidecar panel for Converse")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Community"),
+            "name": "disableChatButton",
+            "type": "checkbox",
+            "label": i18n.get("Disable chat button for Converse")
         },
 /*
         {

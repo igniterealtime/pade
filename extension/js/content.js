@@ -14,16 +14,14 @@ if (channel)
             if (message.sidecar)
             {
                 var script2 = document.createElement('script');
-                script2.innerHTML = "((window.gitter = {}).chat = {}).options = {room: 'dummy'}; window.pade = " + JSON.stringify(message) + ";"
+                script2.async = false;
+                script2.innerHTML = "((window.gitter = {}).chat = {}).options = {room: 'dummy', activationElement: !" + message.disableButton + "}; window.pade = " + JSON.stringify(message) + ";"
                 document.body.appendChild(script2);
 
-                setTimeout(function()
-                {
-                    var script1 = document.createElement('script');
-                    script1.src = message.url + "sidecar/dist/sidecar.js";
-                    document.body.appendChild(script1);
-
-                }, 1000);
+                var script1 = document.createElement('script');
+                script1.async = false;
+                script1.src = message.url + "sidecar/dist/sidecar.js";
+                document.body.appendChild(script1);
             }
             else {
                 var script2 = document.createElement('script');
@@ -74,9 +72,11 @@ if (channel)
     });
 
     window.addEventListener('message', function (event) {
+        //console.log('ofmeet extension window message', event);
+
         if (event.source != window)
             return;
-        if (!event.data || (event.data.type != 'ofmeetGetScreen' && event.data.type != 'ofmeetCancelGetScreen' && event.data.type != 'ofmeetSetRequestorOn' && event.data.type != 'ofmeetSetRequestorOff' && event.data.type != 'ofmeetSetConfig' && event.data.type != 'ofmeetOpenPopup'  && event.data.type != 'ofmeetDrawAttention' && event.data.type != 'ofmeetPaste'))
+        if (!event.data || (event.data.action != 'pade.management.credential.api' && event.data.type != 'ofmeetGetScreen' && event.data.type != 'ofmeetCancelGetScreen' && event.data.type != 'ofmeetSetRequestorOn' && event.data.type != 'ofmeetSetRequestorOff' && event.data.type != 'ofmeetSetConfig' && event.data.type != 'ofmeetOpenPopup'  && event.data.type != 'ofmeetDrawAttention' && event.data.type != 'ofmeetPaste'))
             return;
         channel.postMessage(event.data);
     });

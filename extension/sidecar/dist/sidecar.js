@@ -1039,7 +1039,7 @@ var sidecar = function(t) {
                 var n = v(t, r);
                 if (n.room) {
                     var o = e.createElement("iframe");
-                    o.setAttribute("frameborder", "0"), o.src = "" + t.host, r.appendChild(o)
+                    o.setAttribute("frameborder", "0"), o.src = "" + t.host, r.appendChild(o), o.id = "pade-converse"
                 } else console.error("Gitter Sidecar: No room specified for targetElement", r)
             }), e
         },

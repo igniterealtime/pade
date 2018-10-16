@@ -1,27 +1,32 @@
- 
 .chat-msg__text h1 { 
     font-size: 2em !important;    
     font-weight: bold !important;
+    margin-top: 0.67em;
 }
 .chat-msg__text h2 {
     font-size: 1.5em !important;   
     font-weight: bold !important;
+    margin-top: 0.83em !important;   
 }
 .chat-msg__text h3 { 
     font-size: 1.17em !important;
     font-weight: bold !important;
+    margin-top: 1em !important;  
 }
 .chat-msg__text h4 { 
     font-size: 1.00em !important;
     font-weight: bold !important;
+    margin-top: 1.33em !important; 
 }
 .chat-msg__text h5 { 
     font-size: 0.83em !important;
     font-weight: bold !important;
+    margin-top: 1.67em !important;  
 }
 .chat-msg__text h6 { 
     font-size: 0.67em !important;
     font-weight: bold !important;
+    margin-top: 2.33em !important;   
 }
 .chat-msg__text pre {
     background-color: #F5F5F5 !important;

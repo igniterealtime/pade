@@ -1,5 +1,17 @@
 window.addEventListener("load", function()
 {
+    function getUniqueID()
+    {
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    function urlParam(name)
+    {
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (!results) { return undefined; }
+        return unescape(results[1] || undefined);
+    };
+
     var url = urlParam("url");
     var domain = getSetting("domain", null);
 
@@ -19,7 +31,7 @@ window.addEventListener("load", function()
 
     if (!window.pade) document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse";
 
-    if (getSetting("useTotp", false) || getSetting("useWinSSO", false))
+    if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false))
     {
         converse.env.Strophe.addConnectionPlugin('ofchatsasl',
         {
@@ -136,54 +148,17 @@ window.addEventListener("load", function()
     }
 });
 
-function getUniqueID()
+window.addEventListener('message', function (event)
 {
-    return Math.random().toString(36).substr(2, 9);
-}
+    console.log("inverse addListener message", event.data);
 
-function urlParam(name)
-{
-    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (!results) { return undefined; }
-    return unescape(results[1] || undefined);
-};
-
-function getSetting(name, defaultValue)
-{
-    var localStorage = window.localStorage
-    //console.log("getSetting", name, defaultValue, localStorage["store.settings." + name]);
-
-    if (window.pade)
+    if (event.data && event.data.action)
     {
-        if (name == "username") return window.pade.username;
-        if (name == "password") return window.pade.password;
-        if (name == "domain") return window.pade.domain;
-        if (name == "server") return window.pade.server;
+        if (event.data.action == "pade.action.open.chat") openChat(event.data.from, event.data.name);
+        if (event.data.action == "pade.action.open.chat.panel") openChatPanel(event.data.from);
+        if (event.data.action == "pade.action.open.group.chat") openGroupChat(event.data.jid, event.data.label, event.data.nick, event.data.properties);
     }
-
-    var value = defaultValue;
-
-    if (localStorage["store.settings." + name])
-    {
-        value = JSON.parse(localStorage["store.settings." + name]);
-
-        if (name == "password") value = getPassword(value, localStorage);
-
-    } else {
-        if (defaultValue) localStorage["store.settings." + name] = JSON.stringify(defaultValue);
-    }
-
-    return value;
-}
-
-function getPassword(password, localStorage)
-{
-    if (!password || password == "") return null;
-    if (password.startsWith("token-")) return atob(password.substring(6));
-
-    localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
-    return password;
-}
+});
 
 function openChat(from, name)
 {
@@ -231,4 +206,40 @@ function openGroupChat(jid, label, nick, properties)
             }, 1000);
         }
     }
+}
+function getSetting(name, defaultValue)
+{
+    var localStorage = window.localStorage
+    //console.log("getSetting", name, defaultValue, localStorage["store.settings." + name]);
+
+    if (window.pade)
+    {
+        if (name == "username") return window.pade.username;
+        if (name == "password") return window.pade.password;
+        if (name == "domain") return window.pade.domain;
+        if (name == "server") return window.pade.server;
+    }
+
+    var value = defaultValue;
+
+    if (localStorage["store.settings." + name])
+    {
+        value = JSON.parse(localStorage["store.settings." + name]);
+
+        if (name == "password") value = getPassword(value, localStorage);
+
+    } else {
+        if (defaultValue) localStorage["store.settings." + name] = JSON.stringify(defaultValue);
+    }
+
+    return value;
+}
+
+function getPassword(password, localStorage)
+{
+    if (!password || password == "") return null;
+    if (password.startsWith("token-")) return atob(password.substring(6));
+
+    localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
+    return password;
 }

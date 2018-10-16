@@ -1,22 +1,22 @@
-var uportWin = null;
+var uportWin = null, credWin = null;
+
+window.addEventListener('message', function (event)
+{
+    console.log("addListener message", event.data);
+});
 
 window.addEventListener("unload", function ()
 {
-    if (uportWin)
-    {
-        chrome.windows.remove(uportWin.id);
-        uportWin = null;
-    }
+    if (uportWin) chrome.windows.remove(uportWin.id);
+    if (credWin) chrome.windows.remove(credWin.id);
 });
 
 window.addEvent("domready", function () {
 
     chrome.windows.onRemoved.addListener(function(win)
     {
-        if (uportWin && win == uportWin.id)
-        {
-            uportWin = null;
-        }
+        if (uportWin && win == uportWin.id) uportWin = null;
+        if (credWin && win == credWin.id) credWin = null;
     });
 
     document.getElementById("settings-label").innerHTML = chrome.i18n.getMessage('settings')
@@ -51,6 +51,7 @@ window.addEvent("domready", function () {
 
         settings.manifest.connect.addEvent("action", function ()
         {
+            settings.manifest.status.element.innerHTML = 'Please wait....';
             validateCredentials()
         });
 
@@ -322,6 +323,11 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.useCredsMgrApi.addEvent("action", function ()
+        {
+            background.reloadApp();
+        });
+
         settings.manifest.qrcode.addEvent("action", function ()
         {
             if (window.localStorage["store.settings.server"])
@@ -331,7 +337,7 @@ window.addEvent("domready", function () {
 
                 chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
                 {
-                    chrome.windows.update(win.id, {drawAttention: true, width: 380, height: 270});
+                    chrome.windows.update(win.id, {drawAttention: true, width: 400, height: 270});
                 });
             }
         });
@@ -432,7 +438,7 @@ window.addEvent("domready", function () {
 
                         if (status === 5)
                         {
-                            background.reloadApp();
+                            setTimeout(function() { background.reloadApp(); }, 1000);
                         }
                         else
 

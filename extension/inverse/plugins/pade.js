@@ -206,15 +206,15 @@
 
                         var text = this.model.get('type') ? this.model.get('type') + " : " + body : body;
 
-                        if (getSetting("notifyAllRoomMessages", false))
+                        if (bgWindow.getSetting("notifyAllRoomMessages", false))
                         {
                             // TODO move to background page
                             if (ready) notifyMe(text, from, from);
                         }
 
-                        if (getSetting("notifyOnInterests", false))
+                        if (bgWindow.getSetting("notifyOnInterests", false))
                         {
-                            var interestList = (getSetting("username", "") + "," + getSetting("interestList", "")).split(",");
+                            var interestList = (bgWindow.getSetting("username", "") + "," + bgWindow.getSetting("interestList", "")).split(",");
                             var foundInterest = false;
 
                             for (var i=0; i<interestList.length; i++)
