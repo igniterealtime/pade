@@ -2,30 +2,33 @@ window.addEventListener("load", function()
 {
     console.log(chrome.i18n.getMessage('manifest_shortExtensionName') + " is trying to get permissions to use your video/audio devices");
 
-    // webrtc permission for mic and webcam
+    // webrtc permission for mic and webcam for first time log-in
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(function(stream)
+    if (!window.localStorage["store.settings.server"])
     {
-        console.log(chrome.i18n.getMessage('manifest_shortExtensionName') + " now has permissions to use your video/audio devices");
-
-        setTimeout(function()
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(function(stream)
         {
-            stream.getAudioTracks().forEach(function (track)
+            console.log(chrome.i18n.getMessage('manifest_shortExtensionName') + " now has permissions to use your video/audio devices");
+
+            setTimeout(function()
             {
-                console.log("stopping track")
-                track.stop();
-            });
+                stream.getAudioTracks().forEach(function (track)
+                {
+                    console.log("stopping track")
+                    track.stop();
+                });
 
-        }, 30000);
-    })
-    .catch(function(err) {
-        alert("To experience the full functionality of " + chrome.i18n.getMessage('manifest_shortExtensionName') + ", please connect audio and video devices.");
-        console.error("Error trying to get the stream:: " + err.message);
-    });
+            }, 30000);
+        })
+        .catch(function(err) {
+            alert("To experience the full functionality of " + chrome.i18n.getMessage('manifest_shortExtensionName') + ", please connect audio and video devices.");
+            console.error("Error trying to get the stream:: " + err.message);
+        });
 
-    // register MIDI permissions for APC
+        // register MIDI permissions for APC
 
-    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+        navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+    }
 
     function onMIDISuccess(midiAccess) {
         console.log('MIDI Access Object', midiAccess);

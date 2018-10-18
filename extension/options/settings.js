@@ -91,15 +91,15 @@ window.addEvent("domready", function () {
         {
             background.findUsers(settings.manifest.searchString.element.value, function(users)
             {
-                //console.log("findUsers", users);
+                console.log("findUsers", users);
 
-                var html = "<table><tr><th>Name</th><th>Id</th></tr>";
+                var html = "<table><tr><th>Name</th><th>ID</th><th>Email</th><th>Invite</th></tr>";
                 var count = 0;
 
                 for (var i=0; i<users.length; i++)
                 {
                     var user = users[i];
-                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td></tr>";
+                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><input id='check-" + user.jid + "' type='checkbox'></td></tr>";
                 }
                 html = html + "</table>"
 
@@ -131,8 +131,45 @@ window.addEvent("domready", function () {
                             background.inviteToConference(user.id, user.name);
                         }
                     });
+
+                    document.getElementById("check-" + users[i].jid).addEventListener("click", function(e)
+                    {
+                        e.stopPropagation();
+                        var invitation = e.target;
+
+                        console.log("inviteUser - click", invitation.id, invitation.checked);
+
+                        var inviteList = settings.manifest.invitationList.element.value.split("\n");
+                        var invitee = invitation.id.substring(6);
+
+                        if (invitation.checked)
+                        {
+                            if (inviteList.indexOf(invitee) == -1) inviteList.push(invitee);
+
+                        } else {
+                            var index = inviteList.indexOf(invitee);
+                            if (index > -1) inviteList.splice(index, 1);
+                        }
+
+                        settings.manifest.invitationList.element.value = inviteList.join("\n").trim();
+                    });
                 }
             });
+        });
+
+        settings.manifest.inviteToMeeting.addEvent("action", function ()
+        {
+            var inviteList = settings.manifest.invitationList.element.value.split("\n");
+            var room = "pade-" + Math.random().toString(36).substr(2,9);
+
+            console.log("inviteToMeeting", inviteList, room);
+
+            background.acceptCall(null, null, room);
+
+            for (var i=0; i<inviteList.length; i++)
+            {
+                background.inviteToConference(inviteList[i], room);
+            }
         });
 
         settings.manifest.popupWindow.addEvent("action", function ()
@@ -502,6 +539,7 @@ function doDefaults()
     setSetting("autoReconnect", true);
     setSetting("messageCarbons", true);
     setSetting("converseAutoStart", true);
+    setSetting("showGroupChatStatusMessages", true);
 
     // web apps
     setSetting("webApps", "web.skype.com, web.whatsapp.com");
@@ -680,6 +718,18 @@ function avatarError(error)
     settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>picture/avatar cannot be uploaded and saved</b>';
 }
 
+function highlightSearch()
+{
+    var text = settings.manifest.convSearchString.element.value;
+    var query = new RegExp("(\\b" + text + "\\b)", "gim");
+    var e = document.getElementById("searchtext").innerHTML;
+    var enew = e.replace(/(<span>|<\/span>)/igm, "");
+    document.getElementById("searchtext").innerHTML = enew;
+    var newe = enew.replace(query, "<span>$1</span>");
+    document.getElementById("searchtext").innerHTML = newe;
+
+}
+
 function processConvSearch(conversations, settings, background)
 {
     if (!conversations || conversations.length == 0) return "No conversations found";
@@ -714,8 +764,14 @@ function processConvSearch(conversations, settings, background)
         html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";
     }
 
-    html = html + "</table>";
-    settings.manifest.convSearchResults.element.innerHTML = "<p/><p/>" + html;
+    html = "<p/><p/>" + html + "</table>";
+
+    var text = settings.manifest.convSearchString.element.value;
+    var query = new RegExp("(\\b" + text + "\\b)", "gim");
+    var enew = html.replace(/(<span>|<\/span>)/igm, "");
+    var newe = enew.replace(query, "<span style='background-color:#FF9;color:#555;'>$1</span>");
+
+    settings.manifest.convSearchResults.element.innerHTML = newe;
 
     for (var i=0; i<conversations.length; i++)
     {

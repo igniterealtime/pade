@@ -100,12 +100,12 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["webmeet", "pade"];
+        var whitelistedPlugins = ["search", "options", "webmeet", "pade"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
-        if (window.location.hash.length > 1)    // single conversation mode
+        if (getSetting("useMarkdown", false))
         {
-            whitelistedPlugins = ["webmeet"];
+            whitelistedPlugins.push("markdown");
         }
 
         var config =
@@ -150,7 +150,7 @@ window.addEventListener("load", function()
 
 window.addEventListener('message', function (event)
 {
-    console.log("inverse addListener message", event.data);
+    //console.log("inverse addListener message", event.data);
 
     if (event.data && event.data.action)
     {
@@ -182,14 +182,13 @@ function openChatPanel(from)
 
 function openGroupChat(jid, label, nick, properties)
 {
+    console.log("openGroupChat", jid, label, nick, properties);
+
     if (_inverse)
     {
-        _inverse.bookmarks.create({
-            'jid': jid,
-            'name': properties.name || properties.email || label,
-            'autojoin': true,
-            'nick': nick
-        });
+        if (!properties) properties = {name: label, nick: nick};
+
+        _inverse.api.rooms.open(jid, properties);
 
         if (properties.question)
         {

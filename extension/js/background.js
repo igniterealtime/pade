@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], chatsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}}
 var callbacks = {}
 
 // uPort
@@ -41,17 +41,6 @@ window.addEventListener("unload", function ()
         {
             console.log("pade unloading web app " + webApps[i]);
             closeWebAppsWindow(webApps[i]);
-        }
-    }
-
-    var chats = Object.getOwnPropertyNames(pade.chatsWindow);
-
-    for (var y = 0; y<chats.length; y++)
-    {
-        if (pade.chatsWindow[chats[y]])
-        {
-            console.log("pade unloading chat window " + chats[y]);
-            closeChatsWindow(chats[y]);
         }
     }
 
@@ -491,16 +480,6 @@ window.addEventListener("load", function()
             }
         }
 
-        var chats = Object.getOwnPropertyNames(pade.chatsWindow);
-
-        for (var y = 0; y<chats.length; y++)
-        {
-            if (pade.chatsWindow[chats[y]] && win == pade.chatsWindow[chats[y]].id)
-            {
-               delete pade.chatsWindow[chats[y]];
-            }
-        }
-
     });
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
@@ -571,7 +550,7 @@ function handleContact(contact)
     }
     else
 
-    if (contact.type == "room" && getSetting("enableInverse", false) == false)
+    if (contact.type == "room")
     {
         if (!pade.activeContact)
         {
@@ -580,11 +559,15 @@ function handleContact(contact)
 
         pade.participants[contact.jid] = contact;
         contact.created = true;
-        chrome.contextMenus.create({parentId: "pade_rooms", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleContactClick});
+
+        if (getSetting("enableInverse", false) == false)
+        {
+            chrome.contextMenus.create({parentId: "pade_rooms", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleContactClick});
+        }
     }
     else
 
-    if (contact.type == "conversation" && getSetting("enableInverse", false) == false)
+    if (contact.type == "conversation")
     {
         if (!pade.activeContact)
         {
@@ -595,7 +578,11 @@ function handleContact(contact)
         {
             pade.participants[contact.jid] = contact;
             contact.created = true;
-            chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+
+            if (getSetting("enableInverse", false) == false)
+            {
+                chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
+            }
         }
     }
     else
@@ -974,28 +961,6 @@ function openWebAppsWindow(url, state, width, height)
     }
 }
 
-function closeChatsWindow(window)
-{
-    if (pade.chatsWindow[window] != null)
-    {
-        chrome.windows.remove(pade.chatsWindow[window].id);
-        delete pade.chatsWindow[window];
-    }
-}
-
-function openChatsWindow(url, from)
-{
-    closeChatsWindow(from)
-
-    var data = {url: chrome.runtime.getURL(url), type: "popup", focused: true};
-
-    chrome.windows.create(data, function (win)
-    {
-        pade.chatsWindow[from] = win;
-        chrome.windows.update(pade.chatsWindow[from].id, {drawAttention: true, width: 761, height: 900});
-    });
-}
-
 function closePhoneWindow()
 {
     if (pade.sip && pade.sip.window != null)
@@ -1287,7 +1252,7 @@ function addHandlers()
         pade.presence[from] = pres;
         var contact = pade.participants[from];
 
-        if (contact && contact.type == "conversation")
+        if (contact && contact.type == "conversation" && getSetting("enableInverse", false) == false)
         {
             if (contact.created)
             {
@@ -1297,7 +1262,7 @@ function addHandlers()
             contact.created = false;
             contact.presence = pres;
 
-            if (showUser(contact) && getSetting("enableInverse", false) == false)
+            if (showUser(contact))
             {
                 contact.created = true;
                 chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
@@ -1316,16 +1281,16 @@ function addHandlers()
         var reason = null;
         var password = null;
         var composing = false;
-        var offerer = null;
+        var offerer = Strophe.getBareJidFromJid(from);;
         var type = $(message).attr("type");
         var room = null;
         var autoaccept = null;
 
-        console.log("message handler", from, to, message)
+        //console.log("message handler", from, to, message)
 
         var encrypted = false;
 
-        $(message).find('body').each(function ()
+        $(message).find('encrypted').each(function ()
         {
             encrypted = true;
         });
@@ -1339,9 +1304,7 @@ function addHandlers()
             var pos1 = body.indexOf("/ofmeet/");
             var pos2 = body.indexOf("https://" + pade.server)
 
-            offerer = Strophe.getBareJidFromJid(from);
-
-            console.log("message handler body", body, offerer);
+            //console.log("message handler body", body, offerer);
 
             if ( pos0 > -1 && pos2 > -1 )
             {
@@ -1357,27 +1320,23 @@ function addHandlers()
             }
             else
 
-            if (!pade.chatWindow && !pade.chatsWindow[offerer])
+            if (!pade.chatWindow || getSetting("enableInverse", false) == false)
             {
-                // converse/inverse is closed generate notification
-                processChatNotification(offerer, body);
-
-            } else {    // if inverse window open, change chatview
-
-                if (pade.chatWindow && !pade.converseChats[offerer])
+                doNotification(body, offerer, function()
                 {
-                    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
-                    {
-                        pade.converseChats[offerer] = from;
-
-                        if (buttonIndex == 0)   // accept
-                        {
-                            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
-                        }
-                    }, from);
-                }
+                    openChatWindow("inverse/index.html#converse/chat?jid=" + offerer, true);
+                });
             }
+            else
 
+            if ((pade.chatWindow && !pade.converseChats[offerer]))
+            {
+                doNotification(body, offerer, function()
+                {
+                    pade.converseChats[offerer] = from;
+                    chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
+                });
+            }
         });
 
         $(message).find('x').each(function ()
@@ -1418,13 +1377,24 @@ function addHandlers()
                     });
                 }
 
-                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept, id: id});
+                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept, id: id, reason: reason});
             }
         });
 
         return true;
 
     }, null, 'message');
+}
+
+function doNotification(body, offerer, callback)
+{
+    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+    {
+        if (buttonIndex == 0)   // accept
+        {
+            callback()
+        }
+    }, from);
 }
 
 function fetchContacts(callback)
@@ -1657,16 +1627,17 @@ function handleInvitation(invite)
     if (pade.participants[jid])
     {
         var participant = pade.participants[jid];
-        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept, invite.id);
+        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept, invite.id, invite.reason);
     }
     else
 
     if (invite.offerer == pade.domain)
     {
-        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept, invite.id);
+        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept, invite.id, invite.reason);
     }
     else {
-        processInvitation("Unknown User", invite.offerer, invite.room, invite.id);
+        var label = invite.offerer == Strophe.getBareJidFromJid(pade.connection.jid) ? pade.displayName : "Unknown User"
+        processInvitation(label, invite.offerer, invite.room, invite.autoaccept, invite.id, invite.reason);
     }
 
     // inform touchpad
@@ -1674,15 +1645,15 @@ function handleInvitation(invite)
     if (pade.port) pade.port.postMessage({event: "invited", id : invite.offerer, name: invite.room, jid: invite.id});
 }
 
-function processInvitation(title, label, room, autoaccept, id)
+function processInvitation(title, label, room, autoaccept, id, reason)
 {
-    //console.log("processInvitation", title, label, room, id);
+    //console.log("processInvitation", title, label, room, id, reason);
 
     if (!autoaccept || autoaccept != "true")
     {
         startTone("Diggztone_Vibe");
 
-        notifyText(title, label, null, [{title: "Accept " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject " + chrome.i18n.getMessage('manifest_extensionName') + "?", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+        notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
         {
             //console.log("handleAction callback", notificationId, buttonIndex);
 
@@ -1709,20 +1680,9 @@ function processInvitation(title, label, room, autoaccept, id)
     }
 }
 
-function processChatNotification(from, body)
-{
-    notifyText(body, from, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
-    {
-        if (buttonIndex == 0)   // accept
-        {
-            if (getSetting("enableInverse", false)) openChatsWindow("inverse/index.html#converse/chat?jid=" + from, from);
-        }
-    }, from);
-}
-
 function acceptCall(title, label, room, id)
 {
-    //console.log("acceptCall", title, label, room, pade.questions[label]);
+    //console.log("acceptCall", id, title, label, room, pade.questions[label]);
 
     if (isAudioOnly())
     {
@@ -1730,7 +1690,7 @@ function acceptCall(title, label, room, id)
 
     } else {
 
-        if (!id)    // ofmeet
+        if (!id || getSetting("enableInverse", false) == false)    // ofmeet
         {
             openVideoWindow(room);
 
@@ -1738,9 +1698,9 @@ function acceptCall(title, label, room, id)
 
             if (!pade.chatWindow)
             {
-                openChatsWindow("inverse/index.html#converse/room?jid=" + id, label);
+                openChatWindow("inverse/index.html#converse/room?jid=" + id, true);
             } else {
-                chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(id, label, pade.displayName, pade.questions[label])
+                chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(id, label || room, pade.displayName, pade.questions[label])
             }
         }
     }
@@ -2170,7 +2130,7 @@ function isAudioOnly()
 
 function showUser(contact)
 {
-    return !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
+    return getSetting("enableInverse", false) || !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
 }
 
 function makeRoomName(contact)
@@ -2186,7 +2146,7 @@ function setSipStatus(status)
 {
     pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).c('status').t(status).tree(), function(resp)
     {
-        console.log("setSipStatus", status);
+        //console.log("setSipStatus", status);
 
     }, function (error) {
         console.error("setSipStatus", error);
@@ -2243,7 +2203,7 @@ function setVCard(vCard, callback, errorback)
 
 function updateVCard()
 {
-    console.log("updateVCard");
+    //console.log("updateVCard");
 
     var jid = pade.username + "@" + pade.domain;
 
@@ -2265,7 +2225,7 @@ function updateVCard()
 
 function updateVCardAvatar(jid, avatar)
 {
-    console.log("updateVCardAvatar", avatar);
+    //console.log("updateVCardAvatar", avatar);
 
     var email = getSetting("email", "");
     var phone = getSetting("phone", "");
@@ -2300,7 +2260,7 @@ function updateVCardAvatar(jid, avatar)
 
             setVCard(vCard, function(resp)
             {
-                console.log("uploadAvatar - set vcard", resp);
+                //console.log("uploadAvatar - set vcard", resp);
 
             }, avatarError);
         }
@@ -2562,7 +2522,7 @@ function handleStreamDeckKey(key)
                     jid = jid + "@" + domain;
                 }
 
-                doStreamDeckUrl("inverse/index.html#converse/chat?jid=" + jid, jid, label, key);
+                doStreamDeckUrl("inverse/index.html#converse/chat?jid=" + jid, jid, label, key, false);
             }
             else
 
@@ -2576,23 +2536,31 @@ function handleStreamDeckKey(key)
                     jid = jid + "@conference." + domain;
                 }
 
-                doStreamDeckUrl("inverse/index.html#converse/room?jid=" + jid, jid, label, key);
+                doStreamDeckUrl("inverse/index.html#converse/room?jid=" + jid, jid, label, key, true);
             }
         }
     }
 }
 
-function doStreamDeckUrl(url, jid, label, key)
+function doStreamDeckUrl(url, jid, label, key, groupChat)
 {
-    if (pade.chatsWindow[jid])
+    if (!pade.chatWindow)
     {
-        closeChatsWindow(jid);
-        pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: pade.vcards[jid] ? pade.vcards[jid].avatar : createStreamDeckImage(label, "#070")});
-
-    } else {
-        openChatsWindow(url, jid);
-        pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: createStreamDeckImage(label, "#700")});
+        openChatWindow(url, true);
     }
+
+    else {
+
+        if (groupChat)
+        {
+            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, label, pade.displayName)
+
+        } else {
+            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(jid);
+        }
+    }
+
+    pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: pade.vcards[jid] ? pade.vcards[jid].avatar : createStreamDeckImage(label, "#070")});
 }
 
 function enableRemoteControl()

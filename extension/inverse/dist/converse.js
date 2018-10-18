@@ -60139,8 +60139,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
 
           _.each(sizzle(`x[xmlns="${Strophe.NS.OUTOFBAND}"]`, stanza), xform => {
-            attrs['oob_url'] = xform.querySelector('url').textContent;
-            attrs['oob_desc'] = xform.querySelector('desc').textContent;    // BAO
+              var oobUrl = xform.querySelector('url');
+              var oobDesc = xform.querySelector('desc');
+
+              if (oobUrl) attrs['oob_url'] = oobUrl.textContent;
+              if (oobDesc) attrs['oob_desc'] = oobDesc.textContent;    // BAO
           });
 
           if (spoiler) {

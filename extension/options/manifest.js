@@ -811,6 +811,22 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Search"),
+            "group": i18n.get("Invitation List"),
+            "name": "invitationList",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("Edit the list of meeting invitees"),
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Invitation List"),
+            "name": "inviteToMeeting",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Invite to Meeting")
+        },
+        {
+            "tab": i18n.get("Search"),
             "group": i18n.get("Conversations"),
             "name": "convSearchString",
             "type": "text",

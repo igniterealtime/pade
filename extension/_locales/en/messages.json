@@ -38,6 +38,11 @@
         "description": "Title for hp5 content injection"
     },
     
+    "markdownConfirm": {
+        "message": "This text will be pasted into Converse. Are you sure?",
+        "description": "Title for markdown text injection"
+    },    
+    
     "jitsiConfirm": {
         "message": "Do you want to start an audio/video conference?",
         "description": "Title for confirming jistsi-meet"
