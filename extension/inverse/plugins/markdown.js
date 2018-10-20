@@ -14,7 +14,7 @@
 
             chrome.runtime.onMessage.addListener(function(message)
             {
-                if (bgWindow.pade.activeView)
+                if (bgWindow.pade.activeView && message.markdown)
                 {
                     console.log("chrome.runtime.onMessage", message);
                     bgWindow.pade.activeView.onMessageSubmitted(message.markdown);
@@ -36,10 +36,7 @@
                         var view = this;
                         var id = this.model.get("box_id");
 
-                        var html = '<li id="webmeet-markdown-' + id + '"><a class="fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a></li>';
-
-                        $(this.el).find('.toggle-toolbar-menu .toggle-smiley dropup').after('<li id="place-holder"></li>');
-                        $(this.el).find('#place-holder').after(html);
+                        addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
 
                         setTimeout(function()
                         {
@@ -64,4 +61,26 @@
             }
         }
     });
+
+    var newElement = function(el, id, html)
+    {
+        var ele = document.createElement(el);
+        if (id) ele.id = id;
+        if (html) ele.innerHTML = html;
+        document.body.appendChild(ele);
+        return ele;
+    }
+
+    var addToolbarItem = function(view, id, label, html)
+    {
+        var placeHolder = view.el.querySelector('#place-holder');
+
+        if (!placeHolder)
+        {
+            var smiley = view.el.querySelector('.toggle-smiley.dropup');
+            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            placeHolder = view.el.querySelector('#place-holder');
+        }
+        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+    }
 }));

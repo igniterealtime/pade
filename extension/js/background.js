@@ -155,7 +155,7 @@ window.addEventListener("load", function()
 
     chrome.runtime.onConnect.addListener(function(port)
     {
-        console.log("popup connect", port.sender.url);
+        //console.log("popup connect", port.sender.url);
 
         if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
         {
@@ -246,7 +246,7 @@ window.addEventListener("load", function()
 
         port.onDisconnect.addListener(function()
         {
-            console.log("popup disconnect");
+            //console.log("popup disconnect");
 
             if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
             {
@@ -2787,4 +2787,84 @@ function setupSasl(token)
     });
 
     doPadeConnect();
+}
+
+function searchConversations(keyword, callback)
+{
+    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
+    var url =  "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/messages" + query;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    //console.log("fetch", url, options);
+    var conversations = [];
+
+    fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
+    {
+        //console.log("convSearch", messages.conversation);
+
+        if (messages.conversation instanceof Array)
+        {
+            conversations = messages.conversation;
+            callback(processConvSearch(conversations, keyword), conversations);
+        }
+        else if (messages.conversation) {
+            conversations = [messages.conversation];
+            callback(processConvSearch([messages.conversation], keyword), conversations);
+        }
+        else {
+            callback("<p/><p/>No conversations found", conversations);
+        }
+
+    }).catch(function (err) {
+        console.error('convSearch error', err);
+        callback("<p/><p/> Error - " + err, conversations);
+    });
+}
+
+function processConvSearch(conversations, keyword)
+{
+    if (!conversations || conversations.length == 0) return "<p/><p/>No conversations found";
+
+    keyword = keyword.replace(/[^a-zA-Z ]/g, "");
+
+    var query = new RegExp("(\\b" + keyword + "\\b)", "gim");
+    var html = "<table><tr><th>Date</th><th>Chat</th><th>Conversation</th></tr>";
+
+    console.log("processConvSearch", conversations, keyword);
+
+    for (var i=0; i<conversations.length; i++)
+    {
+        var conversation = conversations[i];
+
+        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[1].split("/")[0];
+        var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
+        var suffix = "</a>";
+
+        var date = moment(conversation.startDate).format('MMM DD YYYY <br/> HH:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('HH:mm:ss');
+        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom.split("@")[0] + suffix + "<br/>" + "(" + conversation.participantList.length + ")" : prefix + conversation.participantList[1].split("@")[0] + suffix + "<br/>" + "<a title='" + conversation.participantList[0].split("/")[0] + "'>" + conversation.participantList[0].split("@")[0] + "</a>";
+
+        var messages = conversation.messages.message;
+
+        if (!messages instanceof Array)
+        {
+            messages = [messages]
+        }
+
+        var convHtml = "";
+
+        for (var j=0; j<messages.length; j++)
+        {
+            if (messages[j].body.indexOf("has left the room") == -1 && messages[j].body.indexOf("has joined the room") == -1)
+            {
+                convHtml = convHtml + "[" + moment(messages[j].sentDate).format('hh:mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
+            }
+        }
+
+        html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";
+    }
+
+    html =  html + "</table>" + "<p/><p/>";
+    var enew = html.replace(/(<span>|<\/span>)/igm, "");
+    var newe = enew.replace(query, "<span style=background-color:#FF9;color:#555;>$1</span>");
+    return newe;
 }

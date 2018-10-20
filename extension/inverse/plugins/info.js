@@ -5,7 +5,6 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var infoDialog = null;
 
     converse.plugins.add("info", {
@@ -39,33 +38,49 @@
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    if (bgWindow)
+                    var view = this;
+                    var id = this.model.get("box_id");
+
+                    addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info-circle" title="Information"></a>');
+
+                    setTimeout(function()
                     {
-                        var view = this;
-                        var id = this.model.get("box_id");
+                        var info = document.getElementById("pade-info-" + id);
 
-                        var html = '<li id="pade-info-' + id + '"><a class="fas fa-info-circle" title="Information"></a></li>';
-
-                        $(this.el).find('.toggle-toolbar-menu .toggle-smiley dropup').after('<li id="place-holder"></li>');
-                        $(this.el).find('#place-holder').after(html);
-
-                        setTimeout(function()
+                        info.addEventListener('click', function(evt)
                         {
-                            var info = document.getElementById("pade-info-" + id);
+                            evt.stopPropagation();
 
-                            info.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
+                            new infoDialog().show();
 
-                                new infoDialog().show();
-
-                            }, false);
-                        });
-                    }
+                        }, false);
+                    });
 
                     return result;
                 }
             }
         }
     });
+
+    function newElement(el, id, html)
+    {
+        var ele = document.createElement(el);
+        if (id) ele.id = id;
+        if (html) ele.innerHTML = html;
+        document.body.appendChild(ele);
+        return ele;
+    }
+
+    var addToolbarItem = function(view, id, label, html)
+    {
+        var placeHolder = view.el.querySelector('#place-holder');
+
+        if (!placeHolder)
+        {
+            var smiley = view.el.querySelector('.toggle-smiley.dropup');
+            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            placeHolder = view.el.querySelector('#place-holder');
+        }
+        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+    }
 }));

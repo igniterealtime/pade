@@ -195,44 +195,66 @@
 
                 renderChatMessage: function renderChatMessage()
                 {
-                    this.__super__.renderChatMessage.apply(this, arguments);
-
                     var body = this.model.get('message');
                     var from = this.model.getDisplayName();
 
-                    if (bgWindow && bgWindow.pade.minimised && body)
+                    if (bgWindow)
                     {
-                        //console.log("messageAdded", body);
+                        var interestList = bgWindow.getSetting("interestList", "").split("\n");
 
-                        var text = this.model.get('type') ? this.model.get('type') + " : " + body : body;
-
-                        if (bgWindow.getSetting("notifyAllRoomMessages", false))
+                        if (bgWindow.pade.minimised && body)
                         {
-                            // TODO move to background page
-                            if (ready) notifyMe(text, from, from);
-                        }
+                            //console.log("messageAdded", body);
 
-                        if (bgWindow.getSetting("notifyOnInterests", false))
-                        {
-                            var interestList = (bgWindow.getSetting("username", "") + "," + bgWindow.getSetting("interestList", "")).split(",");
-                            var foundInterest = false;
+                            var text = this.model.get('type') ? this.model.get('type') + " : " + body : body;
 
-                            for (var i=0; i<interestList.length; i++)
+                            if (bgWindow.getSetting("notifyAllRoomMessages", false))
                             {
-                                if (interestList[i] != "")
-                                {
-                                    var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+                                // TODO move to background page
+                                if (ready) notifyMe(text, from, from);
+                            }
 
-                                    if (searchRegExp.test(body))
+                            if (bgWindow.getSetting("notifyOnInterests", false))
+                            {
+                                for (var i=0; i<interestList.length; i++)
+                                {
+                                    interestList[i] = interestList[i].trim();
+
+                                    if (interestList[i] != "")
                                     {
-                                        // TODO move to background page
-                                        notifyMe(text, from, from);
-                                        break;
+                                        var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+
+                                        if (searchRegExp.test(body))
+                                        {
+                                            // TODO move to background page using server-sent events
+                                            notifyMe(text, from, from);
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        var highlightedBody = body;
+
+                        for (var i=0; i<interestList.length; i++)
+                        {
+                            interestList[i] = interestList[i].trim();
+
+                            if (interestList[i] != "")
+                            {
+                                var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+                                var replaceRegExp = new RegExp('\#' + interestList[i], 'igm');
+
+                                var enew = highlightedBody.replace(replaceRegExp, interestList[i]);
+                                var highlightedBody = enew.replace(searchRegExp, "$1#$2");
+                            }
+                        }
+
+                        this.model.set('message', highlightedBody);
                     }
+
+                   this.__super__.renderChatMessage.apply(this, arguments);
                 }
             },
 

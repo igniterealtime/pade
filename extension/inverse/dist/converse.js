@@ -103410,10 +103410,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return str;
   };
 
-  // BAO
+  // BAO - do markdown to HTML
 
   u.addMarkdown = function (_converse, text) {
-        return marked(text.replace(/&gt;+/g, '>'));
+        var markedText = marked(text.replace(/&gt;+/g, '>'));
+
+        if (markedText.indexOf(text) > -1)
+        {
+            markedText = text;    // dummy paragraph, use original text
+        }
+
+        // BAO do candy-chat color
+        markedText = markedText.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
+
+        // BAO do hashtags
+        markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span title='hashtag' class='badge badge-hash-tag'>$2</span>");
+
+        return markedText;
   };
 
   u.addEmoji = function (_converse, text) {

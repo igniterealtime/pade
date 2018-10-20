@@ -57,33 +57,35 @@ window.addEvent("domready", function () {
 
         settings.manifest.convSearch.addEvent("action", function ()
         {
-            var host = JSON.parse(window.localStorage["store.settings.server"]);
-            var username = JSON.parse(window.localStorage["store.settings.username"]);
-            var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+            var keyword = settings.manifest.convSearchString.element.value;
 
-            var query = settings.manifest.convSearchString.element.value && settings.manifest.convSearchString.element.value != "" ? "?keywords=" + settings.manifest.convSearchString.element.value : "";
-            var url =  "https://" + host + "/rest/api/restapi/v1/chat/" + username + "/messages" + query;
-            var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password), "accept": "application/json"}};
-
-            console.log("fetch", url, options);
-
-            fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
+            background.searchConversations(keyword, function(html, conversations)
             {
-                console.log("convSearch", messages.conversation);
+                settings.manifest.convSearchResults.element.innerHTML = html;
 
-                if (messages.conversation instanceof Array)
+                for (var i=0; i<conversations.length; i++)
                 {
-                    processConvSearch(messages.conversation, settings, background);
-                }
-                else if (messages.conversation) {
-                    processConvSearch([messages.conversation], settings, background);
-                }
-                else {
-                    settings.manifest.convSearchResults.element.innerHTML = "<p/><p/>No conversations found";
-                }
+                    try {
+                        document.getElementById("conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
+                        {
+                            e.stopPropagation();
 
-            }).catch(function (err) {
-                console.error('convSearch error', err);
+                            if (e.target.title && getSetting("enableInverse"))
+                            {
+                                if (background.pade.chatWindow)
+                                {
+                                    chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
+                                }
+                                else {
+                                    background.openChatsWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
+                                }
+                            }
+                        }, false);
+
+                    } catch (e) {
+
+                    }
+                }
             });
         });
 
@@ -99,7 +101,9 @@ window.addEvent("domready", function () {
                 for (var i=0; i<users.length; i++)
                 {
                     var user = users[i];
-                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><input id='check-" + user.jid + "' type='checkbox'></td></tr>";
+                    var checked = settings.manifest.invitationList.element.value.indexOf(user.jid) > -1 ? "checked" : "";
+
+                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><input id='check-" + user.jid + "' type='checkbox' " + checked + "></td></tr>";
                 }
                 html = html + "</table>"
 
@@ -717,80 +721,3 @@ function avatarError(error)
     console.error("uploadAvatar - error", error);
     settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>picture/avatar cannot be uploaded and saved</b>';
 }
-
-function highlightSearch()
-{
-    var text = settings.manifest.convSearchString.element.value;
-    var query = new RegExp("(\\b" + text + "\\b)", "gim");
-    var e = document.getElementById("searchtext").innerHTML;
-    var enew = e.replace(/(<span>|<\/span>)/igm, "");
-    document.getElementById("searchtext").innerHTML = enew;
-    var newe = enew.replace(query, "<span>$1</span>");
-    document.getElementById("searchtext").innerHTML = newe;
-
-}
-
-function processConvSearch(conversations, settings, background)
-{
-    if (!conversations || conversations.length == 0) return "No conversations found";
-
-    var html = "<table><tr><th>Date</th><th>Participants</th><th>Conversation</th></tr>";
-
-    for (var i=0; i<conversations.length; i++)
-    {
-        var conversation = conversations[i];
-
-        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[1].split("/")[0];
-        var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
-        var suffix = "</a>";
-
-        var date = moment(conversation.startDate).format('MMM DD YYYY HH:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('HH:mm:ss');
-        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom + suffix + "<br/>" + "Participants:" + conversation.participantList.length : prefix + conversation.participantList[0].split("/")[0] + suffix + "<br/>" + conversation.participantList[1];
-
-        var messages = conversation.messages.message;
-
-        if (!messages instanceof Array)
-        {
-            messages = [messages]
-        }
-
-        var convHtml = "";
-
-        for (var j=0; j<messages.length; j++)
-        {
-            convHtml = convHtml + "[" + moment(messages[j].sentDate).format('hh:mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
-        }
-
-        html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";
-    }
-
-    html = "<p/><p/>" + html + "</table>";
-
-    var text = settings.manifest.convSearchString.element.value;
-    var query = new RegExp("(\\b" + text + "\\b)", "gim");
-    var enew = html.replace(/(<span>|<\/span>)/igm, "");
-    var newe = enew.replace(query, "<span style='background-color:#FF9;color:#555;'>$1</span>");
-
-    settings.manifest.convSearchResults.element.innerHTML = newe;
-
-    for (var i=0; i<conversations.length; i++)
-    {
-        document.getElementById("conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
-        {
-            e.stopPropagation();
-            //console.log("processConvSearch - click", e.target);
-
-            if (e.target.title && getSetting("enableInverse"))
-            {
-                if (background.pade.chatWindow)
-                {
-                    chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
-                }
-                else {
-                    background.openChatsWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
-                }
-            }
-        }, false);
-    }
-}
-

@@ -985,8 +985,9 @@ Renderer.prototype.checkbox = function(checked) {
     + '> ';
 }
 
-Renderer.prototype.paragraph = function(text) {
-  return text + '\n';
+Renderer.prototype.paragraph = function(text) { // BAO
+  //return text + '<br/>\n';
+  return '<p>' + text + '</p>\n';
 };
 
 Renderer.prototype.table = function(header, body) {

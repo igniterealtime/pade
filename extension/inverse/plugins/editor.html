@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="libs/marked.js"></script>
-<script type="text/javascript" src="libs/editor.js"></script>
-<script type="text/javascript" src="editor.js"></script>
+
+<script src="../dist/jquery.min.js"></script>
+<script src="libs/marked.js"></script>
+<script src="libs/editor.js"></script>
+<script src="libs/paste.js"></script>
+<script src="libs/to-markdown.js"></script>
+<script src="libs/clipboard2markdown.js"></script>
+<script src="editor.js"></script>
+
 <link rel="stylesheet" href="css/editor.css" />
+
 <title>Editor</title>
 </head>
 <body>
 <div class="editor-wrapper">
-<textarea placeholder="Content here ....">
+<textarea id="editor-textarea" placeholder="Content here ....">
 Your heading goes here
 ======================
 

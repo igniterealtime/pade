@@ -1596,11 +1596,12 @@ var CodeMirror = (function() {
       focusInput(cm);
       fastPoll(cm);
     });
+/*
     on(d.input, "paste", function() {
       cm.state.pasteIncoming = true;
       fastPoll(cm);
     });
-
+*/
     function prepareCopy() {
       if (d.inaccurateSelection) {
         d.prevInput = "";
@@ -7012,6 +7013,11 @@ function drawImage(editor) {
 
 // BAO
 
+function pasteText()
+{
+    console.log("pasteText")
+}
+
 function copyText()
 {
     if (confirm(bgWindow.pade.activeView.model.get("jid") + "\n\n" + chrome.i18n.getMessage("markdownConfirm")))
@@ -7150,6 +7156,8 @@ var toolbar = [
   '|',
 
   {name: 'play', action: copyText},  // BAO
+  {name: 'undo', action: undo},
+  {name: 'redo', action: redo},
   {name: 'preview', action: togglePreview},
   {name: 'fullscreen', action: toggleFullScreen}
 ];

@@ -50,6 +50,13 @@
     width: 100%;
 }
 
+.chat-msg__text span.badge-hash-tag {
+    font-weight: bold;
+    color: #fff;
+    background-color: #A53A69;  
+    cursor: pointer;
+}
+
 /* logo branding */
 
 .icon-conversejs {

@@ -652,9 +652,9 @@ this.manifest = {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Converse"),
             "name": "interestList",
-            "type": "text",
-            "label": i18n.get("Interests"),
-            "text": i18n.get("List of comma separated words of interest. For example, xmpp, sip"),
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of words of interest. For example, xmpp, sip"),
         },
         {
             "tab": i18n.get("ofmeet"),

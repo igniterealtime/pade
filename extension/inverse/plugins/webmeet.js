@@ -408,8 +408,10 @@
                         pasteInputs[id] = $(this.el).find('.chat-textarea');
                         pasteInputs[id].pastableTextarea();
 
-                        pasteInputs[id].on('pasteImage', function(ev, data){
+                        pasteInputs[id].on('pasteImage', function(ev, data)
+                        {
                             //console.log("pade - pasteImage", data);
+
                             var file = new File([data.blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
                             view.model.sendFiles([file]);
 
@@ -419,8 +421,9 @@
                         }).on('pasteText', function(ev, data){
                             //console.log("pasteText", data);
 
-                            if (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0)
+                            if (pasteInputs[id][0].value == data.text && (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0))
                             {
+                                // get link only when is initial  URL is pasted
                                 pasteLinkPreview(data.text, pasteInputs[id]);
                             }
 
@@ -452,12 +455,10 @@
 
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    $(this.el).find('.toggle-toolbar-menu .toggle-smiley').after('<li id="place-holder"></li>');
-
                     if (_converse.view_mode === 'embedded')
                     {
-                        var html = '<li id="webmeet-exit-webchat-' + id + '"><a class="fa fa-sign-out" title="Exit Web Chat"></a></li>';
-                        $(this.el).find('#place-holder').after(html);
+                        var html = '<a class="fa fa-sign-out" title="Exit Web Chat"></a>';
+                        addToolbarItem(view, id, "webmeet-exit-webchat-" + id, html)
 
                     } else {
                         // file upload by drag & drop
@@ -472,27 +473,27 @@
 
                         if (bgWindow && bgWindow.pade.activeH5p)
                         {
-                            var html = '<li id="h5p-' + id + '"><a class="fa fa-h-square" title="Add H5P Content"></a></li>';
-                            $(this.el).find('#place-holder').after(html);
+                            var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
+                            addToolbarItem(view, id, "h5p-" + id, html);
                         }
 
                         if (bgWindow && bgWindow.pade.activeUrl)
                         {
-                            var html = '<li id="oob-' + id + '"><a class="fa fa-file" title="Add Collaborative Document"></a></li>';
-                            $(this.el).find('#place-holder').after(html);
+                            var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
+                            addToolbarItem(view, id, "oob-" + id, html);
                         }
                     }
 
-                    var html = '<li id="webmeet-jitsi-meet-' + id + '"><a class="fa fa-users" title="Audio/Video Conference"></a></li>';
-                    $(this.el).find('#place-holder').after(html);
+                    var html = '<a class="fa fa-users" title="Audio/Video Conference"></a>';
+                    addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
 
-                    html = '<li id="webmeet-scrolldown-' + id + '"><a class="fa fa-angle-double-down" title="Scroll to the bottom"></a></li>';
-                    $(this.el).find('#place-holder').after(html);
+                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
+                    addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
 
                     if (bgWindow)
                     {
-                        html = '<li id="webmeet-screencast-' + id + '"><a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
-                        $(this.el).find('#place-holder').after(html);
+                        html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
+                        addToolbarItem(view, id, "webmeet-screencast-" + id, html);
                     }
 
                     setTimeout(function()
@@ -1066,4 +1067,25 @@
         }
     }
 
+    var newElement = function(el, id, html)
+    {
+        var ele = document.createElement(el);
+        if (id) ele.id = id;
+        if (html) ele.innerHTML = html;
+        document.body.appendChild(ele);
+        return ele;
+    }
+
+    var addToolbarItem = function(view, id, label, html)
+    {
+        var placeHolder = view.el.querySelector('#place-holder');
+
+        if (!placeHolder)
+        {
+            var smiley = view.el.querySelector('.toggle-smiley.dropup');
+            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'))
+            placeHolder = view.el.querySelector('#place-holder');
+        }
+        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+    }
 }));

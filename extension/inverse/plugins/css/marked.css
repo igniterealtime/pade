@@ -1,32 +1,38 @@
 .chat-msg__text h1 { 
     font-size: 2em !important;    
     font-weight: bold !important;
-    margin-top: 0.67em;
+    margin-top: 0.67em !important;
+    line-height: 1 !important;    
 }
 .chat-msg__text h2 {
     font-size: 1.5em !important;   
     font-weight: bold !important;
-    margin-top: 0.83em !important;   
+    margin-top: 0.83em !important; 
+    line-height: 1 !important;       
 }
 .chat-msg__text h3 { 
     font-size: 1.17em !important;
     font-weight: bold !important;
     margin-top: 1em !important;  
+    line-height: 1 !important;       
 }
 .chat-msg__text h4 { 
     font-size: 1.00em !important;
     font-weight: bold !important;
-    margin-top: 1.33em !important; 
+    margin-top: 1.33em !important;
+    line-height: 1 !important;       
 }
 .chat-msg__text h5 { 
     font-size: 0.83em !important;
     font-weight: bold !important;
     margin-top: 1.67em !important;  
+    line-height: 1 !important;       
 }
 .chat-msg__text h6 { 
     font-size: 0.67em !important;
     font-weight: bold !important;
-    margin-top: 2.33em !important;   
+    margin-top: 2.33em !important;  
+    line-height: 1 !important;       
 }
 .chat-msg__text pre {
     background-color: #F5F5F5 !important;
@@ -58,4 +64,32 @@
   margin-top: 0 !important;
   margin-bottom: 0 !important; 
   padding: 0px !important;  
+}
+
+.chat-msg__text table {
+    color: #333;
+    font-family: Helvetica, Arial, sans-serif;
+    border-collapse:
+    collapse; border-spacing: 0;
+}
+
+.chat-msg__text td, th {
+    border: 1px solid transparent; /* No more visible border */
+    height: 30px;
+    transition: all 0.3s;  /* Simple transition for hover effect */
+}
+
+.chat-msg__text th {
+    background: #DFDFDF;  /* Darken header a bit */
+    font-weight: bold;
+}
+
+.chat-msg__text td {
+    background: #FAFAFA;
+    text-align: left;
+    vertical-align: top;
+}
+
+.chat-msg__text .modal-body {
+  overflow-x: auto;
 }
