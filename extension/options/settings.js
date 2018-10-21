@@ -332,6 +332,17 @@ window.addEvent("domready", function () {
             }
         });
 
+        settings.manifest.enableDrawIO.addEvent("action", function ()
+        {
+            if (getSetting("enableDrawIO"))
+            {
+                background.addDrawIOMenu();
+
+            } else {
+               background.removeDrawIOMenu();
+            }
+        });
+
         settings.manifest.enableAVCapture.addEvent("action", function ()
         {
             if (getSetting("enableAVCapture"))
@@ -381,6 +392,11 @@ window.addEvent("domready", function () {
                     chrome.windows.update(win.id, {drawAttention: true, width: 400, height: 270});
                 });
             }
+        });
+
+        settings.manifest.updateCollabUrlList.addEvent("action", function ()
+        {
+            background.updateCollabUrlList();
         });
 
 
@@ -471,24 +487,35 @@ window.addEvent("domready", function () {
 
                 if (lynks.server && lynks.domain && lynks.username && lynks.password)
                 {
-                    var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
-
-                    connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
+                    if (lynks.server.indexOf(":") == -1)
                     {
-                        //console.log("status", status, lynks.username, lynks.password, lynks.displayname);
+                        settings.manifest.status.element.innerHTML = '<b>missing server port. use server:port or ipaddress:port</b>';
+                    }
+                    else
 
-                        if (status === 5)
-                        {
-                            setTimeout(function() { background.reloadApp(); }, 1000);
-                        }
-                        else
+                    if (isNumeric(lynks.server.substring(lynks.server.indexOf(":") + 1)))
+                    {
+                        var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
 
-                        if (status === 4)
+                        connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
                         {
-                            setDefaultPassword(settings);
-                            settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
-                        }
-                    });
+                            //console.log("status", status, lynks.username, lynks.password, lynks.displayname);
+
+                            if (status === 5)
+                            {
+                                setTimeout(function() { background.reloadApp(); }, 1000);
+                            }
+                            else
+
+                            if (status === 4)
+                            {
+                                setDefaultPassword(settings);
+                                settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
+                            }
+                        });
+                    } else {
+                        settings.manifest.status.element.innerHTML = '<b>bad server port. use server:port or ipaddress:port</b>';
+                    }
                 }
                 else {
                     if (!lynks.server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
@@ -503,6 +530,10 @@ window.addEvent("domready", function () {
 
 
 });
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 function doDefaults()
 {

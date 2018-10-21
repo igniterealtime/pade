@@ -1,5 +1,5 @@
 this.manifest = {
-    "name": chrome.i18n.getMessage('manifest_extensionName'),
+    "name": chrome.i18n.getMessage('manifest_extensionName') + " - " + chrome.runtime.getManifest().version,
     "icon": "../icon.png",
     "settings": [
         {
@@ -8,7 +8,7 @@ this.manifest = {
             "name": "server",
             "type": "text",
             "label": i18n.get("server"),
-            "text": "server name:port"
+            "text": "server_name:port or ip_address:port"
         },
         {
             "tab": i18n.get("connection"),
@@ -654,7 +654,7 @@ this.manifest = {
             "name": "interestList",
             "type": "textarea",
             "label": i18n.get(""),
-            "text": i18n.get("List of words of interest. For example, xmpp, sip"),
+            "text": i18n.get("List of words of interest. For example:\npade\nxmpp\nsip"),
         },
         {
             "tab": i18n.get("ofmeet"),
@@ -663,6 +663,13 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("Invitation"),
             "text": i18n.get("Please join meeting at"),
+        },
+        {                                       // draw.io web apps
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("DrawIO"),
+            "name": "enableDrawIO",
+            "type": "checkbox",
+            "label": i18n.get("Enable Draw.IO Diagraming Tool")
         },
         {                                       // hosted web apps
             "tab": i18n.get("ofmeet"),
@@ -764,6 +771,29 @@ this.manifest = {
             "name": "sipAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Phone")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "collabUrlListlabel",
+            "type": "description",
+            "text": i18n.get("List of collaboration/co-browse urls")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "updateCollabUrlList",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Update")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "collabUrlList",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("https://igniterealtime.org\nhttps://www.princeton.edu/~archss/webpdfs08/BaharMartonosi.pdf"),
         },
         {
             "tab": i18n.get("ofmeet"),

@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: []}
 var callbacks = {}
 
 // uPort
@@ -278,12 +278,15 @@ window.addEventListener("load", function()
         chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
         chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
     }
+
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
+    chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
 
     addCommunityMenu();
     addInverseMenu();
     addBlogMenu();
     addBlastMenu();
+    addDrawIOMenu();
     addAVCaptureMenu();
     addVertoMenu();
     addTouchPadMenu();
@@ -291,6 +294,7 @@ window.addEventListener("load", function()
     addOffice365Personal();
     addWebApps();
     addGmail();
+    updateCollabUrlList();
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
@@ -526,8 +530,6 @@ function handleContact(contact)
     {
         if (contact.id == 0)
         {
-            chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
-
             chrome.contextMenus.create({id: "pade_h5p", type: "normal", title: "H5P Interactive Content", contexts: ["browser_action"]});
             chrome.contextMenus.create({parentId: "pade_h5p", type: "normal", id: "pade_h5p_viewer", title: "H5P Content Viewer", contexts: ["browser_action"],  onclick: handleH5pViewerClick});
         }
@@ -2001,6 +2003,22 @@ function removeBlastMenu()
     chrome.contextMenus.remove("pade_blast");
 }
 
+function addDrawIOMenu()
+{
+    if (getSetting("enableDrawIO", false))
+    {
+        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_drawio", type: "normal", title: "Draw-IO Diagraming Tool", contexts: ["browser_action"],  onclick: function()
+        {
+            openWebAppsWindow("https://" + pade.server + "/drawio");
+        }});
+    }
+}
+function removeDrawIOMenu()
+{
+    closeWebAppsWindow("https://" + pade.server + "/drawio");
+    chrome.contextMenus.remove("pade_drawio");
+}
+
 function addVertoMenu()
 {
     if (getSetting("enableVerto", false))
@@ -2832,7 +2850,7 @@ function processConvSearch(conversations, keyword)
 
     console.log("processConvSearch", conversations, keyword);
 
-    for (var i=0; i<conversations.length; i++)
+    for (var i=conversations.length-1; i>=0; i--)
     {
         var conversation = conversations[i];
 
@@ -2867,4 +2885,32 @@ function processConvSearch(conversations, keyword)
     var enew = html.replace(/(<span>|<\/span>)/igm, "");
     var newe = enew.replace(query, "<span style=background-color:#FF9;color:#555;>$1</span>");
     return newe;
+}
+
+function updateCollabUrlList()
+{
+    //console.log("updateCollabUrlList", getSetting("collabUrlList"));
+
+    for (var i=0; i<pade.collabList.length; i++)
+    {
+        if (pade.collabDocs[pade.collabList[i]])
+        {
+            //console.log("updateCollabUrlList - removing ", pade.collabList[i]);
+            chrome.contextMenus.remove(pade.collabList[i]);
+        }
+    }
+
+    pade.collabList = getSetting("collabUrlList", "").split("\n");
+
+    for (var i=0; i<pade.collabList.length; i++)
+    {
+        if (i == 0)
+        {
+            if (!pade.activeUrl) pade.activeUrl = pade.collabList[i];
+        }
+
+        var urlMenu = {parentId: "pade_content", type: "radio", id: pade.collabList[i], title: pade.collabList[i], contexts: ["browser_action"],  onclick: handleUrlClick};
+        chrome.contextMenus.create(urlMenu);
+        pade.collabDocs[pade.collabList[i]] = pade.collabList[i];
+    }
 }
