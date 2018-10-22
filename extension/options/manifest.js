@@ -160,11 +160,13 @@ this.manifest = {
                 {"text": "French", "value": "fr"},
                 {"text": "German", "value": "de"},
                 {"text": "Hebrew", "value": "he"},
+                {"text": "Hindi", "value": "hi"},
                 {"text": "Hungarian", "value": "hu"},
                 {"text": "Italian", "value": "it"},
                 {"text": "Japanese", "value": "ja"},
                 {"text": "Norwegian", "value": "nb"},
                 {"text": "Polish", "value": "pl"},
+                {"text": "Romanian", "value": "ro"},
                 {"text": "Russian", "value": "ru"},
                 {"text": "Spanish", "value": "es"},
                 {"text": "Ukrainian", "value": "uk"}
@@ -584,6 +586,13 @@ this.manifest = {
             "name": "messageCarbons",
             "type": "checkbox",
             "label": i18n.get("Enable message carbons")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Converse"),
+            "name": "conversePlaySounds",
+            "type": "checkbox",
+            "label": i18n.get("Enable sound notification")
         },
         {
             "tab": i18n.get("ofmeet"),

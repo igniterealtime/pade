@@ -59102,7 +59102,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       _converse.Bookmark = Backbone.Model;
       _converse.Bookmarks = Backbone.Collection.extend({
         model: _converse.Bookmark,
-        comparator: item => item.get('name').toLowerCase(),
+        comparator: item => item.get('name') ? item.get('name').toLowerCase() : item.get('jid'),
 
         initialize() {
           this.on('add', _.flow(this.openBookmarkedRoom, this.markRoomAsBookmarked));
@@ -71884,7 +71884,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         if (_converse.play_sounds && !_.isUndefined(window.Audio)) {
           audio = new Audio(_converse.sounds_path + "msg_received.ogg");
 
-          if (audio.canPlayType('audio/ogg')) {
+          if (audio.canPlayType('audio/ogg') == "probably") {   // BAO
             audio.play();
           } else {
             audio = new Audio(_converse.sounds_path + "msg_received.mp3");

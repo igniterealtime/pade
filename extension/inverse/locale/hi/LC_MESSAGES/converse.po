@@ -3,19 +3,21 @@
 # This file is distributed under the same license as the Converse.js package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Converse.js 4.0.3\n"
+"Project-Id-Version: Converse.js 3.3.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-22 11:37+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2018-09-21 17:28+0000\n"
+"Last-Translator: John Doe <music.kashish@gmail.com>\n"
+"Language-Team: Hindi <https://hosted.weblate.org/projects/conversejs/"
+"translations/hi/>\n"
+"Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.2-dev\n"
 
 #: dist/converse-no-dependencies.js:38568
 #: dist/converse-no-dependencies.js:38654
@@ -31,7 +33,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:53313
 #: dist/converse-no-dependencies.js:59900
 msgid "Cancel"
-msgstr ""
+msgstr "छोड़ें"
 
 #: dist/converse-no-dependencies.js:38657
 msgid "The name for this bookmark:"
@@ -44,32 +46,32 @@ msgstr ""
 #: dist/converse-no-dependencies.js:38659
 #: dist/converse-no-dependencies.js:53317
 msgid "Save"
-msgstr ""
+msgstr "सम्भालें"
 
 #: dist/converse-no-dependencies.js:38737
 #, javascript-format
 msgid "Are you sure you want to remove the bookmark \"%1$s\"?"
-msgstr ""
+msgstr "क्या आप वाकई \"%1$s\" के बुकमार्क को हटाना चाहते हैं?"
 
 #: dist/converse-no-dependencies.js:38859
 #: dist/converse-no-dependencies.js:40728
 #: dist/converse-no-dependencies.js:51993
 #: dist/converse-no-dependencies.js:53261
 msgid "Error"
-msgstr ""
+msgstr "दिक्कत"
 
 #: dist/converse-no-dependencies.js:38859
 msgid "Sorry, something went wrong while trying to save your bookmark."
-msgstr ""
+msgstr "क्षमाँ करें, आपका बुकमार्क सम्भालनें में कुछ गड़बड़ हुई।"
 
 #: dist/converse-no-dependencies.js:38948
 #: dist/converse-no-dependencies.js:54499
 msgid "Leave this groupchat"
-msgstr ""
+msgstr "इस कमरे को छोड़ें"
 
 #: dist/converse-no-dependencies.js:38949
 msgid "Remove this bookmark"
-msgstr ""
+msgstr "यह बुकमार्क हटाएं"
 
 #: dist/converse-no-dependencies.js:38950
 #: dist/converse-no-dependencies.js:54500
@@ -80,25 +82,25 @@ msgstr ""
 #: dist/converse-no-dependencies.js:47878
 #: dist/converse-no-dependencies.js:54502
 msgid "Show more information on this groupchat"
-msgstr ""
+msgstr "इस कमरे के बारे में और जानकारी दिखाएं"
 
 #: dist/converse-no-dependencies.js:38954
 #: dist/converse-no-dependencies.js:47877
 #: dist/converse-no-dependencies.js:54504
 msgid "Click to open this groupchat"
-msgstr ""
+msgstr "इस कमरे को खोलने के लिए यहाँ क्लिक करें"
 
 #: dist/converse-no-dependencies.js:38996
 msgid "Click to toggle the bookmarks list"
-msgstr ""
+msgstr "बुकमार्क-सूची खोलें/बंद करें"
 
 #: dist/converse-no-dependencies.js:38997
 msgid "Bookmarks"
-msgstr ""
+msgstr "बुकमार्क"
 
 #: dist/converse-no-dependencies.js:39416
 msgid "Sorry, could not determine file upload URL."
-msgstr ""
+msgstr "क्षमाँ करें, फ़ाईल अपलोड करने का यू.आ.एल. समझ नहीं आया।"
 
 #: dist/converse-no-dependencies.js:39424
 msgid "Sorry, could not determine upload URL."
@@ -109,15 +111,15 @@ msgstr ""
 msgid ""
 "Sorry, could not succesfully upload your file. Your server’s response: \"%1$s"
 "\""
-msgstr ""
+msgstr "क्षमाँ करें, आपकी फ़ाईल अपलोड नहीं हो पाई। सर्वर का जवाब: \"%1$s\""
 
 #: dist/converse-no-dependencies.js:39460
 msgid "Sorry, could not succesfully upload your file."
-msgstr ""
+msgstr "क्षमाँ करें, आपकी फ़ाईल अपलोड नहीं हो पाई।"
 
 #: dist/converse-no-dependencies.js:39714
 msgid "Sorry, looks like file upload is not supported by your server."
-msgstr ""
+msgstr "क्षमाँ करें, लगता है आपके सर्वर पर फ़ाईल अपलोड की सेवा उपलब्ध नहीं है।"
 
 #: dist/converse-no-dependencies.js:39723
 #, javascript-format
@@ -156,11 +158,11 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:40816
 msgid "Message"
-msgstr ""
+msgstr "सन्देश"
 
 #: dist/converse-no-dependencies.js:40823
 msgid "Send"
-msgstr ""
+msgstr "भेजें"
 
 #: dist/converse-no-dependencies.js:40824
 msgid "Optional hint"
@@ -168,25 +170,25 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:40865
 msgid "Choose a file to send"
-msgstr ""
+msgstr "कोई फ़ाईल भेजें"
 
 #: dist/converse-no-dependencies.js:41258
 #: dist/converse-no-dependencies.js:48513
 msgid "Remove messages"
-msgstr ""
+msgstr "सन्देश हटाएं"
 
 #: dist/converse-no-dependencies.js:41258
 msgid "Write in the third person"
-msgstr ""
+msgstr "अन्य पुरुष में लिखें"
 
 #: dist/converse-no-dependencies.js:41258
 #: dist/converse-no-dependencies.js:48513
 msgid "Show this menu"
-msgstr ""
+msgstr "यह मेन्यू देखाएं"
 
 #: dist/converse-no-dependencies.js:41488
 msgid "Are you sure you want to clear the messages from this conversation?"
-msgstr ""
+msgstr "क्या आप वाकई इस वार्तालाप के सन्देश हटाना चाहते हैं?"
 
 #: dist/converse-no-dependencies.js:41610
 #, javascript-format
@@ -202,7 +204,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:41614
 #, javascript-format
 msgid "%1$s is busy"
-msgstr ""
+msgstr "%1$s व्यस्त है"
 
 #: dist/converse-no-dependencies.js:41616
 #, javascript-format
@@ -211,16 +213,16 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:42290
 msgid "Username"
-msgstr ""
+msgstr "यूज़रनेम"
 
 #: dist/converse-no-dependencies.js:42290
 msgid "user@domain"
-msgstr ""
+msgstr "यूज़र@डोमेन"
 
 #: dist/converse-no-dependencies.js:42309
 #: dist/converse-no-dependencies.js:55919
 msgid "Please enter a valid XMPP address"
-msgstr ""
+msgstr "क्रिपया कोई मान्य एक्स.एम.पी.पी. ऐड्रेस डालें"
 
 #: dist/converse-no-dependencies.js:42415
 msgid "Chat Contacts"
@@ -241,7 +243,7 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:46669
 msgid "Show more"
-msgstr ""
+msgstr "और दिखाएं"
 
 #: dist/converse-no-dependencies.js:46720
 msgid "Typing from another device"
@@ -250,7 +252,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:46722
 #, javascript-format
 msgid "%1$s is typing"
-msgstr ""
+msgstr "%1$s लिख रहे हैं"
 
 #: dist/converse-no-dependencies.js:46726
 msgid "Stopped typing on the other device"
@@ -259,7 +261,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:46728
 #, javascript-format
 msgid "%1$s has stopped typing"
-msgstr ""
+msgstr "%1$s लिखते-लिखते रुक गए"
 
 #: dist/converse-no-dependencies.js:46766
 msgid "Unencryptable OMEMO message"
@@ -316,15 +318,15 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:47727
 msgid "A new groupchat has been created"
-msgstr ""
+msgstr "एक नया कमरा बना दिया गया है"
 
 #: dist/converse-no-dependencies.js:47730
 msgid "You have been banned from this groupchat"
-msgstr ""
+msgstr "आपको इस कमरे से प्रतिबन्धित कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:47731
 msgid "You have been kicked from this groupchat"
-msgstr ""
+msgstr "आपको इस कमरे से बाहर कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:47732
 msgid ""
@@ -356,7 +358,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:47747
 #, javascript-format
 msgid "%1$s has been banned"
-msgstr ""
+msgstr "%1$s को प्रतिबन्धित कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:47748
 #, javascript-format
@@ -366,7 +368,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:47749
 #, javascript-format
 msgid "%1$s has been kicked out"
-msgstr ""
+msgstr "%1$s को बाहर कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:47750
 #, javascript-format
@@ -390,7 +392,7 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:47786
 msgid "Description:"
-msgstr ""
+msgstr "विवरण :"
 
 #: dist/converse-no-dependencies.js:47787
 msgid "Groupchat Address (JID):"
@@ -412,7 +414,7 @@ msgstr ""
 #: dist/converse-no-dependencies.js:58174
 #: dist/converse-no-dependencies.js:58330
 msgid "Hidden"
-msgstr ""
+msgstr "छिपा हुआ"
 
 #: dist/converse-no-dependencies.js:47792
 msgid "Requires an invitation"
@@ -478,7 +480,7 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:47890
 msgid "No groupchats found"
-msgstr ""
+msgstr "कोई कमरे नहीं मिले"
 
 #: dist/converse-no-dependencies.js:47908
 msgid "Groupchats found:"
@@ -486,7 +488,7 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:47962
 msgid "Enter a new Groupchat"
-msgstr ""
+msgstr "एक नये कमरे का हिस्सा बनें"
 
 #: dist/converse-no-dependencies.js:47963
 msgid "Groupchat address"
@@ -503,7 +505,7 @@ msgstr ""
 
 #: dist/converse-no-dependencies.js:47966
 msgid "Join"
-msgstr ""
+msgstr "हिस्सा बनें"
 
 #: dist/converse-no-dependencies.js:48018
 #, javascript-format
@@ -511,19 +513,19 @@ msgid "Groupchat info for %1$s"
 msgstr ""
 
 #: dist/converse-no-dependencies.js:48204
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%1$s is no longer an admin of this groupchat"
-msgstr ""
+msgstr "इस कमरे के बारे में और जानकारी दिखाएं"
 
 #: dist/converse-no-dependencies.js:48206
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%1$s is no longer an owner of this groupchat"
-msgstr ""
+msgstr "इस कमरे को खोलने के लिए यहाँ क्लिक करें"
 
 #: dist/converse-no-dependencies.js:48208
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%1$s is no longer banned from this groupchat"
-msgstr ""
+msgstr "आपको इस कमरे से प्रतिबन्धित कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:48212
 #, javascript-format
@@ -531,14 +533,14 @@ msgid "%1$s is no longer a permanent member of this groupchat"
 msgstr ""
 
 #: dist/converse-no-dependencies.js:48216
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%1$s is now a permanent member of this groupchat"
-msgstr ""
+msgstr "आपको इस कमरे से प्रतिबन्धित कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:48218
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%1$s has been banned from this groupchat"
-msgstr ""
+msgstr "आपको इस कमरे से प्रतिबन्धित कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:48228
 #, javascript-format
@@ -703,9 +705,9 @@ msgid "%1$s has left and re-entered the groupchat"
 msgstr ""
 
 #: dist/converse-no-dependencies.js:49167
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%1$s has left and re-entered the groupchat. \"%2$s\""
-msgstr ""
+msgstr "आपको इस कमरे से प्रतिबन्धित कर दिया गया है"
 
 #: dist/converse-no-dependencies.js:49186
 #, javascript-format
@@ -1598,3 +1600,21 @@ msgstr ""
 #, javascript-format
 msgid "Download audio file \"%1$s\""
 msgstr ""
+
+#~ msgid "Clear all messages"
+#~ msgstr "सारे सन्देश हटाएं"
+
+#~ msgid "Insert emojis"
+#~ msgstr "इमोजी डालें"
+
+#, fuzzy
+#~ msgid "%1$s is now an "
+#~ msgstr "%1$s को प्रतिबन्धित कर दिया गया है"
+
+#, fuzzy
+#~ msgid "Error: the groupchat "
+#~ msgstr "इस कमरे को छोड़ें"
+
+#, fuzzy
+#~ msgid "Sorry, you're not allowed to registerd in this groupchat"
+#~ msgstr "इस कमरे के बारे में और जानकारी दिखाएं"

@@ -85,7 +85,7 @@
 
             document.addEventListener('pade.search.setup', function(event)
             {
-                console.log("pade.search.setup", event);
+                //console.log("pade.search.setup", event);
 
                 var search = document.getElementById("pade-search-" + event.detail.id);
 

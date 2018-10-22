@@ -233,6 +233,13 @@
                                     }
                                 }
                             }
+
+                            // draw attention to new messages
+
+                            if (bgWindow.pade.chatWindow)
+                            {
+                                chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true, focused: false});
+                            }
                         }
 
                         var highlightedBody = body;

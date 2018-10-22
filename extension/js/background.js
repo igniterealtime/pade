@@ -541,14 +541,18 @@ function handleContact(contact)
         {
             urlMenu = {parentId: "pade_h5p", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleH5pClick};
             if (!pade.activeH5p) pade.activeH5p = contact.url;
+            chrome.contextMenus.create(urlMenu);
 
         } else {
-            urlMenu = {parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick};
-            if (!pade.activeUrl) pade.activeUrl = contact.url; // default
-            pade.collabDocs[contact.url] = contact.name;
-        }
 
-        chrome.contextMenus.create(urlMenu);
+            if (!pade.collabDocs[contact.url])
+            {
+                urlMenu = {parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick};
+                if (!pade.activeUrl) pade.activeUrl = contact.url; // default
+                pade.collabDocs[contact.url] = contact.name;
+                chrome.contextMenus.create(urlMenu);
+            }
+        }
     }
     else
 
@@ -847,13 +851,13 @@ function openOffice365Window(business, state)
                 if (business) pade.of365BWindow = win;
                 if (!business) pade.of365PWindow = win;
 
-                chrome.windows.update(win.id, {drawAttention: true});
+                chrome.windows.update(win.id, {drawAttention: false});
             }
         });
 
     } else {
-        if (business) chrome.windows.update(pade.of365BWindow.id, {drawAttention: true, focused: true});
-        if (!business) chrome.windows.update(pade.of365PWindow.id, {drawAttention: true, focused: true});
+        if (business) chrome.windows.update(pade.of365BWindow.id, {drawAttention: false, focused: true});
+        if (!business) chrome.windows.update(pade.of365PWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -881,11 +885,11 @@ function openApcWindow(state)
         chrome.windows.create(data, function (win)
         {
             pade.apcWindow = win;
-            chrome.windows.update(pade.apcWindow.id, {drawAttention: true, width: 820, height: 640});
+            chrome.windows.update(pade.apcWindow.id, {drawAttention: false, width: 820, height: 640});
         });
 
     } else {
-        chrome.windows.update(pade.apcWindow.id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.apcWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -916,11 +920,11 @@ function openGmailWindow(email, state)
         chrome.windows.create(data, function (win)
         {
             pade.gmailWindow[email] = win;
-            chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: true, width: 640, height: 1024});
+            chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: false, width: 640, height: 1024});
         });
 
     } else {
-        chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: false, focused: true});
     }
 }
 
@@ -955,11 +959,11 @@ function openWebAppsWindow(url, state, width, height)
         chrome.windows.create(data, function (win)
         {
             pade.webAppsWindow[url] = win;
-            chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: true, width: width, height: height});
+            chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: false, width: width, height: height});
         });
 
     } else {
-        chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: false, focused: true});
     }
 }
 
@@ -1027,11 +1031,11 @@ function openChatWindow(url, update, state)
         chrome.windows.create(data, function (win)
         {
             pade.chatWindow = win;
-            chrome.windows.update(pade.chatWindow.id, {drawAttention: true, width: width, height: 900});
+            chrome.windows.update(pade.chatWindow.id, {drawAttention: false, width: width, height: 900});
         });
 
     } else {
-        chrome.windows.update(pade.chatWindow.id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.chatWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -1062,7 +1066,7 @@ function openVideoWindowUrl(url)
     chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
     {
         pade.videoWindow = win;
-        chrome.windows.update(pade.videoWindow.id, {width: 1024, height: 800, drawAttention: true});
+        chrome.windows.update(pade.videoWindow.id, {width: 1024, height: 800, drawAttention: false});
 
         sendToJabra("offhook");
     });
@@ -1087,10 +1091,10 @@ function openBlogWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blogWindow = win;
-            chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800, drawAttention: true});
+            chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800, drawAttention: false});
         });
     } else {
-        chrome.windows.update(pade.blogWindow.id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.blogWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -1113,10 +1117,10 @@ function openAVCaptureWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.avCaptureWindow = win;
-            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 640, drawAttention: true});
+            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 640, drawAttention: false});
         });
     } else {
-        chrome.windows.update(pade.avCaptureWindow.id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.avCaptureWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -1139,10 +1143,10 @@ function openBlastWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blastWindow = win;
-            chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800, drawAttention: true});
+            chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800, drawAttention: false});
         });
     } else {
-        chrome.windows.update(pade.blastWindow.id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.blastWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -1171,10 +1175,10 @@ function openVertoWindow(state)
         chrome.windows.create(data, function (win)
         {
             pade.vertoWindow = win;
-            chrome.windows.update(pade.vertoWindow.id, {width: 1024, height: 800, drawAttention: true});
+            chrome.windows.update(pade.vertoWindow.id, {width: 1024, height: 800, drawAttention: false});
         });
     } else {
-        chrome.windows.update(pade.vertoWindow.id, {drawAttention: true, focused: true});
+        chrome.windows.update(pade.vertoWindow.id, {drawAttention: false, focused: true});
     }
 }
 
@@ -1288,7 +1292,7 @@ function addHandlers()
         var room = null;
         var autoaccept = null;
 
-        //console.log("message handler", from, to, message)
+        console.log("message handler", from, to, message)
 
         var encrypted = false;
 
@@ -1306,7 +1310,7 @@ function addHandlers()
             var pos1 = body.indexOf("/ofmeet/");
             var pos2 = body.indexOf("https://" + pade.server)
 
-            //console.log("message handler body", body, offerer);
+            console.log("message handler body", body, offerer);
 
             if ( pos0 > -1 && pos2 > -1 )
             {
@@ -1390,13 +1394,15 @@ function addHandlers()
 
 function doNotification(body, offerer, callback)
 {
+    //console.log("doNotification", body, offerer)
+
     notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // accept
         {
             callback()
         }
-    }, from);
+    }, offerer);
 }
 
 function fetchContacts(callback)
@@ -2760,7 +2766,7 @@ function doSetupStrophePlugins()
             chrome.windows.create({url: url, type: "popup"}, function (win)
             {
                 pade.credWin = win;
-                chrome.windows.update(win.id, {drawAttention: true, width: width, height: height, left: Math.round((screenWidth-width)/2), top: Math.round((screenHeight-height)/2)});
+                chrome.windows.update(win.id, {drawAttention: false, width: width, height: height, left: Math.round((screenWidth-width)/2), top: Math.round((screenHeight-height)/2)});
             });
         }
     }
