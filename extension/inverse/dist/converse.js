@@ -103414,8 +103414,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   u.addMarkdown = function (_converse, text) {
         var markedText = marked(text.replace(/&gt;+/g, '>'));
+        var checkText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 
-        if (markedText.indexOf(text) > -1)
+        //console.log("addMarkdown", markedText, checkText, text);
+
+        if (markedText.indexOf(checkText) > -1 || markedText.indexOf(text) > -1)
         {
             markedText = text;    // dummy paragraph, use original text
         }
