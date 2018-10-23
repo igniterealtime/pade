@@ -673,12 +673,175 @@ this.manifest = {
             "label": i18n.get("Invitation"),
             "text": i18n.get("Please join meeting at"),
         },
-        {                                       // draw.io web apps
+        {                                               // collaboration
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "collabUrlListlabel",
+            "type": "description",
+            "text": i18n.get("List of collaboration/co-browse urls")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "updateCollabUrlList",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Update")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "collabUrlList",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("https://igniterealtime.org\nhttps://www.princeton.edu/~archss/webpdfs08/BaharMartonosi.pdf"),
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "uploadAppLabel",
+            "type": "description",
+            "text": i18n.get("upload_app")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "uploadApp",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "uploadStatus",
+            "type": "description",
+            "text": ""
+        },
+        {                                       // sip phone
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Phone"),
+            "name": "enableSip",
+            "type": "checkbox",
+            "label": i18n.get("Enable SIP Phone")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Phone"),
+            "name": "enableVerto",
+            "type": "checkbox",
+            "label": i18n.get("Enable Verto Communicator")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Phone"),
+            "name": "sipAutoStart",
+            "type": "checkbox",
+            "label": i18n.get("Auto Start Phone")
+        },
+        {                                       // a/v capture
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("A/V Capture"),
+            "name": "enableAVCapture",
+            "type": "checkbox",
+            "label": i18n.get("Enable Audio/Video Capture")
+        },
+        {                                        // draw.io web apps
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("DrawIO"),
+            "name": "drawioDescription",
+            "type": "description",
+            "text": i18n.get("Diagramming Tool. <b>The DrawIO plugin for Openfire is required for this</b>")
+        },
+        {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("DrawIO"),
             "name": "enableDrawIO",
             "type": "checkbox",
             "label": i18n.get("Enable Draw.IO Diagraming Tool")
+        },
+        {                                       // RDP (remote desktop protocol)
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("RDP"),
+            "name": "rdpDescription",
+            "type": "description",
+            "text": i18n.get("Remote Desktop protocol (RDP). <b>The RDP plugin for Openfire is required for this</b>")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("RDP"),
+            "name": "remoteHost",
+            "type": "text",
+            "text": i18n.get("Enter remote host name or IP Address"),
+            "label": i18n.get("Remote Host")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("RDP"),
+            "name": "remoteDomain",
+            "type": "text",
+            "text": i18n.get("Enter remote domain name"),
+            "label": i18n.get("Remote Domain")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("RDP"),
+            "name": "remoteUsername",
+            "type": "text",
+            "text": i18n.get("Enter remote username or leave blank"),
+            "label": i18n.get("Remote Username")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("RDP"),
+            "name": "remotePassword",
+            "type": "text",
+            "masked": true,
+            "text": i18n.get("Enter remote password or leave blank"),
+            "label": i18n.get("Remote Password")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("RDP"),
+            "name": "remoteConnect",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Connect")
+        },
+        {                                       // blogger
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Blogger"),
+            "name": "blogDescription",
+            "type": "description",
+            "text": i18n.get("Blogger and Website Tool for LiveChat. <b>The solo plugin for Openfire is required for this</b>")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Blogger"),
+            "name": "enableBlog",
+            "type": "checkbox",
+            "label": i18n.get("Enable Blogging")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Blogger"),
+            "name": "blogName",
+            "type": "text",
+            "label": i18n.get("Blog Name"),
+            "text": i18n.get("solo"),
+        },
+        {                                        // message blast
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Message Blast"),
+            "name": "blastDescription",
+            "type": "description",
+            "text": i18n.get("Message blast to multiple people Tool. <b>The ofchat plugin for Openfire is required for this</b>")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Message Blast"),
+            "name": "enableBlast",
+            "type": "checkbox",
+            "label": i18n.get("Enable Message Blast")
         },
         {                                       // hosted web apps
             "tab": i18n.get("ofmeet"),
@@ -731,100 +894,7 @@ this.manifest = {
             "label": i18n.get("Gmail"),
             "text": i18n.get("Enter list of email accounts"),
         },
-        {                                       // blogger
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Blogger"),
-            "name": "enableBlog",
-            "type": "checkbox",
-            "label": i18n.get("Enable Blogging")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Blogger"),
-            "name": "blogName",
-            "type": "text",
-            "label": i18n.get("Blog Name"),
-            "text": i18n.get("solo"),
-        },
-        {                                       // message blast
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Message Blast"),
-            "name": "enableBlast",
-            "type": "checkbox",
-            "label": i18n.get("Enable Message Blast")
-        },
-        {                                       // a/v capture
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("A/V Capture"),
-            "name": "enableAVCapture",
-            "type": "checkbox",
-            "label": i18n.get("Enable Audio/Video Capture")
-        },
-        {                                       // sip phone
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Phone"),
-            "name": "enableSip",
-            "type": "checkbox",
-            "label": i18n.get("Enable SIP Phone")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Phone"),
-            "name": "enableVerto",
-            "type": "checkbox",
-            "label": i18n.get("Enable Verto Communicator")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Phone"),
-            "name": "sipAutoStart",
-            "type": "checkbox",
-            "label": i18n.get("Auto Start Phone")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "collabUrlListlabel",
-            "type": "description",
-            "text": i18n.get("List of collaboration/co-browse urls")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "updateCollabUrlList",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Update")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "collabUrlList",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("https://igniterealtime.org\nhttps://www.princeton.edu/~archss/webpdfs08/BaharMartonosi.pdf"),
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "uploadAppLabel",
-            "type": "description",
-            "text": i18n.get("upload_app")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "uploadApp",
-            "type": "description",
-            "text": ""
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "uploadStatus",
-            "type": "description",
-            "text": ""
-        },
+
         {                                           // search
             "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),
@@ -903,6 +973,12 @@ this.manifest = {
             "email",
             "phone",
             "country"
+        ],
+        [
+            "remoteHost",
+            "remoteDomain",
+            "remoteUsername",
+            "remotePassword",
         ]
     ]
 };

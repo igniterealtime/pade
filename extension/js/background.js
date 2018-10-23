@@ -851,13 +851,13 @@ function openOffice365Window(business, state)
                 if (business) pade.of365BWindow = win;
                 if (!business) pade.of365PWindow = win;
 
-                chrome.windows.update(win.id, {drawAttention: false});
+                chrome.windows.update(win.id, {width: 820, height: 640});
             }
         });
 
     } else {
-        if (business) chrome.windows.update(pade.of365BWindow.id, {drawAttention: false, focused: true});
-        if (!business) chrome.windows.update(pade.of365PWindow.id, {drawAttention: false, focused: true});
+        if (business) chrome.windows.update(pade.of365BWindow.id, {focused: true});
+        if (!business) chrome.windows.update(pade.of365PWindow.id, {focused: true});
     }
 }
 
@@ -885,11 +885,11 @@ function openApcWindow(state)
         chrome.windows.create(data, function (win)
         {
             pade.apcWindow = win;
-            chrome.windows.update(pade.apcWindow.id, {drawAttention: false, width: 820, height: 640});
+            chrome.windows.update(pade.apcWindow.id, {width: 820, height: 640});
         });
 
     } else {
-        chrome.windows.update(pade.apcWindow.id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.apcWindow.id, {focused: true});
     }
 }
 
@@ -920,11 +920,11 @@ function openGmailWindow(email, state)
         chrome.windows.create(data, function (win)
         {
             pade.gmailWindow[email] = win;
-            chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: false, width: 640, height: 1024});
+            chrome.windows.update(pade.gmailWindow[email].id, {width: 1024, height: 768});
         });
 
     } else {
-        chrome.windows.update(pade.gmailWindow[email].id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.gmailWindow[email].id, {focused: true});
     }
 }
 
@@ -959,11 +959,11 @@ function openWebAppsWindow(url, state, width, height)
         chrome.windows.create(data, function (win)
         {
             pade.webAppsWindow[url] = win;
-            chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: false, width: width, height: height});
+            chrome.windows.update(pade.webAppsWindow[url].id, {width: width, height: height});
         });
 
     } else {
-        chrome.windows.update(pade.webAppsWindow[url].id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.webAppsWindow[url].id, {focused: true});
     }
 }
 
@@ -1031,11 +1031,11 @@ function openChatWindow(url, update, state)
         chrome.windows.create(data, function (win)
         {
             pade.chatWindow = win;
-            chrome.windows.update(pade.chatWindow.id, {drawAttention: false, width: width, height: 900});
+            chrome.windows.update(pade.chatWindow.id, {width: width, height: 900});
         });
 
     } else {
-        chrome.windows.update(pade.chatWindow.id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.chatWindow.id, {focused: true});
     }
 }
 
@@ -1066,7 +1066,7 @@ function openVideoWindowUrl(url)
     chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
     {
         pade.videoWindow = win;
-        chrome.windows.update(pade.videoWindow.id, {width: 1024, height: 800, drawAttention: false});
+        chrome.windows.update(pade.videoWindow.id, {width: 1024, height: 800});
 
         sendToJabra("offhook");
     });
@@ -1091,10 +1091,10 @@ function openBlogWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blogWindow = win;
-            chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800, drawAttention: false});
+            chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800});
         });
     } else {
-        chrome.windows.update(pade.blogWindow.id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.blogWindow.id, {focused: true});
     }
 }
 
@@ -1117,10 +1117,10 @@ function openAVCaptureWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.avCaptureWindow = win;
-            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 640, drawAttention: false});
+            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 640});
         });
     } else {
-        chrome.windows.update(pade.avCaptureWindow.id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.avCaptureWindow.id, {focused: true});
     }
 }
 
@@ -1143,10 +1143,10 @@ function openBlastWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blastWindow = win;
-            chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800, drawAttention: false});
+            chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800});
         });
     } else {
-        chrome.windows.update(pade.blastWindow.id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.blastWindow.id, {focused: true});
     }
 }
 
@@ -1175,10 +1175,10 @@ function openVertoWindow(state)
         chrome.windows.create(data, function (win)
         {
             pade.vertoWindow = win;
-            chrome.windows.update(pade.vertoWindow.id, {width: 1024, height: 800, drawAttention: false});
+            chrome.windows.update(pade.vertoWindow.id, {width: 1024, height: 800});
         });
     } else {
-        chrome.windows.update(pade.vertoWindow.id, {drawAttention: false, focused: true});
+        chrome.windows.update(pade.vertoWindow.id, {focused: true});
     }
 }
 
@@ -2766,7 +2766,7 @@ function doSetupStrophePlugins()
             chrome.windows.create({url: url, type: "popup"}, function (win)
             {
                 pade.credWin = win;
-                chrome.windows.update(win.id, {drawAttention: false, width: width, height: height, left: Math.round((screenWidth-width)/2), top: Math.round((screenHeight-height)/2)});
+                chrome.windows.update(win.id, {width: width, height: height, left: Math.round((screenWidth-width)/2), top: Math.round((screenHeight-height)/2)});
             });
         }
     }
@@ -2860,12 +2860,12 @@ function processConvSearch(conversations, keyword)
     {
         var conversation = conversations[i];
 
-        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[1].split("/")[0];
+        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[0].split("/")[0];
         var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
         var suffix = "</a>";
 
         var date = moment(conversation.startDate).format('MMM DD YYYY <br/> HH:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('HH:mm:ss');
-        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom.split("@")[0] + suffix + "<br/>" + "(" + conversation.participantList.length + ")" : prefix + conversation.participantList[1].split("@")[0] + suffix + "<br/>" + "<a title='" + conversation.participantList[0].split("/")[0] + "'>" + conversation.participantList[0].split("@")[0] + "</a>";
+        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom.split("@")[0] + suffix + "<br/>" + "(" + conversation.participantList.length + ")" : prefix + conversation.participantList[0].split("@")[0] + suffix + "<br/>" + "<a title='" + conversation.participantList[1].split("/")[0] + "'>" + conversation.participantList[1].split("@")[0] + "</a>";
 
         var messages = conversation.messages.message;
 

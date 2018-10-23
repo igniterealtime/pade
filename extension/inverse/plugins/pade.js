@@ -26,6 +26,7 @@
      var _converse = null;
      var ready = false;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
+     var notified = false;
 
     // The following line registers your plugin.
     converse.plugins.add("pade", {
@@ -55,6 +56,15 @@
             _converse = this._converse;
             window._inverse = _converse;
             window.inverse = converse;
+
+            if (bgWindow.pade.chatWindow)
+            {
+                chrome.windows.onFocusChanged.addListener(function(win)
+                {
+                    if (win == -1) notified = false;
+                    if (win == bgWindow.pade.chatWindow.id) notified = false;
+                });
+            }
 
             _converse.log("The \"pade\" plugin is being initialized");
 
@@ -236,9 +246,9 @@
 
                             // draw attention to new messages
 
-                            if (bgWindow.pade.chatWindow)
+                            if (bgWindow.pade.chatWindow && !notified)
                             {
-                                chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true, focused: false});
+                                chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
                             }
                         }
 

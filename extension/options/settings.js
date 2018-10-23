@@ -55,6 +55,32 @@ window.addEvent("domready", function () {
             validateCredentials()
         });
 
+        settings.manifest.remoteConnect.addEvent("action", function ()
+        {
+            var host = getSetting("server", null);
+            var hostname = host.split(":")[0]
+
+            if (hostname)
+            {
+                var creds = "";
+                var username = getSetting("remoteUsername", "");
+                var password = getSetting("remotePassword", "");
+
+                if (username != "")
+                {
+                    creds = creds + "&user=" + username
+                }
+
+                if (password != "")
+                {
+                    creds = creds + "&pwd=" + password
+                }
+
+                var url = "http://" + hostname + "/rdpdirect.html?gateway=" + hostname + "&server=" + getSetting("remoteHost", hostname) + "&domain=" + getSetting("remoteDomain") + "&color=16" + creds;
+                background.openWebAppsWindow(url, null, screen.availWidth, screen.availHeight);
+            }
+        });
+
         settings.manifest.convSearch.addEvent("action", function ()
         {
             var keyword = settings.manifest.convSearchString.element.value;
@@ -77,7 +103,7 @@ window.addEvent("domready", function () {
                                     chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
                                 }
                                 else {
-                                    background.openChatsWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
+                                    background.openChatWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
                                 }
                             }
                         }, false);
