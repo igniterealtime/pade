@@ -131,6 +131,13 @@ this.manifest = {
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("About"),
+            "name": "factoryReset",
+            "type": "button",
+            "text": i18n.get("Factory Reset")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("About"),
             "name": "changelog",
             "type": "button",
             "text": i18n.get("Change Log")
@@ -345,6 +352,120 @@ this.manifest = {
             "type": "button",
             "text": i18n.get("Register URL Protocols")
         },
+        {                                             // converse-inverse
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "enableInverse",
+            "type": "checkbox",
+            "label": i18n.get("Enable Converse")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "converseAutoStart",
+            "type": "checkbox",
+            "label": i18n.get("Auto Start Converse")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "converseDebug",
+            "type": "checkbox",
+            "label": i18n.get("Enable Debug")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "messageCarbons",
+            "type": "checkbox",
+            "label": i18n.get("Enable message carbons")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "conversePlaySounds",
+            "type": "checkbox",
+            "label": i18n.get("Enable sound notification")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "autoReconnect",
+            "type": "checkbox",
+            "label": i18n.get("Auto reconnect")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "rosterGroups",
+            "type": "checkbox",
+            "label": i18n.get("Show roster groups")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "allowNonRosterMessaging",
+            "type": "checkbox",
+            "label": i18n.get("Allow non roster messaging")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "autoListRooms",
+            "type": "checkbox",
+            "label": i18n.get("Auto List Rooms")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "showGroupChatStatusMessages",
+            "type": "checkbox",
+            "label": i18n.get("Show GroupChat Status Messages")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "enablePasting",
+            "type": "checkbox",
+            "label": i18n.get("Enable Clipboard pasting of URLs and images")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Markdown"),
+            "name": "useMarkdown",
+            "type": "checkbox",
+            "label": i18n.get("Enable Markdown formatting in chat")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
+            "name": "notifyAllRoomMessages",
+            "type": "checkbox",
+            "label": i18n.get("Notify all room messages")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
+            "name": "notifyOnInterests",
+            "type": "checkbox",
+            "label": i18n.get("Notify on any interest")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
+            "name": "interestList",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of words of interest. For example:\npade\nxmpp\nsip"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "ofmeetInvitation",
+            "type": "text",
+            "label": i18n.get("Invitation"),
+            "text": i18n.get("Please join meeting at"),
+        },
         {                                                   // ofmeet config
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("config"),
@@ -479,6 +600,50 @@ this.manifest = {
             "min": 80,
             "step": 10
         },
+        {                                               // collaboration
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "collabUrlListlabel",
+            "type": "description",
+            "text": i18n.get("List of collaboration/co-browse urls")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "updateCollabUrlList",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Update")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "collabUrlList",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("https://igniterealtime.org\nhttps://www.princeton.edu/~archss/webpdfs08/BaharMartonosi.pdf"),
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "uploadAppLabel",
+            "type": "description",
+            "text": i18n.get("upload_app")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "uploadApp",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Collaboration"),
+            "name": "uploadStatus",
+            "type": "description",
+            "text": ""
+        },
         {                                       // touchpad
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("TouchPad"),
@@ -559,165 +724,14 @@ this.manifest = {
             "label": i18n.get("Web Url"),
             "text": i18n.get("https://my_server/tiki"),
         },
-        {                                             // converse-inverse
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "enableInverse",
-            "type": "checkbox",
-            "label": i18n.get("Enable Converse")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "converseAutoStart",
-            "type": "checkbox",
-            "label": i18n.get("Auto Start Converse")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "converseDebug",
-            "type": "checkbox",
-            "label": i18n.get("Enable Debug")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "messageCarbons",
-            "type": "checkbox",
-            "label": i18n.get("Enable message carbons")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "conversePlaySounds",
-            "type": "checkbox",
-            "label": i18n.get("Enable sound notification")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "autoReconnect",
-            "type": "checkbox",
-            "label": i18n.get("Auto reconnect")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "rosterGroups",
-            "type": "checkbox",
-            "label": i18n.get("Show roster groups")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "allowNonRosterMessaging",
-            "type": "checkbox",
-            "label": i18n.get("Allow non roster messaging")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "autoListRooms",
-            "type": "checkbox",
-            "label": i18n.get("Auto List Rooms")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "showGroupChatStatusMessages",
-            "type": "checkbox",
-            "label": i18n.get("Show GroupChat Status Messages")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "enablePasting",
-            "type": "checkbox",
-            "label": i18n.get("Enable Clipboard pasting of URLs and images")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "useMarkdown",
-            "type": "checkbox",
-            "label": i18n.get("Enable Markdown formatting in chat")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "notifyAllRoomMessages",
-            "type": "checkbox",
-            "label": i18n.get("Notify all room messages")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "notifyOnInterests",
-            "type": "checkbox",
-            "label": i18n.get("Notify on any interest")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "interestList",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("List of words of interest. For example:\npade\nxmpp\nsip"),
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Converse"),
-            "name": "ofmeetInvitation",
-            "type": "text",
-            "label": i18n.get("Invitation"),
-            "text": i18n.get("Please join meeting at"),
-        },
-        {                                               // collaboration
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "collabUrlListlabel",
-            "type": "description",
-            "text": i18n.get("List of collaboration/co-browse urls")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "updateCollabUrlList",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Update")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "collabUrlList",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("https://igniterealtime.org\nhttps://www.princeton.edu/~archss/webpdfs08/BaharMartonosi.pdf"),
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "uploadAppLabel",
-            "type": "description",
-            "text": i18n.get("upload_app")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "uploadApp",
-            "type": "description",
-            "text": ""
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("Collaboration"),
-            "name": "uploadStatus",
-            "type": "description",
-            "text": ""
-        },
         {                                       // sip phone
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("Phone"),
+            "name": "sipDescription",
+            "type": "description",
+            "text": i18n.get("CTX SIP Phone. <b>The ofswitch plugin for Openfire is required for this</b>")
+        },
+        {
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("Phone"),
             "name": "enableSip",
@@ -738,13 +752,6 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Auto Start Phone")
         },
-        {                                       // a/v capture
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("A/V Capture"),
-            "name": "enableAVCapture",
-            "type": "checkbox",
-            "label": i18n.get("Enable Audio/Video Capture")
-        },
         {                                        // draw.io web apps
             "tab": i18n.get("ofmeet"),
             "group": i18n.get("DrawIO"),
@@ -757,7 +764,123 @@ this.manifest = {
             "group": i18n.get("DrawIO"),
             "name": "enableDrawIO",
             "type": "checkbox",
-            "label": i18n.get("Enable Draw.IO Diagraming Tool")
+            "label": i18n.get("Enable Diagraming Tool")
+        },
+        {                                        // ONLYOFFICE collaboration document editors
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyOfficeDescription",
+            "type": "description",
+            "text": i18n.get("ONLYOFFICE Collaboration Document Editors. <b>The Docker plugin for Openfire is required for this</b>")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "enableOnlyOffice",
+            "type": "checkbox",
+            "label": i18n.get("Enable Collaboration Document Editors")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlychat",
+            "type": "checkbox",
+            "label": i18n.get("Enable Chat")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlycomments",
+            "type": "checkbox",
+            "label": i18n.get("Allow Comments")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlycompactToolbar",
+            "type": "checkbox",
+            "label": i18n.get("Enable Compact Toolbar")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyleftMenu",
+            "type": "checkbox",
+            "label": i18n.get("Enable Left menu")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyrightMenu",
+            "type": "checkbox",
+            "label": i18n.get("Enable Right menu")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlytoolbar",
+            "type": "checkbox",
+            "label": i18n.get("Enable Main Toolbar")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyheader",
+            "type": "checkbox",
+            "label": i18n.get("Enable Header")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "statusBar",
+            "type": "checkbox",
+            "label": i18n.get("Enable Status bar")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyautosave",
+            "type": "checkbox",
+            "label": i18n.get("Enable Auto Save")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyforcesave",
+            "type": "checkbox",
+            "label": i18n.get("Enable Force Save")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlycommentAuthorOnly",
+            "type": "checkbox",
+            "label": i18n.get("Comments by Author only")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyshowReviewChanges",
+            "type": "checkbox",
+            "label": i18n.get("Show Review Changes")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyOfficeVersion",
+            "type": "text",
+            "text": i18n.get("Enter the ONLYOFFICE version eg 5.2.2-2"),
+            "label": i18n.get("Version")
+        },
+        {
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("ONLYOFFICE"),
+            "name": "onlyzoom",
+            "type": "slider",
+            "label": i18n.get("Zoom factor"),
+            "max": 100,
+            "min": 50,
+            "step": 5
         },
         {                                       // RDP (remote desktop protocol)
             "tab": i18n.get("ofmeet"),
@@ -894,7 +1017,13 @@ this.manifest = {
             "label": i18n.get("Gmail"),
             "text": i18n.get("Enter list of email accounts"),
         },
-
+        {                                       // a/v capture
+            "tab": i18n.get("ofmeet"),
+            "group": i18n.get("A/V Capture"),
+            "name": "enableAVCapture",
+            "type": "checkbox",
+            "label": i18n.get("Enable Audio/Video Capture")
+        },
         {                                           // search
             "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),

@@ -37,6 +37,11 @@
         "message": "will be add to this conversation. Are you sure?",
         "description": "Title for hp5 content injection"
     },
+
+    "resetConfirm": {
+        "message": "This will reset Pade back to its original default settings. Are you sure?",
+        "description": "Title for factory reset confirmation"
+    },
     
     "markdownConfirm": {
         "message": "This text will be pasted into Converse. Are you sure?",

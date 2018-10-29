@@ -8,6 +8,7 @@
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var SearchDialog = null;
     var searchDialog = null;
+    var searchAvailable = false;
 
     converse.plugins.add("search", {
         'dependencies': [],
@@ -65,7 +66,7 @@
                     {
                         var searchResults = that.el.querySelector("#pade-search-results");
 
-                        bgWindow.searchConversations(keyword, function(html, conversations)
+                        bgWindow.searchConversations(keyword, function(html, conversations, error)
                         {
                             searchResults.innerHTML = html;
 
@@ -110,13 +111,19 @@
                     var view = this;
                     var id = this.model.get("box_id");
 
-                    addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search"></a>');
-
-                    setTimeout(function()
+                    if (bgWindow)
                     {
-                        document.dispatchEvent(new CustomEvent('pade.search.setup', {detail: {id: id, view: view}}));
-                    });
+                        bgWindow.searchConversations("__DUMMY__", function(html, conversations, error)
+                        {
+                            if (!error)
+                            {
+                                addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search"></a>');
+                                document.dispatchEvent(new CustomEvent('pade.search.setup', {detail: {id: id, view: view}}));
 
+                                searchAvailable = true;
+                            }
+                        });
+                    }
                     return result;
                 }
             },
@@ -126,17 +133,20 @@
                 {
                     this.__super__.renderChatMessage.apply(this, arguments);
 
-                    converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
+                    if (searchAvailable)
                     {
-                        badge.addEventListener('click', function(evt)
+                        converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
                         {
-                            evt.stopPropagation();
+                            badge.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
 
-                            console.log("pade.hashtag click", badge.innerText);
-                            searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
-                            searchDialog.show();
-                        }, false);
-                    });
+                                console.log("pade.hashtag click", badge.innerText);
+                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
+                                searchDialog.show();
+                            }, false);
+                        });
+                    }
                 }
             }
         }

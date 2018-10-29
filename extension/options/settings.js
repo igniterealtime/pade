@@ -330,6 +330,15 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        settings.manifest.factoryReset.addEvent("action", function ()
+        {
+            if (confirm(chrome.i18n.getMessage("resetConfirm")))
+            {
+                localStorage.clear();
+                background.reloadApp();
+            }
+        });
+
         settings.manifest.useClientCert.addEvent("action", function ()
         {
             setDefaultPassword(settings);
@@ -604,6 +613,17 @@ function doDefaults()
 
     // web apps
     setSetting("webApps", "web.skype.com, web.whatsapp.com");
+
+    // only office
+    setSetting("onlyOfficeVersion", "5.2.2-2");
+    setSetting("onlyzoom", 100);
+    setSetting("onlycomments", true);
+    setSetting("onlychat", true);
+    setSetting("onlyleftMenu", true);
+    setSetting("onlyrightMenu", true);
+    setSetting("onlyheader", true);
+    setSetting("onlystatusBar", true);
+    setSetting("onlyautosave", true);
 }
 
 function setDefaultPassword(settings)

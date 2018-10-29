@@ -15,6 +15,14 @@ window.addEventListener("unload", function() {
     console.log("sip-phone unload", sessionid);
 
     if (sessionid) ctxSip.sipHangUp(sessionid);
+
+    var setSetting = function(name, value)
+    {
+        window.localStorage["store.settings." + name] = JSON.stringify(value);
+    }
+
+    setSetting("phoneWindow", {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
+
 });
 
 window.addEventListener("load", function()

@@ -48,5 +48,13 @@ window.addEventListener("beforeunload", function()
 
 window.addEventListener("unload", function()
 {
+    var setSetting = function(name, value)
+    {
+        window.localStorage["store.settings." + name] = JSON.stringify(value);
+    }
+
+    setSetting(location.href, {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
+
    clearActiveCall()
+
 })

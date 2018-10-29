@@ -288,10 +288,30 @@
                     var oobUrl = this.model.get('oob_url');
                     var oobDesc = this.model.get('oob_desc');
 
-                    if (oobUrl && oobDesc) {
+                    if (oobUrl)
+                    {
+                        if (!oobDesc)
+                        {
+                            var pos = oobUrl.lastIndexOf("/");
+                            oobDesc = oobUrl.substring(pos + 1);
+                        }
+
                         var viewId = "oob-url-" + Math.random().toString(36).substr(2,9)
-                        var oob_content = '<a id="' + viewId + '" href="#">' + oobDesc + '</a>';
-                        setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId);
+                        var oob_content = '<a id="' + viewId + '" href="#"> Collaborate on ' + oobDesc + '</a>';
+
+                        if (isOnlyOfficeDoc(oobUrl))
+                        {
+                            if (bgWindow.getSetting("enableOnlyOffice", false))
+                            {
+                                var pos = oobUrl.lastIndexOf("/");
+                                oob_content = '<a id="' + viewId + '" href="#"> Collaborate on ' + oobUrl.substring(pos + 1) + '</a>';
+                                setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
+                            }
+                            else
+                                renderSuperChatMessage(this, arguments);
+                        }
+                        else
+                            setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                     }
                     else
 
@@ -431,13 +451,13 @@
                             //console.log("pasteTextRich", data);
 
                             if (bgWindow.getSetting("useMarkdown", false))
-                                pasteInputs[id][0].value = clipboard2Markdown.convert(data.text);
+                                pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('pasteTextHtml', function(ev, data){
                             //console.log("pasteTextHtml", data);
 
                             if (bgWindow.getSetting("useMarkdown", false))
-                                pasteInputs[id][0].value = clipboard2Markdown.convert(data.text);
+                                pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('focus', function(){
                             //console.log("paste - focus", id);
@@ -625,7 +645,7 @@
         chat.__super__.renderChatMessage.apply(chat, arguments);
     }
 
-    var setupContentHandler = function(chat, avRoom, content, callback, chatId)
+    var setupContentHandler = function(chat, avRoom, content, callback, chatId, title)
     {
         var moment_time = moment(chat.model.get('time'));
         var pretty_time = moment_time.format(_converse.time_format);
@@ -644,7 +664,8 @@
             {
                 if (document.getElementById(chatId)) document.getElementById(chatId).onclick = function()
                 {
-                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"));
+                    var target = chat.model.get("type") == "groupchat" ? chat.model.get("from") : chat.model.get("jid");
+                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"), title, Strophe.getBareJidFromJid(target));
                 }
             });
         }
@@ -727,16 +748,42 @@
         messageCount = 0;
     }
 
-    var doOobSession = function doOobSession(url, jid, type)
+    var isOnlyOfficeDoc = function isOnlyOfficeDoc(url)
     {
-        console.log("doOobSession", url, jid, type);
-        bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=false&url=" + url + "&jid=" + jid + "&type=" + type), null, 1024, 800);
+        var onlyOfficeDoc = false;
+        var pos = url.lastIndexOf(".");
+
+        if (pos > -1)
+        {
+            var exten = url.substring(pos + 1);
+            onlyOfficeDoc = "doc docx ppt pptx xls xlsx csv".indexOf(exten) > -1;
+        }
+        return onlyOfficeDoc;
     }
 
-    var doooB = function doooB(view, id, jid, type)
+    var doOobSession = function doOobSession(url, jid, chatType, title, target)
+    {
+        console.log("doOobSession", url, jid, chatType, title);
+
+        if (isOnlyOfficeDoc(url))
+        {
+            if (bgWindow.pade.server == "desktop-545pc5b:7443")   // dev testing
+            {
+                url = url.replace("https://desktop-545pc5b:7443", "http://desktop-545pc5b:7070");
+                bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/onlyoffice/index.html?url=" + url + "&title=" + title + "&to=" + target + "&from=" + _converse.connection.jid + "&type=" + chatType));
+
+            } else
+                bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/onlyoffice/index.html?url=" + url + "&title=" + title + "&to=" + target + "&from=" + _converse.connection.jid + "&type=" + chatType));
+
+        } else {
+            bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=false&url=" + url + "&jid=" + jid + "&type=" + chatType), null, 1024, 800);
+        }
+    }
+
+    var doooB = function doooB(view, id, jid, chatType)
     {
         var activeDoc = bgWindow.pade.collabDocs[bgWindow.pade.activeUrl];
-        console.log("doooB", activeDoc, view, id, jid, type);
+        console.log("doooB", activeDoc, view, id, jid, chatType);
 
         _converse.connection.send($msg(
         {
@@ -746,7 +793,7 @@
             'id': _converse.connection.getUniqueId()
         }).c('body').t(bgWindow.pade.activeUrl).up().c('x', {xmlns: 'jabber:x:oob'}).c('url').t(bgWindow.pade.activeUrl).up().c('desc').t(activeDoc));
 
-        bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=true&url=" + bgWindow.pade.activeUrl + "&jid=" + jid + "&type=" + type), null, 1024, 800);
+        bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=true&url=" + bgWindow.pade.activeUrl + "&jid=" + jid + "&type=" + chatType), null, 1024, 800);
     }
 
     var doH5p = function doH5p(view, id)

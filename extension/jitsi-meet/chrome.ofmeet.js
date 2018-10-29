@@ -389,6 +389,27 @@ var ofmeet = (function(of)
             {
                 of.dialstring = APP.conference.roomName;
                 //connectSIP();
+
+                /*
+                document.addEventListener('contextmenu', function(e)
+                {
+                    e.preventDefault();
+
+                    if (document.pictureInPictureElement)
+                    {
+                        document.exitPictureInPicture()
+                          .then(() => {  })
+                          .catch(() => { });
+
+                    } else {
+
+                        document.getElementById("largeVideo").requestPictureInPicture()
+                        .then(() => { })
+                        .catch(() => { });
+                    }
+
+                }, false)
+                */
             }
 
             if (OFMEET_CONFIG.recordAudio || OFMEET_CONFIG.recordVideo)
@@ -729,8 +750,15 @@ var ofmeet = (function(of)
     {
         console.log("ofmeet.js unload");
 
+        var setSetting = function(name, value)
+        {
+            window.localStorage["store.settings." + name] = JSON.stringify(value);
+        }
+
         localStorage.removeItem("xmpp_username_override");
         localStorage.removeItem("xmpp_password_override");
+
+        setSetting("videoWindow", {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
     });
 
     window.addEventListener("DOMContentLoaded", function()

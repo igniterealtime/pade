@@ -399,6 +399,11 @@ window.addEventListener("load", function()
         //console.log("minimised", win, pade.minimised, pade.chatWindow);
     });
 
+    chrome.windows.onCreated.addListener(function(window)
+    {
+        console.log("opening window ", window);
+    })
+
     chrome.windows.onRemoved.addListener(function(win)
     {
         //console.log("closing window ", win);
@@ -816,6 +821,15 @@ function notifyList(message, context, items, buttons, callback)
     });
 };
 
+function updateWindowCoordinates(win, winId, coordinates)
+{
+    var savedWin = getSetting(win, null);
+
+    if (savedWin)
+        chrome.windows.update(winId, savedWin);
+    else
+        chrome.windows.update(winId, coordinates);
+}
 
 function closeOffice365Window(business)
 {
@@ -886,6 +900,7 @@ function openApcWindow(state)
         {
             pade.apcWindow = win;
             chrome.windows.update(pade.apcWindow.id, {width: 820, height: 640});
+            updateWindowCoordinates("apcWindow", pade.apcWindow.id, {width: 820, height: 640});
         });
 
     } else {
@@ -920,7 +935,7 @@ function openGmailWindow(email, state)
         chrome.windows.create(data, function (win)
         {
             pade.gmailWindow[email] = win;
-            chrome.windows.update(pade.gmailWindow[email].id, {width: 1024, height: 768});
+            updateWindowCoordinates(email, pade.gmailWindow[email].id, {width: 1024, height: 768});
         });
 
     } else {
@@ -959,7 +974,7 @@ function openWebAppsWindow(url, state, width, height)
         chrome.windows.create(data, function (win)
         {
             pade.webAppsWindow[url] = win;
-            chrome.windows.update(pade.webAppsWindow[url].id, {width: width, height: height});
+            updateWindowCoordinates(url, pade.webAppsWindow[url].id, {width: width, height: height});
         });
 
     } else {
@@ -993,11 +1008,12 @@ function openPhoneWindow(focus, state)
         chrome.windows.create(data, function (win)
         {
             pade.sip.window = win;
-            chrome.windows.update(pade.sip.window.id, {drawAttention: focus, width: 400, height: 780});
+            chrome.windows.update(pade.sip.window.id, {width: 400, height: 780});
+            updateWindowCoordinates("phoneWindow", pade.sip.window.id, {width: 400, height: 780});
         });
 
     } else {
-        chrome.windows.update(pade.sip.window.id, {drawAttention: focus, focused: focus5});
+        chrome.windows.update(pade.sip.window.id, {focused: focus5});
     }
 }
 
@@ -1031,7 +1047,7 @@ function openChatWindow(url, update, state)
         chrome.windows.create(data, function (win)
         {
             pade.chatWindow = win;
-            chrome.windows.update(pade.chatWindow.id, {width: width, height: 900});
+            updateWindowCoordinates("chatWindow", pade.chatWindow.id, {width: width, height: 900});
         });
 
     } else {
@@ -1066,7 +1082,7 @@ function openVideoWindowUrl(url)
     chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
     {
         pade.videoWindow = win;
-        chrome.windows.update(pade.videoWindow.id, {width: 1024, height: 800});
+        updateWindowCoordinates("videoWindow", pade.videoWindow.id, {width: 1024, height: 800});
 
         sendToJabra("offhook");
     });
@@ -1091,7 +1107,7 @@ function openBlogWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blogWindow = win;
-            chrome.windows.update(pade.blogWindow.id, {width: 1024, height: 800});
+            updateWindowCoordinates("blogWindow", pade.blogWindow.id, {width: 1024, height: 800});
         });
     } else {
         chrome.windows.update(pade.blogWindow.id, {focused: true});
@@ -1117,7 +1133,7 @@ function openAVCaptureWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.avCaptureWindow = win;
-            chrome.windows.update(pade.avCaptureWindow.id, {width: 800, height: 640});
+            updateWindowCoordinates("avCaptureWindow", pade.avCaptureWindow.id, {width: 800, height: 640});
         });
     } else {
         chrome.windows.update(pade.avCaptureWindow.id, {focused: true});
@@ -1143,7 +1159,7 @@ function openBlastWindow()
         chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
         {
             pade.blastWindow = win;
-            chrome.windows.update(pade.blastWindow.id, {width: 1024, height: 800});
+            updateWindowCoordinates("blastWindow", pade.blastWindow.id, {width: 1024, height: 800});
         });
     } else {
         chrome.windows.update(pade.blastWindow.id, {focused: true});
@@ -1175,7 +1191,7 @@ function openVertoWindow(state)
         chrome.windows.create(data, function (win)
         {
             pade.vertoWindow = win;
-            chrome.windows.update(pade.vertoWindow.id, {width: 1024, height: 800});
+            updateWindowCoordinates("vertoWindow", pade.vertoWindow.id, {width: 1024, height: 800});
         });
     } else {
         chrome.windows.update(pade.vertoWindow.id, {focused: true});
@@ -2829,19 +2845,19 @@ function searchConversations(keyword, callback)
         if (messages.conversation instanceof Array)
         {
             conversations = messages.conversation;
-            callback(processConvSearch(conversations, keyword), conversations);
+            callback(processConvSearch(conversations, keyword), conversations, false);
         }
         else if (messages.conversation) {
             conversations = [messages.conversation];
-            callback(processConvSearch([messages.conversation], keyword), conversations);
+            callback(processConvSearch([messages.conversation], keyword), conversations, false);
         }
         else {
-            callback("<p/><p/>No conversations found", conversations);
+            callback("<p/><p/>No conversations found", conversations, false);
         }
 
     }).catch(function (err) {
         console.error('convSearch error', err);
-        callback("<p/><p/> Error - " + err, conversations);
+        callback("<p/><p/> Error - " + err, conversations, true);
     });
 }
 

@@ -3,6 +3,13 @@ var bgWindow = null, collab = {};
 window.addEventListener("unload", function()
 {
     sendOfMeet('{"event": "ofmeet.event.url.end"}');
+
+    var setSetting = function(name, value)
+    {
+        window.localStorage["store.settings." + name] = JSON.stringify(value);
+    }
+
+    setSetting(location.href, {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
 });
 
 window.addEventListener("load", function()

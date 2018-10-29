@@ -1,3 +1,8 @@
+window.addEventListener("unload", function()
+{
+    setSetting("chatWindow", {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
+});
+
 window.addEventListener("load", function()
 {
     function getUniqueID()
@@ -234,6 +239,12 @@ function getSetting(name, defaultValue)
     }
 
     return value;
+}
+
+function setSetting(name, value)
+{
+    //console.log("setSetting", name, value);
+    window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
 function getPassword(password, localStorage)
