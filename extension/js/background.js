@@ -17,6 +17,8 @@ window.addEventListener("unload", function ()
 {
     console.log("pade unloading applications");
 
+    if (pade.planner) clearInterval(pade.planner);
+
     closeCredsWindow();
     closeChatWindow();
     closeVideoWindow();
@@ -275,8 +277,8 @@ window.addEventListener("load", function()
 
     if (getSetting("enableInverse", false) == false)
     {
-        chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
         chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+        chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
     }
 
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
@@ -401,7 +403,7 @@ window.addEventListener("load", function()
 
     chrome.windows.onCreated.addListener(function(window)
     {
-        console.log("opening window ", window);
+        //console.log("opening window ", window);
     })
 
     chrome.windows.onRemoved.addListener(function(win)
@@ -825,9 +827,18 @@ function updateWindowCoordinates(win, winId, coordinates)
 {
     var savedWin = getSetting(win, null);
 
-    if (savedWin)
+    console.log("updateWindowCoordinates", win, savedWin, coordinates);
+
+    if (savedWin && savedWin.height && savedWin.width && savedWin.top && savedWin.left)   // checks for corrupt or bad data
+    {
+        if (savedWin.height < 250 || savedWin.height > screen.availHeight) savedWin.height = screen.availHeight - 50;
+        if (savedWin.width < 250 || savedWin.width > screen.availWidth) savedWin.width = screen.availWidth - 50;
+
+        if (savedWin.top < -screen.availHeight || savedWin.top > screen.availHeight) savedWin.top = screen.availTop;
+        if (savedWin.left < -screen.availWidth || savedWin.left > screen.availWidth) savedWin.left = screen.availLeft;
+
         chrome.windows.update(winId, savedWin);
-    else
+    } else
         chrome.windows.update(winId, coordinates);
 }
 
@@ -1330,15 +1341,17 @@ function addHandlers()
 
             if ( pos0 > -1 && pos2 > -1 )
             {
+                reason = body.substring(0, pos2);
                 room = body.substring(pos0 + 27);
-                handleInvitation({room: room, offerer: offerer});
+                handleInvitation({room: room, offerer: offerer, reason: reason});
             }
             else
 
             if ( pos1 > -1 && pos2 > -1 )
             {
+                reason = body.substring(0, pos2);
                 room = body.substring(pos1 + 8);
-                handleInvitation({room: room, offerer: offerer});
+                handleInvitation({room: room, offerer: offerer, reason: reason});
             }
             else
 
@@ -1615,12 +1628,15 @@ function findUsers(search, callback)
     });
 };
 
-function inviteToConference(jid, room)
+function inviteToConference(jid, room, invitation)
 {
-    //console.log("inviteToConference", jid, room);
+    var url = "https://" + pade.server + "/ofmeet/" + room;
+    var invite = (invitation ? invitation : "Please join me in") + " " + url;
+    var roomJid = room + "@conference." + pade.domain;
+
+    console.log("inviteToConference", jid, room, url, roomJid, invite);
 
     try {
-        var invite = "Please join me in https://" + pade.server + "/ofmeet/" + room;
         pade.connection.send($msg({type: "chat", to: jid}).c("body").t(invite));
     } catch (e) {
         console.error(e);
@@ -1644,7 +1660,7 @@ function injectMessage(message, room, nickname)
 
 function handleInvitation(invite)
 {
-    //console.log("handleInvitation", invite);
+    console.log("handleInvitation", invite);
 
     var jid = Strophe.getBareJidFromJid(invite.offerer);
 
@@ -1671,7 +1687,7 @@ function handleInvitation(invite)
 
 function processInvitation(title, label, room, autoaccept, id, reason)
 {
-    //console.log("processInvitation", title, label, room, id, reason);
+    console.log("processInvitation", title, label, room, id, reason);
 
     if (!autoaccept || autoaccept != "true")
     {
@@ -1706,7 +1722,7 @@ function processInvitation(title, label, room, autoaccept, id, reason)
 
 function acceptCall(title, label, room, id)
 {
-    //console.log("acceptCall", id, title, label, room, pade.questions[label]);
+    console.log("acceptCall", id, title, label, room, pade.questions[label]);
 
     if (isAudioOnly())
     {
@@ -2673,6 +2689,7 @@ function doPadeConnect()
 
                 chrome.browserAction.setBadgeText({ text: "" });
                 closeCredsWindow();
+                runMeetingPlanner();
 
             }, 3000);
         }
@@ -2868,7 +2885,7 @@ function processConvSearch(conversations, keyword)
     keyword = keyword.replace(/[^a-zA-Z ]/g, "");
 
     var query = new RegExp("(\\b" + keyword + "\\b)", "gim");
-    var html = "<table><tr><th>Date</th><th>Chat</th><th>Conversation</th></tr>";
+    var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Chat</th><th>Conversation</th></tr>";
 
     console.log("processConvSearch", conversations, keyword);
 
@@ -2926,6 +2943,8 @@ function updateCollabUrlList()
 
     for (var i=0; i<pade.collabList.length; i++)
     {
+        if (!pade.collabList[i] || pade.collabList[i] == "") continue;
+
         if (i == 0)
         {
             if (!pade.activeUrl) pade.activeUrl = pade.collabList[i];
@@ -2935,4 +2954,68 @@ function updateCollabUrlList()
         chrome.contextMenus.create(urlMenu);
         pade.collabDocs[pade.collabList[i]] = pade.collabList[i];
     }
+}
+
+
+function runMeetingPlanner()
+{
+    if (getSetting("enableMeetingPlanner"))
+    {
+        var plannerCheck = getSetting("plannerCheck", 10) * 60000;
+        pade.planner = setInterval(executeMeetingPlanner, plannerCheck);
+        executeMeetingPlanner();    // run immediatelty
+    }
+}
+
+
+function executeMeetingPlanner()
+{
+    var plannerNotice = getSetting("plannerNotice", 5) * 60000;
+    var plannerExpire = getSetting("plannerExpire", 15) * 60000;
+
+    var events = [];
+    var encoded = window.localStorage["store.settings.savedPlanner"];
+    if (encoded) events = JSON.parse(atob(encoded));
+
+    var meetings = {};
+    encoded = window.localStorage["store.settings.savedMeetings"];
+    if (encoded) meetings = JSON.parse(atob(encoded));
+
+
+    for (var i=0; i<events.length; i++)
+    {
+        var title = events[i].title.split("@");
+        var start = (new Date(events[i].start)).getTime();
+        var now = (new Date()).getTime();
+        var timeDiff = start - now;
+
+        if (title.length == 2 && meetings[title[1]])
+        {
+            var meeting = meetings[title[1]];
+            console.log("Processing meeting", title, start, now, plannerNotice, timeDiff, meeting);
+
+            if (timeDiff < plannerNotice)
+            {
+                if (timeDiff > -plannerExpire)
+                {
+                    console.log("Triggered meeting", title, start, now, plannerNotice, timeDiff, meeting);
+
+                    inviteToConference(pade.connection.jid, meeting.room, meeting.invite);
+
+                    for (var j=0; j<meeting.inviteList.length; j++)
+                    {
+                        if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
+                        {
+                            inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
+                        }
+                    }
+                } else {
+                    console.log("Expired meeting", title, start, now, plannerNotice, timeDiff, meeting);
+                }
+                events.splice(i, 1);
+                window.localStorage["store.settings.savedPlanner"] = btoa(JSON.stringify(events));
+            }
+        }
+    }
+
 }

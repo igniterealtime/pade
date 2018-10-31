@@ -33,6 +33,16 @@
         "description": "Ethereum network name"
     },    
 
+    "collaborateOn": {
+        "message": "Lets collaborate on",
+        "description": "Title to collaboration invitation"
+    },
+    
+    "plannerConfirm": {
+        "message": "Meeting Planner will be updated. Are you sure?",
+        "description": "Title to update local storage meeting planner"
+    },    
+    
     "hp5Confirm": {
         "message": "will be add to this conversation. Are you sure?",
         "description": "Title for hp5 content injection"

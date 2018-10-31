@@ -37,7 +37,46 @@ this.manifest = {
             "group": i18n.get("connection"),
             "name": "useCredsMgrApi",
             "type": "checkbox",
-            "label": i18n.get("Use Credential Management API")
+            "label": i18n.get("Use Credential Management API SSO")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("login"),
+            "name": "displayname",
+            "type": "text",
+            "label": i18n.get("displayname"),
+            "text": i18n.get("Another User")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("login"),
+            "name": "username",
+            "type": "text",
+            "label": i18n.get("username"),
+            "text": i18n.get("another.user")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("login"),
+            "name": "password",
+            "type": "text",
+            "label": i18n.get("password"),
+            "text": i18n.get("Pa55w0rd!!#"),
+            "masked": true
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("login"),
+            "name": "connect",
+            "type": "button",
+            "text": i18n.get("login")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("login"),
+            "name": "status",
+            "text": i18n.get(""),
+            "type": "description"
         },
         {
             "tab": i18n.get("connection"),
@@ -88,45 +127,6 @@ this.manifest = {
             "name": "certificate",
             "type": "button",
             "text": i18n.get("Download")
-        },
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
-            "name": "displayname",
-            "type": "text",
-            "label": i18n.get("displayname"),
-            "text": i18n.get("x_characters")
-        },
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
-            "name": "username",
-            "type": "text",
-            "label": i18n.get("username"),
-            "text": i18n.get("x_characters")
-        },
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
-            "name": "password",
-            "type": "text",
-            "label": i18n.get("password"),
-            "text": i18n.get("x_characters_pw"),
-            "masked": true
-        },
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
-            "name": "connect",
-            "type": "button",
-            "text": i18n.get("login")
-        },
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
-            "name": "status",
-            "text": i18n.get(""),
-            "type": "description"
         },
         {
             "tab": i18n.get("connection"),
@@ -352,6 +352,214 @@ this.manifest = {
             "type": "button",
             "text": i18n.get("Register URL Protocols")
         },
+        {                                    // ofmeet config
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Saved"),
+            "name": "inviteMeetingsHeader",
+            "text": i18n.get("Use <b>Search/Meet Later</b> to find people and create Meeting invitations"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Saved"),
+            "name": "inviteMeetingsString",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter the partial name of meeting or blank for all"),
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Saved"),
+            "name": "inviteMeetings",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Find")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Saved"),
+            "name": "inviteMeetingsResults",
+            "text": i18n.get(""),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Planner"),
+            "name": "meetingPlanner",
+            "text": i18n.get(""),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Planner Settings"),
+            "name": "enableMeetingPlanner",
+            "type": "checkbox",
+            "label": i18n.get("Enable Meeting Planner")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Planner Settings"),
+            "name": "plannerNotice",
+            "type": "slider",
+            "label": i18n.get("Meeting Planner notice period (mins)"),
+            "max": 30,
+            "min": 0,
+            "step": 5
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Planner Settings"),
+            "name": "plannerExpire",
+            "type": "slider",
+            "label": i18n.get("Meeting Planner expiry period (mins)"),
+            "max": 30,
+            "min": 0,
+            "step": 5
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Planner Settings"),
+            "name": "plannerCheck",
+            "type": "slider",
+            "label": i18n.get("Meeting Planner check interval (mins)"),
+            "max": 30,
+            "min": 5,
+            "step": 5
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "disableAudioLevels",
+            "type": "checkbox",
+            "label": i18n.get("Disable Audio levels")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "enableLipSync",
+            "type": "checkbox",
+            "label": i18n.get("Enable LipSync")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "p2pMode",
+            "type": "checkbox",
+            "label": i18n.get("Enable P2P Mode")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "startWithAudioMuted",
+            "type": "checkbox",
+            "label": i18n.get("Start with Audio Muted")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "startWithVideoMuted",
+            "type": "checkbox",
+            "label": i18n.get("Start with Video Muted")
+        },
+/*
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "recordAudio",
+            "type": "checkbox",
+            "label": i18n.get("Record Audio")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "recordVideo",
+            "type": "checkbox",
+            "label": i18n.get("Record Audio/Video")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "enableTranscription",
+            "type": "checkbox",
+            "label": i18n.get("Enable Voice-to-Text Transcription")
+        },
+*/
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "startBitrate",
+            "type": "slider",
+            "label": i18n.get("Start Bitrate"),
+            "max": 1600,
+            "min": 800,
+            "step": 100
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "resolution",
+            "type": "slider",
+            "label": i18n.get("Resolution"),
+            "max": 1080,
+            "min": 320,
+            "step": 160
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "minHDHeight",
+            "type": "slider",
+            "label": i18n.get("Min HD Height"),
+            "max": 1000,
+            "min": 0,
+            "step": 100
+        },
+        {                                               // ofmeet ui
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("UI Settings"),
+            "name": "VERTICAL_FILMSTRIP",
+            "type": "checkbox",
+            "label": i18n.get("Enable Vertical Filmstrip")
+        },
+/*
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("UI Settings"),
+            "name": "CAPTIONS_SUBTITLES",
+            "type": "checkbox",
+            "label": i18n.get("Enable Captions/Sub Titles")
+        },
+*/
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("UI Settings"),
+            "name": "INITIAL_TOOLBAR_TIMEOUT",
+            "type": "slider",
+            "label": i18n.get("Initial Toolbar Timeout"),
+            "max": 50000,
+            "min": 10000,
+            "step": 10000
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("UI Settings"),
+            "name": "TOOLBAR_TIMEOUT",
+            "type": "slider",
+            "label": i18n.get("Toolbar Timeout"),
+            "max": 10000,
+            "min": 2000,
+            "step": 1000
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("UI Settings"),
+            "name": "FILM_STRIP_MAX_HEIGHT",
+            "type": "slider",
+            "label": i18n.get("Filmstrip Maximum Height"),
+            "max": 160,
+            "min": 80,
+            "step": 10
+        },
         {                                             // converse-inverse
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
@@ -460,155 +668,29 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("Meetings"),
+            "group": i18n.get("Labels"),
             "name": "ofmeetInvitation",
             "type": "text",
             "label": i18n.get("Invitation"),
             "text": i18n.get("Please join meeting at"),
         },
-        {                                                   // ofmeet config
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "disableAudioLevels",
-            "type": "checkbox",
-            "label": i18n.get("Disable Audio levels")
-        },
         {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "enableLipSync",
-            "type": "checkbox",
-            "label": i18n.get("Enable LipSync")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "p2pMode",
-            "type": "checkbox",
-            "label": i18n.get("Enable P2P Mode")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "startWithAudioMuted",
-            "type": "checkbox",
-            "label": i18n.get("Start with Audio Muted")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "startWithVideoMuted",
-            "type": "checkbox",
-            "label": i18n.get("Start with Video Muted")
-        },
-/*
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "recordAudio",
-            "type": "checkbox",
-            "label": i18n.get("Record Audio")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "recordVideo",
-            "type": "checkbox",
-            "label": i18n.get("Record Audio/Video")
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "enableTranscription",
-            "type": "checkbox",
-            "label": i18n.get("Enable Voice-to-Text Transcription")
-        },
-*/
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "startBitrate",
-            "type": "slider",
-            "label": i18n.get("Start Bitrate"),
-            "max": 1600,
-            "min": 800,
-            "step": 100
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "resolution",
-            "type": "slider",
-            "label": i18n.get("Resolution"),
-            "max": 1080,
-            "min": 320,
-            "step": 160
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("config"),
-            "name": "minHDHeight",
-            "type": "slider",
-            "label": i18n.get("Min HD Height"),
-            "max": 1000,
-            "min": 0,
-            "step": 100
-        },
-        {                                               // ofmeet ui
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("ui"),
-            "name": "VERTICAL_FILMSTRIP",
-            "type": "checkbox",
-            "label": i18n.get("Enable Vertical Filmstrip")
-        },
-/*
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("ui"),
-            "name": "CAPTIONS_SUBTITLES",
-            "type": "checkbox",
-            "label": i18n.get("Enable Captions/Sub Titles")
-        },
-*/
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("ui"),
-            "name": "INITIAL_TOOLBAR_TIMEOUT",
-            "type": "slider",
-            "label": i18n.get("Initial Toolbar Timeout"),
-            "max": 50000,
-            "min": 10000,
-            "step": 10000
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("ui"),
-            "name": "TOOLBAR_TIMEOUT",
-            "type": "slider",
-            "label": i18n.get("Toolbar Timeout"),
-            "max": 10000,
-            "min": 2000,
-            "step": 1000
-        },
-        {
-            "tab": i18n.get("ofmeet"),
-            "group": i18n.get("ui"),
-            "name": "FILM_STRIP_MAX_HEIGHT",
-            "type": "slider",
-            "label": i18n.get("Filmstrip Maximum Height"),
-            "max": 160,
-            "min": 80,
-            "step": 10
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Labels"),
+            "name": "letsCollaborate",
+            "type": "text",
+            "label": i18n.get("Invitation"),
+            "text": i18n.get("Lets collaborate on"),
         },
         {                                               // collaboration
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "collabUrlListlabel",
             "type": "description",
             "text": i18n.get("List of collaboration/co-browse urls")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "updateCollabUrlList",
             "type": "button",
@@ -616,7 +698,7 @@ this.manifest = {
             "text": i18n.get("Update")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "collabUrlList",
             "type": "textarea",
@@ -624,77 +706,77 @@ this.manifest = {
             "text": i18n.get("https://igniterealtime.org\nhttps://www.princeton.edu/~archss/webpdfs08/BaharMartonosi.pdf"),
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "uploadAppLabel",
             "type": "description",
             "text": i18n.get("upload_app")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "uploadApp",
             "type": "description",
             "text": ""
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "uploadStatus",
             "type": "description",
             "text": ""
         },
         {                                       // touchpad
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("TouchPad"),
             "name": "enableTouchPad",
             "type": "checkbox",
             "label": i18n.get("Enable Communicator TouchPad")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("TouchPad"),
             "name": "useStreamDeck",
             "type": "checkbox",
             "label": i18n.get("Use Stream Deck as a TouchPad")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("TouchPad"),
             "name": "touchPadAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Communicator Touchpad")
         },
         {                                      // community web app
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "enableCommunity",
             "type": "checkbox",
             "label": i18n.get("Enable Community")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "communityAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Community")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "embedCommunityChat",
             "type": "checkbox",
             "label": i18n.get("Embed Converse for Community chat")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "communitySidecar",
             "type": "checkbox",
             "label": i18n.get("Use a sidecar panel for Converse")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "disableChatButton",
             "type": "checkbox",
@@ -702,14 +784,14 @@ this.manifest = {
         },
 /*
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "chatWithOnlineContacts",
             "type": "checkbox",
             "label": i18n.get("Chat with Online Contacts")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "notifyWhenMentioned",
             "type": "checkbox",
@@ -717,7 +799,7 @@ this.manifest = {
         },
 */
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Community"),
             "name": "communityUrl",
             "type": "text",
@@ -725,147 +807,147 @@ this.manifest = {
             "text": i18n.get("https://my_server/tiki"),
         },
         {                                       // sip phone
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Phone"),
             "name": "sipDescription",
             "type": "description",
             "text": i18n.get("CTX SIP Phone. <b>The ofswitch plugin for Openfire is required for this</b>")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Phone"),
             "name": "enableSip",
             "type": "checkbox",
             "label": i18n.get("Enable SIP Phone")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Phone"),
             "name": "enableVerto",
             "type": "checkbox",
             "label": i18n.get("Enable Verto Communicator")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Phone"),
             "name": "sipAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Phone")
         },
         {                                        // draw.io web apps
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("DrawIO"),
             "name": "drawioDescription",
             "type": "description",
             "text": i18n.get("Diagramming Tool. <b>The DrawIO plugin for Openfire is required for this</b>")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("DrawIO"),
             "name": "enableDrawIO",
             "type": "checkbox",
             "label": i18n.get("Enable Diagraming Tool")
         },
         {                                        // ONLYOFFICE collaboration document editors
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyOfficeDescription",
             "type": "description",
             "text": i18n.get("ONLYOFFICE Collaboration Document Editors. <b>The Docker plugin for Openfire is required for this</b>")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "enableOnlyOffice",
             "type": "checkbox",
             "label": i18n.get("Enable Collaboration Document Editors")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlychat",
             "type": "checkbox",
             "label": i18n.get("Enable Chat")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlycomments",
             "type": "checkbox",
             "label": i18n.get("Allow Comments")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlycompactToolbar",
             "type": "checkbox",
             "label": i18n.get("Enable Compact Toolbar")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyleftMenu",
             "type": "checkbox",
             "label": i18n.get("Enable Left menu")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyrightMenu",
             "type": "checkbox",
             "label": i18n.get("Enable Right menu")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlytoolbar",
             "type": "checkbox",
             "label": i18n.get("Enable Main Toolbar")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyheader",
             "type": "checkbox",
             "label": i18n.get("Enable Header")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "statusBar",
             "type": "checkbox",
             "label": i18n.get("Enable Status bar")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyautosave",
             "type": "checkbox",
             "label": i18n.get("Enable Auto Save")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyforcesave",
             "type": "checkbox",
             "label": i18n.get("Enable Force Save")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlycommentAuthorOnly",
             "type": "checkbox",
             "label": i18n.get("Comments by Author only")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyshowReviewChanges",
             "type": "checkbox",
             "label": i18n.get("Show Review Changes")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyOfficeVersion",
             "type": "text",
@@ -873,7 +955,7 @@ this.manifest = {
             "label": i18n.get("Version")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("ONLYOFFICE"),
             "name": "onlyzoom",
             "type": "slider",
@@ -883,14 +965,14 @@ this.manifest = {
             "step": 5
         },
         {                                       // RDP (remote desktop protocol)
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("RDP"),
             "name": "rdpDescription",
             "type": "description",
             "text": i18n.get("Remote Desktop protocol (RDP). <b>The RDP plugin for Openfire is required for this</b>")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("RDP"),
             "name": "remoteHost",
             "type": "text",
@@ -898,7 +980,7 @@ this.manifest = {
             "label": i18n.get("Remote Host")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("RDP"),
             "name": "remoteDomain",
             "type": "text",
@@ -906,7 +988,7 @@ this.manifest = {
             "label": i18n.get("Remote Domain")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("RDP"),
             "name": "remoteUsername",
             "type": "text",
@@ -914,7 +996,7 @@ this.manifest = {
             "label": i18n.get("Remote Username")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("RDP"),
             "name": "remotePassword",
             "type": "text",
@@ -923,7 +1005,7 @@ this.manifest = {
             "label": i18n.get("Remote Password")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("RDP"),
             "name": "remoteConnect",
             "type": "button",
@@ -931,21 +1013,21 @@ this.manifest = {
             "text": i18n.get("Connect")
         },
         {                                       // blogger
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Blogger"),
             "name": "blogDescription",
             "type": "description",
             "text": i18n.get("Blogger and Website Tool for LiveChat. <b>The solo plugin for Openfire is required for this</b>")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Blogger"),
             "name": "enableBlog",
             "type": "checkbox",
             "label": i18n.get("Enable Blogging")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Blogger"),
             "name": "blogName",
             "type": "text",
@@ -953,49 +1035,49 @@ this.manifest = {
             "text": i18n.get("solo"),
         },
         {                                        // message blast
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Message Blast"),
             "name": "blastDescription",
             "type": "description",
             "text": i18n.get("Message blast to multiple people Tool. <b>The ofchat plugin for Openfire is required for this</b>")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Message Blast"),
             "name": "enableBlast",
             "type": "checkbox",
             "label": i18n.get("Enable Message Blast")
         },
         {                                       // hosted web apps
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "enableOffice365Business",
             "type": "checkbox",
             "label": i18n.get("Enable Office 365 Business")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "enableOffice365Personal",
             "type": "checkbox",
             "label": i18n.get("Enable Office 365 Personal")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "of365AutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Hosted Apps")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "enableWebApps",
             "type": "checkbox",
             "label": i18n.get("Enable Web Apps")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "webApps",
             "type": "text",
@@ -1003,14 +1085,14 @@ this.manifest = {
             "text": i18n.get("Enter list of web app URLs"),
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "enableGmail",
             "type": "checkbox",
             "label": i18n.get("Enable Gmail")
         },
         {
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Hosted Apps"),
             "name": "gmailAccounts",
             "type": "text",
@@ -1018,13 +1100,36 @@ this.manifest = {
             "text": i18n.get("Enter list of email accounts"),
         },
         {                                       // a/v capture
-            "tab": i18n.get("ofmeet"),
+            "tab": i18n.get("Applications"),
             "group": i18n.get("A/V Capture"),
             "name": "enableAVCapture",
             "type": "checkbox",
             "label": i18n.get("Enable Audio/Video Capture")
         },
-        {                                           // search
+        {                                   // search
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearchString",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter the keywords delimted by space"),
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearch",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("search")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearchResults",
+            "text": i18n.get(""),
+            "type": "description"
+        },
+        {
             "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),
             "name": "searchString",
@@ -1050,6 +1155,14 @@ this.manifest = {
         {
             "tab": i18n.get("Search"),
             "group": i18n.get("Invitation List"),
+            "name": "meetingName",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter a name for the meeting"),
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Invitation List"),
             "name": "invitationList",
             "type": "textarea",
             "label": i18n.get(""),
@@ -1061,30 +1174,15 @@ this.manifest = {
             "name": "inviteToMeeting",
             "type": "button",
             "label": i18n.get(""),
-            "text": i18n.get("Invite to Meeting")
+            "text": i18n.get("Meet Now")
         },
         {
             "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearchString",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter the keywords delimted by space"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearch",
+            "group": i18n.get("Invitation List"),
+            "name": "saveMeeting",
             "type": "button",
             "label": i18n.get(""),
-            "text": i18n.get("search")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearchResults",
-            "text": i18n.get(""),
-            "type": "description"
+            "text": i18n.get("Meet Later")
         }
     ],
     "alignment": [

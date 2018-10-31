@@ -287,6 +287,11 @@
                     var body = this.model.get('message');
                     var oobUrl = this.model.get('oob_url');
                     var oobDesc = this.model.get('oob_desc');
+                    var nonCollab = !oobDesc
+                    var letsCollaborate = getSetting("letsCollaborate", chrome.i18n.getMessage("collaborateOn"));
+
+                    // TODO - collaborative documents identified by oob_desc available for UI display
+                    // Neeed to extend XEP or use better method
 
                     if (oobUrl)
                     {
@@ -297,21 +302,25 @@
                         }
 
                         var viewId = "oob-url-" + Math.random().toString(36).substr(2,9)
-                        var oob_content = '<a id="' + viewId + '" href="#"> Collaborate on ' + oobDesc + '</a>';
+                        var oob_content = '<a id="' + viewId + '" href="#"> ' + letsCollaborate + ' ' + oobDesc + '</a>';
 
                         if (isOnlyOfficeDoc(oobUrl))
                         {
                             if (bgWindow.getSetting("enableOnlyOffice", false))
                             {
                                 var pos = oobUrl.lastIndexOf("/");
-                                oob_content = '<a id="' + viewId + '" href="#"> Collaborate on ' + oobUrl.substring(pos + 1) + '</a>';
+                                oob_content = '<a id="' + viewId + '" href="#"> ' + letsCollaborate + ' ' + oobUrl.substring(pos + 1) + '</a>';
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                             }
                             else
                                 renderSuperChatMessage(this, arguments);
                         }
-                        else
-                            setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
+                        else {
+                            if (nonCollab)
+                                renderSuperChatMessage(this, arguments);
+                            else
+                                setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
+                        }
                     }
                     else
 

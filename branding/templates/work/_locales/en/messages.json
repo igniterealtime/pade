@@ -31,12 +31,23 @@
     "uport_ethereum_network": {
         "message": "rinkeby",
         "description": "Ethereum network name"
+    },  
+    "collaborateOn": {
+        "message": "Lets collaborate on",
+        "description": "Title to collaboration invitation"
     },    
-
+    "plannerConfirm": {
+        "message": "Meeting Planner will be updated. Are you sure?",
+        "description": "Title to update local storage meeting planner"
+    },
     "hp5Confirm": {
         "message": "will be add to this conversation. Are you sure?",
         "description": "Title for hp5 content injection"
     },
+    "resetConfirm": {
+        "message": "This will reset Pade back to its original default settings. Are you sure?",
+        "description": "Title for factory reset confirmation"
+    },       
     "markdownConfirm": {
         "message": "This text will be pasted into Converse. Are you sure?",
         "description": "Title for markdown text injection"

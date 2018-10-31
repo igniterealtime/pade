@@ -9,6 +9,9 @@ window.addEventListener("unload", function ()
 {
     if (uportWin) chrome.windows.remove(uportWin.id);
     if (credWin) chrome.windows.remove(credWin.id);
+
+    setSetting(location.href, {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
+
 });
 
 window.addEvent("domready", function () {
@@ -32,6 +35,9 @@ window.addEvent("domready", function () {
         {
             document.getElementById("avatar").innerHTML = "<img style='width: 64px;' src='" + avatar + "' />";
         }
+
+        var planner = settings.manifest.meetingPlanner.element;
+        planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='../calendar/index.html'></iframe>";
 
         settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
 
@@ -85,6 +91,12 @@ window.addEvent("domready", function () {
         {
             var keyword = settings.manifest.convSearchString.element.value;
 
+            if (!keyword || keyword.length == 0)
+            {
+                settings.manifest.convSearchResults.element.innerHTML = i18n.get("Enter the keywords delimted by space");
+                return;
+            }
+
             background.searchConversations(keyword, function(html, conversations)
             {
                 settings.manifest.convSearchResults.element.innerHTML = html;
@@ -121,7 +133,7 @@ window.addEvent("domready", function () {
             {
                 console.log("findUsers", users);
 
-                var html = "<table><tr><th>Name</th><th>ID</th><th>Email</th><th>Invite</th></tr>";
+                var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>ID</th><th>Email</th><th>Invite</th></tr>";
                 var count = 0;
 
                 for (var i=0; i<users.length; i++)
@@ -191,14 +203,147 @@ window.addEvent("domready", function () {
         {
             var inviteList = settings.manifest.invitationList.element.value.split("\n");
             var room = "pade-" + Math.random().toString(36).substr(2,9);
+            var invite = getSetting("meetingName");
 
             console.log("inviteToMeeting", inviteList, room);
 
-            background.acceptCall(null, null, room);
+            background.openVideoWindow(room);
 
             for (var i=0; i<inviteList.length; i++)
             {
-                background.inviteToConference(inviteList[i], room);
+                background.inviteToConference(inviteList[i], room, invite);
+            }
+        });
+
+        settings.manifest.saveMeeting.addEvent("action", function ()
+        {
+            var inviteList = settings.manifest.invitationList.element.value.split("\n");
+            var room = "pade-" + Math.random().toString(36).substr(2,9);
+            var invite = getSetting("meetingName");
+
+            if (!invite || invite.length == 0 || inviteList.length == 0 || inviteList[0].length == 0)
+            {
+                alert(i18n.get("Enter a name for the meeting and select participants"))
+                return;
+            }
+
+            var meetings = {};
+            var encoded = window.localStorage["store.settings.savedMeetings"];
+            if (encoded) meetings = JSON.parse(atob(encoded));
+
+            meetings[room] = {room: room, invite: invite, inviteList: inviteList};
+            window.localStorage["store.settings.savedMeetings"] = btoa(JSON.stringify(meetings));
+        });
+
+        settings.manifest.inviteMeetings.addEvent("action", function ()
+        {
+            var keyword = settings.manifest.inviteMeetingsString.element.value;
+            var meetings = {};
+            var encoded = window.localStorage["store.settings.savedMeetings"];
+            if (encoded) meetings = JSON.parse(atob(encoded));
+
+            var doHTML = function()
+            {
+                var html = "<p/><p/><table style='margin-left: 15px'><tr><th>Meeting</th><th>Room</th><th>Participants</th><th><input id='select-all-rooms' type='checkbox'><a href='#' id='deleteSelected' title='Delete selected Meetings'>Delete</a></th></tr>";
+                var saveMeetings = Object.getOwnPropertyNames(meetings);
+
+                for (var i=0; i<saveMeetings.length; i++)
+                {
+                    var meeting = meetings[saveMeetings[i]];
+                    var participants = "";
+
+                    for (var j=0; j<meeting.inviteList.length; j++)
+                    {
+                        participants = participants + meeting.inviteList[j] + "<br/>"
+                    }
+
+                    var newItem = "<tr><td><a href='#' title='Invite and join this Meeting' id='invite-" + meeting.room + "'>" + meeting.invite + "</a></td><td><a href='#' id='join-" + meeting.room + "' title='Join this meeting'>" + meeting.room + "</a></td><td>" + participants + "</td><td><input id='select-" + meeting.room + "' type='checkbox'/></td></tr>";
+
+                    if (keyword.length == 0 || newItem.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
+                    {
+                        html = html + newItem;
+                    }
+                }
+
+                settings.manifest.inviteMeetingsResults.element.innerHTML = html;
+            }
+
+            doHTML();
+
+            document.getElementById("select-all-rooms").addEventListener("click", function(e)
+            {
+                e.stopPropagation();
+
+                var saveMeetings = Object.getOwnPropertyNames(meetings);
+
+                for (var i=0; i<saveMeetings.length; i++)
+                {
+                    var meeting = document.getElementById("select-" + saveMeetings[i]);
+                    meeting.checked = !meeting.checked;
+                }
+
+            }, false);
+
+            document.getElementById("deleteSelected").addEventListener("click", function(e)
+            {
+                e.stopPropagation();
+
+                var didSomething = false;
+                var saveMeetings = Object.getOwnPropertyNames(meetings);
+
+                for (var i=0; i<saveMeetings.length; i++)
+                {
+                    var meeting = document.getElementById("select-" + saveMeetings[i]);
+
+                    if (meeting.checked)
+                    {
+                        delete meetings[saveMeetings[i]];
+                        didSomething = true;
+                    }
+                }
+
+                if (didSomething)
+                {
+                    window.localStorage["store.settings.savedMeetings"] = btoa(JSON.stringify(meetings));
+                    doHTML();
+                }
+
+            }, false);
+
+            var saveMeetings = Object.getOwnPropertyNames(meetings);
+
+            for (var i=0; i<saveMeetings.length; i++)
+            {
+                var savedMeeting = document.getElementById("invite-" + saveMeetings[i]);
+
+                if (savedMeeting)
+                {
+                    savedMeeting.addEventListener("click", function(e)
+                    {
+                        e.stopPropagation();
+                        var meeting = meetings[e.target.id.substring(7)];
+
+                        background.openVideoWindow(meeting.room);
+
+                        for (var j=0; j<meeting.inviteList.length; j++)
+                        {
+                            // make sure we have a jid entry and not blank line
+
+                            if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
+                            {
+                                background.inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
+                            }
+                        }
+
+                    }, false);
+
+                    document.getElementById("join-" + saveMeetings[i]).addEventListener("click", function(e)
+                    {
+                        e.stopPropagation();
+                        background.openVideoWindow(e.target.id.substring(5));
+
+                    }, false);
+                }
             }
         });
 
@@ -234,8 +379,17 @@ window.addEvent("domready", function () {
                background.removeInverseMenu();
             }
 
+            localStorage.removeItem("store.settings.chatWindow");
             background.reloadApp();
         });
+
+        settings.manifest.enableMeetingPlanner.addEvent("action", function ()
+        {
+            settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
+        });
+
+        // default
+        settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
 
         settings.manifest.enableTouchPad.addEvent("action", function ()
         {
@@ -245,6 +399,7 @@ window.addEvent("domready", function () {
 
             } else {
                background.removeTouchPadMenu();
+               localStorage.removeItem("store.settings.apcWindow");
             }
 
             location.reload()
@@ -598,6 +753,9 @@ function doDefaults()
     setSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
     setSetting("TOOLBAR_TIMEOUT", 4000);
     setSetting("p2pMode", true);
+    setSetting("plannerNotice", 10);
+    setSetting("plannerExpire", 15);
+    setSetting("plannerCheck", 5);
 
     // community
     setSetting("chatWithOnlineContacts", true);
@@ -647,10 +805,10 @@ function setSetting(name, defaultValue)
     }
 }
 
-function getSetting(name)
+function getSetting(name, defaultValue)
 {
     //console.log("getSetting", name);
-    var value = null;
+    var value = defaultValue ? defaultValue : null;
 
     if (window.localStorage["store.settings." + name])
     {
