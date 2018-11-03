@@ -7,7 +7,7 @@ var __displayname = getSetting("displayname");
 var __username = getSetting("username");
 var __password = getSetting("password");
 var __domain = getSetting("domain");
-var __email = getSetting("email", "");
+var __email = getSetting("email", null);
 
 // optional
 var __enableSip = getSetting("enableSip", false);
@@ -20,7 +20,7 @@ OFMEET_CONFIG = {
     username:__username,
     userAvatar: null,
     authorization: btoa(__username + ":" + __password),
-
+    mode: urlParam("mode"),
     isSwitchAvailable: __enableSip,
     showSharedCursor: __showSharedCursor,
     callcontrol:'callcontrol.' + __domain,
@@ -28,10 +28,10 @@ OFMEET_CONFIG = {
     hostname: __server,
     room: urlParam("room") || getUrl(),
     domain:__domain,
-    enableTranscription: getSetting("enableTranscription", true),
+    enableTranscription: getSetting("enableTranscription", false),
     recordAudio: getSetting("recordAudio", false),
     recordVideo: getSetting("recordVideo", false),
-    enableCaptions: getSetting("enableCaptions", true),
+    enableCaptions: getSetting("enableCaptions", false),
     iframe: function(url) {
         return '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 0px; padding-top: 0px;">';
     },
@@ -54,7 +54,7 @@ window.addEventListener("DOMContentLoaded", function()
         createAvatar();     // default avatar
 
         OFMEET_CONFIG.activeUrl = win.pade.activeUrl;
-        APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
+        if (OFMEET_CONFIG.emailAddress) APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
 
         win.findUsers(__username, function(users)
         {
@@ -124,35 +124,6 @@ function createAvatar()
 {
     if (!OFMEET_CONFIG.userAvatar && OFMEET_CONFIG.nickName)
     {
-        var canvas = document.createElement('canvas');
-        canvas.style.display = 'none';
-        canvas.width = '32';
-        canvas.height = '32';
-        document.body.appendChild(canvas);
-        var context = canvas.getContext('2d');
-        context.fillStyle = "#777";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.font = "16px Arial";
-        context.fillStyle = "#fff";
-
-        var first, last;
-        var name = OFMEET_CONFIG.nickName.split(" ");
-
-        if (name && name[0] && name.first != '')
-        {
-            first = name[0][0];
-            last = name[1] && name[1] != '' ? name[1][0] : null;
-
-            if (last) {
-                var initials = first + last;
-                context.fillText(initials.toUpperCase(), 3, 23);
-            } else {
-                var initials = first;
-                context.fillText(initials.toUpperCase(), 10, 23);
-            }
-            var data = canvas.toDataURL();
-            document.body.removeChild(canvas);
-            OFMEET_CONFIG.userAvatar = data;
-        }
+        OFMEET_CONFIG.userAvatar = ofmeet.createAvatar(OFMEET_CONFIG.nickName);
     }
 }

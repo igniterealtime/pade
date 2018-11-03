@@ -13,19 +13,19 @@
 <style>
 
   body {
-    margin-top: 40px;
     text-align: center;
     font-size: 14px;
     font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
   }
-
   .meetings {
     text-align: left;
     margin-bottom: 40px;
   }
-
   .dragdrop-area {
     margin-left: 30px;
+  }
+  .update-changes{
+    float: right
   }
 
   #searchText {
@@ -41,11 +41,13 @@
 </head>
 <body>
   <div id="meetings" class="meetings" />
-    <input type="text" id="searchText" placeholder="Enter the partial name of meeting or blank for all" /><p/>
-    <button id="find-meeeting">Find</button><span class="dragdrop-area">Drag and drop here to delete</span>
+    <input type="text" id="searchText" placeholder="Enter the partial name of meeting or blank for all" />
+    <span class="update-changes"><button id="save-events">Update Planner with Changes</button></span>
+    <p/>
+    <button id="find-meeeting">Find</button><span class="dragdrop-area">Drag and drop on calendar or here to delete</span>
     <div id="searchResults"></div>
   </div>
+
   <div id='calendar'></div>
-  <button id="save-events">Update Planner with Changes</button>
 </body>
 </html>

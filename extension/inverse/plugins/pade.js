@@ -78,7 +78,7 @@
             */
 
             _converse.api.settings.update({
-                ofmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at')
+
             });
 
             /* The user can then pass in values for the configuration

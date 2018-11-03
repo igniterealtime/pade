@@ -11,6 +11,67 @@ var ofmeet = (function(of)
     var remoteController = null;
     var remoteControlPort = null;
 
+    var nickColors = {}
+
+    var getRandomColor = function getRandomColor(nickname)
+    {
+        if (nickColors[nickname])
+        {
+            return nickColors[nickname];
+        }
+        else {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            nickColors[nickname] = color;
+            return color;
+        }
+    }
+
+
+    of.createAvatar = function(nickname, width, height, font)
+    {
+        if (!width) width = 32;
+        if (!height) height = 32;
+        if (!font) font = "16px Arial";
+
+        var canvas = document.createElement('canvas');
+        canvas.style.display = 'none';
+        canvas.width = width;
+        canvas.height = height;
+        document.body.appendChild(canvas);
+        var context = canvas.getContext('2d');
+        context.fillStyle = getRandomColor(nickname);
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.font = font;
+        context.fillStyle = "#fff";
+
+        var first, last;
+        var name = nickname.split(" ");
+        var l = name.length - 1;
+
+        if (name && name[0] && name.first != '')
+        {
+            first = name[0][0];
+            last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
+
+            if (last) {
+                var initials = first + last;
+                context.fillText(initials.toUpperCase(), 3, 23);
+            } else {
+                var initials = first;
+                context.fillText(initials.toUpperCase(), 10, 23);
+            }
+            var data = canvas.toDataURL();
+            document.body.removeChild(canvas);
+        }
+
+        return canvas.toDataURL();
+    }
+
     function setup()
     {
         console.log("ofmeet.js setup", APP.connection, OFMEET_CONFIG.bgWin);
@@ -316,15 +377,19 @@ var ofmeet = (function(of)
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_LEFT, function()
         {
             console.log("ofmeet.js me left");
+            OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.MESSAGE_RECEIVED , function(id, text, ts)
         {
-            console.log("ofmeet.js message", id, text, ts);
+            var participant = APP.conference.getParticipantById(id);
+            var displayName = participant ? participant._displayName || id.split("-")[0] : "Me";
+
+            console.log("ofmeet.js message", id, text, ts, displayName);
 
             if (OFMEET_CONFIG.enableCaptions && text.indexOf("https://") == -1)
             {
-                of.subtitles.innerHTML = id.split("-")[0] + " : " + text;
+                of.subtitles.innerHTML = displayName + " : " + text;
             }
         });
 
@@ -414,7 +479,25 @@ var ofmeet = (function(of)
 
             if (OFMEET_CONFIG.recordAudio || OFMEET_CONFIG.recordVideo)
             {
+                OFMEET_CONFIG.bgWin.etherlynk.startRecorder(APP.conference.localAudio.stream, APP.conference.localVideo.stream, OFMEET_CONFIG.room, APP.conference.getMyUserId());
 
+                var nick = APP.conference.getMyUserId();
+                var audioFileName = OFMEET_CONFIG.room + "." + nick + ".audio.webm";
+                var videoFileName = OFMEET_CONFIG.room + "." + nick + ".video.webm";
+
+                var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
+                var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
+
+                if (OFMEET_CONFIG.recordVideo)
+                {
+                    APP.conference._room.sendOfText(videoFileUrl);
+                }
+                else
+
+                if (OFMEET_CONFIG.recordAudio)
+                {
+                    APP.conference._room.sendOfText(audioFileUrl);
+                }
             }
 
             if (OFMEET_CONFIG.enableTranscription)
@@ -422,9 +505,16 @@ var ofmeet = (function(of)
 
             }
 
-        }
+            if (OFMEET_CONFIG.mode)  // webinar presenter mode, dont show remote users. only show you
+            {
+                if (OFMEET_CONFIG.mode == "attendee") interfaceConfig.FILM_STRIP_MAX_HEIGHT = 0;
+                if (OFMEET_CONFIG.mode == "presenter") APP.UI.clickOnVideo(0);
 
-        document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
+                document.title = interfaceConfig.APP_NAME + " - Webinar " + OFMEET_CONFIG.mode;
+                APP.UI.toggleFilmstrip();
+            }
+            else document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
+        }
     }
 
     function connectSIP()
@@ -800,6 +890,19 @@ var ofmeet = (function(of)
     // Suspending video might cause problems with audio playback. Disabling until these are fixed.
 
     config.disableSuspendVideo = true;
+    //config.disableThirdPartyRequests = true;
+
+    if (OFMEET_CONFIG.mode)   // webinar mode, let presenter start manually
+    {
+        config.startWithAudioMuted = true;
+        config.startWithVideoMuted = true;
+
+        if (OFMEET_CONFIG.mode == "attendee")
+        {
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("microphone"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("camera"), 1);
+        }
+    }
 
     return of;
 

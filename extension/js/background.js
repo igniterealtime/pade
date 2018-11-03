@@ -381,6 +381,12 @@ window.addEventListener("load", function()
         {
             if (win == -1) pade.minimised = true;
             if (win == pade.chatWindow.id) pade.minimised = false;
+
+            if (!pade.minimised)
+            {
+                chrome.browserAction.setBadgeText({ text: "" });
+                pade.messageCount = 0;
+            }
         }
 
         else
@@ -448,6 +454,8 @@ window.addEventListener("load", function()
             pade.videoWindow = null;
             pade.minimised = false;
             pade.connection.send($pres());  // needed because JitsiMeet send unavailable
+
+            etherlynk.stopRecorder();
         }
 
         if (pade.apcWindow && win == pade.apcWindow.id)
@@ -829,8 +837,10 @@ function updateWindowCoordinates(win, winId, coordinates)
 
     console.log("updateWindowCoordinates", win, savedWin, coordinates);
 
-    if (savedWin && savedWin.height && savedWin.width && savedWin.top && savedWin.left)   // checks for corrupt or bad data
+    if (getSetting("saveWinPositions") && savedWin && savedWin.height && savedWin.width && savedWin.top && savedWin.left)
     {
+        // checks for corrupt or bad data
+
         if (savedWin.height < 250 || savedWin.height > screen.availHeight) savedWin.height = screen.availHeight - 50;
         if (savedWin.width < 250 || savedWin.width > screen.availWidth) savedWin.width = screen.availWidth - 50;
 
@@ -1076,15 +1086,17 @@ function closeVideoWindow()
     }
 }
 
-function openVideoWindow(room)
+function openVideoWindow(room, mode)
 {
     var url = chrome.runtime.getURL("jitsi-meet/chrome.index.html");
-    if (room) url = url + "?room=" + room;
+    if (room) url = url + "?room=" + room + (mode ? "&mode=" + mode : "");
     openVideoWindowUrl(url);
 }
 
 function openVideoWindowUrl(url)
 {
+    console.log("openVideoWindowUrl", url);
+
     if (pade.videoWindow != null)
     {
         chrome.windows.remove(pade.videoWindow.id);
@@ -1333,25 +1345,38 @@ function addHandlers()
         $(message).find('body').each(function ()
         {
             var body = $(this).text();
-            var pos0 = body.indexOf("/jitsimeet/index.html?room=")
+            var pos0 = body.indexOf("/webinar/")
             var pos1 = body.indexOf("/ofmeet/");
+            var pos1e = body.indexOf("/jitsimeet/index.html?room=")
+
             var pos2 = body.indexOf("https://" + pade.server)
 
-            console.log("message handler body", body, offerer);
+            console.log("message handler body", body, offerer, pade.minimised);
+
+            if (!pade.messageCount) pade.messageCount = 0;
+
+            if (pade.minimised)
+            {
+                pade.messageCount++;
+                chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                chrome.browserAction.setBadgeText({ text: pade.messageCount.toString() });
+            }
 
             if ( pos0 > -1 && pos2 > -1 )
             {
-                reason = body.substring(0, pos2);
-                room = body.substring(pos0 + 27);
-                handleInvitation({room: room, offerer: offerer, reason: reason});
+                reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("webinarInvite", 'Please join webinar at');
+                room = body.substring(pos0 + 9);
+                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: true});
             }
             else
 
-            if ( pos1 > -1 && pos2 > -1 )
+            if ((pos1 > -1 || pos1e > -1) && pos2 > -1 )
             {
-                reason = body.substring(0, pos2);
                 room = body.substring(pos1 + 8);
-                handleInvitation({room: room, offerer: offerer, reason: reason});
+                if ( pos1e > -1) room = body.substring(pos1e + 27);
+
+                reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("ofmeetInvitation", 'Please join meeting at');
+                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
             }
             else
 
@@ -1370,6 +1395,7 @@ function addHandlers()
                 {
                     pade.converseChats[offerer] = from;
                     chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
+                    chrome.windows.update(pade.chatWindow.id, {focused: true});
                 });
             }
         });
@@ -1412,7 +1438,7 @@ function addHandlers()
                     });
                 }
 
-                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept, id: id, reason: reason});
+                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept, id: id, reason: reason, webinar: false});
             }
         });
 
@@ -1667,17 +1693,17 @@ function handleInvitation(invite)
     if (pade.participants[jid])
     {
         var participant = pade.participants[jid];
-        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept, invite.id, invite.reason);
+        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept, invite.id, invite.reason, invite.webinar);
     }
     else
 
     if (invite.offerer == pade.domain)
     {
-        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept, invite.id, invite.reason);
+        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept, invite.id, invite.reason, invite.webinar);
     }
     else {
         var label = invite.offerer == Strophe.getBareJidFromJid(pade.connection.jid) ? pade.displayName : "Unknown User"
-        processInvitation(label, invite.offerer, invite.room, invite.autoaccept, invite.id, invite.reason);
+        processInvitation(label, invite.offerer, invite.room, invite.autoaccept, invite.id, invite.reason, invite.webinar);
     }
 
     // inform touchpad
@@ -1685,9 +1711,9 @@ function handleInvitation(invite)
     if (pade.port) pade.port.postMessage({event: "invited", id : invite.offerer, name: invite.room, jid: invite.id});
 }
 
-function processInvitation(title, label, room, autoaccept, id, reason)
+function processInvitation(title, label, room, autoaccept, id, reason, webinar)
 {
-    console.log("processInvitation", title, label, room, id, reason);
+    console.log("processInvitation", title, label, room, id, reason, webinar);
 
     if (!autoaccept || autoaccept != "true")
     {
@@ -1700,7 +1726,7 @@ function processInvitation(title, label, room, autoaccept, id, reason)
             if (buttonIndex == 0)   // accept
             {
                 stopTone();
-                acceptCall(title, label, room, id);
+                acceptCall(title, label, room, id, webinar);
             }
             else
 
@@ -1720,9 +1746,9 @@ function processInvitation(title, label, room, autoaccept, id, reason)
     }
 }
 
-function acceptCall(title, label, room, id)
+function acceptCall(title, label, room, id, webinar)
 {
-    console.log("acceptCall", id, title, label, room, pade.questions[label]);
+    console.log("acceptCall", id, title, label, room, pade.questions[label], webinar);
 
     if (isAudioOnly())
     {
@@ -1732,7 +1758,7 @@ function acceptCall(title, label, room, id)
 
         if (!id || getSetting("enableInverse", false) == false)    // ofmeet
         {
-            openVideoWindow(room);
+            openVideoWindow(room, webinar ? "attendee" : null);
 
         } else {
 
@@ -1741,6 +1767,7 @@ function acceptCall(title, label, room, id)
                 openChatWindow("inverse/index.html#converse/room?jid=" + id, true);
             } else {
                 chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(id, label || room, pade.displayName, pade.questions[label])
+                chrome.windows.update(pade.chatWindow.id, {focused: true});
             }
         }
     }
@@ -2614,6 +2641,7 @@ function doStreamDeckUrl(url, jid, label, key, groupChat)
         } else {
             chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(jid);
         }
+        chrome.windows.update(pade.chatWindow.id, {focused: true});
     }
 
     pade.streamDeckPort.postMessage({ message: "setImage", key: key, data: pade.vcards[jid] ? pade.vcards[jid].avatar : createStreamDeckImage(label, "#070")});
@@ -2690,6 +2718,7 @@ function doPadeConnect()
                 chrome.browserAction.setBadgeText({ text: "" });
                 closeCredsWindow();
                 runMeetingPlanner();
+                checkForChatAPI();
 
             }, 3000);
         }
@@ -2710,6 +2739,7 @@ function doPadeConnect()
 
     });
 }
+
 
 function doSetupStrophePlugins()
 {
@@ -3018,4 +3048,12 @@ function executeMeetingPlanner()
         }
     }
 
+}
+
+function checkForChatAPI()
+{
+    searchConversations("__DUMMY__", function(html, conversations, error)
+    {
+        pade.chatAPIAvailable = !error;
+    });
 }

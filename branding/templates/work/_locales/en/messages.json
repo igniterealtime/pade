@@ -32,6 +32,10 @@
         "message": "rinkeby",
         "description": "Ethereum network name"
     },  
+    "webinarInvite": {
+        "message": "Please join webinar at",
+        "description": "Title to webinar invitation"
+    }, 
     "collaborateOn": {
         "message": "Lets collaborate on",
         "description": "Title to collaboration invitation"
@@ -51,7 +55,11 @@
     "markdownConfirm": {
         "message": "This text will be pasted into Converse. Are you sure?",
         "description": "Title for markdown text injection"
-    },       
+    }, 
+    "webinarConfirm": {
+        "message": "Do you want to start a webinar conference?",
+        "description": "Title for confirming webinar with jitsi-meet"
+    },    
     "jitsiConfirm": {
         "message": "Do you want to start an audio/video conference?",
         "description": "Title for confirming jistsi-meet"

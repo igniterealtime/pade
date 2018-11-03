@@ -250,6 +250,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "saveWinPositions",
+            "type": "checkbox",
+            "label": i18n.get("Save Window postions and sizes")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "desktopShareMode",
             "type": "checkbox",
             "label": i18n.get("Desktop Share mode only")
@@ -295,13 +302,6 @@ this.manifest = {
             "name": "useJabra",
             "type": "checkbox",
             "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Preferences"),
-            "name": "audioOnly",
-            "type": "checkbox",
-            "label": i18n.get("Audioconference Only")
         },
         {
             "tab": i18n.get("general"),
@@ -352,16 +352,9 @@ this.manifest = {
             "type": "button",
             "text": i18n.get("Register URL Protocols")
         },
-        {                                    // ofmeet config
+        {                                   // ofmeet config
             "tab": i18n.get("Meetings"),
-            "group": i18n.get("Saved"),
-            "name": "inviteMeetingsHeader",
-            "text": i18n.get("Use <b>Search/Meet Later</b> to find people and create Meeting invitations"),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Saved"),
+            "group": i18n.get("Invites"),
             "name": "inviteMeetingsString",
             "type": "text",
             "label": i18n.get(""),
@@ -369,7 +362,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Meetings"),
-            "group": i18n.get("Saved"),
+            "group": i18n.get("Invites"),
             "name": "inviteMeetings",
             "type": "button",
             "label": i18n.get(""),
@@ -377,7 +370,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Meetings"),
-            "group": i18n.get("Saved"),
+            "group": i18n.get("Invites"),
             "name": "inviteMeetingsResults",
             "text": i18n.get(""),
             "type": "description"
@@ -429,6 +422,13 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
+            "name": "webinarMode",
+            "type": "checkbox",
+            "label": i18n.get("Enable Webinar Presenter")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
             "name": "disableAudioLevels",
             "type": "checkbox",
             "label": i18n.get("Disable Audio levels")
@@ -461,7 +461,6 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Start with Video Muted")
         },
-/*
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
@@ -476,6 +475,7 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Record Audio/Video")
         },
+/*
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
@@ -484,6 +484,36 @@ this.manifest = {
             "label": i18n.get("Enable Voice-to-Text Transcription")
         },
 */
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "channelLastN",
+            "type": "slider",
+            "label": i18n.get("Maximium Video Streams"),
+            "max": 32,
+            "min": -1,
+            "step": 1
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "startAudioMuted",
+            "type": "slider",
+            "label": i18n.get("Start Audio muted after"),
+            "max": 15,
+            "min": 1,
+            "step": 1
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "startVideoMuted",
+            "type": "slider",
+            "label": i18n.get("Start Video muted after"),
+            "max": 15,
+            "min": 1,
+            "step": 1
+        },
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
@@ -521,15 +551,13 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Vertical Filmstrip")
         },
-/*
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("UI Settings"),
-            "name": "CAPTIONS_SUBTITLES",
+            "name": "enableCaptions",
             "type": "checkbox",
-            "label": i18n.get("Enable Captions/Sub Titles")
+            "label": i18n.get("Show Chat as Captions/Sub-titles")
         },
-*/
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("UI Settings"),
@@ -679,8 +707,16 @@ this.manifest = {
             "group": i18n.get("Labels"),
             "name": "letsCollaborate",
             "type": "text",
-            "label": i18n.get("Invitation"),
+            "label": i18n.get("Collaborate"),
             "text": i18n.get("Lets collaborate on"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Labels"),
+            "name": "webinarInvite",
+            "type": "text",
+            "label": i18n.get("Webinar"),
+            "text": i18n.get("Please join webinar at"),
         },
         {                                               // collaboration
             "tab": i18n.get("Applications"),
@@ -746,6 +782,13 @@ this.manifest = {
             "name": "touchPadAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Communicator Touchpad")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("TouchPad"),
+            "name": "audioOnly",
+            "type": "checkbox",
+            "label": i18n.get("Audioconference Only (no video)")
         },
         {                                      // community web app
             "tab": i18n.get("Applications"),

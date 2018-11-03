@@ -46,9 +46,10 @@ var config = {
     desktopSharingChromeMinExtVersion: '0.1',
     desktopSharingFirefoxDisabled: true,
 
-    channelLastN: -1,
-    startAudioMuted: 5,
-    startVideoMuted: 5,
+    channelLastN: getSetting("channelLastN", -1),
+    startAudioMuted: getSetting("startAudioMuted", 5),
+    startVideoMuted: getSetting("startVideoMuted", 5),
+
     enableWelcomePage: true,
     minHDHeight: getSetting("minHDHeight", 540),
     enableUserRolesBasedOnToken: false,

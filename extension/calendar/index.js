@@ -36,7 +36,7 @@
 
         var keyword = document.getElementById("searchText").value;
         var saveMeetings = Object.getOwnPropertyNames(meetings);
-        var html = "<p/><p/><table><tr><th>Meeting</th><th>Participants</th></tr>";
+        var html = "<p/><p/><table><!--tr><th>Meeting</th><th style='text-align: right;'>Participants</th></tr-->";
         var saveMeetings = Object.getOwnPropertyNames(meetings);
 
         for (var i=0; i<saveMeetings.length; i++)
@@ -46,10 +46,10 @@
 
             for (var j=0; j<meeting.inviteList.length; j++)
             {
-                participants = participants + meeting.inviteList[j] + "<br/>"
+                participants = participants + meeting.inviteList[j] + "\n"
             }
 
-            var newItem = "<tr><td><a class='fc-event' href='#' title='Drag and drop on calendar' id='invite-" + meeting.room + "'>" + meeting.invite + "@" + meeting.room + "</a></td><td>" + participants + "</td></tr>";
+            var newItem = "<tr><td><a class='fc-event' href='#' title='Drag and drop on calendar' id='invite-" + meeting.room + "'>" + meeting.invite + "@" + meeting.room + "</a></td><td style='text-align: right;'><a title='" + participants + "'>" + meeting.inviteList.length + " Participants</a></td></tr>";
 
             if (keyword.length == 0 || newItem.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
             {

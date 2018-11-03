@@ -5,13 +5,19 @@ window.addEventListener('message', function (event)
     console.log("addListener message", event.data);
 });
 
+window.addEventListener("load", function()
+{
+    console.log("options loaded");
+})
+
 window.addEventListener("unload", function ()
 {
-    if (uportWin) chrome.windows.remove(uportWin.id);
-    if (credWin) chrome.windows.remove(credWin.id);
+    console.log("options unloaded");
 
     setSetting(location.href, {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
 
+    if (uportWin) chrome.windows.remove(uportWin.id);
+    if (credWin) chrome.windows.remove(credWin.id);
 });
 
 window.addEvent("domready", function () {
@@ -476,7 +482,7 @@ window.addEvent("domready", function () {
 
         settings.manifest.useWinSSO.addEvent("action", function ()
         {
-            setSetting("password", "__DEFAULT__WINSSO__")
+            setDefaultSetting("password", "__DEFAULT__WINSSO__")
             background.reloadApp();
         });
 
@@ -728,60 +734,64 @@ function isNumeric(n) {
 function doDefaults()
 {
     // connection
-    setSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
-    setSetting("server", chrome.i18n.getMessage("openfire_server"));
-    setSetting("domain", chrome.i18n.getMessage("openfire_domain"));
-    setSetting("useWebsocket", true);
+    setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
+    setDefaultSetting("server", chrome.i18n.getMessage("openfire_server"));
+    setDefaultSetting("domain", chrome.i18n.getMessage("openfire_domain"));
+    setDefaultSetting("useWebsocket", true);
 
     // preferences
-    setSetting("language", "en");
-    setSetting("popupWindow", true);
-    setSetting("enableLipSync", false);
-    setSetting("enableCommunity", false);
-    setSetting("audioOnly", false);
-    setSetting("enableSip", false);
-    setSetting("enableBlog", false);
+    setDefaultSetting("language", "en");
+    setDefaultSetting("popupWindow", true);
+    setDefaultSetting("enableLipSync", false);
+    setDefaultSetting("enableCommunity", false);
+    setDefaultSetting("audioOnly", false);
+    setDefaultSetting("enableSip", false);
+    setDefaultSetting("enableBlog", false);
+    setDefaultSetting("showSharedCursor", true);
 
     // config
-    setSetting("startBitrate", 800);
-    setSetting("resolution", 720);
-    setSetting("minHDHeight", 540);
+    setDefaultSetting("startBitrate", 800);
+    setDefaultSetting("resolution", 720);
+    setDefaultSetting("minHDHeight", 540);
 
     // meeting
-    setSetting("VERTICAL_FILMSTRIP", true);
-    setSetting("FILM_STRIP_MAX_HEIGHT", 90);
-    setSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
-    setSetting("TOOLBAR_TIMEOUT", 4000);
-    setSetting("p2pMode", true);
-    setSetting("plannerNotice", 10);
-    setSetting("plannerExpire", 15);
-    setSetting("plannerCheck", 5);
+    setDefaultSetting("VERTICAL_FILMSTRIP", true);
+    setDefaultSetting("FILM_STRIP_MAX_HEIGHT", 90);
+    setDefaultSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
+    setDefaultSetting("TOOLBAR_TIMEOUT", 4000);
+    setDefaultSetting("p2pMode", true);
+    setDefaultSetting("plannerNotice", 10);
+    setDefaultSetting("plannerExpire", 15);
+    setDefaultSetting("plannerCheck", 5);
+    setDefaultSetting("channelLastN", 10);
+    setDefaultSetting("startAudioMuted", 5);
+    setDefaultSetting("startVideoMuted", 5);
 
     // community
-    setSetting("chatWithOnlineContacts", true);
-    setSetting("notifyWhenMentioned", true);
+    setDefaultSetting("chatWithOnlineContacts", true);
+    setDefaultSetting("notifyWhenMentioned", true);
 
     // converse
-    setSetting("enableInverse", true);
-    setSetting("allowNonRosterMessaging", true);
-    setSetting("autoReconnect", true);
-    setSetting("messageCarbons", true);
-    setSetting("converseAutoStart", true);
-    setSetting("showGroupChatStatusMessages", true);
+    setDefaultSetting("enableInverse", true);
+    setDefaultSetting("allowNonRosterMessaging", true);
+    setDefaultSetting("autoReconnect", true);
+    setDefaultSetting("messageCarbons", true);
+    setDefaultSetting("converseAutoStart", true);
+    setDefaultSetting("showGroupChatStatusMessages", true);
 
     // web apps
-    setSetting("webApps", "web.skype.com, web.whatsapp.com");
+    setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");
 
     // only office
-    setSetting("onlyOfficeVersion", "5.2.2-2");
-    setSetting("onlyzoom", 100);
-    setSetting("onlycomments", true);
-    setSetting("onlychat", true);
-    setSetting("onlyleftMenu", true);
-    setSetting("onlyrightMenu", true);
-    setSetting("onlyheader", true);
-    setSetting("onlystatusBar", true);
-    setSetting("onlyautosave", true);
+    setDefaultSetting("onlyOfficeVersion", "5.2.2-2");
+    setDefaultSetting("onlyzoom", 100);
+    setDefaultSetting("onlycomments", true);
+    setDefaultSetting("onlychat", true);
+    setDefaultSetting("onlyleftMenu", true);
+    setDefaultSetting("onlyrightMenu", true);
+    setDefaultSetting("onlyheader", true);
+    setDefaultSetting("onlystatusBar", true);
+    setDefaultSetting("onlyautosave", true);
 }
 
 function setDefaultPassword(settings)
@@ -791,13 +801,19 @@ function setDefaultPassword(settings)
     if (settings.manifest.useClientCert.element.checked)
     {
         settings.manifest.password.element.disabled = true;
-        setSetting("password", settings.manifest.username.element.value);
+        setDefaultSetting("password", settings.manifest.username.element.value);
     }
 }
 
-function setSetting(name, defaultValue)
+function setSetting(name, value)
 {
-    console.log("setSetting", name, defaultValue);
+    //console.log("setSetting", name, value);
+    window.localStorage["store.settings." + name] = JSON.stringify(value);
+}
+
+function setDefaultSetting(name, defaultValue)
+{
+    console.log("setDefaultSetting", name, defaultValue);
 
     if (!window.localStorage["store.settings." + name])
     {

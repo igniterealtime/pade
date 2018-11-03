@@ -94,7 +94,8 @@
                 webmeet_record_video: false,
                 webmeet_transcription: false,
                 webmeet_captions: false,
-                webmeet_invitation: 'Please join meeting in room '
+                webmeet_invitation: 'Please join meeting in room',
+                webinar_invitation: 'Please join webinar at'
             });
 
             /* The user can then pass in values for the configuration
@@ -330,24 +331,30 @@
 
                         if (pos > -1)
                         {
-                            var pos0 = body.indexOf("/jitsimeet/index.html?room=")
+                            var pos0 = body.indexOf("/webinar/")
                             var pos1 = body.indexOf("/ofmeet/");
+                            var pos1e = body.indexOf("/jitsimeet/index.html?room=")
                             var pos2 = body.indexOf("/h5p/");
+                            var pos3 = body.indexOf("https://");
 
                             if ( pos0 > -1)
                             {
-                                //console.log("audio/video invite", body);
-                                var link_room = body.substring(pos0 + 27);
-                                var link_content = '<a id="' + link_room + '" href="#">' + _converse.api.settings.get("webmeet_invitation") + link_room + '</a>';
-                                setupContentHandler(this, link_room, link_content, doAVConference, link_room);
+                                //console.log("webinar invite", body);
+                                var link_room = body.substring(pos0 + 9);
+                                var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webinar_invitation");
+                                var link_content = '<a id="' + link_room + '" href="#">' + link_label + ' webinar</a>';
+                                setupContentHandler(this, link_room, link_content, handleWebinarAttendee, link_room);
                             }
                             else
 
-                            if ( pos1 > -1)
+                            if ( pos1 > -1 || pos1e > -1)
                             {
                                 //console.log("audio/video invite", body);
                                 var link_room = body.substring(pos1 + 8);
-                                var link_content = '<a id="' + link_room + '" href="#">' + _converse.api.settings.get("webmeet_invitation") + link_room + '</a>';
+                                if (pos1e > -1) link_room = body.substring(pos1 + 27);
+
+                                var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
+                                var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
                                 setupContentHandler(this, link_room, link_content, doAVConference, link_room);
 
                             }
@@ -387,27 +394,7 @@
                     }
                     else
 
-                    if (_converse.view_mode === 'embedded')
-                    {
-                        var url = "../phone/index.html";
-                        var converseDiv = document.getElementById("conversejs");
-                        var jitsiDiv = document.getElementById("jitsimeet");
-
-                        iframeURLChange(jitsiDiv, function (newURL)
-                        {
-                            if (newURL.indexOf("/jitsimeet/") == -1 && newURL.indexOf("/phone/") == -1)
-                            {
-                                converseDiv.style.display = "inline";
-                                jitsiDiv.style.display = "none";
-                                jitsiDiv.src = "about:blank";
-                            }
-                        });
-
-                        converseDiv.style.display = "none";
-                        jitsiDiv.src = url;
-                        jitsiDiv.style.display = "inline";
-
-                    } else  if (bgWindow) {
+                    if (bgWindow) {
                         //console.log('callButtonClicked');
                         var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
 
@@ -476,44 +463,29 @@
                         });
                     }
 
-
-                    if (_converse.view_mode === 'mobile')
-                    {
-                         document.title = this.model.attributes.jid;
-                    }
-
                     var result = this.__super__.renderToolbar.apply(this, arguments);
+                    var dropZone = $(this.el).find('.chat-body')[0];
 
-                    if (_converse.view_mode === 'embedded')
+                    dropZone.removeEventListener('dragover', handleDragOver);
+                    dropZone.removeEventListener('drop', handleDropFileSelect);
+                    dropZone.addEventListener('dragover', handleDragOver, false);
+                    dropZone.addEventListener('drop', handleDropFileSelect, false);
+
+                    // h5p content button
+
+                    if (bgWindow && bgWindow.pade.activeH5p)
                     {
-                        var html = '<a class="fa fa-sign-out" title="Exit Web Chat"></a>';
-                        addToolbarItem(view, id, "webmeet-exit-webchat-" + id, html)
-
-                    } else {
-                        // file upload by drag & drop
-
-                        var dropZone = $(this.el).find('.chat-body')[0];
-                        dropZone.removeEventListener('dragover', handleDragOver);
-                        dropZone.removeEventListener('drop', handleDropFileSelect);
-                        dropZone.addEventListener('dragover', handleDragOver, false);
-                        dropZone.addEventListener('drop', handleDropFileSelect, false);
-
-                        // h5p content button
-
-                        if (bgWindow && bgWindow.pade.activeH5p)
-                        {
-                            var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                            addToolbarItem(view, id, "h5p-" + id, html);
-                        }
-
-                        if (bgWindow && bgWindow.pade.activeUrl)
-                        {
-                            var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
-                            addToolbarItem(view, id, "oob-" + id, html);
-                        }
+                        var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
+                        addToolbarItem(view, id, "h5p-" + id, html);
                     }
 
-                    var html = '<a class="fa fa-users" title="Audio/Video Conference"></a>';
+                    if (bgWindow && bgWindow.pade.activeUrl)
+                    {
+                        var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
+                        addToolbarItem(view, id, "oob-" + id, html);
+                    }
+
+                    var html = '<a class="fa fa-users" title="Audio/Video/Screenshare Conference"></a>';
                     addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
 
                     html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
@@ -523,6 +495,18 @@
                     {
                         html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
                         addToolbarItem(view, id, "webmeet-screencast-" + id, html);
+
+                        if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
+                        {
+                            html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
+                            addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+                        }
+
+                        if (getSetting("webinarMode", false))
+                        {
+                            html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
+                            addToolbarItem(view, id, "webmeet-webinar-" + id, html);
+                        }
                     }
 
                     setTimeout(function()
@@ -562,17 +546,38 @@
                             }, false);
                         }
 
-                        var exitJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
+                        var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
 
-                        if (exitJitsiMeet)
+                        if (handleJitsiMeet)
                         {
-                            exitJitsiMeet.addEventListener('click', function(evt)
+                            handleJitsiMeet.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
 
-                                if (confirm(chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm"): "Jitsi Meeting?"))
+                                var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
+
+                                if (confirm(jitsiConfirm))
                                 {
                                     doVideo(view);
+                                }
+
+                            }, false);
+                        }
+
+                        var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
+
+                        if (handleWebinarPresenter)
+                        {
+                            handleWebinarPresenter.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
+                                var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
+
+                                if (title && title != "")
+                                {
+                                    doWebinarPresenter(view, title);
                                 }
 
                             }, false);
@@ -616,6 +621,18 @@
                             {
                                 evt.stopPropagation();
                                 view.viewUnreadMessages()
+
+                            }, false);
+                        }
+
+                        var messageblast = document.getElementById("webmeet-messageblast-" + id);
+
+                        if (messageblast)
+                        {
+                            messageblast.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+                                bgWindow.openBlastWindow();
 
                             }, false);
                         }
@@ -674,15 +691,46 @@
                 if (document.getElementById(chatId)) document.getElementById(chatId).onclick = function()
                 {
                     var target = chat.model.get("type") == "groupchat" ? chat.model.get("from") : chat.model.get("jid");
-                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"), title, Strophe.getBareJidFromJid(target));
+                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"), title, Strophe.getBareJidFromJid(target), chat);
                 }
             });
         }
     }
 
+    var handleWebinarAttendee = function handleWebinarAttendee(room, from, chatType, title, target, view)
+    {
+        console.log("handleWebinarAttendee", room, view);
+
+        var mode = view.model.get("sender") == "me" ? "presenter" : "attendee";
+        bgWindow.openVideoWindow(room, mode);
+    }
+
+    var doWebinarPresenter = function doWebinarPresenter(view, title)
+    {
+        console.log("doWebinarPresenter", view, title);
+
+        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+        var url = null;
+
+        if ( _converse.view_mode === 'overlayed')
+        {
+            if (window.pade && window.pade.url)
+            {
+                url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
+                window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room, location.href + "&presenter=true");
+            }
+        }
+        else {
+            url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
+            if (bgWindow) bgWindow.openVideoWindow(room, "presenter");
+        }
+
+        if (url) view.onMessageSubmitted(title + ' ' + url);
+    }
+
     var doAVConference = function doAVConference(room)
     {
-        //console.log("doAVConference", room);
+        console.log("doAVConference", room);
         var url = null;
 
         if ( _converse.view_mode === 'overlayed')
@@ -693,42 +741,7 @@
                 window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room, location.href);
             }
         }
-        else
-
-        if (_converse.view_mode === 'embedded')
-        {
-            var url = "../verto/index.html";
-            var converseDiv = document.getElementById("conversejs");
-            var jitsiDiv = document.getElementById("jitsimeet");
-
-            if (_converse.api.settings.get("ofswitch") == false)
-            {
-                var url = "../jitsimeet/index.html?room=";
-                url = url + room;
-
-                var a = document.createElement('a');
-                a.href = url;
-                url = a.href;
-
-                iframeURLChange(jitsiDiv, function (newURL)
-                {
-                    if (newURL.indexOf("/jitsimeet/") == -1 && newURL.indexOf("/phone/") == -1)
-                    {
-                        converseDiv.style.display = "inline";
-                        jitsiDiv.style.display = "none";
-                        jitsiDiv.src = "about:blank";
-                    }
-                });
-
-                converseDiv.style.display = "none";
-                jitsiDiv.src = url;
-                jitsiDiv.style.display = "inline";
-
-            } else {
-                window.open(url, location.href);
-            }
-
-        } else {
+        else {
             url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
             if (bgWindow) bgWindow.openVideoWindow(room);
         }
@@ -836,41 +849,6 @@
             }
         });
     };
-
-    var iframeURLChange = function(iframe, callback) {
-        var lastDispatched = null;
-
-        var dispatchChange = function () {
-            var newHref = iframe.contentWindow.location.href;
-
-            if (newHref !== lastDispatched) {
-                callback(newHref);
-                lastDispatched = newHref;
-            }
-        };
-
-        var unloadHandler = function () {
-            // Timeout needed because the URL changes immediately after
-            // the `unload` event is dispatched.
-            setTimeout(dispatchChange, 0);
-        };
-
-        function attachUnload() {
-            // Remove the unloadHandler in case it was already attached.
-            // Otherwise, there will be two handlers, which is unnecessary.
-            iframe.contentWindow.removeEventListener("unload", unloadHandler);
-            iframe.contentWindow.addEventListener("unload", unloadHandler);
-        }
-
-        iframe.addEventListener("load", function () {
-            attachUnload();
-
-            // Just in case the change wasn't dispatched during the unload event...
-            dispatchChange();
-        });
-
-        attachUnload();
-    }
 
     var nickColors = {}
 

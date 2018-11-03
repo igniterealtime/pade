@@ -689,44 +689,49 @@ var etherlynk = (function(lynk)
         }
     }
 
-    function uploadFile(file, room)
+    lynk.doUploadFile = function(room)
     {
-        var putUrl = "https://" + pade.server + "/dashboard/upload?name=" + file.name + "&username=" + pade.username;
+        var putUrl = "https://" + pade.server + "/dashboard/upload?name=" + lynk.uploadFile.name + "&username=" + pade.username;
 
-        var req = new XMLHttpRequest();
+        lynk.req = new XMLHttpRequest();
 
-        req.onreadystatechange = function()
+        lynk.req.onreadystatechange = function()
         {
           if (this.readyState == 4 && this.status >= 200 && this.status < 400)
           {
             console.log("uploadFile", this.statusText);
+            lynk.req = null;
           }
           else
 
           if (this.readyState == 4 && this.status >= 400)
           {
             console.error("uploadFile", this.statusText);
+            lynk.req = null;
           }
 
         };
-        req.open("PUT", putUrl, true);
-        req.setRequestHeader("Authorization", 'Basic ' + btoa(pade.username+':'+pade.password));
-        req.send(file);
-    }
 
-    function dataUrlToFile(dataUrl, name)
-    {
-        //console.log("dataUrlToFile", dataUrl, name);
-
-        var binary = atob(dataUrl.split(',')[1]),
-        data = [];
-
-        for (var i = 0; i < binary.length; i++)
+        lynk.req.upload.addEventListener("progress", function(evt)
         {
-            data.push(binary.charCodeAt(i));
-        }
+            if (evt.lengthComputable)
+            {
+                if (evt.loaded == evt.total)
+                {
+                    console.log('upload ok - ' + lynk.uploadFile.name);
 
-        return new File([new Uint8Array(data)], name, {type: 'video/webm'});
+                    lynk.videoRecorder = null;
+                    lynk.audioRecorder = null;
+
+                    lynk.uploadFile = null;
+                    lynk.blob = null;
+                }
+            }
+        }, false);
+
+        lynk.req.open("PUT", putUrl, true);
+        lynk.req.setRequestHeader("Authorization", 'Basic ' + btoa(pade.username+':'+pade.password));
+        lynk.req.send(lynk.uploadFile);
     }
 
     //-------------------------------------------------------
@@ -737,76 +742,83 @@ var etherlynk = (function(lynk)
 
     lynk.stopRecorder = function()
     {
-        console.log("stopRecorder");
+        try {
+            if (lynk.audioRecorder) lynk.audioRecorder.stop();
+            if (lynk.videoRecorder) lynk.videoRecorder.stop();
+        } catch (e) { }
 
-        if (lynk.audioRecorder) lynk.audioRecorder.stop();
-        if (lynk.videoRecorder) lynk.videoRecorder.stop();
+        console.log("stopRecorder");
     }
 
     lynk.startRecorder = function(localAudioStream, localVideoStream, room, nickname)
     {
-        console.log("startRecorder", nickname, room, localAudioStream, localVideoStream);
+        console.log("startRecorder", nickname, room, localAudioStream.getAudioTracks(), localVideoStream.getAudioTracks());
 
-        if (getSetting("recordAudio", false) || getSetting("recordVideo", false))
-        {
-            lynk.audioRecorder = new MediaRecorder(localAudioStream);
-            lynk.audioChunks = [];
-
-            lynk.audioRecorder.ondataavailable = function(e)
-            {
-                if (e.data.size > 0)
-                {
-                    console.log("startRecorder push audio ", e.data);
-                    lynk.audioChunks.push(e.data);
-                }
-            }
-
-            lynk.audioRecorder.onstop = function(e)
-            {
-                var audioReader = new FileReader();
-
-                audioReader.onload = function()
-                {
-                    var file = dataUrlToFile(audioReader.result, room + "." + nickname + ".audio.webm");
-                    console.log("audioReader.onload", file);
-                    uploadFile(file, room);
-                };
-
-                audioReader.readAsDataURL(new Blob(lynk.audioChunks, {type: 'video/webm'}));
-            }
-
-            lynk.audioRecorder.start();
-        }
+        // TODO - progressive streaming. use pcm instead of opus for easy conversion into mp3 with Lame
 
         if (getSetting("recordVideo", false))
         {
-            lynk.videoRecorder = new MediaRecorder(localVideoStream);
-            lynk.videoChunks = [];
+            localVideoStream.addTrack(localAudioStream.getAudioTracks()[0]);
+            localAudioStream.removeTrack(localAudioStream.getAudioTracks()[0]);
+
+            lynk.videoRecorder = new MediaRecorder(localVideoStream, { mimeType: 'video/webm'});
+            var videoChunks = [];
+
+            console.log("recordVideo", lynk.videoRecorder);
 
             lynk.videoRecorder.ondataavailable = function(e)
             {
                 if (e.data.size > 0)
                 {
                     console.log("startRecorder push video ", e.data);
-                    lynk.videoChunks.push(e.data);
+                    videoChunks.push(e.data);
                 }
             }
 
             lynk.videoRecorder.onstop = function(e)
             {
-                var videoReader = new FileReader();
+                localVideoStream.getTracks().forEach(track => track.stop());
 
-                videoReader.onload = function()
-                {
-                    var file = dataUrlToFile(videoReader.result, room + "." + nickname + ".video.webm");
-                    console.log("videoReader.onload", file);
-                    uploadFile(file, room);
-                };
+                lynk.blob = new Blob(videoChunks, {type: 'video/webm'});
+                lynk.uploadFile = new File([lynk.blob], room + "." + nickname + ".video.webm", {type: 'video/webm'});
 
-                videoReader.readAsDataURL(new Blob(lynk.videoChunks, {type: 'video/webm'}));
+                lynk.doUploadFile(room);
+                videoChunks = [];
             }
 
             lynk.videoRecorder.start();
+        }
+        else
+
+        if (getSetting("recordAudio", false))
+        {
+            lynk.audioRecorder = new MediaRecorder(localAudioStream, {mimeType: 'audio/webm'});
+            var audioChunks = [];
+
+            console.log("recordAudio", lynk.audioRecorder);
+
+            lynk.audioRecorder.ondataavailable = function(e)
+            {
+                if (e.data.size > 0)
+                {
+                    console.log("startRecorder push audio ", e.data);
+                    audioChunks.push(e.data);
+                }
+            }
+
+            lynk.audioRecorder.onstop = function(e)
+            {
+                localAudioStream.getTracks().forEach(track => track.stop());
+
+                lynk.blob = new Blob(audioChunks, {type: 'audio/webm'});
+                lynk.uploadFile = new File([lynk.blob], room + "." + nickname + ".audio.webm", {type: 'audio/webm'});
+
+                lynk.doUploadFile(room);
+                audioChunks = [];
+
+            }
+
+            lynk.audioRecorder.start();
         }
     }
 

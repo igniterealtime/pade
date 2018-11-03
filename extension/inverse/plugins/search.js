@@ -84,21 +84,6 @@
                 }
             });
 
-            document.addEventListener('pade.search.setup', function(event)
-            {
-                //console.log("pade.search.setup", event);
-
-                var search = document.getElementById("pade-search-" + event.detail.id);
-
-                search.addEventListener('click', function(evt)
-                {
-                    evt.stopPropagation();
-
-                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
-                    searchDialog.show();
-                }, false);
-            });
-
             console.log("search plugin is ready");
         },
 
@@ -111,17 +96,22 @@
                     var view = this;
                     var id = this.model.get("box_id");
 
-                    if (bgWindow)
+                    if (bgWindow && bgWindow.pade.chatAPIAvailable)
                     {
-                        bgWindow.searchConversations("__DUMMY__", function(html, conversations, error)
-                        {
-                            if (!error)
-                            {
-                                addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search"></a>');
-                                document.dispatchEvent(new CustomEvent('pade.search.setup', {detail: {id: id, view: view}}));
+                        addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search"></a>');
+                        searchAvailable = true;
 
-                                searchAvailable = true;
-                            }
+                        setTimeout(function()
+                        {
+                            var search = document.getElementById("pade-search-" + id);
+
+                            search.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
+                                searchDialog.show();
+                            }, false);
                         });
                     }
                     return result;
