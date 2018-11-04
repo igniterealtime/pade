@@ -42,32 +42,41 @@ window.addEvent("domready", function () {
             document.getElementById("avatar").innerHTML = "<img style='width: 64px;' src='" + avatar + "' />";
         }
 
-        var planner = settings.manifest.meetingPlanner.element;
-        planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='../calendar/index.html'></iframe>";
-
-        settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
-
-        document.getElementById("uploadAvatar").addEventListener('change', function(event)
+        if (settings.manifest.meetingPlanner)
         {
-            uploadAvatar(event, settings);
-        });
+            var planner = settings.manifest.meetingPlanner.element;
+            planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='../calendar/index.html'></iframe>";
+        }
 
-        settings.manifest.uploadApp.element.innerHTML = "<input id='uploadApplication' type='file' name='files[]'>";
-
-        document.getElementById("uploadApplication").addEventListener('change', function(event)
+        if (settings.manifest.uploadAvatar)
         {
-            uploadApplication(event, settings, background);
-        });
+            settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
+
+            document.getElementById("uploadAvatar").addEventListener('change', function(event)
+            {
+                uploadAvatar(event, settings);
+            });
+        }
+
+        if (settings.manifest.uploadApp)
+        {
+            settings.manifest.uploadApp.element.innerHTML = "<input id='uploadApplication' type='file' name='files[]'>";
+
+            document.getElementById("uploadApplication").addEventListener('change', function(event)
+            {
+                uploadApplication(event, settings, background);
+            });
+        }
 
         setDefaultPassword(settings);
 
-        settings.manifest.connect.addEvent("action", function ()
+        if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
         {
             settings.manifest.status.element.innerHTML = 'Please wait....';
             validateCredentials()
         });
 
-        settings.manifest.remoteConnect.addEvent("action", function ()
+        if (settings.manifest.remoteConnect) settings.manifest.remoteConnect.addEvent("action", function ()
         {
             var host = getSetting("server", null);
             var hostname = host.split(":")[0]
@@ -93,7 +102,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.convSearch.addEvent("action", function ()
+        if (settings.manifest.convSearch) settings.manifest.convSearch.addEvent("action", function ()
         {
             var keyword = settings.manifest.convSearchString.element.value;
 
@@ -133,7 +142,7 @@ window.addEvent("domready", function () {
             });
         });
 
-        settings.manifest.search.addEvent("action", function ()
+        if (settings.manifest.search) settings.manifest.search.addEvent("action", function ()
         {
             background.findUsers(settings.manifest.searchString.element.value, function(users)
             {
@@ -162,7 +171,7 @@ window.addEvent("domready", function () {
                         e.stopPropagation();
                         var user = e.target;
 
-                        //console.log("findUsers - click", user.id, user.name, user.title);
+                        console.debug("findUsers - click", user.id, user.name, user.title);
 
                         if (getSetting("enableInverse"))
                         {
@@ -205,7 +214,7 @@ window.addEvent("domready", function () {
             });
         });
 
-        settings.manifest.inviteToMeeting.addEvent("action", function ()
+        if (settings.manifest.inviteToMeeting) settings.manifest.inviteToMeeting.addEvent("action", function ()
         {
             var inviteList = settings.manifest.invitationList.element.value.split("\n");
             var room = "pade-" + Math.random().toString(36).substr(2,9);
@@ -221,7 +230,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.saveMeeting.addEvent("action", function ()
+        if (settings.manifest.saveMeeting) settings.manifest.saveMeeting.addEvent("action", function ()
         {
             var inviteList = settings.manifest.invitationList.element.value.split("\n");
             var room = "pade-" + Math.random().toString(36).substr(2,9);
@@ -241,7 +250,7 @@ window.addEvent("domready", function () {
             window.localStorage["store.settings.savedMeetings"] = btoa(JSON.stringify(meetings));
         });
 
-        settings.manifest.inviteMeetings.addEvent("action", function ()
+        if (settings.manifest.inviteMeetings) settings.manifest.inviteMeetings.addEvent("action", function ()
         {
             var keyword = settings.manifest.inviteMeetingsString.element.value;
             var meetings = {};
@@ -353,7 +362,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.popupWindow.addEvent("action", function ()
+        if (settings.manifest.popupWindow) settings.manifest.popupWindow.addEvent("action", function ()
         {
             if (getSetting("popupWindow"))
             {
@@ -364,7 +373,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableCommunity.addEvent("action", function ()
+        if (settings.manifest.enableCommunity) settings.manifest.enableCommunity.addEvent("action", function ()
         {
             if (getSetting("enableCommunity"))
             {
@@ -375,7 +384,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableInverse.addEvent("action", function ()
+        if (settings.manifest.enableInverse) settings.manifest.enableInverse.addEvent("action", function ()
         {
             if (getSetting("enableInverse"))
             {
@@ -389,15 +398,18 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
-        settings.manifest.enableMeetingPlanner.addEvent("action", function ()
+        if (settings.manifest.enableMeetingPlanner)
         {
+            settings.manifest.enableMeetingPlanner.addEvent("action", function ()
+            {
+                settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
+            });
+
+            // default
             settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
-        });
+        }
 
-        // default
-        settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
-
-        settings.manifest.enableTouchPad.addEvent("action", function ()
+        if (settings.manifest.enableTouchPad) settings.manifest.enableTouchPad.addEvent("action", function ()
         {
             if (getSetting("enableTouchPad"))
             {
@@ -411,12 +423,12 @@ window.addEvent("domready", function () {
             location.reload()
         });
 
-        settings.manifest.useStreamDeck.addEvent("action", function ()
+        if (settings.manifest.useStreamDeck) settings.manifest.useStreamDeck.addEvent("action", function ()
         {
             location.reload()
         });
 
-        settings.manifest.enableOffice365Business.addEvent("action", function ()
+        if (settings.manifest.enableOffice365Business) settings.manifest.enableOffice365Business.addEvent("action", function ()
         {
             if (getSetting("enableOffice365Business"))
             {
@@ -427,7 +439,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableOffice365Personal.addEvent("action", function ()
+        if (settings.manifest.enableOffice365Personal) settings.manifest.enableOffice365Personal.addEvent("action", function ()
         {
             if (getSetting("enableOffice365Personal"))
             {
@@ -438,7 +450,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableWebApps.addEvent("action", function ()
+        if (settings.manifest.enableWebApps) settings.manifest.enableWebApps.addEvent("action", function ()
         {
             if (getSetting("enableWebApps"))
             {
@@ -449,7 +461,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableGmail.addEvent("action", function ()
+        if (settings.manifest.enableGmail) settings.manifest.enableGmail.addEvent("action", function ()
         {
             if (getSetting("enableGmail"))
             {
@@ -460,38 +472,38 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.changelog.addEvent("action", function ()
+        if (settings.manifest.changelog) settings.manifest.changelog.addEvent("action", function ()
         {
             location.href = "../changelog.html";
         });
 
-        settings.manifest.help.addEvent("action", function ()
+        if (settings.manifest.help) settings.manifest.help.addEvent("action", function ()
         {
             location.href = chrome.runtime.getManifest().homepage_url;
         });
 
-        settings.manifest.enableSip.addEvent("action", function ()
+        if (settings.manifest.enableSip) settings.manifest.enableSip.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
-        settings.manifest.useTotp.addEvent("action", function ()
+        if (settings.manifest.useTotp) settings.manifest.useTotp.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
-        settings.manifest.useWinSSO.addEvent("action", function ()
+        if (settings.manifest.useWinSSO) settings.manifest.useWinSSO.addEvent("action", function ()
         {
             setDefaultSetting("password", "__DEFAULT__WINSSO__")
             background.reloadApp();
         });
 
-        settings.manifest.enableRemoteControl.addEvent("action", function ()
+        if (settings.manifest.enableRemoteControl) settings.manifest.enableRemoteControl.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
-        settings.manifest.factoryReset.addEvent("action", function ()
+        if (settings.manifest.factoryReset) settings.manifest.factoryReset.addEvent("action", function ()
         {
             if (confirm(chrome.i18n.getMessage("resetConfirm")))
             {
@@ -500,13 +512,13 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.useClientCert.addEvent("action", function ()
+        if (settings.manifest.useClientCert) settings.manifest.useClientCert.addEvent("action", function ()
         {
             setDefaultPassword(settings);
             background.reloadApp();
         });
 
-        settings.manifest.enableBlog.addEvent("action", function ()
+        if (settings.manifest.enableBlog) settings.manifest.enableBlog.addEvent("action", function ()
         {
             if (getSetting("enableBlog"))
             {
@@ -517,7 +529,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableBlast.addEvent("action", function ()
+        if (settings.manifest.enableBlast) settings.manifest.enableBlast.addEvent("action", function ()
         {
             if (getSetting("enableBlast"))
             {
@@ -528,7 +540,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableDrawIO.addEvent("action", function ()
+        if (settings.manifest.enableDrawIO) settings.manifest.enableDrawIO.addEvent("action", function ()
         {
             if (getSetting("enableDrawIO"))
             {
@@ -539,7 +551,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableAVCapture.addEvent("action", function ()
+        if (settings.manifest.enableAVCapture) settings.manifest.enableAVCapture.addEvent("action", function ()
         {
             if (getSetting("enableAVCapture"))
             {
@@ -550,7 +562,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.enableVerto.addEvent("action", function ()
+        if (settings.manifest.enableVerto) settings.manifest.enableVerto.addEvent("action", function ()
         {
             if (getSetting("enableVerto"))
             {
@@ -561,22 +573,22 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.desktopShareMode.addEvent("action", function ()
+        if (settings.manifest.desktopShareMode) settings.manifest.desktopShareMode.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
-        settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
+        if (settings.manifest.showOnlyOnlineUsers) settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
-        settings.manifest.useCredsMgrApi.addEvent("action", function ()
+        if (settings.manifest.useCredsMgrApi) settings.manifest.useCredsMgrApi.addEvent("action", function ()
         {
             background.reloadApp();
         });
 
-        settings.manifest.qrcode.addEvent("action", function ()
+        if (settings.manifest.qrcode) settings.manifest.qrcode.addEvent("action", function ()
         {
             if (window.localStorage["store.settings.server"])
             {
@@ -590,13 +602,13 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.updateCollabUrlList.addEvent("action", function ()
+        if (settings.manifest.updateCollabUrlList) settings.manifest.updateCollabUrlList.addEvent("action", function ()
         {
             background.updateCollabUrlList();
         });
 
 
-        settings.manifest.registerUrlProtocols.addEvent("action", function ()
+        if (settings.manifest.registerUrlProtocols) settings.manifest.registerUrlProtocols.addEvent("action", function ()
         {
             if (getSetting("registerIMProtocol"))
             {
@@ -624,7 +636,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.uport.addEvent("action", function ()
+        if (settings.manifest.uport) settings.manifest.uport.addEvent("action", function ()
         {
             if (getSetting("useUport"))
             {
@@ -644,7 +656,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        settings.manifest.certificate.addEvent("action", function ()
+        if (settings.manifest.certificate) settings.manifest.certificate.addEvent("action", function ()
         {
             if (window.localStorage["store.settings.server"])
             {
@@ -695,7 +707,7 @@ window.addEvent("domready", function () {
 
                         connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
                         {
-                            //console.log("status", status, lynks.username, lynks.password, lynks.displayname);
+                            console.debug("status", status, lynks.username, lynks.displayname);
 
                             if (status === 5)
                             {
@@ -796,24 +808,27 @@ function doDefaults()
 
 function setDefaultPassword(settings)
 {
-    settings.manifest.password.element.disabled = false;
-
-    if (settings.manifest.useClientCert.element.checked)
+    if (settings.manifest.password)
     {
-        settings.manifest.password.element.disabled = true;
-        setDefaultSetting("password", settings.manifest.username.element.value);
+        settings.manifest.password.element.disabled = false;
+
+        if (settings.manifest.useClientCert && settings.manifest.useClientCert.element.checked)
+        {
+            settings.manifest.password.element.disabled = true;
+            setDefaultSetting("password", settings.manifest.username.element.value);
+        }
     }
 }
 
 function setSetting(name, value)
 {
-    //console.log("setSetting", name, value);
+    console.debug("setSetting", name, value);
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
 function setDefaultSetting(name, defaultValue)
 {
-    console.log("setDefaultSetting", name, defaultValue);
+    console.debug("setDefaultSetting", name, defaultValue);
 
     if (!window.localStorage["store.settings." + name])
     {
@@ -823,7 +838,7 @@ function setDefaultSetting(name, defaultValue)
 
 function getSetting(name, defaultValue)
 {
-    //console.log("getSetting", name);
+    console.debug("getSetting", name);
     var value = defaultValue ? defaultValue : null;
 
     if (window.localStorage["store.settings." + name])
@@ -850,7 +865,7 @@ function getPassword(password)
 
 function uploadApplication(event, settings, background)
 {
-    //console.log("uploadApplication", event);
+    console.debug("uploadApplication", event);
 
     if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
     {

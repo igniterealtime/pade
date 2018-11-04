@@ -131,6 +131,13 @@ this.manifest = {
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("About"),
+            "name": "credits",
+            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 16px;'>Ignite Realtime Community</a>"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("About"),
             "name": "factoryReset",
             "type": "button",
             "text": i18n.get("Factory Reset")
@@ -1257,7 +1264,7 @@ this.manifest = {
 
 var getSetting = function (name)
 {
-    //console.log("getSetting", name);
+    console.debug("getSetting", name);
     var value = null;
 
     if (window.localStorage["store.settings." + name])
@@ -1368,4 +1375,50 @@ if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
             "text": i18n.get("Enter the value for speaker " + s),
         });
     }
+}
+
+// branding overrides
+
+var overrides = Object.getOwnPropertyNames(branding);
+
+for (var i=0; i<overrides.length; i++)
+{
+    var setting = overrides[i];
+    var override = branding[setting];
+
+    var index = getStaticSetting(setting, this.manifest.settings);
+
+    if ( index > -1)
+    {
+        if (override.value)
+        {
+            var oldSetting = this.manifest.settings[index]
+
+            if (oldSetting.type == "description")
+            {
+                oldSetting.text = override.value
+            }
+            window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+        }
+
+        if (override.disable) this.manifest.settings.splice(index, 1);
+    }
+
+    console.debug("branding - found " + i, index, setting, override.value, override.disable);
+}
+
+
+function getStaticSetting(name, settings)
+{
+    var index = -1;
+
+    for (var i=0; i<settings.length; i++)
+    {
+        if (name == settings[i].name)
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
 }

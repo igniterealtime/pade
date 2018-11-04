@@ -157,7 +157,7 @@ window.addEventListener("load", function()
 
     chrome.runtime.onConnect.addListener(function(port)
     {
-        //console.log("popup connect", port.sender.url);
+        console.debug("popup connect", port.sender.url);
 
         if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
         {
@@ -248,7 +248,7 @@ window.addEventListener("load", function()
 
         port.onDisconnect.addListener(function()
         {
-            //console.log("popup disconnect");
+            console.debug("popup disconnect");
 
             if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
             {
@@ -360,7 +360,7 @@ window.addEventListener("load", function()
 
     chrome.commands.onCommand.addListener(function(command)
     {
-        console.log('Command:', command);
+        console.debug('Command:', command);
 
         if (command == "activate_chat" && getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
 
@@ -404,17 +404,17 @@ window.addEventListener("load", function()
             if (win == pade.apcWindow.id) pade.minimised = false;
         }
 
-        //console.log("minimised", win, pade.minimised, pade.chatWindow);
+        console.debug("minimised", win, pade.minimised, pade.chatWindow);
     });
 
     chrome.windows.onCreated.addListener(function(window)
     {
-        //console.log("opening window ", window);
+        console.debug("opening window ", window);
     })
 
     chrome.windows.onRemoved.addListener(function(win)
     {
-        //console.log("closing window ", win);
+        console.debug("closing window ", win);
 
         if (pade.chatWindow && win == pade.chatWindow.id)
         {
@@ -539,7 +539,7 @@ window.addEventListener("load", function()
 
 function handleContact(contact)
 {
-    //console.log("handleContact", contact);
+    console.debug("handleContact", contact);
 
     if (contact.type == "url")
     {
@@ -645,7 +645,7 @@ function setActiveWorkgroup(contact)
 
 function handleContactClick(info)
 {
-    //console.log("handleContactClick", info, pade.participants[info.menuItemId]);
+    console.debug("handleContactClick", info, pade.participants[info.menuItemId]);
     setActiveContact(pade.participants[info.menuItemId]);
     doJitsiMeet();
 }
@@ -697,25 +697,25 @@ function doJitsiMeet()
 
 function handleWorkgroupClick(info)
 {
-    //console.log("handleWorkgroupClick", info, pade.participants[info.menuItemId]);
+    console.debug("handleWorkgroupClick", info, pade.participants[info.menuItemId]);
     setActiveWorkgroup(pade.participants[info.menuItemId]);
 }
 
 function handleUrlClick(info)
 {
-    //console.log("handleUrlClick", info);
+    console.debug("handleUrlClick", info);
     pade.activeUrl = info.menuItemId;
 }
 
 function handleH5pClick(info)
 {
-    //console.log("handleH5pClick", info);
+    console.debug("handleH5pClick", info);
     pade.activeH5p = info.menuItemId;
 }
 
 function handleH5pViewerClick(info)
 {
-    console.log("handleH5pViewerClick", info);
+    console.debug("handleH5pViewerClick", info);
     if (pade.activeH5p) openWebAppsWindow(pade.activeH5p, null, 800, 600)
 }
 
@@ -728,7 +728,7 @@ function startTone(name)
 {
     if (getSetting("enableRingtone", false))
     {
-        //console.log("startTone", name);
+        console.debug("startTone", name);
 
         if (!pade.ringtone)
         {
@@ -835,7 +835,7 @@ function updateWindowCoordinates(win, winId, coordinates)
 {
     var savedWin = getSetting(win, null);
 
-    console.log("updateWindowCoordinates", win, savedWin, coordinates);
+    console.debug("updateWindowCoordinates", win, savedWin, coordinates);
 
     if (getSetting("saveWinPositions") && savedWin && savedWin.height && savedWin.width && savedWin.top && savedWin.left)
     {
@@ -982,7 +982,7 @@ function openWebAppsWindow(url, state, width, height)
     var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : "https://" + url.trim());
     var data = {url: httpUrl, type: "popup", focused: true};
 
-    console.log("openWebAppsWindow", data, state, width, height);
+    console.debug("openWebAppsWindow", data, state, width, height);
 
     if (state == "minimized")
     {
@@ -1014,7 +1014,7 @@ function closePhoneWindow()
 
 function openPhoneWindow(focus, state)
 {
-    console.log("openPhoneWindow", focus, state);
+    console.debug("openPhoneWindow", focus, state);
 
     var data = {url: chrome.runtime.getURL("phone/index-ext.html"), type: "popup", focused: focus};
 
@@ -1095,7 +1095,7 @@ function openVideoWindow(room, mode)
 
 function openVideoWindowUrl(url)
 {
-    console.log("openVideoWindowUrl", url);
+    console.debug("openVideoWindowUrl", url);
 
     if (pade.videoWindow != null)
     {
@@ -1246,7 +1246,7 @@ function addHandlers()
 {
     pade.connection.addHandler(function(iq)
     {
-        //console.log('fastpath handler', iq);
+        console.debug('fastpath handler', iq);
 
         var iq = $(iq);
         var workgroupJid = iq.attr('from');
@@ -1266,7 +1266,7 @@ function addHandlers()
                 properties[name] = value;
             });
 
-            //console.log("fastpath handler offer", properties, workgroupJid);
+            console.debug("fastpath handler offer", properties, workgroupJid);
 
             acceptRejectOffer(properties);
         });
@@ -1276,7 +1276,7 @@ function addHandlers()
             id = $(this).attr('id');
             jid = $(this).attr('jid').toLowerCase();
 
-            //console.log("fastpath handler offer-revoke", workgroupJid);
+            console.debug("fastpath handler offer-revoke", workgroupJid);
         });
 
         return true;
@@ -1289,7 +1289,7 @@ function addHandlers()
         var type = $(presence).attr('type');
         var from = Strophe.getBareJidFromJid($(presence).attr('from'));
 
-        //console.log("presence handler", from, to, type);
+        console.debug("presence handler", from, to, type);
 
         var pres = "online";
         if (type == "unavailable") pres = "unavailable";
@@ -1331,7 +1331,7 @@ function addHandlers()
         var room = null;
         var autoaccept = null;
 
-        console.log("message handler", from, to, message)
+        console.debug("message handler", from, to, message)
 
         var encrypted = false;
 
@@ -1351,7 +1351,7 @@ function addHandlers()
 
             var pos2 = body.indexOf("https://" + pade.server)
 
-            console.log("message handler body", body, offerer, pade.minimised);
+            console.debug("message handler body", body, offerer, pade.minimised);
 
             if (!pade.messageCount) pade.messageCount = 0;
 
@@ -1449,7 +1449,7 @@ function addHandlers()
 
 function doNotification(body, offerer, callback)
 {
-    //console.log("doNotification", body, offerer)
+    console.debug("doNotification", body, offerer)
 
     notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
     {
@@ -1469,7 +1469,7 @@ function fetchContacts(callback)
 
     pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("storage", {xmlns: "storage:bookmarks"}).tree(), function(resp)
     {
-        //console.log("get bookmarks", resp)
+        console.debug("get bookmarks", resp)
 
         $(resp).find('conference').each(function()
         {
@@ -1478,7 +1478,7 @@ function fetchContacts(callback)
             var muc = Strophe.getDomainFromJid(jid);
             var domain = muc.substring("conference.".length);           // ignore "conference."
 
-            //console.log('ofmeet.bookmark.conference.item', {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
+            console.debug('ofmeet.bookmark.conference.item', {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
 
             if (callback) callback(
             {
@@ -1496,7 +1496,7 @@ function fetchContacts(callback)
 
         $(resp).find('url').each(function()
         {
-            //console.log('ofmeet.bookmark.url.item', {name: $(this).attr("name"), url: $(this).attr("url")});
+            console.debug('ofmeet.bookmark.url.item', {name: $(this).attr("name"), url: $(this).attr("url")});
 
             var ignore = $(this).attr("name") == "Video conferencing web client";
 
@@ -1516,7 +1516,7 @@ function fetchContacts(callback)
 
     pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:roster"}).tree(), function(resp)
     {
-        //console.log("get roster", resp)
+        console.debug("get roster", resp)
 
         $(resp).find('item').each(function()
         {
@@ -1525,7 +1525,7 @@ function fetchContacts(callback)
             var name = $(this).attr("name");
             var domain = Strophe.getDomainFromJid(jid);
 
-            //console.log('ofmeet.roster.item',jid, name);
+            console.debug('ofmeet.roster.item',jid, name);
 
             if (callback) callback(
             {
@@ -1556,7 +1556,7 @@ function fetchContacts(callback)
             var name = Strophe.getNodeFromJid(jid);
             var room = 'workgroup-' + name + "@conference." + pade.connection.domain;
 
-            //console.log("get workgroups", room, jid);
+            console.debug("get workgroups", room, jid);
 
             if (callback) callback(
             {
@@ -1602,7 +1602,7 @@ function fetchContacts(callback)
             $(resp).find('outboundproxy').each(function()       {pade.sip.outboundproxy = $(this).text();});
             $(resp).find('promptCredentials').each(function()   {pade.sip.promptCredentials = $(this).text();});
 
-            console.log("get sip profile", pade.sip);
+            console.debug("get sip profile", pade.sip);
 
             if (pade.sip.authUsername)
             {
@@ -1624,7 +1624,7 @@ function fetchContacts(callback)
 
 function findUsers(search, callback)
 {
-    //console.log('findUsers', search);
+    console.debug('findUsers', search);
 
     var iq = $iq({type: 'set', to: "search." + pade.connection.domain}).c('query', {xmlns: 'jabber:iq:search'}).c('x').t(search).up().c('email').t(search).up().c('nick').t(search);
 
@@ -1642,7 +1642,7 @@ function findUsers(search, callback)
             var email = current.find('email').text();
             var room = makeRoomName(username);
 
-            //console.log('findUsers response', name, jid, room);
+            console.debug('findUsers response', name, jid, room);
 
             users.push({username: username, name: name, email: email, jid: jid, room: room});
         });
@@ -1660,7 +1660,7 @@ function inviteToConference(jid, room, invitation)
     var invite = (invitation ? invitation : "Please join me in") + " " + url;
     var roomJid = room + "@conference." + pade.domain;
 
-    console.log("inviteToConference", jid, room, url, roomJid, invite);
+    console.debug("inviteToConference", jid, room, url, roomJid, invite);
 
     try {
         pade.connection.send($msg({type: "chat", to: jid}).c("body").t(invite));
@@ -1671,7 +1671,7 @@ function inviteToConference(jid, room, invitation)
 
 function injectMessage(message, room, nickname)
 {
-    //console.log("injectMessage", message, room);
+    console.debug("injectMessage", message, room);
 
     try {
         var msg = $msg({to: room + "@conference." + pade.domain, type: "groupchat"});
@@ -1686,7 +1686,7 @@ function injectMessage(message, room, nickname)
 
 function handleInvitation(invite)
 {
-    console.log("handleInvitation", invite);
+    console.debug("handleInvitation", invite);
 
     var jid = Strophe.getBareJidFromJid(invite.offerer);
 
@@ -1713,7 +1713,7 @@ function handleInvitation(invite)
 
 function processInvitation(title, label, room, autoaccept, id, reason, webinar)
 {
-    console.log("processInvitation", title, label, room, id, reason, webinar);
+    console.debug("processInvitation", title, label, room, id, reason, webinar);
 
     if (!autoaccept || autoaccept != "true")
     {
@@ -1721,7 +1721,7 @@ function processInvitation(title, label, room, autoaccept, id, reason, webinar)
 
         notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
         {
-            //console.log("handleAction callback", notificationId, buttonIndex);
+            console.debug("handleAction callback", notificationId, buttonIndex);
 
             if (buttonIndex == 0)   // accept
             {
@@ -1748,7 +1748,7 @@ function processInvitation(title, label, room, autoaccept, id, reason, webinar)
 
 function acceptCall(title, label, room, id, webinar)
 {
-    console.log("acceptCall", id, title, label, room, pade.questions[label], webinar);
+    console.debug("acceptCall", id, title, label, room, pade.questions[label], webinar);
 
     if (isAudioOnly())
     {
@@ -1785,13 +1785,13 @@ function acceptRejectOffer(properties)
 
         pade.questions[properties.workgroupJid] = properties;
 
-        //console.log("acceptRejectOffer", question, email);
+        console.debug("acceptRejectOffer", question, email);
 
         startTone("Diggztone_DigitalSanity");
 
         notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
         {
-            //console.log("handleAction callback", notificationId, buttonIndex);
+            console.debug("handleAction callback", notificationId, buttonIndex);
 
             if (buttonIndex == 0)   // accept
             {
@@ -1824,13 +1824,13 @@ function setupJabra()
 
         pade.jabraPort.onMessage.addListener(function(data)
         {
-            //console.log("jabra incoming", data);
+            console.debug("jabra incoming", data);
             handleJabraMessage(data.message);
         });
 
         pade.jabraPort.onDisconnect.addListener(function()
         {
-            console.log("jabra disconnected");
+            console.debug("jabra disconnected");
             pade.jabraPort = null;
         });
 
@@ -1843,7 +1843,7 @@ function setupJabra()
 function handleJabraMessage(message)
 {
     if (message.startsWith("Event: Version ")) {
-        console.log("Jabra " + message);
+        console.debug("Jabra " + message);
     }
 
     if (message == "Event: mute") {
@@ -1916,7 +1916,7 @@ function sendToJabra(message)
 {
     if (pade.jabraPort)
     {
-        //console.log("sendToJabra " + message);
+        console.debug("sendToJabra " + message);
         pade.jabraPort.postMessage({ message: message });
     }
 }
@@ -1925,7 +1925,7 @@ function clearNotification(room)
 {
     chrome.notifications.clear(room, function(wasCleared)
     {
-        //console.log("notification cleared", room, wasCleared);
+        console.debug("notification cleared", room, wasCleared);
     });
 }
 
@@ -1951,13 +1951,13 @@ function removeSetting(name)
 
 function setSetting(name, value)
 {
-    //console.log("setSetting", name, value);
+    console.debug("setSetting", name, value);
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
 function getSetting(name, defaultValue)
 {
-    //console.log("getSetting", name, defaultValue);
+    console.debug("getSetting", name, defaultValue);
 
     var value = defaultValue;
 
@@ -2229,7 +2229,7 @@ function setSipStatus(status)
 {
     pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).c('status').t(status).tree(), function(resp)
     {
-        //console.log("setSipStatus", status);
+        console.debug("setSipStatus", status);
 
     }, function (error) {
         console.error("setSipStatus", error);
@@ -2251,7 +2251,7 @@ function logCall(target, direction, duration)
 /*
     pade.connection.sendIQ($iq({type: 'get', to: "logger." + pade.connection.domain}).c('logger', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/log"}).c('callLog').c('numA').t(numA).up().c('numB').t(numB).up().c('direction').t(direction).up().c('duration').t(duration).up().tree(), function(resp)
     {
-        console.log("logCall", numA, numB, direction, duration);
+        console.debug("logCall", numA, numB, direction, duration);
 
     }, function (error) {
         console.error("logCall", error);
@@ -2286,7 +2286,7 @@ function setVCard(vCard, callback, errorback)
 
 function updateVCard()
 {
-    //console.log("updateVCard");
+    console.debug("updateVCard");
 
     var jid = pade.username + "@" + pade.domain;
 
@@ -2308,7 +2308,7 @@ function updateVCard()
 
 function updateVCardAvatar(jid, avatar)
 {
-    //console.log("updateVCardAvatar", avatar);
+    console.debug("updateVCardAvatar", avatar);
 
     var email = getSetting("email", "");
     var phone = getSetting("phone", "");
@@ -2343,7 +2343,7 @@ function updateVCardAvatar(jid, avatar)
 
             setVCard(vCard, function(resp)
             {
-                //console.log("uploadAvatar - set vcard", resp);
+                console.debug("uploadAvatar - set vcard", resp);
 
             }, avatarError);
         }
@@ -2437,7 +2437,7 @@ function setupStreamDeck()
 
             pade.streamDeckPort.onMessage.addListener(function(data)
             {
-                //console.log("stream deck incoming", data);
+                console.debug("stream deck incoming", data);
 
                 if (data.message == "keypress")
                 {
@@ -2659,7 +2659,7 @@ function enableRemoteControl()
 
             pade.remoteControlPort.onMessage.addListener(function(data)
             {
-                console.log("remote control incoming", data);
+                console.debug("remote control incoming", data);
             });
 
             pade.remoteControlPort.onDisconnect.addListener(function()
@@ -2691,7 +2691,7 @@ function doPadeConnect()
 
     pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
     {
-        console.log("pade.connection ===>", status);
+        console.debug("pade.connection ===>", status);
 
         if (status === Strophe.Status.CONNECTED)
         {
@@ -2882,12 +2882,12 @@ function searchConversations(keyword, callback)
     var url =  "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/messages" + query;
     var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
 
-    //console.log("fetch", url, options);
+    console.debug("fetch", url, options);
     var conversations = [];
 
     fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
     {
-        //console.log("convSearch", messages.conversation);
+        console.debug("convSearch", messages.conversation);
 
         if (messages.conversation instanceof Array)
         {
@@ -2917,7 +2917,7 @@ function processConvSearch(conversations, keyword)
     var query = new RegExp("(\\b" + keyword + "\\b)", "gim");
     var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Chat</th><th>Conversation</th></tr>";
 
-    console.log("processConvSearch", conversations, keyword);
+    console.debug("processConvSearch", conversations, keyword);
 
     for (var i=conversations.length-1; i>=0; i--)
     {
@@ -2958,13 +2958,13 @@ function processConvSearch(conversations, keyword)
 
 function updateCollabUrlList()
 {
-    //console.log("updateCollabUrlList", getSetting("collabUrlList"));
+    console.debug("updateCollabUrlList", getSetting("collabUrlList"));
 
     for (var i=0; i<pade.collabList.length; i++)
     {
         if (pade.collabDocs[pade.collabList[i]])
         {
-            //console.log("updateCollabUrlList - removing ", pade.collabList[i]);
+            console.debug("updateCollabUrlList - removing ", pade.collabList[i]);
             chrome.contextMenus.remove(pade.collabList[i]);
         }
     }
@@ -3022,13 +3022,13 @@ function executeMeetingPlanner()
         if (title.length == 2 && meetings[title[1]])
         {
             var meeting = meetings[title[1]];
-            console.log("Processing meeting", title, start, now, plannerNotice, timeDiff, meeting);
+            console.debug("Processing meeting", title, start, now, plannerNotice, timeDiff, meeting);
 
             if (timeDiff < plannerNotice)
             {
                 if (timeDiff > -plannerExpire)
                 {
-                    console.log("Triggered meeting", title, start, now, plannerNotice, timeDiff, meeting);
+                    console.debug("Triggered meeting", title, start, now, plannerNotice, timeDiff, meeting);
 
                     inviteToConference(pade.connection.jid, meeting.room, meeting.invite);
 
@@ -3040,7 +3040,7 @@ function executeMeetingPlanner()
                         }
                     }
                 } else {
-                    console.log("Expired meeting", title, start, now, plannerNotice, timeDiff, meeting);
+                    console.debug("Expired meeting", title, start, now, plannerNotice, timeDiff, meeting);
                 }
                 events.splice(i, 1);
                 window.localStorage["store.settings.savedPlanner"] = btoa(JSON.stringify(events));

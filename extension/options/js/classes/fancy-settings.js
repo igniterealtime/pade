@@ -77,6 +77,8 @@
         },
 
         "align": function (settings) {
+            if (!settings[0]) return;
+
             var types,
                 type,
                 maxWidth;
@@ -95,6 +97,8 @@
             }
 
             settings.each(function (setting) {
+                if (!setting) return;
+
                 if (setting.params.type !== type) {
                     throw "multipleTypes";
                 }
@@ -106,6 +110,7 @@
             });
 
             settings.each(function (setting) {
+                if (!setting) return;
                 var width = setting.label.offsetWidth;
                 if (width < maxWidth) {
                     if (type === "button" || type === "slider") {
