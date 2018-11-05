@@ -1,7 +1,10 @@
 P&agrave;d&eacute;
 =====
 
-[P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. It is a unified communications client for Openfire Meetings and uses the following front end web applications.
+[P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. 
+
+<img src="https://discourse.igniterealtime.org/uploads/default/optimized/2X/2/22d1dda0a03402cf6cc8b020c9cc8752b263ac44_1_690x407.jpeg" />
+It is a unified communications client for Openfire Meetings and uses the following front end web applications.
 
 * [Jitsi Meet](https://jitsi.org/jitsi-meet/) for audio/video conferencing, screen share and real-time application collaboration (WebRTC)
 * [ctxPhone](https://collecttix.github.io/ctxSip/) for SIP based telephony with FreeSWITCH
