@@ -747,9 +747,8 @@ function doDefaults()
 {
     // connection
     setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
-    setDefaultSetting("server", chrome.i18n.getMessage("openfire_server"));
-    setDefaultSetting("domain", chrome.i18n.getMessage("openfire_domain"));
     setDefaultSetting("useWebsocket", true);
+    setDefaultServer();
 
     // preferences
     setDefaultSetting("language", "en");
@@ -767,6 +766,7 @@ function doDefaults()
     setDefaultSetting("minHDHeight", 540);
 
     // meeting
+    setDefaultSetting("transcribeLanguage", "en-GB");
     setDefaultSetting("VERTICAL_FILMSTRIP", true);
     setDefaultSetting("FILM_STRIP_MAX_HEIGHT", 90);
     setDefaultSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
@@ -804,6 +804,92 @@ function doDefaults()
     setDefaultSetting("onlyheader", true);
     setDefaultSetting("onlystatusBar", true);
     setDefaultSetting("onlyautosave", true);
+}
+
+function setDefaultServer()
+{
+    if (!window.localStorage["store.settings.server"] || !window.localStorage["store.settings.domain"])
+    {
+        var doTheSetup = function(domain, server)
+        {
+            setDefaultSetting("server", server);
+            setDefaultSetting("domain", domain);
+
+            fetch("https://" + server + "/pade.json", {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
+            {
+                console.debug("setDefaultServer - found branding", json);
+                var overrides = Object.getOwnPropertyNames(json);
+
+                for (var i=0; i<overrides.length; i++)
+                {
+                    var setting = overrides[i];
+                    var override = json[setting];
+
+                    if (override.value)
+                    {
+                        console.debug("setDefaultServer - overrride", setting, override.value);
+                        window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+                    }
+                }
+
+                if (getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false))
+                {
+                    setDefaultSetting("password", "__DEFAULT__WINSSO__");
+                    chrome.extension.getBackgroundPage().reloadApp();
+                }
+
+                window.location.reload();
+
+            }).catch(function (err) {
+                console.error('setDefaultServer pade.json file error', err);
+                alert("Auto Configuartion error\n" + err);
+                window.location.reload();
+            });
+        }
+
+        chrome.tabs.query({}, function(tabs)
+        {
+            if (tabs)
+            {
+                var option_tab = tabs.filter(function(t) { return t.url.indexOf("/ofmeet") > -1; });
+
+                console.debug("setDefaultServer - found tabs", option_tab, tabs);
+
+                if (option_tab.length > 0)
+                {
+                    var url = option_tab[0].url.split("/");
+                    var server = url[2];
+                    var domain = url[2].split(":")[0];
+
+                    console.debug("setDefaultServer - found ofmeet web page", server, domain, url);
+
+                    fetch("https://" + server + "/ofmeet/config.js", {method: "GET"}).then(function(response){ return response.text()}).then(function(text)
+                    {
+                        var pos = text.indexOf("\"domain\": \"");
+
+                        if (pos > -1)
+                        {
+                            var temp = text.substring(pos + 11);
+                            pos = temp.indexOf("\"");
+                            temp = temp.substring(0, pos);
+
+                            if (temp != "")
+                            {
+                                domain = temp;
+                                console.debug("setDefaultServer - found domain from config.js", domain);
+                            }
+                        }
+
+                        doTheSetup(domain, server);
+
+                    }).catch(function (err) {
+                        console.warn('setDefaultServer config.js file error. using domain ' + domain, err);
+                        doTheSetup(domain, server);
+                    });
+                }
+            }
+        });
+    }
 }
 
 function setDefaultPassword(settings)

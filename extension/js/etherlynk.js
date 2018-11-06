@@ -725,6 +725,8 @@ var etherlynk = (function(lynk)
 
                     lynk.uploadFile = null;
                     lynk.blob = null;
+
+                    if (lynk.stopRecordCallback) lynk.stopRecordCallback(evt.total);
                 }
             }
         }, false);
@@ -740,8 +742,10 @@ var etherlynk = (function(lynk)
     //
     //-------------------------------------------------------
 
-    lynk.stopRecorder = function()
+    lynk.stopRecorder = function(callback)
     {
+        if (callback) lynk.stopRecordCallback = callback;
+
         try {
             if (lynk.audioRecorder) lynk.audioRecorder.stop();
             if (lynk.videoRecorder) lynk.videoRecorder.stop();
@@ -750,16 +754,25 @@ var etherlynk = (function(lynk)
         console.log("stopRecorder");
     }
 
-    lynk.startRecorder = function(localAudioStream, localVideoStream, room, nickname)
+    lynk.startRecorder = function(localAudioStream, localVideoStream, room, nickname, audioFileName, videoFileName)
     {
         console.log("startRecorder", nickname, room, localAudioStream.getAudioTracks(), localVideoStream.getAudioTracks());
+
+        if (lynk.audioRecorder || lynk.videoRecorder)
+        {
+            console.error("startRecorder - active recording, ignored");
+            return;
+        }
 
         // TODO - progressive streaming. use pcm instead of opus for easy conversion into mp3 with Lame
 
         if (getSetting("recordVideo", false))
         {
-            localVideoStream.addTrack(localAudioStream.getAudioTracks()[0]);
-            localAudioStream.removeTrack(localAudioStream.getAudioTracks()[0]);
+            if (localAudioStream.getAudioTracks().length > 0)
+            {
+                localVideoStream.addTrack(localAudioStream.getAudioTracks()[0]);
+                localAudioStream.removeTrack(localAudioStream.getAudioTracks()[0]);
+            }
 
             lynk.videoRecorder = new MediaRecorder(localVideoStream, { mimeType: 'video/webm'});
             var videoChunks = [];
@@ -780,7 +793,7 @@ var etherlynk = (function(lynk)
                 localVideoStream.getTracks().forEach(track => track.stop());
 
                 lynk.blob = new Blob(videoChunks, {type: 'video/webm'});
-                lynk.uploadFile = new File([lynk.blob], room + "." + nickname + ".video.webm", {type: 'video/webm'});
+                lynk.uploadFile = new File([lynk.blob], videoFileName, {type: 'video/webm'});
 
                 lynk.doUploadFile(room);
                 videoChunks = [];
@@ -811,7 +824,7 @@ var etherlynk = (function(lynk)
                 localAudioStream.getTracks().forEach(track => track.stop());
 
                 lynk.blob = new Blob(audioChunks, {type: 'audio/webm'});
-                lynk.uploadFile = new File([lynk.blob], room + "." + nickname + ".audio.webm", {type: 'audio/webm'});
+                lynk.uploadFile = new File([lynk.blob], audioFileName, {type: 'audio/webm'});
 
                 lynk.doUploadFile(room);
                 audioChunks = [];

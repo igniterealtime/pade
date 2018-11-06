@@ -717,7 +717,7 @@
             if (window.pade && window.pade.url)
             {
                 url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
-                window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room, location.href + "&presenter=true");
+                window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room + "&mode=presenter", location.href);
             }
         }
         else {

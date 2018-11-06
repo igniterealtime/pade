@@ -10,6 +10,8 @@ var ofmeet = (function(of)
     var largeVideo = null;
     var remoteController = null;
     var remoteControlPort = null;
+    var recordingAudioStream = null;
+    var recordingVideoStream = null;
 
     var nickColors = {}
 
@@ -243,7 +245,9 @@ var ofmeet = (function(of)
 
                             // above code does not work properly
                             // brute force solution is to reload
-                            window.location.href = "chrome.index.html?room=" + OFMEET_CONFIG.room;
+
+                            var reloadUrl = "chrome.index.html?room=" + OFMEET_CONFIG.room + (OFMEET_CONFIG.mode ? "&mode=" + OFMEET_CONFIG.mode : "");
+                            window.location.href = reloadUrl;
                         }
                     }
                     else
@@ -378,6 +382,15 @@ var ofmeet = (function(of)
         {
             console.log("ofmeet.js me left");
             OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
+
+            recordingAudioStream = null;
+            recordingVideoStream = null;
+
+            if (of.recognition)
+            {
+                of.recognitionActive = false;
+                of.recognition.stop();
+            }
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.MESSAGE_RECEIVED , function(id, text, ts)
@@ -412,14 +425,59 @@ var ofmeet = (function(of)
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_REMOVED, function(track)
         {
-            //console.log("ofmeet.js track removed", APP.conference.getMyUserId(), track.getParticipantId(), track.getType());
+            console.log("ofmeet.js track removed", track.getParticipantId());
+
+            if (APP.conference.getMyUserId() == track.getParticipantId())
+            {
+                console.log("ofmeet.js track removed", APP.conference.getMyUserId(), track.getParticipantId(), track.getType());
+
+                OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
+
+                if (track.getType() == "audio") recordingAudioStream = null;
+                if (track.getType() == "video") recordingVideoStream = null;
+            }
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_ADDED, function(track)
         {
             if (APP.conference.getMyUserId() == track.getParticipantId())
             {
-                console.log("ofmeet.js track added", track.getParticipantId(), track.getType());
+                console.log("ofmeet.js track added", track.getParticipantId(), track.getType(), track.isMuted());
+
+                if (recordingVideoStream && recordingAudioStream && track.getType() == "video") // new video stream, close old
+                {
+                    OFMEET_CONFIG.bgWin.etherlynk.stopRecorder(function(size)
+                    {
+                        console.log("ofmeet.js recording saved " + size);
+                        recordingVideoStream = track.stream;
+
+                        navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function(stream)
+                        {
+                            startRecording(stream, recordingVideoStream);
+
+                        }).catch(function(err) {
+                            startRecording(recordingAudioStream, recordingVideoStream);
+                        });
+                    });
+                }
+                else
+
+                if (config.startWithAudioMuted || config.startWithVideoMuted)
+                {
+                    if (track.getType() == "audio") recordingAudioStream = track.stream;
+                    if (track.getType() == "video") recordingVideoStream = track.stream;
+
+                    if (OFMEET_CONFIG.recordVideo)
+                    {
+                        if (recordingAudioStream && recordingVideoStream) startRecording(recordingAudioStream, recordingVideoStream);
+                    }
+                    else
+
+                    if (OFMEET_CONFIG.recordAudio)
+                    {
+                        if (recordingAudioStream) startRecording(recordingAudioStream, null);
+                    }
+                }
             }
         });
 
@@ -439,11 +497,15 @@ var ofmeet = (function(of)
                     }
                 }
 
-                if (track.isMuted())
+                if (track.isMuted())    // speech recog synch
                 {
+                    console.log("muted, stopping speech transcription");
+                    of.recognitionActive = false;
+                    of.recognition.stop();
 
                 } else {
-
+                    console.log("unmuted, starting speech transcription");
+                    of.recognition.start();
                 }
             }
         });
@@ -479,41 +541,59 @@ var ofmeet = (function(of)
 
             if (OFMEET_CONFIG.recordAudio || OFMEET_CONFIG.recordVideo)
             {
-                OFMEET_CONFIG.bgWin.etherlynk.startRecorder(APP.conference.localAudio.stream, APP.conference.localVideo.stream, OFMEET_CONFIG.room, APP.conference.getMyUserId());
-
-                var nick = APP.conference.getMyUserId();
-                var audioFileName = OFMEET_CONFIG.room + "." + nick + ".audio.webm";
-                var videoFileName = OFMEET_CONFIG.room + "." + nick + ".video.webm";
-
-                var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
-                var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
-
-                if (OFMEET_CONFIG.recordVideo)
+                if (!config.startWithAudioMuted && !config.startWithVideoMuted)
                 {
-                    APP.conference._room.sendOfText(videoFileUrl);
-                }
-                else
+                    startRecording(APP.conference.localAudio.stream, APP.conference.localVideo.stream);
 
-                if (OFMEET_CONFIG.recordAudio)
-                {
-                    APP.conference._room.sendOfText(audioFileUrl);
+                    recordingAudioStream = APP.conference.localAudio.stream;
+                    recordingVideoStream = APP.conference.localVideo.stream;
                 }
             }
 
             if (OFMEET_CONFIG.enableTranscription)
             {
-
+                setupSpeechRecognition();
+                of.recognition.start();
             }
 
             if (OFMEET_CONFIG.mode)  // webinar presenter mode, dont show remote users. only show you
             {
-                if (OFMEET_CONFIG.mode == "attendee") interfaceConfig.FILM_STRIP_MAX_HEIGHT = 0;
+                if (OFMEET_CONFIG.mode == "attendee")
+                {
+                    interfaceConfig.FILM_STRIP_MAX_HEIGHT = 0;
+                    OFMEET_CONFIG.showSharedCursor = false; // only show presenter cursor, not self
+                }
+
                 if (OFMEET_CONFIG.mode == "presenter") APP.UI.clickOnVideo(0);
 
                 document.title = interfaceConfig.APP_NAME + " - Webinar " + OFMEET_CONFIG.mode;
                 APP.UI.toggleFilmstrip();
             }
             else document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
+        }
+    }
+
+    function startRecording(audioStream, videoStream)
+    {
+        var nick = APP.conference.getMyUserId();
+        var prefix = OFMEET_CONFIG.room + "." + nick + "." + getUniqueID();
+        var audioFileName = prefix + ".audio.webm";
+        var videoFileName = prefix + ".video.webm";
+
+        OFMEET_CONFIG.bgWin.etherlynk.startRecorder(audioStream, videoStream, OFMEET_CONFIG.room, APP.conference.getMyUserId(), audioFileName, videoFileName);
+
+        var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
+        var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
+
+        if (OFMEET_CONFIG.recordVideo)
+        {
+            APP.conference._room.sendOfText(videoFileUrl);
+        }
+        else
+
+        if (OFMEET_CONFIG.recordAudio)
+        {
+            APP.conference._room.sendOfText(audioFileUrl);
         }
     }
 
@@ -789,14 +869,14 @@ var ofmeet = (function(of)
                       if (this.readyState == 4 && this.status >= 200 && this.status < 400)
                       {
                         console.log("uploadFile ok", this.statusText);
-                        APP.conference._room.sendTextMessage(getUrl, OFMEET_CONFIG.username);
+                        APP.conference._room.sendOfText(getUrl);
                       }
                       else
 
                       if (this.readyState == 4 && this.status >= 400)
                       {
                         console.error("uploadFile error", this.statusText);
-                        APP.conference._room.sendTextMessage(this.statusText, OFMEET_CONFIG.username);
+                        APP.conference._room.sendOfText(this.statusText);
                        }
 
                     };
@@ -811,11 +891,71 @@ var ofmeet = (function(of)
             {
                 errorText = $(this).text();
                 console.log("uploadFile error", errorText);
-                APP.conference._room.sendTextMessage(errorText, OFMEET_CONFIG.username);
+                APP.conference._room.sendOfText(errorText);
             });
         });
     }
 
+    function setupSpeechRecognition()
+    {
+        console.log("setupSpeechRecognition", event);
+
+        of.recognition = new webkitSpeechRecognition();
+        of.recognition.lang = OFMEET_CONFIG.transcribeLanguage;
+        of.recognition.continuous = true;
+        of.recognition.interimResults = false;
+
+        of.recognition.onresult = function(event)
+        {
+            //console.log("Speech recog event", event)
+
+            if(event.results[event.resultIndex].isFinal==true)
+            {
+                var transcript = event.results[event.resultIndex][0].transcript;
+                console.log("Speech recog transcript", transcript);
+                sendSpeechRecognition(transcript);
+            }
+        }
+
+        of.recognition.onspeechend  = function(event)
+        {
+            //console.log("Speech recog onspeechend", event);
+        }
+
+        of.recognition.onstart = function(event)
+        {
+            //console.log("Speech to text started", event);
+            of.recognitionActive = true;
+        }
+
+        of.recognition.onend = function(event)
+        {
+            //console.log("Speech to text ended", event);
+
+            if (of.recognitionActive)
+            {
+                //console.warn("Speech to text restarted");
+                of.recognition.start();
+            }
+        }
+
+        of.recognition.onerror = function(event)
+        {
+            console.error("Speech to text error", event);
+        }
+    }
+
+    function sendSpeechRecognition(result)
+    {
+        if (result != "" && APP.conference && APP.conference._room)
+        {
+            var message = "[" + result + "]";
+            console.log("Speech recog result", APP.conference._room, message,  OFMEET_CONFIG.username);
+
+            APP.conference._room.sendOfText(message);
+            of.currentTranslation = [];
+        }
+    }
 
     window.addEventListener("beforeunload", function(e)
     {
@@ -901,6 +1041,15 @@ var ofmeet = (function(of)
         {
             interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("microphone"), 1);
             interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("camera"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("desktop"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("recording"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("livestreaming"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("etherpad"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("sharedvideo"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("filmstrip"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("invite"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("stats"), 1);
+            interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("tileview"), 1);
         }
     }
 
@@ -931,7 +1080,8 @@ function ofmeetEtherpadClicked()
                 // brute force solution is to reload
 
                 APP.conference._room.sendOfMeet('{"event": "ofmeet.event.url.end"}');
-                window.location.href = "chrome.index.html?room=" + OFMEET_CONFIG.room;
+                var reloadUrl = "chrome.index.html?room=" + OFMEET_CONFIG.room + (OFMEET_CONFIG.mode ? "&mode=" + OFMEET_CONFIG.mode : "");
+                window.location.href =reloadUrl;
             }
         }
         else {
