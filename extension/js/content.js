@@ -5,7 +5,7 @@ var channel = chrome.runtime.connect();
 if (channel)
 {
     channel.onMessage.addListener(function (message) {
-        console.log('ofmeet extension channel message', message);
+        console.debug('ofmeet extension channel message', message);
 
         if (message.community && message.url)
         {
@@ -72,7 +72,7 @@ if (channel)
     });
 
     window.addEventListener('message', function (event) {
-        //console.log('ofmeet extension window message', event);
+        //console.debug('ofmeet extension window message', event);
 
         if (event.source != window)
             return;

@@ -29,6 +29,7 @@ OFMEET_CONFIG = {
     room: urlParam("room") || getUrl(),
     domain:__domain,
     enableTranscription: getSetting("enableTranscription", false),
+    transcribeLanguage: getSetting("transcribeLanguage", "en-GB"),
     recordAudio: getSetting("recordAudio", false),
     recordVideo: getSetting("recordVideo", false),
     enableCaptions: getSetting("enableCaptions", false),

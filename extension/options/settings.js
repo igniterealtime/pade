@@ -423,6 +423,11 @@ window.addEvent("domready", function () {
             location.reload()
         });
 
+        if (settings.manifest.enableFriendships) settings.manifest.enableFriendships.addEvent("action", function ()
+        {
+            location.reload()
+        });
+
         if (settings.manifest.useStreamDeck) settings.manifest.useStreamDeck.addEvent("action", function ()
         {
             location.reload()
@@ -667,7 +672,7 @@ window.addEvent("domready", function () {
                 var url =  "https://" + host + "/rest/api/restapi/v1/chat/certificate";
                 var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password)}};
 
-                console.log("fetch", url, options);
+                console.log("fetch certificate", url, options);
 
                 fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
                 {
@@ -677,6 +682,122 @@ window.addEvent("domready", function () {
                     console.error('connection error', err);
                 });
 
+            }
+        });
+
+        if (settings.manifest.friendCreate) settings.manifest.friendCreate.addEvent("action", function ()
+        {
+            var host = getSetting("server", null);
+
+            if (host)
+            {
+                var domain = getSetting("domain");
+                var username = getSetting("username");
+                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+                var friendId = getSetting("friendId");
+                var friendType = getSetting("friendType", "xmpp");
+                var friendName = getSetting("friendName", "Unknown");
+
+                if (friendType == "xmpp")
+                {
+                    if (friendId.indexOf("@") == -1)
+                    {
+                        friendId = friendId + "@" + domain;
+                    }
+                }
+                else
+
+                if (friendType == "email")
+                {
+                    if (friendId.indexOf("@") == -1)
+                    {
+                        alert("Invalid Email Address")
+                        return;
+                    }
+
+                    var temp = friendId.split("@");
+                    friendId = temp[0] + "\\40" + temp[1] + "@" + domain;
+                }
+                else
+
+                if (friendType == "sms")
+                {
+                    if (friendId.indexOf("+") == 0)
+                    {
+                        friendId = friendId.substring(1);
+                    }
+
+                    friendId = "sms-" + friendId + "@" + domain;
+                }
+
+
+                var body = {
+                  "jid": friendId,
+                  "nickname": friendName,
+                  "groups": getSetting("friendGroups", ""),
+                };
+
+                var url =  "https://" + host + "/rest/api/restapi/v1/meet/friend";
+                var permission =  "Basic " + btoa(username + ":" + password);
+                var options = {method: "POST", headers: {"authorization": permission, "content-type": "application/json"}, body: JSON.stringify(body)};
+
+                console.log("fetch friendCreate", url, options);
+
+                fetch(url, options).then(function(response)
+                {
+                    setTimeout(function() {alert('Created : ' + friendName + "\n" + friendId);});
+
+                }).catch(function (err) {
+                    setTimeout(function() {alert('Error : ' + err);});
+                    console.error('friendCreate error', err);
+                });
+
+            }
+        });
+
+        if (settings.manifest.saveProfile) settings.manifest.saveProfile.addEvent("action", function ()
+        {
+            var host = getSetting("server", null);
+
+            if (host)
+            {
+                var domain = getSetting("domain");
+                var username = getSetting("username");
+                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+                var phone   = getSetting("phone");
+                var sms     = getSetting("sms");
+                var url     = getSetting("url");
+                var country = getSetting("country");
+                var role    = getSetting("role");
+                var email   = getSetting("email");
+
+                var body = []
+
+                if (phone)      body.push({"name": "sms_in_number", "value": phone});
+                if (sms)        body.push({"name": "sms_out_number", "value": sms});
+                if (url)        body.push({"name": "pade.profile.url", "value": url});
+                if (country)    body.push({"name": "pade.profile.country", "value": country});
+                if (role)       body.push({"name": "pade.profile.role", "value": role});
+                if (email)      body.push({"name": "pade.profile.email", "value": email});
+
+                if (body.length > 0)
+                {
+                    var url =  "https://" + host + "/rest/api/restapi/v1/meet/profile";
+                    var permission =  "Basic " + btoa(username + ":" + password);
+                    var options = {method: "POST", headers: {"authorization": permission, "content-type": "application/json"}, body: JSON.stringify(body)};
+
+                    console.log("fetch saveProfile", url, options);
+
+                    fetch(url, options).then(function(response)
+                    {
+                        setTimeout(function() {alert('Profile Saved');});
+
+                    }).catch(function (err) {
+                        setTimeout(function() {alert('Error : ' + err);});
+                        console.error('saveProfile error', err);
+                    });
+                }
             }
         });
 
@@ -747,12 +868,12 @@ function doDefaults()
 {
     // connection
     setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
-    setDefaultSetting("server", chrome.i18n.getMessage("openfire_server"));
-    setDefaultSetting("domain", chrome.i18n.getMessage("openfire_domain"));
     setDefaultSetting("useWebsocket", true);
+    setDefaultServer();
 
     // preferences
     setDefaultSetting("language", "en");
+    setDefaultSetting("friendType", "xmpp");
     setDefaultSetting("popupWindow", true);
     setDefaultSetting("enableLipSync", false);
     setDefaultSetting("enableCommunity", false);
@@ -767,6 +888,7 @@ function doDefaults()
     setDefaultSetting("minHDHeight", 540);
 
     // meeting
+    setDefaultSetting("transcribeLanguage", "en-GB");
     setDefaultSetting("VERTICAL_FILMSTRIP", true);
     setDefaultSetting("FILM_STRIP_MAX_HEIGHT", 90);
     setDefaultSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
@@ -804,6 +926,92 @@ function doDefaults()
     setDefaultSetting("onlyheader", true);
     setDefaultSetting("onlystatusBar", true);
     setDefaultSetting("onlyautosave", true);
+}
+
+function setDefaultServer()
+{
+    if (!window.localStorage["store.settings.server"] || !window.localStorage["store.settings.domain"])
+    {
+        var doTheSetup = function(domain, server)
+        {
+            setDefaultSetting("server", server);
+            setDefaultSetting("domain", domain);
+
+            fetch("https://" + server + "/pade.json", {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
+            {
+                console.debug("setDefaultServer - found branding", json);
+                var overrides = Object.getOwnPropertyNames(json);
+
+                for (var i=0; i<overrides.length; i++)
+                {
+                    var setting = overrides[i];
+                    var override = json[setting];
+
+                    if (override.value)
+                    {
+                        console.debug("setDefaultServer - overrride", setting, override.value);
+                        window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+                    }
+                }
+
+                if (getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false))
+                {
+                    setDefaultSetting("password", "__DEFAULT__WINSSO__");
+                    chrome.extension.getBackgroundPage().reloadApp();
+                }
+
+                window.location.reload();
+
+            }).catch(function (err) {
+                console.error('setDefaultServer pade.json file error', err);
+                alert("Auto Configuartion error\n" + err);
+                window.location.reload();
+            });
+        }
+
+        chrome.tabs.query({}, function(tabs)
+        {
+            if (tabs)
+            {
+                var option_tab = tabs.filter(function(t) { return t.url.indexOf("/ofmeet") > -1; });
+
+                console.debug("setDefaultServer - found tabs", option_tab, tabs);
+
+                if (option_tab.length > 0)
+                {
+                    var url = option_tab[0].url.split("/");
+                    var server = url[2];
+                    var domain = url[2].split(":")[0];
+
+                    console.debug("setDefaultServer - found ofmeet web page", server, domain, url);
+
+                    fetch("https://" + server + "/ofmeet/config.js", {method: "GET"}).then(function(response){ return response.text()}).then(function(text)
+                    {
+                        var pos = text.indexOf("\"domain\": \"");
+
+                        if (pos > -1)
+                        {
+                            var temp = text.substring(pos + 11);
+                            pos = temp.indexOf("\"");
+                            temp = temp.substring(0, pos);
+
+                            if (temp != "")
+                            {
+                                domain = temp;
+                                console.debug("setDefaultServer - found domain from config.js", domain);
+                            }
+                        }
+
+                        doTheSetup(domain, server);
+
+                    }).catch(function (err) {
+                        console.warn('setDefaultServer config.js file error. using domain ' + domain, err);
+                        doTheSetup(domain, server);
+                    });
+                }
+            }
+        });
+    }
 }
 
 function setDefaultPassword(settings)

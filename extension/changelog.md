@@ -1,5 +1,42 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>0.8.0</b> -- <i>November 6, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/66">Added auto-config to Single Sign On (SSO) for Windows Enterprise Users</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/89">Fixed #89:  Extend branding to cover options and user preferences</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/88">Fixed #88:  Implement a Webinar type application for Pade</a></li>
+</ul>
+
+<p><b>0.7.4</b> -- <i>October 31, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/87">Fixed #87: Implement Meeting Planner</a></li>
+</ul>
+
+<p><b>0.7.3</b> -- <i>October 30, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/85">Partial Implementation #85: Break-out rooms</a></li>
+</ul>
+
+<p><b>0.7.2</b> -- <i>October 29, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/86">Fixed #86: Make Converse and other Pàdé app windows remember position and size</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/84">Fixed #84: Add support for ONLYOFFICE collaborative editors</a></li>
+</ul>
+
+<p><b>0.7.1</b> -- <i>October 23, 2018</i></p>
+<ul>
+    <li>Added support for the Openfire RDP plugin</>
+</ul>
+
+<p><b>0.7.0</b> -- <i>October 22, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/83">Fixed #83: Validate connection details before connecting</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/73">Fixed #73: Realtime Collaboration on Diagrams, with mxGraph (which powers Draw.io) enhancement</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/82">Fixed #82: Improve Pàdé full text search and make accessible from Converse</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/81">Fixed #81: Implement the ability to invite people to an ad-hoc meeting</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/80">Fixed #80: Fix a number of UX issues</a></li>
+</ul>
+
 <p><b>0.6.0</b> -- <i>October 14, 2018</i></p>
 <ul>
     <li>Added missing OMEMO third-party library</li>

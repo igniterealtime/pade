@@ -132,7 +132,7 @@ this.manifest = {
             "tab": i18n.get("connection"),
             "group": i18n.get("About"),
             "name": "credits",
-            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 16px;'>Ignite Realtime Community</a>"),
+            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + chrome.runtime.getManifest().version + " Ignite Realtime Community</a>"),
             "type": "description"
         },
         {
@@ -188,7 +188,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "email",
             "type": "text",
             "label": i18n.get("email"),
@@ -196,7 +196,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "phone",
             "type": "text",
             "label": i18n.get("phone"),
@@ -204,7 +204,15 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
+            "name": "sms",
+            "type": "text",
+            "label": i18n.get("SMS"),
+            "text": "+447925488496"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Profile"),
             "name": "country",
             "type": "text",
             "label": i18n.get("country"),
@@ -212,7 +220,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "role",
             "type": "text",
             "label": i18n.get("role"),
@@ -220,11 +228,25 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "url",
             "type": "text",
             "label": i18n.get("url"),
             "text": "http://my-home-page.com"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Profile"),
+            "name": "saveProfile",
+            "type": "button",
+            "text": i18n.get("Save on Server")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Friends"),
+            "name": "enableFriendships",
+            "type": "checkbox",
+            "label": i18n.get("Enable Direct Friendships")
         },
         {
             "tab": i18n.get("general"),
@@ -482,7 +504,6 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Record Audio/Video")
         },
-/*
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
@@ -490,7 +511,98 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Voice-to-Text Transcription")
         },
-*/
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "transcribeLanguage",
+            "type": "popupButton",
+            "label": i18n.get("Transcription Language"),
+            "options": [
+                {"text": "Algeria", "value": "ar-DZ"},
+                {"text": "Argentina", "value": "es-AR"},
+                {"text": "Australia", "value": "en-AU"},
+                {"text": "Bahrain", "value": "ar-BH"},
+                {"text": "Bolivia", "value": "es-BO"},
+                {"text": "Brazil", "value": "pt-BR"},
+                {"text": "Bulgaria", "value": "bg-BG"},
+                {"text": "Canada", "value": "en-CA"},
+                {"text": "Chile", "value": "es-CL"},
+                {"text": "China (Simp.)", "value": "cmn-Hans-CN"},
+                {"text": "Colombia", "value": "es-CO"},
+                {"text": "Costa Rica", "value": "es-CR"},
+                {"text": "Croatia", "value": "hr_HR"},
+                {"text": "Czech Republic", "value": "cs-CZ"},
+                {"text": "Denmark", "value": "da-DK"},
+                {"text": "Dominican Republic", "value": "es-DO"},
+                {"text": "Ecuador", "value": "es-EC"},
+                {"text": "Egypt", "value": "ar-EG"},
+                {"text": "El Salvador", "value": "es-SV"},
+                {"text": "Finland", "value": "fi-FI"},
+                {"text": "France", "value": "fr-FR"},
+                {"text": "Germany", "value": "de-DE"},
+                {"text": "Greece", "value": "el-GR"},
+                {"text": "Guatemala", "value": "es-GT"},
+                {"text": "Honduras", "value": "es-HN"},
+                {"text": "Hong Kong SAR (Trad.)", "value": "cmn-Hans-HK"},
+                {"text": "Hong Kong", "value": "yue-Hant-HK"},
+                {"text": "Hungary", "value": "hu-HU"},
+                {"text": "Iceland", "value": "is-IS"},
+                {"text": "India", "value": "en-IN"},
+                {"text": "India", "value": "hi-IN"},
+                {"text": "Indonesia", "value": "id-ID"},
+                {"text": "Iran", "value": "fa-IR"},
+                {"text": "Iraq", "value": "ar-IQ"},
+                {"text": "Ireland", "value": "en-IE"},
+                {"text": "Israel", "value": "he-IL"},
+                {"text": "Israel", "value": "ar-IL"},
+                {"text": "Italy", "value": "it-IT"},
+                {"text": "Japan", "value": "ja-JP"},
+                {"text": "Jordan", "value": "ar-JO"},
+                {"text": "Korea", "value": "ko-KR"},
+                {"text": "Kuwait", "value": "ar-KW"},
+                {"text": "Lebanon", "value": "ar-LB"},
+                {"text": "Lithuania", "value": "lt-LT"},
+                {"text": "Malaysia", "value": "ms-MY"},
+                {"text": "Morocco", "value": "ar-MA"},
+                {"text": "México", "value": "es-MX"},
+                {"text": "Netherlands", "value": "nl-NL"},
+                {"text": "New Zealand", "value": "en-NZ"},
+                {"text": "Nicaragua", "value": "es-NI"},
+                {"text": "Norway", "value": "nb-NO"},
+                {"text": "Oman", "value": "ar-OM"},
+                {"text": "Palestinian Territory", "value": "ar-PS"},
+                {"text": "Panamá", "value": "es-PA"},
+                {"text": "Paraguay", "value": "es-PY"},
+                {"text": "Perú", "value": "es-PE"},
+                {"text": "Philippines", "value": "en-PH"},
+                {"text": "Philippines", "value": "fil-PH"},
+                {"text": "Poland", "value": "pl-PL"},
+                {"text": "Portugal", "value": "pt-PT"},
+                {"text": "Puerto Rico", "value": "es-PR"},
+                {"text": "Qatar", "value": "ar-QA"},
+                {"text": "Romania", "value": "ro-RO"},
+                {"text": "Russia", "value": "ru-RU"},
+                {"text": "Saudi Arabia", "value": "ar-SA"},
+                {"text": "Serbia", "value": "sr-RS"},
+                {"text": "Slovakia", "value": "sk-SK"},
+                {"text": "Slovenia", "value": "sl-SI"},
+                {"text": "South Africa", "value": "en-ZA"},
+                {"text": "Spain", "value": "es-ES"},
+                {"text": "Sweden", "value": "sv-SE"},
+                {"text": "Switzerland", "value": "it-CH"},
+                {"text": "Taiwan (Trad.)", "value": "cmn-Hant-TW"},
+                {"text": "Thailand", "value": "th-TH"},
+                {"text": "Tunisia", "value": "ar-TN"},
+                {"text": "Turkey", "value": "tr-TR"},
+                {"text": "UAE", "value": "ar-AE"},
+                {"text": "Ukraine", "value": "uk-UA"},
+                {"text": "United Kingdom", "value": "en-GB"},
+                {"text": "United States", "value": "en-US"},
+                {"text": "Uruguay", "value": "es-UY"},
+                {"text": "Venezuela", "value": "es-VE"},
+                {"text": "Viet Nam", "value": "vi-VN"}
+            ]
+        },
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
@@ -1249,18 +1361,25 @@ this.manifest = {
         [
             "email",
             "phone",
-            "country"
+            "sms",
+            "phone",
+            "role",
+            "country",
+            "url"
         ],
         [
             "remoteHost",
             "remoteDomain",
             "remoteUsername",
             "remotePassword",
+        ],
+        [
+            "friendId",
+            "friendName"
         ]
     ]
 };
 
-// TouchPad
 
 var getSetting = function (name)
 {
@@ -1274,6 +1393,69 @@ var getSetting = function (name)
 
     return value;
 }
+
+// Friendships
+
+if (getSetting("enableFriendships", false))
+{
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendType",
+        "type": "popupButton",
+        "label": i18n.get(""),
+        "options": [
+            {"text": "Select how friend will communicate with you", "value": "xmpp"},
+            {"text": "XMPP", "value": "xmpp"},
+            {"text": "Email", "value": "email"},
+            {"text": "SMS", "value": "sms"}
+        ]
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendId",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the email, phone no or XMPP JID for friend")
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendName",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the name of your friend")
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendGroups",
+        "type": "textarea",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the list of roster groups to which this friend should belong")
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendCreate",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("Create Friendship")
+    });
+}
+
+// TouchPad
 
 if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
 {
@@ -1398,7 +1580,11 @@ for (var i=0; i<overrides.length; i++)
             {
                 oldSetting.text = override.value
             }
-            window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+
+            if (!window.localStorage["store.settings." + setting])  // override default value
+            {
+                window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+            }
         }
 
         if (override.disable) this.manifest.settings.splice(index, 1);

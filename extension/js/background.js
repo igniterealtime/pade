@@ -5,7 +5,7 @@ var callbacks = {}
 
 function uportRequestedCredentials(creds)
 {
-    console.log("uportRequestedCredentials", creds.publicEncKey, creds.address, creds.name);
+    console.debug("uportRequestedCredentials", creds.publicEncKey, creds.address, creds.name);
 }
 
 function uportError(error)
@@ -505,10 +505,13 @@ window.addEventListener("load", function()
     chrome.browserAction.setBadgeText({ text: 'off' });
 
 
-    if (pade.server && pade.domain && pade.username && pade.password)
+    if (pade.server && pade.domain && pade.password)
     {
-        pade.jid = pade.username + "@" + pade.domain;
-        pade.displayName = getSetting("displayname", pade.username);
+        if (pade.username)
+        {
+            pade.jid = pade.username + "@" + pade.domain;
+            pade.displayName = getSetting("displayname", pade.username);
+        }
 
         // setup popup
 
@@ -1223,7 +1226,7 @@ function openVertoWindow(state)
 
 function doExtensionPage(url)
 {
-    chrome.tabs.getAllInWindow(null, function(tabs)
+    chrome.tabs.query({}, function(tabs)
     {
         var setupUrl = chrome.runtime.getURL(url);
 
@@ -2781,6 +2784,8 @@ function doSetupStrophePlugins()
         {
             var server = getSetting("server", null);
 
+            console.debug("doSetupStrophePlugins - WinSSO", server);
+
             if (server)
             {
                 fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
@@ -2795,6 +2800,9 @@ function doSetupStrophePlugins()
 
                         pade.username = userPass[0];
                         pade.password = userPass[1];
+
+                        pade.jid = pade.username + "@" + pade.domain;
+                        pade.displayName = getSetting("displayname", pade.username);
                     }
 
                     setTimeout(function() { setupSasl(accessToken); })
@@ -2847,7 +2855,7 @@ function closeCredsWindow()
 }
 function setupSasl(token)
 {
-    console.log("setupSasl", token);
+    console.debug("setupSasl", token);
 
     Strophe.addConnectionPlugin('ofchatsasl',
     {
