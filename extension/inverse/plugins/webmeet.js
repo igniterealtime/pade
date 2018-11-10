@@ -270,6 +270,13 @@
                 {
                     //console.log('webmeet - renderChatMessage', this.model);
 
+                    // intercepting email IM
+
+                    if (!this.model.get("fullname") && this.model.get("from").indexOf("\\40") > -1)
+                    {
+                        this.model.vcard.attributes.fullname = Strophe.unescapeNode(this.model.get("from").split("@")[0]);
+                    }
+
                     var nick = this.model.getDisplayName();
 
                     if (nick && !this.model.vcard.attributes.fullname) // no vcard
@@ -277,14 +284,6 @@
                         this.model.vcard.attributes.image = createAvatar(this.model.vcard.attributes.image, nick);
                     }
 
-/* REMOVE
-                    if (!document.hasFocus() && window.parent && window.parent.ofmeet)
-                    {
-                        window.parent.ofmeet.doBadge(++messageCount);
-                    } else {
-                        messageCount = 0;
-                    }
-*/
                     var body = this.model.get('message');
                     var oobUrl = this.model.get('oob_url');
                     var oobDesc = this.model.get('oob_desc');

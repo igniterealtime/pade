@@ -423,6 +423,11 @@ window.addEvent("domready", function () {
             location.reload()
         });
 
+        if (settings.manifest.enableFriendships) settings.manifest.enableFriendships.addEvent("action", function ()
+        {
+            location.reload()
+        });
+
         if (settings.manifest.useStreamDeck) settings.manifest.useStreamDeck.addEvent("action", function ()
         {
             location.reload()
@@ -667,7 +672,7 @@ window.addEvent("domready", function () {
                 var url =  "https://" + host + "/rest/api/restapi/v1/chat/certificate";
                 var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password)}};
 
-                console.log("fetch", url, options);
+                console.log("fetch certificate", url, options);
 
                 fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
                 {
@@ -677,6 +682,122 @@ window.addEvent("domready", function () {
                     console.error('connection error', err);
                 });
 
+            }
+        });
+
+        if (settings.manifest.friendCreate) settings.manifest.friendCreate.addEvent("action", function ()
+        {
+            var host = getSetting("server", null);
+
+            if (host)
+            {
+                var domain = getSetting("domain");
+                var username = getSetting("username");
+                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+                var friendId = getSetting("friendId");
+                var friendType = getSetting("friendType", "xmpp");
+                var friendName = getSetting("friendName", "Unknown");
+
+                if (friendType == "xmpp")
+                {
+                    if (friendId.indexOf("@") == -1)
+                    {
+                        friendId = friendId + "@" + domain;
+                    }
+                }
+                else
+
+                if (friendType == "email")
+                {
+                    if (friendId.indexOf("@") == -1)
+                    {
+                        alert("Invalid Email Address")
+                        return;
+                    }
+
+                    var temp = friendId.split("@");
+                    friendId = temp[0] + "\\40" + temp[1] + "@" + domain;
+                }
+                else
+
+                if (friendType == "sms")
+                {
+                    if (friendId.indexOf("+") == 0)
+                    {
+                        friendId = friendId.substring(1);
+                    }
+
+                    friendId = "sms-" + friendId + "@" + domain;
+                }
+
+
+                var body = {
+                  "jid": friendId,
+                  "nickname": friendName,
+                  "groups": getSetting("friendGroups", ""),
+                };
+
+                var url =  "https://" + host + "/rest/api/restapi/v1/meet/friend";
+                var permission =  "Basic " + btoa(username + ":" + password);
+                var options = {method: "POST", headers: {"authorization": permission, "content-type": "application/json"}, body: JSON.stringify(body)};
+
+                console.log("fetch friendCreate", url, options);
+
+                fetch(url, options).then(function(response)
+                {
+                    setTimeout(function() {alert('Created : ' + friendName + "\n" + friendId);});
+
+                }).catch(function (err) {
+                    setTimeout(function() {alert('Error : ' + err);});
+                    console.error('friendCreate error', err);
+                });
+
+            }
+        });
+
+        if (settings.manifest.saveProfile) settings.manifest.saveProfile.addEvent("action", function ()
+        {
+            var host = getSetting("server", null);
+
+            if (host)
+            {
+                var domain = getSetting("domain");
+                var username = getSetting("username");
+                var password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+                var phone   = getSetting("phone");
+                var sms     = getSetting("sms");
+                var url     = getSetting("url");
+                var country = getSetting("country");
+                var role    = getSetting("role");
+                var email   = getSetting("email");
+
+                var body = []
+
+                if (phone)      body.push({"name": "sms_in_number", "value": phone});
+                if (sms)        body.push({"name": "sms_out_number", "value": sms});
+                if (url)        body.push({"name": "pade.profile.url", "value": url});
+                if (country)    body.push({"name": "pade.profile.country", "value": country});
+                if (role)       body.push({"name": "pade.profile.role", "value": role});
+                if (email)      body.push({"name": "pade.profile.email", "value": email});
+
+                if (body.length > 0)
+                {
+                    var url =  "https://" + host + "/rest/api/restapi/v1/meet/profile";
+                    var permission =  "Basic " + btoa(username + ":" + password);
+                    var options = {method: "POST", headers: {"authorization": permission, "content-type": "application/json"}, body: JSON.stringify(body)};
+
+                    console.log("fetch saveProfile", url, options);
+
+                    fetch(url, options).then(function(response)
+                    {
+                        setTimeout(function() {alert('Profile Saved');});
+
+                    }).catch(function (err) {
+                        setTimeout(function() {alert('Error : ' + err);});
+                        console.error('saveProfile error', err);
+                    });
+                }
             }
         });
 
@@ -752,6 +873,7 @@ function doDefaults()
 
     // preferences
     setDefaultSetting("language", "en");
+    setDefaultSetting("friendType", "xmpp");
     setDefaultSetting("popupWindow", true);
     setDefaultSetting("enableLipSync", false);
     setDefaultSetting("enableCommunity", false);

@@ -178,7 +178,8 @@ function openChat(from, name)
             if (name.indexOf("sms-") == 0) name = name.substring(4);
         }
 
-        _inverse.roster.addAndSubscribe(from, name);
+        var contact = _converse.roster.findWhere({'jid': from});
+        if (!contact) _inverse.roster.addAndSubscribe(from, name);
         _inverse.api.chats.open(from);
     }
 }

@@ -188,7 +188,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "email",
             "type": "text",
             "label": i18n.get("email"),
@@ -196,7 +196,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "phone",
             "type": "text",
             "label": i18n.get("phone"),
@@ -204,7 +204,15 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
+            "name": "sms",
+            "type": "text",
+            "label": i18n.get("SMS"),
+            "text": "+447925488496"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Profile"),
             "name": "country",
             "type": "text",
             "label": i18n.get("country"),
@@ -212,7 +220,7 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "role",
             "type": "text",
             "label": i18n.get("role"),
@@ -220,11 +228,25 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
-            "group": i18n.get("contact"),
+            "group": i18n.get("Profile"),
             "name": "url",
             "type": "text",
             "label": i18n.get("url"),
             "text": "http://my-home-page.com"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Profile"),
+            "name": "saveProfile",
+            "type": "button",
+            "text": i18n.get("Save on Server")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Friends"),
+            "name": "enableFriendships",
+            "type": "checkbox",
+            "label": i18n.get("Enable Direct Friendships")
         },
         {
             "tab": i18n.get("general"),
@@ -1339,18 +1361,25 @@ this.manifest = {
         [
             "email",
             "phone",
-            "country"
+            "sms",
+            "phone",
+            "role",
+            "country",
+            "url"
         ],
         [
             "remoteHost",
             "remoteDomain",
             "remoteUsername",
             "remotePassword",
+        ],
+        [
+            "friendId",
+            "friendName"
         ]
     ]
 };
 
-// TouchPad
 
 var getSetting = function (name)
 {
@@ -1364,6 +1393,69 @@ var getSetting = function (name)
 
     return value;
 }
+
+// Friendships
+
+if (getSetting("enableFriendships", false))
+{
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendType",
+        "type": "popupButton",
+        "label": i18n.get(""),
+        "options": [
+            {"text": "Select how friend will communicate with you", "value": "xmpp"},
+            {"text": "XMPP", "value": "xmpp"},
+            {"text": "Email", "value": "email"},
+            {"text": "SMS", "value": "sms"}
+        ]
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendId",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the email, phone no or XMPP JID for friend")
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendName",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the name of your friend")
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendGroups",
+        "type": "textarea",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the list of roster groups to which this friend should belong")
+    });
+
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("general"),
+        "group": i18n.get("Friends"),
+        "name": "friendCreate",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("Create Friendship")
+    });
+}
+
+// TouchPad
 
 if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
 {
@@ -1488,7 +1580,11 @@ for (var i=0; i<overrides.length; i++)
             {
                 oldSetting.text = override.value
             }
-            window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+
+            if (!window.localStorage["store.settings." + setting])  // override default value
+            {
+                window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+            }
         }
 
         if (override.disable) this.manifest.settings.splice(index, 1);
