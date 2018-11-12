@@ -1086,13 +1086,16 @@
             {
                 console.log("preview link", preview, textarea);
 
-                var text = body + "\n\n";
+                if (preview.title || preview.image || preview.descriptionShort)
+                {
+                    var text = body + "\n\n";
 
-                if (preview.title) text = text + preview.title + "\n ";
-                if (preview.image) text = text + preview.image.split("?")[0] + " \n";
-                if (preview.descriptionShort) text = text + preview.descriptionShort + "\n";
+                    if (preview.title) text = text + preview.title + "\n ";
+                    if (preview.image) text = text + preview.image.split("?")[0] + " \n";
+                    if (preview.descriptionShort) text = text + preview.descriptionShort + "\n";
 
-                textarea[0].value = text;
+                    textarea[0].value = text;
+                }
 
             }).catch(function (err) {
                 console.error('preview link', err);
