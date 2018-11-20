@@ -35,6 +35,7 @@ var config = {
         }
     },
     bosh: connUrl,
+    openBridgeChannel: "datachannel",
     enforcedBridge: "jitsi-videobridge." + __domain,
     clientNode: "http://igniterealtime.org/pade/",
 
