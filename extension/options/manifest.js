@@ -41,6 +41,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("connection"),
+            "group": i18n.get("connection"),
+            "name": "useSmartIdCard",
+            "type": "checkbox",
+            "label": i18n.get("Use E-Residency Smart ID")
+        },
+        {
+            "tab": i18n.get("connection"),
             "group": i18n.get("login"),
             "name": "displayname",
             "type": "text",
@@ -724,6 +731,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "converseRosterIcons",
+            "type": "checkbox",
+            "label": i18n.get("Enable Coloured Roster Icons")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")
@@ -1394,11 +1408,21 @@ var getSetting = function (name)
     return value;
 }
 
-// Friendships
+if (getSetting("useSmartIdCard", false))
+{
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("connection"),
+        "group": i18n.get("connection"),
+        "name": "smartCardIframe",
+        "text": i18n.get(""),
+        "type": "description",
+        "text": "<iframe id='id-login-iframe' allowtransparency='true' width='200' height='46' frameborder='0' scrolling='no'></iframe>"
+    });
+}
 
 if (getSetting("enableFriendships", false))
 {
-
     this.manifest.settings.push(
     {
         "tab": i18n.get("general"),

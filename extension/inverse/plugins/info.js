@@ -47,7 +47,7 @@
                     {
                         var info = document.getElementById("pade-info-" + id);
 
-                        info.addEventListener('click', function(evt)
+                        if (info) info.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
 

@@ -105,7 +105,7 @@
                         {
                             var search = document.getElementById("pade-search-" + id);
 
-                            search.addEventListener('click', function(evt)
+                            if (search) search.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
 

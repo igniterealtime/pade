@@ -1,10 +1,5 @@
 var uportWin = null, credWin = null;
 
-window.addEventListener('message', function (event)
-{
-    console.log("addListener message", event.data);
-});
-
 window.addEventListener("load", function()
 {
     console.log("options loaded");
@@ -422,6 +417,67 @@ window.addEvent("domready", function () {
 
             location.reload()
         });
+
+        if (settings.manifest.useSmartIdCard)
+        {
+            settings.manifest.useSmartIdCard.addEvent("action", function ()
+            {
+                location.reload()
+            });
+
+            var server = getSetting("server", null);
+            var buttonUrl = "https://id.smartid.ee/oauth/authorize?client_id=s5D6gnTwOqmFISb7KY5maMe2XgEcKNOa&redirect_uri=https://igniterealtime.github.io/pade/redirect.html&response_type=code&method=ee-id-card";
+            var idFrame = document.getElementById("id-login-iframe");
+
+            if (idFrame && server)
+            {
+                window.addEventListener('message', function (event)
+                {
+                    if (event.data.url && event.data.event == "ofmeet.event.url.ready")
+                    {
+                        console.log("Smart-ID URL", event.data.url);
+
+                        var pos = event.data.url.indexOf( "https://igniterealtime.github.io/pade/redirect.html?code=" );
+
+                        if (pos > -1)
+                        {
+                            code = event.data.url.substring(pos + 57);
+                            console.log("Smart-ID CODE", code);
+
+                            fetch("https://" + server + "/apps/smartidcard?code=" + code, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
+                            {
+                                console.log("Smart-ID DATA", json);
+
+                                var fullName = null;
+                                var email = null;
+
+                                if (json.firstname && json.lastname)
+                                {
+                                    fullName = json.firstname + " " + json.lastname;
+                                }
+
+                                if (json.email) email = json.email;
+
+                                setSetting("username", json.idcode);
+                                setSetting("password", json.password);
+
+                                if (fullName) setSetting("displayname", fullName);
+                                if (email) setSetting("email", email);
+
+                                idFrame.src = buttonUrl;
+                                background.reloadApp();
+
+                            }).catch(function (err) {
+                                console.error("Smart-ID DATA", err);
+                                idFrame.outerHTML = "<b><a title='" + err + "'>Error</a></b>";
+                            });
+                        }
+                    }
+                });
+
+                idFrame.src = buttonUrl;
+            }
+        }
 
         if (settings.manifest.enableFriendships) settings.manifest.enableFriendships.addEvent("action", function ()
         {
@@ -912,6 +968,7 @@ function doDefaults()
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
+    setDefaultSetting("converseRosterIcons", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

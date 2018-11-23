@@ -33,7 +33,7 @@
                         {
                             var options = document.getElementById("pade-options-" + id);
 
-                            options.addEventListener('click', function(evt)
+                            if (options) options.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
                                 var url = chrome.extension.getURL("options/index.html");

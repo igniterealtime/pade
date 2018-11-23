@@ -42,7 +42,7 @@
                         {
                             var markdown = document.getElementById("webmeet-markdown-" + id);
 
-                            markdown.addEventListener('click', function(evt)
+                            if (markdown) markdown.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
 

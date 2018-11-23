@@ -2296,6 +2296,8 @@ function updateVCard()
     getVCard(jid, function(vCard)
     {
         avatar = vCard.avatar;
+        if (!avatar || avatar == "") avatar = createAvatar(pade.displayName);
+
         setSetting("avatar", avatar);
 
     }, function(error) {
@@ -2356,6 +2358,7 @@ function updateVCardAvatar(jid, avatar)
     }, avatarError);
 }
 
+
 function createAvatar(nickname, width, height, font)
 {
     if (!width) width = 32;
@@ -2368,7 +2371,7 @@ function createAvatar(nickname, width, height, font)
     canvas.height = height;
     document.body.appendChild(canvas);
     var context = canvas.getContext('2d');
-    context.fillStyle = "#777";
+    context.fillStyle = getRandomColor(nickname);
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = font;
     context.fillStyle = "#fff";
@@ -2394,6 +2397,26 @@ function createAvatar(nickname, width, height, font)
     }
 
     return canvas.toDataURL();
+}
+
+var nickColors = {}
+
+function getRandomColor(nickname)
+{
+    if (nickColors[nickname])
+    {
+        return nickColors[nickname];
+    }
+    else {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        nickColors[nickname] = color;
+        return color;
+    }
 }
 
 function createStreamDeckImage(text, fill)
@@ -2778,7 +2801,7 @@ function doSetupStrophePlugins()
     }
     else
 
-    if (getSetting("useTotp", false) || getSetting("useWinSSO", false)  || getSetting("useCredsMgrApi", false))
+    if (getSetting("useTotp", false) || getSetting("useWinSSO", false)  || getSetting("useCredsMgrApi", false) || getSetting("useSmartIdCard", false))
     {
         if (getSetting("useWinSSO", false))
         {
@@ -2815,7 +2838,7 @@ function doSetupStrophePlugins()
             }
         }
 
-        else if(getSetting("useTotp", false))
+        else if (getSetting("useTotp", false) || getSetting("useSmartIdCard", false))
         {
             var username = getSetting("username", null);
             var password = getSetting("password", null);

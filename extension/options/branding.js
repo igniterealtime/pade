@@ -94,6 +94,7 @@ var branding = {
     useJabra                : {disable: true},
     useStreamDeck           : {disable: true},
     useTotp                 : {disable: true},
+    useSmartIdCard          : {disable: true},
     useWebsocket            : {disable: true, value: true},
     useWinSSO               : {disable: true, value: false},
     webApps                 : {disable: true},

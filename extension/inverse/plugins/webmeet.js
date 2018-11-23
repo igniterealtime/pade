@@ -268,7 +268,7 @@
 
                 renderChatMessage: function renderChatMessage()
                 {
-                    //console.log('webmeet - renderChatMessage', this.model);
+                    //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
 
                     // intercepting email IM
 
@@ -279,9 +279,13 @@
 
                     var nick = this.model.getDisplayName();
 
-                    if (nick && !this.model.vcard.attributes.fullname) // no vcard
+                    if (nick && _converse.DEFAULT_IMAGE == this.model.vcard.attributes.image)
                     {
-                        this.model.vcard.attributes.image = createAvatar(this.model.vcard.attributes.image, nick);
+                        var dataUri = createAvatar(nick);
+                        var avatar = dataUri.split(";base64,");
+
+                        this.model.vcard.attributes.image = avatar[1];
+                        this.model.vcard.attributes.image_type = "image/png";
                     }
 
                     var body = this.model.get('message');
@@ -848,63 +852,6 @@
             }
         });
     };
-
-    var nickColors = {}
-
-    var getRandomColor = function getRandomColor(nickname)
-    {
-        if (nickColors[nickname])
-        {
-            return nickColors[nickname];
-        }
-        else {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            nickColors[nickname] = color;
-            return color;
-        }
-    }
-
-    var createAvatar = function(avatar, nickname)
-    {
-        var canvas = document.createElement('canvas');
-        canvas.style.display = 'none';
-        canvas.width = '32';
-        canvas.height = '32';
-        document.body.appendChild(canvas);
-        var context = canvas.getContext('2d');
-        context.fillStyle = getRandomColor(nickname);
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.font = "16px Arial";
-        context.fillStyle = "#fff";
-
-        var first, last;
-        var name = nickname.split(" ");
-        var l = name.length - 1;
-
-        if (name && name[0] && name.first != '')
-        {
-            first = name[0][0];
-            last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
-
-            if (last) {
-                var initials = first + last;
-                context.fillText(initials.toUpperCase(), 3, 23);
-            } else {
-                var initials = first;
-                context.fillText(initials.toUpperCase(), 10, 23);
-            }
-            var data = canvas.toDataURL();
-            document.body.removeChild(canvas);
-            avatar = data.split(";base64,")[1];
-        }
-
-        return avatar;
-    }
 
     var getVCard = function(response)
     {

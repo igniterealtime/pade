@@ -12,6 +12,7 @@
 #conversejs #controlbox .controlbox-section .controlbox-heading {
   font-family: "Century Gothic", futura, "URW Gothic L", Verdana, sans-serif;
   margin: 0 0 0.5em 0;
+  margin-top: 10px;
   color: red;
   text-transform: uppercase; 
 }
@@ -66,7 +67,7 @@
 
 .icon-conversejs {
     padding-right: 2.0em;
-    background-size: 64px;   
+    background-size: 32px;   
     background-image: url(../../../image.png);
     background-repeat: no-repeat, no-repeat;  
 }
@@ -88,4 +89,27 @@
 :not(textarea)::-webkit-scrollbar-thumb{
     background-color: #000000;
 }
+
+#conversejs .room-avatar, #conversejs .roster-avatar{
+    margin-right: 0.5em;
+    vertical-align: middle;
+}
+
+#conversejs #converse-roster .roster-contacts .roster-group li.current-xmpp-contact span.fa {
+    font-size: 0.5em;
+}
+
+#conversejs #controlbox .controlbox-pane .controlbox-padded {
+  padding-top: 4px;
+}
+      
+#conversejs .items-list .list-item.open {
+    background-color: #444 !important; 
+}
+
+#conversejs .message.chat-msg .chat-msg__heading .chat-msg__author{
+    font-weight: bold; 
+    font-size: 100%;    
+}
+
 
