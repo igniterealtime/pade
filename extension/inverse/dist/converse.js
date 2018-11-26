@@ -49188,7 +49188,9 @@ const AvatarMixin = {
     var display_name = this.model.vcard.attributes.fullname || this.model.get('jid');
     var dataUri = "data:" + image_type + ";base64," + image;
 
-    if (display_name && _converse.DEFAULT_IMAGE == this.model.vcard.attributes.image && getSetting("converseRosterIcons"))
+    const defaultAvatar = "PD94bWwgdmVyc2lvbj0iMS4wIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiA8cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0iIzU1NSIvPgogPGNpcmNsZSBjeD0iNjQiIGN5PSI0MSIgcj0iMjQiIGZpbGw9IiNmZmYiLz4KIDxwYXRoIGQ9Im0yOC41IDExMiB2LTEyIGMwLTEyIDEwLTI0IDI0LTI0IGgyMyBjMTQgMCAyNCAxMiAyNCAyNCB2MTIiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==";
+
+    if (display_name && defaultAvatar == this.model.vcard.attributes.image && getSetting("converseRosterIcons"))
     {
         dataUri = createAvatar(display_name);
     }
@@ -59217,8 +59219,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         return false;
       },
 
-      shouldBeVisible() {
-        return _converse.roster.length >= 5 || this.isActive();
+      shouldBeVisible() {   // BAO
+        return (_converse.roster.length >= 16 || this.isActive()) && getSetting("converseRosterFilter");
       },
 
       showOrHide() {

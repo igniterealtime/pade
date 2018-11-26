@@ -733,7 +733,14 @@ this.manifest = {
             "group": i18n.get("General"),
             "name": "converseRosterIcons",
             "type": "checkbox",
-            "label": i18n.get("Enable Coloured Roster Icons")
+            "label": i18n.get("Enable Coloured Deterministic Roster Icons")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "converseRosterFilter",
+            "type": "checkbox",
+            "label": i18n.get("Enable Contacts Filter")
         },
         {
             "tab": i18n.get("Converse"),

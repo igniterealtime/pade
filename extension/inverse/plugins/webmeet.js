@@ -31,9 +31,6 @@
      var pasteInputs = {};
      var videoRecorder = null;
 
-    // override converse for openfire
-    Strophe.addNamespace('MAM', 'urn:xmpp:mam:1');
-
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
 
