@@ -53862,6 +53862,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
         'click .hide-occupants': 'hideOccupants',
         'click .new-msgs-indicator': 'viewUnreadMessages',
         'click .occupant-nick': 'onOccupantClicked',
+        'click .occupant-avatar': 'onOccupantAvatarClicked',    // BAO
         'click .send-button': 'onFormSubmitted',
         'click .show-room-details-modal': 'showRoomDetailsModal',
         'click .toggle-call': 'toggleCall',
@@ -54215,6 +54216,14 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
          * the chat textarea input.
          */
         this.insertIntoTextArea(ev.target.textContent);
+      },
+
+      // BAO
+      onOccupantAvatarClicked(ev) {
+        /* When an occupant avatar is clicked, open private chatbox
+         */
+         const jid = ev.target.getAttribute('data-room-jid');
+        if (_converse.bare_jid != jid) _inverse.api.chats.open(jid);
       },
 
       handleChatStateNotification(message) {
@@ -93651,7 +93660,7 @@ __e( o.jid ) +
 __e( o.hint_occupant ) +
 '"\n    ';
  } ;    //BAO
-__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n<img class="room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
+__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n<img data-room-jid="' + o.jid + '" class="occupant-avatar room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
 __e(o.show) +
 ' circle" title="' +
 __e(o.hint_show) +

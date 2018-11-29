@@ -1454,7 +1454,7 @@ function doNotification(body, offerer, callback)
 {
     console.debug("doNotification", body, offerer)
 
-    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // accept
         {
@@ -1718,11 +1718,11 @@ function processInvitation(title, label, room, autoaccept, id, reason, webinar)
 {
     console.debug("processInvitation", title, label, room, id, reason, webinar);
 
-    if (!autoaccept || autoaccept != "true")
+    if ((!autoaccept || autoaccept != "true") && !pade.questions[label])
     {
         startTone("Diggztone_Vibe");
 
-        notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+        notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
         {
             console.debug("handleAction callback", notificationId, buttonIndex);
 
@@ -1792,7 +1792,7 @@ function acceptRejectOffer(properties)
 
         startTone("Diggztone_DigitalSanity");
 
-        notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.runtime.getURL("success-16x16.gif")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.runtime.getURL("forbidden-16x16.gif")}], function(notificationId, buttonIndex)
+        notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
         {
             console.debug("handleAction callback", notificationId, buttonIndex);
 
@@ -1937,7 +1937,7 @@ function joinAudioCall(title, label, room)
     etherlynk.join(room);
     sendToJabra("offhook");
 
-    notifyText(title, label, null, [{title: "Clear Conversation?", iconUrl: chrome.runtime.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
+    notifyText(title, label, null, [{title: "Clear Conversation?", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // terminate
         {

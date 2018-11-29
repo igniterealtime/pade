@@ -148,11 +148,11 @@
 
                     _converse.connection.sendIQ(stanza, function(iq) {
 
+                        var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
+
                         $(iq).find('conference').each(function()
                         {
-                            var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
-
-                            //console.log('pade BookmarksReceived', _converse, myNick, {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
+                            console.debug('pade BookmarksReceived', _converse, myNick, {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
 
                             if (_converse.bookmarks)
                             {
@@ -207,6 +207,7 @@
                 {
                     var body = this.model.get('message');
                     var from = this.model.getDisplayName();
+                    var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
 
                     if (bgWindow)
                     {
@@ -214,8 +215,6 @@
 
                         if (bgWindow.pade.minimised && body)
                         {
-                            //console.log("messageAdded", body);
-
                             var text = this.model.get('type') ? this.model.get('type') + " : " + body : body;
 
                             if (bgWindow.getSetting("notifyAllRoomMessages", false))
@@ -250,25 +249,38 @@
                             {
                                 chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
                             }
-                        }
 
-                        var highlightedBody = body;
+                            // track groupchat mentions
 
-                        for (var i=0; i<interestList.length; i++)
-                        {
-                            interestList[i] = interestList[i].trim();
-
-                            if (interestList[i] != "")
+                            if (this.model.get('type') === "groupchat" )
                             {
-                                var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
-                                var replaceRegExp = new RegExp('\#' + interestList[i], 'igm');
+                                var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
+                                console.debug("groupchat mention", mentioned, this.model);
 
-                                var enew = highlightedBody.replace(replaceRegExp, interestList[i]);
-                                var highlightedBody = enew.replace(searchRegExp, "$1#$2");
+                                if (mentioned) notifyMe(text, from, from);
                             }
                         }
 
-                        this.model.set('message', highlightedBody);
+                        if (bgWindow.getSetting("notifyOnInterests", false))
+                        {
+                            var highlightedBody = body;
+
+                            for (var i=0; i<interestList.length; i++)
+                            {
+                                interestList[i] = interestList[i].trim();
+
+                                if (interestList[i] != "")
+                                {
+                                    var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+                                    var replaceRegExp = new RegExp('\#' + interestList[i], 'igm');
+
+                                    var enew = highlightedBody.replace(replaceRegExp, interestList[i]);
+                                    var highlightedBody = enew.replace(searchRegExp, "$1#$2");
+                                }
+                            }
+
+                            this.model.set('message', highlightedBody);
+                        }
                     }
 
                    this.__super__.renderChatMessage.apply(this, arguments);
@@ -302,7 +314,7 @@
     {
         _converse.playSoundNotification();
 
-        bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("success-16x16.gif")}], function(notificationId, buttonIndex)
+        bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
         {
             if (buttonIndex == 0)
             {

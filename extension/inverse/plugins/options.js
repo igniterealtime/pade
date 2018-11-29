@@ -27,7 +27,7 @@
                         var view = this;
                         var id = this.model.get("box_id");
 
-                        addToolbarItem(view, id, "pade-options-" + id, '<a class="fas fa-cog" title="Pade Options and Features"></a>');
+                        addToolbarItem(view, id, "pade-options-" + id, '<a class="fas fa-cog" title="Options and Features"></a>');
 
                         setTimeout(function()
                         {

@@ -199,6 +199,8 @@ function openGroupChat(jid, label, nick, properties)
 
         _inverse.api.rooms.open(jid, properties);
 
+        console.log("openGroupChat - subject", properties.question);
+
         if (properties.question)
         {
             setTimeout(function()
