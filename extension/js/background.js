@@ -1392,7 +1392,7 @@ function addHandlers()
             }
             else
 
-            if ((pade.chatWindow && !pade.converseChats[offerer]))
+            if ((pade.chatWindow && !pade.converseChats[offerer]) || pade.minimised)
             {
                 doNotification(body, offerer, function()
                 {
