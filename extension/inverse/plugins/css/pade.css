@@ -1,3 +1,11 @@
+/* pade plugins for converse */
+
+#pade-preview-image {
+    max-width: 768px;
+}
+
+/* converse customisation*/
+
 #conversejs.converse-fullscreen .flyout {
   border-radius: 0;
   border: 0.85px solid #3AA569;

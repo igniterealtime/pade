@@ -67,14 +67,50 @@
             baseUrl = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2];
             _converse.log("The \"webmeet\" plugin is being initialized");
 
-            /* From the `_converse` object you can get any configuration
-             * options that the user might have passed in via
-             * `converse.initialize`.
-             *
-             * You can also specify new configuration settings for this
-             * plugin, or override the default values of existing
-             * configuration settings. This is done like so:
-            */
+
+            PreviewDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">Clipboard Image Paste Preview</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body">' +
+                         '<img id="pade-preview-image"/>' +
+                         '</div>' +
+                         '<div class="modal-footer"> <button type="button" class="btn btn-danger btn-preview-image" data-dismiss="modal">Upload Image</button> </div>' +
+                         '</div> </div> </div>';
+                },
+                afterRender() {
+                    var that = this;
+
+                    this.el.addEventListener('shown.bs.modal', function()
+                    {
+                        var fileReader = new FileReader();
+
+                        fileReader.onload = function(e)
+                        {
+                            that.el.querySelector('#pade-preview-image').src = e.target.result;
+                        }
+
+                        fileReader.readAsDataURL(that.model.get("blob"));
+
+                    }, false);
+                },
+                events: {
+                    "click .btn-preview-image": "uploadImage",
+                },
+
+                uploadImage() {
+                    var view = this.model.get("view");
+                    var blob = this.model.get("blob");
+
+                    var file = new File([blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
+                    view.model.sendFiles([file]);
+                }
+            });
+
             _converse.api.settings.update({
                 'initialize_message': 'Initializing webmeet',
                 'visible_toolbar_buttons': {
@@ -332,12 +368,11 @@
                         if (pos > -1)
                         {
                             var pos0 = body.indexOf("/webinar/")
-                            var pos1 = body.indexOf("/ofmeet/");
-                            var pos1e = body.indexOf("/jitsimeet/index.html?room=")
+                            var pos1 = body.indexOf("/jitsimeet/index.html?room=")
                             var pos2 = body.indexOf("/h5p/");
                             var pos3 = body.indexOf("https://");
 
-                            if ( pos0 > -1)
+                            if ( pos0 > -1 && pos3 > -1)
                             {
                                 //console.log("webinar invite", body);
                                 var link_room = body.substring(pos0 + 9);
@@ -347,12 +382,21 @@
                             }
                             else
 
-                            if ( pos1 > -1 || pos1e > -1)
+                            if (bgWindow && body.indexOf(bgWindow.pade.ofmeetUrl) > -1 && pos3 > -1)
+                            {
+                                var pos4 = body.indexOf(bgWindow.pade.ofmeetUrl);
+
+                                var link_room = body.substring(pos4 + bgWindow.pade.ofmeetUrl.length);
+                                var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
+                                var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
+                                setupContentHandler(this, link_room, link_content, doAVConference, link_room);
+                            }
+                            else
+
+                            if ( pos1 > -1 && pos3 > -1)
                             {
                                 //console.log("audio/video invite", body);
-                                var link_room = body.substring(pos1 + 8);
-                                if (pos1e > -1) link_room = body.substring(pos1 + 27);
-
+                                var link_room = body.substring(pos1 + 27);
                                 var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
                                 var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
                                 setupContentHandler(this, link_room, link_content, doAVConference, link_room);
@@ -428,8 +472,8 @@
                         {
                             //console.log("pade - pasteImage", data);
 
-                            var file = new File([data.blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
-                            view.model.sendFiles([file]);
+                            previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
+                            previewDialog.show();
 
                         }).on('pasteImageError', function(ev, data){
                             console.error('pasteImageError', data);
@@ -735,15 +779,15 @@
 
         if ( _converse.view_mode === 'overlayed')
         {
-            if (window.pade && window.pade.url)
+            if (window.pade && window.pade.url && window.pade.ofmeetUrl)
             {
-                url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
+                url = window.pade.ofmeetUrl + room;
                 window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room, location.href);
             }
         }
-        else {
-            url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/ofmeet/" + room;
-            if (bgWindow) bgWindow.openVideoWindow(room);
+        else if (bgWindow) {
+            url = bgWindow.pade.ofmeetUrl + room;
+            bgWindow.openVideoWindow(room);
         }
         return url;
     }

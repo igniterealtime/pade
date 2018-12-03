@@ -8,6 +8,8 @@ var __username = getSetting("username");
 var __password = getSetting("password");
 var __domain = getSetting("domain");
 var __email = getSetting("email", null);
+var __mode = urlParam("mode");
+var __ofmeetUrl = __mode ? "https://" + __server + "/webinar/" : getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
 
 // optional
 var __enableSip = getSetting("enableSip", false);
@@ -20,7 +22,7 @@ OFMEET_CONFIG = {
     username:__username,
     userAvatar: null,
     authorization: btoa(__username + ":" + __password),
-    mode: urlParam("mode"),
+    mode: __mode,
     isSwitchAvailable: __enableSip,
     showSharedCursor: __showSharedCursor,
     callcontrol:'callcontrol.' + __domain,
@@ -28,6 +30,7 @@ OFMEET_CONFIG = {
     hostname: __server,
     room: urlParam("room") || getUrl(),
     domain:__domain,
+    ofmeetUrl: __ofmeetUrl,
     enableTranscription: getSetting("enableTranscription", false),
     transcribeLanguage: getSetting("transcribeLanguage", "en-GB"),
     recordAudio: getSetting("recordAudio", false),

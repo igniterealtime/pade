@@ -176,7 +176,7 @@ window.addEventListener("load", function()
         if (port.sender.url.indexOf(communityUrl) > -1 && enableCommunity && embedCommunityChat && !enableInverse)
         {
             // converse as sidecar only available if main converse window is not enabled
-            port.postMessage({community: true, url: chrome.runtime.getURL(""), id: chrome.runtime.id, sidecar: communitySidecar, domain: pade.domain, server: pade.server, username: pade.username, password: pade.password, disableButton: disableChatButton});
+            port.postMessage({community: true, url: chrome.runtime.getURL(""), id: chrome.runtime.id, sidecar: communitySidecar, domain: pade.domain, server: pade.server, username: pade.username, password: pade.password, disableButton: disableChatButton, ofmeetUrl: pade.ofmeetUrl});
         }
 
         port.onMessage.addListener(function(message)
@@ -266,6 +266,9 @@ window.addEventListener("load", function()
     }
 
     pade.server = getSetting("server", null);
+    pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
+    if (!getSetting("ofmeetUrl", null)) setSetting("ofmeetUrl", pade.ofmeetUrl);
+
     pade.domain = getSetting("domain", null);
     pade.username = getSetting("username", null);
     pade.password = getSetting("password", null);
@@ -1349,10 +1352,8 @@ function addHandlers()
         {
             var body = $(this).text();
             var pos0 = body.indexOf("/webinar/")
-            var pos1 = body.indexOf("/ofmeet/");
-            var pos1e = body.indexOf("/jitsimeet/index.html?room=")
-
-            var pos2 = body.indexOf("https://" + pade.server)
+            var pos1 = body.indexOf("/jitsimeet/index.html?room=")
+            var pos2 = body.indexOf("https://" + pade.server);
 
             console.debug("message handler body", body, offerer, pade.minimised);
 
@@ -1373,12 +1374,19 @@ function addHandlers()
             }
             else
 
-            if ((pos1 > -1 || pos1e > -1) && pos2 > -1 )
+            if (pos2 > -1 && pade.ofmeetUrl.indexOf("https://" + pade.server) > -1)
             {
-                room = body.substring(pos1 + 8);
-                if ( pos1e > -1) room = body.substring(pos1e + 27);
-
+                var pos3 = body.indexOf(pade.ofmeetUrl);
                 reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("ofmeetInvitation", 'Please join meeting at');
+                room = body.substring(pos3 + pade.ofmeetUrl.length);
+                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
+            }
+            else
+
+            if (pos1 > -1 && pos2 > -1 )
+            {
+                reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("ofmeetInvitation", 'Please join meeting at');
+                room = body.substring(pos1 + 27);
                 handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
             }
             else
@@ -1502,6 +1510,12 @@ function fetchContacts(callback)
             console.debug('ofmeet.bookmark.url.item', {name: $(this).attr("name"), url: $(this).attr("url")});
 
             var ignore = $(this).attr("name") == "Video conferencing web client";
+
+            if (ignore)
+            {
+                pade.ofmeetUrl = $(this).attr("url");
+                setSetting("ofmeetUrl", pade.ofmeetUrl);
+            }
 
             if (callback && !ignore) callback(
             {
@@ -1659,7 +1673,7 @@ function findUsers(search, callback)
 
 function inviteToConference(jid, room, invitation)
 {
-    var url = "https://" + pade.server + "/ofmeet/" + room;
+    var url = pade.ofmeetUrl + room;
     var invite = (invitation ? invitation : "Please join me in") + " " + url;
     var roomJid = room + "@conference." + pade.domain;
 
@@ -1954,13 +1968,13 @@ function removeSetting(name)
 
 function setSetting(name, value)
 {
-    console.debug("setSetting", name, value);
+    //console.debug("setSetting", name, value);
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
 function getSetting(name, defaultValue)
 {
-    console.debug("getSetting", name, defaultValue);
+    //console.debug("getSetting", name, defaultValue);
 
     var value = defaultValue;
 
@@ -2934,7 +2948,7 @@ function searchConversations(keyword, callback)
         }
 
     }).catch(function (err) {
-        console.error('convSearch error', err);
+        //console.error('convSearch error', err);
         callback("<p/><p/> Error - " + err, conversations, true);
     });
 }

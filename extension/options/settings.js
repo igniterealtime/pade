@@ -1030,7 +1030,7 @@ function setDefaultServer()
         {
             if (tabs)
             {
-                var option_tab = tabs.filter(function(t) { return t.url.indexOf("/ofmeet") > -1; });
+                var option_tab = tabs.filter(function(t) { return t.url.indexOf("/ofmeet") > -1; });    // depends on app name not changing
 
                 console.debug("setDefaultServer - found tabs", option_tab, tabs);
 

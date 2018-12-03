@@ -613,6 +613,14 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
+            "name": "ofmeetUrl",
+            "type": "text",
+            "label": i18n.get("Base Url"),
+            "text": "https://server:7443/ofmeet"
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
             "name": "channelLastN",
             "type": "slider",
             "label": i18n.get("Maximium Video Streams"),
