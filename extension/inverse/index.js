@@ -105,7 +105,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "options", "webmeet", "pade"];
+        var whitelistedPlugins = ["search", "options", "canned", "webmeet", "pade"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("useMarkdown", false))
@@ -129,22 +129,22 @@ window.addEventListener("load", function()
           debug: getSetting("converseDebug", false),
           default_domain: domain,
           domain_placeholder: domain,
-          fullname: getSetting("displayname", null),
+          fullname: displayname,
           hide_open_bookmarks: true,
           i18n: getSetting("language", "en"),
-          jid : getSetting("username", null) + "@" + getSetting("domain", null),
+          jid : username + "@" + domain,
           locked_domain: domain,
           message_archiving: "always",
           message_carbons: getSetting("messageCarbons", true),
           muc_domain: "conference." + getSetting("domain", null),
           muc_nickname_from_jid: true,
           muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
-          nickname: getSetting("displayname", getSetting("username", null)),
+          nickname: displayname,
           notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
           notification_icon: '../image.png',
           webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
-          password: getSetting("password", null),
+          password: password,
           play_sounds: getSetting("conversePlaySounds", false),
           roster_groups: getSetting("rosterGroups", false),
           show_message_load_animation: false,

@@ -68,17 +68,22 @@
 
                         bgWindow.searchConversations(keyword, function(html, conversations, error)
                         {
+                            console.log("searchConversations", html);
+
                             searchResults.innerHTML = html;
 
-                            for (var i=0; i<conversations.length; i++)
+                            setTimeout(function()
                             {
-                                that.el.querySelector("#conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
+                                for (var i=0; i<conversations.length; i++)
                                 {
-                                    e.stopPropagation();
-                                    chrome.extension.getViews({windowId: bgWindow.pade.chatWindow.id})[0].openChatPanel(e.target.title);
+                                    that.el.querySelector("#conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
+                                    {
+                                        e.stopPropagation();
+                                        chrome.extension.getViews({windowId: bgWindow.pade.chatWindow.id})[0].openChatPanel(e.target.title);
 
-                                }, false);
-                            }
+                                    }, false);
+                                }
+                            }, 1000);
                         });
                     }
                 }

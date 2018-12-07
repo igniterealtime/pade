@@ -228,6 +228,14 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Profile"),
+            "name": "exten",
+            "type": "text",
+            "text": i18n.get("Enter phone extension to be call controlled"),
+            "label": i18n.get("Phone Extension")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Profile"),
             "name": "role",
             "type": "text",
             "label": i18n.get("role"),
@@ -414,16 +422,16 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("Planner"),
-            "name": "meetingPlanner",
-            "text": i18n.get(""),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Planner Settings"),
             "name": "enableMeetingPlanner",
             "type": "checkbox",
             "label": i18n.get("Enable Meeting Planner")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("Planner"),
+            "name": "meetingPlanner",
+            "text": i18n.get(""),
+            "type": "description"
         },
         {
             "tab": i18n.get("Meetings"),
@@ -822,10 +830,31 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("Canned Responses"),
+            "name": "enableCannedResponses",
+            "type": "checkbox",
+            "label": i18n.get("Enable Canned Responses")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Canned Responses"),
+            "name": "cannedResponses",
+            "text": i18n.get(""),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",
             "label": i18n.get("Notify all room messages")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
+            "name": "notifyRoomMentions",
+            "type": "checkbox",
+            "label": i18n.get("Notify on room mentions")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1002,21 +1031,14 @@ this.manifest = {
             "group": i18n.get("Phone"),
             "name": "sipDescription",
             "type": "description",
-            "text": i18n.get("CTX SIP Phone. <b>The ofswitch plugin for Openfire is required for this</b>")
+            "text": i18n.get("SIP Phone. <b>The ofswitch plugin for Openfire is required for this</b>")
         },
         {
             "tab": i18n.get("Applications"),
             "group": i18n.get("Phone"),
             "name": "enableSip",
             "type": "checkbox",
-            "label": i18n.get("Enable SIP Phone")
-        },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Phone"),
-            "name": "enableVerto",
-            "type": "checkbox",
-            "label": i18n.get("Enable Verto Communicator")
+            "label": i18n.get("Enable CTX SIP Phone")
         },
         {
             "tab": i18n.get("Applications"),
@@ -1024,6 +1046,13 @@ this.manifest = {
             "name": "sipAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Phone")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("Phone"),
+            "name": "enableVerto",
+            "type": "checkbox",
+            "label": i18n.get("Enable Verto Communicator")
         },
         {                                        // draw.io web apps
             "tab": i18n.get("Applications"),
@@ -1393,6 +1422,7 @@ this.manifest = {
             "sms",
             "phone",
             "role",
+            "exten",
             "country",
             "url"
         ],

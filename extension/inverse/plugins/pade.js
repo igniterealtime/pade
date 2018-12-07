@@ -207,7 +207,11 @@
                 {
                     var body = this.model.get('message');
                     var from = this.model.getDisplayName();
+                    var room_jid = Strophe.getBareJidFromJid(this.model.get("from"));
                     var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
+
+                    var room = _converse.chatboxes.get(room_jid);
+                    if (room) myNick = room.get('nick');
 
                     if (bgWindow)
                     {
@@ -252,12 +256,13 @@
 
                             // track groupchat mentions
 
-                            if (this.model.get('type') === "groupchat" )
+                            if (bgWindow.getSetting("notifyRoomMentions", false))
                             {
-                                var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
-                                console.debug("groupchat mention", mentioned, this.model);
-
-                                if (mentioned) notifyMe(text, from, from);
+                                if (this.model.get('type') === "groupchat" )
+                                {
+                                    var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
+                                    if (mentioned) notifyMe(text, room_jid, from);
+                                }
                             }
                         }
 
@@ -283,7 +288,7 @@
                         }
                     }
 
-                   this.__super__.renderChatMessage.apply(this, arguments);
+                    this.__super__.renderChatMessage.apply(this, arguments);
                 }
             },
 
@@ -312,16 +317,21 @@
 
     var notifyMe = function(text, room, id)
     {
-        _converse.playSoundNotification();
+        console.debug("notifyMe", text, room, id);
 
-        bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+        Promise.all([_converse.api.waitUntil('roomsPanelRendered')]).then(() =>
         {
-            if (buttonIndex == 0)
-            {
-                bgWindow.openChatWindow("inverse/index.html");
-            }
+            _converse.playSoundNotification();
 
-        }, id);
+            bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+            {
+                if (buttonIndex == 0)
+                {
+                    bgWindow.openInverseGroupChatWindow(room);
+                }
+
+            }, id);
+        });
     }
 
 }));

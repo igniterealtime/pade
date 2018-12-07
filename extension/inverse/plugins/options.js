@@ -37,7 +37,7 @@
                             {
                                 evt.stopPropagation();
                                 var url = chrome.extension.getURL("options/index.html");
-                                bgWindow.openWebAppsWindow(url, null, 1050, 900);
+                                bgWindow.openWebAppsWindow(url, null, 1200, 900);
 
                             }, false);
                         });

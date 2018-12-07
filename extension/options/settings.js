@@ -43,6 +43,12 @@ window.addEvent("domready", function () {
             planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='../calendar/index.html'></iframe>";
         }
 
+        if (settings.manifest.cannedResponses)
+        {
+            var planner = settings.manifest.cannedResponses.element;
+            planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='canned/index.html'></iframe>";
+        }
+
         if (settings.manifest.uploadAvatar)
         {
             settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
@@ -139,19 +145,38 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.search) settings.manifest.search.addEvent("action", function ()
         {
-            background.findUsers(settings.manifest.searchString.element.value, function(users)
+            background.findUsers(settings.manifest.searchString.element.value, function(userList)
             {
-                console.log("findUsers", users);
+                console.log("findUsers", userList);
 
-                var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>ID</th><th>Email</th><th>Invite</th></tr>";
+                var usersObj = {};
+
+                for (var i=0; i < userList.length; i++ )
+                {
+                    usersObj[userList[i].jid] = userList[i];
+                }
+
+                var users = new Array();
+
+                for (var key in usersObj)
+                {
+                    users.push(usersObj[key]);
+                }
+
+                var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>ID</th><th>Email</th><th>Phone</th><th>Invite</th></tr>";
                 var count = 0;
 
                 for (var i=0; i<users.length; i++)
                 {
                     var user = users[i];
+                    user.room = background.makeRoomName(user.username);
+
+                    if (!user.email) user.email = "";
+                    if (!user.caller_id_number) user.caller_id_number = "";
+
                     var checked = settings.manifest.invitationList.element.value.indexOf(user.jid) > -1 ? "checked" : "";
 
-                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><input id='check-" + user.jid + "' type='checkbox' " + checked + "></td></tr>";
+                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><a name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td><td><input id='check-" + user.jid + "' type='checkbox' " + checked + "></td></tr>";
                 }
                 html = html + "</table>"
 
@@ -204,6 +229,24 @@ window.addEvent("domready", function () {
                         }
 
                         settings.manifest.invitationList.element.value = inviteList.join("\n").trim();
+                    });
+
+                    document.getElementById("phone-" + users[i].jid).addEventListener("click", function(e)
+                    {
+                        e.stopPropagation();
+                        var user = e.target;
+                        var phone = getSetting("exten", null)
+
+                        if (phone && phone != "" && background.pade.chatAPIAvailable)
+                        {
+                            console.debug("findUsers phone - click", user.name);
+
+                            background.makePhoneCall(phone, user.name, function(err)
+                            {
+                                if (err) alert("Telephone call failed!!");
+                            });
+
+                        } else alert("Phone Extension not configured");
                     });
                 }
             });
@@ -392,6 +435,17 @@ window.addEvent("domready", function () {
             localStorage.removeItem("store.settings.chatWindow");
             background.reloadApp();
         });
+
+        if (settings.manifest.enableCannedResponses)
+        {
+            settings.manifest.enableCannedResponses.addEvent("action", function ()
+            {
+                settings.manifest.cannedResponses.element.style = getSetting("enableCannedResponses") ? "display:initial;" : "display: none;";
+            });
+
+            // default
+            settings.manifest.cannedResponses.element.style = getSetting("enableCannedResponses") ? "display:initial;" : "display: none;";
+        }
 
         if (settings.manifest.enableMeetingPlanner)
         {
@@ -827,11 +881,13 @@ window.addEvent("domready", function () {
                 var country = getSetting("country");
                 var role    = getSetting("role");
                 var email   = getSetting("email");
+                var exten   = getSetting("exten");
 
                 var body = []
 
                 if (phone)      body.push({"name": "sms_in_number", "value": phone});
                 if (sms)        body.push({"name": "sms_out_number", "value": sms});
+                if (exten)      body.push({"name": "caller_id_number", "value": exten});
                 if (url)        body.push({"name": "pade.profile.url", "value": url});
                 if (country)    body.push({"name": "pade.profile.country", "value": country});
                 if (role)       body.push({"name": "pade.profile.role", "value": role});
@@ -969,6 +1025,7 @@ function doDefaults()
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
+    setDefaultSetting("converseRosterFilter", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

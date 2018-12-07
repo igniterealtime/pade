@@ -258,49 +258,6 @@ window.addEventListener("load", function()
         });
     });
 
-
-    if (getSetting("desktopShareMode", false))
-    {
-        console.log("pade screen share mode only");
-        return;
-    }
-
-    pade.server = getSetting("server", null);
-    pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
-    if (!getSetting("ofmeetUrl", null)) setSetting("ofmeetUrl", pade.ofmeetUrl);
-
-    pade.domain = getSetting("domain", null);
-    pade.username = getSetting("username", null);
-    pade.password = getSetting("password", null);
-    pade.avatar = getSetting("avatar", null);
-
-    console.log("pade loaded");
-
-    chrome.contextMenus.removeAll();
-
-    if (getSetting("enableInverse", false) == false)
-    {
-        chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
-        chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
-    }
-
-    chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
-    chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
-
-    addCommunityMenu();
-    addInverseMenu();
-    addBlogMenu();
-    addBlastMenu();
-    addDrawIOMenu();
-    addAVCaptureMenu();
-    addVertoMenu();
-    addTouchPadMenu();
-    addOffice365Business();
-    addOffice365Personal();
-    addWebApps();
-    addGmail();
-    updateCollabUrlList();
-
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
         if (notificationId.startsWith("audioconf-")) etherlynk.leave(notificationId.substring(10));
@@ -313,6 +270,24 @@ window.addEventListener("load", function()
         if (callback)
         {
             callback(notificationId, buttonIndex);
+
+            callbacks[notificationId] = null;
+            delete callbacks[notificationId];
+
+            chrome.notifications.clear(notificationId, function(wasCleared)
+            {
+
+            });
+        }
+    });
+
+    chrome.notifications.onClicked.addListener(function(notificationId)
+    {
+        var callback = callbacks[notificationId];
+
+        if (callback)
+        {
+            callback(notificationId, -1);
 
             callbacks[notificationId] = null;
             delete callbacks[notificationId];
@@ -503,6 +478,67 @@ window.addEventListener("load", function()
         }
 
     });
+
+    if (getSetting("desktopShareMode", false))
+    {
+        console.log("pade screen share mode only");
+        return;
+    }
+
+    pade.server = getSetting("server", null);
+    pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
+
+    if (!getSetting("ofmeetUrl", null)) setSetting("ofmeetUrl", pade.ofmeetUrl);
+
+    pade.domain = getSetting("domain", null);
+    pade.username = getSetting("username", null);
+    pade.password = getSetting("password", null);
+    pade.avatar = getSetting("avatar", null);
+
+    console.log("pade loaded");
+
+    chrome.contextMenus.removeAll();
+
+    if (getSetting("enableInverse", false) == false)
+    {
+        chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
+        chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
+    }
+
+    chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
+    chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
+
+    chrome.contextMenus.create({id: "pade_selection_meet", type: "normal", title: "Meet in %s", contexts: ["selection", "editable"], onclick: handleRightClick});
+
+    if (getSetting("enableInverse", false))
+    {
+        chrome.contextMenus.create({id: "pade_selection_chat", type: "normal", title: "Chat with %s", contexts: ["selection", "editable"], onclick: handleRightClick});
+        chrome.contextMenus.create({id: "pade_selection_chatroom", type: "normal", title: "Enter Chatroom %s", contexts: ["selection", "editable"], onclick: handleRightClick});
+    }
+
+    if (getSetting("exten", null))
+    {
+        var exten = getSetting("exten")
+
+        if (exten && exten != "")
+        {
+            chrome.contextMenus.create({id: "pade_selection_phone", type: "normal", title: "Phone %s", contexts: ["selection", "editable"], onclick: handleRightClick});
+        }
+    }
+
+    addCommunityMenu();
+    addInverseMenu();
+    addBlogMenu();
+    addBlastMenu();
+    addDrawIOMenu();
+    addAVCaptureMenu();
+    addVertoMenu();
+    addTouchPadMenu();
+    addOffice365Business();
+    addOffice365Personal();
+    addWebApps();
+    addGmail();
+    updateCollabUrlList();
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
     chrome.browserAction.setBadgeText({ text: 'off' });
@@ -723,6 +759,59 @@ function handleH5pViewerClick(info)
 {
     console.debug("handleH5pViewerClick", info);
     if (pade.activeH5p) openWebAppsWindow(pade.activeH5p, null, 800, 600)
+}
+
+function openInverseChatWindow(jid)
+{
+    if (jid.indexOf("@") == -1) jid = jid + "@" + pade.domain;
+
+    if (!pade.chatWindow)
+    {
+        openChatWindow("inverse/index.html#converse/chat?jid=" + jid, true);
+
+    } else {
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(jid);
+        chrome.windows.update(pade.chatWindow.id, {focused: true});
+    }
+}
+
+function openInverseGroupChatWindow(jid)
+{
+    if (jid.indexOf("@") == -1) jid = jid + "@conference." + pade.domain;
+    var room = Strophe.getNodeFromJid(jid);
+
+    if (!pade.chatWindow)
+    {
+        openChatWindow("inverse/index.html#converse/room?jid=" + jid + pade.domain, true);
+    } else {
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, room, pade.displayName)
+        chrome.windows.update(pade.chatWindow.id, {focused: true});
+    }
+}
+
+function openPhoneCall(destination)
+{
+    var phone = getSetting("exten", null)
+
+    if (phone && phone != "" && pade.chatAPIAvailable)
+    {
+        makePhoneCall(phone, destination, function(err)
+        {
+            if (err) alert("Telephone call failed!!");
+        })
+
+    } else alert("Call control not configured!!");
+}
+
+
+function handleRightClick(info)
+{
+    console.debug("handleRightClick", info);
+
+    if (info.menuItemId == "pade_selection_chat")       openInverseChatWindow(info.selectionText);
+    if (info.menuItemId == "pade_selection_chatroom")   openInverseGroupChatWindow(info.selectionText);
+    if (info.menuItemId == "pade_selection_meet")       openVideoWindow(info.selectionText);
+    if (info.menuItemId == "pade_selection_phone")      openPhoneCall(info.selectionText);
 }
 
 function reloadApp()
@@ -1453,6 +1542,102 @@ function addHandlers()
             }
         });
 
+        $(message).find('ofswitch').each(function ()
+        {
+            var json = JSON.parse($(this).text());
+            console.log("ofswitch event", json);
+
+            var buttons = [];
+            var title = json.direction == "inbound" ? json.destination : json.source;
+            var callback0 = function(){};
+            var callback1 = function(){};
+
+            var doTelephoneAction = function(action, callId, destination)
+            {
+                var query = destination && destination != "" ? "?destination=" + destination : "";
+                var url =  "https://" + pade.server + "/rest/api/restapi/v1/meet/action/" + action + "/" + callId + query;
+                var options = {method: "POST", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+                console.debug("doTelephoneAction", url, options);
+
+                fetch(url, options).then(function(response)
+                {
+                    console.debug("doTelephoneAction ok", response);
+
+                }).catch(function (err) {
+                    console.error('doTelephoneAction error', err);
+                });
+            }
+
+            if (json.state == "HANGUP")
+            {
+                chrome.notifications.clear(json.call_id, function(wasCleared)
+                {
+                    console.log("CC Hangup", wasCleared);
+                });
+
+                pade.activeCallId = null;
+            }
+            else {
+
+                if (json.state == "ACTIVE")
+                {
+                    buttons = [{title: "Transfer", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Hangup", iconUrl: chrome.runtime.getURL("times-solid.svg")}];
+
+                    callback0 = function()
+                    {
+                        var destination = prompt("Transfer To:");
+                        if (destination) doTelephoneAction("transfer", json.call_id, destination);
+                    };
+
+                    callback1 = function()
+                    {
+                        doTelephoneAction("clear", json.call_id);
+                        pade.activeCallId = null;
+                    };
+
+                    pade.activeCallId = json.call_id;
+                }
+                else
+
+                if (json.state == "HELD")
+                {
+                    buttons = [{title: "Unhold", iconUrl: chrome.runtime.getURL("check-solid.svg")}];
+
+                    callback0 = function()
+                    {
+                        doTelephoneAction("hold", json.call_id);
+                    };
+                }
+
+                else
+
+                if (json.state == "RINGING")
+                {
+                    buttons = [{title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}];
+
+                    callback0 = function()
+                    {
+                        doTelephoneAction("clear", json.call_id);
+                        pade.activeCallId = null;
+                    };
+                }
+
+                notifyText(title, "Telephone Call", null, buttons, function(notificationId, buttonIndex)
+                {
+                    if (buttonIndex == 0) callback0();
+                    if (buttonIndex == 1) callback1();
+
+                    if (buttonIndex == -1)
+                    {
+                        doTelephoneAction("clear", json.call_id);
+                        pade.activeCallId = null;
+                    }
+
+                }, json.call_id);
+            }
+        });
+
         return true;
 
     }, null, 'message');
@@ -1513,7 +1698,7 @@ function fetchContacts(callback)
 
             if (ignore)
             {
-                pade.ofmeetUrl = $(this).attr("url");
+                pade.ofmeetUrl = $(this).attr("url") + "/";
                 setSetting("ofmeetUrl", pade.ofmeetUrl);
             }
 
@@ -1639,9 +1824,51 @@ function fetchContacts(callback)
 
 }
 
+function makePhoneCall(line, destination, callback)
+{
+    console.debug('makePhoneCall', destination, pade.activeCallId);
+
+    var url = "https://" + pade.server + "/rest/api/restapi/v1/meet/phone/" + line + "/" + destination;
+
+    if (pade.activeCallId)  // active call, transfer
+    {
+       url = "https://" + pade.server + "/rest/api/restapi/v1/meet/action/transfer/" + pade.activeCallId + "?destination=" + destination;
+    }
+
+    var options = {method: "POST", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("makePhoneCall", url, options);
+
+    fetch(url, options).then(function(response)
+    {
+        console.debug("getUserProperties ok", response);
+        if (callback) callback();
+
+    }).catch(function (err) {
+        if (callback) callback(err);
+    });
+}
+
 function findUsers(search, callback)
 {
-    console.debug('findUsers', search);
+    var url =  "https://" + pade.server + "/rest/api/restapi/v1/meet/profile/" + search;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("findUsers", url, options);
+
+    fetch(url, options).then(function(response){ return response.json()}).then(function(props)
+    {
+        console.debug("getUserProperties ok", props);
+        if (callback) callback(props);
+
+    }).catch(function (err) {           // no chat api, use XMMP search
+        findUsers2(search, callback)
+    });
+}
+
+function findUsers2(search, callback)
+{
+    console.debug('findUsers2', search);
 
     var iq = $iq({type: 'set', to: "search." + pade.connection.domain}).c('query', {xmlns: 'jabber:iq:search'}).c('x').t(search).up().c('email').t(search).up().c('nick').t(search);
 
@@ -1654,20 +1881,17 @@ function findUsers(search, callback)
             var current = $(this);
             var jid = current.attr('jid');
             var username = Strophe.getNodeFromJid(jid);
-
             var name = current.find('nick').text();
             var email = current.find('email').text();
-            var room = makeRoomName(username);
 
-            console.debug('findUsers response', name, jid, room);
-
-            users.push({username: username, name: name, email: email, jid: jid, room: room});
+            console.debug('findUsers2 response', name, jid, room);
+            users.push({username: username, name: name, email: email, jid: jid});
         });
 
         if (callback) callback(users);
 
     }, function (error) {
-        console.error('findUsers', error);
+        console.error('findUsers2', error);
     });
 };
 
@@ -2729,7 +2953,7 @@ function doPadeConnect()
 
     pade.connection = getConnection(connUrl);
 
-    pade.connection.connect(pade.username + "@" + pade.domain + "/" + pade.username + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
+    pade.connection.connect(pade.username + "@" + pade.domain + "/" + chrome.i18n.getMessage('manifest_shortExtensionName') + "-" + chrome.runtime.getManifest().version + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
     {
         console.debug("pade.connection ===>", status);
 
@@ -2951,6 +3175,7 @@ function searchConversations(keyword, callback)
         //console.error('convSearch error', err);
         callback("<p/><p/> Error - " + err, conversations, true);
     });
+
 }
 
 function processConvSearch(conversations, keyword)

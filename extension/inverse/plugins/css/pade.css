@@ -3,6 +3,30 @@
 #pade-preview-image {
     max-width: 768px;
 }
+#conversejs table {
+    color: #333;
+    font-family: Helvetica, Arial, sans-serif;
+    border-collapse:
+    collapse; border-spacing: 0;
+    width: 95%;
+}
+
+#conversejs td, th {
+    border: 1px solid transparent; /* No more visible border */
+    height: 30px;
+    transition: all 0.3s;  /* Simple transition for hover effect */
+}
+
+#conversejs th {
+    background: #DFDFDF;  /* Darken header a bit */
+    font-weight: bold;
+}
+
+#conversejs td {
+    background: #FAFAFA;
+    text-align: left;
+    vertical-align: top;
+}
 
 /* converse customisation*/
 

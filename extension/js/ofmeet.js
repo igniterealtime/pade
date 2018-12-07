@@ -122,7 +122,7 @@
         break;
       }
       if (children[i].nodeType == document.ELEMENT_NODE) {
-        if (children[i].className.indexOf("togetherjs") != -1) {
+        if ( children[i].className && typeof children[i].className.indexOf === 'function' && children[i].className.indexOf("togetherjs") != -1) {
           // Don't count our UI
           continue;
         }

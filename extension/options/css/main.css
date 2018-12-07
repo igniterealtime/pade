@@ -109,7 +109,7 @@ body.searching #tab-container .tab.active {
 .tab-content {
     display: none;
     position: absolute;
-    width: 840px;
+    width: 1024px;
     top: 0;
     left: 0;
     bottom: 0;
