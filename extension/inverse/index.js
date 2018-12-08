@@ -105,12 +105,17 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "options", "canned", "webmeet", "pade"];
+        var whitelistedPlugins = ["search", "options", "webmeet", "pade"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("useMarkdown", false))
         {
             whitelistedPlugins.push("markdown");
+        }
+
+        if (getSetting("enableCannedResponses", false))
+        {
+            whitelistedPlugins.push("canned");
         }
 
         var config =

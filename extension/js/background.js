@@ -83,43 +83,47 @@ window.addEventListener("load", function()
     {
         console.log("onStartup");
 
-        if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false))
-            openChatWindow("inverse/index.html", null, "minimized");
-
-        if (getSetting("enableCommunity", false) && getSetting("communityAutoStart", false))
-            openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), "minimized", 1024, 800);
-
-        if (getSetting("enableVerto", false) && getSetting("sipAutoStart", false))
-            openVertoWindow("minimized");
-
-        if (getSetting("enableTouchPad", false) && getSetting("touchPadAutoStart", false))
-            openApcWindow("minimized");
-
-        if (getSetting("enableOffice365Business", false) && getSetting("of365AutoStart", false))
-            openOffice365Window(true, "minimized");
-
-        if (getSetting("enableOffice365Personal", false) && getSetting("of365AutoStart", false))
-            openOffice365Window(false, "minimized");
-
-        if (getSetting("enableWebApps", false) && getSetting("of365AutoStart", false))
+        setTimeout(function()   // wait for 3 secs before starting apps for background dependencies to be active and ready
         {
-            var webApps = getSetting("webApps", "").split(",");
+            if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false))
+                openChatWindow("inverse/index.html", null, "minimized");
 
-            for (var i=0; i<webApps.length; i++)
+            if (getSetting("enableCommunity", false) && getSetting("communityAutoStart", false))
+                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), "minimized", 1024, 800);
+
+            if (getSetting("enableVerto", false) && getSetting("sipAutoStart", false))
+                openVertoWindow("minimized");
+
+            if (getSetting("enableTouchPad", false) && getSetting("touchPadAutoStart", false))
+                openApcWindow("minimized");
+
+            if (getSetting("enableOffice365Business", false) && getSetting("of365AutoStart", false))
+                openOffice365Window(true, "minimized");
+
+            if (getSetting("enableOffice365Personal", false) && getSetting("of365AutoStart", false))
+                openOffice365Window(false, "minimized");
+
+            if (getSetting("enableWebApps", false) && getSetting("of365AutoStart", false))
             {
-                openWebAppsWindow(webApps[i], "minimized");
+                var webApps = getSetting("webApps", "").split(",");
+
+                for (var i=0; i<webApps.length; i++)
+                {
+                    openWebAppsWindow(webApps[i], "minimized");
+                }
             }
-        }
 
-        if (getSetting("enableGmail", false) && getSetting("of365AutoStart", false))
-        {
-            var gmailAccounts = getSetting("gmailAccounts", "").split(",");
-
-            for (var i=0; i<gmailAccounts.length; i++)
+            if (getSetting("enableGmail", false) && getSetting("of365AutoStart", false))
             {
-                openGmailWindow(gmailAccounts[i], "minimized");
+                var gmailAccounts = getSetting("gmailAccounts", "").split(",");
+
+                for (var i=0; i<gmailAccounts.length; i++)
+                {
+                    openGmailWindow(gmailAccounts[i], "minimized");
+                }
             }
-        }
+
+        }, 3000);
     });
 
     // support Jitsi domain controlled screen share
@@ -486,14 +490,13 @@ window.addEventListener("load", function()
     }
 
     pade.server = getSetting("server", null);
-    pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
-
-    if (!getSetting("ofmeetUrl", null)) setSetting("ofmeetUrl", pade.ofmeetUrl);
-
+    pade.ofmeetUrl = getSetting("ofmeetUrl", "https://" + pade.server + "/ofmeet/");
     pade.domain = getSetting("domain", null);
     pade.username = getSetting("username", null);
     pade.password = getSetting("password", null);
     pade.avatar = getSetting("avatar", null);
+
+    checkForChatAPI();
 
     console.log("pade loaded");
 
@@ -1698,8 +1701,11 @@ function fetchContacts(callback)
 
             if (ignore)
             {
-                pade.ofmeetUrl = $(this).attr("url") + "/";
-                setSetting("ofmeetUrl", pade.ofmeetUrl);
+                if (!getSetting("ofmeetUrl", null))
+                {
+                    pade.ofmeetUrl = $(this).attr("url") + "/";
+                    setSetting("ofmeetUrl", pade.ofmeetUrl);
+                }
             }
 
             if (callback && !ignore) callback(
@@ -2982,7 +2988,6 @@ function doPadeConnect()
                 chrome.browserAction.setBadgeText({ text: "" });
                 closeCredsWindow();
                 runMeetingPlanner();
-                checkForChatAPI();
 
             }, 3000);
         }

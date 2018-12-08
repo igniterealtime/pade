@@ -5,7 +5,6 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var CannedDialog = null;
     var cannedDialog = null;
 
@@ -47,7 +46,7 @@
                     var response = that.model.get("response");
                     var responses = that.model.get("responses");
 
-                    if (response != "" && responses && bgWindow)
+                    if (response != "" && responses)
                     {
                         var cannedResults = that.el.querySelector("#pade-canned-results");
                         var html = "<table style='margin-left: 15px'><tr><th>Response</th><th>Description</th></tr>";
@@ -89,31 +88,28 @@
                 renderToolbar: function renderToolbar(toolbar, canned) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    if (bgWindow && bgWindow.getSetting("enableCannedResponses", false))
+                    var view = this;
+                    var id = this.model.get("box_id");
+                    var textArea = this.el.querySelector('.chat-textarea');
+
+                    addToolbarItem(view, id, "pade-canned-" + id, '<a class="far fa-save" title="Canned Responses/Replies"></a>');
+
+                    setTimeout(function()
                     {
-                        var view = this;
-                        var id = this.model.get("box_id");
-                        var textArea = $(this.el).find('.chat-textarea')[0];
+                        var canned = document.getElementById("pade-canned-" + id);
 
-                        addToolbarItem(view, id, "pade-canned-" + id, '<a class="far fa-save" title="Canned Responses/Replies"></a>');
-
-                        setTimeout(function()
+                        if (canned) canned.addEventListener('click', function(evt)
                         {
-                            var canned = document.getElementById("pade-canned-" + id);
+                            evt.stopPropagation();
 
-                            if (canned) canned.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
+                            var responses = getAnswersListFromStorage()
+                            console.log("canned", responses);
 
-                                var responses = bgWindow.getSetting("cannedResponses");
-                                console.log("canned", responses);
+                            cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({responses: responses, textArea: textArea}) });
+                            cannedDialog.show();
 
-                                cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({responses: responses, textArea: textArea}) });
-                                cannedDialog.show();
-
-                            }, false);
-                        });
-                    }
+                        }, false);
+                    });
 
                     return result;
                 }
@@ -141,6 +137,19 @@
             placeHolder = view.el.querySelector('#place-holder');
         }
         placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+    }
+
+    var getAnswersListFromStorage  = function()
+    {
+        var localStorageKey = "store.settings.cannedResponses";
+        var saved = localStorage.getItem(localStorageKey);
+        var answers = [];
+
+        if (saved && saved != '')
+        {
+            answers = JSON.parse(localStorage.getItem(localStorageKey));
+        }
+        return answers;
     }
 
 }));
