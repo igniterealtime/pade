@@ -130,7 +130,7 @@ window.addEventListener("load", function()
 
     chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse)
     {
-        console.log("Got deskshare request", request, sender);
+        console.debug("Got deskshare request", request, sender);
 
         if(request.getVersion)
         {
@@ -193,7 +193,7 @@ window.addEventListener("load", function()
 
             if (message.action == 'pade.management.credential.api')
             {
-                console.log("pade.management.credential.api", message);
+                console.debug("pade.management.credential.api", message);
 
                 if (message.creds)
                 {
@@ -403,6 +403,8 @@ window.addEventListener("load", function()
             pade.chatWindow = null;
             pade.minimised = false;
             pade.converseChats = {};
+
+            if (pade.activeWorkgroup) setupWorkgroup(); // needed because presence has reset status
         }
 
         if (pade.sip.window && win == pade.sip.window.id)
@@ -498,7 +500,7 @@ window.addEventListener("load", function()
 
     checkForChatAPI();
 
-    console.log("pade loaded");
+    console.debug("pade loaded");
 
     chrome.contextMenus.removeAll();
 
@@ -681,11 +683,7 @@ function setActiveWorkgroup(contact)
     }
 
     pade.activeWorkgroup = contact;
-
-    pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
-    pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("status").t("Online").up().c("priority").t("9"));
-    pade.connection.sendIQ($iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"}));
-
+    setupWorkgroup();
 }
 
 function handleContactClick(info)
@@ -910,7 +908,7 @@ function notifyProgress(message, context, progress, buttons, callback)
 };
 
 
-function notifyList(message, context, items, buttons, callback)
+function notifyList(message, context, items, buttons, callback, notifyId)
 {
     var opt = {
       type: "list",
@@ -920,11 +918,12 @@ function notifyList(message, context, items, buttons, callback)
       message: message,
       buttons: buttons,
       contextMessage: context,
-      items: items
+      items: items,
+      requireInteraction: !!buttons && !!callback
     }
-    var id = Math.random().toString(36).substr(2,9);
+    if (!notifyId) notifyId = Math.random().toString(36).substr(2,9);
 
-    chrome.notifications.create(id, opt, function(notificationId){
+    chrome.notifications.create(notifyId, opt, function(notificationId){
         if (callback) callbacks[notificationId] = callback;
     });
 };
@@ -1412,6 +1411,125 @@ function addHandlers()
             }
          }
 
+        if ($(presence).find('agent-status').length > 0 || $(presence).find('notify-queue-details').length > 0 || $(presence).find('notify-queue').length > 0)
+        {
+            var from = $(presence).attr('from');
+            var nick = Strophe.getNodeFromJid(from);
+
+            var maxChats, free = true;
+            var workGroup = Strophe.getNodeFromJid(from);
+
+            $(presence).find('agent-status').each(function()
+            {
+                workGroup = Strophe.getNodeFromJid($(this).attr('jid'));
+
+                $(presence).find('max-chats').each(function()
+                {
+                    maxChats = $(this).text();
+                });
+
+                $(presence).find('chat').each(function()
+                {
+                    free = false;
+
+                    var sessionID = $(this).attr('sessionID');
+                    var sessionJid = sessionID + "@conference." + pade.connection.domain;
+                    var sessionHash = (sessionJid);
+
+                    var userID = Strophe.getNodeFromJid($(this).attr('userID'));
+                    var startTime = $(this).attr('startTime');
+                    var question = $(this).attr('question');
+                    var username = $(this).attr('username');
+                    var email = $(this).attr('email');
+                    var text = userID + " talking with " + username + " about " + question;
+
+                    console.debug('agent-status message  ' + text + ' in ' + workGroup + ' using ' + sessionJid);
+
+                    notifyText(workGroup, text, null, [{title: "Join", iconUrl: chrome.runtime.getURL("check-solid.svg")},{title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+                    {
+                        if (buttonIndex == 0)
+                        {
+                            openInverseGroupChatWindow(sessionJid);
+                        }
+                    }, workGroup);
+                });
+            });
+
+            $(presence).find('notify-queue-details').each(function()
+            {
+                var free = true;
+
+                $(presence).find('user').each(function()
+                {
+                    var jid = $(this).attr('jid');
+                    var position, time, joinTime
+
+                    $(this).find('position').each(function()
+                    {
+                        position = $(this).text() == "0" ? "first": jQuery(this).text();
+                    });
+
+                    $(this).find('time').each(function()
+                    {
+                        time = $(this).text();
+                    });
+
+                    $(this).find('join-time').each(function()
+                    {
+                        joinTime = $(this).text();
+                    });
+
+                    if (position && time && joinTime)
+                    {
+                        free = false;
+                        var text = "A caller has been waiting for " + time + " secconds";
+
+                        console.debug('notify-queue-details message  ' + text);
+                        notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
+                    }
+                });
+
+            });
+
+            $(presence).find('notify-queue').each(function()
+            {
+                var free = true;
+                var count, oldest, waitTime, status
+
+                $(presence).find('count').each(function()
+                {
+                    count = jQuery(this).text();
+                });
+
+                $(presence).find('oldest').each(function()
+                {
+                    oldest = jQuery(this).text();
+                });
+
+                $(presence).find('time').each(function()
+                {
+                    waitTime = jQuery(this).text();
+                });
+
+                $(presence).find('status').each(function()
+                {
+                    status = jQuery(this).text();
+                });
+
+                if (count && oldest && waitTime && status)
+                {
+                    free = false;
+                    var text = "There are " + count + " caller(s) waiting for as long as " + waitTime + " seconds";
+
+                    console.debug('notify-queue message ' + text);
+                    notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
+                }
+            });
+
+            if (free) clearNotification(workGroup);
+        }
+
+
         return true;
 
     }, null, 'presence');
@@ -1548,7 +1666,7 @@ function addHandlers()
         $(message).find('ofswitch').each(function ()
         {
             var json = JSON.parse($(this).text());
-            console.log("ofswitch event", json);
+            console.debug("ofswitch event", json);
 
             var buttons = [];
             var title = json.direction == "inbound" ? json.destination : json.source;
@@ -1576,7 +1694,7 @@ function addHandlers()
             {
                 chrome.notifications.clear(json.call_id, function(wasCleared)
                 {
-                    console.log("CC Hangup", wasCleared);
+                    console.debug("CC Hangup", wasCleared);
                 });
 
                 pade.activeCallId = null;
@@ -1791,7 +1909,7 @@ function fetchContacts(callback)
         });
 
     }, function (error) {
-        console.warn("Fastpath not available");
+        console.warn("Workgroups not available");
     });
 
     etherlynk.connect();
@@ -2025,7 +2143,7 @@ function acceptRejectOffer(properties)
     if (pade.participants[properties.workgroupJid])
     {
         var question = properties.question;
-        if (!question) question = "Fastpath Assistance";
+        if (!question) question = "Workgroups Ask";
 
         var email = properties.email;
         if (!email) email = Strophe.getBareJidFromJid(properties.jid);
@@ -2036,7 +2154,7 @@ function acceptRejectOffer(properties)
 
         startTone("Diggztone_DigitalSanity");
 
-        notifyText(question, email, null, [{title: "Accept - Fastpath Assistance", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject - Fastpath Assistance?", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+        notifyText(question, "Ask - " + email, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
         {
             console.debug("handleAction callback", notificationId, buttonIndex);
 
@@ -2984,11 +3102,10 @@ function doPadeConnect()
                 updateVCard();
                 setupStreamDeck();
                 enableRemoteControl();
-
-                chrome.browserAction.setBadgeText({ text: "" });
                 closeCredsWindow();
                 runMeetingPlanner();
 
+                chrome.browserAction.setBadgeText({ text: "" });
             }, 3000);
         }
         else
@@ -3330,5 +3447,33 @@ function checkForChatAPI()
     searchConversations("__DUMMY__", function(html, conversations, error)
     {
         pade.chatAPIAvailable = !error;
+    });
+}
+
+function setupWorkgroup()
+{
+    console.debug("setupWorkgroup", pade.activeWorkgroup);
+
+    pade.connection.send($pres().c("show").t("chat").up().c("priority").t("9"));
+    pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
+
+    stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})
+
+    pade.connection.sendIQ(stanza, function(iq)
+    {
+        var list = [];
+
+        $(iq).find('agent').each(function()
+        {
+            var jid = $(this).attr('jid');
+            var name = Strophe.getNodeFromJid(jid);
+            console.debug('pade workgroup agent', jid);
+            list.push({title: name, message: jid});
+        });
+
+        notifyList("Available Agents", "Workgroups", list);
+
+    }, function(error){
+        console.error("agent-status-request error", error);
     });
 }

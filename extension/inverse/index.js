@@ -105,7 +105,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "options", "webmeet", "pade"];
+        var whitelistedPlugins = ["search", "options", "vmsg", "webmeet", "pade"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("useMarkdown", false))

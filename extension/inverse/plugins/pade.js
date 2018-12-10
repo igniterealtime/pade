@@ -96,8 +96,6 @@
 
             });
 
-            console.log("pade is ready");
-
             /* Besides `_converse.api.settings.update`, there is also a
              * `_converse.api.promises.add` method, which allows you to
              * add new promises that your plugin is obligated to fulfill.
@@ -134,71 +132,76 @@
              * method "onConnected". You can override that method as follows:
              */
             'onConnected': function () {
-                // Overrides the onConnected method in converse.js
-
-                // Top-level functions in "overrides" are bound to the
-                // inner "_converse" object.
                 var _converse = this;
-
-                // Your custom code can come here ...
 
                 var initPade = function initPade()
                 {
+                    ready = true;
+                    console.log("pade is ready");
+
+                    var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
                     var stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });
+
+                    var bookmarkRoom = function bookmarkRoom(json)
+                    {
+                        var room = _converse.chatboxes.get(json.jid);
+
+                        if (!room)
+                        {
+                            _converse.bookmarks.create({
+                                'jid': json.jid,
+                                'name': json.name,
+                                'autojoin': json.autojoin,
+                                'nick': myNick
+                            });
+
+                            room = _converse.chatboxes.get(json.jid);
+                            if (room) room.save('bookmarked', true);
+                        }
+                        return room;
+                    }
 
                     _converse.connection.sendIQ(stanza, function(iq) {
 
-                        var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
-
                         $(iq).find('conference').each(function()
                         {
-                            console.debug('pade BookmarksReceived', _converse, myNick, {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
+                            var name = Strophe.getNodeFromJid($(this).attr('jid'));
+                            var jid = $(this).attr("jid");
+                            var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
+                            var json = {name: name, jid: jid, autojoin: autojoin};
 
-                            if (_converse.bookmarks)
-                            {
-                                var room = _converse.chatboxes.get($(this).attr("jid"));
-
-                                if (!room)
-                                {
-                                    _converse.bookmarks.create({
-                                        'jid': $(this).attr("jid"),
-                                        'name': $(this).attr('name'),
-                                        'autojoin': $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1',
-                                        'nick': myNick
-                                    });
-
-                                    room = _converse.chatboxes.get($(this).attr("jid"));
-                                    if (room) room.save('bookmarked', true);
-                                }
-                            }
+                            console.debug('pade BookmarksReceived', json);
+                            if (_converse.bookmarks) bookmarkRoom(json);
 
                         });
 
-                        if (bgWindow && bgWindow.pade.activeWorkgroup)
-                        {
-                            _converse.connection.send($pres({to: bgWindow.pade.activeWorkgroup.jid}).c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
-                            _converse.connection.send($pres({to: bgWindow.pade.activeWorkgroup.jid}).c("status").t("Online").up().c("priority").t("9"));
-                        }
-
-
-                        console.log("pade plugin ready");
-                        ready = true;
-
                     }, function(error){
                         console.error("bookmarks error", error);
-
                     });
+
+                    stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
+
+                    _converse.connection.sendIQ(stanza, function(iq)
+                    {
+                        $(iq).find('workgroup').each(function()
+                        {
+                            var name = Strophe.getNodeFromJid($(this).attr('jid'));
+                            var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
+                            var json = {name: name, jid: jid, autojoin: true};
+
+                            console.log('pade workgroup recieved', json);
+                            if (_converse.bookmarks) bookmarkRoom(json);
+                        });
+
+                    }, function(error){
+                        console.error("workgroups error", error);
+                    });
+
                 }
 
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
 
-                // You can access the original function being overridden
-                // via the __super__ attribute.
-                // Make sure to pass on the arguments supplied to this
-                // function and also to apply the proper "this" object.
                 _converse.__super__.onConnected.apply(this, arguments);
-
-                // Your custom code can come here ...
             },
 
             MessageView: {
