@@ -69,12 +69,7 @@
 
   padding: 1em; 
 }
-#conversejs.converse-fullscreen .chatroom .box-flyout, #conversejs.converse-mobile .chatroom .box-flyout {
-    background-color: #E77051;
-    border: 0.85px solid #E77051;
-    border-top: 0.8em solid #E77051;
-    width: 100%;
-}
+
 #conversejs .chatbox .sendXMPPMessage .chat-textarea {
   resize: vertical; 
 }

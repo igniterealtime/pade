@@ -322,6 +322,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "wgNotifications",
+            "type": "checkbox",
+            "label": i18n.get("Workgroup Notifications")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "showSharedCursor",
             "type": "checkbox",
             "label": i18n.get("Show Shared Cursor")
@@ -823,10 +830,23 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("Markdown"),
+            "group": i18n.get("User Interface"),
             "name": "useMarkdown",
             "type": "checkbox",
             "label": i18n.get("Enable Markdown formatting in chat")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "converseTheme",
+            "type": "popupButton",
+            "label": i18n.get("UI Theme"),
+            "options": [
+                {"text": "Paper White", "value": "paperwhite"},
+                {"text": "Plain Simple", "value": "plainsimple"},
+                {"text": "Dark Room", "value": "darkroom"},
+                {"text": "Black Board", "value": "blackboard"}
+            ]
         },
         {
             "tab": i18n.get("Converse"),
@@ -1341,6 +1361,14 @@ this.manifest = {
             "type": "button",
             "label": i18n.get(""),
             "text": i18n.get("search")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convPdf",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Download PDF File")
         },
         {
             "tab": i18n.get("Search"),

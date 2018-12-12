@@ -1485,7 +1485,11 @@ function addHandlers()
                         var text = "A caller has been waiting for " + time + " secconds";
 
                         console.debug('notify-queue-details message  ' + text);
-                        notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
+
+                        if (getSetting("wgNotifications", false))
+                        {
+                            notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
+                        }
                     }
                 });
 
@@ -1522,7 +1526,11 @@ function addHandlers()
                     var text = "There are " + count + " caller(s) waiting for as long as " + waitTime + " seconds";
 
                     console.debug('notify-queue message ' + text);
-                    notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
+
+                    if (getSetting("wgNotifications", false))
+                    {
+                        notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
+                    }
                 }
             });
 
@@ -3273,12 +3281,12 @@ function searchConversations(keyword, callback)
     var url =  "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/messages" + query;
     var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
 
-    console.debug("fetch", url, options);
+    console.debug("searchConversations", url, options);
     var conversations = [];
 
     fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
     {
-        console.debug("convSearch", messages.conversation);
+        console.debug("searchConversations", messages.conversation);
 
         if (messages.conversation instanceof Array)
         {
@@ -3296,6 +3304,28 @@ function searchConversations(keyword, callback)
     }).catch(function (err) {
         //console.error('convSearch error', err);
         callback("<p/><p/> Error - " + err, conversations, true);
+    });
+
+}
+
+function pdfConversations(keyword, callback)
+{
+    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
+    var url = "https://" + getSetting("server") + "/dashboard/pdf?keywords=" + keyword;
+    //var url = "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/pdf" + query;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("pdfConversations", url, options);
+    var conversations = [];
+
+    fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
+    {
+        console.debug("pdfConversations", blob);
+        callback(blob, false);
+
+    }).catch(function (err) {
+        //console.error('convSearch error', err);
+        callback(null, true);
     });
 
 }
@@ -3461,17 +3491,20 @@ function setupWorkgroup()
 
     pade.connection.sendIQ(stanza, function(iq)
     {
-        var list = [];
-
-        $(iq).find('agent').each(function()
+        if (getSetting("wgNotifications", false))
         {
-            var jid = $(this).attr('jid');
-            var name = Strophe.getNodeFromJid(jid);
-            console.debug('pade workgroup agent', jid);
-            list.push({title: name, message: jid});
-        });
+            var list = [];
 
-        notifyList("Available Agents", "Workgroups", list);
+            $(iq).find('agent').each(function()
+            {
+                var jid = $(this).attr('jid');
+                var name = Strophe.getNodeFromJid(jid);
+                console.debug('pade workgroup agent', jid);
+                list.push({title: name, message: jid});
+            });
+
+            notifyList("Available Agents", "Workgroups", list);
+        }
 
     }, function(error){
         console.error("agent-status-request error", error);

@@ -103,17 +103,47 @@ window.addEvent("domready", function () {
             }
         });
 
-        if (settings.manifest.convSearch) settings.manifest.convSearch.addEvent("action", function ()
+        if (settings.manifest.useMarkdown) settings.manifest.useMarkdown.addEvent("action", function ()
         {
-            var keyword = settings.manifest.convSearchString.element.value;
+            reloadConverse(background);
+        });
 
-            if (!keyword || keyword.length == 0)
+        if (settings.manifest.converseTheme) settings.manifest.converseTheme.addEvent("action", function ()
+        {
+            reloadConverse(background);
+        });
+
+        if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
+        {
+            var keywords = settings.manifest.convSearchString.element.value;
+
+            if (!keywords || keywords.length == 0)
             {
                 settings.manifest.convSearchResults.element.innerHTML = i18n.get("Enter the keywords delimted by space");
                 return;
             }
 
-            background.searchConversations(keyword, function(html, conversations)
+            background.pdfConversations(keywords, function(blob, error)
+            {
+                if (!error) chrome.downloads.download({url: URL.createObjectURL(blob), filename: "conversations" + Math.random().toString(36).substr(2,9) + ".pdf"}, function(id)
+                {
+                    console.log("PDF downloaded", id);
+                });
+            });
+
+        });
+
+        if (settings.manifest.convSearch) settings.manifest.convSearch.addEvent("action", function ()
+        {
+            var keywords = settings.manifest.convSearchString.element.value;
+
+            if (!keywords || keywords.length == 0)
+            {
+                settings.manifest.convSearchResults.element.innerHTML = i18n.get("Enter the keywords delimted by space");
+                return;
+            }
+
+            background.searchConversations(keywords, function(html, conversations)
             {
                 settings.manifest.convSearchResults.element.innerHTML = html;
 
@@ -1026,6 +1056,7 @@ function doDefaults()
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("converseRosterFilter", true);
+    setDefaultSetting("converseTheme", "paperwhite");
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");
@@ -1303,6 +1334,13 @@ function uploadAvatar(event, settings)
     }
 }
 
+function reloadConverse(background)
+{
+    if (background.pade.chatWindow.id)
+    {
+        chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].location.reload();
+    }
+}
 
 function avatarError(error)
 {

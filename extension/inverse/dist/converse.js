@@ -52426,7 +52426,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
             if (getSetting("useMarkdown", false))   // BAO
             {
-                msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _),_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMarkdown, _converse))(text);
+                msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMarkdown, _converse), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
 
             } else {
                 msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
@@ -62570,7 +62570,7 @@ strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('FORWARD', 'urn:
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('HINTS', 'urn:xmpp:hints');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('HTTPUPLOAD', 'urn:xmpp:http:upload:0');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('IDLE', 'urn:xmpp:idle:1');
-strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('MAM', 'urn:xmpp:mam:2');                   // BAO
+strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('MAM', 'urn:xmpp:mam:1');                   // BAO
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('NICK', 'http://jabber.org/protocol/nick');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('OMEMO', "eu.siacs.conversations.axolotl");
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('OUTOFBAND', 'jabber:x:oob');
