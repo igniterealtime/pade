@@ -5,6 +5,11 @@
         factory(converse);
     }
 }(this, function (converse) {
+    var ready = false;
+    var handlers = {};
+    var Strophe = converse.env.Strophe;
+    var $iq = converse.env.$iq;
+    var $msg = converse.env.$msg;
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
 
     converse.plugins.add("markdown", {
@@ -21,11 +26,77 @@
                     bgWindow.closeWebAppsWindow(chrome.extension.getURL("inverse/plugins/editor.html"));
                 }
             });
-
-            console.log("markdown plugin is ready");
         },
 
         'overrides': {
+            'onConnected': function () {
+
+                setTimeout(function()
+                {
+                    ready = true;
+                    console.log("markdown plugin is ready");
+
+                }, 10000);
+
+                _converse.__super__.onConnected.apply(this, arguments);
+            },
+
+            MessageView: {
+
+                renderChatMessage: function renderChatMessage()
+                {
+                    var that = this;
+                    var originator = that.model.vcard && that.model.vcard.get("jid") ? that.model.vcard.get("jid") : that.model.get("from");
+                    var source = that.model.get("type") == "groupchat" ? that.model.get("from") : that.model.get("jid");
+
+                    if (ready)
+                    {
+                        setTimeout(function()
+                        {
+                            var form = that.el.querySelector('.marked-forms input[type=button]') || that.el.querySelector('.marked-forms input[type=submit]');
+                            var inputs = that.el.querySelectorAll('.marked-forms input:not([type=button]):not([type=submit])');
+
+                            if (form && !handlers[form.id])
+                            {
+                                var box_jid = Strophe.getBareJidFromJid(source);
+                                var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
+                                var box = _converse.chatboxes.get(box_jid);
+                                var view = getSelectedChatBox();
+
+                                console.debug("renderChatMessage - form", box, form, view);
+
+                                if (box) myNick = box.get('nick');
+
+                                form.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+                                    var formJson = {event: "markdown-form-data", nick: myNick};
+
+                                    for (var j=0; j< inputs.length; j++)
+                                    {
+                                        console.debug("renderChatMessage - form data", inputs[j].type, inputs[j].name, inputs[j].value, inputs[j].checked);
+
+                                        if (inputs[j].type == "text" || inputs[j].type == "textarea" || inputs[j].checked)
+                                        {
+                                            formJson[inputs[j].name] = inputs[j].value;
+                                        }
+                                    }
+
+                                    _converse.connection.send($msg({'to': originator}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(formJson)));
+                                    if (view) view.onMessageSubmitted('/me submitted form ' + form.id);
+                                    delete handlers[form.id]
+
+                                });
+
+                                handlers[form.id] = {};
+                                console.debug("renderChatMessage - markdown", form.id);
+                            }
+                        });
+                    }
+                    this.__super__.renderChatMessage.apply(this, arguments);
+                }
+            },
+
             ChatBoxView: {
 
                 renderToolbar: function renderToolbar(toolbar, options) {
@@ -82,5 +153,22 @@
             placeHolder = view.el.querySelector('#place-holder');
         }
         placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+    }
+
+    var getSelectedChatBox = function()
+    {
+        var views = _converse.chatboxviews.model.models;
+        var view = null;
+
+            console.debug("getSelectedChatBox", views[i]);
+
+        for (var i=0; i<views.length; i++)
+        {
+            if ((views[i].get('type') === "chatroom" || views[i].get('type') === "chatbox") && !views[i].get('hidden'))
+            {
+                view = _inverse.chatboxviews.views[views[i].id];
+            }
+        }
+        return view;
     }
 }));

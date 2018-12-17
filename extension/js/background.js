@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: []}
+var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}}
 var callbacks = {}
 
 // uPort
@@ -513,13 +513,14 @@ window.addEventListener("load", function()
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
     chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
 
-    chrome.contextMenus.create({id: "pade_selection_meet", type: "normal", title: "Meet in %s", contexts: ["selection", "editable"], onclick: handleRightClick});
-
     if (getSetting("enableInverse", false))
     {
+        chrome.contextMenus.create({id: "pade_selection_reply", type: "normal", title: 'Reply to "%s"', contexts: ["selection", "editable"], onclick: handleRightClick});
         chrome.contextMenus.create({id: "pade_selection_chat", type: "normal", title: "Chat with %s", contexts: ["selection", "editable"], onclick: handleRightClick});
         chrome.contextMenus.create({id: "pade_selection_chatroom", type: "normal", title: "Enter Chatroom %s", contexts: ["selection", "editable"], onclick: handleRightClick});
     }
+
+    chrome.contextMenus.create({id: "pade_selection_meet", type: "normal", title: "Meet in %s", contexts: ["selection", "editable"], onclick: handleRightClick});
 
     if (getSetting("exten", null))
     {
@@ -527,7 +528,7 @@ window.addEventListener("load", function()
 
         if (exten && exten != "")
         {
-            chrome.contextMenus.create({id: "pade_selection_phone", type: "normal", title: "Phone %s", contexts: ["selection", "editable"], onclick: handleRightClick});
+            chrome.contextMenus.create({id: "pade_selection_phone", type: "normal", title: "Phone %s", contexts: ["selection"], onclick: handleRightClick});
         }
     }
 
@@ -764,6 +765,8 @@ function handleH5pViewerClick(info)
 
 function openInverseChatWindow(jid)
 {
+    checkForChatAPI();
+
     if (jid.indexOf("@") == -1) jid = jid + "@" + pade.domain;
 
     if (!pade.chatWindow)
@@ -804,11 +807,32 @@ function openPhoneCall(destination)
     } else alert("Call control not configured!!");
 }
 
+function getSelectedChatBox()
+{
+    var chatBox = null;
+
+    if (pade.chatWindow)
+    {
+        chatBox = chrome.extension.getViews({windowId: pade.chatWindow.id})[0].getSelectedChatBox();
+    }
+
+    return chatBox;
+}
+
+function replyInverseChat(text)
+{
+    if (pade.chatWindow)
+    {
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].replyInverseChat(text);
+    }
+}
+
 
 function handleRightClick(info)
 {
     console.debug("handleRightClick", info);
 
+    if (info.menuItemId == "pade_selection_reply")      replyInverseChat(info.selectionText);
     if (info.menuItemId == "pade_selection_chat")       openInverseChatWindow(info.selectionText);
     if (info.menuItemId == "pade_selection_chatroom")   openInverseGroupChatWindow(info.selectionText);
     if (info.menuItemId == "pade_selection_meet")       openVideoWindow(info.selectionText);
@@ -1715,7 +1739,17 @@ function addHandlers()
 
                     callback0 = function()
                     {
-                        var destination = prompt("Transfer To:");
+                        var currentChat = getSelectedChatBox();
+                        var defaultExten = undefined;
+
+                        if (currentChat)
+                        {
+                            var currentJid = currentChat.model.get("jid");
+                            var userprofile = pade.userProfiles[currentJid];
+                            if (userprofile) defaultExten = userprofile.caller_id_number;
+                        }
+
+                        var destination = prompt("Transfer To:", defaultExten);
                         if (destination) doTelephoneAction("transfer", json.call_id, destination);
                     };
 
@@ -1988,10 +2022,18 @@ function findUsers(search, callback)
 
     console.debug("findUsers", url, options);
 
-    fetch(url, options).then(function(response){ return response.json()}).then(function(props)
+    fetch(url, options).then(function(response){ return response.json()}).then(function(userList)
     {
-        console.debug("getUserProperties ok", props);
-        if (callback) callback(props);
+        console.debug("findUsers ok", userList);
+
+        // cache user profiles
+
+        for (var i=0; i < userList.length; i++ )
+        {
+            pade.userProfiles[userList[i].jid] = userList[i];
+        }
+
+        if (callback) callback(userList);
 
     }).catch(function (err) {           // no chat api, use XMMP search
         findUsers2(search, callback)
@@ -2016,7 +2058,7 @@ function findUsers2(search, callback)
             var name = current.find('nick').text();
             var email = current.find('email').text();
 
-            console.debug('findUsers2 response', name, jid, room);
+            console.debug('findUsers2 response', username, name, email, jid);
             users.push({username: username, name: name, email: email, jid: jid});
         });
 
@@ -2092,7 +2134,7 @@ function processInvitation(title, label, room, autoaccept, id, reason, webinar)
     {
         startTone("Diggztone_Vibe");
 
-        notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+        notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Hangup", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
         {
             console.debug("handleAction callback", notificationId, buttonIndex);
 
@@ -2339,9 +2381,6 @@ function getSetting(name, defaultValue)
         value = JSON.parse(window.localStorage["store.settings." + name]);
 
         if (name == "password") value = getPassword(value);
-
-    } else {
-        if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }
 
     return value;
@@ -3302,7 +3341,7 @@ function searchConversations(keyword, callback)
         }
 
     }).catch(function (err) {
-        //console.error('convSearch error', err);
+        console.error('convSearch error', err);
         callback("<p/><p/> Error - " + err, conversations, true);
     });
 
@@ -3484,7 +3523,7 @@ function setupWorkgroup()
 {
     console.debug("setupWorkgroup", pade.activeWorkgroup);
 
-    pade.connection.send($pres().c("show").t("chat").up().c("priority").t("9"));
+    pade.connection.send($pres()/*.c("show").t("chat").up().c("priority").t("9")*/);
     pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
 
     stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})

@@ -7196,10 +7196,12 @@ Editor.toolbar = toolbar;
 /**
  * Default markdown render.
  */
-Editor.markdown = function(text) {
+Editor.markdown = function(text) {  // BAO
   if (window.marked) {
     // use marked as markdown parser
-    return marked(text);
+    var renderer = new marked.Renderer();
+    markedForms(renderer);
+    return marked(text.replace(/&gt;+/g, '>'), {renderer: renderer});
   }
 };
 

@@ -1,5 +1,5 @@
 
-var theme = "plainwhite";
+var theme = "plainsimple";
 
 if (localStorage["store.settings.converseTheme"])
 {

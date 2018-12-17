@@ -107,9 +107,6 @@ function getSetting(name, defaultValue)
         value = JSON.parse(window.localStorage["store.settings." + name]);
 
         if (name == "password") value = getPassword(value);
-
-    } else {
-        if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }
 
     return value;

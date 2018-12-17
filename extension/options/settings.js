@@ -563,6 +563,12 @@ window.addEvent("domready", function () {
             }
         }
 
+
+        if (settings.manifest.ofmeetUrl) settings.manifest.ofmeetUrl.addEvent("action", function ()
+        {
+            background.pade.ofmeetUrl = getSetting("ofmeetUrl");
+        });
+
         if (settings.manifest.enableFriendships) settings.manifest.enableFriendships.addEvent("action", function ()
         {
             location.reload()
@@ -1056,7 +1062,7 @@ function doDefaults()
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("converseRosterFilter", true);
-    setDefaultSetting("converseTheme", "paperwhite");
+    setDefaultSetting("converseTheme", "plainsimple");
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

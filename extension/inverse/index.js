@@ -105,7 +105,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "options", "vmsg", "webmeet", "pade"];
+        var whitelistedPlugins = ["search", "directory", "options", "vmsg", "webmeet", "pade"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("useMarkdown", false))
@@ -197,9 +197,39 @@ function openChatPanel(from)
     if (_inverse) _inverse.api.chats.open(from);
 }
 
+function getSelectedChatBox()
+{
+    var views = _inverse.chatboxviews.model.models;
+    var view = null;
+
+        console.debug("getSelectedChatBox", views[i]);
+
+    for (var i=0; i<views.length; i++)
+    {
+        if ((views[i].get('type') === "chatroom" || views[i].get('type') === "chatbox") && !views[i].get('hidden'))
+        {
+            view = _inverse.chatboxviews.views[views[i].id];
+        }
+    }
+    return view;
+}
+
+function replyInverseChat(text)
+{
+    var box = getSelectedChatBox();
+
+    console.debug("replyInverseChat", text, box);
+
+    if (box)
+    {
+        var textArea = box.el.querySelector('.chat-textarea');
+        if (textArea) textArea.value = ">" + text + "\n\n";
+    }
+}
+
 function openGroupChat(jid, label, nick, properties)
 {
-    console.log("openGroupChat", jid, label, nick, properties);
+    console.debug("openGroupChat", jid, label, nick, properties);
 
     if (_inverse)
     {
@@ -245,9 +275,6 @@ function getSetting(name, defaultValue)
         value = JSON.parse(localStorage["store.settings." + name]);
 
         if (name == "password") value = getPassword(value, localStorage);
-
-    } else {
-        if (defaultValue) localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }
 
     return value;

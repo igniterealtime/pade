@@ -57798,6 +57798,8 @@ const _converse$env = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_
 
 Strophe.addNamespace('REGISTER', 'jabber:iq:register'); // Add Strophe Statuses
 
+window.webForm2xForm = _converse_headless_utils_form__WEBPACK_IMPORTED_MODULE_9__["default"].webForm2xForm;   // BAO
+
 let i = 0;
 
 _.each(_.keys(Strophe.Status), function (key) {
@@ -91403,8 +91405,11 @@ _core__WEBPACK_IMPORTED_MODULE_2__["default"].shortnameToUnicode = function (str
 
   // BAO - do markdown to HTML
 
-_core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (_converse, text) {
-        var markedText = marked(text.replace(/&gt;+/g, '>'));
+_core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (_converse, text)
+{
+        var renderer = new marked.Renderer();
+        markedForms(renderer);
+        var markedText = marked(text.replace(/&gt;+/g, '>'), {renderer: renderer});
         var checkText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 
         //console.log("addMarkdown", markedText, checkText, text);
@@ -91421,7 +91426,7 @@ _core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (_converse,
         markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span title='hashtag' class='badge badge-hash-tag'>$2</span>");
 
         return markedText;
-  };
+};
 
 _core__WEBPACK_IMPORTED_MODULE_2__["default"].addEmoji = function (_converse, text) {
   if (_converse.use_system_emojis) {

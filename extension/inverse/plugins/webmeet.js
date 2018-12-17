@@ -30,6 +30,7 @@
      var h5pViews = {};
      var pasteInputs = {};
      var videoRecorder = null;
+     var userProfiles = {};
 
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -152,7 +153,7 @@
                     if (pos > -1)
                     {
                         var id = body.substring(pos + 11);
-                        //console.log("messageAdded h5p", id);
+                        console.debug("messageAdded h5p", id);
                         h5pViews[id] = data.chatbox;
                     }
                 }
@@ -162,13 +163,13 @@
             {
                 if (event.data.event == "ofmeet.event.xapi")
                 {
-                    //console.log("webmeet xpi handler", h5pViews, event.data);
+                    console.debug("webmeet xpi handler", h5pViews, event.data);
 
                     if (event.data.action == "completed")
                     {
                         if (h5pViews[event.data.id])
                         {
-                            //console.log("webmeet xpi handler", h5pViews, event.data);
+                            console.debug("webmeet xpi handler", h5pViews, event.data);
 
                             var view = h5pViews[event.data.id];
                             var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
@@ -232,16 +233,16 @@
                 var _converse = this;
 
                 _converse.connection.xmlInput = function(b) {
-                    //console.log("xmlInput", b);
+                    //console.debug("xmlInput", b);
                 };
                 _converse.connection.xmlOutput = function(b) {
-                    //console.log("xmlOutput", b);
+                    //console.debug("xmlOutput", b);
                 };
 
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
-                //console.log("Found uport data", uPort);
+                console.debug("Found uport data", uPort);
 
                 // only save avatar if user has success with uport
 
@@ -276,7 +277,7 @@
 
                                 _converse.connection.sendIQ( setVCard(vCard), function(resp)
                                 {
-                                    //console.log("set vcard ok", resp);
+                                    console.debug("set vcard ok", resp);
                                     _converse.__super__.onConnected.apply(this, arguments);
 
                                 }, function(err) {
@@ -374,7 +375,7 @@
 
                             if ( pos0 > -1 && pos3 > -1)
                             {
-                                //console.log("webinar invite", body);
+                                console.debug("webinar invite", body);
                                 var link_room = body.substring(pos0 + 9);
                                 var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webinar_invitation");
                                 var link_content = '<a id="' + link_room + '" href="#">' + link_label + ' webinar</a>';
@@ -395,7 +396,7 @@
 
                             if ( pos1 > -1 && pos3 > -1)
                             {
-                                //console.log("audio/video invite", body);
+                                console.debug("audio/video invite", body);
                                 var link_room = body.substring(pos1 + 27);
                                 var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
                                 var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
@@ -406,7 +407,7 @@
 
                             if ( pos2 > -1)
                             {
-                                //console.log("h5p content", this.model.attributes);
+                                console.debug("h5p content", this.model.attributes);
                                 var path = body.substring(pos2 + 11);
                                 var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
                                 var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
@@ -428,7 +429,7 @@
             ChatBoxView: {
 
                 toggleCall: function toggleCall(ev) {
-                    //console.log("toggleCall", this.model);
+                    console.debug("toggleCall", this.model);
 
                     ev.stopPropagation();
 
@@ -439,7 +440,7 @@
                     else
 
                     if (bgWindow) {
-                        //console.log('callButtonClicked');
+                        console.debug('callButtonClicked');
                         var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
 
                         if (this.model.get("message_type") == "chat")
@@ -452,7 +453,7 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                   //console.log('webmeet - renderToolbar', this.model);
+                   console.debug('webmeet - renderToolbar', this.model);
 
                     var view = this;
                     var id = this.model.get("box_id");
@@ -470,7 +471,7 @@
 
                         pasteInputs[id].on('pasteImage', function(ev, data)
                         {
-                            //console.log("pade - pasteImage", data);
+                            console.debug("pade - pasteImage", data);
 
                             previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
                             previewDialog.show();
@@ -479,7 +480,7 @@
                             console.error('pasteImageError', data);
 
                         }).on('pasteText', function(ev, data){
-                            //console.log("pasteText", data);
+                            console.debug("pasteText", data);
 
                             if (pasteInputs[id][0].value == data.text && (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0))
                             {
@@ -488,32 +489,26 @@
                             }
 
                         }).on('pasteTextRich', function(ev, data){
-                            //console.log("pasteTextRich", data);
+                            console.debug("pasteTextRich", data);
 
                             if (bgWindow.getSetting("useMarkdown", false))
                                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('pasteTextHtml', function(ev, data){
-                            //console.log("pasteTextHtml", data);
+                            console.debug("pasteTextHtml", data);
 
                             if (bgWindow.getSetting("useMarkdown", false))
                                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('focus', function(){
-                            //console.log("paste - focus", id);
+                            console.debug("paste - focus", id);
 
                         }).on('blur', function(){
-                            //console.log("paste - blur", id);
+                            console.debug("paste - blur", id);
                         });
                     }
 
                     var result = this.__super__.renderToolbar.apply(this, arguments);
-                    var dropZone = $(this.el).find('.chat-body')[0];
-
-                    dropZone.removeEventListener('dragover', handleDragOver);
-                    dropZone.removeEventListener('drop', handleDropFileSelect);
-                    dropZone.addEventListener('dragover', handleDragOver, false);
-                    dropZone.addEventListener('drop', handleDropFileSelect, false);
 
                     // h5p content button
 
@@ -529,7 +524,7 @@
                         addToolbarItem(view, id, "oob-" + id, html);
                     }
 
-                    var html = '<a class="fa fa-users" title="Audio/Video/Screenshare Conference"></a>';
+                    var html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
                     addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
 
                     html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
@@ -555,6 +550,23 @@
 
                     setTimeout(function()
                     {
+                        // custom profile
+
+                        if (bgWindow && bgWindow.pade.chatAPIAvailable && type === "chatbox")
+                        {
+                            if (!bgWindow.pade.userProfiles[jid])
+                            {
+                                bgWindow.findUsers(Strophe.getNodeFromJid(jid), function(userList)
+                                {
+                                    if (userList.length > 0 && userList[0].jid == jid)
+                                    {
+                                        console.debug("user profile", jid, userList[0].jid, userList[0]);
+                                        bgWindow.pade.userProfiles[jid] = userList[0];
+                                    }
+                                });
+                            }
+                        }
+
                         var exitButton = document.getElementById("webmeet-exit-webchat-" + id);
                         if (exitButton) exitButton.addEventListener('click', doExit, false);
 
@@ -743,7 +755,7 @@
 
     var handleWebinarAttendee = function handleWebinarAttendee(room, from, chatType, title, target, view)
     {
-        console.log("handleWebinarAttendee", room, view);
+        console.debug("handleWebinarAttendee", room, view);
 
         var mode = view.model.get("sender") == "me" ? "presenter" : "attendee";
         bgWindow.openVideoWindow(room, mode);
@@ -751,7 +763,7 @@
 
     var doWebinarPresenter = function doWebinarPresenter(view, title)
     {
-        console.log("doWebinarPresenter", view, title);
+        console.debug("doWebinarPresenter", view, title);
 
         var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
         var url = null;
@@ -774,7 +786,7 @@
 
     var doAVConference = function doAVConference(room)
     {
-        console.log("doAVConference", room);
+        console.debug("doAVConference", room);
         var url = null;
 
         if ( _converse.view_mode === 'overlayed')
@@ -797,7 +809,7 @@
         var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
         url = doAVConference(room);
 
-        console.log("doVideo", room, url, view);
+        console.debug("doVideo", room, url, view);
 
         if (_converse.api.settings.get("ofswitch") == false)
         {
@@ -809,7 +821,7 @@
     var doExit = function doExit(event)
     {
         event.stopPropagation();
-        //console.log("doExit", event);
+        console.debug("doExit", event);
         if (window.parent && window.parent.ofmeet) window.parent.ofmeet.doExit();
         messageCount = 0;
     }
@@ -829,7 +841,7 @@
 
     var doOobSession = function doOobSession(url, jid, chatType, title, target)
     {
-        console.log("doOobSession", url, jid, chatType, title);
+        console.debug("doOobSession", url, jid, chatType, title);
 
         if (isOnlyOfficeDoc(url))
         {
@@ -849,7 +861,7 @@
     var doooB = function doooB(view, id, jid, chatType)
     {
         var activeDoc = bgWindow.pade.collabDocs[bgWindow.pade.activeUrl];
-        console.log("doooB", activeDoc, view, id, jid, chatType);
+        console.debug("doooB", activeDoc, view, id, jid, chatType);
 
         _converse.connection.send($msg(
         {
@@ -864,35 +876,9 @@
 
     var doH5p = function doH5p(view, id)
     {
-        //console.log("doH5p", view);
+        console.debug("doH5p", view);
         view.onMessageSubmitted(bgWindow.pade.activeH5p);
     }
-
-    var handleDragOver = function handleDragOver(evt)
-    {
-        //console.log("handleDragOver");
-
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy';
-    };
-
-    var handleDropFileSelect = function handleDropFileSelect(evt)
-    {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        _converse.chatboxviews.each(function (view)
-        {
-            //console.log("handleDropFileSelect", view.model.get('type'));
-
-            if ((view.model.get('type') === "chatroom" || view.model.get('type') === "chatbox") && !view.model.get('hidden'))
-            {
-                var files = evt.dataTransfer.files;
-                view.model.sendFiles(files);
-            }
-        });
-    };
 
     var getVCard = function(response)
     {
@@ -1023,7 +1009,7 @@
 
                 if (e.data.size > 0)
                 {
-                    console.log("startRecorder push video ", e.data);
+                    console.debug("startRecorder push video ", e.data);
                     videoChunks.push(e.data);
                 }
             }
@@ -1053,7 +1039,7 @@
 
     var pasteLinkPreview = function pasteLinkPreview(body, textarea)
     {
-        console.log("pasteLinkPreview", body);
+        console.debug("pasteLinkPreview", body);
 
         if (bgWindow != null)
         {
@@ -1066,13 +1052,13 @@
             var url =  "https://" + server + "/rest/api/restapi/v1/ask/previewlink/3/" + linkUrl;
             var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password), "accept": "application/json"}};
 
-            console.log("fetch preview", url, options);
+            console.debug("fetch preview", url, options);
 
             var chat = this;
 
             fetch(url, options).then(function(response){ return response.json()}).then(function(preview)
             {
-                console.log("preview link", preview, textarea);
+                console.debug("preview link", preview, textarea);
 
                 if (preview.title || preview.image || preview.descriptionShort)
                 {

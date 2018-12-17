@@ -136,9 +136,6 @@
 
                 var initPade = function initPade()
                 {
-                    ready = true;
-                    console.log("pade is ready");
-
                     var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
                     var stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });
 
@@ -165,8 +162,9 @@
 
                         $(iq).find('conference').each(function()
                         {
-                            var name = Strophe.getNodeFromJid($(this).attr('jid'));
                             var jid = $(this).attr("jid");
+                            var name = $(this).attr("name");
+                            if (!name) name = Strophe.getNodeFromJid(jid);
                             var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
                             var json = {name: name, jid: jid, autojoin: autojoin};
 
@@ -189,7 +187,7 @@
                             var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
                             var json = {name: name, jid: jid, autojoin: true};
 
-                            console.log('pade workgroup recieved', json);
+                            console.debug('pade workgroup recieved', json);
                             if (_converse.bookmarks) bookmarkRoom(json);
                         });
 
@@ -200,6 +198,13 @@
                 }
 
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
+
+                setTimeout(function()
+                {
+                    ready = true;
+                    console.log("pade plugin is ready");
+
+                }, 30000);
 
                 _converse.__super__.onConnected.apply(this, arguments);
             },
@@ -227,7 +232,7 @@
                             if (bgWindow.getSetting("notifyAllRoomMessages", false))
                             {
                                 // TODO move to background page
-                                if (ready) notifyMe(text, from, from);
+                                notifyMe(text, from, from);
                             }
 
                             if (bgWindow.getSetting("notifyOnInterests", false))
@@ -322,7 +327,7 @@
     {
         console.debug("notifyMe", text, room, id);
 
-        Promise.all([_converse.api.waitUntil('roomsPanelRendered')]).then(() =>
+        if (ready)
         {
             _converse.playSoundNotification();
 
@@ -334,7 +339,7 @@
                 }
 
             }, id);
-        });
+        };
     }
 
 }));

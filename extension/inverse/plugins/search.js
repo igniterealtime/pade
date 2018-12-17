@@ -68,7 +68,7 @@
 
                         bgWindow.searchConversations(keyword, function(html, conversations, error)
                         {
-                            console.log("searchConversations", html);
+                            console.debug("searchConversations", conversations, error);
 
                             searchResults.innerHTML = html;
 
@@ -127,19 +127,23 @@
                 renderChatMessage: function renderChatMessage()
                 {
                     this.__super__.renderChatMessage.apply(this, arguments);
+                    var that = this;
 
                     if (searchAvailable)
                     {
-                        converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
+                        setTimeout(function()
                         {
-                            badge.addEventListener('click', function(evt)
+                            converse.env._.each(that.el.querySelectorAll('.badge-hash-tag'), function (badge)
                             {
-                                evt.stopPropagation();
+                                badge.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
 
-                                console.log("pade.hashtag click", badge.innerText);
-                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
-                                searchDialog.show();
-                            }, false);
+                                    console.debug("pade.hashtag click", badge.innerText);
+                                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
+                                    searchDialog.show();
+                                }, false);
+                            });
                         });
                     }
                 }

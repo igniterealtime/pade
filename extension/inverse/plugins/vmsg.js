@@ -40,7 +40,7 @@
                     var id = view.model.get("id").split("@")[0];
                     var mp3File = this.el.querySelector("#iframe-vmsg-" + id).contentWindow.getMp3File();
 
-                    console.log("upload vmsg", mp3File, id);
+                    console.debug("upload vmsg", mp3File, id);
 
                     if (!mp3File)
                     {
@@ -69,7 +69,7 @@
                     {
                         var vmsg = document.getElementById("pade-vmsg-" + id);
 
-                        vmsg.addEventListener('click', function(evt)
+                        if (vmsg) vmsg.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
 
@@ -77,7 +77,8 @@
                             vmsgDialog.show();
 
                         }, false);
-                    });
+
+                    }, 1000);
 
                     return result;
                 }

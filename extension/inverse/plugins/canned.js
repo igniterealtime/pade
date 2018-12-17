@@ -56,7 +56,7 @@
                         {
                             if (response.length == 0 || responses[i].name.indexOf(response) > -1 || responses[i].description.toLowerCase().indexOf(response.toLowerCase()) > -1)
                             {
-                                html = html + "<tr><td width='30%'>" + responses[i].name + "</td><td><a id='resp-" + count + "' href='#' title='click here to pate in input area'>" + responses[i].description + "</a></td></tr>";
+                                html = html + "<tr><td width='30%'>" + responses[i].name + "</td><td><a id='resp-" + count + "' href='#' title='click here to pate in input area'><pre>" + responses[i].description + "</pre></a></td></tr>";
                                 count++;
                             }
                         }
@@ -71,6 +71,7 @@
                                 {
                                     e.stopPropagation();
                                     textArea.value = e.target.innerText;
+                                    that.modal.hide();
 
                                 }, false);
                             }
@@ -103,7 +104,7 @@
                             evt.stopPropagation();
 
                             var responses = getAnswersListFromStorage()
-                            console.log("canned", responses);
+                            console.debug("canned", responses);
 
                             cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({responses: responses, textArea: textArea}) });
                             cannedDialog.show();

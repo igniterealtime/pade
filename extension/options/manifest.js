@@ -754,20 +754,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "converseRosterIcons",
-            "type": "checkbox",
-            "label": i18n.get("Enable Coloured Deterministic Roster Icons")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "converseRosterFilter",
-            "type": "checkbox",
-            "label": i18n.get("Enable Contacts Filter")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")
@@ -796,13 +782,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "rosterGroups",
-            "type": "checkbox",
-            "label": i18n.get("Show roster groups")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "allowNonRosterMessaging",
             "type": "checkbox",
             "label": i18n.get("Allow non roster messaging")
@@ -817,16 +796,37 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enablePasting",
+            "type": "checkbox",
+            "label": i18n.get("Enable Clipboard pasting of URLs and images")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "rosterGroups",
+            "type": "checkbox",
+            "label": i18n.get("Show roster groups")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "showGroupChatStatusMessages",
             "type": "checkbox",
             "label": i18n.get("Show GroupChat Status Messages")
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "enablePasting",
+            "group": i18n.get("User Interface"),
+            "name": "converseRosterIcons",
             "type": "checkbox",
-            "label": i18n.get("Enable Clipboard pasting of URLs and images")
+            "label": i18n.get("Enable Coloured Deterministic Roster Icons")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "converseRosterFilter",
+            "type": "checkbox",
+            "label": i18n.get("Enable Contacts Filter")
         },
         {
             "tab": i18n.get("Converse"),
