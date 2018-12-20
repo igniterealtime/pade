@@ -103,7 +103,7 @@
 
                     if (bgWindow && bgWindow.pade.chatAPIAvailable)
                     {
-                        addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search"></a>');
+                        addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search conversations for keywords"></a>');
                         searchAvailable = true;
 
                         setTimeout(function()

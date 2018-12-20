@@ -98,6 +98,7 @@ define("elements/wb-cam-recorder.js", ["../../components/w69b-es6/log.js"], func
                 value: function() {
                     o.default.debug("starting...", this.stream); //, this.$.recorder.start(this.stream)
                     var that = this;
+
                     window.localStream = this.stream;
 
                     var finished = function finished()

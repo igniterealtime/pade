@@ -356,6 +356,40 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "idleTimeout",
+            "type": "slider",
+            "label": i18n.get("Timeout (secs)"),
+            "max": 900,
+            "min": 60,
+            "step": 30
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "idleMessage",
+            "type": "text",
+            "label": i18n.get("Idle Message"),
+            "text": "see you later"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "idleActiveMessage",
+            "type": "text",
+            "label": i18n.get("Active Message"),
+            "text": "hello"
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "idleLockedMessage",
+            "type": "text",
+            "label": i18n.get("Locked Message"),
+            "text": "good bye"
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "unregisterUrlProtocols",
             "type": "description",
@@ -1430,7 +1464,7 @@ this.manifest = {
             "name": "saveMeeting",
             "type": "button",
             "label": i18n.get(""),
-            "text": i18n.get("Meet Later")
+            "text": i18n.get("Save for Later")
         }
     ],
     "alignment": [
@@ -1463,6 +1497,11 @@ this.manifest = {
         [
             "friendId",
             "friendName"
+        ],
+        [
+            "idleMessage",
+            "idleActiveMessage",
+            "idleLockedMessage"
         ]
     ]
 };

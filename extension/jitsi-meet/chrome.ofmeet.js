@@ -999,7 +999,7 @@ var ofmeet = (function(of)
 
     if (OFMEET_CONFIG)
     {
-        if (OFMEET_CONFIG.authorization)
+        if (OFMEET_CONFIG.authorization && OFMEET_CONFIG.sameOrigin)
         {
             console.log("ofmeet.js authorization", OFMEET_CONFIG);
 
@@ -1009,14 +1009,14 @@ var ofmeet = (function(of)
         }
     }
 
-/*
-    config.dialInNumbersUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/phonenumberlist.json';
-    config.dialInConfCodeUrl    = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/conferencemapper.json';
-    config.dialOutCodesUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/countrycodes.json';
-    config.dialOutAuthUrl       = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/authorizephone.json';
-    config.peopleSearchUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/peoplesearch.json';
-    config.inviteServiceUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/inviteservice.json';
-*/
+
+    //config.dialInNumbersUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/phonenumberlist.json';
+    //config.dialInConfCodeUrl    = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/conferencemapper.json';
+    //config.dialOutCodesUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/countrycodes.json';
+    //config.dialOutAuthUrl       = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/authorizephone.json';
+    //config.peopleSearchUrl      = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/peoplesearch.json';
+    //config.inviteServiceUrl     = 'https://' + OFMEET_CONFIG.hostname + '/ofmeet/inviteservice.json';
+
     config.p2p = {
         enabled: getSetting("p2pMode", false),
         stunServers: [
@@ -1052,7 +1052,6 @@ var ofmeet = (function(of)
             interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("tileview"), 1);
         }
     }
-
     return of;
 
 }(ofmeet || {}));

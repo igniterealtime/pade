@@ -57798,8 +57798,6 @@ const _converse$env = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_
 
 Strophe.addNamespace('REGISTER', 'jabber:iq:register'); // Add Strophe Statuses
 
-window.webForm2xForm = _converse_headless_utils_form__WEBPACK_IMPORTED_MODULE_9__["default"].webForm2xForm;   // BAO
-
 let i = 0;
 
 _.each(_.keys(Strophe.Status), function (key) {
@@ -63046,7 +63044,7 @@ _converse.initialize = function (settings, callback) {
   // Module-level functions
   // ----------------------
 
-  this.generateResource = () => `/converse.js-${Math.floor(Math.random() * 139749528).toString()}`;
+  this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${_converse.VERSION_NAME}-${Math.floor(Math.random() * 139749528).toString()}`; // BAO
 
   this.sendCSI = function (stat) {
     /* Send out a Chat Status Notification (XEP-0352)

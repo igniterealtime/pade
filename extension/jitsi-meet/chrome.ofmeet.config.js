@@ -3,13 +3,24 @@ var OFMEET_CONFIG = {};
 // mandatory
 
 var __server = getSetting("server");
+var __domain = getSetting("domain");
+var __baseUrl = getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
+var __sameOrigin = true;
+
+if (__baseUrl.indexOf("https://" + __server) == -1)
+{
+    __server = __baseUrl.split("/")[2];
+    __domain = __server.split(":")[0];
+    __sameOrigin = false;
+}
+
 var __displayname = getSetting("displayname");
 var __username = getSetting("username");
 var __password = getSetting("password");
-var __domain = getSetting("domain");
 var __email = getSetting("email", null);
 var __mode = urlParam("mode");
 var __ofmeetUrl = __mode ? "https://" + __server + "/webinar/" : getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
+var __baseUrl = getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
 
 // optional
 var __enableSip = getSetting("enableSip", false);
@@ -27,6 +38,7 @@ OFMEET_CONFIG = {
     showSharedCursor: __showSharedCursor,
     callcontrol:'callcontrol.' + __domain,
     sip:__server,
+    sameOrigin: __sameOrigin,
     hostname: __server,
     room: urlParam("room") || getUrl(),
     domain:__domain,

@@ -98,6 +98,9 @@ window.addEventListener("load", function()
         var password = getSetting("password", null);
         var displayname = getSetting("displayname", username);
 
+        var autoAway = getSetting("idleTimeout", 300);
+        var autoXa = autoAway * 3;
+
         var connUrl = undefined;
 
         if (getSetting("useWebsocket", true))
@@ -105,7 +108,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "directory", "options", "vmsg", "webmeet", "pade"];
+        var whitelistedPlugins = ["search", "directory", "invite", "options", "webmeet", "pade", "vmsg"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("useMarkdown", false))
@@ -125,8 +128,8 @@ window.addEventListener("load", function()
           allow_public_bookmarks: true,
           allow_logout: false,
           authentication: "login",
-          auto_away: 300,
-          auto_xa: 900,
+          auto_away: autoAway,
+          auto_xa: autoXa,
           auto_list_rooms: getSetting("allowNonRosterMessaging", false),
           auto_login: username != null,
           auto_reconnect: getSetting("autoReconnect", true),
@@ -202,13 +205,14 @@ function getSelectedChatBox()
     var views = _inverse.chatboxviews.model.models;
     var view = null;
 
-        console.debug("getSelectedChatBox", views[i]);
+    console.debug("getSelectedChatBox", views);
 
     for (var i=0; i<views.length; i++)
     {
         if ((views[i].get('type') === "chatroom" || views[i].get('type') === "chatbox") && !views[i].get('hidden'))
         {
             view = _inverse.chatboxviews.views[views[i].id];
+            break;
         }
     }
     return view;

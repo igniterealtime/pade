@@ -67,7 +67,11 @@
     "oobConfirm": {
         "message": "Do you want to start a collaborative document session on",
         "description": "Title for confirming collab doc session"
-    },    
+    }, 
+    "inviteConfirm": {
+        "message": "Do you want to invite the following participants to the meeting?",
+        "description": "Title for confirming invitation send out"
+    },     
     "search": {
         "message": "Search",
         "description": "Title for search"

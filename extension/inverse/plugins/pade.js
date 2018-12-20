@@ -24,7 +24,6 @@
         moment = converse.env.moment;
 
      var _converse = null;
-     var ready = false;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var notified = false;
 
@@ -93,7 +92,6 @@
             _converse.on('messageAdded', function (data) {
                 // The message is at `data.message`
                 // The original chatbox is at `data.chatbox`.
-
             });
 
             /* Besides `_converse.api.settings.update`, there is also a
@@ -195,16 +193,39 @@
                         console.error("workgroups error", error);
                     });
 
+                    console.log("pade plugin is ready");
                 }
 
-                Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
-
-                setTimeout(function()
+                _converse.on('message', function (data)
                 {
-                    ready = true;
-                    console.log("pade plugin is ready");
+                    var  message = data.stanza;
+                    var full_from_jid = message.getAttribute('from');
+                    var from_jid = Strophe.getBareJidFromJid(full_from_jid);
+                    var body = message.querySelector('body');
+                    var chatbox = _converse.chatboxes.get(from_jid);
 
-                }, 30000);
+                    if (body && chatbox)
+                    {
+                        // draw attention to new messages
+                        // done here instead of background.js becasue of chatroom messages
+
+                        if (bgWindow.pade.chatWindow && !notified)
+                        {
+                            chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
+                            notified = true;
+                        }
+
+                        if (chatbox.get('type') == "chatroom")  // chatboxes handled in background.js
+                        {
+                            var myNick =  chatbox.get('nick');
+                            var theNick =  chatbox.get('name');
+
+                            if (bgWindow) scanMessage(from_jid, body.innerHTML, theNick, myNick);
+                        }
+                    }
+                });
+
+                Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
 
                 _converse.__super__.onConnected.apply(this, arguments);
             },
@@ -213,87 +234,27 @@
 
                 renderChatMessage: function renderChatMessage()
                 {
-                    var body = this.model.get('message');
-                    var from = this.model.getDisplayName();
-                    var room_jid = Strophe.getBareJidFromJid(this.model.get("from"));
-                    var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
-
-                    var room = _converse.chatboxes.get(room_jid);
-                    if (room) myNick = room.get('nick');
-
-                    if (bgWindow)
+                    if (bgWindow.getSetting("notifyOnInterests", false))
                     {
+                        var body = this.model.get('message');
+                        var highlightedBody = body;
                         var interestList = bgWindow.getSetting("interestList", "").split("\n");
 
-                        if (bgWindow.pade.minimised && body)
+                        for (var i=0; i<interestList.length; i++)
                         {
-                            var text = this.model.get('type') ? this.model.get('type') + " : " + body : body;
+                            interestList[i] = interestList[i].trim();
 
-                            if (bgWindow.getSetting("notifyAllRoomMessages", false))
+                            if (interestList[i] != "")
                             {
-                                // TODO move to background page
-                                notifyMe(text, from, from);
-                            }
+                                var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+                                var replaceRegExp = new RegExp('\#' + interestList[i], 'igm');
 
-                            if (bgWindow.getSetting("notifyOnInterests", false))
-                            {
-                                for (var i=0; i<interestList.length; i++)
-                                {
-                                    interestList[i] = interestList[i].trim();
-
-                                    if (interestList[i] != "")
-                                    {
-                                        var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
-
-                                        if (searchRegExp.test(body))
-                                        {
-                                            // TODO move to background page using server-sent events
-                                            notifyMe(text, from, from);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-
-                            // draw attention to new messages
-
-                            if (bgWindow.pade.chatWindow && !notified)
-                            {
-                                chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
-                            }
-
-                            // track groupchat mentions
-
-                            if (bgWindow.getSetting("notifyRoomMentions", false))
-                            {
-                                if (this.model.get('type') === "groupchat" )
-                                {
-                                    var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
-                                    if (mentioned) notifyMe(text, room_jid, from);
-                                }
+                                var enew = highlightedBody.replace(replaceRegExp, interestList[i]);
+                                var highlightedBody = enew.replace(searchRegExp, "$1#$2");
                             }
                         }
 
-                        if (bgWindow.getSetting("notifyOnInterests", false))
-                        {
-                            var highlightedBody = body;
-
-                            for (var i=0; i<interestList.length; i++)
-                            {
-                                interestList[i] = interestList[i].trim();
-
-                                if (interestList[i] != "")
-                                {
-                                    var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
-                                    var replaceRegExp = new RegExp('\#' + interestList[i], 'igm');
-
-                                    var enew = highlightedBody.replace(replaceRegExp, interestList[i]);
-                                    var highlightedBody = enew.replace(searchRegExp, "$1#$2");
-                                }
-                            }
-
-                            this.model.set('message', highlightedBody);
-                        }
+                        this.model.set('message', highlightedBody);
                     }
 
                     this.__super__.renderChatMessage.apply(this, arguments);
@@ -323,23 +284,68 @@
         }
     });
 
-    var notifyMe = function(text, room, id)
+    var scanMessage = function(fromJid, body, fromNick, myNick)
     {
-        console.debug("notifyMe", text, room, id);
+        console.debug("scanMessage", fromJid, body, fromNick, myNick);
 
-        if (ready)
+        var interestList = bgWindow.getSetting("interestList", "").split("\n");
+
+        if (bgWindow.pade.minimised && body)
         {
-            _converse.playSoundNotification();
-
-            bgWindow.notifyText(text, room, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+            if (bgWindow.getSetting("notifyAllRoomMessages", false))
             {
-                if (buttonIndex == 0)
+                // TODO move to background page
+                notifyMe(body, fromNick, fromJid);
+            }
+            else {
+                var alerted = false;
+
+                if (bgWindow.getSetting("notifyOnInterests", false))
                 {
-                    bgWindow.openInverseGroupChatWindow(room);
+                    for (var i=0; i<interestList.length; i++)
+                    {
+                        interestList[i] = interestList[i].trim();
+
+                        if (interestList[i] != "")
+                        {
+                            var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+
+                            if (searchRegExp.test(body))
+                            {
+                                // TODO move to background page using server-sent events
+                                notifyMe(body, fromNick, fromJid);
+                                alerted = true;
+                                break;
+                            }
+                        }
+                    }
                 }
 
-            }, id);
-        };
+                // track groupchat mentions
+
+                if (!alerted && bgWindow.getSetting("notifyRoomMentions", false))
+                {
+                    var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
+                    if (mentioned) notifyMe(body, fromNick, fromJid);
+                }
+            }
+        }
     }
 
+    var notifyMe = function(text, fromNick, fromJid)
+    {
+        console.debug("notifyMe", text, fromNick, fromJid);
+
+        _converse.playSoundNotification();
+
+        bgWindow.notifyText(text, fromNick, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+        {
+            if (buttonIndex == 0)
+            {
+                _converse.api.rooms.open(fromJid);
+                chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+            }
+
+        }, fromJid);
+    };
 }));

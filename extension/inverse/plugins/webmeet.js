@@ -364,62 +364,54 @@
 
                     if (body)
                     {
-                        var pos = body.indexOf(baseUrl)
+                        var pos0 = body.indexOf("/webinar/")
+                        var pos1 = body.indexOf("/jitsimeet/index.html?room=")
+                        var pos2 = body.indexOf("/h5p/");
+                        var pos3 = body.indexOf("https://");
 
-                        if (pos > -1)
+                        if ( pos0 > -1 && pos3 > -1)
                         {
-                            var pos0 = body.indexOf("/webinar/")
-                            var pos1 = body.indexOf("/jitsimeet/index.html?room=")
-                            var pos2 = body.indexOf("/h5p/");
-                            var pos3 = body.indexOf("https://");
+                            console.debug("webinar invite", body);
+                            var link_room = body.substring(pos0 + 9);
+                            var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webinar_invitation");
+                            var link_content = '<a id="' + link_room + '" href="#">' + link_label + ' webinar</a>';
+                            setupContentHandler(this, link_room, link_content, handleWebinarAttendee, link_room);
+                        }
+                        else
 
-                            if ( pos0 > -1 && pos3 > -1)
-                            {
-                                console.debug("webinar invite", body);
-                                var link_room = body.substring(pos0 + 9);
-                                var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webinar_invitation");
-                                var link_content = '<a id="' + link_room + '" href="#">' + link_label + ' webinar</a>';
-                                setupContentHandler(this, link_room, link_content, handleWebinarAttendee, link_room);
-                            }
-                            else
+                        if (bgWindow && body.indexOf(bgWindow.pade.ofmeetUrl) > -1 && pos3 > -1)
+                        {
+                            var pos4 = body.indexOf(bgWindow.pade.ofmeetUrl);
 
-                            if (bgWindow && body.indexOf(bgWindow.pade.ofmeetUrl) > -1 && pos3 > -1)
-                            {
-                                var pos4 = body.indexOf(bgWindow.pade.ofmeetUrl);
+                            var link_room = body.substring(pos4 + bgWindow.pade.ofmeetUrl.length);
+                            var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
+                            var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
+                            setupContentHandler(this, link_room, link_content, doAVConference, link_room);
+                        }
+                        else
 
-                                var link_room = body.substring(pos4 + bgWindow.pade.ofmeetUrl.length);
-                                var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
-                                var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
-                                setupContentHandler(this, link_room, link_content, doAVConference, link_room);
-                            }
-                            else
+                        if ( pos1 > -1 && pos3 > -1)
+                        {
+                            console.debug("audio/video invite", body);
+                            var link_room = body.substring(pos1 + 27);
+                            var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
+                            var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
+                            setupContentHandler(this, link_room, link_content, doAVConference, link_room);
 
-                            if ( pos1 > -1 && pos3 > -1)
-                            {
-                                console.debug("audio/video invite", body);
-                                var link_room = body.substring(pos1 + 27);
-                                var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
-                                var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
-                                setupContentHandler(this, link_room, link_content, doAVConference, link_room);
+                        }
+                        else
 
-                            }
-                            else
-
-                            if ( pos2 > -1)
-                            {
-                                console.debug("h5p content", this.model.attributes);
-                                var path = body.substring(pos2 + 11);
-                                var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
-                                var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
-                                setupContentHandler(this, null, h5p_content);
-                            }
-                            else {
-                                renderSuperChatMessage(this, arguments);
-                            }
-                        } else {
+                        if ( pos2 > -1)
+                        {
+                            console.debug("h5p content", this.model.attributes);
+                            var path = body.substring(pos2 + 11);
+                            var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
+                            var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
+                            setupContentHandler(this, null, h5p_content);
+                        }
+                        else {
                             renderSuperChatMessage(this, arguments);
                         }
-
                     } else {
                         renderSuperChatMessage(this, arguments);
                     }
@@ -501,10 +493,10 @@
                                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('focus', function(){
-                            console.debug("paste - focus", id);
+                            //console.debug("paste - focus", id);
 
                         }).on('blur', function(){
-                            console.debug("paste - blur", id);
+                            //console.debug("paste - blur", id);
                         });
                     }
 

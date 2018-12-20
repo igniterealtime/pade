@@ -79,6 +79,19 @@ window.addEventListener("load", function()
         }
     });
 
+    chrome.idle.onStateChanged.addListener(function(idleState)
+    {
+        console.log("chrome.idle.onStateChanged", idleState);
+
+        var pres = $pres();
+
+        if (idleState == "locked") pres.c("show").t("xa").up().c("status").t(getSetting("idleLockedMessage", "good bye"));
+        if (idleState == "idle") pres.c("show").t("away").up().c("status").t(getSetting("idleMessage", "see you later"));
+        if (idleState == "active") pres.c("status").t(getSetting("idleActiveMessage", "hello"));
+
+        pade.connection.send(pres);
+    })
+
     chrome.runtime.onStartup.addListener(function()
     {
         console.log("onStartup");
@@ -497,6 +510,8 @@ window.addEventListener("load", function()
     pade.username = getSetting("username", null);
     pade.password = getSetting("password", null);
     pade.avatar = getSetting("avatar", null);
+
+    chrome.idle.setDetectionInterval(getSetting("idleTimeout", 300));
 
     checkForChatAPI();
 
@@ -1596,6 +1611,7 @@ function addHandlers()
             var pos0 = body.indexOf("/webinar/")
             var pos1 = body.indexOf("/jitsimeet/index.html?room=")
             var pos2 = body.indexOf("https://" + pade.server);
+            var pos3 = body.indexOf(pade.ofmeetUrl);
 
             console.debug("message handler body", body, offerer, pade.minimised);
 
@@ -1616,21 +1632,21 @@ function addHandlers()
             }
             else
 
-            if (pos2 > -1 && pade.ofmeetUrl.indexOf("https://" + pade.server) > -1)
-            {
-                var pos3 = body.indexOf(pade.ofmeetUrl);
-                reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("ofmeetInvitation", 'Please join meeting at');
-                room = body.substring(pos3 + pade.ofmeetUrl.length);
-                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
-            }
-            else
-
             if (pos1 > -1 && pos2 > -1 )
             {
                 reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("ofmeetInvitation", 'Please join meeting at');
                 room = body.substring(pos1 + 27);
                 handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
             }
+            else
+
+            if (pos3 > -1)
+            {
+                reason = pos3 > 0 ? body.substring(0, pos3) : getSetting("ofmeetInvitation", 'Please join meeting at');
+                room = body.substring(pos3 + pade.ofmeetUrl.length);
+                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
+            }
+
             else
 
             if (!pade.chatWindow || getSetting("enableInverse", false) == false)
@@ -3124,7 +3140,7 @@ function doPadeConnect()
 
     pade.connection = getConnection(connUrl);
 
-    pade.connection.connect(pade.username + "@" + pade.domain + "/" + chrome.i18n.getMessage('manifest_shortExtensionName') + "-" + chrome.runtime.getManifest().version + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
+    pade.connection.connect(pade.username + "@" + pade.domain + "/" + chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
     {
         console.debug("pade.connection ===>", status);
 
@@ -3385,6 +3401,7 @@ function processConvSearch(conversations, keyword)
         var conversation = conversations[i];
 
         var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[0].split("/")[0];
+        if (jid == Strophe.getBareJidFromJid(pade.connection.jid)) jid = conversation.participantList[1].split("/")[0]
         var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
         var suffix = "</a>";
 
@@ -3513,7 +3530,7 @@ function executeMeetingPlanner()
 
 function checkForChatAPI()
 {
-    searchConversations("__DUMMY__", function(html, conversations, error)
+    if (pade.server) searchConversations("__DUMMY__", function(html, conversations, error)
     {
         pade.chatAPIAvailable = !error;
     });
@@ -3523,7 +3540,7 @@ function setupWorkgroup()
 {
     console.debug("setupWorkgroup", pade.activeWorkgroup);
 
-    pade.connection.send($pres()/*.c("show").t("chat").up().c("priority").t("9")*/);
+    pade.connection.send($pres());
     pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
 
     stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})

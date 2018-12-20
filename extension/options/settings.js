@@ -406,8 +406,6 @@ window.addEvent("domready", function () {
                         e.stopPropagation();
                         var meeting = meetings[e.target.id.substring(7)];
 
-                        background.openVideoWindow(meeting.room);
-
                         for (var j=0; j<meeting.inviteList.length; j++)
                         {
                             // make sure we have a jid entry and not blank line
@@ -417,6 +415,8 @@ window.addEvent("domready", function () {
                                 background.inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
                             }
                         }
+
+                        background.openVideoWindow(meeting.room);
 
                     }, false);
 
@@ -1029,6 +1029,7 @@ function doDefaults()
     setDefaultSetting("enableSip", false);
     setDefaultSetting("enableBlog", false);
     setDefaultSetting("showSharedCursor", true);
+    setDefaultSetting("idleTimeout", 300);
 
     // config
     setDefaultSetting("startBitrate", 800);

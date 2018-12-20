@@ -1,9 +1,5 @@
-var __server = getSetting("server");
 var __domain = getSetting("domain");
-var __displayname = getSetting("displayname");
-var __username = getSetting("username");
-var __password = getSetting("password");
-
+var __server = getSetting("server");
 var connUrl = "https://" + __server + "/http-bind/";
 
 if (getSetting("useWebsocket", false))
@@ -11,6 +7,18 @@ if (getSetting("useWebsocket", false))
     connUrl = "wss://" + __server + "/ws/";
 }
 
+var __baseUrl = getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
+
+if (__baseUrl.indexOf("https://" + __server) == -1)
+{
+    __server = __baseUrl.split("/")[2];
+    __domain = __server.split(":")[0];
+    connUrl = __baseUrl + "/http-bind";
+}
+
+var __displayname = getSetting("displayname");
+var __username = getSetting("username");
+var __password = getSetting("password");
 
 var config = {
 

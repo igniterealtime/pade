@@ -34,12 +34,13 @@ define("elements/wb-stream-preview.js", [], function() {
                 key: "ready",
                 value: function() {
                     this.$.video.volume = 0
+                    console.log("stream ready", this.$.video);
                 }
             }, {
                 key: "_onCanplay",
                 value: function() {
                     var e = this.$.video;
-                    console.log("resolution: " + e.videoWidth + "x" + e.videoHeight)
+                    console.log("resolution: " + e.videoWidth + "x" + e.videoHeight, e)
                 }
             }, {
                 key: "_streamChanged",
@@ -48,6 +49,7 @@ define("elements/wb-stream-preview.js", [], function() {
                     this.$.video.srcObject = e;
                     this.$.video.volume = 1;
                     this.$.video.play();
+                    //this.$.video.muted = true;
                     window.sipElement = this.$.video;
 
                     // if we loose focus terminate video conference

@@ -89,7 +89,7 @@
                     var view = this;
                     var id = this.model.get("box_id");
 
-                    addToolbarItem(view, id, "pade-directory-" + id, '<a title="Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
+                    addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
                     directoryAvailable = true;
 
                     setTimeout(function()
@@ -220,7 +220,7 @@
             if (!user.email) user.email = "";
             if (!user.caller_id_number) user.caller_id_number = "";
 
-            html = html + "<tr><td><a class='plugin-directory-jid' title='" + user.name + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><a class='plugin-directory-phone' name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td></tr>";
+            html = html + "<tr><td><a class='plugin-directory-jid' title='click here to open chat with " + user.name + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><a class='plugin-directory-phone' name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td></tr>";
         }
         html = html + "</table>"
 

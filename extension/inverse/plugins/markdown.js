@@ -31,12 +31,11 @@
         'overrides': {
             'onConnected': function () {
 
-                setTimeout(function()
+                Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
                 {
                     ready = true;
                     console.log("markdown plugin is ready");
-
-                }, 10000);
+                })
 
                 _converse.__super__.onConnected.apply(this, arguments);
             },
@@ -160,7 +159,7 @@
         var views = _converse.chatboxviews.model.models;
         var view = null;
 
-            console.debug("getSelectedChatBox", views[i]);
+        console.debug("getSelectedChatBox", views[i]);
 
         for (var i=0; i<views.length; i++)
         {
