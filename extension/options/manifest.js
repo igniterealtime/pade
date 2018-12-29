@@ -872,6 +872,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "enableInfoPanel",
+            "type": "checkbox",
+            "label": i18n.get("Enable Information Panel")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "converseTheme",
             "type": "popupButton",
             "label": i18n.get("UI Theme"),

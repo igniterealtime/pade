@@ -21,6 +21,7 @@
         $build = converse.env.$build,
         b64_sha1 = converse.env.b64_sha1,
         _ = converse.env._,
+        Backbone = converse.env.Backbone,
         moment = converse.env.moment;
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
@@ -31,6 +32,8 @@
      var pasteInputs = {};
      var videoRecorder = null;
      var userProfiles = {};
+     var PreviewDialog = null;
+     var previewDialog = null;
 
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -522,6 +525,11 @@
                     html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
                     addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
 
+                    if (getSetting("enableInfoPanel", false))
+                    {
+                        addToolbarItem(view, id, "webmeet-info-" + id, '<a class="fas fa-info-circle" title="Information"></a>');
+                    }
+
                     if (bgWindow)
                     {
                         html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
@@ -559,8 +567,45 @@
                             }
                         }
 
-                        var exitButton = document.getElementById("webmeet-exit-webchat-" + id);
-                        if (exitButton) exitButton.addEventListener('click', doExit, false);
+                        // add info panel for chatrooms
+
+                        var occupants = view.el.querySelector('.occupants');
+                        var infoButton = document.getElementById("webmeet-info-" + id);
+
+                        if (occupants && infoButton)
+                        {
+                            var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
+                            infoElement.style.display = "none";
+
+                            infoButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                var chat_area = view.el.querySelector('.chat-area');
+
+                                if (infoElement.style.display == "none")
+                                {
+                                    infoElement.style.display = "";
+                                    removeClass('full', chat_area);
+                                    removeClass('col-12', chat_area);
+                                    addClass('col-md-9', chat_area);
+                                    addClass('col-8', chat_area);
+                                    addClass('hidden', view.el.querySelector('.occupants'));
+
+                                    var query = "jid=" + jid + "&type=" + type + "&id=" + id
+                                    infoElement.innerHTML = '<iframe src="plugins/info/index.html?' + query + '"></iframe>'
+
+                                } else {
+                                    infoElement.style.display = "none"
+                                    removeClass('col-md-9', chat_area);
+                                    removeClass('col-8', chat_area);
+                                    addClass('full', chat_area);
+                                    addClass('col-12', chat_area);
+                                    hideElement(view.el.querySelector('.occupants'));
+                                }
+
+                            }, false);
+                        }
 
                         var h5pButton = document.getElementById("h5p-" + id);
 
@@ -1069,11 +1114,35 @@
         }
     }
 
-    var newElement = function(el, id, html)
+    var hideElement = function (el)
+    {
+        return addClass("hidden", el);
+    }
+
+    var addClass = function (className, el)
+    {
+      if (el instanceof Element)
+      {
+        el.classList.add(className);
+      }
+      return el;
+    }
+
+    var removeClass = function (className, el)
+    {
+      if (el instanceof Element)
+      {
+        el.classList.remove(className);
+      }
+      return el;
+    }
+
+    var newElement = function(el, id, html, className)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;
         if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
         document.body.appendChild(ele);
         return ele;
     }
