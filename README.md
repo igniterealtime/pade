@@ -1,27 +1,23 @@
-P&agrave;d&eacute;
-=====
+Pàdé is the Yoruba word for "Meet". It is a unified communications client for Openfire Meetings and uses the following front end web applications.
 
-[P&agrave;d&eacute;] is the Yoruba word for "Meet". P&agrave;d&eacute; (the "p" is pronounced explosively) is the renamed [Openfire Meetings] Chrome Extension. 
+- [Jitsi Meet](https://jitsi.org/jitsi-meet/) for SFU-based WebRTC audio/video conferencing, screen share and real-time application collaboration with Jitsi Video-bridge
+- [ctxPhone](https://collecttix.github.io/ctxSip/) for SIP based telephony with FreeSWITCH
+- [Converse.js](https://conversejs.org/) for XMPP chat/groupchat with Openfire
 
-<img src="https://discourse.igniterealtime.org/uploads/default/optimized/2X/2/22d1dda0a03402cf6cc8b020c9cc8752b263ac44_1_690x407.jpeg" />
-It is a unified communications client for Openfire Meetings and uses the following front end web applications.
+All web application run from within a browser extension in native application windows and combine together to provide:
 
-* [Jitsi Meet](https://jitsi.org/jitsi-meet/) for audio/video conferencing, screen share and real-time application collaboration (WebRTC)
-* [ctxPhone](https://collecttix.github.io/ctxSip/) for SIP based telephony with FreeSWITCH
-* [Converse.js](https://conversejs.org/) for XMPP chat client (both full page dedicated group chat and one-on-on pop-up chat)
-
-All applications run from within a Chrome extension and together provide:
-
-* Modern HTML5 user interface;
-* Openfire user authentication;
-* Chat, Audio and Video conferencing (WebRTC);
-* Telephone (SIP) conferencing;
-* Online Meeting/Conference hosting and planner with a calendar or CRON trigger;
-* Screen sharing;
-* Co-browsing;
-* Application sharing (PDF presentation, realtime collaborative scrum board, drawing and shared WOOT text editor)
-* Simple API for making any web page collaborative.
-* Fastpath agent support with audio and video conferencing.
+- Modern HTML5 user interface;
+- Single user authentication and sign-on; Windows SSO, Credential Management API and Smart ID support
+- Modern chat user experience; chats, group chats and message broadcasts with private chat responses.
+- Message Styling with markdown plain text
+- Interactive content; mentions, hashtags, forms and H5P/xAPI support
+- Audio Video conferencing (WebRTC);
+- Webinars; Single talker and multiple listeners
+- Telephone (SIP soft-phone) and MCU-based audio/video conferencing;
+- Online Meeting/Conference planner with a calendar or CRON trigger;
+- Screen sharing, Co-browsing and Application sharing/real-time collaboration
+- Agent support for live conversations with web site visitors using chat, audio and video conferencing.
+- Support hardware devices like MIDI touch-pads and HID USB touch devices like the Elgato stream deck
 
 To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en)
 
