@@ -62570,7 +62570,7 @@ strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('FORWARD', 'urn:
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('HINTS', 'urn:xmpp:hints');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('HTTPUPLOAD', 'urn:xmpp:http:upload:0');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('IDLE', 'urn:xmpp:idle:1');
-strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('MAM', 'urn:xmpp:mam:1');                   // BAO
+strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('MAM', 'urn:xmpp:mam:2');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('NICK', 'http://jabber.org/protocol/nick');
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('OMEMO', "eu.siacs.conversations.axolotl");
 strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].addNamespace('OUTOFBAND', 'jabber:x:oob');
