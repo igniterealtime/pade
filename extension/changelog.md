@@ -1,5 +1,88 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>0.9.0</b> -- <i>January 04, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/conversejs/community-plugins/issues/3">Fixed #3:  Media Content Summary</a></li>
+</ul>
+
+<p><b>0.8.12</b> -- <i>December 20, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/109">Fixed #109: Allow the Base URL of Openfire Meetings to point at a difference service like meet.jit.si</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/108">Fixed #108: Allow Pade meeting invitations to be used for chatroom invitations</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/104">Fixed #104: Auto-Presence from browser.idle events</a></li>
+    <li>Fixed issue with conversation search hyper-link</li>
+    <li>Chat notifications are sent from "message" event and not when message is rendered</li>
+</ul>
+
+<p><b>0.8.11</b> -- <i>December 17, 2018</i></p>
+<ul>
+    <li>Added support for simplified interactive content using HTML forms generated from plain text markdown-forms. See <a href="https://github.com/igniterealtime/Pade/issues/79">Issue #79</a></i>
+    <li>Added people directory search plugin to Converse</li>
+    <li>Fixed issue with Converse presence when workgroup is joined</li>
+</ul>
+
+<p><b>0.8.10</b> -- <i>December 13, 2018</i></p>
+<ul>
+    <li>Fixed issue with Openfire Meetings 'null' URL</li>
+</ul>
+
+<p><b>0.8.9</b> -- <i>December 12, 2018</i></p>
+<ul>
+    <li>Fixed typo in default CSS theme/skin name</li>
+</ul>
+
+<p><b>0.8.8</b> -- <i>December 12, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/103">Fixed #103: Add support for UI themes/skins to Converse</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/102">Fixed #102: Add support for voice messages using mp3 recordings in chats and groupchats</a></li>
+    <li>Make improvements to Workgroups (Fastpath)</li>
+    <li>Revert MAM back to ver 1 as Openfire support for ver 2 is unconfirmed</li>
+    <li>Added support for PDF download for conversation search. PDF file is generated server-side and requires Chat API plugin.</li>
+</ul>
+
+<p><b>0.8.7</b> -- <i>December 08, 2018</i></p>
+<ul>
+    <li>Added a new preference to control notifications of chat room mentions</li>
+    <li>Added support for call control of any designinated line/extension using FreeSWITCH</li>
+    <li>Added support for right click of selected text on any web page to make call, join meeting, start chat or enter chat room.</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/100">Fixed #100: Implement canned responses</a></li>
+
+</ul>
+
+<p><b>0.8.6</b> -- <i>December 03, 2018</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/97">Fixed #97: Display confirmation dialog with preview before pasting and uploading clipboard directly to chat</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/94">Fixed #94: When Openfire Meetings folder is changed from ofmeet to ROOT or anything else, Jitsi_meet stops working</a></li>
+</ul>
+
+<p><b>0.8.5</b> -- <i>November 29, 2018</i></p>
+<ul>
+    <li>Open a chat window with the JID of the room occupant when their avatar/image is clicked.</li>
+    <li>Display a sticky Pade notification when nickname is mentioned in groupchat.</li>
+    <li>Auto-accept conference invitation after accepting Fastpath question.</li>
+    <li>Support Candy Chat color codes in chat conversations</li>
+    <li>Replaced bitmap accept/reject icons with vector (svg) equivalents.</li>
+    <li>Fixed issue with hyperlinks and markdown</li>
+</ul>
+
+<p><b>0.8.4</b> -- <i>November 26, 2018</i></p>
+<ul>
+    <li>Converse now only supports MAM version 2 as Openfire monitoring plugin upgraded.</li>
+    <li>Fixed issue with self avatar.</li>
+</ul>
+
+<p><b>0.8.3</b> -- <i>November 23, 2018</i></p>
+<ul>
+    <li>Upgraded ConverseJs to 4.0.5</li>
+    <li>Added support for E-Residency smart-card auto registration and auto sign-in</li>
+    <li><a href="https://github.com/conversejs/converse.js/issues/1349">Partially implement XEP-0392: Consistent Color Generation</a></li>
+</ul>
+
+<p><b>0.8.2</b> -- <i>November 12, 2018</i></p>
+<ul>
+    <li>Added support for the SMTP/XMPP Email Gateway in the ofchat plugin</li>
+</ul>
+
 <p><b>0.8.0</b> -- <i>November 6, 2018</i></p>
 <ul>
     <li><a href="https://github.com/igniterealtime/Pade/issues/66">Added auto-config to Single Sign On (SSO) for Windows Enterprise Users</a></li>
