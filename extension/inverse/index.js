@@ -108,7 +108,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "directory", "invite", "options", "webmeet", "pade", "vmsg"];
+        var whitelistedPlugins = ["info", "search", "directory", "invite", "options", "webmeet", "pade", "vmsg"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("useMarkdown", false))
@@ -169,7 +169,7 @@ window.addEventListener("load", function()
 
 window.addEventListener('message', function (event)
 {
-    //console.log("inverse addListener message", event.data);
+    console.debug("inverse addListener message", event.data);
 
     if (event.data && event.data.action)
     {
@@ -241,7 +241,7 @@ function openGroupChat(jid, label, nick, properties)
 
         _inverse.api.rooms.open(jid, properties);
 
-        console.log("openGroupChat - subject", properties.question);
+        console.debug("openGroupChat - subject", properties.question);
 
         if (properties.question)
         {
@@ -262,7 +262,7 @@ function openGroupChat(jid, label, nick, properties)
 function getSetting(name, defaultValue)
 {
     var localStorage = window.localStorage
-    //console.log("getSetting", name, defaultValue, localStorage["store.settings." + name]);
+    console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
 
     if (window.pade)
     {
@@ -286,7 +286,7 @@ function getSetting(name, defaultValue)
 
 function setSetting(name, value)
 {
-    //console.log("setSetting", name, value);
+    console.debug("setSetting", name, value);
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
@@ -298,7 +298,17 @@ function getPassword(password, localStorage)
     localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
     return password;
 }
+
 var avatars = {}
+
+if (chrome.storage)
+{
+    chrome.storage.local.get('avatars', function(data) {
+      if (data && data.avatars) avatars = data.avatars;
+      console.debug('chrome.storage get', avatars);
+    });
+}
+
 
 function createAvatar(nickname, width, height, font)
 {
@@ -343,6 +353,13 @@ function createAvatar(nickname, width, height, font)
     }
 
     avatars[nickname] = canvas.toDataURL();
+
+    if (chrome.storage)
+    {
+        chrome.storage.local.set({avatars: avatars}, function() {
+          console.debug('chrome.storage is set for ' + nickname, avatars);
+        });
+    }
     return avatars[nickname];
 }
 

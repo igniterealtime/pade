@@ -139,26 +139,6 @@
     font-size: 100%;    
 }
 
-/* webmeet */
-
-.plugin-infobox {
-    border-left: 0.1em solid #707070 !important;
-    width: 100%;
-}
-
-.plugin-infobox iframe {
-    top:0px; 
-    left:0px; 
-    bottom:0px; 
-    right:0px; 
-    width:100%; 
-    height:100%; 
-    border:none; 
-    margin:0; 
-    padding:0; 
-    overflow:hidden;
-}
-
 /* candy colors */
 
 #conversejs span.colored {

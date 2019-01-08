@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}}
 var callbacks = {}
 
 // uPort
@@ -81,7 +81,7 @@ window.addEventListener("load", function()
 
     chrome.idle.onStateChanged.addListener(function(idleState)
     {
-        console.log("chrome.idle.onStateChanged", idleState);
+        console.debug("chrome.idle.onStateChanged", idleState);
 
         var pres = $pres();
 
@@ -1453,50 +1453,71 @@ function addHandlers()
         if ($(presence).find('agent-status').length > 0 || $(presence).find('notify-queue-details').length > 0 || $(presence).find('notify-queue').length > 0)
         {
             var from = $(presence).attr('from');
-            var nick = Strophe.getNodeFromJid(from);
-
-            var maxChats, free = true;
-            var workGroup = Strophe.getNodeFromJid(from);
+            var maxChats;
 
             $(presence).find('agent-status').each(function()
             {
-                workGroup = Strophe.getNodeFromJid($(this).attr('jid'));
+                var free = true;
+
+                var workGroup = Strophe.getNodeFromJid($(this).attr('jid'));
+                if (!pade.fastpath[workGroup]) pade.fastpath[workGroup] = {conversations: {}};
 
                 $(presence).find('max-chats').each(function()
                 {
-                    maxChats = $(this).text();
+                    pade.fastpath[workGroup].maxChats = $(this).text();
+                });
+
+                var agent = Strophe.getNodeFromJid(from);
+                if (!pade.fastpath[workGroup].conversations[agent]) pade.fastpath[workGroup].conversations[agent] = {};
+
+                pade.fastpath[workGroup].conversations[agent].agent = agent;
+
+                $(presence).find('show').each(function()
+                {
+                    pade.fastpath[workGroup].conversations[agent].show = $(this).text();
                 });
 
                 $(presence).find('chat').each(function()
                 {
                     free = false;
 
-                    var sessionID = $(this).attr('sessionID');
-                    var sessionJid = sessionID + "@conference." + pade.connection.domain;
-                    var sessionHash = (sessionJid);
+                    pade.fastpath[workGroup].conversations[agent].sessionID = $(this).attr('sessionID');
+                    pade.fastpath[workGroup].conversations[agent].sessionJid = pade.fastpath[workGroup].conversations[agent].sessionID + "@conference." + pade.connection.domain;
 
-                    var userID = Strophe.getNodeFromJid($(this).attr('userID'));
-                    var startTime = $(this).attr('startTime');
-                    var question = $(this).attr('question');
-                    var username = $(this).attr('username');
-                    var email = $(this).attr('email');
-                    var text = userID + " talking with " + username + " about " + question;
+                    pade.fastpath[workGroup].conversations[agent].userID = Strophe.getNodeFromJid($(this).attr('userID'));
+                    pade.fastpath[workGroup].conversations[agent].startTime = $(this).attr('startTime');
+                    pade.fastpath[workGroup].conversations[agent].question = $(this).attr('question');
+                    pade.fastpath[workGroup].conversations[agent].username = $(this).attr('username');
+                    pade.fastpath[workGroup].conversations[agent].email = $(this).attr('email');
 
-                    console.debug('agent-status message  ' + text + ' in ' + workGroup + ' using ' + sessionJid);
+                    var text = pade.fastpath[workGroup].conversations[agent].userID + " talking with " + pade.fastpath[workGroup].conversations[agent].username + " about " + pade.fastpath[workGroup].conversations[agent].question;
+
+                    console.debug('agent-status message', pade.fastpath[workGroup].conversations[agent]);
 
                     notifyText(workGroup, text, null, [{title: "Join", iconUrl: chrome.runtime.getURL("check-solid.svg")},{title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
                     {
                         if (buttonIndex == 0)
                         {
-                            openInverseGroupChatWindow(sessionJid);
+                            openInverseGroupChatWindow(pade.fastpath[workGroup].conversations[agent].sessionJid);
                         }
                     }, workGroup);
                 });
+
+                console.log("agent-status", workGroup, agent, pade.fastpath[workGroup]);
+
+                if (free)
+                {
+                    console.log("agent-status delete", workGroup, agent, pade.fastpath[workGroup]);
+
+                    clearNotification(workGroup);
+                    delete pade.fastpath[workGroup].conversations[agent];
+                }
             });
 
             $(presence).find('notify-queue-details').each(function()
             {
-                var free = true;
+                var workGroup = Strophe.getNodeFromJid(from);
+                if (!pade.fastpath[workGroup]) pade.fastpath[workGroup] = {conversations: {}};
 
                 $(presence).find('user').each(function()
                 {
@@ -1505,23 +1526,22 @@ function addHandlers()
 
                     $(this).find('position').each(function()
                     {
-                        position = $(this).text() == "0" ? "first": jQuery(this).text();
+                        pade.fastpath[workGroup].position = $(this).text() == "0" ? "first": jQuery(this).text();
                     });
 
                     $(this).find('time').each(function()
                     {
-                        time = $(this).text();
+                        pade.fastpath[workGroup].time = $(this).text();
                     });
 
                     $(this).find('join-time').each(function()
                     {
-                        joinTime = $(this).text();
+                        pade.fastpath[workGroup].joinTime = $(this).text();
                     });
 
-                    if (position && time && joinTime)
+                    if (pade.fastpath[workGroup].position && pade.fastpath[workGroup].time && pade.fastpath[workGroup].joinTime)
                     {
-                        free = false;
-                        var text = "A caller has been waiting for " + time + " secconds";
+                        var text = "A caller has been waiting for " + pade.fastpath[workGroup].time + " secconds";
 
                         console.debug('notify-queue-details message  ' + text);
 
@@ -1531,37 +1551,38 @@ function addHandlers()
                         }
                     }
                 });
-
+                console.log("notify-queue-details", workGroup, pade.fastpath[workGroup]);
             });
 
             $(presence).find('notify-queue').each(function()
             {
-                var free = true;
+                var workGroup = Strophe.getNodeFromJid(from);
+                if (!pade.fastpath[workGroup]) pade.fastpath[workGroup] = {conversations: {}};
+
                 var count, oldest, waitTime, status
 
                 $(presence).find('count').each(function()
                 {
-                    count = jQuery(this).text();
+                    pade.fastpath[workGroup].count = jQuery(this).text();
                 });
 
                 $(presence).find('oldest').each(function()
                 {
-                    oldest = jQuery(this).text();
+                    pade.fastpath[workGroup].oldest = jQuery(this).text();
                 });
 
                 $(presence).find('time').each(function()
                 {
-                    waitTime = jQuery(this).text();
+                    pade.fastpath[workGroup].waitTime = jQuery(this).text();
                 });
 
                 $(presence).find('status').each(function()
                 {
-                    status = jQuery(this).text();
+                    pade.fastpath[workGroup].status = jQuery(this).text();
                 });
 
-                if (count && oldest && waitTime && status)
+                if (pade.fastpath[workGroup].count && pade.fastpath[workGroup].oldest && pade.fastpath[workGroup].waitTime && pade.fastpath[workGroup].status)
                 {
-                    free = false;
                     var text = "There are " + count + " caller(s) waiting for as long as " + waitTime + " seconds";
 
                     console.debug('notify-queue message ' + text);
@@ -1571,9 +1592,9 @@ function addHandlers()
                         notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
                     }
                 }
-            });
 
-            if (free) clearNotification(workGroup);
+                console.log("notify-queue presence", workGroup, pade.fastpath[workGroup]);
+            });
         }
 
 

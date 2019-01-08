@@ -307,6 +307,12 @@
                 {
                     //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
 
+                    var source = this.model.get("type") == "groupchat" ? this.model.get("from") : this.model.get("jid");
+                    var box_jid = Strophe.getBareJidFromJid(source);
+                    var box = _converse.chatboxes.get(box_jid);
+                    var selectedBox = false;
+                    if (box) selectedBox = !box.get('hidden');
+
                     // intercepting email IM
 
                     if (!this.model.get("fullname") && this.model.get("from").indexOf("\\40") > -1)
@@ -354,11 +360,11 @@
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                             }
                             else
-                                renderSuperChatMessage(this, arguments);
+                                renderSuperChatMessage(this, arguments, selectedBox);
                         }
                         else {
                             if (nonCollab)
-                                renderSuperChatMessage(this, arguments);
+                                renderSuperChatMessage(this, arguments, selectedBox);
                             else
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                         }
@@ -413,10 +419,10 @@
                             setupContentHandler(this, null, h5p_content);
                         }
                         else {
-                            renderSuperChatMessage(this, arguments);
+                            renderSuperChatMessage(this, arguments, selectedBox);
                         }
                     } else {
-                        renderSuperChatMessage(this, arguments);
+                        renderSuperChatMessage(this, arguments, selectedBox);
                     }
                 }
             },
@@ -505,29 +511,24 @@
 
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    // h5p content button
-
-                    if (bgWindow && bgWindow.pade.activeH5p)
-                    {
-                        var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                        addToolbarItem(view, id, "h5p-" + id, html);
-                    }
-
-                    if (bgWindow && bgWindow.pade.activeUrl)
-                    {
-                        var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
-                        addToolbarItem(view, id, "oob-" + id, html);
-                    }
-
                     var html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
                     addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
 
-                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
-                    addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
-
-                    if (getSetting("enableInfoPanel", false))
+                    if (bgWindow)
                     {
-                        addToolbarItem(view, id, "webmeet-info-" + id, '<a class="fas fa-info-circle" title="Information"></a>');
+                        // h5p content button
+
+                        if (bgWindow.pade.activeH5p)
+                        {
+                            var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
+                            addToolbarItem(view, id, "h5p-" + id, html);
+                        }
+
+                        if (bgWindow.pade.activeUrl)
+                        {
+                            var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
+                            addToolbarItem(view, id, "oob-" + id, html);
+                        }
                     }
 
                     if (bgWindow)
@@ -548,6 +549,9 @@
                         }
                     }
 
+                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
+                    addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
+
                     setTimeout(function()
                     {
                         // custom profile
@@ -565,46 +569,6 @@
                                     }
                                 });
                             }
-                        }
-
-                        // add info panel for chatrooms
-
-                        var occupants = view.el.querySelector('.occupants');
-                        var infoButton = document.getElementById("webmeet-info-" + id);
-
-                        if (occupants && infoButton)
-                        {
-                            var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
-                            infoElement.style.display = "none";
-
-                            infoButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                var chat_area = view.el.querySelector('.chat-area');
-
-                                if (infoElement.style.display == "none")
-                                {
-                                    infoElement.style.display = "";
-                                    removeClass('full', chat_area);
-                                    removeClass('col-12', chat_area);
-                                    addClass('col-md-9', chat_area);
-                                    addClass('col-8', chat_area);
-                                    addClass('hidden', view.el.querySelector('.occupants'));
-
-                                    var query = "jid=" + jid + "&type=" + type + "&id=" + id
-                                    infoElement.innerHTML = '<iframe src="plugins/info/index.html?' + query + '"></iframe>'
-
-                                } else {
-                                    infoElement.style.display = "none"
-                                    removeClass('col-md-9', chat_area);
-                                    removeClass('col-8', chat_area);
-                                    addClass('full', chat_area);
-                                    addClass('col-12', chat_area);
-                                    hideElement(view.el.querySelector('.occupants'));
-                                }
-
-                            }, false);
                         }
 
                         var h5pButton = document.getElementById("h5p-" + id);
@@ -759,9 +723,24 @@
         }
     });
 
-    var renderSuperChatMessage = function(chat, arguments)
+    var renderSuperChatMessage = function(chat, arguments, selectedBox)
     {
         chat.__super__.renderChatMessage.apply(chat, arguments);
+
+        // time ago
+        setTimeout(function()
+        {
+            var moment_time = moment(chat.model.get('time'));
+            var pretty_time = moment_time.format(_converse.time_format);
+
+            var timeEle = chat.el.querySelector('.chat-msg__time');
+            var timeAgo = moment_time.fromNow(true);
+
+            if (timeEle && timeEle.innerHTML)
+            {
+                timeEle.innerHTML = pretty_time + " (" + timeAgo + ")";
+            }
+        });
     }
 
     var setupContentHandler = function(chat, avRoom, content, callback, chatId, title)
@@ -1021,12 +1000,12 @@
 
     var handleAudioStream = function handleStream (stream, audioStream, view)
     {
-        console.info("handleAudioStream - seperate", stream, audioStream);
+        console.debug("handleAudioStream - seperate", stream, audioStream);
 
         stream.addTrack(audioStream.getAudioTracks()[0]);
         audioStream.removeTrack(audioStream.getAudioTracks()[0]);
 
-        console.info("handleAudioStream - merged", stream);
+        console.debug("handleAudioStream - merged", stream);
 
         var video = document.createElement('video');
         video.playsinline = true;
@@ -1042,7 +1021,7 @@
 
             videoRecorder.ondataavailable = function(e)
             {
-                console.info("handleStream - start", e);
+                console.debug("handleStream - start", e);
 
                 if (e.data.size > 0)
                 {
@@ -1053,7 +1032,7 @@
 
             videoRecorder.onstop = function(e)
             {
-                console.info("handleStream - stop", e);
+                console.debug("handleStream - stop", e);
 
                 stream.getTracks().forEach(track => track.stop());
 
@@ -1064,7 +1043,7 @@
             }
 
             videoRecorder.start();
-            console.info("handleStream", video, videoRecorder);
+            console.debug("handleStream", video, videoRecorder);
 
         }, 1000);
     }
@@ -1114,29 +1093,6 @@
         }
     }
 
-    var hideElement = function (el)
-    {
-        return addClass("hidden", el);
-    }
-
-    var addClass = function (className, el)
-    {
-      if (el instanceof Element)
-      {
-        el.classList.add(className);
-      }
-      return el;
-    }
-
-    var removeClass = function (className, el)
-    {
-      if (el instanceof Element)
-      {
-        el.classList.remove(className);
-      }
-      return el;
-    }
-
     var newElement = function(el, id, html, className)
     {
         var ele = document.createElement(el);
@@ -1159,4 +1115,5 @@
         }
         placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
     }
+
 }));
