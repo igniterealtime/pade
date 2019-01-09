@@ -123,62 +123,93 @@
 
     var createMylinks = function(jid, id)
     {
-        _converse.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("storage", {xmlns: "storage:bookmarks"}).tree(), function(resp)
+        if (bgWindow && (bgWindow.pade.activeH5p || bgWindow.pade.activeUrl))
         {
-            var urls = resp.querySelectorAll('url');
-            var count = document.getElementById(id + "-mylinks-count");
-            var detail = document.getElementById(id + "-mylinks-details");
-
-            if (bgWindow && detail && count)
+            _converse.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("storage", {xmlns: "storage:bookmarks"}).tree(), function(resp)
             {
-                var html = "";
+                var urls = resp.querySelectorAll('url');
+
+                var h5pCount = document.getElementById(id + "-h5p-count");
+                var h5pDetail = document.getElementById(id + "-h5p-details");
+                var pdfCount = document.getElementById(id + "-pdf-count");
+                var pdfDetail = document.getElementById(id + "-pdf-details");
+                var appsCount = document.getElementById(id + "-apps-count");
+                var appsDetail = document.getElementById(id + "-apps-details");
+
+                var h5pHtml = "", h5pKount = 0, pdfHtml = "", pdfKount = 0, appsHtml = "", appsKount = 0;
 
                 for (var i=0; i<urls.length; i++)
                 {
                     console.debug('createMylinks', urls[i]);
-                    var kount = 0;
 
                     if (urls[i].getAttribute("name") != "Video conferencing web client")
                     {
-                        kount++;
-                        var checked = bgWindow.pade.activeH5p == urls[i].getAttribute("url") || bgWindow.pade.activeUrl == urls[i].getAttribute("url") ? "checked" : "";
-                        html += '<input name="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+                        if (isH5PURL(urls[i].getAttribute("url")))
+                        {
+                            h5pKount++;
+                            var checked = bgWindow.pade.activeH5p == urls[i].getAttribute("url") ? "checked" : "";
+                            h5pHtml += '<input name="info_h5p_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+
+                        }
+                        else
+
+                        if (isPDFURL(urls[i].getAttribute("url")))
+                        {
+                            pdfKount++;
+                            var checked = bgWindow.pade.activeUrl == urls[i].getAttribute("url") ? "checked" : "";
+                            pdfHtml += '<input name="info_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+
+                        }
+                        else {
+                            appsKount++;
+                            var checked = bgWindow.pade.activeUrl == urls[i].getAttribute("url") ? "checked" : "";
+                            appsHtml += '<input name="info_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+                        }
                     }
                 }
 
-                count.innerHTML = kount;
+                if (h5pCount) h5pCount.innerHTML = h5pKount;
+                if (pdfCount) pdfCount.innerHTML = pdfKount;
+                if (appsCount) appsCount.innerHTML = appsKount;
 
-                var element = newElement('div', null, html);
+                var htmlArray = [{html: h5pHtml, ele: h5pDetail}, {html: pdfHtml, ele: pdfDetail}, {html: appsHtml, ele: appsDetail}];
 
-                element.addEventListener('click', function(evt)
+                for (var i = 0; i < htmlArray.length; i++)
                 {
-                    evt.stopPropagation();
-
-                    var activeUrls = document.getElementsByName("info_active_url");
-
-                    for (var i=0; i<activeUrls.length; i++)
+                    if (htmlArray[i].ele)
                     {
-                        console.debug("createMylinks click", activeUrls[i].value, activeUrls[i].checked);
+                        var element = newElement('div', null, htmlArray[i].html);
+                        htmlArray[i].ele.insertAdjacentElement('afterEnd', element);
 
-                        if (activeUrls[i].checked)
+                        element.addEventListener('click', function(evt)
                         {
-                            if (activeUrls[i].value.indexOf("/h5p/") > -1)
+                            evt.stopPropagation();
+
+                            var activeUrls = document.getElementsByClassName("info_active_url");
+
+                            for (var k=0; k<activeUrls.length; k++)
                             {
-                                bgWindow.pade.activeH5p = activeUrls[i].value;
+                                console.debug("createMylinks click", activeUrls[k].value, activeUrls[k].checked);
+
+                                if (activeUrls[k].checked)
+                                {
+                                    if (activeUrls[k].value.indexOf("/h5p/") > -1)
+                                    {
+                                        bgWindow.pade.activeH5p = activeUrls[k].value;
+                                    }
+                                    else {
+                                        bgWindow.pade.activeUrl = activeUrls[k].value;
+                                    }
+                                }
                             }
-                            else {
-                                bgWindow.pade.activeUrl = activeUrls[i].value;
-                            }
-                        }
+                        });
                     }
-                });
+                }
 
-                detail.insertAdjacentElement('afterEnd', element);
-            }
-
-        }, function (error) {
-            console.error("createMylinks", error);
-        });
+            }, function (error) {
+                console.error("createMylinks", error);
+            });
+        }
     }
 
     var createWorkgroups = function(jid, id)
@@ -415,13 +446,38 @@
                     '</details>';
         }
 
-        html += '<h3>My Links</h3>' +
-                '<details>' +
-                '    <summary id="' + id + '-mylinks-details">Links (<span id="' + id + '-mylinks-count">0</span>)<span style="float: right;" class="fas fa-globe"/></summary>' +
-                '</details>';
+        if (bgWindow && (bgWindow.pade.activeH5p || bgWindow.pade.activeUrl))
+        {
+            html += '<h3>Collaborative Links</h3>' +
+                    '<details>' +
+                    '    <summary id="' + id + '-pdf-details">PDF Documents (<span id="' + id + '-pdf-count">0</span>)<span style="float: right;" class="fa fa-file"/></summary>' +
+                    '</details>'+
+                    '<details>' +
+                    '    <summary id="' + id + '-apps-details">Applications (<span id="' + id + '-apps-count">0</span>)<span style="float: right;" class="fas fa-globe"/></summary>' +
+                    '</details>';
+
+            if (bgWindow.pade.activeH5p)
+            {
+                html += '<details>' +
+                        '    <summary id="' + id + '-h5p-details">H5P Interactive Content (<span id="' + id + '-h5p-count">0</span>)<span style="float: right;" class="fa fa-h-square"/></summary>' +
+                        '</details>';
+            }
+        }
 
         return html;
     }
+
+    var isH5PURL = function (url)
+    {
+      const filename = url.toLowerCase();
+      return filename.indexOf("/h5p/") > -1
+    };
+
+    var isPDFURL = function (url)
+    {
+      const filename = url.toLowerCase();
+      return filename.endsWith('.pdf');
+    };
 
     var isAudioURL = function (url)
     {
