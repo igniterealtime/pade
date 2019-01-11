@@ -809,6 +809,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "converseTimeAgo",
+            "type": "checkbox",
+            "label": i18n.get("Enable time ago")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "autoReconnect",
             "type": "checkbox",
             "label": i18n.get("Auto reconnect")
@@ -1509,6 +1516,11 @@ this.manifest = {
             "idleMessage",
             "idleActiveMessage",
             "idleLockedMessage"
+        ],
+        [
+            "ofmeetInvitation",
+            "letsCollaborate",
+            "webinarInvite"
         ]
     ]
 };

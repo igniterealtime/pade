@@ -79,26 +79,41 @@
                 },
                 toHTML() {
                   return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
-                         '<div class="modal-header"><h1 class="modal-title">Clipboard Image Paste Preview</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
-                         '<div class="modal-body">' +
-                         '<img id="pade-preview-image"/>' +
-                         '</div>' +
-                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-preview-image" data-dismiss="modal">Upload</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>' +
+                         '<div class="modal-header"><h1 class="modal-title">Clipboard Paste Preview</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body"></div>' +
+                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-preview-image" data-dismiss="modal">Accept</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
                     var that = this;
+                    var blob = this.model.get("blob");
+                    var preview = this.model.get("preview");
 
                     this.el.addEventListener('shown.bs.modal', function()
                     {
-                        var fileReader = new FileReader();
-
-                        fileReader.onload = function(e)
+                        if (blob)
                         {
-                            that.el.querySelector('#pade-preview-image').src = e.target.result;
-                        }
+                            var fileReader = new FileReader();
 
-                        fileReader.readAsDataURL(that.model.get("blob"));
+                            fileReader.onload = function(e)
+                            {
+                                that.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + e.target.result + '"/>';
+                            }
+
+                            fileReader.readAsDataURL(blob);
+                        }
+                        else
+
+                        if (preview)
+                        {
+                            var text = "";
+
+                            if (preview.title) text = text + "<b>" + preview.title + "</b><br/> ";
+                            if (preview.image) text = text + "<img class='pade-preview-image' src='" + preview.image.split("?")[0] + "'/><br/>";
+                            if (preview.descriptionShort) text = text + preview.descriptionShort + "<br/>";
+
+                            that.el.querySelector('.modal-body').innerHTML = text;
+                        }
 
                     }, false);
                 },
@@ -109,9 +124,24 @@
                 uploadImage() {
                     var view = this.model.get("view");
                     var blob = this.model.get("blob");
+                    var html = this.model.get("html");
+                    var textarea = this.model.get("textarea");
 
-                    var file = new File([blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
-                    view.model.sendFiles([file]);
+                    if (blob)
+                    {
+                        var file = new File([blob], "paste-" + Math.random().toString(36).substr(2,9) + ".png", {type: 'image/png'});
+                        view.model.sendFiles([file]);
+                    }
+                    else
+
+                    if (html && textarea)
+                    {
+                        textarea[0].value = "";
+                        view.onMessageSubmitted(html);
+
+                        console.debug("uploadImage/Preview", html);
+                    }
+
                 }
             });
 
@@ -235,13 +265,6 @@
                 // inner "_converse" object.
                 var _converse = this;
 
-                _converse.connection.xmlInput = function(b) {
-                    //console.debug("xmlInput", b);
-                };
-                _converse.connection.xmlOutput = function(b) {
-                    //console.debug("xmlOutput", b);
-                };
-
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
@@ -306,13 +329,6 @@
                 renderChatMessage: function renderChatMessage()
                 {
                     //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
-
-                    var source = this.model.get("type") == "groupchat" ? this.model.get("from") : this.model.get("jid");
-                    var box_jid = Strophe.getBareJidFromJid(source);
-                    var box = _converse.chatboxes.get(box_jid);
-                    var selectedBox = false;
-                    if (box) selectedBox = !box.get('hidden');
-
                     // intercepting email IM
 
                     if (!this.model.get("fullname") && this.model.get("from").indexOf("\\40") > -1)
@@ -353,18 +369,18 @@
 
                         if (isOnlyOfficeDoc(oobUrl))
                         {
-                            if (bgWindow.getSetting("enableOnlyOffice", false))
+                            if (getSetting("enableOnlyOffice", false))
                             {
                                 var pos = oobUrl.lastIndexOf("/");
                                 oob_content = '<a id="' + viewId + '" href="#"> ' + letsCollaborate + ' ' + oobUrl.substring(pos + 1) + '</a>';
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                             }
                             else
-                                renderSuperChatMessage(this, arguments, selectedBox);
+                                renderSuperChatMessage(this, arguments);
                         }
                         else {
                             if (nonCollab)
-                                renderSuperChatMessage(this, arguments, selectedBox);
+                                renderSuperChatMessage(this, arguments);
                             else
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                         }
@@ -419,10 +435,10 @@
                             setupContentHandler(this, null, h5p_content);
                         }
                         else {
-                            renderSuperChatMessage(this, arguments, selectedBox);
+                            renderSuperChatMessage(this, arguments);
                         }
                     } else {
-                        renderSuperChatMessage(this, arguments, selectedBox);
+                        renderSuperChatMessage(this, arguments);
                     }
                 }
             },
@@ -464,7 +480,7 @@
                     // hide occupants list by default
                     this.model.set({'hidden_occupants': true});
 
-                    if (bgWindow && bgWindow.getSetting("enablePasting", true))
+                    if (getSetting("enablePasting", true))
                     {
                         // paste
                         pasteInputs[id] = $(this.el).find('.chat-textarea');
@@ -486,19 +502,19 @@
                             if (pasteInputs[id][0].value == data.text && (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0))
                             {
                                 // get link only when is initial  URL is pasted
-                                pasteLinkPreview(data.text, pasteInputs[id]);
+                                pasteLinkPreview(view, data.text, pasteInputs[id]);
                             }
 
                         }).on('pasteTextRich', function(ev, data){
                             console.debug("pasteTextRich", data);
 
-                            if (bgWindow.getSetting("useMarkdown", false))
+                            if (getSetting("useMarkdown", false))
                                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('pasteTextHtml', function(ev, data){
                             console.debug("pasteTextHtml", data);
 
-                            if (bgWindow.getSetting("useMarkdown", false))
+                            if (getSetting("useMarkdown", false))
                                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
                         }).on('focus', function(){
@@ -723,24 +739,26 @@
         }
     });
 
-    var renderSuperChatMessage = function(chat, arguments, selectedBox)
+    var renderSuperChatMessage = function(chat, arguments)
     {
         chat.__super__.renderChatMessage.apply(chat, arguments);
 
-        // time ago
-        setTimeout(function()
+        if (getSetting("converseTimeAgo", false))
         {
-            var moment_time = moment(chat.model.get('time'));
-            var pretty_time = moment_time.format(_converse.time_format);
-
-            var timeEle = chat.el.querySelector('.chat-msg__time');
-            var timeAgo = moment_time.fromNow(true);
-
-            if (timeEle && timeEle.innerHTML)
+            setTimeout(function()
             {
-                timeEle.innerHTML = pretty_time + " (" + timeAgo + ")";
-            }
-        });
+                var moment_time = moment(chat.model.get('time'));
+                var pretty_time = moment_time.format(_converse.time_format);
+
+                var timeEle = chat.el.querySelector('.chat-msg__time');
+                var timeAgo = moment_time.fromNow(true);
+
+                if (timeEle && timeEle.innerHTML)
+                {
+                    timeEle.innerHTML = pretty_time + " (" + timeAgo + ")";
+                }
+            });
+        }
     }
 
     var setupContentHandler = function(chat, avRoom, content, callback, chatId, title)
@@ -1053,44 +1071,44 @@
         console.error("ScreenCast", e)
     }
 
-    var pasteLinkPreview = function pasteLinkPreview(body, textarea)
+    var pasteLinkPreview = function pasteLinkPreview(view, body, textarea)
     {
         console.debug("pasteLinkPreview", body);
 
-        if (bgWindow != null)
+        var linkUrl = btoa(body.split(" ")[0]);
+
+        var server = getSetting("server");
+        var username = getSetting("username");
+        var password = getSetting("password");
+
+        var url =  "https://" + server + "/rest/api/restapi/v1/ask/previewlink/3/" + linkUrl;
+        var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password), "accept": "application/json"}};
+
+        console.debug("fetch preview", url, options);
+
+        var chat = this;
+
+        fetch(url, options).then(function(response){ return response.json()}).then(function(preview)
         {
-            var linkUrl = btoa(body.split(" ")[0]);
+            console.debug("preview link", preview, textarea);
 
-            var server = bgWindow.getSetting("server");
-            var username = bgWindow.getSetting("username");
-            var password = bgWindow.getSetting("password");
-
-            var url =  "https://" + server + "/rest/api/restapi/v1/ask/previewlink/3/" + linkUrl;
-            var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password), "accept": "application/json"}};
-
-            console.debug("fetch preview", url, options);
-
-            var chat = this;
-
-            fetch(url, options).then(function(response){ return response.json()}).then(function(preview)
+            if (preview.title && preview.image && preview.descriptionShort && preview.title != "" && preview.image != "" && preview.descriptionShort != "")
             {
-                console.debug("preview link", preview, textarea);
+                var text = body + "\n\n";
 
-                if (preview.title || preview.image || preview.descriptionShort)
-                {
-                    var text = body + "\n\n";
+                if (preview.title) text = text + preview.title + "\n ";
+                if (preview.image) text = text + preview.image.split("?")[0] + "\n";
+                if (preview.descriptionShort) text = text + preview.descriptionShort;
 
-                    if (preview.title) text = text + preview.title + "\n ";
-                    if (preview.image) text = text + preview.image.split("?")[0] + " \n";
-                    if (preview.descriptionShort) text = text + preview.descriptionShort + "\n";
 
-                    textarea[0].value = text;
-                }
+                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({html: text, view: view, preview: preview, textarea: textarea}) });
+                previewDialog.show();
 
-            }).catch(function (err) {
-                console.error('preview link', err);
-            });
-        }
+            }
+
+        }).catch(function (err) {
+            console.error('preview link', err);
+        });
     }
 
     var newElement = function(el, id, html, className)

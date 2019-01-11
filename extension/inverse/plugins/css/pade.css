@@ -1,6 +1,6 @@
 /* pade plugins for converse */
 
-#pade-preview-image {
+.pade-preview-image {
     max-width: 768px;
 }
 #conversejs table {

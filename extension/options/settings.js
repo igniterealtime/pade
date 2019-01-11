@@ -659,6 +659,7 @@ window.addEvent("domready", function () {
             if (confirm(chrome.i18n.getMessage("resetConfirm")))
             {
                 localStorage.clear();
+                chrome.storage.local.clear();
                 background.reloadApp();
             }
         });
@@ -974,6 +975,12 @@ window.addEvent("domready", function () {
                     {
                         var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
 
+                        if (window.localStorage["store.settings.useTotp"] && JSON.parse(window.localStorage["store.settings.useTotp"]))
+                        {
+                            var token = lynks.username + ":" + lynks.password;
+                            background.setupSasl(token);
+                        }
+
                         connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
                         {
                             console.debug("status", status, lynks.username, lynks.displayname);
@@ -1154,7 +1161,10 @@ function setDefaultServer()
                             }
                         }
 
-                        doTheSetup(domain, server);
+                        if (confirm("Auto-Configure\n\nDomain: " + domain + "\nServer: " + server + "\n\nAre you sure??"))
+                        {
+                            doTheSetup(domain, server);
+                        }
 
                     }).catch(function (err) {
                         console.warn('setDefaultServer config.js file error. using domain ' + domain, err);

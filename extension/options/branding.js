@@ -1,6 +1,5 @@
 var branding = {
     uport                   : {disable: true},
-    qrcode                  : {disable: true},
     uportPermission         : {disable: true},
     useUport                : {disable: true},
 
@@ -58,6 +57,7 @@ var branding = {
     onlyzoom                : {disable: true},
     phone                   : {disable: true},
     popupWindow             : {disable: true},
+    qrcode                  : {disable: true},
     rdpDescription          : {disable: true},
     registerIMProtocol      : {disable: true},
     registerMEETProtocol    : {disable: true},

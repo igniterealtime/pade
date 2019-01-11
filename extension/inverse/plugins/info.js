@@ -58,6 +58,23 @@
         'overrides': {
             ChatBoxView: {
 
+                parseMessageForCommands: function(text) {
+                    console.debug('info - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const args = match[2] && match[2].splitOnce(' ').filter(s => s) || [];
+                    const command = match[1].toLowerCase();
+
+                    if (command === "alert")
+                    {
+                        postMessage(this, match[2]);
+                        return true;
+                    }
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
+
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
@@ -101,6 +118,7 @@
                                     createContentSummary(jid, id);
                                     createWorkgroups(jid, id);
                                     createMylinks(jid, id);
+                                    createBroadcastEndpoints(jid, id);
 
                                 } else {
                                     infoElement.style.display = "none"
@@ -120,6 +138,12 @@
             }
         }
     });
+
+    var postMessage = function(view, text, spoiler_hint)
+    {
+        const attrs = view.model.getOutgoingMessageAttributes("*" + text + "*", spoiler_hint);
+        view.model.messages.create(attrs);
+    }
 
     var createMylinks = function(jid, id)
     {
@@ -210,6 +234,47 @@
                 console.error("createMylinks", error);
             });
         }
+    }
+
+    var createBroadcastEndpoints = function(jid, id)
+    {
+        console.debug("createBroadcastEndpoints", jid, id);
+
+        _converse.connection.sendIQ($iq({type: 'get', to: "broadcast." + _converse.connection.domain}).c('query', {xmlns: "http://jabber.org/protocol/disco#items"}).tree(), function(resp)
+        {
+            var count = document.getElementById(id + "-broadcast-count");
+            var detail = document.getElementById(id + "-broadcast-details");
+            var items = resp.querySelectorAll('item');
+
+            if (count && detail)
+            {
+                count.innerHTML = items.length;
+
+                for (var i=0; i<items.length; i++)
+                {
+                    var jid = items[i].getAttribute('jid');
+                    var name = Strophe.getNodeFromJid(jid);
+
+                    console.debug('createBroadcastEndpoints', jid, name);
+
+                    var html = '<li title="' + jid + '">' + name + '</li>';
+                    var element = newElement('div', null, html);
+
+                    element.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        console.debug("createBroadcastEndpoints click", evt.target.title);
+                        _converse.api.chats.open(evt.target.title);
+                    });
+
+                    detail.insertAdjacentElement('afterEnd', element);
+                }
+            }
+
+        }, function (error) {
+             console.warn("Broadcast plugin not available");
+        });
     }
 
     var createWorkgroups = function(jid, id)
@@ -318,15 +383,15 @@
 
                         console.debug("createWorkgroups conversation", conversation);
 
-                        var html = '<li href="#" name="' + conversation.sessionJid + '" title="' + conversation.question + '">' + conversation.username + ' (' + conversation.agent + ')</li>';
+                        var html = '<li title="' + conversation.question + '">' + conversation.username + ' (' + conversation.agent + ')</li>';
                         var element = newElement('div', null, html);
 
                         element.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
 
-                            console.debug("createWorkgroups click", evt.target);
-                            _converse.api.rooms.open(evt.target.name);
+                            console.debug("createWorkgroups click", evt.target.title);
+                            _converse.api.rooms.open(evt.target.title);
 
                         });
 
@@ -463,6 +528,11 @@
                         '</details>';
             }
         }
+
+        html += '<h3>Broadcasts</h3>' +
+                '<details>' +
+                '    <summary id="' + id + '-broadcast-details">Distribution Lists (<span id="' + id + '-broadcast-count">0</span>)<span style="float: right;" class="fas fa-bullhorn"/></summary>' +
+                '</details>';
 
         return html;
     }
