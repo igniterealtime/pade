@@ -95,6 +95,23 @@
         'overrides': {
             ChatBoxView: {
 
+                parseMessageForCommands: function(text) {
+                    console.debug('search - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const command = match[1].toLowerCase();
+
+                    if (command === "search")
+                    {
+                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: match[2]}) });
+                        searchDialog.show();
+                        return true;
+                    }
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
+
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
@@ -124,26 +141,23 @@
             },
             MessageView: {
 
-                renderChatMessage: function renderChatMessage()
+                renderChatMessage: async function renderChatMessage()
                 {
-                    this.__super__.renderChatMessage.apply(this, arguments);
+                    await this.__super__.renderChatMessage.apply(this, arguments);
                     var that = this;
 
                     if (searchAvailable)
                     {
-                        setTimeout(function()
+                        converse.env._.each(that.el.querySelectorAll('.badge-hash-tag'), function (badge)
                         {
-                            converse.env._.each(that.el.querySelectorAll('.badge-hash-tag'), function (badge)
+                            badge.addEventListener('click', function(evt)
                             {
-                                badge.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
+                                evt.stopPropagation();
 
-                                    console.debug("pade.hashtag click", badge.innerText);
-                                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
-                                    searchDialog.show();
-                                }, false);
-                            });
+                                console.debug("pade.hashtag click", badge.innerText);
+                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
+                                searchDialog.show();
+                            }, false);
                         });
                     }
                 }

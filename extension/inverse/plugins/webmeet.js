@@ -109,7 +109,7 @@
                             var text = "";
 
                             if (preview.title) text = text + "<b>" + preview.title + "</b><br/> ";
-                            if (preview.image) text = text + "<img class='pade-preview-image' src='" + preview.image.split("?")[0] + "'/><br/>";
+                            if (preview.image) text = text + "<img class='pade-preview-image' src='" + preview.image + "'/><br/>";
                             if (preview.descriptionShort) text = text + preview.descriptionShort + "<br/>";
 
                             that.el.querySelector('.modal-body').innerHTML = text;
@@ -326,7 +326,7 @@
 
             MessageView: {
 
-                renderChatMessage: function renderChatMessage()
+                renderChatMessage: async function renderChatMessage()
                 {
                     //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
                     // intercepting email IM
@@ -375,14 +375,19 @@
                                 oob_content = '<a id="' + viewId + '" href="#"> ' + letsCollaborate + ' ' + oobUrl.substring(pos + 1) + '</a>';
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
                             }
-                            else
-                                renderSuperChatMessage(this, arguments);
+                            else {
+                                await this.__super__.renderChatMessage.apply(this, arguments);
+                                renderTimeAgoChatMessage(this);
+                            }
                         }
                         else {
-                            if (nonCollab)
-                                renderSuperChatMessage(this, arguments);
-                            else
+                            if (nonCollab) {
+                                await this.__super__.renderChatMessage.apply(this, arguments);
+                                renderTimeAgoChatMessage(this);
+                            }
+                            else {
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
+                            }
                         }
                     }
                     else
@@ -435,15 +440,22 @@
                             setupContentHandler(this, null, h5p_content);
                         }
                         else {
-                            renderSuperChatMessage(this, arguments);
+                            await this.__super__.renderChatMessage.apply(this, arguments);
+                            renderTimeAgoChatMessage(this);
                         }
                     } else {
-                        renderSuperChatMessage(this, arguments);
+                        await this.__super__.renderChatMessage.apply(this, arguments);
+                        renderTimeAgoChatMessage(this);
                     }
                 }
             },
 
             ChatBoxView: {
+
+                parseMessageForCommands: function(text) {
+
+                    return handleCommand(this, text) || this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
 
                 toggleCall: function toggleCall(ev) {
                     console.debug("toggleCall", this.model);
@@ -570,23 +582,6 @@
 
                     setTimeout(function()
                     {
-                        // custom profile
-
-                        if (bgWindow && bgWindow.pade.chatAPIAvailable && type === "chatbox")
-                        {
-                            if (!bgWindow.pade.userProfiles[jid])
-                            {
-                                bgWindow.findUsers(Strophe.getNodeFromJid(jid), function(userList)
-                                {
-                                    if (userList.length > 0 && userList[0].jid == jid)
-                                    {
-                                        console.debug("user profile", jid, userList[0].jid, userList[0]);
-                                        bgWindow.pade.userProfiles[jid] = userList[0];
-                                    }
-                                });
-                            }
-                        }
-
                         var h5pButton = document.getElementById("h5p-" + id);
 
                         if (h5pButton && bgWindow)
@@ -664,24 +659,7 @@
                             {
                                 evt.stopPropagation();
 
-                                if (videoRecorder == null)
-                                {
-                                    chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], null, function(streamId)
-                                    {
-                                        navigator.mediaDevices.getUserMedia({
-                                            audio: false,
-                                            video: {
-                                                mandatory: {
-                                                    chromeMediaSource: 'desktop',
-                                                    chromeMediaSourceId: streamId
-                                                }
-                                            }
-                                        }).then((stream) => handleStream(stream, view)).catch((e) => handleError(e))
-                                    })
-
-                                } else {
-                                    videoRecorder.stop();
-                                }
+                                toggleScreenCast(view);
 
                             }, false);
                         }
@@ -739,25 +717,20 @@
         }
     });
 
-    var renderSuperChatMessage = function(chat, arguments)
+    var renderTimeAgoChatMessage = function(chat)
     {
-        chat.__super__.renderChatMessage.apply(chat, arguments);
-
         if (getSetting("converseTimeAgo", false))
         {
-            setTimeout(function()
+            var moment_time = moment(chat.model.get('time'));
+            var pretty_time = moment_time.format(_converse.time_format);
+
+            var timeEle = chat.el.querySelector('.chat-msg__time');
+            var timeAgo = moment_time.fromNow(true);
+
+            if (timeEle && timeEle.innerHTML)
             {
-                var moment_time = moment(chat.model.get('time'));
-                var pretty_time = moment_time.format(_converse.time_format);
-
-                var timeEle = chat.el.querySelector('.chat-msg__time');
-                var timeAgo = moment_time.fromNow(true);
-
-                if (timeEle && timeEle.innerHTML)
-                {
-                    timeEle.innerHTML = pretty_time + " (" + timeAgo + ")";
-                }
-            });
+                timeEle.innerHTML = pretty_time + " (" + timeAgo + ")";
+            }
         }
     }
 
@@ -845,11 +818,8 @@
 
         console.debug("doVideo", room, url, view);
 
-        if (_converse.api.settings.get("ofswitch") == false)
-        {
-            var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
-            view.onMessageSubmitted(inviteMsg);
-        }
+        var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
+        view.onMessageSubmitted(inviteMsg);
     }
 
     var doExit = function doExit(event)
@@ -1011,6 +981,30 @@
         return iq;
     }
 
+    var toggleScreenCast = function(view)
+    {
+        if (videoRecorder == null)
+        {
+            chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], null, function(streamId)
+            {
+                navigator.mediaDevices.getUserMedia({
+                    audio: false,
+                    video: {
+                        mandatory: {
+                            chromeMediaSource: 'desktop',
+                            chromeMediaSourceId: streamId
+                        }
+                    }
+                }).then((stream) => handleStream(stream, view)).catch((e) => handleError(e))
+            })
+
+        } else {
+            videoRecorder.stop();
+        }
+
+        return true;
+    }
+
     var handleStream = function handleStream (stream, view)
     {
         navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((audioStream) => handleAudioStream(stream, audioStream, view)).catch((e) => handleError(e))
@@ -1096,8 +1090,8 @@
             {
                 var text = body + "\n\n";
 
-                if (preview.title) text = text + preview.title + "\n ";
-                if (preview.image) text = text + preview.image.split("?")[0] + "\n";
+                if (preview.title) text = text + preview.title + "\n "; // space needed
+                if (preview.image) text = text + preview.image + " \n"; // space needed
                 if (preview.descriptionShort) text = text + preview.descriptionShort;
 
 
@@ -1132,6 +1126,126 @@
             placeHolder = view.el.querySelector('#place-holder');
         }
         placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+    }
+
+    var handleCommand = function(view, text)
+    {
+        console.debug('handleCommand', view, text);
+
+        const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+        const args = match[2] && match[2].splitOnce(' ').filter(s => s) || [];
+        const command = match[1].toLowerCase();
+
+        if (command === "help") view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "\n\n"]);
+        else
+
+        if (command == "app" && bgWindow && match[2])
+        {
+            bgWindow.openWebAppsWindow(args[0], null, args[1], args[2]);
+            return true;
+        }
+        else
+
+        if ((command == "meet" && bgWindow) || command == "invite")
+        {
+            var meetings = {};
+            var encoded = localStorage["store.settings.savedMeetings"];
+            if (encoded) meetings = JSON.parse(atob(encoded));
+            var saveMeetings = Object.getOwnPropertyNames(meetings);
+
+            if (command == "meet")
+            {
+                if (!match[2]) doVideo(view);
+
+                else {
+
+                    for (var i=0; i<saveMeetings.length; i++)
+                    {
+                        var meeting = meetings[saveMeetings[i]];
+
+                        if (meeting.invite.toLowerCase() == match[2].toLowerCase())
+                        {
+                            for (var j=0; j<meeting.inviteList.length; j++)
+                            {
+                                if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
+                                {
+                                    bgWindow.inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
+                                }
+                            }
+
+                            bgWindow.openVideoWindow(meeting.room);
+                            return true;
+                        }
+                    }
+
+                    // use specified room
+                    var url = doAVConference(args[0]);
+                    var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
+                    view.onMessageSubmitted(inviteMsg);
+                }
+            }
+            else
+
+            if (command == "invite" && match[2])
+            {
+                for (var i=0; i<saveMeetings.length; i++)
+                {
+                    var meeting = meetings[saveMeetings[i]];
+
+                    if (meeting.invite.toLowerCase() == match[2].toLowerCase())
+                    {
+                        for (var j=0; j<meeting.inviteList.length; j++)
+                        {
+                            if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
+                            {
+                                view.model.directInvite(meeting.inviteList[j], meeting.invite);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+        else
+
+        if ((command == "tel" || command == "sip") && bgWindow)
+        {
+            if (!match[2]) bgWindow.openPhoneWindow(true);
+
+            else {
+                if (command == "tel") bgWindow.openPhoneWindow(true, null, "sip:" + args[0]);
+                if (command == "sip") bgWindow.openWebAppsWindow(chrome.extension.getURL("webcam/sip-video.html?url=sip:" + args[0]), null, 800, 640);
+            }
+            return true;
+        }
+        else
+
+        if ((command == "im" || command == "chat"))
+        {
+            if (match[2])
+            {
+                var jid = args[0];
+                if (jid.indexOf("@") == -1) jid = jid + "@" + (command == "chat" ? "conference." : "") + _converse.connection.domain;
+
+                if (command == "im") _inverse.api.chats.open(jid);
+                if (command == "chat") _inverse.api.rooms.open(jid);
+            }
+            return true;
+        }
+        else
+
+        if (command == "who")
+        {
+            view.toggleOccupants(null, true);
+            return true;
+        }
+        else
+
+        if (command == "screencast") return toggleScreenCast(view);
+
+
+        return false;
     }
 
 }));

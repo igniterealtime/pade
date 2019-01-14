@@ -57,6 +57,23 @@
         'overrides': {
             ChatBoxView: {
 
+                parseMessageForCommands: function(text) {
+                    console.debug('vmsg - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const command = match[1].toLowerCase();
+
+                    if (command === "vmsg")
+                    {
+                        vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: this}) });
+                        vmsgDialog.show();
+                        return true;
+                    }
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
+
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 

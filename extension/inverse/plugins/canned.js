@@ -27,6 +27,21 @@
                          '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
+                afterRender() {
+                  var that = this;
+                  this.el.addEventListener('shown.bs.modal', function()
+                  {
+                      if (that.model.get("response"))
+                      {
+                          that.el.querySelector('#pade-canned-responses').style.display = "none";
+                          that.doCannedResponses();
+                      }
+                      else {
+                        that.el.querySelector('#pade-canned-responses').focus();
+                      }
+
+                  }, false);
+                },
                 events: {
                     'keyup #pade-canned-responses': 'keyUp'
                 },
@@ -48,34 +63,42 @@
 
                     if (response != "" && responses)
                     {
-                        var cannedResults = that.el.querySelector("#pade-canned-results");
                         var html = "<table style='margin-left: 15px'><tr><th>Response</th><th>Description</th></tr>";
-                        var count = 0;
+                        var count = 0, singleton = -1;
 
                         for (var i = 0; i < responses.length; i++)
                         {
-                            if (response.length == 0 || responses[i].name.indexOf(response) > -1 || responses[i].description.toLowerCase().indexOf(response.toLowerCase()) > -1)
+                            if (response.length == 0 || responses[i].name.toLowerCase().indexOf(response.toLowerCase()) > -1 || responses[i].description.toLowerCase().indexOf(response.toLowerCase()) > -1)
                             {
+                                singleton = i;
                                 html = html + "<tr><td width='30%'>" + responses[i].name + "</td><td><a id='resp-" + count + "' href='#' title='click here to pate in input area'><pre>" + responses[i].description + "</pre></a></td></tr>";
                                 count++;
                             }
                         }
 
-                        cannedResults.innerHTML = html;
-
-                        setTimeout(function()
+                        if (count == 1)
                         {
-                            for (var i = 0; i < count; i++)
-                            {
-                                that.el.querySelector("#resp-" + i).addEventListener("click", function(e)
-                                {
-                                    e.stopPropagation();
-                                    textArea.value = e.target.innerText;
-                                    that.modal.hide();
+                            textArea.value = responses[singleton].description;
+                            this.modal.hide();
 
-                                }, false);
-                            }
-                        },1000);
+                        } else {
+
+                            that.el.querySelector("#pade-canned-results").innerHTML = html;
+
+                            setTimeout(function()
+                            {
+                                for (var i = 0; i < count; i++)
+                                {
+                                    that.el.querySelector("#resp-" + i).addEventListener("click", function(e)
+                                    {
+                                        e.stopPropagation();
+                                        textArea.value = e.target.innerText;
+                                        that.modal.hide();
+
+                                    }, false);
+                                }
+                            },1000);
+                        }
                     }
                 }
             });
@@ -86,12 +109,23 @@
         'overrides': {
             ChatBoxView: {
 
+                parseMessageForCommands: function(text) {
+                    console.debug('canned - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const command = match[1].toLowerCase();
+
+                    if (command == "msg" && match[2]) return doCannedMsg(this, match[2]);
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
+
                 renderToolbar: function renderToolbar(toolbar, canned) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
                     var view = this;
                     var id = this.model.get("box_id");
-                    var textArea = this.el.querySelector('.chat-textarea');
 
                     addToolbarItem(view, id, "pade-canned-" + id, '<a class="far fa-save" title="Canned Responses/Replies"></a>');
 
@@ -101,13 +135,8 @@
 
                         if (canned) canned.addEventListener('click', function(evt)
                         {
-                            evt.stopPropagation();
-
-                            var responses = getAnswersListFromStorage()
-                            console.debug("canned", responses);
-
-                            cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({responses: responses, textArea: textArea}) });
-                            cannedDialog.show();
+                            evt.stopPropagation(view, id);
+                            doCannedMsg(view);
 
                         }, false);
                     });
@@ -117,6 +146,20 @@
             }
         }
     });
+
+    var doCannedMsg = function(view, response)
+    {
+        var id = view.model.get("box_id");
+        var textArea = view.el.querySelector('.chat-textarea');
+        var responses = getAnswersListFromStorage();
+
+        console.debug("canned", response, responses);
+
+        cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({response: response, responses: responses, textArea: textArea}) });
+        cannedDialog.show();
+
+        return true;
+    }
 
     function newElement(el, id, html)
     {

@@ -83,6 +83,23 @@
         'overrides': {
             ChatBoxView: {
 
+                parseMessageForCommands: function(text) {
+                    console.debug('directory - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const command = match[1].toLowerCase();
+
+                    if (command === "find")
+                    {
+                        directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({query: match[2]}) });
+                        directoryDialog.show();
+                        return true;
+                    }
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
+
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 

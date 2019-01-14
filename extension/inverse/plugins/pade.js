@@ -232,7 +232,7 @@
 
             MessageView: {
 
-                renderChatMessage: function renderChatMessage()
+                renderChatMessage: async function renderChatMessage()
                 {
                     if (bgWindow.getSetting("notifyOnInterests", false))
                     {
@@ -257,7 +257,7 @@
                         this.model.set('message', highlightedBody);
                     }
 
-                    this.__super__.renderChatMessage.apply(this, arguments);
+                    await this.__super__.renderChatMessage.apply(this, arguments);
                 }
             },
 

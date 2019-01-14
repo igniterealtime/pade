@@ -1148,11 +1148,11 @@ function closePhoneWindow()
     }
 }
 
-function openPhoneWindow(focus, state)
+function openPhoneWindow(focus, state, url)
 {
     console.debug("openPhoneWindow", focus, state);
 
-    var data = {url: chrome.runtime.getURL("phone/index-ext.html"), type: "popup", focused: focus};
+    var data = {url: chrome.runtime.getURL("phone/index-ext.html") + (url ? "?url=" + url: ""), type: "popup", focused: focus};
 
     if (state == "minimized")
     {

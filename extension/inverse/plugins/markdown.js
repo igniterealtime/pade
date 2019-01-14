@@ -42,7 +42,7 @@
 
             MessageView: {
 
-                renderChatMessage: function renderChatMessage()
+                renderChatMessage: async function renderChatMessage()
                 {
                     var that = this;
                     var originator = that.model.vcard && that.model.vcard.get("jid") ? that.model.vcard.get("jid") : that.model.get("from");
@@ -50,53 +50,62 @@
 
                     if (ready)
                     {
-                        setTimeout(function()
+                        var form = that.el.querySelector('.marked-forms input[type=button]') || that.el.querySelector('.marked-forms input[type=submit]');
+                        var inputs = that.el.querySelectorAll('.marked-forms input:not([type=button]):not([type=submit])');
+
+                        if (form && !handlers[form.id])
                         {
-                            var form = that.el.querySelector('.marked-forms input[type=button]') || that.el.querySelector('.marked-forms input[type=submit]');
-                            var inputs = that.el.querySelectorAll('.marked-forms input:not([type=button]):not([type=submit])');
+                            var box_jid = Strophe.getBareJidFromJid(source);
+                            var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
+                            var box = _converse.chatboxes.get(box_jid);
+                            var view = getSelectedChatBox();
 
-                            if (form && !handlers[form.id])
+                            console.debug("renderChatMessage - form", box, form, view);
+
+                            if (box) myNick = box.get('nick');
+
+                            form.addEventListener('click', function(evt)
                             {
-                                var box_jid = Strophe.getBareJidFromJid(source);
-                                var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
-                                var box = _converse.chatboxes.get(box_jid);
-                                var view = getSelectedChatBox();
+                                evt.stopPropagation();
+                                var formJson = {event: "markdown-form-data", nick: myNick};
 
-                                console.debug("renderChatMessage - form", box, form, view);
-
-                                if (box) myNick = box.get('nick');
-
-                                form.addEventListener('click', function(evt)
+                                for (var j=0; j< inputs.length; j++)
                                 {
-                                    evt.stopPropagation();
-                                    var formJson = {event: "markdown-form-data", nick: myNick};
+                                    console.debug("renderChatMessage - form data", inputs[j].type, inputs[j].name, inputs[j].value, inputs[j].checked);
 
-                                    for (var j=0; j< inputs.length; j++)
+                                    if (inputs[j].type == "text" || inputs[j].type == "textarea" || inputs[j].checked)
                                     {
-                                        console.debug("renderChatMessage - form data", inputs[j].type, inputs[j].name, inputs[j].value, inputs[j].checked);
-
-                                        if (inputs[j].type == "text" || inputs[j].type == "textarea" || inputs[j].checked)
-                                        {
-                                            formJson[inputs[j].name] = inputs[j].value;
-                                        }
+                                        formJson[inputs[j].name] = inputs[j].value;
                                     }
+                                }
 
-                                    _converse.connection.send($msg({'to': originator}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(formJson)));
-                                    if (view) view.onMessageSubmitted('/me submitted form ' + form.id);
-                                    delete handlers[form.id]
+                                _converse.connection.send($msg({'to': originator}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(formJson)));
+                                if (view) view.onMessageSubmitted('/me submitted form ' + form.id);
+                                delete handlers[form.id]
 
-                                });
+                            });
 
-                                handlers[form.id] = {};
-                                console.debug("renderChatMessage - markdown", form.id);
-                            }
-                        });
+                            handlers[form.id] = {};
+                            console.debug("renderChatMessage - markdown", form.id);
+                        }
                     }
-                    this.__super__.renderChatMessage.apply(this, arguments);
+                    await this.__super__.renderChatMessage.apply(this, arguments);
                 }
             },
 
             ChatBoxView: {
+
+                parseMessageForCommands: function(text) {
+                    console.debug('markdown - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const command = match[1].toLowerCase();
+
+                    if (command == "md" && bgWindow) return doMarkdown(this);
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
@@ -115,12 +124,7 @@
                             if (markdown) markdown.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
-
-                                bgWindow.pade.activeView = view;
-                                var url = chrome.extension.getURL("inverse/plugins/editor.html");
-
-                                bgWindow.closeWebAppsWindow(url);
-                                bgWindow.openWebAppsWindow(url, null, 623, 600);
+                                doMarkdown(view);
 
                             }, false);
                         });
@@ -131,6 +135,17 @@
             }
         }
     });
+
+    var doMarkdown = function(view)
+    {
+        bgWindow.pade.activeView = view;
+        var url = chrome.extension.getURL("inverse/plugins/editor.html");
+
+        bgWindow.closeWebAppsWindow(url);
+        bgWindow.openWebAppsWindow(url, null, 623, 600);
+
+        return true;
+    }
 
     var newElement = function(el, id, html)
     {

@@ -19,6 +19,18 @@
         'overrides': {
             ChatBoxView: {
 
+                parseMessageForCommands: function(text) {
+                    console.debug('options - parseMessageForCommands', text);
+
+                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                    const command = match[1].toLowerCase();
+
+                    if (command == "pref" && bgWindow) return dOptions();
+                    else
+
+                    return this.__super__.parseMessageForCommands.apply(this, arguments);
+                },
+
                 renderToolbar: function renderToolbar(toolbar, options) {
                     var result = this.__super__.renderToolbar.apply(this, arguments);
 
@@ -36,8 +48,7 @@
                             if (options) options.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
-                                var url = chrome.extension.getURL("options/index.html");
-                                bgWindow.openWebAppsWindow(url, null, 1200, 900);
+                                dOptions();
 
                             }, false);
                         });
@@ -48,6 +59,14 @@
             }
         }
     });
+
+    var dOptions = function()
+    {
+        var url = chrome.extension.getURL("options/index.html");
+        bgWindow.openWebAppsWindow(url, null, 1200, 900);
+
+        return true;
+    }
 
     function newElement(el, id, html)
     {

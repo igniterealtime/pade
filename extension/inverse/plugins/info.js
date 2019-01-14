@@ -62,12 +62,16 @@
                     console.debug('info - parseMessageForCommands', text);
 
                     const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
-                    const args = match[2] && match[2].splitOnce(' ').filter(s => s) || [];
                     const command = match[1].toLowerCase();
 
-                    if (command === "alert")
+                    if (command === "help") return false; // TODO work-round. remove when converse fixed
+
+                    if (command === "info")
                     {
-                        postMessage(this, match[2]);
+                        var id = this.model.get("box_id");
+                        var jid = this.model.get("jid");
+                        var infoElement = this.el.querySelector('.plugin-infobox');
+                        if (infoElement) toggleInfoBar(this, infoElement, id, jid);
                         return true;
                     }
                     else
@@ -102,32 +106,7 @@
                             {
                                 evt.stopPropagation();
 
-                                var chat_area = view.el.querySelector('.chat-area');
-
-                                if (infoElement.style.display == "none")
-                                {
-                                    infoElement.style.display = "";
-                                    removeClass('full', chat_area);
-                                    removeClass('col-12', chat_area);
-                                    addClass('col-md-9', chat_area);
-                                    addClass('col-8', chat_area);
-                                    addClass('hidden', view.el.querySelector('.occupants'));
-
-                                    infoElement.innerHTML = getHTML(id, jid);
-
-                                    createContentSummary(jid, id);
-                                    createWorkgroups(jid, id);
-                                    createMylinks(jid, id);
-                                    createBroadcastEndpoints(jid, id);
-
-                                } else {
-                                    infoElement.style.display = "none"
-                                    removeClass('col-md-9', chat_area);
-                                    removeClass('col-8', chat_area);
-                                    addClass('full', chat_area);
-                                    addClass('col-12', chat_area);
-                                    hideElement(view.el.querySelector('.occupants'));
-                                }
+                                toggleInfoBar(view, infoElement, id, jid);
 
                             }, false);
                         }
@@ -138,6 +117,36 @@
             }
         }
     });
+
+    var toggleInfoBar = function(view, infoElement, id, jid)
+    {
+        var chat_area = view.el.querySelector('.chat-area');
+
+        if (infoElement.style.display == "none")
+        {
+            infoElement.style.display = "";
+            removeClass('full', chat_area);
+            removeClass('col-12', chat_area);
+            addClass('col-md-9', chat_area);
+            addClass('col-8', chat_area);
+            addClass('hidden', view.el.querySelector('.occupants'));
+
+            infoElement.innerHTML = getHTML(id, jid);
+
+            createContentSummary(jid, id);
+            createWorkgroups(jid, id);
+            createMylinks(jid, id);
+            createBroadcastEndpoints(jid, id);
+
+        } else {
+            infoElement.style.display = "none"
+            removeClass('col-md-9', chat_area);
+            removeClass('col-8', chat_area);
+            addClass('full', chat_area);
+            addClass('col-12', chat_area);
+            hideElement(view.el.querySelector('.occupants'));
+        }
+    }
 
     var postMessage = function(view, text, spoiler_hint)
     {
