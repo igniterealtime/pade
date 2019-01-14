@@ -816,6 +816,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enableBookmarks",
+            "type": "checkbox",
+            "label": i18n.get("Enable server bookmarks")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "autoReconnect",
             "type": "checkbox",
             "label": i18n.get("Auto reconnect")

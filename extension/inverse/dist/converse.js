@@ -48817,7 +48817,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       },
 
       createBookmarksFromStanza(stanza) {
-        const bookmarks = sizzle('items[node="storage:bookmarks"] ' + 'item#current ' + 'storage[xmlns="storage:bookmarks"] ' + 'conference', stanza);
+        const bookmarks = sizzle(`items[node="storage:bookmarks"] item storage[xmlns="storage:bookmarks"] conference`, stanza);
 
         _.forEach(bookmarks, bookmark => {
           const jid = bookmark.getAttribute('jid');
@@ -48985,7 +48985,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
           ev.preventDefault();
         }
 
-        const icon_el = ev.target.querySelector('.fa');
+        const icon_el = ev.target.matches('.fa') ? ev.target : ev.target.querySelector('.fa');
 
         if (u.hasClass('fa-caret-down', icon_el)) {
           u.slideIn(this.el.querySelector('.bookmarks'));
@@ -49007,8 +49007,14 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     });
 
     _converse.checkBookmarksSupport = async function () {
-      const args = await Promise.all([_converse.api.disco.getIdentity('pubsub', 'pep', _converse.bare_jid), _converse.api.disco.supports(Strophe.NS.PUBSUB + '#publish-options', _converse.bare_jid)]);
-      return args[0] && (args[1].length || _converse.allow_public_bookmarks);
+      const identity = await _converse.api.disco.getIdentity('pubsub', 'pep', _converse.bare_jid);
+
+      if (_converse.allow_public_bookmarks) {
+        return !!identity;
+      } else {
+        const supported = await _converse.api.disco.supports(Strophe.NS.PUBSUB + '#publish-options', _converse.bare_jid);
+        return !!supported.length;
+      }
     };
 
     const initBookmarks = async function initBookmarks() {
@@ -49153,13 +49159,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/converse-core */ "./src/headless/converse-core.js");
 /* harmony import */ var templates_avatar_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! templates/avatar.svg */ "./src/templates/avatar.svg");
 /* harmony import */ var templates_avatar_svg__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(templates_avatar_svg__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! templates/chatboxes.html */ "./src/templates/chatboxes.html");
-/* harmony import */ var templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var templates_background_logo_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! templates/background_logo.html */ "./src/templates/background_logo.html");
+/* harmony import */ var templates_background_logo_html__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(templates_background_logo_html__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! templates/chatboxes.html */ "./src/templates/chatboxes.html");
+/* harmony import */ var templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_6__);
 // Converse.js
 // http://conversejs.org
 //
 // Copyright (c) 2012-2018, the Converse.js developers
 // Licensed under the Mozilla Public License (MPLv2)
+
 
 
 
@@ -49272,17 +49281,25 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
 
       initialize() {
         this.model.on("destroy", this.removeChat, this);
+        const bg = document.getElementById('conversejs-bg');
+
+        if (bg && !bg.innerHTML.trim()) {
+          bg.innerHTML = templates_background_logo_html__WEBPACK_IMPORTED_MODULE_5___default()();
+        }
+
+        const body = document.querySelector('body');
+        body.classList.add(`converse-${_converse.view_mode}`);
         this.el.classList.add(`converse-${_converse.view_mode}`);
         this.render();
       },
 
       render() {
         try {
-          this.el.innerHTML = templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_5___default()();
+          this.el.innerHTML = templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_6___default()();
         } catch (e) {
           this._ensureElement();
 
-          this.el.innerHTML = templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_5___default()();
+          this.el.innerHTML = templates_chatboxes_html__WEBPACK_IMPORTED_MODULE_6___default()();
         }
 
         this.row_el = this.el.querySelector('.row');
@@ -49315,21 +49332,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
 
     });
     /************************ BEGIN Event Handlers ************************/
-
-    _converse.api.waitUntil('rosterContactsFetched').then(() => {
-      _converse.roster.on('add', contact => {
-        /* When a new contact is added, check if we already have a
-         * chatbox open for it, and if so attach it to the chatbox.
-         */
-        const chatbox = _converse.chatboxes.findWhere({
-          'jid': contact.get('jid')
-        });
-
-        if (chatbox) {
-          chatbox.addRelatedContact(contact);
-        }
-      });
-    });
 
     _converse.api.listen.on('chatBoxesInitialized', () => {
       _converse.chatboxviews = new _converse.ChatBoxViews({
@@ -50228,27 +50230,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         }
       },
 
-      onMessageSubmitted(text, spoiler_hint) {
-        /* This method gets called once the user has typed a message
-         * and then pressed enter in a chat box.
-         *
-         *  Parameters:
-         *    (String) text - The chat message text.
-         *    (String) spoiler_hint - A hint in case the message
-         *      text is a hidden/spoiler message. See XEP-0382
-         */
-        if (!_converse.connection.authenticated) {
-          return this.showHelpMessages(['Sorry, the connection has been lost, ' + 'and your message could not be sent'], 'error');
-        }
-
-        if (this.parseMessageForCommands(text)) {
-          return;
-        }
-
-        const attrs = this.model.getOutgoingMessageAttributes(text, spoiler_hint);
-        this.model.sendMessage(attrs);
-      },
-
       setChatState(state, options) {
         /* Mutator for setting the chat state of this chat session.
          * Handles clearing of any chat state notification timeouts and
@@ -50275,7 +50256,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         return this;
       },
 
-      onFormSubmitted(ev) {
+      async onFormSubmitted(ev) {
         ev.preventDefault();
         const textarea = this.el.querySelector('.chat-textarea'),
               message = textarea.value;
@@ -50284,26 +50265,37 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
           return;
         }
 
-        let spoiler_hint;
-
-        if (this.model.get('composing_spoiler')) {
-          const hint_el = this.el.querySelector('form.sendXMPPMessage input.spoiler-hint');
-          spoiler_hint = hint_el.value;
-          hint_el.value = '';
+        if (!_converse.connection.authenticated) {
+          this.showHelpMessages(['Sorry, the connection has been lost, and your message could not be sent'], 'error');
+          return;
         }
 
-        textarea.value = '';
-        _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].removeClass('correcting', textarea);
-        textarea.focus(); // Trigger input event, so that the textarea resizes
+        let spoiler_hint,
+            hint_el = {};
 
-        const event = document.createEvent('Event');
-        event.initEvent('input', true, true);
-        textarea.dispatchEvent(event);
-        this.onMessageSubmitted(message, spoiler_hint);
+        if (this.model.get('composing_spoiler')) {
+          hint_el = this.el.querySelector('form.sendXMPPMessage input.spoiler-hint');
+          spoiler_hint = hint_el.value;
+        }
 
-        _converse.emit('messageSend', message); // Suppress events, otherwise superfluous CSN gets set
+        _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].addClass('disabled', textarea);
+        textarea.setAttribute('disabled', 'disabled');
+
+        if (this.parseMessageForCommands(message) || (await this.model.sendMessage(this.model.getOutgoingMessageAttributes(message, spoiler_hint)))) {
+          hint_el.value = '';
+          textarea.value = '';
+          _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].removeClass('correcting', textarea); // Trigger input event, so that the textarea resizes
+
+          const event = document.createEvent('Event');
+          event.initEvent('input', true, true);
+          textarea.dispatchEvent(event);
+
+          _converse.emit('messageSend', message);
+        }
+
+        textarea.removeAttribute('disabled');
+        textarea.focus(); // Suppress events, otherwise superfluous CSN gets set
         // immediately after the message, causing rate-limiting issues.
-
 
         this.setChatState(_converse.ACTIVE, {
           'silent': true
@@ -50441,9 +50433,13 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       },
 
       inputChanged(ev) {
-        ev.target.style.height = 'auto'; // Fixes weirdness
+        const new_height = ev.target.scrollHeight + 'px';
 
-        ev.target.style.height = ev.target.scrollHeight + 'px';
+        if (ev.target.style.height !== new_height) {
+          ev.target.style.height = 'auto'; // Fixes weirdness
+
+          ev.target.style.height = new_height;
+        }
       },
 
       clearMessages(ev) {
@@ -50750,8 +50746,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
             'silent': true
           });
           this.model.sendChatState();
-
-          _converse.connection.flush();
         }
       }
 
@@ -50924,6 +50918,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
    * NB: These plugins need to have already been loaded via require.js.
    */
   dependencies: ["converse-modal", "converse-chatboxes", "converse-rosterview", "converse-chatview"],
+
+  enabled(_converse) {
+    return _converse.view_mode !== 'embedded';
+  },
+
   overrides: {
     // Overrides mentioned here will be picked up by converse.js's
     // plugin architecture they will replace existing methods on the
@@ -50945,6 +50944,16 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
     },
 
     ChatBoxes: {
+      model(attrs, options) {
+        const _converse = this.__super__._converse;
+
+        if (attrs.id == 'controlbox') {
+          return new _converse.ControlBox(attrs, options);
+        } else {
+          return this.__super__.model.apply(this, arguments);
+        }
+      },
+
       chatBoxMayBeShown(chatbox) {
         return this.__super__.chatBoxMayBeShown.apply(this, arguments) && chatbox.get('id') !== 'controlbox';
       }
@@ -50983,6 +50992,20 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
     },
     ChatBox: {
+      validate(attrs, options) {
+        const _converse = this.__super__._converse;
+
+        if (attrs.type === _converse.CONTROLBOX_TYPE) {
+          if (_converse.view_mode === 'embedded') {
+            return 'Controlbox not relevant in embedded view mode';
+          }
+
+          return;
+        }
+
+        return this.__super__.validate.apply(this, arguments);
+      },
+
       initialize() {
         if (this.get('id') === 'controlbox') {
           this.set({
@@ -51027,15 +51050,28 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
     _converse.api.promises.add('controlboxInitialized');
 
-    _converse.addControlBox = () => {
-      return _converse.chatboxes.add({
-        'id': 'controlbox',
-        'box_id': 'controlbox',
-        'type': _converse.CONTROLBOX_TYPE,
-        'closed': !_converse.show_controlbox_by_default
-      });
-    };
+    const addControlBox = () => _converse.chatboxes.add({
+      'id': 'controlbox'
+    });
 
+    _converse.ControlBox = _converse.ChatBox.extend({
+      defaults: {
+        'bookmarked': false,
+        'box_id': 'controlbox',
+        'chat_state': undefined,
+        'closed': !_converse.show_controlbox_by_default,
+        'num_unread': 0,
+        'type': _converse.CONTROLBOX_TYPE,
+        'url': ''
+      },
+
+      initialize() {
+        u.safeSave(this, {
+          'time_opened': this.get('time_opened') || moment().valueOf()
+        });
+      }
+
+    });
     _converse.ControlBoxView = _converse.ChatBoxView.extend({
       tagName: 'div',
       className: 'chatbox',
@@ -51405,7 +51441,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         // We let the render method of ControlBoxView decide whether
         // the ControlBox or the Toggle must be shown. This prevents
         // artifacts (i.e. on page load the toggle is shown only to then
-        // seconds later be hidden in favor of the control box).
+        // seconds later be hidden in favor of the controlbox).
         this.el.innerHTML = templates_controlbox_toggle_html__WEBPACK_IMPORTED_MODULE_9___default()({
           'label_toggle': _converse.connection.connected ? __('Chat Contacts') : __('Toggle chat')
         });
@@ -51425,7 +51461,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         let controlbox = _converse.chatboxes.get('controlbox');
 
         if (!controlbox) {
-          controlbox = _converse.addControlBox();
+          controlbox = addControlBox();
         }
 
         if (_converse.connection.connected) {
@@ -51492,11 +51528,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       }
     });
 
-    Promise.all([_converse.api.waitUntil('connectionInitialized'), _converse.api.waitUntil('chatBoxViewsInitialized')]).then(_converse.addControlBox).catch(_.partial(_converse.log, _, Strophe.LogLevel.FATAL));
+    Promise.all([_converse.api.waitUntil('connectionInitialized'), _converse.api.waitUntil('chatBoxViewsInitialized')]).then(addControlBox).catch(_.partial(_converse.log, _, Strophe.LogLevel.FATAL));
 
     _converse.on('chatBoxesFetched', () => {
-      const controlbox = _converse.chatboxes.get('controlbox') || _converse.addControlBox();
-
+      const controlbox = _converse.chatboxes.get('controlbox') || addControlBox();
       controlbox.save({
         connected: true
       });
@@ -51518,6 +51553,32 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
     _converse.on('disconnected', () => disconnect().renderLoginPanel());
 
     _converse.on('will-reconnect', disconnect);
+    /************************ BEGIN API ************************/
+
+
+    _.extend(_converse.api, {
+      /**
+       * The "controlbox" namespace groups methods pertaining to the
+       * controlbox view
+       *
+       * @namespace _converse.api.controlbox
+       * @memberOf _converse.api
+       */
+      'controlbox': {
+        /**
+         * Retrieves the controlbox view.
+         *
+         * @example
+         * const view = _converse.api.controlbox.get();
+         *
+         * @returns {Backbone.View} View representing the controlbox
+         */
+        get() {
+          return _converse.chatboxviews.get('controlbox');
+        }
+
+      }
+    });
   }
 
 });
@@ -52424,13 +52485,13 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
             'whiteList': {}
           });
 
-            if (getSetting("useMarkdown", false))   // BAO
-            {
-                msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMarkdown, _converse), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
+          if (getSetting("useMarkdown", false))   // BAO
+          {
+              msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMarkdown, _converse), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
 
-            } else {
-                msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
-            }
+          } else {
+              msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
+          }
         }
 
         const promise = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderImageURLs(_converse, msg_content);
@@ -52608,7 +52669,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
   dependencies: ["converse-chatview", "converse-controlbox", "converse-muc", "converse-muc-views", "converse-headline"],
 
   enabled(_converse) {
-    return _converse.view_mode == 'overlayed';
+    return _converse.view_mode === 'overlayed';
   },
 
   overrides: {
@@ -52661,7 +52722,9 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
       _show() {
         const _converse = this.__super__._converse;
 
-        if (!this.model.get('minimized')) {
+        if (_converse.view_mode !== 'overlayed') {
+          return this.__super__._show.apply(this, arguments);
+        } else if (!this.model.get('minimized')) {
           this.__super__._show.apply(this, arguments);
 
           _converse.chatboxviews.trimChats(this);
@@ -53100,16 +53163,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
       },
 
       updateUnreadMessagesCounter() {
-        const ls = this.model.pluck('num_unread');
-        let count = 0,
-            i;
-
-        for (i = 0; i < ls.length; i++) {
-          count += ls[i];
-        }
-
         this.toggleview.model.save({
-          'num_unread': count
+          'num_unread': _.sum(this.model.pluck('num_unread'))
         });
         this.render();
       }
@@ -53154,15 +53209,21 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
       _converse.emit('minimizedChatsInitialized');
     }).catch(_.partial(_converse.log, _, Strophe.LogLevel.FATAL));
 
-    _converse.on('registeredGlobalEventHandlers', function () {
-      window.addEventListener("resize", _.debounce(function (ev) {
-        if (_converse.connection.connected) {
-          _converse.chatboxviews.trimChats();
-        }
-      }, 200));
-    });
+    const debouncedTrim = _.debounce(ev => {
+      if (_converse.view_mode !== 'overlayed' || !_converse.chatboxviews.trimChats) {
+        return;
+      }
 
-    _converse.on('controlBoxOpened', function (chatbox) {
+      if (_converse.connection.connected) {
+        _converse.chatboxviews.trimChats();
+      }
+    }, 200);
+
+    _converse.api.listen.on('registeredGlobalEventHandlers', () => window.addEventListener("resize", debouncedTrim));
+
+    _converse.api.listen.on('unregisteredGlobalEventHandlers', () => window.removeEventListener("resize", debouncedTrim));
+
+    _converse.api.listen.on('controlBoxOpened', function (chatbox) {
       // Wrapped in anon method because at scan time, chatboxviews
       // attr not set yet.
       if (_converse.connection.connected) {
@@ -53417,20 +53478,6 @@ const _converse$env = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_
       $msg = _converse$env.$msg,
       $pres = _converse$env.$pres;
 const u = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].env.utils;
-const ROOM_FEATURES_MAP = {
-  'passwordprotected': 'unsecured',
-  'unsecured': 'passwordprotected',
-  'hidden': 'publicroom',
-  'publicroom': 'hidden',
-  'membersonly': 'open',
-  'open': 'membersonly',
-  'persistent': 'temporary',
-  'temporary': 'persistent',
-  'nonanonymous': 'semianonymous',
-  'semianonymous': 'nonanonymous',
-  'moderated': 'unmoderated',
-  'unmoderated': 'moderated'
-};
 _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc-views', {
   /* Dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
@@ -53493,9 +53540,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
 
     _converse.api.settings.update({
       'auto_list_rooms': false,
-      'hide_muc_server': false,
-      // TODO: no longer implemented...
       'muc_disable_moderator_commands': false,
+      'roomconfig_whitelist': [],
       'visible_toolbar_buttons': {
         'toggle_occupants': true
       }
@@ -53836,11 +53882,12 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
         return templates_chatroom_details_modal_html__WEBPACK_IMPORTED_MODULE_9___default()(_.extend(this.model.toJSON(), {
           '_': _,
           '__': __,
+          'display_name': __('Groupchat info for %1$s', this.model.getDisplayName()),
+          'features': this.model.features.toJSON(),
+          'num_occupants': this.model.occupants.length,
           'topic': u.addHyperlinks(xss__WEBPACK_IMPORTED_MODULE_26___default.a.filterXSS(_.get(this.model.get('subject'), 'text'), {
             'whiteList': {}
-          })),
-          'display_name': __('Groupchat info for %1$s', this.model.getDisplayName()),
-          'num_occupants': this.model.occupants.length
+          }))
         }));
       }
 
@@ -53899,6 +53946,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
             this.model.occupants.on('change:role', this.informOfOccupantsRoleChange, this);
             this.model.occupants.on('change:affiliation', this.informOfOccupantsAffiliationChange, this);
         }
+
         this.createEmojiPicker();
         this.createOccupantsView();
         this.render().insertIntoDOM();
@@ -54245,6 +54293,22 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
         }
       },
 
+      destroy(groupchat, reason, onSuccess, onError) {
+        const destroy = $build("destroy");
+        const iq = $iq({
+          to: groupchat,
+          type: "set"
+        }).c("query", {
+          xmlns: Strophe.NS.MUC_OWNER
+        }).cnode(destroy.node);
+
+        if (reason && reason.length > 0) {
+          iq.c("reason", reason);
+        }
+
+        return _converse.api.sendIQ(iq);
+      },
+
       modifyRole(groupchat, nick, role, reason, onSuccess, onError) {
         const item = $build("item", {
           nick,
@@ -54318,12 +54382,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
       },
 
       parseMessageForCommands(text) {
-        if (_converse.ChatBoxView.prototype.parseMessageForCommands.apply(this, arguments)) {
-          return true;
-        }
-
         if (_converse.muc_disable_moderator_commands) {
-          return false;
+          return _converse.ChatBoxView.prototype.parseMessageForCommands.apply(this, arguments);
         }
 
         const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''],
@@ -54361,8 +54421,16 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
             this.modifyRole(this.model.get('jid'), args[0], 'participant', args[1], undefined, this.onCommandError.bind(this));
             break;
 
+          case 'destroy':
+            if (!this.verifyAffiliations(['owner'])) {
+              break;
+            }
+
+            this.destroy(this.model.get('jid'), args[0]).then(() => this.close()).catch(e => this.onCommandError(e));
+            break;
+
           case 'help':
-            this.showHelpMessages([`<strong>/admin</strong>: ${__("Change user's affiliation to admin")}`, `<strong>/ban</strong>: ${__('Ban user from groupchat')}`, `<strong>/clear</strong>: ${__('Remove messages')}`, `<strong>/deop</strong>: ${__('Change user role to participant')}`, `<strong>/help</strong>: ${__('Show this menu')}`, `<strong>/kick</strong>: ${__('Kick user from groupchat')}`, `<strong>/me</strong>: ${__('Write in 3rd person')}`, `<strong>/member</strong>: ${__('Grant membership to a user')}`, `<strong>/mute</strong>: ${__("Remove user's ability to post messages")}`, `<strong>/nick</strong>: ${__('Change your nickname')}`, `<strong>/op</strong>: ${__('Grant moderator role to user')}`, `<strong>/owner</strong>: ${__('Grant ownership of this groupchat')}`, `<strong>/register</strong>: ${__("Register a nickname for this room")}`, `<strong>/revoke</strong>: ${__("Revoke user's membership")}`, `<strong>/subject</strong>: ${__('Set groupchat subject')}`, `<strong>/topic</strong>: ${__('Set groupchat subject (alias for /subject)')}`, `<strong>/voice</strong>: ${__('Allow muted user to post messages')}`]);
+            this.showHelpMessages([`<strong>/admin</strong>: ${__("Change user's affiliation to admin")}`, `<strong>/ban</strong>: ${__('Ban user from groupchat')}`, `<strong>/clear</strong>: ${__('Remove messages')}`, `<strong>/deop</strong>: ${__('Change user role to participant')}`, `<strong>/destroy</strong>: ${__('Destroy room')}`, `<strong>/help</strong>: ${__('Show this menu')}`, `<strong>/kick</strong>: ${__('Kick user from groupchat')}`, `<strong>/me</strong>: ${__('Write in 3rd person')}`, `<strong>/member</strong>: ${__('Grant membership to a user')}`, `<strong>/mute</strong>: ${__("Remove user's ability to post messages")}`, `<strong>/nick</strong>: ${__('Change your nickname')}`, `<strong>/op</strong>: ${__('Grant moderator role to user')}`, `<strong>/owner</strong>: ${__('Grant ownership of this groupchat')}`, `<strong>/register</strong>: ${__("Register a nickname for this groupchat")}`, `<strong>/revoke</strong>: ${__("Revoke user's membership")}`, `<strong>/subject</strong>: ${__('Set groupchat subject')}`, `<strong>/topic</strong>: ${__('Set groupchat subject (alias for /subject)')}`, `<strong>/voice</strong>: ${__('Allow muted user to post messages')}`]);
             break;
 
           case 'kick':
@@ -54481,7 +54549,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
             break;
 
           default:
-            return false;
+            return _converse.ChatBoxView.prototype.parseMessageForCommands.apply(this, arguments);
         }
 
         return true;
@@ -54577,8 +54645,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
           fieldset_el.insertAdjacentHTML('beforeend', `<p class="form-help">${instructions}</p>`);
         }
 
-        _.each(fields, function (field) {
-          fieldset_el.insertAdjacentHTML('beforeend', u.xForm2webForm(field, stanza));
+        _.each(fields, field => {
+          if (_converse.roomconfig_whitelist.length === 0 || _.includes(_converse.roomconfig_whitelist, field.getAttribute('var'))) {
+            fieldset_el.insertAdjacentHTML('beforeend', u.xForm2webForm(field, stanza));
+          }
         }); // Render save/cancel buttons
 
 
@@ -55303,8 +55373,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
         this.model.on('change', this.render, this);
       },
 
-      toHTML() {    // BAO
-        var image = "data:" + _converse.DEFAULT_IMAGE_TYPE + ";base64," + _converse.DEFAULT_IMAGE;
+      toHTML() {
+        var image = "data:" + _converse.DEFAULT_IMAGE_TYPE + ";base64," + _converse.DEFAULT_IMAGE;  // BAO
 
         if ((this.model.get('nick') || this.model.get('jid')) && getSetting("converseRosterIcons"))
         {
@@ -55326,7 +55396,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
           // we only get a subset of the _ methods.
           'jid': '',
           'show': show,
-          'image': image,
+          'image': image,                                   // BAO
           'hint_show': _converse.PRETTY_CHAT_STATUS[show],
           'hint_occupant': __('Click to mention %1$s in your message.', this.model.get('nick')),
           'desc_moderator': __('This user is a moderator.'),
@@ -55358,19 +55428,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
         this.chatroomview = this.model.chatroomview;
         this.chatroomview.model.on('change:open', this.renderInviteWidget, this);
         this.chatroomview.model.on('change:affiliation', this.renderInviteWidget, this);
-        this.chatroomview.model.on('change:hidden', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:mam_enabled', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:membersonly', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:moderated', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:nonanonymous', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:open', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:passwordprotected', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:persistent', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:publicroom', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:semianonymous', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:temporary', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:unmoderated', this.onFeatureChanged, this);
-        this.chatroomview.model.on('change:unsecured', this.onFeatureChanged, this);
+        this.chatroomview.model.features.on('change', this.renderRoomFeatures, this);
         this.render();
         this.model.fetch({
           'add': true,
@@ -55412,46 +55470,19 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
       },
 
       renderRoomFeatures() {
-        const picks = _.pick(this.chatroomview.model.attributes, _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].ROOM_FEATURES),
-              iteratee = (a, v) => a || v,
-              el = this.el.querySelector('.chatroom-features');
+        const features = this.chatroomview.model.features,
+              picks = _.pick(features.attributes, _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].ROOM_FEATURES),
+              iteratee = (a, v) => a || v;
 
-        el.innerHTML = templates_chatroom_features_html__WEBPACK_IMPORTED_MODULE_11___default()(_.extend(this.chatroomview.model.toJSON(), {
-          '__': __,
-          'has_features': _.reduce(_.values(picks), iteratee)
-        }));
-        this.setOccupantsHeight();
-        return this;
-      },
-
-      onFeatureChanged(model) {
-        /* When a feature has been changed, it's logical opposite
-         * must be set to the opposite value.
-         *
-         * So for example, if "temporary" was set to "false", then
-         * "persistent" will be set to "true" in this method.
-         *
-         * Additionally a debounced render method is called to make
-         * sure the features widget gets updated.
-         */
-        if (_.isUndefined(this.debouncedRenderRoomFeatures)) {
-          this.debouncedRenderRoomFeatures = _.debounce(this.renderRoomFeatures, 100, {
-            'leading': false
-          });
+        if (_.reduce(_.values(picks), iteratee)) {
+          const el = this.el.querySelector('.chatroom-features');
+          el.innerHTML = templates_chatroom_features_html__WEBPACK_IMPORTED_MODULE_11___default()(_.extend(features.toJSON(), {
+            __
+          }));
+          this.setOccupantsHeight();
         }
 
-        const changed_features = {};
-
-        _.each(_.keys(model.changed), function (k) {
-          if (!_.isNil(ROOM_FEATURES_MAP[k])) {
-            changed_features[ROOM_FEATURES_MAP[k]] = !model.changed[k];
-          }
-        });
-
-        this.chatroomview.model.save(changed_features, {
-          'silent': true
-        });
-        this.debouncedRenderRoomFeatures();
+        return this;
       },
 
       setOccupantsHeight() {
@@ -55760,7 +55791,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     };
 
     _converse.isMessageToHiddenChat = function (message) {
-      if (_.includes(['mobile', 'fullscreen', 'embedded'], _converse.view_mode)) {
+      if (_converse.isUniView()) {
         const jid = Strophe.getBareJidFromJid(message.getAttribute('from')),
               view = _converse.chatboxviews.get(jid);
 
@@ -55826,6 +55857,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       /* Shows an HTML5 Notification to indicate that a new chat
        * message was received.
        */
+      if (!_converse.areDesktopNotificationsEnabled()) {
+        return;
+      }
+
       let title, roster_item;
       const full_from_jid = message.getAttribute('from'),
             from_jid = Strophe.getBareJidFromJid(full_from_jid);
@@ -55955,11 +55990,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         return false;
       }
 
+      _converse.api.emit('messageNotification', message);
+
       _converse.playSoundNotification();
 
-      if (_converse.areDesktopNotificationsEnabled()) {
-        _converse.showMessageNotification(message);
-      }
+      _converse.showMessageNotification(message);
     };
 
     _converse.handleContactRequestNotification = function (contact) {
@@ -56028,6 +56063,7 @@ const _converse$env = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_
       Strophe = _converse$env.Strophe,
       moment = _converse$env.moment,
       sizzle = _converse$env.sizzle,
+      $build = _converse$env.$build,
       $iq = _converse$env.$iq,
       $msg = _converse$env.$msg,
       _ = _converse$env._,
@@ -56046,6 +56082,15 @@ const KEY_ALGO = {
   'name': "AES-GCM",
   'length': 128
 };
+
+class IQError extends Error {
+  constructor(message, iq) {
+    super(message, iq);
+    this.name = 'IQError';
+    this.iq = iq;
+  }
+
+}
 
 function parseBundle(bundle_el) {
   /* Given an XML element representing a user's OMEMO bundle, parse it
@@ -56078,7 +56123,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     return !_.isNil(window.libsignal) && !f.includes('converse-omemo', _converse.blacklisted_plugins);
   },
 
-  dependencies: ["converse-chatview"],
+  dependencies: ["converse-chatview", "converse-pubsub"],
   overrides: {
     ProfileModal: {
       events: {
@@ -56147,7 +56192,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
               api = _converse.api;
         ev.preventDefault();
 
-        if (confirm(__("Are you sure you want to generate new OMEMO keys? " + "This will remove your old keys and all previously encrypted messages will no longer be ecryptable on this device."))) {
+        if (confirm(__("Are you sure you want to generate new OMEMO keys? " + "This will remove your old keys and all previously encrypted messages will no longer be decryptable on this device."))) {
           api.omemo.bundle.generate();
         }
       }
@@ -56180,54 +56225,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
     },
     ChatBox: {
-      getBundlesAndBuildSessions() {
-        const _converse = this.__super__._converse;
-        let devices;
-        return _converse.getDevicesForContact(this.get('jid')).then(their_devices => {
-          const device_id = _converse.omemo_store.get('device_id'),
-                devicelist = _converse.devicelists.get(_converse.bare_jid),
-                own_devices = devicelist.devices.filter(device => device.get('id') !== device_id);
-
-          devices = _.concat(own_devices, their_devices.models);
-          return Promise.all(devices.map(device => device.getBundle()));
-        }).then(() => this.buildSessions(devices));
-      },
-
-      async buildSession(device) {
-        const _converse = this.__super__._converse,
-              address = new libsignal.SignalProtocolAddress(device.get('jid'), device.get('id')),
-              sessionBuilder = new libsignal.SessionBuilder(_converse.omemo_store, address),
-              prekey = device.getRandomPreKey(),
-              bundle = await device.getBundle();
-        return sessionBuilder.processPreKey({
-          'registrationId': parseInt(device.get('id'), 10),
-          'identityKey': u.base64ToArrayBuffer(bundle.identity_key),
-          'signedPreKey': {
-            'keyId': bundle.signed_prekey.id,
-            // <Number>
-            'publicKey': u.base64ToArrayBuffer(bundle.signed_prekey.public_key),
-            'signature': u.base64ToArrayBuffer(bundle.signed_prekey.signature)
-          },
-          'preKey': {
-            'keyId': prekey.id,
-            // <Number>
-            'publicKey': u.base64ToArrayBuffer(prekey.key)
-          }
-        });
-      },
-
-      getSession(device) {
-        const _converse = this.__super__._converse,
-              address = new libsignal.SignalProtocolAddress(device.get('jid'), device.get('id'));
-        return _converse.omemo_store.loadSession(address.toString()).then(session => {
-          if (session) {
-            return Promise.resolve();
-          } else {
-            return this.buildSession(device);
-          }
-        });
-      },
-
       async encryptMessage(plaintext) {
         // The client MUST use fresh, randomly generated key/IV pairs
         // with AES-128 in Galois/Counter Mode (GCM).
@@ -56356,20 +56353,16 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         }
       },
 
-      getMessageAttributesFromStanza(stanza, original_stanza) {
+      async getMessageAttributesFromStanza(stanza, original_stanza) {
         const _converse = this.__super__._converse,
               encrypted = sizzle(`encrypted[xmlns="${Strophe.NS.OMEMO}"]`, original_stanza).pop(),
-              attrs = this.__super__.getMessageAttributesFromStanza.apply(this, arguments);
+              attrs = await this.__super__.getMessageAttributesFromStanza.apply(this, arguments);
 
         if (!encrypted || !_converse.config.get('trusted')) {
           return attrs;
         } else {
           return this.getEncryptionAttributesfromStanza(stanza, original_stanza, attrs);
         }
-      },
-
-      buildSessions(devices) {
-        return Promise.all(devices.map(device => this.getSession(device))).then(() => devices);
       },
 
       getSessionCipher(jid, id) {
@@ -56386,95 +56379,49 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         }));
       },
 
-      addKeysToMessageStanza(stanza, dicts, iv) {
-        for (var i in dicts) {
-          if (Object.prototype.hasOwnProperty.call(dicts, i)) {
-            const payload = dicts[i].payload,
-                  device = dicts[i].device,
-                  prekey = 3 == parseInt(payload.type, 10);
-            stanza.c('key', {
-              'rid': device.get('id')
-            }).t(btoa(payload.body));
-
-            if (prekey) {
-              stanza.attrs({
-                'prekey': prekey
-              });
-            }
-
-            stanza.up();
-
-            if (i == dicts.length - 1) {
-              stanza.c('iv').t(iv).up().up();
-            }
-          }
-        }
-
-        return Promise.resolve(stanza);
-      },
-
-      createOMEMOMessageStanza(message, devices) {
+      handleMessageSendError(e) {
         const _converse = this.__super__._converse,
               __ = _converse.__;
 
-        const body = __("This is an OMEMO encrypted message which your client doesn’t seem to support. " + "Find more information on https://conversations.im/omemo");
+        if (e.name === 'IQError') {
+          this.save('omemo_supported', false);
+          const err_msgs = [];
 
-        if (!message.get('message')) {
-          throw new Error("No message body to encrypt!");
+          if (sizzle(`presence-subscription-required[xmlns="${Strophe.NS.PUBSUB_ERROR}"]`, e.iq).length) {
+            err_msgs.push(__("Sorry, we're unable to send an encrypted message because %1$s " + "requires you to be subscribed to their presence in order to see their OMEMO information", e.iq.getAttribute('from')));
+          } else if (sizzle(`remote-server-not-found[xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"]`, e.iq).length) {
+            err_msgs.push(__("Sorry, we're unable to send an encrypted message because the remote server for %1$s could not be found", e.iq.getAttribute('from')));
+          } else {
+            err_msgs.push(__("Unable to send an encrypted message due to an unexpected error."));
+            err_msgs.push(e.iq.outerHTML);
+          }
+
+          _converse.api.alert.show(Strophe.LogLevel.ERROR, __('Error'), err_msgs);
+
+          _converse.log(e, Strophe.LogLevel.ERROR);
+        } else {
+          throw e;
         }
-
-        const stanza = $msg({
-          'from': _converse.connection.jid,
-          'to': this.get('jid'),
-          'type': this.get('message_type'),
-          'id': message.get('msgid')
-        }).c('body').t(body).up().c('request', {
-          'xmlns': Strophe.NS.RECEIPTS
-        }).up() // An encrypted header is added to the message for
-        // each device that is supposed to receive it.
-        // These headers simply contain the key that the
-        // payload message is encrypted with,
-        // and they are separately encrypted using the
-        // session corresponding to the counterpart device.
-        .c('encrypted', {
-          'xmlns': Strophe.NS.OMEMO
-        }).c('header', {
-          'sid': _converse.omemo_store.get('device_id')
-        });
-        return this.encryptMessage(message.get('message')).then(obj => {
-          // The 16 bytes key and the GCM authentication tag (The tag
-          // SHOULD have at least 128 bit) are concatenated and for each
-          // intended recipient device, i.e. both own devices as well as
-          // devices associated with the contact, the result of this
-          // concatenation is encrypted using the corresponding
-          // long-standing SignalProtocol session.
-          const promises = devices.filter(device => device.get('trusted') != UNTRUSTED).map(device => this.encryptKey(obj.key_and_tag, device));
-          return Promise.all(promises).then(dicts => this.addKeysToMessageStanza(stanza, dicts, obj.iv)).then(stanza => {
-            stanza.c('payload').t(obj.payload).up().up();
-            stanza.c('store', {
-              'xmlns': Strophe.NS.HINTS
-            });
-            return stanza;
-          });
-        });
       },
 
-      sendMessage(attrs) {
+      async sendMessage(attrs) {
         const _converse = this.__super__._converse,
               __ = _converse.__;
 
         if (this.get('omemo_active') && attrs.message) {
           attrs['is_encrypted'] = true;
           attrs['plaintext'] = attrs.message;
-          const message = this.messages.create(attrs);
-          this.getBundlesAndBuildSessions().then(devices => this.createOMEMOMessageStanza(message, devices)).then(stanza => this.sendMessageStanza(stanza)).catch(e => {
-            this.messages.create({
-              'message': __("Sorry, could not send the message due to an error.") + ` ${e.message}`,
-              'type': 'error'
-            });
 
-            _converse.log(e, Strophe.LogLevel.ERROR);
-          });
+          try {
+            const devices = await _converse.getBundlesAndBuildSessions(this);
+            const stanza = await _converse.createOMEMOMessageStanza(this, this.messages.create(attrs), devices);
+            this.sendMessageStanza(stanza);
+          } catch (e) {
+            this.handleMessageSendError(e);
+            return false;
+          }
+
+          return true;
         } else {
           return this.__super__.sendMessage.apply(this, arguments);
         }
@@ -56486,6 +56433,13 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         'click .toggle-omemo': 'toggleOMEMO'
       },
 
+      initialize() {
+        this.__super__.initialize.apply(this, arguments);
+
+        this.model.on('change:omemo_active', this.renderOMEMOToolbarButton, this);
+        this.model.on('change:omemo_supported', this.onOMEMOSupportedDetermined, this);
+      },
+
       showMessage(message) {
         // We don't show a message if it's only keying material
         if (!message.get('is_only_key')) {
@@ -56493,31 +56447,80 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         }
       },
 
-      async renderOMEMOToolbarButton() {
+      onOMEMOSupportedDetermined() {
+        if (!this.model.get('omemo_supported') && this.model.get('omemo_active')) {
+          this.model.set('omemo_active', false); // Will cause render
+        } else {
+          this.renderOMEMOToolbarButton();
+        }
+      },
+
+      renderOMEMOToolbarButton() {
         const _converse = this.__super__._converse,
-              __ = _converse.__;
-        const support = await _converse.contactHasOMEMOSupport(this.model.get('jid'));
+              __ = _converse.__,
+              icon = this.el.querySelector('.toggle-omemo'),
+              html = templates_toolbar_omemo_html__WEBPACK_IMPORTED_MODULE_1___default()(_.extend(this.model.toJSON(), {
+          '__': __
+        }));
 
-        if (support) {
-          const icon = this.el.querySelector('.toggle-omemo'),
-                html = templates_toolbar_omemo_html__WEBPACK_IMPORTED_MODULE_1___default()(_.extend(this.model.toJSON(), {
-            '__': __
-          }));
-
-          if (icon) {
-            icon.outerHTML = html;
-          } else {
-            this.el.querySelector('.chat-toolbar').insertAdjacentHTML('beforeend', html);
-          }
+        if (icon) {
+          icon.outerHTML = html;
+        } else {
+          this.el.querySelector('.chat-toolbar').insertAdjacentHTML('beforeend', html);
         }
       },
 
       toggleOMEMO(ev) {
+        const _converse = this.__super__._converse,
+              __ = _converse.__;
+
+        if (!this.model.get('omemo_supported')) {
+          return _converse.api.alert.show(Strophe.LogLevel.ERROR, __('Error'), [__("Cannot use end-to-end encryption because %1$s uses a client that doesn't support OMEMO.", this.model.contact.getDisplayName())]);
+        }
+
         ev.preventDefault();
         this.model.save({
           'omemo_active': !this.model.get('omemo_active')
         });
-        this.renderOMEMOToolbarButton();
+      }
+
+    },
+    ChatRoomView: {
+      events: {
+        'click .toggle-omemo': 'toggleOMEMO'
+      },
+
+      initialize() {
+        this.__super__.initialize.apply(this, arguments);
+
+        this.model.on('change:omemo_active', this.renderOMEMOToolbarButton, this);
+        this.model.on('change:omemo_supported', this.onOMEMOSupportedDetermined, this);
+      },
+
+      toggleOMEMO(ev) {
+        const _converse = this.__super__._converse,
+              __ = _converse.__;
+
+        if (!this.model.get('omemo_supported')) {
+          return _converse.api.alert.show(Strophe.LogLevel.ERROR, __('Error'), [__('Cannot use end-to-end encryption in this groupchat, ' + 'either the groupchat has some anonymity or not all participants support OMEMO.')]);
+        }
+
+        ev.preventDefault();
+        this.model.save({
+          'omemo_active': !this.model.get('omemo_active')
+        });
+      },
+
+      renderOMEMOToolbarButton() {
+        if (this.model.features.get('membersonly') && this.model.features.get('nonanonymous')) {
+          this.__super__.renderOMEMOToolbarButton.apply(arguments);
+        } else {
+          const icon = this.el.querySelector('.toggle-omemo');
+
+          if (icon) {
+            icon.parentElement.removeChild(icon);
+          }
+        }
       }
 
     }
@@ -56527,7 +56530,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     /* The initialize function gets called as soon as the plugin is
      * loaded by Converse.js's plugin machinery.
      */
-    const _converse = this._converse;
+    const _converse = this._converse,
+          __ = _converse.__;
 
     _converse.api.promises.add(['OMEMOInitialized']);
 
@@ -56545,15 +56549,15 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     }
 
     _converse.generateFingerprints = async function (jid) {
-      const devices = await _converse.getDevicesForContact(jid);
+      const devices = await getDevicesForContact(jid);
       return Promise.all(devices.map(d => generateFingerprint(d)));
     };
 
     _converse.getDeviceForContact = function (jid, device_id) {
-      return _converse.getDevicesForContact(jid).then(devices => devices.get(device_id));
+      return getDevicesForContact(jid).then(devices => devices.get(device_id));
     };
 
-    _converse.getDevicesForContact = async function (jid) {
+    async function getDevicesForContact(jid) {
       await _converse.api.waitUntil('OMEMOInitialized');
 
       const devicelist = _converse.devicelists.get(jid) || _converse.devicelists.create({
@@ -56562,11 +56566,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
       await devicelist.fetchDevices();
       return devicelist.devices;
-    };
+    }
 
     _converse.contactHasOMEMOSupport = async function (jid) {
       /* Checks whether the contact advertises any OMEMO-compatible devices. */
-      const devices = await _converse.getDevicesForContact(jid);
+      const devices = await getDevicesForContact(jid);
       return devices.length > 0;
     };
 
@@ -56588,6 +56592,140 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
       return device_id.toString();
     }
+
+    async function buildSession(device) {
+      const address = new libsignal.SignalProtocolAddress(device.get('jid'), device.get('id')),
+            sessionBuilder = new libsignal.SessionBuilder(_converse.omemo_store, address),
+            prekey = device.getRandomPreKey(),
+            bundle = await device.getBundle();
+      return sessionBuilder.processPreKey({
+        'registrationId': parseInt(device.get('id'), 10),
+        'identityKey': u.base64ToArrayBuffer(bundle.identity_key),
+        'signedPreKey': {
+          'keyId': bundle.signed_prekey.id,
+          // <Number>
+          'publicKey': u.base64ToArrayBuffer(bundle.signed_prekey.public_key),
+          'signature': u.base64ToArrayBuffer(bundle.signed_prekey.signature)
+        },
+        'preKey': {
+          'keyId': prekey.id,
+          // <Number>
+          'publicKey': u.base64ToArrayBuffer(prekey.key)
+        }
+      });
+    }
+
+    function getSession(device) {
+      const address = new libsignal.SignalProtocolAddress(device.get('jid'), device.get('id'));
+      return _converse.omemo_store.loadSession(address.toString()).then(session => {
+        if (session) {
+          return Promise.resolve();
+        } else {
+          return buildSession(device);
+        }
+      });
+    }
+
+    _converse.getBundlesAndBuildSessions = async function (chatbox) {
+      let devices;
+
+      const id = _converse.omemo_store.get('device_id');
+
+      if (chatbox.get('type') === _converse.CHATROOMS_TYPE) {
+        const collections = await Promise.all(chatbox.occupants.map(o => getDevicesForContact(o.get('jid'))));
+        devices = collections.reduce((a, b) => _.concat(a, b.models), []);
+      } else if (chatbox.get('type') === _converse.PRIVATE_CHAT_TYPE) {
+        const their_devices = await getDevicesForContact(chatbox.get('jid')),
+              devicelist = _converse.devicelists.get(_converse.bare_jid),
+              own_devices = devicelist.devices.filter(d => d.get('id') !== id);
+
+        devices = _.concat(own_devices, their_devices.models);
+      } // Filter out our own device
+
+
+      devices = devices.filter(d => d.get('id') !== id);
+      await Promise.all(devices.map(d => d.getBundle()));
+      await Promise.all(devices.map(d => getSession(d)));
+      return devices;
+    };
+
+    function addKeysToMessageStanza(stanza, dicts, iv) {
+      for (var i in dicts) {
+        if (Object.prototype.hasOwnProperty.call(dicts, i)) {
+          const payload = dicts[i].payload,
+                device = dicts[i].device,
+                prekey = 3 == parseInt(payload.type, 10);
+          stanza.c('key', {
+            'rid': device.get('id')
+          }).t(btoa(payload.body));
+
+          if (prekey) {
+            stanza.attrs({
+              'prekey': prekey
+            });
+          }
+
+          stanza.up();
+
+          if (i == dicts.length - 1) {
+            stanza.c('iv').t(iv).up().up();
+          }
+        }
+      }
+
+      return Promise.resolve(stanza);
+    }
+
+    _converse.createOMEMOMessageStanza = function (chatbox, message, devices) {
+      const __ = _converse.__;
+
+      const body = __("This is an OMEMO encrypted message which your client doesn’t seem to support. " + "Find more information on https://conversations.im/omemo");
+
+      if (!message.get('message')) {
+        throw new Error("No message body to encrypt!");
+      }
+
+      const stanza = $msg({
+        'from': _converse.connection.jid,
+        'to': chatbox.get('jid'),
+        'type': chatbox.get('message_type'),
+        'id': message.get('msgid')
+      }).c('body').t(body).up();
+
+      if (message.get('type') === 'chat') {
+        stanza.c('request', {
+          'xmlns': Strophe.NS.RECEIPTS
+        }).up();
+      } // An encrypted header is added to the message for
+      // each device that is supposed to receive it.
+      // These headers simply contain the key that the
+      // payload message is encrypted with,
+      // and they are separately encrypted using the
+      // session corresponding to the counterpart device.
+
+
+      stanza.c('encrypted', {
+        'xmlns': Strophe.NS.OMEMO
+      }).c('header', {
+        'sid': _converse.omemo_store.get('device_id')
+      });
+      return chatbox.encryptMessage(message.get('message')).then(obj => {
+        // The 16 bytes key and the GCM authentication tag (The tag
+        // SHOULD have at least 128 bit) are concatenated and for each
+        // intended recipient device, i.e. both own devices as well as
+        // devices associated with the contact, the result of this
+        // concatenation is encrypted using the corresponding
+        // long-standing SignalProtocol session.
+        const promises = devices.filter(device => device.get('trusted') != UNTRUSTED).map(device => chatbox.encryptKey(obj.key_and_tag, device));
+        return Promise.all(promises).then(dicts => addKeysToMessageStanza(stanza, dicts, obj.iv)).then(stanza => {
+          stanza.c('payload').t(obj.payload).up().up();
+          stanza.c('store', {
+            'xmlns': Strophe.NS.HINTS
+          });
+          return stanza;
+        });
+      });
+    };
 
     _converse.OMEMOStore = Backbone.Model.extend({
       Direction: {
@@ -56758,27 +56896,24 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
       publishBundle() {
         const signed_prekey = this.get('signed_prekey');
-        const stanza = $iq({
-          'from': _converse.bare_jid,
-          'type': 'set'
-        }).c('pubsub', {
-          'xmlns': Strophe.NS.PUBSUB
-        }).c('publish', {
-          'node': `${Strophe.NS.OMEMO_BUNDLES}:${this.get('device_id')}`
-        }).c('item').c('bundle', {
+        const node = `${Strophe.NS.OMEMO_BUNDLES}:${this.get('device_id')}`;
+        const item = $build('item').c('bundle', {
           'xmlns': Strophe.NS.OMEMO
         }).c('signedPreKeyPublic', {
           'signedPreKeyId': signed_prekey.id
         }).t(signed_prekey.pubKey).up().c('signedPreKeySignature').t(signed_prekey.signature).up().c('identityKey').t(this.get('identity_keypair').pubKey).up().c('prekeys');
 
-        _.forEach(this.get('prekeys'), (prekey, id) => stanza.c('preKeyPublic', {
+        _.forEach(this.get('prekeys'), (prekey, id) => item.c('preKeyPublic', {
           'preKeyId': id
         }).t(prekey.pubKey).up());
 
-        return _converse.api.sendIQ(stanza);
+        const options = {
+          'pubsub#access_model': 'open'
+        };
+        return _converse.api.pubsub.publish(null, node, item, options, false);
       },
 
-      generateMissingPreKeys() {
+      async generateMissingPreKeys() {
         const current_keys = this.getPreKeys(),
               missing_keys = _.difference(_.invokeMap(_.range(0, _converse.NUM_PREKEYS), Number.prototype.toString), _.keys(current_keys));
 
@@ -56788,20 +56923,21 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
           return Promise.resolve();
         }
 
-        return Promise.all(_.map(missing_keys, id => libsignal.KeyHelper.generatePreKey(parseInt(id, 10)))).then(keys => {
-          _.forEach(keys, k => this.storePreKey(k.keyId, k.keyPair));
+        const keys = await Promise.all(_.map(missing_keys, id => libsignal.KeyHelper.generatePreKey(parseInt(id, 10))));
 
-          const marshalled_keys = _.map(this.getPreKeys(), k => ({
-            'id': k.keyId,
-            'key': u.arrayBufferToBase64(k.pubKey)
-          })),
-                devicelist = _converse.devicelists.get(_converse.bare_jid),
-                device = devicelist.devices.get(this.get('device_id'));
+        _.forEach(keys, k => this.storePreKey(k.keyId, k.keyPair));
 
-          return device.getBundle().then(bundle => device.save('bundle', _.extend(bundle, {
-            'prekeys': marshalled_keys
-          })));
-        });
+        const marshalled_keys = _.map(this.getPreKeys(), k => ({
+          'id': k.keyId,
+          'key': u.arrayBufferToBase64(k.pubKey)
+        })),
+              devicelist = _converse.devicelists.get(_converse.bare_jid),
+              device = devicelist.devices.get(this.get('device_id'));
+
+        const bundle = await device.getBundle();
+        device.save('bundle', _.extend(bundle, {
+          'prekeys': marshalled_keys
+        }));
       },
 
       async generateBundle() {
@@ -56885,7 +57021,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         return bundle.prekeys[u.getRandomInt(bundle.prekeys.length)];
       },
 
-      fetchBundleFromServer() {
+      async fetchBundleFromServer() {
         const stanza = $iq({
           'type': 'get',
           'from': _converse.bare_jid,
@@ -56895,15 +57031,23 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         }).c('items', {
           'node': `${Strophe.NS.OMEMO_BUNDLES}:${this.get('id')}`
         });
-        return _converse.api.sendIQ(stanza).then(iq => {
-          const publish_el = sizzle(`items[node="${Strophe.NS.OMEMO_BUNDLES}:${this.get('id')}"]`, iq).pop(),
-                bundle_el = sizzle(`bundle[xmlns="${Strophe.NS.OMEMO}"]`, publish_el).pop(),
-                bundle = parseBundle(bundle_el);
-          this.save('bundle', bundle);
-          return bundle;
-        }).catch(iq => {
-          _converse.log(iq.outerHTML, Strophe.LogLevel.ERROR);
-        });
+        let iq;
+
+        try {
+          iq = await _converse.api.sendIQ(stanza);
+        } catch (iq) {
+          throw new IQError("Could not fetch bundle", iq);
+        }
+
+        if (iq.querySelector('error')) {
+          throw new IQError("Could not fetch bundle", iq);
+        }
+
+        const publish_el = sizzle(`items[node="${Strophe.NS.OMEMO_BUNDLES}:${this.get('id')}"]`, iq).pop(),
+              bundle_el = sizzle(`bundle[xmlns="${Strophe.NS.OMEMO}"]`, publish_el).pop(),
+              bundle = parseBundle(bundle_el);
+        this.save('bundle', bundle);
+        return bundle;
       },
 
       getBundle() {
@@ -56927,7 +57071,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       initialize() {
         this.devices = new _converse.Devices();
         const id = `converse.devicelist-${_converse.bare_jid}-${this.get('jid')}`;
-        this.devices.browserStorage = new Backbone.BrowserStorage.session(id);
+
+        const storage = _converse.config.get('storage');
+
+        this.devices.browserStorage = new Backbone.BrowserStorage[storage](id);
         this.fetchDevices();
       },
 
@@ -56937,7 +57084,19 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
             this.devices.fetch({
               'success': async collection => {
                 if (collection.length === 0) {
-                  const ids = await this.fetchDevicesFromServer();
+                  let ids;
+
+                  try {
+                    ids = await this.fetchDevicesFromServer();
+                  } catch (e) {
+                    _converse.log(`Could not fetch devices for ${this.get('jid')}`);
+
+                    _converse.log(e, Strophe.LogLevel.ERROR);
+
+                    this.destroy();
+                    return resolve(e);
+                  }
+
                   await this.publishCurrentDevice(ids);
                 }
 
@@ -56946,7 +57105,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
               'error': e => {
                 _converse.log(e, Strophe.LogLevel.ERROR);
 
-                resolve();
+                resolve(e);
               }
             });
           });
@@ -57009,20 +57168,16 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       },
 
       publishDevices() {
-        const stanza = $iq({
-          'from': _converse.bare_jid,
-          'type': 'set'
-        }).c('pubsub', {
-          'xmlns': Strophe.NS.PUBSUB
-        }).c('publish', {
-          'node': Strophe.NS.OMEMO_DEVICELIST
-        }).c('item').c('list', {
+        const item = $build('item').c('list', {
           'xmlns': Strophe.NS.OMEMO
         });
-        this.devices.each(device => stanza.c('device', {
-          'id': device.get('id')
+        this.devices.each(d => item.c('device', {
+          'id': d.get('id')
         }).up());
-        return _converse.api.sendIQ(stanza);
+        const options = {
+          'pubsub#access_model': 'open'
+        };
+        return _converse.api.pubsub.publish(null, Strophe.NS.OMEMO_DEVICELIST, item, options, false);
       },
 
       removeOwnDevices(device_ids) {
@@ -57041,23 +57196,24 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     });
 
     function fetchDeviceLists() {
-      return new Promise((resolve, reject) => _converse.devicelists.fetch({
-        'success': resolve
+      return new Promise((success, error) => _converse.devicelists.fetch({
+        success,
+        error
       }));
     }
 
-    function fetchOwnDevices() {
-      return fetchDeviceLists().then(() => {
-        let own_devicelist = _converse.devicelists.get(_converse.bare_jid);
+    async function fetchOwnDevices() {
+      await fetchDeviceLists();
 
-        if (_.isNil(own_devicelist)) {
-          own_devicelist = _converse.devicelists.create({
-            'jid': _converse.bare_jid
-          });
-        }
+      let own_devicelist = _converse.devicelists.get(_converse.bare_jid);
 
-        return own_devicelist.fetchDevices();
-      });
+      if (_.isNil(own_devicelist)) {
+        own_devicelist = _converse.devicelists.create({
+          'jid': _converse.bare_jid
+        });
+      }
+
+      return own_devicelist.fetchDevices();
     }
 
     function updateBundleFromStanza(stanza) {
@@ -57154,7 +57310,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       return _converse.omemo_store.fetchSession();
     }
 
-    function initOMEMO() {
+    async function initOMEMO() {
       if (!_converse.config.get('trusted')) {
         return;
       }
@@ -57165,8 +57321,55 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
             id = `converse.devicelists-${_converse.bare_jid}`;
 
       _converse.devicelists.browserStorage = new Backbone.BrowserStorage[storage](id);
-      fetchOwnDevices().then(() => restoreOMEMOSession()).then(() => _converse.omemo_store.publishBundle()).then(() => _converse.emit('OMEMOInitialized')).catch(_.partial(_converse.log, _, Strophe.LogLevel.ERROR));
+      await fetchOwnDevices();
+      await restoreOMEMOSession();
+      await _converse.omemo_store.publishBundle();
+
+      _converse.emit('OMEMOInitialized');
     }
+
+    async function onOccupantAdded(chatroom, occupant) {
+      if (occupant.isSelf() || !chatroom.features.get('nonanonymous') || !chatroom.features.get('membersonly')) {
+        return;
+      }
+
+      if (chatroom.get('omemo_active')) {
+        const supported = await _converse.contactHasOMEMOSupport(occupant.get('jid'));
+
+        if (!supported) {
+          chatroom.messages.create({
+            'message': __("%1$s doesn't appear to have a client that supports OMEMO. " + "Encrypted chat will no longer be possible in this grouchat.", occupant.get('nick')),
+            'type': 'error'
+          });
+          chatroom.save({
+            'omemo_active': false,
+            'omemo_supported': false
+          });
+        }
+      }
+    }
+
+    async function checkOMEMOSupported(chatbox) {
+      let supported;
+
+      if (chatbox.get('type') === _converse.CHATROOMS_TYPE) {
+        await _converse.api.waitUntil('OMEMOInitialized');
+        supported = chatbox.features.get('nonanonymous') && chatbox.features.get('membersonly');
+      } else if (chatbox.get('type') === _converse.PRIVATE_CHAT_TYPE) {
+        supported = await _converse.contactHasOMEMOSupport(chatbox.get('jid'));
+      }
+
+      chatbox.set('omemo_supported', supported);
+    }
+
+    _converse.api.waitUntil('chatBoxesInitialized').then(() => _converse.chatboxes.on('add', chatbox => {
+      checkOMEMOSupported(chatbox);
+
+      if (chatbox.get('type') === _converse.CHATROOMS_TYPE) {
+        chatbox.occupants.on('add', o => onOccupantAdded(chatbox, o));
+        chatbox.features.on('change', () => checkOMEMOSupported(chatbox));
+      }
+    }));
 
     _converse.api.listen.on('afterTearDown', () => {
       if (_converse.devicelists) {
@@ -57471,7 +57674,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           'modal_title': __('About'),
           'version_name': _converse.VERSION_NAME,   // BAO
           'first_subtitle': "", //__('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
-          'second_subtitle': "" //__('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
+          'second_subtitle': "", //__('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
         }));
       }
 
@@ -57706,19 +57909,21 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
       const enabled_services = _.reject(_converse.push_app_servers, 'disable');
 
+      const disabled_services = _.filter(_converse.push_app_servers, 'disable');
+
       try {
-        await Promise.all(_.map(enabled_services, _.partial(enablePushAppServer, domain)));
+        const enabled = _.map(enabled_services, _.partial(enablePushAppServer, domain));
+
+        const disabled = _.map(disabled_services, _.partial(disablePushAppServer, domain));
+
+        await Promise.all(enabled.concat(disabled));
       } catch (e) {
-        _converse.log('Could not enable push App Server', Strophe.LogLevel.ERROR);
+        _converse.log('Could not enable or disable push App Server', Strophe.LogLevel.ERROR);
 
         if (e) _converse.log(e, Strophe.LogLevel.ERROR);
       } finally {
         push_enabled.push(domain);
       }
-
-      const disabled_services = _.filter(_converse.push_app_servers, 'disable');
-
-      _.each(disabled_services, _.partial(disablePushAppServer, domain));
 
       _converse.session.save('push_enabled', push_enabled);
     }
@@ -58023,7 +58228,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
 
         if (register.length === 0) {
           conn._changeConnectStatus(Strophe.Status.REGIFAIL);
-
 
           this.showValidationError(__("Sorry, the given provider does not support in " + "band account registration. Please try with a " + "different provider."));
           return true;
@@ -58569,7 +58773,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
      * loaded by converse.js's plugin machinery.
      */
     const _converse = this._converse,
-          __ = _converse.__;
+          __ = _converse.__; // Promises exposed by this plugin
+
+    _converse.api.promises.add('roomsListInitialized');
+
     _converse.OpenRooms = Backbone.Collection.extend({
       comparator(room) {
         if (room.get('bookmarked')) {
@@ -58654,7 +58861,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
           // supported by the XMPP server. So we can use it
           // as a check for support (other ways of checking are async).
           'allow_bookmarks': _converse.allow_bookmarks && _converse.bookmarks,
-          'currently_open': _converse.isSingleton() && !this.model.get('hidden'),
+          'currently_open': _converse.isUniView() && !this.model.get('hidden'),
           'info_leave_room': __('Leave this groupchat'),
           'info_remove_bookmark': __('Unbookmark this groupchat'),
           'info_add_bookmark': __('Bookmark this groupchat'),
@@ -58759,15 +58966,16 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         u.showElement(this.el);
       },
 
-      openRoom(ev) {
+      async openRoom(ev) {
         ev.preventDefault();
         const name = ev.target.textContent;
         const jid = ev.target.getAttribute('data-room-jid');
         const data = {
           'name': name || Strophe.unescapeNode(Strophe.getNodeFromJid(jid)) || jid
         };
+        await _converse.api.rooms.open(jid, data);
 
-        _converse.api.rooms.open(jid, data);
+        _converse.api.chatviews.get(jid).focus();
       },
 
       closeRoom(ev) {
@@ -58797,7 +59005,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
           ev.preventDefault();
         }
 
-        const icon_el = ev.target.querySelector('.fa');
+        const icon_el = ev.target.matches('.fa') ? ev.target : ev.target.querySelector('.fa');
 
         if (icon_el.classList.contains("fa-caret-down")) {
           u.slideIn(this.el.querySelector('.open-rooms-list')).then(() => {
@@ -58829,23 +59037,16 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       _converse.rooms_list_view = new _converse.RoomsListView({
         'model': model
       });
+
+      _converse.api.emit('roomsListInitialized');
     };
 
     if (_converse.allow_bookmarks) {
-      u.onMultipleEvents([{
-        'object': _converse,
-        'event': 'chatBoxesFetched'
-      }, {
-        'object': _converse,
-        'event': 'roomsPanelRendered'
-      }, {
-        'object': _converse,
-        'event': 'bookmarksInitialized'
-      }], initRoomsListView);
+      _converse.api.waitUntil('bookmarksInitialized').then(initRoomsListView);
     } else {
       u.onMultipleEvents([{
         'object': _converse,
-        'event': 'chatBoxesFetched'
+        'event': 'chatBoxesInitialized'
       }, {
         'object': _converse,
         'event': 'roomsPanelRendered'
@@ -59321,7 +59522,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         this.el.setAttribute('data-status', show);
         this.highlight();
 
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           const chatbox = _converse.chatboxes.get(this.model.get('jid'));
 
           if (chatbox) {
@@ -59374,7 +59575,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       highlight() {
         /* If appropriate, highlight the contact (by adding the 'open' class).
          */
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           const chatbox = _converse.chatboxes.get(this.model.get('jid'));
 
           if (chatbox) {
@@ -59401,6 +59602,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
           status_icon = 'fa fa-minus-circle chat-status chat-status--busy';
         }
 
+        //const display_name = item.getDisplayName();
+
         // BAO
         var display_name = item.getDisplayName();
         var dataUri = "data:" + item.vcard.attributes.image_type + ";base64," + item.vcard.attributes.image;
@@ -59414,7 +59617,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
           'display_name': display_name,
           'desc_status': STATUSES[show],
           'status_icon': status_icon,
-          'dataUri': dataUri,
+          'dataUri': dataUri,   // BAO
           'desc_chat': __('Click to chat with %1$s (JID: %2$s)', display_name, item.get('jid')),
           'desc_remove': __('Click to remove %1$s as a contact', display_name),
           'allow_contact_removal': _converse.allow_contact_removal,
@@ -59648,7 +59851,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
           ev.preventDefault();
         }
 
-        const icon_el = ev.target.querySelector('.fa');
+        const icon_el = ev.target.matches('.fa') ? ev.target : ev.target.querySelector('.fa');
 
         if (_.includes(icon_el.classList, "fa-caret-down")) {
           this.model.save({
@@ -60082,7 +60285,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
           return true;
         }
 
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           const any_chats_visible = _converse.chatboxes.filter(cb => cb.get('id') != 'controlbox').filter(cb => !cb.get('hidden')).length > 0;
 
           if (any_chats_visible) {
@@ -60099,7 +60302,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
         /* Make sure new chat boxes are hidden by default. */
         const _converse = this.__super__._converse;
 
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           attrs = attrs || {};
           attrs.hidden = true;
         }
@@ -60112,7 +60315,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
       shouldShowOnTextMessage() {
         const _converse = this.__super__._converse;
 
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           return false;
         } else {
           return this.__super__.shouldShowOnTextMessage.apply(this, arguments);
@@ -60126,7 +60329,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
          */
         const _converse = this.__super__._converse;
 
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           _.each(this.__super__._converse.chatboxviews.xget(this.model.get('id')), hideChat);
 
           u.safeSave(this.model, {
@@ -60142,7 +60345,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
       show(focus) {
         const _converse = this.__super__._converse;
 
-        if (_converse.isSingleton()) {
+        if (_converse.isUniView()) {
           _.each(this.__super__._converse.chatboxviews.xget(this.model.get('id')), hideChat);
 
           u.safeSave(this.model, {
@@ -60168,31 +60371,40 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var converse_autocomplete__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! converse-autocomplete */ "./src/converse-autocomplete.js");
-/* harmony import */ var converse_bookmarks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! converse-bookmarks */ "./src/converse-bookmarks.js");
-/* harmony import */ var converse_caps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! converse-caps */ "./src/converse-caps.js");
-/* harmony import */ var converse_chatview__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! converse-chatview */ "./src/converse-chatview.js");
-/* harmony import */ var converse_controlbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! converse-controlbox */ "./src/converse-controlbox.js");
-/* harmony import */ var converse_dragresize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! converse-dragresize */ "./src/converse-dragresize.js");
-/* harmony import */ var converse_embedded__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! converse-embedded */ "./src/converse-embedded.js");
-/* harmony import */ var converse_fullscreen__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! converse-fullscreen */ "./src/converse-fullscreen.js");
-/* harmony import */ var converse_push__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! converse-push */ "./src/converse-push.js");
-/* harmony import */ var converse_headline__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! converse-headline */ "./src/converse-headline.js");
-/* harmony import */ var _converse_headless_converse_mam__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/converse-mam */ "./src/headless/converse-mam.js");
-/* harmony import */ var converse_minimize__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! converse-minimize */ "./src/converse-minimize.js");
-/* harmony import */ var converse_muc_views__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! converse-muc-views */ "./src/converse-muc-views.js");
-/* harmony import */ var converse_notification__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! converse-notification */ "./src/converse-notification.js");
-/* harmony import */ var converse_omemo__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! converse-omemo */ "./src/converse-omemo.js");
-/* harmony import */ var _converse_headless_converse_ping__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @converse/headless/converse-ping */ "./src/headless/converse-ping.js");
-/* harmony import */ var converse_register__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! converse-register */ "./src/converse-register.js");
-/* harmony import */ var converse_roomslist__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! converse-roomslist */ "./src/converse-roomslist.js");
-/* harmony import */ var converse_rosterview__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! converse-rosterview */ "./src/converse-rosterview.js");
-/* harmony import */ var _converse_headless_converse_vcard__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @converse/headless/converse-vcard */ "./src/headless/converse-vcard.js");
-/* harmony import */ var _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @converse/headless/converse-core */ "./src/headless/converse-core.js");
+/* harmony import */ var _converse_headless_converse_mam__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/converse-mam */ "./src/headless/converse-mam.js");
+/* harmony import */ var _converse_headless_converse_ping__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/converse-ping */ "./src/headless/converse-ping.js");
+/* harmony import */ var _converse_headless_converse_pubsub__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/converse-pubsub */ "./src/headless/converse-pubsub.js");
+/* harmony import */ var _converse_headless_converse_vcard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/converse-vcard */ "./src/headless/converse-vcard.js");
+/* harmony import */ var converse_autocomplete__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! converse-autocomplete */ "./src/converse-autocomplete.js");
+/* harmony import */ var converse_bookmarks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! converse-bookmarks */ "./src/converse-bookmarks.js");
+/* harmony import */ var converse_caps__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! converse-caps */ "./src/converse-caps.js");
+/* harmony import */ var converse_chatview__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! converse-chatview */ "./src/converse-chatview.js");
+/* harmony import */ var converse_controlbox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! converse-controlbox */ "./src/converse-controlbox.js");
+/* harmony import */ var converse_dragresize__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! converse-dragresize */ "./src/converse-dragresize.js");
+/* harmony import */ var converse_embedded__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! converse-embedded */ "./src/converse-embedded.js");
+/* harmony import */ var converse_fullscreen__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! converse-fullscreen */ "./src/converse-fullscreen.js");
+/* harmony import */ var converse_headline__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! converse-headline */ "./src/converse-headline.js");
+/* harmony import */ var converse_minimize__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! converse-minimize */ "./src/converse-minimize.js");
+/* harmony import */ var converse_muc_views__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! converse-muc-views */ "./src/converse-muc-views.js");
+/* harmony import */ var converse_notification__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! converse-notification */ "./src/converse-notification.js");
+/* harmony import */ var converse_omemo__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! converse-omemo */ "./src/converse-omemo.js");
+/* harmony import */ var converse_push__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! converse-push */ "./src/converse-push.js");
+/* harmony import */ var converse_register__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! converse-register */ "./src/converse-register.js");
+/* harmony import */ var converse_roomslist__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! converse-roomslist */ "./src/converse-roomslist.js");
+/* harmony import */ var converse_rosterview__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! converse-rosterview */ "./src/converse-rosterview.js");
+/* harmony import */ var _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @converse/headless/converse-core */ "./src/headless/converse-core.js");
 /* START: Removable components
  * --------------------
  * Any of the following components may be removed if they're not needed.
  */
+ // XEP-0313 Message Archive Management
+
+ // XEP-0199 XMPP Ping
+
+ // XEP-0060 PubSub
+
+ // XEP-0054 VCard-temp
+
 
  // XEP-0048 Bookmarks
 
@@ -60206,11 +60418,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // XEP-0357 Push Notifications
-
  // Support for headline messages
-
- // XEP-0313 Message Archive Management
 
  // Allows chat boxes to be minimized
 
@@ -60219,23 +60427,21 @@ __webpack_require__.r(__webpack_exports__);
  // HTML5 Notifications
 
 
- // XEP-0199 XMPP Ping
+ // XEP-0357 Push Notifications
 
  // XEP-0077 In-band registration
 
  // Show currently open chat rooms
 
 
- // XEP-0054 VCard-temp
-
 /* END: Removable components */
 
 
 const WHITELISTED_PLUGINS = ['converse-autocomplete', 'converse-bookmarks', 'converse-caps', 'converse-chatboxviews', 'converse-chatview', 'converse-controlbox', 'converse-dragresize', 'converse-embedded', 'converse-fullscreen', 'converse-headline', 'converse-message-view', 'converse-minimize', 'converse-modal', 'converse-muc-views', 'converse-notification', 'converse-oauth', 'converse-omemo', 'converse-profile', 'converse-push', 'converse-register', 'converse-roomslist', 'converse-rosterview', 'converse-singleton'];
-const initialize = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_20__["default"].initialize;
+const initialize = _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_21__["default"].initialize;
 
-_converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_20__["default"].initialize = function (settings, callback) {
-  if (_converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_20__["default"].env._.isArray(settings.whitelisted_plugins)) {
+_converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_21__["default"].initialize = function (settings, callback) {
+  if (_converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_21__["default"].env._.isArray(settings.whitelisted_plugins)) {
     settings.whitelisted_plugins = settings.whitelisted_plugins.concat(WHITELISTED_PLUGINS);
   } else {
     settings.whitelisted_plugins = WHITELISTED_PLUGINS;
@@ -60244,7 +60450,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_20__["default"].initia
   return initialize(settings, callback);
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (_converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_20__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (_converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_21__["default"]);
 
 /***/ }),
 
@@ -61462,13 +61668,13 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
             });
           }
 
-          if (!vcard) {
+          if (!vcard && chatbox.occupants) {
             let jid;
             const occupant = chatbox.occupants.findWhere({
               'nick': nick
             });
 
-            if (occupant && occupant.get('jid')) {
+            if (occupant && occupant.get('jid')) {  // BAO
               jid = occupant.get('jid');
               this.save({
                 'vcard_jid': jid
@@ -61619,7 +61825,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
       model: _converse.Message,
       comparator: 'time'
     });
-    _converse.ChatBox = _converse.ModelWithVCardAndPresence.extend({
+    _converse.ChatBox = Backbone.Model.extend({
       defaults() {
         return {
           'bookmarked': false,
@@ -61633,27 +61839,47 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
       },
 
       initialize() {
-        _converse.ModelWithVCardAndPresence.prototype.initialize.apply(this, arguments);
+        const jid = this.get('jid');
 
-        _converse.api.waitUntil('rosterContactsFetched').then(() => {
-          this.addRelatedContact(_converse.roster.findWhere({
-            'jid': this.get('jid')
-          }));
+        if (!jid) {
+          // XXX: The `validate` method will prevent this model
+          // from being persisted if there's no jid, but that gets
+          // called after model instantiation, so we have to deal
+          // with invalid models here also.
+          //
+          // This happens when the controlbox is in browser storage,
+          // but we're in embedded mode.
+          return;
+        }
+
+        this.vcard = _converse.vcards.findWhere({
+          'jid': jid
+        }) || _converse.vcards.create({
+          'jid': jid
+        }); // XXX: this creates a dependency on converse-roster, which we
+        // probably shouldn't have here, so we should probably move
+        // ChatBox out of converse-chatboxes
+
+        this.presence = _converse.presences.findWhere({
+          'jid': jid
+        }) || _converse.presences.create({
+          'jid': jid
         });
-
         this.messages = new _converse.Messages();
 
         const storage = _converse.config.get('storage');
 
-        this.messages.browserStorage = new Backbone.BrowserStorage[storage](b64_sha1(`converse.messages${this.get('jid')}${_converse.bare_jid}`));
+        this.messages.browserStorage = new Backbone.BrowserStorage[storage](b64_sha1(`converse.messages${jid}${_converse.bare_jid}`));
         this.messages.chatbox = this;
         this.messages.on('change:upload', message => {
           if (message.get('upload') === _converse.SUCCESS) {
             this.sendMessageStanza(this.createMessageStanza(message));
           }
         });
-        this.on('change:chat_state', this.sendChatState, this);
-        this.save({
+        this.on('change:chat_state', this.sendChatState, this); // Models get saved immediately after creation, so no need to
+        // call `save` here.
+
+        this.set({
           // The chat_state will be set to ACTIVE once the chat box is opened
           // and we listen for change:chat_state, so shouldn't set it to ACTIVE here.
           'box_id': b64_sha1(this.get('jid')),
@@ -61662,10 +61888,11 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         });
       },
 
-      addRelatedContact(contact) {
-        if (!_.isUndefined(contact)) {
-          this.contact = contact;
-          this.trigger('contactAdded', contact);
+      validate(attrs, options) {
+        const _converse = this.__super__._converse;
+
+        if (!attrs.jid) {
+          return 'Ignored ChatBox without JID';
         }
       },
 
@@ -61848,7 +62075,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           message = this.messages.create(attrs);
         }
 
-        return this.sendMessageStanza(this.createMessageStanza(message));
+        this.sendMessageStanza(this.createMessageStanza(message));
+        return true;
       },
 
       sendChatState() {
@@ -61997,35 +62225,22 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         return attrs;
       },
 
-      createMessage(message, original_stanza) {
+      async createMessage(message, original_stanza) {
         /* Create a Backbone.Message object inside this chat box
          * based on the identified message stanza.
          */
-        const that = this;
+        const attrs = await this.getMessageAttributesFromStanza(message, original_stanza),
+              is_csn = u.isOnlyChatStateNotification(attrs);
 
-        function _create(attrs) {
-          const is_csn = u.isOnlyChatStateNotification(attrs);
-
-          if (is_csn && (attrs.is_delayed || attrs.type === 'groupchat' && Strophe.getResourceFromJid(attrs.from) == that.get('nick'))) {
-            // XXX: MUC leakage
-            // No need showing delayed or our own CSN messages
-            return;
-          } else if (!is_csn && !attrs.file && !attrs.plaintext && !attrs.message && !attrs.oob_url && attrs.type !== 'error') {
-            // TODO: handle <subject> messages (currently being done by ChatRoom)
-            return;
-          } else {
-            return that.messages.create(attrs);
-          }
-        }
-
-        const result = this.getMessageAttributesFromStanza(message, original_stanza);
-
-        if (typeof result.then === "function") {
-          return new Promise((resolve, reject) => result.then(attrs => resolve(_create(attrs))));
+        if (is_csn && (attrs.is_delayed || attrs.type === 'groupchat' && Strophe.getResourceFromJid(attrs.from) == this.get('nick'))) {
+          // XXX: MUC leakage
+          // No need showing delayed or our own CSN messages
+          return;
+        } else if (!is_csn && !attrs.file && !attrs.plaintext && !attrs.message && !attrs.oob_url && attrs.type !== 'error') {
+          // TODO: handle <subject> messages (currently being done by ChatRoom)
+          return;
         } else {
-          const message = _create(result);
-
-          return Promise.resolve(message);
+          return this.messages.create(attrs);
         }
       },
 
@@ -62080,6 +62295,20 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           this.onMessage(stanza);
           return true;
         }, null, 'message', 'chat');
+
+        _converse.connection.addHandler(stanza => {
+          // Message receipts are usually without the `type` attribute. See #1353
+          if (!_.isNull(stanza.getAttribute('type'))) {
+            // TODO: currently Strophe has no way to register a handler
+            // for stanzas without a `type` attribute.
+            // We could update it to accept null to mean no attribute,
+            // but that would be a backward-incompatible chnge
+            return true; // Gets handled above.
+          }
+
+          this.onMessage(stanza);
+          return true;
+        }, Strophe.NS.RECEIPTS, 'message');
 
         _converse.connection.addHandler(stanza => {
           this.onErrorMessage(stanza);
@@ -62170,10 +62399,13 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         const receipt_stanza = $msg({
           'from': _converse.connection.jid,
           'id': _converse.connection.getUniqueId(),
-          'to': to_jid
+          'to': to_jid,
+          'type': 'chat'
         }).c('received', {
           'xmlns': Strophe.NS.RECEIPTS,
           'id': id
+        }).up().c('store', {
+          'xmlns': Strophe.NS.HINTS
         }).up();
 
         _converse.api.send(receipt_stanza);
@@ -62197,19 +62429,20 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           // XXX: Ideally we wouldn't have to check for headline
           // messages, but Prosody sends headline messages with the
           // wrong type ('chat'), so we need to filter them out here.
-          _converse.log(`onMessage: Ignoring incoming headline message sent with type 'chat' from JID: ${stanza.getAttribute('from')}`, Strophe.LogLevel.INFO);
+          _converse.log(`onMessage: Ignoring incoming headline message from JID: ${stanza.getAttribute('from')}`, Strophe.LogLevel.INFO);
 
           return true;
         }
 
-        let from_jid = stanza.getAttribute('from');
+        let from_jid = stanza.getAttribute('from'),
+            is_carbon = false;
         const forwarded = stanza.querySelector('forwarded'),
               original_stanza = stanza;
 
         if (!_.isNull(forwarded)) {
           const forwarded_message = forwarded.querySelector('message'),
-                forwarded_from = forwarded_message.getAttribute('from'),
-                is_carbon = !_.isNull(stanza.querySelector(`received[xmlns="${Strophe.NS.CARBONS}"]`));
+                forwarded_from = forwarded_message.getAttribute('from');
+          is_carbon = !_.isNull(stanza.querySelector(`received[xmlns="${Strophe.NS.CARBONS}"]`));
 
           if (is_carbon && Strophe.getBareJidFromJid(forwarded_from) !== from_jid) {
             // Prevent message forging via carbons
@@ -62222,15 +62455,15 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           to_jid = stanza.getAttribute('to');
         }
 
-        const requests_receipt = !_.isUndefined(sizzle(`request[xmlns="${Strophe.NS.RECEIPTS}"]`, stanza).pop());
-
-        if (requests_receipt) {
-          this.sendReceiptStanza(from_jid, stanza.getAttribute('id'));
-        }
-
         const from_bare_jid = Strophe.getBareJidFromJid(from_jid),
               from_resource = Strophe.getResourceFromJid(from_jid),
               is_me = from_bare_jid === _converse.bare_jid;
+        const requests_receipt = !_.isUndefined(sizzle(`request[xmlns="${Strophe.NS.RECEIPTS}"]`, stanza).pop());
+
+        if (requests_receipt && !is_carbon && !is_me) {
+          this.sendReceiptStanza(from_jid, stanza.getAttribute('id'));
+        }
+
         let contact_jid;
 
         if (is_me) {
@@ -62248,7 +62481,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           'fullname': _.get(_converse.api.contacts.get(contact_jid), 'attributes.fullname') // Get chat box, but only create a new one when the message has a body.
 
         };
-        const has_body = sizzle(`body, encrypted[xmlns="${Strophe.NS.OMEMO}"]`).length > 0;
+        const has_body = sizzle(`body, encrypted[xmlns="${Strophe.NS.OMEMO}"]`, stanza).length > 0;
         const chatbox = this.getChatBox(contact_jid, attrs, has_body);
 
         if (chatbox && !chatbox.handleMessageCorrection(stanza) && !chatbox.handleReceipt(stanza)) {
@@ -62332,21 +62565,6 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
 
 
     _converse.on('chatBoxesFetched', autoJoinChats);
-
-    _converse.api.waitUntil('rosterContactsFetched').then(() => {
-      _converse.roster.on('add', contact => {
-        /* When a new contact is added, check if we already have a
-         * chatbox open for it, and if so attach it to the chatbox.
-         */
-        const chatbox = _converse.chatboxes.findWhere({
-          'jid': contact.get('jid')
-        });
-
-        if (chatbox) {
-          chatbox.addRelatedContact(contact);
-        }
-      });
-    });
 
     _converse.on('addClientFeatures', () => {
       _converse.api.disco.own.features.add(Strophe.NS.MESSAGE_CORRECT);
@@ -62611,7 +62829,7 @@ const _converse = {
   'templates': {},
   'promises': {}
 };
-_converse.VERSION_NAME = "v4.0.5";
+_converse.VERSION_NAME = "v4.1.0";
 
 _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.extend(_converse, Backbone.Events); // Make converse pluggable
 
@@ -62620,7 +62838,7 @@ pluggable_js_dist_pluggable__WEBPACK_IMPORTED_MODULE_8___default.a.enable(_conve
 // These are just the @converse/headless plugins, for the full converse,
 // the other plugins are whitelisted in src/converse.js
 
-_converse.core_plugins = ['converse-chatboxes', 'converse-core', 'converse-disco', 'converse-mam', 'converse-muc', 'converse-ping', 'converse-roster', 'converse-vcard'];
+_converse.core_plugins = ['converse-chatboxes', 'converse-core', 'converse-disco', 'converse-mam', 'converse-muc', 'converse-ping', 'converse-pubsub', 'converse-roster', 'converse-vcard'];
 _converse.keycodes = {
   TAB: 9,
   ENTER: 13,
@@ -62838,7 +63056,12 @@ _converse.emit = function (name) {
   }
 };
 
-_converse.isSingleton = function () {
+_converse.isUniView = function () {
+  /* We distinguish between UniView and MultiView instances.
+   *
+   * UniView means that only one chat is visible, even though there might be multiple ongoing chats.
+   * MultiView means that multiple chats may be visible simultaneously.
+   */
   return _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.includes(['mobile', 'fullscreen', 'embedded'], _converse.view_mode);
 };
 
@@ -62955,6 +63178,12 @@ function finishInitialization() {
   }
 }
 
+function unregisterGlobalEventHandlers() {
+  document.removeEventListener("visibilitychange", _converse.saveWindowState);
+
+  _converse.emit('unregisteredGlobalEventHandlers');
+}
+
 function cleanup() {
   // Looks like _converse.initialized was called again without logging
   // out or disconnecting in the previous session.
@@ -62963,6 +63192,7 @@ function cleanup() {
 
   _converse.chatboxviews.closeAllChatBoxes();
 
+  unregisterGlobalEventHandlers();
   window.localStorage.clear();
   window.sessionStorage.clear();
 
@@ -62975,14 +63205,14 @@ function cleanup() {
 
   _converse.connection.reset();
 
+  _converse.tearDown();
+
   _converse.stopListening();
 
-  _converse.tearDown();
+  _converse.off();
 
   delete _converse.config;
   initClientConfig();
-
-  _converse.off();
 }
 
 _converse.initialize = function (settings, callback) {
@@ -63044,7 +63274,10 @@ _converse.initialize = function (settings, callback) {
   // Module-level functions
   // ----------------------
 
-  this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${_converse.VERSION_NAME}-${Math.floor(Math.random() * 139749528).toString()}`; // BAO
+  //this.generateResource = () => `/converse.js-${Math.floor(Math.random() * 139749528).toString()}`;
+  // BAO
+  this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${_converse.VERSION_NAME}-${Math.floor(Math.random() * 139749528).toString()}`;
+
 
   this.sendCSI = function (stat) {
     /* Send out a Chat Status Notification (XEP-0352)
@@ -63362,7 +63595,7 @@ _converse.initialize = function (settings, callback) {
   };
 
   this.initSession = function () {
-    const id = b64_sha1('converse.bosh-session');
+    const id = 'converse.bosh-session';
     _converse.session = new Backbone.Model({
       id
     });
@@ -63401,7 +63634,7 @@ _converse.initialize = function (settings, callback) {
     _converse.emit('logout');
   };
 
-  this.saveWindowState = function (ev, hidden) {
+  this.saveWindowState = function (ev) {
     // XXX: eventually we should be able to just use
     // document.visibilityState (when we drop support for older
     // browsers).
@@ -63419,7 +63652,7 @@ _converse.initialize = function (settings, callback) {
     if (ev.type in event_map) {
       state = event_map[ev.type];
     } else {
-      state = document[hidden] ? "hidden" : "visible";
+      state = document.hidden ? "hidden" : "visible";
     }
 
     if (state === 'visible') {
@@ -63434,32 +63667,12 @@ _converse.initialize = function (settings, callback) {
   };
 
   this.registerGlobalEventHandlers = function () {
-    // Taken from:
-    // http://stackoverflow.com/questions/1060008/is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active
-    let hidden = "hidden"; // Standards:
+    document.addEventListener("visibilitychange", _converse.saveWindowState);
 
-    if (hidden in document) {
-      document.addEventListener("visibilitychange", _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden));
-    } else if ((hidden = "mozHidden") in document) {
-      document.addEventListener("mozvisibilitychange", _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden));
-    } else if ((hidden = "webkitHidden") in document) {
-      document.addEventListener("webkitvisibilitychange", _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden));
-    } else if ((hidden = "msHidden") in document) {
-      document.addEventListener("msvisibilitychange", _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden));
-    } else if ("onfocusin" in document) {
-      // IE 9 and lower:
-      document.onfocusin = document.onfocusout = _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden);
-    } else {
-      // All others:
-      window.onpageshow = window.onpagehide = window.onfocus = window.onblur = _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden);
-    } // set the initial state (but only if browser supports the Page Visibility API)
+    _converse.saveWindowState({
+      'type': document.hidden ? "blur" : "focus"
+    }); // Set initial state
 
-
-    if (document[hidden] !== undefined) {
-      _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.saveWindowState, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, hidden)({
-        type: document[hidden] ? "blur" : "focus"
-      });
-    }
 
     _converse.emit('registeredGlobalEventHandlers');
   };
@@ -63850,7 +64063,7 @@ _converse.initialize = function (settings, callback) {
   } else {
     _i18n__WEBPACK_IMPORTED_MODULE_6__["default"].fetchTranslations(_converse.locale, _converse.locales, _converse_headless_utils_core__WEBPACK_IMPORTED_MODULE_11__["default"].interpolate(_converse.locales_url, {
       'locale': _converse.locale
-    })).catch(e => _converse.log(e.message, strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].LogLevel.FATAL)).then(finishInitialization).catch(_lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a.partial(_converse.log, _lodash_noconflict__WEBPACK_IMPORTED_MODULE_4___default.a, strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].LogLevel.FATAL));
+    })).catch(e => _converse.log(e.message, strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].LogLevel.FATAL)).finally(finishInitialization).catch(e => _converse.log(e.message, strophe_js__WEBPACK_IMPORTED_MODULE_0__["Strophe"].LogLevel.FATAL));
   }
 
   return init_promise;
@@ -64500,25 +64713,18 @@ _converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins.add('converse-dis
         this.items.fetch();
       },
 
-      getIdentity(category, type) {
+      async getIdentity(category, type) {
         /* Returns a Promise which resolves with a map indicating
-         * whether a given identity is provided.
+         * whether a given identity is provided by this entity.
          *
          * Parameters:
          *    (String) category - The identity category
          *    (String) type - The identity type
          */
-        const entity = this;
-        return new Promise((resolve, reject) => {
-          function fulfillPromise() {
-            const model = entity.identities.findWhere({
-              'category': category,
-              'type': type
-            });
-            resolve(model);
-          }
-
-          entity.waitUntilFeaturesDiscovered.then(fulfillPromise).catch(_.partial(_converse.log, _, Strophe.LogLevel.FATAL));
+        await this.waitUntilFeaturesDiscovered;
+        return this.identities.findWhere({
+          'category': category,
+          'type': type
         });
       },
 
@@ -64574,12 +64780,15 @@ _converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins.add('converse-dis
         }
       },
 
-      queryInfo() {
-        _converse.api.disco.info(this.get('jid'), null).then(stanza => this.onInfo(stanza)).catch(iq => {
-          this.waitUntilFeaturesDiscovered.resolve(this);
+      async queryInfo() {
+        try {
+          const stanza = await _converse.api.disco.info(this.get('jid'), null);
+          this.onInfo(stanza);
+        } catch (iq) {
+          this.waitUntilFeaturesDiscovered.reject(iq);
 
           _converse.log(iq, Strophe.LogLevel.ERROR);
-        });
+        }
       },
 
       onDiscoItems(stanza) {
@@ -65381,24 +65590,10 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-mam
     //
     // New functions which don't exist yet can also be added.
     ChatBox: {
-      getMessageAttributesFromStanza(message, original_stanza) {
-        function _process(attrs) {
-          const archive_id = getMessageArchiveID(original_stanza);
-
-          if (archive_id) {
-            attrs.archive_id = archive_id;
-          }
-
-          return attrs;
-        }
-
-        const result = this.__super__.getMessageAttributesFromStanza.apply(this, arguments);
-
-        if (result instanceof Promise) {
-          return new Promise((resolve, reject) => result.then(attrs => resolve(_process(attrs))).catch(reject));
-        } else {
-          return _process(result);
-        }
+      async getMessageAttributesFromStanza(message, original_stanza) {
+        const attrs = await this.__super__.getMessageAttributesFromStanza.apply(this, arguments);
+        attrs.archive_id = getMessageArchiveID(original_stanza);
+        return attrs;
       }
 
     },
@@ -65942,7 +66137,23 @@ Strophe.addNamespace('MUC_REGISTER', "jabber:iq:register");
 Strophe.addNamespace('MUC_ROOMCONF', Strophe.NS.MUC + "#roomconfig");
 Strophe.addNamespace('MUC_USER', Strophe.NS.MUC + "#user");
 _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].MUC_NICK_CHANGED_CODE = "303";
-_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES = ['passwordprotected', 'unsecured', 'hidden', 'publicroom', 'membersonly', 'open', 'persistent', 'temporary', 'nonanonymous', 'semianonymous', 'moderated', 'unmoderated', 'mam_enabled'];
+_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES = ['passwordprotected', 'unsecured', 'hidden', 'publicroom', 'membersonly', 'open', 'persistent', 'temporary', 'nonanonymous', 'semianonymous', 'moderated', 'unmoderated', 'mam_enabled']; // No longer used in code, but useful as reference.
+//
+// const ROOM_FEATURES_MAP = {
+//     'passwordprotected': 'unsecured',
+//     'unsecured': 'passwordprotected',
+//     'hidden': 'publicroom',
+//     'publicroom': 'hidden',
+//     'membersonly': 'open',
+//     'open': 'membersonly',
+//     'persistent': 'temporary',
+//     'temporary': 'persistent',
+//     'nonanonymous': 'semianonymous',
+//     'semianonymous': 'nonanonymous',
+//     'moderated': 'unmoderated',
+//     'unmoderated': 'moderated'
+// };
+
 _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOMSTATUS = {
   CONNECTED: 0,
   CONNECTING: 1,
@@ -66050,7 +66261,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
 
     _converse.ChatRoom = _converse.ChatBox.extend({
       defaults() {
-        return _.assign(_.clone(_converse.ChatBox.prototype.defaults), _.zipObject(_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES, _.map(_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES, _.stubFalse)), {
+        return _.assign(_.clone(_converse.ChatBox.prototype.defaults), {
           // For group chats, we distinguish between generally unread
           // messages and those ones that specifically mention the
           // user.
@@ -66065,7 +66276,6 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
           'name': '',
           'nick': _converse.xmppstatus.get('nickname') || _converse.nickname,
           'description': '',
-          'features_fetched': false,
           'roomconfig': {},
           'type': _converse.CHATROOMS_TYPE,
           'message_type': 'groupchat'
@@ -66076,6 +66286,15 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
         this.constructor.__super__.initialize.apply(this, arguments);
 
         this.on('change:connection_status', this.onConnectionStatusChanged, this);
+
+        const storage = _converse.config.get('storage');
+
+        const id = `converse.muc-features-${_converse.bare_jid}-${this.get('jid')}`;
+        this.features = new Backbone.Model(_.assign({
+          id
+        }, _.zipObject(_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES, _.map(_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES, _.stubFalse))));
+        this.features.browserStorage = new Backbone.BrowserStorage.session(id);
+        this.features.fetch();
         this.occupants = new _converse.ChatRoomOccupants();
         this.occupants.browserStorage = new Backbone.BrowserStorage.session(b64_sha1(`converse.occupants-${_converse.bare_jid}${this.get('jid')}`));
         this.occupants.chatroom = this;
@@ -66204,6 +66423,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
          *  (String) exit_msg: Optional message to indicate your
          *      reason for leaving.
          */
+        this.features.destroy();
+
         this.occupants.browserStorage._clear();
 
         this.occupants.reset();
@@ -66365,7 +66586,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
          * as taken from the 'chat_state' attribute of the chat box.
          * See XEP-0085 Chat State Notifications.
          */
-        if (this.get('connection_status') !== _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOMSTATUS.ENTERED) {
+        if (!_converse.send_chat_state_notifications || this.get('connection_status') !== _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOMSTATUS.ENTERED) {
           return;
         }
 
@@ -66446,13 +66667,28 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
       },
 
       async getRoomFeatures() {
-        const features = await _converse.api.disco.getFeatures(this.get('jid')),
-              fields = await _converse.api.disco.getFields(this.get('jid')),
-              identity = await _converse.api.disco.getIdentity('conference', 'text', this.get('jid')),
-              attrs = {
-          'features_fetched': moment().format(),
-          'name': identity && identity.get('name')
-        };
+        let identity;
+
+        try {
+          identity = await _converse.api.disco.getIdentity('conference', 'text', this.get('jid'));
+        } catch (e) {
+          // Getting the identity probably failed because this room doesn't exist yet.
+          return _converse.log(e, Strophe.LogLevel.ERROR);
+        }
+
+        const fields = await _converse.api.disco.getFields(this.get('jid'));
+        this.save({
+          'name': identity && identity.get('name'),
+          'description': _.get(fields.findWhere({
+            'var': "muc#roominfo_description"
+          }), 'attributes.value')
+        });
+        const features = await _converse.api.disco.getFeatures(this.get('jid'));
+
+        const attrs = _.extend(_.zipObject(_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES, _.map(_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].ROOM_FEATURES, _.stubFalse)), {
+          'fetched': moment().format()
+        });
+
         features.each(feature => {
           const fieldname = feature.get('var');
 
@@ -66466,10 +66702,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
 
           attrs[fieldname.replace('muc_', '')] = true;
         });
-        attrs.description = _.get(fields.findWhere({
-          'var': "muc#roominfo_description"
-        }), 'attributes.value');
-        this.save(attrs);
+        this.features.save(attrs);
       },
 
       requestMemberList(affiliation) {
@@ -66943,7 +67176,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
         return data;
       },
 
-      isDuplicate(message) {
+      isDuplicate(message, original_stanza) {
+        // XXX: original_stanza is not used here, but in converse-mam
         const msgid = message.getAttribute('id'),
               jid = message.getAttribute('from');
 
@@ -66992,7 +67226,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
           stanza = forwarded.querySelector('message');
         }
 
-        if (this.isDuplicate(stanza)) {
+        if (this.isDuplicate(stanza, original_stanza)) {
           return;
         }
 
@@ -67085,12 +67319,12 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
             this.autoConfigureChatRoom().then(() => this.refreshRoomFeatures());
           } else if (_converse.muc_instant_rooms) {
             // Accept default configuration
-            this.saveConfiguration().then(() => this.getRoomFeatures());
+            this.saveConfiguration().then(() => this.refreshRoomFeatures());
           } else {
             this.trigger('configurationNeeded');
             return; // We haven't yet entered the groupchat, so bail here.
           }
-        } else if (!this.get('features_fetched')) {
+        } else if (!this.features.get('fetched')) {
           // The features for this groupchat weren't fetched.
           // That must mean it's a new groupchat without locking
           // (in which case Prosody doesn't send a 201 status),
@@ -67165,7 +67399,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
     });
     _converse.ChatRoomOccupant = Backbone.Model.extend({
       defaults: {
-        'show': 'offline'
+        'show': 'offline',
+        'states': []
       },
 
       initialize(attributes) {
@@ -67191,7 +67426,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
 
         _.forEach(_.filter(vcards, undefined), vcard => {
           if (hash && vcard.get('image_hash') !== hash) {
-            _converse.api.vcard.update(vcard);
+            _converse.api.vcard.update(vcard, true);
           }
         });
       },
@@ -67202,6 +67437,10 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
 
       isMember() {
         return _.includes(['admin', 'owner', 'member'], this.get('affiliation'));
+      },
+
+      isSelf() {
+        return this.get('states').includes('110');
       }
 
     });
@@ -67755,6 +67994,130 @@ _converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins.add('converse-pin
     _converse.on('connected', onConnected);
 
     _converse.on('reconnected', onConnected);
+  }
+
+});
+
+/***/ }),
+
+/***/ "./src/headless/converse-pubsub.js":
+/*!*****************************************!*\
+  !*** ./src/headless/converse-pubsub.js ***!
+  \*****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _converse_disco__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./converse-disco */ "./src/headless/converse-disco.js");
+/* harmony import */ var _converse_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./converse-core */ "./src/headless/converse-core.js");
+// Converse.js
+// http://conversejs.org
+//
+// Copyright (c) 2018, the Converse.js developers
+// Licensed under the Mozilla Public License (MPLv2)
+
+
+const _converse$env = _converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].env,
+      Strophe = _converse$env.Strophe,
+      Backbone = _converse$env.Backbone,
+      Promise = _converse$env.Promise,
+      $iq = _converse$env.$iq,
+      $build = _converse$env.$build,
+      $msg = _converse$env.$msg,
+      $pres = _converse$env.$pres,
+      b64_sha1 = _converse$env.b64_sha1,
+      f = _converse$env.f,
+      moment = _converse$env.moment,
+      _ = _converse$env._;
+Strophe.addNamespace('PUBSUB_ERROR', Strophe.NS.PUBSUB + "#errors");
+_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins.add('converse-pubsub', {
+  dependencies: ["converse-disco"],
+
+  initialize() {
+    /* The initialize function gets called as soon as the plugin is
+     * loaded by converse.js's plugin machinery.
+     */
+    const _converse = this._converse,
+          __ = _converse.__;
+    /************************ BEGIN API ************************/
+    // We extend the default converse.js API to add methods specific to MUC groupchats.
+
+    _.extend(_converse.api, {
+      /**
+       * The "pubsub" namespace groups methods relevant to PubSub
+       *
+       * @namespace _converse.api.pubsub
+       * @memberOf _converse.api
+       */
+      'pubsub': {
+        /**
+         * Publshes an item to a PubSub node
+         *
+         * @method _converse.api.pubsub.publish
+         * @param {string} jid The JID of the pubsub service where the node resides.
+         * @param {string} node The node being published to
+         * @param {Strophe.Builder} item The Strophe.Builder representation of the XML element being published
+         * @param {object} options An object representing the publisher options
+         *      (see https://xmpp.org/extensions/xep-0060.html#publisher-publish-options)
+         * @param {boolean} strict_options Indicates whether the publisher
+         *      options are a strict requirement or not. If they're NOT
+         *      strict, then Converse will publish to the node even if
+         *      the publish options precondication cannot be met.
+         */
+        async 'publish'(jid, node, item, options, strict_options = true) {
+          const stanza = $iq({
+            'from': _converse.bare_jid,
+            'type': 'set',
+            'to': jid
+          }).c('pubsub', {
+            'xmlns': Strophe.NS.PUBSUB
+          }).c('publish', {
+            'node': node
+          }).cnode(item.tree()).up().up();
+
+          if (options) {
+            jid = jid || _converse.bare_jid;
+            const result = await _converse.api.disco.supports(Strophe.NS.PUBSUB + '#publish-options', jid);
+
+            if (result.length) {
+              stanza.c('publish-options').c('x', {
+                'xmlns': Strophe.NS.XFORM,
+                'type': 'submit'
+              }).c('field', {
+                'var': 'FORM_TYPE',
+                'type': 'hidden'
+              }).c('value').t(`${Strophe.NS.PUBSUB}#publish-options`).up().up();
+              Object.keys(options).forEach(k => stanza.c('field', {
+                'var': k
+              }).c('value').t(options[k]).up().up());
+            } else {
+              _converse.log(`_converse.api.publish: ${jid} does not support #publish-options, ` + `so we didn't set them even though they were provided.`);
+            }
+          }
+
+          try {
+            _converse.api.sendIQ(stanza);
+          } catch (iq) {
+            if (iq instanceof Element && strict_options && iq.querySelector(`precondition-not-met[xmlns="${Strophe.NS.PUBSUB_ERROR}"]`)) {
+              // The publish-options precondition couldn't be
+              // met. We re-publish but without publish-options.
+              const el = stanza.nodeTree;
+              el.querySelector('publish-options').outerHTML = '';
+
+              _converse.log(`PubSub: Republishing without publish options. ${el.outerHTML}`, Strophe.LogLevel.WARN);
+
+              _converse.api.sendIQ(el);
+            } else {
+              throw iq;
+            }
+          }
+        }
+
+      }
+    });
+    /************************ END API ************************/
+
   }
 
 });
@@ -68670,6 +69033,13 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     /********** Event Handlers *************/
 
 
+    function addRelatedContactToChatbox(chatbox, contact) {
+      if (!_.isUndefined(contact)) {
+        chatbox.contact = contact;
+        chatbox.trigger('contactAdded', contact);
+      }
+    }
+
     function updateUnreadCounter(chatbox) {
       const contact = _converse.roster.findWhere({
         'jid': chatbox.get('jid')
@@ -68684,9 +69054,31 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
 
     _converse.api.listen.on('chatBoxesInitialized', () => {
       _converse.chatboxes.on('change:num_unread', updateUnreadCounter);
+
+      _converse.chatboxes.on('add', async chatbox => {
+        await _converse.api.waitUntil('rosterContactsFetched');
+        addRelatedContactToChatbox(chatbox, _converse.roster.findWhere({
+          'jid': chatbox.get('jid')
+        }));
+      });
     });
 
     _converse.api.listen.on('beforeTearDown', _converse.unregisterPresenceHandler());
+
+    _converse.api.waitUntil('rosterContactsFetched').then(() => {
+      _converse.roster.on('add', contact => {
+        /* When a new contact is added, check if we already have a
+         * chatbox open for it, and if so attach it to the chatbox.
+         */
+        const chatbox = _converse.chatboxes.findWhere({
+          'jid': contact.get('jid')
+        });
+
+        if (chatbox) {
+          addRelatedContactToChatbox(chatbox, contact);
+        }
+      });
+    });
 
     _converse.api.listen.on('afterTearDown', () => {
       if (_converse.presences) {
@@ -68971,7 +69363,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins.add('converse-vca
 
     _converse.initVCardCollection = function () {
       _converse.vcards = new _converse.VCards();
-      const id = b64_sha1(`converse.vcards`);
+      const id = b64_sha1(`${_converse.bare_jid}-converse.vcards`);
       _converse.vcards.browserStorage = new Backbone.BrowserStorage[_converse.config.get('storage')](id);
 
       _converse.vcards.fetch();
@@ -69041,8 +69433,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins.add('converse-vca
             const jid = model.get('jid');
 
             if (!jid) {
-                //throw new Error("No JID to get vcard for!");
-                return Promise.resolve({});   // BAO
+              //throw new Error("No JID to get vcard for!");
+              return Promise.resolve({});   // BAO
             }
 
             return getVCard(_converse, jid);
@@ -69597,7 +69989,7 @@ u.isOnlyChatStateNotification = function (attrs) {
 };
 
 u.isHeadlineMessage = function (_converse, message) {
-  var from_jid = message.getAttribute('from');
+  const from_jid = message.getAttribute('from');
 
   if (message.getAttribute('type') === 'headline') {
     return true;
@@ -69605,7 +69997,7 @@ u.isHeadlineMessage = function (_converse, message) {
 
   const chatbox = _converse.chatboxes.get(strophe_js__WEBPACK_IMPORTED_MODULE_2__["Strophe"].getBareJidFromJid(from_jid));
 
-  if (chatbox && chatbox.get('type') === 'chatroom') {
+  if (chatbox && chatbox.get('type') === _converse.CHATROOMS_TYPE) {
     return false;
   }
 
@@ -69694,7 +70086,8 @@ u.matchesSelector = function (el, selector) {
    *      (DOMElement) el - The DOM element
    *      (String) selector - The selector
    */
-  return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+  const match = el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector;
+  return match ? match.call(el, selector) : false;
 };
 
 u.queryChildren = function (el, selector) {
@@ -91847,6 +92240,22 @@ return __p
 
 /***/ }),
 
+/***/ "./src/templates/background_logo.html":
+/*!********************************************!*\
+  !*** ./src/templates/background_logo.html ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
+module.exports = function(o) {
+var __t, __p = '';
+__p += '<!-- src/templates/background_logo.html -->\n<div class="inner-content converse-brand row">\n    <div class="converse-brand__padding"></div>\n    <div class="converse-brand__heading">\n        <svg height="200px"\n            xmlns="http://www.w3.org/2000/svg"\n            xmlns:xlink="http://www.w3.org/1999/xlink"\n            viewBox="0 0 364 364"\n            version="1.1">\n            <title>Logo Converse</title>\n            <defs>\n                <linearGradient id="gradient" x1="92.14" y1="27.64" x2="267.65" y2="331.62" gradientUnits="userSpaceOnUse">\n                    <stop offset="0" stop-color="#fff1d1"/>\n                    <stop offset="0.05" stop-color="#fae8c1"/>\n                    <stop offset="0.15" stop-color="#f0d5a1"/>\n                    <stop offset="0.27" stop-color="#e7c687"/>\n                    <stop offset="0.4" stop-color="#e1bb72"/>\n                    <stop offset="0.54" stop-color="#dcb264"/>\n                    <stop offset="0.71" stop-color="#daad5c"/>\n                    <stop offset="1" stop-color="#d9ac59"/>\n                </linearGradient>\n                <filter id="shadow">\n                    <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur1"/>\n                    <feOffset in="blur1" dx="3" dy="3" result="blur2"/>\n                    <feColorMatrix in="blur2" type="matrix" result="blur3"\n                        values="1 0 0 0 0.1\n                                0 1 0 0 0.1\n                                0 0 1 0 0.1\n                                0 0 0 1 0"/>\n                    <feMerge>\n                        <feMergeNode in="blur3"/>\n                        <feMergeNode in="SourceGraphic"/>\n                    </feMerge>\n                </filter>\n            </defs>\n            <g filter="url(#shadow)">\n                <path d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" fill="#d9ac59"/>\n                <path d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" fill="url(#gradient)"/>\n            </g>\n        </svg>\n        <span class="converse-brand__text">\n            <span>converse<span class="subdued">.js</span></span>\n            <p class="byline">messaging freedom</p>\n        </span>\n    </div>\n</div>\n';
+return __p
+};
+
+/***/ }),
+
 /***/ "./src/templates/bookmark.html":
 /*!*************************************!*\
   !*** ./src/templates/bookmark.html ***!
@@ -92217,7 +92626,7 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/chatroom_destroyed.html -->\n<div class="alert alert-danger">\n    <h3 class="alert-heading disconnect-msg">' +
-__e(o.__('This room no longer exists')) +
+__e(o.__('This groupchat no longer exists')) +
 '</h3>\n\n    <p class="destroyed-reason">' +
 __e(o.reason) +
 '</p>\n\n    ';
@@ -92280,7 +92689,7 @@ __e(o.num_occupants) +
 '</p>\n                    <p class="room-info"><strong>' +
 __e(o.__('Features')) +
 '</strong>:\n                        <div class="chatroom-features">\n                        <ul class="features-list">\n                        ';
- if (o.passwordprotected) { ;
+ if (o.features.passwordprotected) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-lock"></span>' +
 __e( o.__('Password protected') ) +
 ' - <em>' +
@@ -92288,7 +92697,7 @@ __e( o.__('This groupchat requires a password before entry') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.unsecured) { ;
+ if (o.features.unsecured) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-unlock"></span>' +
 __e( o.__('No password required') ) +
 ' - <em>' +
@@ -92296,7 +92705,7 @@ __e( o.__('This groupchat does not require a password upon entry') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.hidden) { ;
+ if (o.features.hidden) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-eye-slash"></span>' +
 __e( o.__('Hidden') ) +
 ' - <em>' +
@@ -92304,7 +92713,7 @@ __e( o.__('This groupchat is not publicly searchable') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.public_room) { ;
+ if (o.features.public_room) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-eye"></span>' +
 __e( o.__('Public') ) +
 ' - <em>' +
@@ -92312,7 +92721,7 @@ __e( o.__('This groupchat is publicly searchable') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.membersonly) { ;
+ if (o.features.membersonly) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-address-book"></span>' +
 __e( o.__('Members only') ) +
 ' - <em>' +
@@ -92320,7 +92729,7 @@ __e( o.__('This groupchat is restricted to members only') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.open) { ;
+ if (o.features.open) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-globe"></span>' +
 __e( o.__('Open') ) +
 ' - <em>' +
@@ -92328,7 +92737,7 @@ __e( o.__('Anyone can join this groupchat') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.persistent) { ;
+ if (o.features.persistent) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-save"></span>' +
 __e( o.__('Persistent') ) +
 ' - <em>' +
@@ -92336,7 +92745,7 @@ __e( o.__('This groupchat persists even if it\'s unoccupied') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.temporary) { ;
+ if (o.features.temporary) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-snowflake-o"></span>' +
 __e( o.__('Temporary') ) +
 ' - <em>' +
@@ -92344,7 +92753,7 @@ __e( o.__('This groupchat will disappear once the last person leaves') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.nonanonymous) { ;
+ if (o.features.nonanonymous) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-id-card"></span>' +
 __e( o.__('Not anonymous') ) +
 ' - <em>' +
@@ -92352,7 +92761,7 @@ __e( o.__('All other groupchat participants can see your XMPP username') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.semianonymous) { ;
+ if (o.features.semianonymous) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-user-secret"></span>' +
 __e( o.__('Semi-anonymous') ) +
 ' - <em>' +
@@ -92360,7 +92769,7 @@ __e( o.__('Only moderators can see your XMPP username') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.moderated) { ;
+ if (o.features.moderated) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-gavel"></span>' +
 __e( o.__('Moderated') ) +
 ' - <em>' +
@@ -92368,7 +92777,7 @@ __e( o.__('Participants entering this groupchat need to request permission to wr
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.unmoderated) { ;
+ if (o.features.unmoderated) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-info-circle"></span>' +
 __e( o.__('Not moderated') ) +
 ' - <em>' +
@@ -92376,7 +92785,7 @@ __e( o.__('Participants entering this groupchat can write right away') ) +
 '</em></li>\n                        ';
  } ;
 __p += '\n                        ';
- if (o.mam_enabled) { ;
+ if (o.features.mam_enabled) { ;
 __p += '\n                        <li class="feature" ><span class="fa fa-database"></span>' +
 __e( o.__('Message archiving') ) +
 ' - <em>' +
@@ -92427,13 +92836,9 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_features.html -->\n';
- if (o.has_features) { ;
-__p += '\n<p class="occupants-heading">' +
+__p += '<!-- src/templates/chatroom_features.html -->\n<p class="occupants-heading">' +
 __e(o.__('Features')) +
-'</p>\n';
- } ;
-__p += '\n<ul class="features-list">\n';
+'</p>\n<ul class="features-list">\n';
  if (o.passwordprotected) { ;
 __p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat requires a password before entry') ) +
@@ -92493,7 +92898,7 @@ __p += '\n';
  if (o.temporary) { ;
 __p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat will disappear once the last person leaves') ) +
-'"><span class="fa fa-snowflake-o"></span>' +
+'"><span class="fa fa-snowflake"></span>' +
 __e( o.__('Temporary') ) +
 '</li>\n';
  } ;
@@ -92782,7 +93187,7 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/converse_brand_heading.html -->\n<span class="brand-heading-container">\n    <div class="brand-heading">\n        <a href="https://conversejs.org" target="_blank" rel="noopener">\n            <i class="icon-conversejs"></i><span class="brand-name">converse</span>\n        </a>\n    </div>\n</span>\n';
+__p += '<!-- src/templates/converse_brand_heading.html -->\n<span class="brand-heading-container">\n    <a class="brand-heading" href="https://conversejs.org" target="_blank" rel="noopener">\n        <svg class="converse-svg-logo"\n            xmlns:svg="http://www.w3.org/2000/svg"\n            xmlns="http://www.w3.org/2000/svg"\n            xmlns:xlink="http://www.w3.org/1999/xlink"\n            viewBox="0 0 364 364">\n            <title>Converse</title>\n            <g class="cls-1" id="g904">\n                <g data-name="Layer 2">\n                    <g data-name="Layer 7">\n                        <path\n                            class="cls-3"\n                            d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" />\n                        <path\n                            class="cls-4"\n                            d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" />\n                    </g>\n                </g>\n            </g>\n        </svg>\n        <span class="brand-name">\n            <span class="brand-name__text">converse<span class="subdued">.js</span></span>\n        </span>\n    </a>\n</span>\n';
 return __p
 };
 
@@ -93201,7 +93606,7 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/group_header.html -->\n<a href="#" class="group-toggle controlbox-padded" title="' +
+__p += '<!-- src/templates/group_header.html -->\n<a href="#" class="list-toggle group-toggle controlbox-padded" title="' +
 __e(o.desc_group_toggle) +
 '">\n    <span class="fa ';
  if (o.toggle_state === o._converse.OPENED) { ;
@@ -93671,7 +94076,7 @@ __e(o.hint_show) +
 __e(o.nick || o.jid) +
 '</span>\n            <span class="occupant-badges">\n                ';
  if (o.affiliation === "owner") { ;
-__p += '\n                    <span class="badge badge-primary">' +
+__p += '\n                    <span class="badge badge-groupchat">' +
 __e(o.label_owner) +
 '</span>\n                ';
  } ;
@@ -93944,7 +94349,7 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/register_panel.html -->\n<div class="row">\n    <form id="converse-register" class="converse-form">\n        <legend class="col-form-label">' +
+__p += '<!-- src/templates/register_panel.html -->\n<div>\n    <form id="converse-register" class="converse-form">\n        <legend class="col-form-label">' +
 __e(o.__("Create your account")) +
 '</legend>\n\n        <div class="form-group">\n            <label>' +
 __e(o.__("Please enter the XMPP provider to register with:")) +
@@ -94061,11 +94466,11 @@ __e(o.display_name) +
  if (o.allow_chat_pending_contacts)  { ;
 __p += '\n</a>\n';
  } ;
-__p += '\n<a class="accept-xmpp-request fa fa-check"\n   aria-label="' +
+__p += '\n<a class="accept-xmpp-request list-item-action list-item-action--visible fa fa-check"\n   aria-label="' +
 __e(o.desc_accept) +
 '" title="' +
 __e(o.desc_accept) +
-'" href="#"></a>\n<a class="decline-xmpp-request fa fa-times"\n   aria-label="' +
+'" href="#"></a>\n<a class="decline-xmpp-request list-item-action list-item-action--visible  fa fa-times"\n   aria-label="' +
 __e(o.desc_decline) +
 '" title="' +
 __e(o.desc_decline) +
@@ -94210,7 +94615,7 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/room_panel.html -->\n<!-- <div id="chatrooms"> -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading">' +
+__p += '<!-- src/templates/room_panel.html -->\n<!-- <div id="chatrooms"> -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading controlbox-heading--groupchats">' +
 __e(o.heading_chatrooms) +
 '</span>\n    <a class="controlbox-heading__btn show-list-muc-modal fa fa-list-ul" title="' +
 __e(o.title_list_rooms) +
@@ -94270,9 +94675,9 @@ __p += ' unread-msgs ';
  } ;
 __p += '"\n    data-room-jid="' +
 __e(o.jid) +
-'">\n';
+'">\n\n';
  if (o.num_unread) { ;
-__p += '\n    <span class="msgs-indicator badge badge-info">' +
+__p += '\n    <span class="list-item-badge badge badge-room-color msgs-indicator">' +
 __e( o.num_unread ) +
 '</span>\n';
  } ;
@@ -94288,7 +94693,7 @@ __p += '\n<a class="list-item-action fa ';
  if (o.bookmarked) { ;
 __p += ' fa-bookmark remove-bookmark button-on ';
  } else { ;
-__p += ' add-bookmark fa-bookmark-o ';
+__p += ' add-bookmark fa-bookmark ';
  } ;
 __p += '"\n   data-room-jid="' +
 __e(o.jid) +
@@ -94310,7 +94715,7 @@ __p += '\n\n<a class="list-item-action room-info fa fa-info-circle" data-room-ji
 __e(o.jid) +
 '"\n   title="' +
 __e(o.info_title) +
-'" href="#"></a>\n\n<a class="list-item-action fa fa-times close-room"\n   data-room-jid="' +
+'" href="#"></a>\n\n<a class="list-item-action fa fa-sign-out-alt close-room"\n   data-room-jid="' +
 __e(o.jid) +
 '"\n   data-room-name="' +
 __e(o.name || o.jid) +
@@ -94351,7 +94756,7 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/roster.html -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading">' +
+__p += '<!-- src/templates/roster.html -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading controlbox-heading--contacts">' +
 __e(o.heading_contacts) +
 '</span>\n    <a class="controlbox-heading__btn sync-contacts fa fa-sync" title="' +
 __e(o.title_sync_contacts) +
@@ -94361,7 +94766,7 @@ __p += '\n        <a class="controlbox-heading__btn add-contact fa fa-user-plus"
 __e(o.title_add_contact) +
 '"\n           data-toggle="modal"\n           data-target="#add-contact-modal"></a>\n    ';
  } ;
-__p += '\n</div>\n\n<form class="roster-filter-form"></form>\n\n<div class="roster-contacts"></div>\n';
+__p += '\n</div>\n\n<form class="roster-filter-form"></form>\n\n<div class="list-container roster-contacts"></div>\n';
 return __p
 };
 
@@ -94486,7 +94891,7 @@ __p += '<!-- src/templates/roster_item.html -->\n<a class="list-item-link cbox-l
 __p += ' unread-msgs ';
  } ;
 __p += '"\n   title="' +
-__e(o.desc_chat) +
+__e(o.desc_chat) +  // BAO
 '" href="#">\n<img width="22" height="22" src="' + o.dataUri + '" class="roster-avatar avatar" />    <span class="' +
 __e(o.status_icon) +
 '" title="' +
@@ -94746,13 +95151,17 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/toolbar_omemo.html -->\n<li class="toggle-omemo fa ';
+__p += '<!-- src/templates/toolbar_omemo.html -->\n<li class="toggle-omemo fa \n        ';
+ if (!o.omemo_supported) { ;
+__p += ' disabled ';
+ } ;
+__p += '\n        ';
  if (o.omemo_active) { ;
 __p += ' fa-lock ';
  } else { ;
 __p += ' fa-unlock ';
  } ;
-__p += '" title="' +
+__p += '"\n    title="' +
 __e(o.__('Messages are being sent in plaintext')) +
 '"></li>\n';
 return __p
@@ -95644,4 +96053,3 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_16__["default"].xForm2webForm = fu
 /***/ })
 
 /******/ });
-//# sourceMappingURL=converse.js.map

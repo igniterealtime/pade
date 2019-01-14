@@ -156,42 +156,45 @@
                         return room;
                     }
 
-                    _converse.connection.sendIQ(stanza, function(iq) {
-
-                        $(iq).find('conference').each(function()
-                        {
-                            var jid = $(this).attr("jid");
-                            var name = $(this).attr("name");
-                            if (!name) name = Strophe.getNodeFromJid(jid);
-                            var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
-                            var json = {name: name, jid: jid, autojoin: autojoin};
-
-                            console.debug('pade BookmarksReceived', json);
-                            if (_converse.bookmarks) bookmarkRoom(json);
-
-                        });
-
-                    }, function(error){
-                        console.error("bookmarks error", error);
-                    });
-
-                    stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
-
-                    _converse.connection.sendIQ(stanza, function(iq)
+                    if (getSetting("enableBookmarks", true))
                     {
-                        $(iq).find('workgroup').each(function()
-                        {
-                            var name = Strophe.getNodeFromJid($(this).attr('jid'));
-                            var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
-                            var json = {name: name, jid: jid, autojoin: true};
+                        _converse.connection.sendIQ(stanza, function(iq) {
 
-                            console.debug('pade workgroup recieved', json);
-                            if (_converse.bookmarks) bookmarkRoom(json);
+                            $(iq).find('conference').each(function()
+                            {
+                                var jid = $(this).attr("jid");
+                                var name = $(this).attr("name");
+                                if (!name) name = Strophe.getNodeFromJid(jid);
+                                var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
+                                var json = {name: name, jid: jid, autojoin: autojoin};
+
+                                console.debug('pade BookmarksReceived', json);
+                                if (_converse.bookmarks) bookmarkRoom(json);
+
+                            });
+
+                        }, function(error){
+                            console.error("bookmarks error", error);
                         });
 
-                    }, function(error){
-                        console.error("workgroups error", error);
-                    });
+                        stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
+
+                        _converse.connection.sendIQ(stanza, function(iq)
+                        {
+                            $(iq).find('workgroup').each(function()
+                            {
+                                var name = Strophe.getNodeFromJid($(this).attr('jid'));
+                                var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
+                                var json = {name: name, jid: jid, autojoin: true};
+
+                                console.debug('pade workgroup recieved', json);
+                                if (_converse.bookmarks) bookmarkRoom(json);
+                            });
+
+                        }, function(error){
+                            console.error("workgroups error", error);
+                        });
+                    }
 
                     console.log("pade plugin is ready");
                 }
@@ -234,11 +237,11 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    if (bgWindow.getSetting("notifyOnInterests", false))
+                    if (getSetting("notifyOnInterests", false))
                     {
                         var body = this.model.get('message');
                         var highlightedBody = body;
-                        var interestList = bgWindow.getSetting("interestList", "").split("\n");
+                        var interestList = getSetting("interestList", "").split("\n");
 
                         for (var i=0; i<interestList.length; i++)
                         {
@@ -288,11 +291,11 @@
     {
         console.debug("scanMessage", fromJid, body, fromNick, myNick);
 
-        var interestList = bgWindow.getSetting("interestList", "").split("\n");
+        var interestList = getSetting("interestList", "").split("\n");
 
         if (bgWindow.pade.minimised && body)
         {
-            if (bgWindow.getSetting("notifyAllRoomMessages", false))
+            if (getSetting("notifyAllRoomMessages", false))
             {
                 // TODO move to background page
                 notifyMe(body, fromNick, fromJid);
@@ -300,7 +303,7 @@
             else {
                 var alerted = false;
 
-                if (bgWindow.getSetting("notifyOnInterests", false))
+                if (getSetting("notifyOnInterests", false))
                 {
                     for (var i=0; i<interestList.length; i++)
                     {
@@ -323,7 +326,7 @@
 
                 // track groupchat mentions
 
-                if (!alerted && bgWindow.getSetting("notifyRoomMentions", false))
+                if (!alerted && getSetting("notifyRoomMentions", false))
                 {
                     var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
                     if (mentioned) notifyMe(body, fromNick, fromJid);

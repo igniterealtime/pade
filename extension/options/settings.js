@@ -103,11 +103,6 @@ window.addEvent("domready", function () {
             }
         });
 
-        if (settings.manifest.useMarkdown) settings.manifest.useMarkdown.addEvent("action", function ()
-        {
-            reloadConverse(background);
-        });
-
         if (settings.manifest.converseTheme) settings.manifest.converseTheme.addEvent("action", function ()
         {
             reloadConverse(background);
@@ -1071,6 +1066,7 @@ function doDefaults()
     setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("converseRosterFilter", true);
     setDefaultSetting("converseTheme", "plainsimple");
+    setDefaultSetting("enableBookmarks", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

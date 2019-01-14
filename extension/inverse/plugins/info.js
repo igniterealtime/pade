@@ -64,8 +64,6 @@
                     const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
                     const command = match[1].toLowerCase();
 
-                    if (command === "help") return false; // TODO work-round. remove when converse fixed
-
                     if (command === "info")
                     {
                         var id = this.model.get("box_id");

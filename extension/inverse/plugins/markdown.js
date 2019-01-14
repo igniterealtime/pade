@@ -22,7 +22,7 @@
                 if (bgWindow.pade.activeView && message.markdown)
                 {
                     console.log("chrome.runtime.onMessage", message);
-                    bgWindow.pade.activeView.onMessageSubmitted(message.markdown);
+                    submitMessage(bgWindow.pade.activeView, message.markdown);
                     bgWindow.closeWebAppsWindow(chrome.extension.getURL("inverse/plugins/editor.html"));
                 }
             });
@@ -80,7 +80,7 @@
                                 }
 
                                 _converse.connection.send($msg({'to': originator}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(formJson)));
-                                if (view) view.onMessageSubmitted('/me submitted form ' + form.id);
+                                if (view) submitMessage(view, '/me submitted form ' + form.id);
                                 delete handlers[form.id]
 
                             });
@@ -184,5 +184,10 @@
             }
         }
         return view;
+    }
+
+    var submitMessage = function(view, inviteMsg)
+    {
+        view.model.sendMessage(view.model.getOutgoingMessageAttributes(inviteMsg));
     }
 }));

@@ -137,7 +137,7 @@
                     if (html && textarea)
                     {
                         textarea[0].value = "";
-                        view.onMessageSubmitted(html);
+                        submitMessage(view, html);
 
                         console.debug("uploadImage/Preview", html);
                     }
@@ -331,20 +331,23 @@
                     //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
                     // intercepting email IM
 
-                    if (!this.model.get("fullname") && this.model.get("from").indexOf("\\40") > -1)
+                    if (this.model.vcard)
                     {
-                        this.model.vcard.attributes.fullname = Strophe.unescapeNode(this.model.get("from").split("@")[0]);
-                    }
+                        if (!this.model.get("fullname") && this.model.get("from").indexOf("\\40") > -1)
+                        {
+                            this.model.vcard.attributes.fullname = Strophe.unescapeNode(this.model.get("from").split("@")[0]);
+                        }
 
-                    var nick = this.model.getDisplayName();
+                        var nick = this.model.getDisplayName();
 
-                    if (nick && _converse.DEFAULT_IMAGE == this.model.vcard.attributes.image)
-                    {
-                        var dataUri = createAvatar(nick);
-                        var avatar = dataUri.split(";base64,");
+                        if (nick && _converse.DEFAULT_IMAGE == this.model.vcard.attributes.image)
+                        {
+                            var dataUri = createAvatar(nick);
+                            var avatar = dataUri.split(";base64,");
 
-                        this.model.vcard.attributes.image = avatar[1];
-                        this.model.vcard.attributes.image_type = "image/png";
+                            this.model.vcard.attributes.image = avatar[1];
+                            this.model.vcard.attributes.image_type = "image/png";
+                        }
                     }
 
                     var body = this.model.get('message');
@@ -403,9 +406,10 @@
                         {
                             console.debug("webinar invite", body);
                             var link_room = body.substring(pos0 + 9);
+                            var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
                             var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webinar_invitation");
-                            var link_content = '<a id="' + link_room + '" href="#">' + link_label + ' webinar</a>';
-                            setupContentHandler(this, link_room, link_content, handleWebinarAttendee, link_room);
+                            var link_content = '<a id="' + link_id + '" href="#">' + link_label + ' webinar</a>';
+                            setupContentHandler(this, link_room, link_content, handleWebinarAttendee, link_id);
                         }
                         else
 
@@ -414,9 +418,10 @@
                             var pos4 = body.indexOf(bgWindow.pade.ofmeetUrl);
 
                             var link_room = body.substring(pos4 + bgWindow.pade.ofmeetUrl.length);
+                            var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
                             var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
-                            var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
-                            setupContentHandler(this, link_room, link_content, doAVConference, link_room);
+                            var link_content = '<a id="' + link_id + '" href="#">' + link_label + " " + link_room + '</a>';
+                            setupContentHandler(this, link_room, link_content, doAVConference, link_id);
                         }
                         else
 
@@ -424,10 +429,10 @@
                         {
                             console.debug("audio/video invite", body);
                             var link_room = body.substring(pos1 + 27);
+                            var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
                             var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
-                            var link_content = '<a id="' + link_room + '" href="#">' + link_label + " " + link_room + '</a>';
-                            setupContentHandler(this, link_room, link_content, doAVConference, link_room);
-
+                            var link_content = '<a id="' + link_id + '" href="#">' + link_label + " " + link_room + '</a>';
+                            setupContentHandler(this, link_room, link_content, doAVConference, link_id);
                         }
                         else
 
@@ -744,8 +749,11 @@
         msg_content.setAttribute("class", "message chat-msg groupchat");
         msg_content.setAttribute("data-isodate", time);
 
-        msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text">' + content + '</span> <div class="chat-msg-media"></div> </div>';
-        chat.replaceElement(msg_content);
+        if (chat.model.vcard)
+        {
+            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text">' + content + '</span> <div class="chat-msg-media"></div> </div>';
+            chat.replaceElement(msg_content);
+        }
 
         if (avRoom && callback && chatId)
         {
@@ -788,7 +796,7 @@
             if (bgWindow) bgWindow.openVideoWindow(room, "presenter");
         }
 
-        if (url) view.onMessageSubmitted(title + ' ' + url);
+        if (url) submitMessage(view, title + ' ' + url);
     }
 
     var doAVConference = function doAVConference(room)
@@ -819,7 +827,7 @@
         console.debug("doVideo", room, url, view);
 
         var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
-        view.onMessageSubmitted(inviteMsg);
+        submitMessage(view, inviteMsg);
     }
 
     var doExit = function doExit(event)
@@ -881,7 +889,7 @@
     var doH5p = function doH5p(view, id)
     {
         console.debug("doH5p", view);
-        view.onMessageSubmitted(bgWindow.pade.activeH5p);
+        submitMessage(view, bgWindow.pade.activeH5p);
     }
 
     var getVCard = function(response)
@@ -1136,7 +1144,12 @@
         const args = match[2] && match[2].splitOnce(' ').filter(s => s) || [];
         const command = match[1].toLowerCase();
 
-        if (command === "help") view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "\n\n"]);
+        if (command === "pade")
+        {
+            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "\n\n"]);
+            view.viewUnreadMessages();
+            return true;
+        }
         else
 
         if (command == "app" && bgWindow && match[2])
@@ -1181,7 +1194,7 @@
                     // use specified room
                     var url = doAVConference(args[0]);
                     var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
-                    view.onMessageSubmitted(inviteMsg);
+                    submitMessage(view, inviteMsg);
                 }
             }
             else
@@ -1246,6 +1259,11 @@
 
 
         return false;
+    }
+
+    var submitMessage = function(view, inviteMsg)
+    {
+        view.model.sendMessage(view.model.getOutgoingMessageAttributes(inviteMsg));
     }
 
 }));
