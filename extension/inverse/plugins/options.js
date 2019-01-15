@@ -32,29 +32,29 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
 
                     if (bgWindow)
                     {
-                        var view = this;
                         var id = this.model.get("box_id");
 
-                        addToolbarItem(view, id, "pade-options-" + id, '<a class="fas fa-cog" title="Options and Features"></a>');
-
-                        setTimeout(function()
+                        _converse.api.listen.on('renderToolbar', function(view)
                         {
-                            var options = document.getElementById("pade-options-" + id);
-
-                            if (options) options.addEventListener('click', function(evt)
+                            if (id == view.model.get("box_id") && !view.el.querySelector(".plugin-options"))
                             {
-                                evt.stopPropagation();
-                                dOptions();
+                                addToolbarItem(view, id, "pade-options-" + id, '<a class="plugin-options fas fa-cog" title="Options and Features"></a>');
 
-                            }, false);
+                                var options = document.getElementById("pade-options-" + id);
+
+                                if (options) options.addEventListener('click', function(evt)
+                                {
+                                     evt.stopPropagation();
+                                     dOptions();
+
+                                }, false);
+                            }
                         });
                     }
-
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

@@ -7147,7 +7147,7 @@ readers do not read off random characters that represent icons */
 
 @media (min-width: 992px) {
   #conversejs .modal-lg {
-    max-width: 800px; } }
+    max-width: 96%; } }
 
 #conversejs .tooltip {
   position: absolute;
@@ -11910,6 +11910,7 @@ body.reset {
     margin-left: 2.75rem; }
   #conversejs .message.chat-msg .chat-msg__receipt {
     margin-right: 0.5em;
+    font-size: 8px; /* BAO */
     color: var(--message-receipt-color); }
 
 #conversejs .chatroom-body .message.onload {

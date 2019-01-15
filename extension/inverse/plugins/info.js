@@ -6,6 +6,7 @@
     }
 }(this, function (converse) {
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
+    var _converse = null;
     var infoDialog = null;
     var Strophe = converse.env.Strophe;
     var $iq = converse.env.$iq;
@@ -33,19 +34,19 @@
 
                     if (this.model.get("type") == "image")
                     {
-                        this.el.querySelector('.modal-body').innerHTML = '<img id="pade-preview-image" src="' + this.model.get("url") + '"/>';
+                        this.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + this.model.get("url") + '"/>';
                     }
                     else
 
                     if (this.model.get("type") == "video")
                     {
-                        this.el.querySelector('.modal-body').innerHTML = '<video controls id="pade-preview-image" src="' + this.model.get("url") + '"/>';
+                        this.el.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + this.model.get("url") + '"/>';
                     }
                     else
 
                     if (this.model.get("type") == "audio")
                     {
-                        this.el.querySelector('.modal-body').innerHTML = '<audio controls id="pade-preview-image" src="' + this.model.get("url") + '"/>';
+                        this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + this.model.get("url") + '"/>';
                     }
 
                     this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + this.model.get("url");
@@ -78,39 +79,39 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    var view = this;
-                    var id = this.model.get("box_id");
-                    var jid = this.model.get("jid");
-                    var type = this.model.get("type");
-
-                    if (getSetting("enableInfoPanel", false) && type === "chatroom")
+                    if (this.model.get("type") === "chatroom")
                     {
-                        addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info-circle" title="Information"></a>');
+                        var id = this.model.get("box_id");
+
+                        _converse.api.listen.on('renderToolbar', function(view)
+                        {
+                            if (id == view.model.get("box_id") && !view.el.querySelector(".fa-info"))
+                            {
+                                var jid = view.model.get("jid");
+
+                                addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
+
+                                var occupants = view.el.querySelector('.occupants');
+                                var infoButton = document.getElementById("pade-info-" + id);
+
+                                if (occupants && infoButton)
+                                {
+                                    var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
+                                    infoElement.style.display = "none";
+
+                                    infoButton.addEventListener('click', function(evt)
+                                    {
+                                        evt.stopPropagation();
+                                        toggleInfoBar(view, infoElement, id, jid);
+
+                                    }, false);
+                                }
+                            }
+                        });
                     }
 
-                    setTimeout(function()
-                    {
-                        var occupants = view.el.querySelector('.occupants');
-                        var infoButton = document.getElementById("pade-info-" + id);
-
-                        if (occupants && infoButton)
-                        {
-                            var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
-                            infoElement.style.display = "none";
-
-                            infoButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                toggleInfoBar(view, infoElement, id, jid);
-
-                            }, false);
-                        }
-                    });
-
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }
@@ -144,6 +145,7 @@
             addClass('col-12', chat_area);
             hideElement(view.el.querySelector('.occupants'));
         }
+        view.scrollDown();
     }
 
     var postMessage = function(view, text, spoiler_hint)

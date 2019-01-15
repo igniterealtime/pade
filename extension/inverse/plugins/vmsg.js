@@ -75,35 +75,44 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    var view = this;
                     var id = this.model.get("box_id");
 
-                    addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
-
-                    setTimeout(function()
+                    _converse.api.listen.on('renderToolbar', function(view)
                     {
-                        var vmsg = document.getElementById("pade-vmsg-" + id);
-
-                        if (vmsg) vmsg.addEventListener('click', function(evt)
+                        isFileUploadAvailable(id, view, function()
                         {
-                            evt.stopPropagation();
+                            addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
 
-                            vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
-                            vmsgDialog.show();
+                            var vmsg = document.getElementById("pade-vmsg-" + id);
 
-                        }, false);
+                            if (vmsg) vmsg.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
 
-                    }, 1000);
+                                vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                                vmsgDialog.show();
 
-                    return result;
+                            }, false);
+                        });
+                    });
+
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }
     });
 
-    function newElement(el, id, html)
+    var isFileUploadAvailable = async function(id, view, callback)
+    {
+        if (id == view.model.get("box_id"))
+        {
+            const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
+            if (result.length > 0 && !view.el.querySelector(".fa-microphone")) callback();
+        }
+    }
+
+    var newElement = function (el, id, html)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;

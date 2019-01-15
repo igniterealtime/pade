@@ -108,8 +108,13 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["info", "search", "directory", "invite", "options", "webmeet", "pade", "vmsg"];
+        var whitelistedPlugins = ["search", "directory", "invite", "options", "webmeet", "pade", "vmsg"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
+
+        if (getSetting("enableInfoPanel", false))
+        {
+            whitelistedPlugins.push("info");
+        }
 
         if (getSetting("useMarkdown", false))
         {
@@ -142,7 +147,7 @@ window.addEventListener("load", function()
           i18n: getSetting("language", "en"),
           jid : username + "@" + domain,
           locked_domain: domain,
-          message_archiving: "always",
+          message_archiving: "never",
           message_carbons: getSetting("messageCarbons", true),
           muc_domain: "conference." + getSetting("domain", null),
           muc_nickname_from_jid: true,

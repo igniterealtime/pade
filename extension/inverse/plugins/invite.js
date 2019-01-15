@@ -8,15 +8,25 @@
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var Strophe = converse.env.Strophe;
     var $iq = converse.env.$iq;
+    var _converse = null;
+
     var DirectoryDialog = null;
     var inviteDialog = null;
     var inviteAvailable = false;
+    var saveMeetings = [];
+    var meetings = {};
+
 
     converse.plugins.add("invite", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
+
+            var encoded = window.localStorage["store.settings.savedMeetings"];
+            if (encoded) meetings = JSON.parse(atob(encoded));
+            saveMeetings = Object.getOwnPropertyNames(meetings);
+            inviteAvailable = saveMeetings.length > 0;
 
             DirectoryDialog = _converse.BootstrapModal.extend({
                 initialize() {
@@ -82,33 +92,30 @@
             ChatBoxView: {
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
 
-                    var view = this;
-                    var id = this.model.get("box_id");
-                    var type = this.model.get("type");
-                    var jid = this.model.get("jid");
-
-                    if (type === "chatroom")
+                    if (this.model.get("type") === "chatroom" && inviteAvailable)
                     {
-                        addToolbarItem(view, id, "pade-invite-" + id, '<a class="fas fa-user-plus" title="Invite others to this chat with a saved invitation"></a>');
-                        inviteAvailable = true;
+                        var id = this.model.get("box_id");
 
-                        setTimeout(function()
+                        _converse.api.listen.on('renderToolbar', function(view)
                         {
-                            var invite = document.getElementById("pade-invite-" + id);
-
-                            if (invite) invite.addEventListener('click', function(evt)
+                            if (id == view.model.get("box_id") && !view.el.querySelector(".fa-user-plus"))
                             {
-                                evt.stopPropagation();
+                                addToolbarItem(view, id, "pade-invite-" + id, '<a class="fas fa-user-plus" title="Invite others to this chat with a saved invitation"></a>');
 
-                                inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
-                                inviteDialog.show();
-                            }, false);
+                                var invite = document.getElementById("pade-invite-" + id);
+
+                                if (invite) invite.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
+                                    inviteDialog.show();
+                                }, false);
+                            }
                         });
                     }
-
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

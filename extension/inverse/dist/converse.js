@@ -49772,7 +49772,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
           'show_toolbar': _converse.show_toolbar,
           'unread_msgs': __('You have unread messages')
         }));
-        this.renderToolbar();
+        var that = this;
+        setTimeout(function(){that.renderToolbar();}) // BAO
       },
 
       showControlBox() {

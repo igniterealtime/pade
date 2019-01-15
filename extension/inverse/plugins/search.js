@@ -113,32 +113,33 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
-                    var id = this.model.get("box_id");
 
                     if (bgWindow && bgWindow.pade.chatAPIAvailable)
                     {
-                        addToolbarItem(view, id, "pade-search-" + id, '<a class="fa fa-search" title="Search conversations for keywords"></a>');
-                        searchAvailable = true;
+                        var id = this.model.get("box_id");
 
-                        setTimeout(function()
+                        _converse.api.listen.on('renderToolbar', function(view)
                         {
-                            var search = document.getElementById("pade-search-" + id);
-
-                            if (search) search.addEventListener('click', function(evt)
+                            if (id == view.model.get("box_id") && !view.el.querySelector(".plugin-search"))
                             {
-                                evt.stopPropagation();
+                                addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
 
-                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
-                                searchDialog.show();
-                            }, false);
+                                var search = document.getElementById("pade-search-" + id);
+
+                                if (search) search.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
+                                    searchDialog.show();
+                                }, false);
+                            }
                         });
                     }
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             },
+
             MessageView: {
 
                 renderChatMessage: async function renderChatMessage()

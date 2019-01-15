@@ -108,29 +108,29 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
 
                     if (bgWindow)
                     {
-                        var view = this;
                         var id = this.model.get("box_id");
 
-                        addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
-
-                        setTimeout(function()
+                        _converse.api.listen.on('renderToolbar', function(view)
                         {
-                            var markdown = document.getElementById("webmeet-markdown-" + id);
-
-                            if (markdown) markdown.addEventListener('click', function(evt)
+                            if (id == view.model.get("box_id") && !view.el.querySelector(".plugin-markdown"))
                             {
-                                evt.stopPropagation();
-                                doMarkdown(view);
+                                addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="plugin-markdown fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
 
-                            }, false);
+                                var markdown = document.getElementById("webmeet-markdown-" + id);
+
+                                if (markdown) markdown.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+                                    doMarkdown(view);
+
+                                }, false);
+                            }
                         });
                     }
-
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

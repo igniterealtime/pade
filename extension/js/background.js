@@ -505,7 +505,6 @@ window.addEventListener("load", function()
     }
 
     pade.server = getSetting("server", null);
-    pade.ofmeetUrl = getSetting("ofmeetUrl", "https://" + pade.server + "/ofmeet/");
     pade.domain = getSetting("domain", null);
     pade.username = getSetting("username", null);
     pade.password = getSetting("password", null);

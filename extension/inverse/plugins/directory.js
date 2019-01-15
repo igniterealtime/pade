@@ -10,7 +10,6 @@
     var $iq = converse.env.$iq;
     var DirectoryDialog = null;
     var directoryDialog = null;
-    var directoryAvailable = false;
 
     converse.plugins.add("directory", {
         'dependencies': [],
@@ -101,28 +100,27 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
                     var id = this.model.get("box_id");
 
-                    addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
-                    directoryAvailable = true;
-
-                    setTimeout(function()
+                    _converse.api.listen.on('renderToolbar', function(view)
                     {
-                        var directory = document.getElementById("pade-directory-" + id);
-
-                        if (directory) directory.addEventListener('click', function(evt)
+                        if (id == view.model.get("box_id") && !view.el.querySelector(".fa-male"))
                         {
-                            evt.stopPropagation();
+                            addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
 
-                            directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
-                            directoryDialog.show();
-                        }, false);
+                            var directory = document.getElementById("pade-directory-" + id);
+
+                            if (directory) directory.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                                directoryDialog.show();
+                            }, false);
+                        }
                     });
 
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

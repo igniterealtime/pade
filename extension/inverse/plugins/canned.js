@@ -122,26 +122,26 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, canned) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
                     var id = this.model.get("box_id");
 
-                    addToolbarItem(view, id, "pade-canned-" + id, '<a class="far fa-save" title="Canned Responses/Replies"></a>');
-
-                    setTimeout(function()
+                    _converse.api.listen.on('renderToolbar', function(view)
                     {
-                        var canned = document.getElementById("pade-canned-" + id);
-
-                        if (canned) canned.addEventListener('click', function(evt)
+                        if (id == view.model.get("box_id") && !view.el.querySelector(".fa-sticky-note"))
                         {
-                            evt.stopPropagation(view, id);
-                            doCannedMsg(view);
+                            addToolbarItem(view, id, "pade-canned-" + id, '<a class="fas fa-sticky-note" title="Canned Responses/Replies"></a>');
 
-                        }, false);
+                            var canned = document.getElementById("pade-canned-" + id);
+
+                            if (canned) canned.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation(view, id);
+                                doCannedMsg(view);
+
+                            }, false);
+                        }
                     });
 
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

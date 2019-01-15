@@ -1,7 +1,7 @@
 /* pade plugins for converse */
 
 .pade-preview-image {
-    max-width: 768px;
+    max-width: -webkit-fill-available;
 }
 #conversejs table {
     color: #333;

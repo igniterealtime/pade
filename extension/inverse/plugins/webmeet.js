@@ -487,215 +487,182 @@
                 },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
-                   console.debug('webmeet - renderToolbar', this.model);
+                    console.debug('webmeet - renderToolbar', this.model);
 
-                    var view = this;
                     var id = this.model.get("box_id");
                     var jid = this.model.get("jid");
                     var type = this.model.get("type");
 
-                    // hide occupants list by default
-                    this.model.set({'hidden_occupants': true});
-
                     if (getSetting("enablePasting", true))
                     {
-                        // paste
-                        pasteInputs[id] = $(this.el).find('.chat-textarea');
-                        pasteInputs[id].pastableTextarea();
+                        setupPastingHandlers(this, id, jid, type);
+                    }
 
-                        pasteInputs[id].on('pasteImage', function(ev, data)
+                    _converse.api.listen.on('renderToolbar', function(view)
+                    {
+                        testFileUploadAvailable(id, view, function(isFileUploadAvailable)
                         {
-                            console.debug("pade - pasteImage", data);
+                            var html = '';
 
-                            previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
-                            previewDialog.show();
-
-                        }).on('pasteImageError', function(ev, data){
-                            console.error('pasteImageError', data);
-
-                        }).on('pasteText', function(ev, data){
-                            console.debug("pasteText", data);
-
-                            if (pasteInputs[id][0].value == data.text && (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0))
+                            if (type == "chatroom")
                             {
-                                // get link only when is initial  URL is pasted
-                                pasteLinkPreview(view, data.text, pasteInputs[id]);
+                                // hide occupants list by default
+                                view.model.set({'hidden_occupants': true});
+                                view.setOccupantsVisibility();
+                                view.scrollDown();
                             }
 
-                        }).on('pasteTextRich', function(ev, data){
-                            console.debug("pasteTextRich", data);
+                            if (bgWindow)
+                            {
+                                if (bgWindow.pade.ofmeetUrl)
+                                {
+                                    html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
+                                    addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
+                                }
 
-                            if (getSetting("useMarkdown", false))
-                                pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
+                                if (bgWindow.pade.activeH5p && bgWindow.pade.chatAPIAvailable)
+                                {
+                                    var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
+                                    addToolbarItem(view, id, "h5p-" + id, html);
+                                }
 
-                        }).on('pasteTextHtml', function(ev, data){
-                            console.debug("pasteTextHtml", data);
+                                if (bgWindow.pade.activeUrl)
+                                {
+                                    var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
+                                    addToolbarItem(view, id, "oob-" + id, html);
+                                }
 
-                            if (getSetting("useMarkdown", false))
-                                pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
+                                if (isFileUploadAvailable)
+                                {
+                                    html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
+                                    addToolbarItem(view, id, "webmeet-screencast-" + id, html);
+                                }
 
-                        }).on('focus', function(){
-                            //console.debug("paste - focus", id);
+                                if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
+                                {
+                                    html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
+                                    addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+                                }
 
-                        }).on('blur', function(){
-                            //console.debug("paste - blur", id);
+                                if (getSetting("webinarMode", false) && bgWindow.pade.ofmeetUrl)
+                                {
+                                    html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
+                                    addToolbarItem(view, id, "webmeet-webinar-" + id, html);
+                                }
+                            }
+
+                            html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
+                            addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
+
+                            var h5pButton = document.getElementById("h5p-" + id);
+
+                            if (h5pButton && bgWindow)
+                            {
+                                h5pButton.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
+                                    {
+                                        doH5p(view, id);
+                                    }
+
+                                }, false);
+                            }
+
+                            var oobButton = document.getElementById("oob-" + id);
+
+                            if (oobButton && bgWindow)
+                            {
+                                oobButton.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
+                                    {
+                                        doooB(view, id, jid, type);
+                                    }
+
+                                }, false);
+                            }
+
+                            var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
+
+                            if (handleJitsiMeet)
+                            {
+                                handleJitsiMeet.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
+
+                                    if (confirm(jitsiConfirm))
+                                    {
+                                        doVideo(view);
+                                    }
+
+                                }, false);
+                            }
+
+                            var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
+
+                            if (handleWebinarPresenter)
+                            {
+                                handleWebinarPresenter.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
+                                    var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
+
+                                    if (title && title != "")
+                                    {
+                                        doWebinarPresenter(view, title);
+                                    }
+
+                                }, false);
+                            }
+
+                            var screencast = document.getElementById("webmeet-screencast-" + id);
+
+                            if (screencast)
+                            {
+                                screencast.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    toggleScreenCast(view);
+
+                                }, false);
+                            }
+
+                            var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
+
+                            if (scrolldown)
+                            {
+                                scrolldown.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+                                    view.viewUnreadMessages()
+
+                                }, false);
+                            }
+
+                            var messageblast = document.getElementById("webmeet-messageblast-" + id);
+
+                            if (messageblast)
+                            {
+                                messageblast.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+                                    bgWindow.openBlastWindow();
+
+                                }, false);
+                            }
                         });
-                    }
-
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
-                    addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
-
-                    if (bgWindow)
-                    {
-                        // h5p content button
-
-                        if (bgWindow.pade.activeH5p)
-                        {
-                            var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                            addToolbarItem(view, id, "h5p-" + id, html);
-                        }
-
-                        if (bgWindow.pade.activeUrl)
-                        {
-                            var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
-                            addToolbarItem(view, id, "oob-" + id, html);
-                        }
-                    }
-
-                    if (bgWindow)
-                    {
-                        html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
-                        addToolbarItem(view, id, "webmeet-screencast-" + id, html);
-
-                        if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
-                        {
-                            html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
-                            addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
-                        }
-
-                        if (getSetting("webinarMode", false))
-                        {
-                            html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
-                            addToolbarItem(view, id, "webmeet-webinar-" + id, html);
-                        }
-                    }
-
-                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
-                    addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
-
-                    setTimeout(function()
-                    {
-                        var h5pButton = document.getElementById("h5p-" + id);
-
-                        if (h5pButton && bgWindow)
-                        {
-                            h5pButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
-                                {
-                                    doH5p(view, id);
-                                }
-
-                            }, false);
-                        }
-
-                        var oobButton = document.getElementById("oob-" + id);
-
-                        if (oobButton && bgWindow)
-                        {
-                            oobButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
-                                {
-                                    doooB(view, id, jid, type);
-                                }
-
-                            }, false);
-                        }
-
-                        var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
-
-                        if (handleJitsiMeet)
-                        {
-                            handleJitsiMeet.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
-
-                                if (confirm(jitsiConfirm))
-                                {
-                                    doVideo(view);
-                                }
-
-                            }, false);
-                        }
-
-                        var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
-
-                        if (handleWebinarPresenter)
-                        {
-                            handleWebinarPresenter.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
-                                var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
-
-                                if (title && title != "")
-                                {
-                                    doWebinarPresenter(view, title);
-                                }
-
-                            }, false);
-                        }
-
-                        var screencast = document.getElementById("webmeet-screencast-" + id);
-
-                        if (screencast)
-                        {
-                            screencast.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                toggleScreenCast(view);
-
-                            }, false);
-                        }
-
-                        var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
-
-                        if (scrolldown)
-                        {
-                            scrolldown.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-                                view.viewUnreadMessages()
-
-                            }, false);
-                        }
-
-                        var messageblast = document.getElementById("webmeet-messageblast-" + id);
-
-                        if (messageblast)
-                        {
-                            messageblast.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-                                bgWindow.openBlastWindow();
-
-                            }, false);
-                        }
-
                     });
 
-                    return result;
+                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             },
 
@@ -721,6 +688,52 @@
             }
         }
     });
+
+    var setupPastingHandlers = function(view, id, jid, type)
+    {
+        console.debug("setupPastingHandlers", id, jid, type);
+
+        pasteInputs[id] = $(view.el).find('.chat-textarea');
+        pasteInputs[id].pastableTextarea();
+
+        pasteInputs[id].on('pasteImage', function(ev, data)
+        {
+            console.debug("pade - pasteImage", data);
+
+            previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
+            previewDialog.show();
+
+        }).on('pasteImageError', function(ev, data){
+            console.error('pasteImageError', data);
+
+        }).on('pasteText', function(ev, data){
+            console.debug("pasteText", data);
+
+            if (pasteInputs[id][0].value == data.text && (data.text.indexOf("http:") == 0  || data.text.indexOf("https:") == 0))
+            {
+                // get link only when is initial  URL is pasted
+                pasteLinkPreview(view, data.text, pasteInputs[id]);
+            }
+
+        }).on('pasteTextRich', function(ev, data){
+            console.debug("pasteTextRich", data);
+
+            if (getSetting("useMarkdown", false))
+                pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
+
+        }).on('pasteTextHtml', function(ev, data){
+            console.debug("pasteTextHtml", data);
+
+            if (getSetting("useMarkdown", false))
+                pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
+
+        }).on('focus', function(){
+            //console.debug("paste - focus", id);
+
+        }).on('blur', function(){
+            //console.debug("paste - blur", id);
+        });
+    }
 
     var renderTimeAgoChatMessage = function(chat)
     {
@@ -1250,7 +1263,8 @@
 
         if (command == "who")
         {
-            view.toggleOccupants(null, true);
+            view.toggleOccupants(null, false);
+            view.scrollDown();
             return true;
         }
         else
@@ -1266,4 +1280,12 @@
         view.model.sendMessage(view.model.getOutgoingMessageAttributes(inviteMsg));
     }
 
+    var testFileUploadAvailable = async function(id, view, callback)
+    {
+        if (id == view.model.get("box_id"))
+        {
+            const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
+            if (!view.el.querySelector(".fa-angle-double-down")) callback(result.length > 0);
+        }
+    }
 }));
