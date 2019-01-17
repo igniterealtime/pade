@@ -52,31 +52,35 @@ var ofmeet = (function(of)
         context.fillStyle = "#fff";
 
         var first, last;
-        var name = nickname.split(" ");
-        var l = name.length - 1;
 
-        if (name && name[0] && name.first != '')
+        if (nickname)
         {
-            first = name[0][0];
-            last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
+            var name = nickname.split(" ");
+            var l = name.length - 1;
 
-            if (last) {
-                var initials = first + last;
-                context.fillText(initials.toUpperCase(), 3, 23);
-            } else {
-                var initials = first;
-                context.fillText(initials.toUpperCase(), 10, 23);
+            if (name && name[0] && name.first != '')
+            {
+                first = name[0][0];
+                last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
+
+                if (last) {
+                    var initials = first + last;
+                    context.fillText(initials.toUpperCase(), 3, 23);
+                } else {
+                    var initials = first;
+                    context.fillText(initials.toUpperCase(), 10, 23);
+                }
             }
-            var data = canvas.toDataURL();
-            document.body.removeChild(canvas);
         }
 
+        var data = canvas.toDataURL();
+        document.body.removeChild(canvas);
         return canvas.toDataURL();
     }
 
     function setup()
     {
-        console.log("ofmeet.js setup", APP.connection, OFMEET_CONFIG.bgWin);
+        console.debug("ofmeet.js setup", APP.connection, OFMEET_CONFIG.bgWin);
 
         if (!APP.connection || !OFMEET_CONFIG.bgWin)
         {
@@ -87,7 +91,7 @@ var ofmeet = (function(of)
 
         window.addEventListener('message', function (event)
         {
-            console.log("addListener message", event.data);
+            console.debug("addListener message", event.data);
 
             // messages from remote control
             // {"postis":true,"scope":"jitsi-remote-control","method":"message","params":{"type":"request","data":{"name":"remote-control","type":"start","sourceId":"8Ppvxxlv3Zgncd5uiKx6zA=="},"id":1}}
@@ -103,7 +107,7 @@ var ofmeet = (function(of)
 
                     if (data.type == "start" && remoteController != null)
                     {
-                        console.log("addListener start", data);
+                        console.debug("addListener start", data);
 
                         APP.remoteControl.receiver.sendRemoteControlEndpointMessage(remoteController._id, {
                             type: "permissions",
@@ -142,7 +146,7 @@ var ofmeet = (function(of)
 
                 if (event.data.event == "ofmeet.event.url.ready")
                 {
-                    console.log("addListener message collab", event.data);
+                    console.debug("addListener message collab", event.data);
 
                     // Starts here. When content page is ready and we have content to share,
                     // we start mouse/key event feed
@@ -172,7 +176,7 @@ var ofmeet = (function(of)
 
         of.connection.addHandler(function(message)
         {
-            //console.log("ofmeet.js incoming xmpp", message);
+            //console.debug("ofmeet.js incoming xmpp", message);
 
             $(message).find('ofmeet').each(function ()
             {
@@ -197,7 +201,7 @@ var ofmeet = (function(of)
 
                     if (json.event == "ofmeet.event.pdf.goto" || json.event == "ofmeet.event.pdf.ready" || json.event == "ofmeet.event.url.ready")
                     {
-                        //console.log("ofmeet.js document share", json);
+                        //console.debug("ofmeet.js document share", json);
 
                         var url = json.url;
 
@@ -258,7 +262,7 @@ var ofmeet = (function(of)
 
                         if (ofMeetContent && (OFMEET_CONFIG.showSharedCursor || !OFMEET_CONFIG.showSharedCursor && json.from != OFMEET_CONFIG.nickName))
                         {
-                            //console.log("ofmeet.event.pdf.message", json);
+                            //console.debug("ofmeet.event.pdf.message", json);
                             ofMeetContent.contentWindow.handlePdfShare(json.msg, json.from);
                         }
                     }
@@ -270,7 +274,7 @@ var ofmeet = (function(of)
 
                         if (ofMeetContent)
                         {
-                            //console.log("ofmeet.event.url.message", json);
+                            //console.debug("ofmeet.event.url.message", json);
                             ofMeetContent.contentWindow.postMessage({ action: 'ofmeet.action.url.share', json: json}, '*');
                         }
                     }
@@ -290,7 +294,7 @@ var ofmeet = (function(of)
 
         APP.connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED, function()
         {
-            console.log("Connection Disconnected!")
+            console.debug("Connection Disconnected!")
         });
 
         setupHttpFileUpload();
@@ -298,7 +302,7 @@ var ofmeet = (function(of)
 
     function __init()
     {
-        console.log("ofmeet.js __init");
+        console.debug("ofmeet.js __init");
         of.subtitles = document.getElementById("subtitles");
 
         remoteControlPort = OFMEET_CONFIG.bgWin.pade.remoteControlPort;
@@ -312,7 +316,7 @@ var ofmeet = (function(of)
         {
             if (message.type != "stats")
             {
-                console.log("ofmeet.js endpoint_message", participant._id, message);
+                console.debug("ofmeet.js endpoint_message", participant._id, message);
 
                 if (message.type == "permissions")
                 {
@@ -375,12 +379,12 @@ var ofmeet = (function(of)
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_JOINED, function()
         {
-            console.log("ofmeet.js me joined");
+            console.debug("ofmeet.js me joined");
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.CONFERENCE_LEFT, function()
         {
-            console.log("ofmeet.js me left");
+            console.debug("ofmeet.js me left");
             OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
 
             recordingAudioStream = null;
@@ -398,7 +402,7 @@ var ofmeet = (function(of)
             var participant = APP.conference.getParticipantById(id);
             var displayName = participant ? participant._displayName || id.split("-")[0] : "Me";
 
-            console.log("ofmeet.js message", id, text, ts, displayName);
+            console.debug("ofmeet.js message", id, text, ts, displayName);
 
             if (OFMEET_CONFIG.enableCaptions && text.indexOf("https://") == -1)
             {
@@ -408,28 +412,28 @@ var ofmeet = (function(of)
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.USER_LEFT, function(id)
         {
-            console.log("ofmeet.js user left", id);
+            console.debug("ofmeet.js user left", id);
             checkIfDocOwnerGone(id);
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.USER_JOINED, function(id)
         {
-            console.log("ofmeet.js user joined", id);
+            console.debug("ofmeet.js user joined", id);
             refreshShare(id);
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.DOMINANT_SPEAKER_CHANGED, function(id)
         {
-            //console.log("ofmeet.js dominant speaker changed", id);
+            //console.debug("ofmeet.js dominant speaker changed", id);
         });
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_REMOVED, function(track)
         {
-            console.log("ofmeet.js track removed", track.getParticipantId());
+            console.debug("ofmeet.js track removed", track.getParticipantId());
 
             if (APP.conference.getMyUserId() == track.getParticipantId())
             {
-                console.log("ofmeet.js track removed", APP.conference.getMyUserId(), track.getParticipantId(), track.getType());
+                console.debug("ofmeet.js track removed", APP.conference.getMyUserId(), track.getParticipantId(), track.getType());
 
                 OFMEET_CONFIG.bgWin.etherlynk.stopRecorder();
 
@@ -442,13 +446,13 @@ var ofmeet = (function(of)
         {
             if (APP.conference.getMyUserId() == track.getParticipantId())
             {
-                console.log("ofmeet.js track added", track.getParticipantId(), track.getType(), track.isMuted());
+                console.debug("ofmeet.js track added", track.getParticipantId(), track.getType(), track.isMuted());
 
                 if (recordingVideoStream && recordingAudioStream && track.getType() == "video") // new video stream, close old
                 {
                     OFMEET_CONFIG.bgWin.etherlynk.stopRecorder(function(size)
                     {
-                        console.log("ofmeet.js recording saved " + size);
+                        console.debug("ofmeet.js recording saved " + size);
                         recordingVideoStream = track.stream;
 
                         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function(stream)
@@ -483,7 +487,7 @@ var ofmeet = (function(of)
 
         APP.conference.addConferenceListener(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, function(track)
         {
-            console.log("ofmeet.js track muted", track.getParticipantId(), track.getType(), track.isMuted());
+            console.debug("ofmeet.js track muted", track.getParticipantId(), track.getType(), track.isMuted());
 
             if (APP.conference.getMyUserId() == track.getParticipantId())
             {
@@ -497,15 +501,18 @@ var ofmeet = (function(of)
                     }
                 }
 
-                if (track.isMuted())    // speech recog synch
+                if (of.recognition)
                 {
-                    console.log("muted, stopping speech transcription");
-                    of.recognitionActive = false;
-                    of.recognition.stop();
+                    if (track.isMuted())    // speech recog synch
+                    {
+                        console.debug("muted, stopping speech transcription");
+                        of.recognitionActive = false;
+                        of.recognition.stop();
 
-                } else {
-                    console.log("unmuted, starting speech transcription");
-                    of.recognition.start();
+                    } else {
+                        console.debug("unmuted, starting speech transcription");
+                        of.recognition.start();
+                    }
                 }
             }
         });
@@ -599,7 +606,7 @@ var ofmeet = (function(of)
 
     function connectSIP()
     {
-        console.log("ofmeet.js connectSIP", config);
+        console.debug("ofmeet.js connectSIP", config);
 
         var getUserMediaFailure = function(e)
         {
@@ -612,28 +619,28 @@ var ofmeet = (function(of)
             of.sipUI = OFMEET_CONFIG.bgWin.etherof.sip.sipUI;
 
             of.sipUI.on('connected', function(e) {
-                console.log("SIP Connected");
+                console.debug("SIP Connected");
             });
 
             of.sipUI.on('disconnected', function(e) {
-                console.log("SIP Disconnected");
+                console.debug("SIP Disconnected");
             });
 
             of.sipUI.on('registered', function(e) {
-                console.log("SIP Registered");
+                console.debug("SIP Registered");
             });
 
             of.sipUI.on('registrationFailed', function(e) {
-                console.log("Error: Registration Failed");
+                console.debug("Error: Registration Failed");
                 APP.UI.messageHandler.notify("SIP Error " + e, null, null, "");
             });
 
             of.sipUI.on('unregistered', function(e) {
-                console.log("Error: Unregistered");
+                console.debug("Error: Unregistered");
             });
 
             of.sipUI.on('message', function(message) {
-                console.log("SIP Message", message.body);
+                console.debug("SIP Message", message.body);
             });
 
             of.sipUI.on('invite', function (incomingSession) {
@@ -655,7 +662,7 @@ var ofmeet = (function(of)
             }
         }
 
-        console.log("ofmeet.js. SIP", OFMEET_CONFIG.sip, config.iceServers);
+        console.debug("ofmeet.js. SIP", OFMEET_CONFIG.sip, config.iceServers);
         navigator.getUserMedia({ audio : true, video : false }, getUserMediaSuccess, getUserMediaFailure);
     }
 
@@ -663,7 +670,7 @@ var ofmeet = (function(of)
     {
         if (APP.conference.roomName == event.conference)
         {
-            console.log("ofmeet.js. removeSipParticipant", event);
+            console.debug("ofmeet.js. removeSipParticipant", event);
             APP.UI.removeUser(event.id, event.source);
 
             delete participants[event.id];
@@ -675,7 +682,7 @@ var ofmeet = (function(of)
         if (participants[event.id]) return;
         if (APP.conference.roomName != event.conference) return;
 
-        console.log("ofmeet.js. addSipParticipant", event);
+        console.debug("ofmeet.js. addSipParticipant", event);
 
         var participant =
         {
@@ -720,7 +727,7 @@ var ofmeet = (function(of)
 
     function dial()
     {
-        console.log("ofmeet.js. SIP", OFMEET_CONFIG.sip, config.iceServers);
+        console.debug("ofmeet.js. SIP", OFMEET_CONFIG.sip, config.iceServers);
 
         try {
             var remoteSipAudio = new Audio();
@@ -784,7 +791,7 @@ var ofmeet = (function(of)
             data.url = OFMEET_CONFIG.currentUrl;
             data.owner = data.username;
 
-            console.log("ofmeet.js refreshShare", id, data);
+            console.debug("ofmeet.js refreshShare", id, data);
 
             setTimeout(function()
             {
@@ -836,7 +843,7 @@ var ofmeet = (function(of)
 
     function uploadFile(file)
     {
-        console.log("uploadFile", file);
+        console.debug("uploadFile", file);
 
         var getUrl = null;
         var putUrl = null;
@@ -844,7 +851,7 @@ var ofmeet = (function(of)
 
         APP.conference._room.sendOfUpload(file, function(response)
         {
-            console.log("uploadFile response", response);
+            console.debug("uploadFile response", response);
 
             $(response).find('slot').each(function()
             {
@@ -858,7 +865,7 @@ var ofmeet = (function(of)
                     getUrl = $(this).text();
                 });
 
-                console.log("uploadFile", putUrl, getUrl);
+                console.debug("uploadFile", putUrl, getUrl);
 
                 if (putUrl != null & getUrl != null)
                 {
@@ -868,7 +875,7 @@ var ofmeet = (function(of)
                     {
                       if (this.readyState == 4 && this.status >= 200 && this.status < 400)
                       {
-                        console.log("uploadFile ok", this.statusText);
+                        console.debug("uploadFile ok", this.statusText);
                         APP.conference._room.sendOfText(getUrl);
                       }
                       else
@@ -890,7 +897,7 @@ var ofmeet = (function(of)
             $(error).find('text').each(function()
             {
                 errorText = $(this).text();
-                console.log("uploadFile error", errorText);
+                console.debug("uploadFile error", errorText);
                 APP.conference._room.sendOfText(errorText);
             });
         });
@@ -898,7 +905,7 @@ var ofmeet = (function(of)
 
     function setupSpeechRecognition()
     {
-        console.log("setupSpeechRecognition", event);
+        console.debug("setupSpeechRecognition", event);
 
         of.recognition = new webkitSpeechRecognition();
         of.recognition.lang = OFMEET_CONFIG.transcribeLanguage;
@@ -907,30 +914,30 @@ var ofmeet = (function(of)
 
         of.recognition.onresult = function(event)
         {
-            //console.log("Speech recog event", event)
+            //console.debug("Speech recog event", event)
 
             if(event.results[event.resultIndex].isFinal==true)
             {
                 var transcript = event.results[event.resultIndex][0].transcript;
-                console.log("Speech recog transcript", transcript);
+                console.debug("Speech recog transcript", transcript);
                 sendSpeechRecognition(transcript);
             }
         }
 
         of.recognition.onspeechend  = function(event)
         {
-            //console.log("Speech recog onspeechend", event);
+            //console.debug("Speech recog onspeechend", event);
         }
 
         of.recognition.onstart = function(event)
         {
-            //console.log("Speech to text started", event);
+            //console.debug("Speech to text started", event);
             of.recognitionActive = true;
         }
 
         of.recognition.onend = function(event)
         {
-            //console.log("Speech to text ended", event);
+            //console.debug("Speech to text ended", event);
 
             if (of.recognitionActive)
             {
@@ -950,7 +957,7 @@ var ofmeet = (function(of)
         if (result != "" && APP.conference && APP.conference._room)
         {
             var message = "[" + result + "]";
-            console.log("Speech recog result", APP.conference._room, message,  OFMEET_CONFIG.username);
+            console.debug("Speech recog result", APP.conference._room, message,  OFMEET_CONFIG.username);
 
             APP.conference._room.sendOfText(message);
             of.currentTranslation = [];
@@ -959,7 +966,7 @@ var ofmeet = (function(of)
 
     window.addEventListener("beforeunload", function(e)
     {
-        console.log("ofmeet.js beforeunload");
+        console.debug("ofmeet.js beforeunload");
 
         //e.returnValue = 'Ok';
 
@@ -978,7 +985,7 @@ var ofmeet = (function(of)
 
     window.addEventListener("unload", function (e)
     {
-        console.log("ofmeet.js unload");
+        console.debug("ofmeet.js unload");
 
         var setSetting = function(name, value)
         {
@@ -993,7 +1000,7 @@ var ofmeet = (function(of)
 
     window.addEventListener("DOMContentLoaded", function()
     {
-        console.log("ofmeet.js load");
+        console.debug("ofmeet.js load");
         setTimeout(function() {setup();}, 1000);
     });
 
@@ -1001,7 +1008,7 @@ var ofmeet = (function(of)
     {
         if (OFMEET_CONFIG.authorization && OFMEET_CONFIG.sameOrigin)
         {
-            console.log("ofmeet.js authorization", OFMEET_CONFIG);
+            console.debug("ofmeet.js authorization", OFMEET_CONFIG);
 
             var authorization = atob(OFMEET_CONFIG.authorization).split(":");
             localStorage.setItem("xmpp_username_override", authorization[0] + "@" + OFMEET_CONFIG.domain);
@@ -1060,7 +1067,7 @@ var ofmeet = (function(of)
 
 function ofmeetEtherpadClicked()
 {
-    console.log("ofmeet.etherpadClicked", OFMEET_CONFIG.bgWin.pade.activeUrl);
+    console.debug("ofmeet.etherpadClicked", OFMEET_CONFIG.bgWin.pade.activeUrl);
 
     if (OFMEET_CONFIG.bgWin.pade.activeUrl)
     {

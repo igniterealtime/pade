@@ -74,6 +74,10 @@
  #conversejs .chatbox .box-flyout, #conversejs.converse-embedded .chatbox .box-flyout {
      background-color: #000;
 }
+ #conversejs.converse-fullscreen #controlbox .box-flyout, #conversejs.converse-mobile #controlbox .box-flyout {
+    padding-bottom: 20px; !important;  
+    background-color: #000;
+}
  #conversejs.converse-fullscreen .chatroom .box-flyout, #conversejs.converse-mobile .chatroom .box-flyout {
      border: 0.85px solid #E77051;
      border-top: 0.8em solid #E77051;

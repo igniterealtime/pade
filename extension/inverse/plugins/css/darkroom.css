@@ -2,6 +2,10 @@
      color: #d8d8d8;
      text-shadow: none;
 }
+ #conversejs .items-list .list-item {
+     color: #959595; 
+}
+
  #conversejs a, #conversejs.converse-embedded a, #conversejs a:visited, #conversejs.converse-embedded a:visited {
      color: #ababab;
 }
@@ -52,6 +56,10 @@
      background-color: #474747;
 }
  #conversejs #controlbox .controlbox-head, #conversejs.converse-embedded #controlbox .controlbox-head, #conversejs #controlbox .controlbox-panes, #conversejs.converse-embedded #controlbox .controlbox-panes, #conversejs #controlbox .controlbox-pane, #conversejs.converse-embedded #controlbox .controlbox-pane {
+     background-color: #474747;
+}
+ #conversejs.converse-fullscreen #controlbox .box-flyout, #conversejs.converse-mobile #controlbox .box-flyout {
+     padding-bottom: 20px; !important;  
      background-color: #474747;
 }
  #conversejs #controlbox #chatrooms .list-toggle, #conversejs.converse-embedded #controlbox #chatrooms .list-toggle {

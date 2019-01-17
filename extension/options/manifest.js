@@ -1636,7 +1636,7 @@ if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
         {
             "tab": i18n.get("TouchPad Page:" + p),
             "group": i18n.get("General"),
-            "name": "PageLabel_" + p,
+            "name": "pageLabel_" + p,
             "type": "text",
             "label": i18n.get("Label"),
             "text": i18n.get("Enter the label for page " + p),
@@ -1680,7 +1680,7 @@ if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
 
     this.manifest.settings.push(
     {
-        "tab": i18n.get("TouchPad Page:" + p),
+        "tab": i18n.get("TouchPad Speakers"),
         "group": i18n.get("General"),
         "name": "speakersEnabled",
         "type": "checkbox",

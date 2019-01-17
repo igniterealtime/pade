@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, no-var, max-len */
+
 var interfaceConfig = {
     // TO FIX: this needs to be handled from SASS variables. There are some
     // methods allowing to use variables both in css and js.
@@ -7,14 +9,14 @@ var interfaceConfig = {
      * Whether or not the blurred video background for large video should be
      * displayed on browsers that can support it.
      */
-    DISABLE_VIDEO_BACKGROUND: true,
+    DISABLE_VIDEO_BACKGROUND: false,
 
-    INITIAL_TOOLBAR_TIMEOUT: getSetting("INITIAL_TOOLBAR_TIMEOUT", 20000),
-    TOOLBAR_TIMEOUT: getSetting("TOOLBAR_TIMEOUT", 4000),
+    INITIAL_TOOLBAR_TIMEOUT: 20000,
+    TOOLBAR_TIMEOUT: 4000,
     TOOLBAR_ALWAYS_VISIBLE: false,
-    DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
+    DEFAULT_REMOTE_DISPLAY_NAME: 'Fellow Jitster',
     DEFAULT_LOCAL_DISPLAY_NAME: 'me',
-    SHOW_JITSI_WATERMARK: false,
+    SHOW_JITSI_WATERMARK: true,
     JITSI_WATERMARK_LINK: 'https://jitsi.org',
 
     // if watermark is disabled by default, it can be shown only for guests
@@ -25,10 +27,10 @@ var interfaceConfig = {
     SHOW_DEEP_LINKING_IMAGE: false,
     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: true,
     DISPLAY_WELCOME_PAGE_CONTENT: true,
-    APP_NAME: chrome.i18n.getMessage('manifest_extensionName'),
-    NATIVE_APP_NAME: chrome.i18n.getMessage('manifest_extensionName'),
+    APP_NAME: 'Jitsi Meet',
+    NATIVE_APP_NAME: 'Jitsi Meet',
     LANG_DETECTION: false, // Allow i18n to detect the system language
-    INVITATION_POWERED_BY: false,
+    INVITATION_POWERED_BY: true,
 
     /**
      * If we should show authentication block in profile
@@ -47,7 +49,7 @@ var interfaceConfig = {
         'fodeviceselection', 'hangup', 'profile', 'info', 'chat', 'recording',
         'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
         'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview', 'localrecording'
+        'tileview'
     ],
 
     SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar' ],
@@ -66,13 +68,13 @@ var interfaceConfig = {
     /**
      * Whether to show thumbnails in filmstrip as a column instead of as a row.
      */
-    VERTICAL_FILMSTRIP: getSetting("VERTICAL_FILMSTRIP", true),
+    VERTICAL_FILMSTRIP: true,
 
     // A html text to be shown to guests on the close page, false disables it
     CLOSE_PAGE_GUEST_HINT: false,
     RANDOM_AVATAR_URL_PREFIX: false,
     RANDOM_AVATAR_URL_SUFFIX: false,
-    FILM_STRIP_MAX_HEIGHT: getSetting("FILM_STRIP_MAX_HEIGHT", 80),
+    FILM_STRIP_MAX_HEIGHT: 120,
 
     // Enables feedback star animation.
     ENABLE_FEEDBACK_ANIMATION: false,
@@ -193,3 +195,4 @@ var interfaceConfig = {
     // APP_SCHEME: 'org.jitsi.meet'
 };
 
+/* eslint-enable no-unused-vars, no-var, max-len */

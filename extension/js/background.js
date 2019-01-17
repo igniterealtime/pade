@@ -509,6 +509,9 @@ window.addEventListener("load", function()
     pade.username = getSetting("username", null);
     pade.password = getSetting("password", null);
     pade.avatar = getSetting("avatar", null);
+    pade.ofmeetUrl = getSetting("ofmeetUrl", null);
+
+    if (!pade.ofmeetUrl) pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
 
     chrome.idle.setDetectionInterval(getSetting("idleTimeout", 300));
 
@@ -2866,7 +2869,7 @@ function getRandomColor(nickname)
 
 function createStreamDeckImage(text, fill)
 {
-    if (!fill) fill = "#070";
+    if (!fill) fill = getRandomColor(text);
 
     var canvas = document.createElement('canvas');
     canvas.style.display = 'none';
@@ -3036,19 +3039,7 @@ function handleStreamDeckPage(p)
         for (var b=5; b<15; b++)
         {
             pade.streamDeckPort.postMessage({ message: "setColor", key: b, color: 0 });
-
-            var i = b < 13 ? 1 : 2;     // row 1 - 2 (2x10 = 20)
-            var j = ((b - 5) % 8) + 1;  // cols 1 - 8 plus 2 = 10
-
-            if (getSetting("cellEnabled_" + p + "_" + i + "_" + j, false))
-            {
-                var label = getSetting("cellLabel_" + p + "_" + i + "_" + j, null);
-
-                if (label)
-                {
-                    pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: createStreamDeckImage(label)});
-                }
-            }
+            setupStreadDeckKey(b);
         }
     }
 }

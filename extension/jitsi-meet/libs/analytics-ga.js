@@ -126,9 +126,12 @@
             return;
         }
 
-        // The e2e rtt are not useful in GA, and there are too many of them.
-        // We just filter them out for now.
-        if (event.action === 'e2e_rtt') {
+        const ignoredEvents
+            = [ 'e2e_rtt', 'rtp.stats', 'rtt.by.region', 'available.device',
+                'stream.switch.delay', 'ice.state.changed', 'ice.duration' ];
+
+        // Temporary removing some of the events that are too noisy.
+        if (ignoredEvents.indexOf(event.action) !== -1) {
             return;
         }
 

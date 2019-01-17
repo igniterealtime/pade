@@ -4,3 +4,8 @@
     border-top: 0.8em solid #E77051;
     width: 100%;
 }
+
+#conversejs.converse-fullscreen #controlbox .box-flyout, #conversejs.converse-mobile #controlbox .box-flyout {
+    padding-bottom: 20px; !important;  
+    background-color: white;    
+}

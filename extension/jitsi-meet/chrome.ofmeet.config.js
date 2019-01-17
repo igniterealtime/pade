@@ -110,7 +110,7 @@ function urlParam(name)
 
 function getSetting(name, defaultValue)
 {
-    //console.log("getSetting", name, defaultValue);
+    //console.debug("getSetting", name, defaultValue);
 
     var value = defaultValue;
 

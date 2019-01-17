@@ -54271,8 +54271,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
       onOccupantAvatarClicked(ev) {
         /* When an occupant avatar is clicked, open private chatbox
          */
-         const jid = ev.target.getAttribute('data-room-jid');
-        if (_converse.bare_jid != jid) _converse.api.chats.open(jid);
+            const jid = ev.target.getAttribute('data-room-jid');
+            if (jid && _converse.bare_jid != jid) _converse.api.chats.open(jid);
       },
 
       handleChatStateNotification(message) {

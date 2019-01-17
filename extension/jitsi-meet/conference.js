@@ -88,6 +88,7 @@ import {
 import { updateSettings } from './react/features/base/settings';
 import {
     createLocalTracksF,
+    destroyLocalTracks,
     isLocalTrackMuted,
     replaceLocalTrack,
     trackAdded,
@@ -97,6 +98,7 @@ import {
     getLocationContextRoot,
     getJitsiMeetGlobalNS
 } from './react/features/base/util';
+import { addMessage } from './react/features/chat';
 import { showDesktopPicker } from './react/features/desktop-picker';
 import { appendSuffix } from './react/features/display-name';
 import {
@@ -424,10 +426,16 @@ class ConferenceConnector {
         switch (err) {
         case JitsiConferenceErrors.CHAT_ERROR:
             logger.error('Chat error.', err);
-            if (isButtonEnabled('chat')) {
+            if (isButtonEnabled('chat') && !interfaceConfig.filmStripOnly) {
                 const [ code, msg ] = params;
 
-                APP.UI.showChatError(code, msg);
+                APP.store.dispatch(addMessage({
+                    hasRead: true,
+                    error: code,
+                    message: msg,
+                    timestamp: Date.now(),
+                    type: 'error'
+                }));
             }
             break;
         default:
@@ -1480,6 +1488,8 @@ export default {
         const wasVideoMuted = this.isLocalVideoMuted();
 
         return createLocalTracksF({
+            desktopSharingSourceDevice: options.desktopSharingSources
+                ? null : config._desktopSharingSourceDevice,
             desktopSharingSources: options.desktopSharingSources,
             devices: [ 'desktop' ],
             desktopSharingExtensionExternalInstallation: {
@@ -1637,6 +1647,7 @@ export default {
         // Handling:
         // JitsiTrackErrors.PERMISSION_DENIED
         // JitsiTrackErrors.CHROME_EXTENSION_INSTALLATION_ERROR
+        // JitsiTrackErrors.CONSTRAINT_FAILED
         // JitsiTrackErrors.GENERAL
         // and any other
         let descriptionKey;
@@ -1660,6 +1671,9 @@ export default {
                 descriptionKey = 'dialog.screenSharingPermissionDeniedError';
                 titleKey = 'dialog.screenSharingFailedToInstallTitle';
             }
+        } else if (error.name === JitsiTrackErrors.CONSTRAINT_FAILED) {
+            descriptionKey = 'dialog.cameraConstraintFailedError';
+            titleKey = 'deviceError.cameraError';
         } else {
             descriptionKey = 'dialog.screenSharingFailedToInstall';
             titleKey = 'dialog.screenSharingFailedToInstallTitle';
@@ -1818,35 +1832,6 @@ export default {
         room.on(
             JitsiConferenceEvents.DOMINANT_SPEAKER_CHANGED,
             id => APP.store.dispatch(dominantSpeakerChanged(id, room)));
-
-        if (!interfaceConfig.filmStripOnly) {
-            if (isButtonEnabled('chat')) {
-                room.on(
-                    JitsiConferenceEvents.MESSAGE_RECEIVED,
-                    (id, body, ts) => {
-                        let nick = getDisplayName(id);
-
-                        if (!nick) {
-                            nick = `${
-                                interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME} (${
-                                id})`;
-                        }
-
-                        APP.API.notifyReceivedChatMessage({
-                            id,
-                            nick,
-                            body,
-                            ts
-                        });
-                        APP.UI.addMessage(id, nick, body, ts);
-                    }
-                );
-                APP.UI.addListener(UIEvents.MESSAGE_CREATED, message => {
-                    APP.API.notifySendingChatMessage(message);
-                    room.sendTextMessage(message);
-                });
-            }
-        }
 
         room.on(JitsiConferenceEvents.CONNECTION_INTERRUPTED, () => {
             APP.store.dispatch(localParticipantConnectionStatusChanged(
@@ -2488,7 +2473,11 @@ export default {
      */
     hangup(requestFeedback = false) {
         eventEmitter.emit(JitsiMeetConferenceEvents.BEFORE_HANGUP);
-        APP.UI.removeLocalMedia();
+
+        APP.store.dispatch(destroyLocalTracks());
+        this._localTracksInitialized = false;
+        this.localVideo = null;
+        this.localAudio = null;
 
         // Remove unnecessary event listeners from firing callbacks.
         if (this.deviceChangeListener) {
@@ -2496,6 +2485,9 @@ export default {
                 JitsiMediaDevicesEvents.DEVICE_LIST_CHANGED,
                 this.deviceChangeListener);
         }
+
+        APP.UI.removeAllListeners();
+        APP.remoteControl.removeAllListeners();
 
         let requestFeedbackPromise;
 
@@ -2530,7 +2522,12 @@ export default {
     leaveRoomAndDisconnect() {
         APP.store.dispatch(conferenceWillLeave(room));
 
-        return room.leave().then(disconnect, disconnect);
+        return room.leave()
+            .then(disconnect, disconnect)
+            .then(() => {
+                this._room = undefined;
+                room = undefined;
+            });
     },
 
     /**
@@ -2669,7 +2666,6 @@ export default {
         });
 
         if (room) {
-            room.setDisplayName(formattedNickname);
             APP.UI.changeDisplayName(id, formattedNickname);
         }
     },

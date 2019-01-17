@@ -1,8 +1,6 @@
 /* global __dirname */
 
 const process = require('process');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const webpack = require('webpack');
 
 /**
  * The URL of the Jitsi Meet deployment to be proxy to in the context of
@@ -14,33 +12,6 @@ const devServerProxyTarget
 const minimize
     = process.argv.indexOf('-p') !== -1
         || process.argv.indexOf('--optimize-minimize') !== -1;
-
-// eslint-disable-next-line camelcase
-const node_modules = `${__dirname}/node_modules/`;
-const plugins = [
-    new webpack.LoaderOptionsPlugin({
-        debug: !minimize,
-        minimize
-    })
-];
-
-if (minimize) {
-    // XXX Webpack's command line argument -p is not enough. Further
-    // optimizations are made possible by the use of DefinePlugin and NODE_ENV
-    // with value 'production'. For example, React takes advantage of these.
-    plugins.push(new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: JSON.stringify('production')
-        }
-    }));
-    plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-    plugins.push(new UglifyJsPlugin({
-        cache: true,
-        extractComments: true,
-        parallel: true,
-        sourceMap: true
-    }));
-}
 
 // The base Webpack configuration to bundle the JavaScript artifacts of
 // jitsi-meet such as app.bundle.js and external_api.js.
@@ -57,28 +28,38 @@ const config = {
         }
     },
     devtool: 'source-map',
+    mode: minimize ? 'production' : 'development',
     module: {
         rules: [ {
             // Transpile ES2015 (aka ES6) to ES5. Accept the JSX syntax by React
             // as well.
 
-            exclude: node_modules, // eslint-disable-line camelcase
+            exclude: [
+                new RegExp(`${__dirname}/node_modules/(?!js-utils)`)
+            ],
             loader: 'babel-loader',
             options: {
                 // XXX The require.resolve bellow solves failures to locate the
                 // presets when lib-jitsi-meet, for example, is npm linked in
-                // jitsi-meet. The require.resolve, of course, mandates the use
-                // of the prefix babel-preset- in the preset names.
+                // jitsi-meet.
+                plugins: [
+                    require.resolve('@babel/plugin-transform-flow-strip-types'),
+                    require.resolve('@babel/plugin-proposal-class-properties'),
+                    require.resolve(
+                        '@babel/plugin-proposal-export-default-from'),
+                    require.resolve(
+                        '@babel/plugin-proposal-export-namespace-from')
+                ],
                 presets: [
                     [
-                        require.resolve('babel-preset-env'),
+                        require.resolve('@babel/preset-env'),
 
                         // Tell babel to avoid compiling imports into CommonJS
                         // so that webpack may do tree shaking.
                         { modules: false }
                     ],
-                    require.resolve('babel-preset-react'),
-                    require.resolve('babel-preset-stage-1')
+                    require.resolve('@babel/preset-flow'),
+                    require.resolve('@babel/preset-react')
                 ]
             },
             test: /\.jsx?$/
@@ -105,13 +86,16 @@ const config = {
         // value that is a mock (/index.js).
         __filename: true
     },
+    optimization: {
+        concatenateModules: minimize,
+        minimize
+    },
     output: {
         filename: `[name]${minimize ? '.min' : ''}.js`,
         path: `${__dirname}/build`,
         publicPath: '/libs/',
         sourceMapFilename: `[name].${minimize ? 'min' : 'js'}.map`
     },
-    plugins,
     resolve: {
         alias: {
             jquery: `jquery/dist/jquery${minimize ? '.min' : ''}.js`
@@ -141,10 +125,6 @@ module.exports = [
                 './react/features/always-on-top/index.js',
 
             'dial_in_info_bundle': [
-
-                // atlaskit does not support React 16 prop-types
-                './react/features/base/react/prop-types-polyfill.js',
-
                 './react/features/invite/components/dial-in-info-page'
             ],
 
@@ -153,7 +133,11 @@ module.exports = [
 
             'flacEncodeWorker':
                 './react/features/local-recording/'
-                    + 'recording/flac/flacEncodeWorker.js'
+                    + 'recording/flac/flacEncodeWorker.js',
+            'analytics-ga':
+                './react/features/analytics/handlers/GoogleAnalyticsHandler.js',
+            'analytics-amplitude':
+                './react/features/analytics/handlers/AmplitudeHandler.js'
         }
     }),
 
@@ -180,7 +164,8 @@ module.exports = [
  * target, undefined; otherwise, the path to the local file to be served.
  */
 function devServerProxyBypass({ path }) {
-    if (path.startsWith('/css/') || path.startsWith('/doc/')) {
+    if (path.startsWith('/css/') || path.startsWith('/doc/')
+            || path.startsWith('/fonts/')) {
         return path;
     }
 
