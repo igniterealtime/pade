@@ -1,5 +1,25 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>0.9.3</b> -- <i>January 17, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/116">Fixed #116: Openfire Meetings stopped working after upgrade to Openfire 4.3.0</a></li>
+    <li>Fixed CSS errors introduced in version 0.9.2</li>
+    <li>Test with Openfire 4.3.0</li>
+    <li>Upgraded Jitsi-Meet to version 1.0.3174</li>
+</ul>
+
+<p><b>0.9.2</b> -- <i>January 14, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/115">Fixed #115: Extend Converse slash commands with plugin commands</a></li>
+    <li>Upgraded Converse to 4.1.0</li>
+</ul>
+
+<p><b>0.9.1</b> -- <i>January 09, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/112">Fixed #112: Extend the media content summary with more context sensitive info</a></li>
+    <li>Implemented a cache using chrome.storage.local for contact avatars to speed up loading Converse</li>
+</ul>
+
 <p><b>0.9.0</b> -- <i>January 04, 2019</i></p>
 <ul>
     <li><a href="https://github.com/conversejs/community-plugins/issues/3">Fixed #3:  Media Content Summary</a></li>
