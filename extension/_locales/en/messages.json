@@ -33,6 +33,15 @@
         "description": "Ethereum network name"
     },    
 
+    "registerSubject": {
+        "message": "User Account Registration confirmation",
+        "description": "Title for email used in account registration"
+    },    
+    "registerBody": {
+        "message": "Please reply this email to confirm registration",
+        "description": "Body for email used in account registration"
+    },
+    
     "webinarInvite": {
         "message": "Please join webinar at",
         "description": "Title to webinar invitation"

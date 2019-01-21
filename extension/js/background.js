@@ -89,7 +89,7 @@ window.addEventListener("load", function()
         if (idleState == "idle") pres.c("show").t("away").up().c("status").t(getSetting("idleMessage", "see you later"));
         if (idleState == "active") pres.c("status").t(getSetting("idleActiveMessage", "hello"));
 
-        pade.connection.send(pres);
+        if (pade.connection) pade.connection.send(pres);
     })
 
     chrome.runtime.onStartup.addListener(function()
@@ -1427,13 +1427,24 @@ function addHandlers()
         var type = $(presence).attr('type');
         var from = Strophe.getBareJidFromJid($(presence).attr('from'));
 
-        console.debug("presence handler", from, to, type);
-
         var pres = "online";
-        if (type == "unavailable") pres = "unavailable";
+        if (type) pres = type;
+
+        $(presence).find('show').each(function()
+        {
+            pres = $(this).text();
+        });
+
+        var contact = pade.participants[from];
+
+        console.debug("presence tracker", pres, from, to, type, contact, pade.presence[from]);
+
+        if (pade.isReady && pade.presence[from] && pade.presence[from] != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
+        {
+            if (contact.name && from) notifyText(contact.name, "Contact Tracker", null, [], null, from);
+        }
 
         pade.presence[from] = pres;
-        var contact = pade.participants[from];
 
         if (contact && contact.type == "conversation" && getSetting("enableInverse", false) == false)
         {
@@ -3180,6 +3191,7 @@ function doPadeConnect()
                 runMeetingPlanner();
 
                 chrome.browserAction.setBadgeText({ text: "" });
+                pade.isReady = true;
             }, 3000);
         }
         else

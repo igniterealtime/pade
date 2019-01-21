@@ -22,6 +22,11 @@
     font-weight: bold;
 }
 
+#conversejs h3 {
+    font-weight: bold !important;  /* info bar categories */
+    font-size: 120% !important;    
+}
+
 #conversejs td {
     background: #FAFAFA;
     text-align: left;

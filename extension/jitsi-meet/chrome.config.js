@@ -13,7 +13,7 @@ if (__baseUrl.indexOf("https://" + __server) == -1)
 {
     __server = __baseUrl.split("/")[2];
     __domain = __server.split(":")[0];
-    connUrl = __baseUrl + "/http-bind";
+    connUrl = "https://" + __server + "/http-bind";
 }
 
 var __displayname = getSetting("displayname");

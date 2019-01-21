@@ -2,12 +2,12 @@ var uportWin = null, credWin = null;
 
 window.addEventListener("load", function()
 {
-    console.log("options loaded");
+    console.debug("options loaded");
 })
 
 window.addEventListener("unload", function ()
 {
-    console.log("options unloaded");
+    console.debug("options unloaded");
 
     setSetting(location.href, {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
 
@@ -73,8 +73,14 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
         {
-            settings.manifest.status.element.innerHTML = 'Please wait....';
-            validateCredentials()
+            settings.manifest.status.element.innerHTML = 'Connecting, please wait....';
+            validateCredentials();
+        });
+
+        if (settings.manifest.register) settings.manifest.register.addEvent("action", function ()
+        {
+            settings.manifest.status.element.innerHTML = 'Registering, please wait....';
+            registerUser();
         });
 
         if (settings.manifest.remoteConnect) settings.manifest.remoteConnect.addEvent("action", function ()
@@ -122,7 +128,7 @@ window.addEvent("domready", function () {
             {
                 if (!error) chrome.downloads.download({url: URL.createObjectURL(blob), filename: "conversations" + Math.random().toString(36).substr(2,9) + ".pdf"}, function(id)
                 {
-                    console.log("PDF downloaded", id);
+                    console.debug("PDF downloaded", id);
                 });
             });
 
@@ -172,7 +178,7 @@ window.addEvent("domready", function () {
         {
             background.findUsers(settings.manifest.searchString.element.value, function(userList)
             {
-                console.log("findUsers", userList);
+                console.debug("findUsers", userList);
 
                 var usersObj = {};
 
@@ -239,7 +245,7 @@ window.addEvent("domready", function () {
                         e.stopPropagation();
                         var invitation = e.target;
 
-                        console.log("inviteUser - click", invitation.id, invitation.checked);
+                        console.debug("inviteUser - click", invitation.id, invitation.checked);
 
                         var inviteList = settings.manifest.invitationList.element.value.split("\n");
                         var invitee = invitation.id.substring(6);
@@ -283,7 +289,7 @@ window.addEvent("domready", function () {
             var room = "pade-" + Math.random().toString(36).substr(2,9);
             var invite = getSetting("meetingName");
 
-            console.log("inviteToMeeting", inviteList, room);
+            console.debug("inviteToMeeting", inviteList, room);
 
             background.openVideoWindow(room);
 
@@ -514,18 +520,18 @@ window.addEvent("domready", function () {
                 {
                     if (event.data.url && event.data.event == "ofmeet.event.url.ready")
                     {
-                        console.log("Smart-ID URL", event.data.url);
+                        console.debug("Smart-ID URL", event.data.url);
 
                         var pos = event.data.url.indexOf( "https://igniterealtime.github.io/pade/redirect.html?code=" );
 
                         if (pos > -1)
                         {
                             code = event.data.url.substring(pos + 57);
-                            console.log("Smart-ID CODE", code);
+                            console.debug("Smart-ID CODE", code);
 
                             fetch("https://" + server + "/apps/smartidcard?code=" + code, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
                             {
-                                console.log("Smart-ID DATA", json);
+                                console.debug("Smart-ID DATA", json);
 
                                 var fullName = null;
                                 var email = null;
@@ -814,7 +820,7 @@ window.addEvent("domready", function () {
                 var url =  "https://" + host + "/rest/api/restapi/v1/chat/certificate";
                 var options = {method: "GET", headers: {"authorization": "Basic " + btoa(username + ":" + password)}};
 
-                console.log("fetch certificate", url, options);
+                console.debug("fetch certificate", url, options);
 
                 fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
                 {
@@ -883,7 +889,7 @@ window.addEvent("domready", function () {
                 var permission =  "Basic " + btoa(username + ":" + password);
                 var options = {method: "POST", headers: {"authorization": permission, "content-type": "application/json"}, body: JSON.stringify(body)};
 
-                console.log("fetch friendCreate", url, options);
+                console.debug("fetch friendCreate", url, options);
 
                 fetch(url, options).then(function(response)
                 {
@@ -931,7 +937,7 @@ window.addEvent("domready", function () {
                     var permission =  "Basic " + btoa(username + ":" + password);
                     var options = {method: "POST", headers: {"authorization": permission, "content-type": "application/json"}, body: JSON.stringify(body)};
 
-                    console.log("fetch saveProfile", url, options);
+                    console.debug("fetch saveProfile", url, options);
 
                     fetch(url, options).then(function(response)
                     {
@@ -945,6 +951,98 @@ window.addEvent("domready", function () {
             }
         });
 
+
+        function registerUser()
+        {
+            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.email"])
+            {
+                var lynks = {};
+
+                lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
+                lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
+                lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
+                lynks.email = JSON.parse(window.localStorage["store.settings.email"]);
+
+                if (window.localStorage["store.settings.displayname"])
+                {
+                   lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
+                }
+
+                if (window.localStorage["store.settings.password"])
+                {
+                   lynks.password = JSON.parse(window.localStorage["store.settings.password"]);
+                }
+
+                lynks.connUrl = "https://" + lynks.server + "/http-bind/";
+
+                if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
+                {
+                    lynks.connUrl = "wss://" + lynks.server + "/ws/";
+                }
+
+                var connection = background.getConnection(lynks.connUrl);
+
+                connection.addHandler(function(resp)
+                {
+                    var register = resp.querySelector('register');
+
+                    if (register && resp.getAttribute("type") == "result")
+                    {
+                        console.debug("registerUser: register responses", register);
+
+                        var error = register.getAttribute("error");
+
+                        if (error) settings.manifest.status.element.innerHTML = '<b style="color:red">' + error + '</b>';
+
+                        else {
+                            var password = register.getAttribute("password");
+                            if (password) setSetting("password", "token-" + btoa(password));
+
+                            setTimeout(function()
+                            {
+                                connection.disconnect();
+                                background.reloadApp();
+
+                            }, 1000);
+                        }
+                    }
+
+                    return true;
+
+                }, null, 'iq');
+
+                connection.connect(lynks.domain, "", function (status)
+                {
+                    console.debug("registerUser: register status", status);
+
+                    if (status === 5)
+                    {
+                        var attrs = {xmlns: "http://igniterealtime.org/ofchat/register", from: lynks.username + "@" + lynks.domain, email: lynks.email, name: lynks.displayname, subject: chrome.i18n.getMessage('registerSubject')};
+                        if (lynks.password && lynks.password != "") attrs.password = lynks.password;
+
+                        var request = background.$iq({to: connection.domain, type: "set"}).c("register", attrs).t(chrome.i18n.getMessage('registerBody'));
+                        connection.send(request);
+                    }
+                    else
+
+                    if (status === 4)
+                    {
+                        settings.manifest.status.element.innerHTML = '<b style="color:red">bad server or domain</b>';
+                        connection.disconnect();
+                    }
+                });
+
+                setTimeout(function()
+                {
+                    connection.disconnect();
+                    background.reloadApp();
+
+                }, 60000);
+
+
+            } else settings.manifest.status.element.innerHTML = '<b style="color:red">bad server, domain, username, display name or email</b>';
+
+        }
 
         function validateCredentials()
         {
@@ -962,13 +1060,19 @@ window.addEvent("domready", function () {
                 {
                     if (lynks.server.indexOf(":") == -1)
                     {
-                        settings.manifest.status.element.innerHTML = '<b>missing server port. use server:port or ipaddress:port</b>';
+                        settings.manifest.status.element.innerHTML = '<b style="color:red">missing server port. use server:port or ipaddress:port</b>';
                     }
                     else
 
                     if (isNumeric(lynks.server.substring(lynks.server.indexOf(":") + 1)))
                     {
-                        var connection = background.getConnection("https://" + lynks.server + "/http-bind/");
+                        var connUrl = "https://" + lynks.server + "/http-bind/";
+
+                        if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
+                        {
+                            connUrl = "wss://" + lynks.server + "/ws/";
+                        }
+                        var connection = background.getConnection(connUrl);
 
                         if (window.localStorage["store.settings.useTotp"] && JSON.parse(window.localStorage["store.settings.useTotp"]))
                         {
@@ -989,21 +1093,21 @@ window.addEvent("domready", function () {
                             if (status === 4)
                             {
                                 setDefaultPassword(settings);
-                                settings.manifest.status.element.innerHTML = '<b>bad username or password</b>';
+                                settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
                             }
                         });
                     } else {
-                        settings.manifest.status.element.innerHTML = '<b>bad server port. use server:port or ipaddress:port</b>';
+                        settings.manifest.status.element.innerHTML = '<b style="color:red" style="color:red">bad server port. use server:port or ipaddress:port</b>';
                     }
                 }
                 else {
-                    if (!lynks.server) settings.manifest.status.element.innerHTML = '<b>bad server</b>';
-                    if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b>bad domain</b>';
-                    if (!lynks.username) settings.manifest.status.element.innerHTML = '<b>bad username</b>';
-                    if (!lynks.password) settings.manifest.status.element.innerHTML = '<b>bad password</b>';
+                    if (!lynks.server) settings.manifest.status.element.innerHTML = '<b style="color:red">bad server</b>';
+                    if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b style="color:red">bad domain</b>';
+                    if (!lynks.username) settings.manifest.status.element.innerHTML = '<b style="color:red">bad username</b>';
+                    if (!lynks.password) settings.manifest.status.element.innerHTML = '<b style="color:red">bad password</b>';
                 }
 
-            } else settings.manifest.status.element.innerHTML = '<b>bad server, domain, username or password</b>';
+            } else settings.manifest.status.element.innerHTML = '<b style="color:red">bad server, domain, username or password</b>';
         }
     });
 
@@ -1067,6 +1171,7 @@ function doDefaults()
     setDefaultSetting("converseRosterFilter", true);
     setDefaultSetting("converseTheme", "plainsimple");
     setDefaultSetting("enableBookmarks", true);
+    setDefaultSetting("notifyRoomMentions", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");
@@ -1242,7 +1347,7 @@ function uploadApplication(event, settings, background)
 
         for (var i = 0, file; file = files[i]; i++)
         {
-            console.log("upload", file);
+            console.debug("upload", file);
 
             if (file.name.endsWith(".zip") || file.name.endsWith(".h5p"))
             {
@@ -1253,8 +1358,8 @@ function uploadApplication(event, settings, background)
                 {
                   if (this.readyState == 4 && this.status >= 200 && this.status < 400)
                   {
-                    console.log("pade.upload.app", this.statusText);
-                    settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+                    console.debug("pade.upload.app", this.statusText);
+                    settings.manifest.uploadStatus.element.innerHTML = '<b style="color:red">' + this.statusText + '</b>';
 
                     setTimeout(function()
                     {
@@ -1267,7 +1372,7 @@ function uploadApplication(event, settings, background)
                   if (this.readyState == 4 && this.status >= 400)
                   {
                     console.error("pade.upload.error", this.statusText);
-                    settings.manifest.uploadStatus.element.innerHTML = '<b>' + this.statusText + '</b>';
+                    settings.manifest.uploadStatus.element.innerHTML = '<b style="color:red">' + this.statusText + '</b>';
                   }
 
                 };
@@ -1275,12 +1380,12 @@ function uploadApplication(event, settings, background)
                 req.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
                 req.send(file);
             } else {
-                settings.manifest.uploadStatus.element.innerHTML = '<b>application file must be a zip file</b>';
+                settings.manifest.uploadStatus.element.innerHTML = '<b style="color:red">application file must be a zip file</b>';
             }
         }
 
     } else {
-        settings.manifest.uploadStatus.element.innerHTML = '<b>user not configured</b>';
+        settings.manifest.uploadStatus.element.innerHTML = '<b style="color:red">user not configured</b>';
     }
 }
 
@@ -1304,7 +1409,7 @@ function uploadAvatar(event, settings)
             reader.onload = function(event)
             {
                 dataUri = event.target.result;
-                console.log("uploadAvatar", dataUri);
+                console.debug("uploadAvatar", dataUri);
 
                 window.localStorage["store.settings.avatar"] = JSON.stringify(dataUri);
 
@@ -1318,12 +1423,12 @@ function uploadAvatar(event, settings)
 
                     background.getVCard(jid, function(vCard)
                     {
-                        console.log("uploadAvatar - get vcard", vCard);
+                        console.debug("uploadAvatar - get vcard", vCard);
                         vCard.avatar = canvas.toDataURL();
 
                         background.setVCard(vCard, function(resp)
                         {
-                            console.log("uploadAvatar - set vcard", resp);
+                            console.debug("uploadAvatar - set vcard", resp);
                             setTimeout(function() {location.reload();}, 500);
 
                         }, avatarError);
@@ -1336,13 +1441,13 @@ function uploadAvatar(event, settings)
 
             reader.onerror = function(event) {
                 console.error("uploadAvatar - error", event);
-                settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>File could not be read! Code ' + event.target.error.code;
+                settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">File could not be read! Code ' + event.target.error.code;
             };
 
             reader.readAsDataURL(file);
 
         } else {
-            settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>image file must be a png or jpg file</b>';
+            settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">image file must be a png or jpg file</b>';
         }
     }
 }
@@ -1358,5 +1463,5 @@ function reloadConverse(background)
 function avatarError(error)
 {
     console.error("uploadAvatar - error", error);
-    settings.manifest.uploadAvatarStatus.element.innerHTML = '<b>picture/avatar cannot be uploaded and saved</b>';
+    settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">picture/avatar cannot be uploaded and saved</b>';
 }

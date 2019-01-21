@@ -14,8 +14,8 @@
      border-color: #4c4c4c;
 }
  #conversejs form input[type=text], #conversejs.converse-embedded form input[type=text], #conversejs form textarea, #conversejs.converse-embedded form textarea, #conversejs form select, #conversejs.converse-embedded form select {
-     background-color: #242424;
-     color: #cfcfcf;
+     background-color: #000 !important;
+     color: #cfcfcf !important;
      border-color: #4c4c4c;
 }
  #conversejs form.converse-form, #conversejs.converse-embedded form.converse-form {

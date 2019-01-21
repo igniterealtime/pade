@@ -87,6 +87,21 @@ this.manifest = {
         },
         {
             "tab": i18n.get("connection"),
+            "group": i18n.get("Registration"),
+            "name": "email",
+            "type": "text",
+            "label": i18n.get("email"),
+            "text": "name@domain"
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("Registration"),
+            "name": "register",
+            "type": "button",
+            "text": i18n.get("Register New Account")
+        },
+        {
+            "tab": i18n.get("connection"),
             "group": i18n.get("uPort"),
             "name": "useUport",
             "type": "checkbox",
@@ -192,14 +207,6 @@ this.manifest = {
                 {"text": "Spanish", "value": "es"},
                 {"text": "Ukrainian", "value": "uk"}
             ]
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Profile"),
-            "name": "email",
-            "type": "text",
-            "label": i18n.get("email"),
-            "text": "name@domain"
         },
         {
             "tab": i18n.get("general"),
@@ -353,6 +360,13 @@ this.manifest = {
             "name": "useJabra",
             "type": "checkbox",
             "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "enablePresenceTracking",
+            "type": "checkbox",
+            "label": i18n.get("Notify when a contact becomes available")
         },
         {
             "tab": i18n.get("general"),
@@ -1496,11 +1510,11 @@ this.manifest = {
         ],
         [
             "username",
+            "email",
             "displayname",
             "password"
         ],
         [
-            "email",
             "phone",
             "sms",
             "phone",
@@ -1720,6 +1734,7 @@ if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
         });
     }
 }
+
 
 // branding overrides
 
