@@ -1172,6 +1172,8 @@ function doDefaults()
     setDefaultSetting("converseTheme", "plainsimple");
     setDefaultSetting("enableBookmarks", true);
     setDefaultSetting("notifyRoomMentions", true);
+    setDefaultSetting("enableInfoPanel", true);
+    setDefaultSetting("useMarkdown", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

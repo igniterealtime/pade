@@ -65,6 +65,14 @@ this.manifest = {
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("login"),
+            "name": "email",
+            "type": "text",
+            "label": i18n.get("email"),
+            "text": "name@domain"
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("login"),
             "name": "password",
             "type": "text",
             "label": i18n.get("password"),
@@ -84,14 +92,6 @@ this.manifest = {
             "name": "status",
             "text": i18n.get(""),
             "type": "description"
-        },
-        {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("Registration"),
-            "name": "email",
-            "type": "text",
-            "label": i18n.get("email"),
-            "text": "name@domain"
         },
         {
             "tab": i18n.get("connection"),

@@ -9733,7 +9733,7 @@ body.converse-fullscreen {
   #conversejs .badge {
     line-height: 1;
     font-weight: normal;
-    font-size: 90%; }
+    font-size: 75%; margin-left: 5px;}   /* BAO */
   #conversejs .btn {
     font-weight: normal;
     color: #fff; }

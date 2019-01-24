@@ -5,10 +5,6 @@
   bottom: 0; 
 }
 
-#conversejs #controlbox .controlbox-section .controlbox-heading {
-  color: black;
-}
-
 #conversejs #controlbox .controlbox-panes::-webkit-scrollbar {
     display: none;
 } 
