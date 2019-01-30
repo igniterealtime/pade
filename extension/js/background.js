@@ -888,24 +888,38 @@ function stopTone()
 }
 
 
-function notifyText(message, context, iconUrl, buttons, callback, notifyId)
+function notifyText(message, context, jid, buttons, callback, notifyId)
 {
     var opt = {
       type: "basic",
       title: chrome.i18n.getMessage('manifest_extensionName'),
-      iconUrl: iconUrl ? iconUrl : chrome.runtime.getURL("image.png"),
-
+      iconUrl: chrome.runtime.getURL("image.png"),
       message: message,
       buttons: buttons,
       contextMessage: context,
       requireInteraction: !!buttons && !!callback
     }
+
     if (!notifyId) notifyId = Math.random().toString(36).substr(2,9);
 
-    chrome.notifications.create(notifyId, opt, function(notificationId)
+    var doNotify = function()
     {
-        if (callback) callbacks[notificationId] = callback;
-    });
+        chrome.notifications.create(notifyId, opt, function(notificationId)
+        {
+            if (callback) callbacks[notificationId] = callback;
+        });
+    }
+
+    if (jid)
+    {
+        getVCard(jid, function(vCard)
+        {
+            if (vCard.avatar) opt.iconUrl = vCard.avatar;
+            doNotify();
+
+        }, doNotify);
+    }
+    else doNotify();
 };
 
 function notifyImage(message, context, imageUrl, buttons, callback)
@@ -1441,7 +1455,7 @@ function addHandlers()
 
         if (pade.isReady && pade.presence[from] && pade.presence[from] != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
         {
-            if (contact.name && from) notifyText(contact.name, "Contact Tracker", null, [], null, from);
+            if (contact.name && from) notifyText(contact.name, "Contact Tracker", from, [], null, from);
         }
 
         pade.presence[from] = pres;
@@ -1623,7 +1637,7 @@ function addHandlers()
         var reason = null;
         var password = null;
         var composing = false;
-        var offerer = Strophe.getBareJidFromJid(from);;
+        var offerer = Strophe.getBareJidFromJid(from);
         var type = $(message).attr("type");
         var room = null;
         var autoaccept = null;
@@ -1860,7 +1874,7 @@ function doNotification(body, offerer, callback)
 {
     console.debug("doNotification", body, offerer)
 
-    notifyText(body, offerer, null, [{title: "View", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+    notifyText(body, offerer, offerer, [{title: "View", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // accept
         {
@@ -2184,7 +2198,7 @@ function processInvitation(title, label, room, autoaccept, id, reason, webinar)
     {
         startTone("Diggztone_Vibe");
 
-        notifyText(title + " - " + reason, label, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Hangup", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+        notifyText(title + " - " + reason, label, label, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Hangup", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
         {
             console.debug("handleAction callback", notificationId, buttonIndex);
 
@@ -2723,15 +2737,21 @@ function logCall(target, direction, duration)
 
 function getVCard(jid, callback, errorback)
 {
-    pade.connection.vCard.get(jid, function(vCard)
+    if (pade.vcards[jid])
     {
-        if (callback) callback(vCard);
+       if (callback) callback(pade.vcards[jid]);
 
-    }, function(error) {
-        if (errorback) errorback(error);
-        console.error(error);
-    });
+    } else {
+        pade.connection.vCard.get(jid, function(vCard)
+        {
+            pade.vcards[jid] = vCard;
+            if (callback) callback(vCard);
 
+        }, function(error) {
+            if (errorback) errorback(error);
+            console.error(error);
+        });
+    }
 }
 
 function setVCard(vCard, callback, errorback)
@@ -3004,7 +3024,6 @@ function setupStreadDeckKey(b)
                         canvas.height = 72;
                         canvas.getContext("2d").drawImage(sourceImage, 0, 0, 72, 72);
                         vCard.avatar = canvas.toDataURL();
-                        pade.vcards[jid] = vCard;
 
                         pade.streamDeckPort.postMessage({ message: "setImage", key: b, data: pade.vcards[jid].avatar});
                     }

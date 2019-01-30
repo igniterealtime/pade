@@ -57686,6 +57686,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         "click a.show-profile": "showProfileModal",
         "click a.change-status": "showStatusChangeModal",
         "click .show-client-info": "showClientInfoModal",
+        "click .show-preferences": "showPreferences",      // BAO
         "click .logout": "logOut"
       },
 
@@ -57704,6 +57705,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           '_converse': _converse,
           'title_change_settings': __('Change settings'),
           'title_change_status': __('Click to change your chat status'),
+          'title_preferences': __('Preferences/Options'),               // BAO
           'title_log_out': __('Log out'),
           'info_details': __('Show details about this chat client'),
           'title_your_profile': __('Your profile')
@@ -57732,6 +57734,15 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         }
 
         this.status_modal.show(ev);
+      },
+
+      showPreferences(ev) { // BAO
+
+        if (chrome.extension)
+        {
+            var url = chrome.extension.getURL("options/index.html");
+            chrome.extension.getBackgroundPage().openWebAppsWindow(url, null, 1200, 900);
+        }
       },
 
       showClientInfoModal(ev) {
@@ -94274,6 +94285,9 @@ __p += '<!-- src/templates/profile_view.html -->\n<div class="userinfo controlbo
 __e(o.fullname) +
 '</span>\n    <a class="controlbox-heading__btn show-client-info fa fa-info-circle align-self-center" title="' +
 __e(o.info_details) +
+'"></a>\n    ' +
+'<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="' +    // BAO
+__e(o.title_preferences) +
 '"></a>\n    ';
  if (o._converse.allow_logout) { ;
 __p += '\n        <a class="controlbox-heading__btn logout fa fa-sign-out-alt align-self-center" title="' +

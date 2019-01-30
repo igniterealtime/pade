@@ -108,7 +108,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "directory", "invite", "options", "webmeet", "pade", "vmsg"];
+        var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("enableInfoPanel", false))
@@ -132,6 +132,7 @@ window.addEventListener("load", function()
           allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
           allow_public_bookmarks: true,
           allow_logout: false,
+          archived_messages_page_size: getSetting("archivedMessagesPageSize", 10),
           authentication: "login",
           auto_away: autoAway,
           auto_xa: autoXa,

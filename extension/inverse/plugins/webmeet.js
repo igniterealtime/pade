@@ -1165,6 +1165,14 @@
         }
         else
 
+        if (command == "pref" && bgWindow)
+        {
+            var url = chrome.extension.getURL("options/index.html");
+            bgWindow.openWebAppsWindow(url, null, 1200, 900);
+            return true;
+        }
+        else
+
         if (command == "app" && bgWindow && match[2])
         {
             bgWindow.openWebAppsWindow(args[0], null, args[1], args[2]);

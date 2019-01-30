@@ -1174,6 +1174,7 @@ function doDefaults()
     setDefaultSetting("notifyRoomMentions", true);
     setDefaultSetting("enableInfoPanel", true);
     setDefaultSetting("useMarkdown", true);
+    setDefaultSetting("archivedMessagesPageSize", 10);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

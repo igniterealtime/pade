@@ -156,12 +156,12 @@
 
     var createMylinks = function(jid, id)
     {
-        if (bgWindow && (bgWindow.pade.activeH5p || bgWindow.pade.activeUrl))
+        if (bgWindow && bgWindow.pade.collabDocs)
         {
-            _converse.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("storage", {xmlns: "storage:bookmarks"}).tree(), function(resp)
-            {
-                var urls = resp.querySelectorAll('url');
+            var urls = Object.getOwnPropertyNames(bgWindow.pade.collabDocs);
 
+            if (urls.length > 0)
+            {
                 var h5pCount = document.getElementById(id + "-h5p-count");
                 var h5pDetail = document.getElementById(id + "-h5p-details");
                 var pdfCount = document.getElementById(id + "-pdf-count");
@@ -173,30 +173,31 @@
 
                 for (var i=0; i<urls.length; i++)
                 {
-                    console.debug('createMylinks', urls[i]);
+                    var urlName = bgWindow.pade.collabDocs[urls[i]];
+                    console.debug('createMylinks', urls[i], urlName);
 
-                    if (urls[i].getAttribute("name") != "Video conferencing web client")
+                    if (urlName != "Video conferencing web client")
                     {
-                        if (isH5PURL(urls[i].getAttribute("url")))
+                        if (isH5PURL(urls[i]))
                         {
                             h5pKount++;
-                            var checked = bgWindow.pade.activeH5p == urls[i].getAttribute("url") ? "checked" : "";
-                            h5pHtml += '<input name="info_h5p_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+                            var checked = bgWindow.pade.activeH5p == urls[i] ? "checked" : "";
+                            h5pHtml += '<div title="' + urlName + '" class="mediaItem"><input name="info_h5p_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i] + '"/>&nbsp;' + urlName + '</div>';
 
                         }
                         else
 
-                        if (isPDFURL(urls[i].getAttribute("url")))
+                        if (isPDFURL(urls[i]))
                         {
                             pdfKount++;
-                            var checked = bgWindow.pade.activeUrl == urls[i].getAttribute("url") ? "checked" : "";
-                            pdfHtml += '<input name="info_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+                            var checked = bgWindow.pade.activeUrl == urls[i] ? "checked" : "";
+                            pdfHtml += '<div title="' + urlName + '" class="mediaItem"><input name="info_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i] + '"/>&nbsp;' + urlName + '</div>';
 
                         }
                         else {
                             appsKount++;
-                            var checked = bgWindow.pade.activeUrl == urls[i].getAttribute("url") ? "checked" : "";
-                            appsHtml += '<input name="info_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i].getAttribute("url") + '"/>&nbsp;' + urls[i].getAttribute("name") + '<br/>';
+                            var checked = bgWindow.pade.activeUrl == urls[i] ? "checked" : "";
+                            appsHtml += '<div title="' + urlName + '" class="mediaItem"><input name="info_url" class="info_active_url" ' + checked + ' type="radio" value="' + urls[i] + '"/>&nbsp;' + urlName + '</div>';
                         }
                     }
                 }
@@ -239,9 +240,7 @@
                     }
                 }
 
-            }, function (error) {
-                console.error("createMylinks", error);
-            });
+            }
         }
     }
 
@@ -423,6 +422,8 @@
             {
                 var body = messages[i].querySelector('body');
                 var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
+
+                //console.debug("archived msg", i, from, body);
 
                 if (body)
                 {
