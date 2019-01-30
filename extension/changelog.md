@@ -1,5 +1,13 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.0.0</b> -- <i>January 31, 2019</i></p>
+<ul>
+    <li>Added archived messages page size to Converse preferences</li>
+    <li>Added contact avatars to Notifications when available</li>
+    <li>Moved preferences icon from toolbar to main converse panel</li>
+    <li>Fixed issue where info panel was not showing collaboration/co-browse urls</li>
+</ul>
+
 <p><b>0.9.3</b> -- <i>January 17, 2019</i></p>
 <ul>
     <li><a href="https://github.com/igniterealtime/Pade/issues/116">Fixed #116: Openfire Meetings stopped working after upgrade to Openfire 4.3.0</a></li>
