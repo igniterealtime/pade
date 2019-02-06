@@ -55532,7 +55532,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
       },
 
       shouldInviteWidgetBeShown() {
-        return _converse.allow_muc_invitations && (this.chatroomview.model.get('open') || this.chatroomview.model.get('affiliation') === "owner");
+        // BAO
+        return _converse.allow_muc_invitations && (this.chatroomview.model.features.get('open') || this.chatroomview.model.get('affiliation') === "owner");
       },
 
       initInviteWidget() {
@@ -55546,7 +55547,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
         const el = this.el.querySelector('input.invited-contact');
 
         const list = _converse.roster.map(function (item) {
-          const label = item.get('fullname') || item.get('jid');
+          const label = item.get('nickname') || item.get('fullname') || item.get('jid');    // BAO
           return {
             'label': label,
             'value': item.get('jid')
@@ -61909,7 +61910,9 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
       },
 
       getDisplayName() {
-        return this.vcard.get('fullname') || this.get('jid');
+        //return this.vcard.get('fullname') || this.get('jid');
+        // BAO
+        return this.get('nickname') || this.vcard.get('nickname') || this.vcard.get('fullname') || this.get('jid');
       },
 
       handleMessageCorrection(stanza) {
@@ -92102,7 +92105,7 @@ __p += '<!-- src/templates/add_chatroom_modal.html -->\n<div class="modal fade" 
 __e(o.heading_new_chatroom) +
 '</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body">\n                <form class="converse-form add-chatroom">\n                    <div class="form-group">\n                        <label for="chatroom">' +
 __e(o.label_room_address) +
-':</label>\n                        <input type="text" required="required" name="chatroom" class="form-control" placeholder="' +
+':</label>\n                        <input value="name@' + __e(o.muc_domain) + '" type="text" required="required" name="chatroom" class="form-control" placeholder="' + // BAO
 __e(o.chatroom_placeholder) +
 '"/>\n                    </div>\n                    <div class="form-group">\n                        <label for="nickname">' +
 __e(o.label_nickname) +

@@ -132,6 +132,7 @@ window.addEventListener("load", function()
           allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
           allow_public_bookmarks: true,
           allow_logout: false,
+          allow_muc_invitations: true,
           archived_messages_page_size: getSetting("archivedMessagesPageSize", 10),
           authentication: "login",
           auto_away: autoAway,

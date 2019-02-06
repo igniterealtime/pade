@@ -1,5 +1,10 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.0.1</b> -- <i>February ??, 2019</i></p>
+<ul>
+
+</ul>
+
 <p><b>1.0.0</b> -- <i>January 31, 2019</i></p>
 <ul>
     <li>Added archived messages page size to Converse preferences</li>

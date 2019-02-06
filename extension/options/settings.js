@@ -961,11 +961,13 @@ window.addEvent("domready", function () {
                 lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
                 lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
                 lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
+                lynks.avatar = background.createAvatar(lynks.username);
                 lynks.email = JSON.parse(window.localStorage["store.settings.email"]);
 
                 if (window.localStorage["store.settings.displayname"])
                 {
                    lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
+                   lynks.avatar = background.createAvatar(lynks.displayname);
                 }
 
                 if (window.localStorage["store.settings.password"])
@@ -1003,7 +1005,7 @@ window.addEvent("domready", function () {
                                 connection.disconnect();
                                 background.reloadApp();
 
-                            }, 1000);
+                            }, 5000);
                         }
                     }
 
@@ -1017,7 +1019,7 @@ window.addEvent("domready", function () {
 
                     if (status === 5)
                     {
-                        var attrs = {xmlns: "http://igniterealtime.org/ofchat/register", from: lynks.username + "@" + lynks.domain, email: lynks.email, name: lynks.displayname, subject: chrome.i18n.getMessage('registerSubject')};
+                        var attrs = {xmlns: "http://igniterealtime.org/ofchat/register", from: lynks.username + "@" + lynks.domain, email: lynks.email, name: lynks.displayname, avatar: lynks.avatar, subject: chrome.i18n.getMessage('registerSubject')};
                         if (lynks.password && lynks.password != "") attrs.password = lynks.password;
 
                         var request = background.$iq({to: connection.domain, type: "set"}).c("register", attrs).t(chrome.i18n.getMessage('registerBody'));
