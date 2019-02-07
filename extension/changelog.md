@@ -1,8 +1,10 @@
 <h1 id="changelog">Changelog</h1>
 
-<p><b>1.0.1</b> -- <i>February ??, 2019</i></p>
+<p><b>1.0.1</b> -- <i>February 07, 2019</i></p>
 <ul>
-
+    <li><a href="https://github.com/conversejs/converse.js/issues/1434">Fixed #1434: Groupchat invitation textbox only showing when user is owner of room</a></li>
+    <li><a href="https://github.com/conversejs/converse.js/issues/1284">Fixed #1284: Create MUC: default to local MUC service</a></li>
+    <li>Register a new account by email now creates a vcard, groupchat and bookmark from the email domain name</li>
 </ul>
 
 <p><b>1.0.0</b> -- <i>January 31, 2019</i></p>
