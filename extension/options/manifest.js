@@ -951,6 +951,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
+            "name": "notifyWhenClosed",
+            "type": "checkbox",
+            "label": i18n.get("Notify when closed")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
             "name": "notifyRoomMentions",
             "type": "checkbox",
             "label": i18n.get("Notify on room mentions")

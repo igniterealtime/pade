@@ -1174,6 +1174,7 @@ function doDefaults()
     setDefaultSetting("converseTheme", "plainsimple");
     setDefaultSetting("enableBookmarks", true);
     setDefaultSetting("notifyRoomMentions", true);
+    setDefaultSetting("notifyWhenClosed", true);
     setDefaultSetting("enableInfoPanel", true);
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("archivedMessagesPageSize", 10);

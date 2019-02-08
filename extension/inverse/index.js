@@ -207,6 +207,11 @@ function openChatPanel(from)
     if (_inverse) _inverse.api.chats.open(from);
 }
 
+function getChatPanel(from)
+{
+    if (_inverse) return _inverse.api.chats.get(from);
+}
+
 function getSelectedChatBox()
 {
     var views = _inverse.chatboxviews.model.models;

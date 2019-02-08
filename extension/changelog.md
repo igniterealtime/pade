@@ -1,5 +1,10 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.0.2</b> -- <i>February ??, 2019</i></p>
+<ul>
+
+</ul>
+
 <p><b>1.0.1</b> -- <i>February 07, 2019</i></p>
 <ul>
     <li><a href="https://github.com/conversejs/converse.js/issues/1434">Fixed #1434: Groupchat invitation textbox only showing when user is owner of room</a></li>

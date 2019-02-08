@@ -803,7 +803,7 @@ function openInverseGroupChatWindow(jid)
 
     if (!pade.chatWindow)
     {
-        openChatWindow("inverse/index.html#converse/room?jid=" + jid + pade.domain, true);
+        openChatWindow("inverse/index.html#converse/room?jid=" + jid, true);
     } else {
         chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, room, pade.displayName)
         chrome.windows.update(pade.chatWindow.id, {focused: true});
@@ -1652,6 +1652,29 @@ function addHandlers()
         });
 
         if (encrypted) return true; // ignore
+
+        $(message).find('notification').each(function ()
+        {
+            var namespace = $(this).attr("xmlns");
+
+            if (namespace == "http://igniterealtime.org/ofchat/notification")
+            {
+                var body = $(this).text();
+                var jid = $(this).attr('jid');
+                var nickname = $(this).attr('nickname');
+
+                if ((pade.chatWindow && !chrome.extension.getViews({windowId: pade.chatWindow.id})[0].getChatPanel(from)) || !pade.chatWindow)
+                {
+                    if (getSetting("notifyWhenClosed", true))
+                    {
+                        doNotification(body, jid, function()
+                        {
+                            openInverseGroupChatWindow(from);
+                        });
+                    }
+                }
+            }
+        });
 
         $(message).find('body').each(function ()
         {
