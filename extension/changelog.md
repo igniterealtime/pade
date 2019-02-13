@@ -1,8 +1,10 @@
 <h1 id="changelog">Changelog</h1>
 
-<p><b>1.0.2</b> -- <i>February ??, 2019</i></p>
+<p><b>1.0.2</b> -- <i>February 13, 2019</i></p>
 <ul>
-
+    <li><a href="https://github.com/igniterealtime/Pade/issues/118">Fixed #118: Notifications when converse is closed or room is not open</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/120">Fixed #120: Add avatar/image to auto-complete items in Converse</a></li>
+    <li>Added support for peer-to-peer payment systems, starting with Google Pay and PayPal Me</li>    
 </ul>
 
 <p><b>1.0.1</b> -- <i>February 07, 2019</i></p>

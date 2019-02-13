@@ -868,7 +868,7 @@ this.manifest = {
             "name": "archivedMessagesPageSize",
             "type": "slider",
             "label": i18n.get("Archived Messages Page Size"),
-            "max": 100,
+            "max": 121,
             "min": 1,
             "step": 10
         },
@@ -1001,7 +1001,21 @@ this.manifest = {
             "label": i18n.get("Webinar"),
             "text": i18n.get("Please join webinar at"),
         },
-        {                                               // collaboration
+        {                                       // Applications
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("Payment Systems"),
+            "name": "enableGooglePay",
+            "type": "checkbox",
+            "label": i18n.get("Enable Google Pay")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("Payment Systems"),
+            "name": "enablePayPalMe",
+            "type": "checkbox",
+            "label": i18n.get("Enable PayPal Me")
+        },
+        {
             "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "collabUrlListlabel",

@@ -321,9 +321,26 @@ if (chrome.storage)
     });
 }
 
+function setAvatar(nickname, avatar)
+{
+    if (nickname && !avatars[nickname])
+    {
+       nickname = nickname.toLowerCase();
+       avatars[nickname] = avatar;
+
+        if (chrome.storage)
+        {
+            chrome.storage.local.set({avatars: avatars}, function() {
+              console.debug('chrome.storage is set for ' + nickname, avatars);
+            });
+        }
+    }
+}
 
 function createAvatar(nickname, width, height, font)
 {
+    nickname = nickname.toLowerCase();
+
     if (avatars[nickname])
     {
         return avatars[nickname];

@@ -489,9 +489,11 @@
                 renderToolbar: function renderToolbar(toolbar, options) {
                     console.debug('webmeet - renderToolbar', this.model);
 
+                    var that = this;
                     var id = this.model.get("box_id");
                     var jid = this.model.get("jid");
                     var type = this.model.get("type");
+                    var url = this.model.vcard.get("url")
 
                     if (getSetting("enablePasting", true))
                     {
@@ -549,6 +551,17 @@
                                     html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
                                     addToolbarItem(view, id, "webmeet-webinar-" + id, html);
                                 }
+
+                                if (getSetting("enableGooglePay", false))
+                                {
+                                    addToolbarItem(view, id, "webmeet-googlepay-" + id, '<a class="plugin-googlepay fa" title="Google Pay. Click to open"><img width="32" src="plugins/css/images/google-pay-mark_800_gray.svg"/></a>');
+                                }
+
+                                if (getSetting("enablePayPalMe", false) && url && url.indexOf("https://www.paypal.me/") > -1)
+                                {
+                                    addToolbarItem(view, id, "webmeet-paypalme-" + id, '<a class="plugin-paypalme fa" title="PayPal Me. Click to open"><img width="32" src="plugins/css/images/pp-acceptance-small.png"/></a>');
+                                }
+
                             }
 
                             html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
@@ -659,6 +672,38 @@
 
                                 }, false);
                             }
+
+                            var googlePay = document.getElementById("webmeet-googlepay-" + id);
+
+                            if (googlePay)
+                            {
+                                googlePay.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    bgWindow.pade.activeView = view;
+                                    var googlePayUrl = "https://pay.google.com/payments/u/0/home#sendRequestMoney";
+                                    bgWindow.closeWebAppsWindow(googlePayUrl);
+                                    bgWindow.openWebAppsWindow(googlePayUrl, null, 590, 820);
+
+                                }, false);
+                            }
+
+                            var payPalMe = document.getElementById("webmeet-paypalme-" + id);
+
+                            if (payPalMe)
+                            {
+                                payPalMe.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    bgWindow.pade.activeView = view;
+                                    bgWindow.closeWebAppsWindow(url);
+                                    bgWindow.openWebAppsWindow(url, null, 590, 880);
+
+                                }, false);
+                            }
+
                         });
                     });
 

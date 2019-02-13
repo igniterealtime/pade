@@ -1177,7 +1177,7 @@ function doDefaults()
     setDefaultSetting("notifyWhenClosed", true);
     setDefaultSetting("enableInfoPanel", true);
     setDefaultSetting("useMarkdown", true);
-    setDefaultSetting("archivedMessagesPageSize", 10);
+    setDefaultSetting("archivedMessagesPageSize", 51);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

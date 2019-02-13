@@ -346,6 +346,7 @@
             if (buttonIndex == 0)
             {
                 _converse.api.rooms.open(fromJid);
+                bgWindow.pade.minimised = false;    // needed to reset if minimised is confused
                 chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
             }
 

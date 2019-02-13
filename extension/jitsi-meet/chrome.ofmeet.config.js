@@ -20,6 +20,12 @@ var __password = getSetting("password");
 var __email = getSetting("email", null);
 var __mode = urlParam("mode");
 var __ofmeetUrl = __mode ? "https://" + __server + "/webinar/" : getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
+
+if (__ofmeetUrl.substring(__ofmeetUrl.length -1, __ofmeetUrl.length) != "/")
+{
+   __ofmeetUrl = __ofmeetUrl + "/";
+}
+
 var __baseUrl = getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
 
 // optional

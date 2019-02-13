@@ -421,6 +421,12 @@ _.ITEM = function (text, input) {
     var element = document.createElement("li");
     element.setAttribute("aria-selected", "false");
 
+    const img = document.createElement("img");      // BAO
+    img.setAttribute("src", createAvatar(text));
+    img.setAttribute("width", "22");
+    img.setAttribute("class", "roster-avatar avatar");
+    element.appendChild(img);
+
     var regex = new RegExp("("+input+")", "ig");
     var parts = input ? text.split(regex) : [text];
     parts.forEach(function (txt) {
@@ -47998,6 +48004,13 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
     const ITEM = (text, input) => {
       input = input.trim();
       const element = document.createElement("li");
+
+      const img = document.createElement("img");      // BAO
+      img.setAttribute("src", createAvatar(text));
+      img.setAttribute("width", "22");
+      img.setAttribute("class", "roster-avatar avatar");
+      element.appendChild(img);
+
       element.setAttribute("aria-selected", "false");
       const regex = new RegExp("(" + input + ")", "ig");
       const parts = input ? text.split(regex) : [text];
@@ -49202,6 +49215,9 @@ const AvatarMixin = {
     if (display_name && defaultAvatar == this.model.vcard.attributes.image && getSetting("converseRosterIcons"))
     {
         dataUri = createAvatar(display_name);
+    }
+    else {
+        setAvatar(display_name, dataUri);
     }
 
     canvas_el.outerHTML = templates_avatar_svg__WEBPACK_IMPORTED_MODULE_4___default()({
@@ -57742,7 +57758,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         if (chrome.extension)
         {
             var url = chrome.extension.getURL("options/index.html");
-            chrome.extension.getBackgroundPage().openWebAppsWindow(url, null, 1200, 900);
+            chrome.extension.getBackgroundPage().openWebAppsWindow(url, null, 1300, 950);
         }
       },
 
@@ -59624,6 +59640,9 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         if (display_name && _converse.DEFAULT_IMAGE == item.vcard.attributes.image && getSetting("converseRosterIcons"))
         {
             dataUri = createAvatar(display_name);
+        }
+        else {
+            setAvatar(display_name, dataUri);
         }
 
         this.el.innerHTML = templates_roster_item_html__WEBPACK_IMPORTED_MODULE_12___default()(_.extend(item.toJSON(), {
@@ -66417,7 +66436,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins.add('converse-muc
         }).c("x", {
           'xmlns': Strophe.NS.MUC
         }).c("history", {
-          'maxstanzas': this.get('mam_enabled') ? 0 : _converse.muc_history_max_stanzas
+          'maxstanzas': this.features.get('mam_enabled') ? 0 : _converse.muc_history_max_stanzas        // BAO
         }).up();
 
         if (password) {
