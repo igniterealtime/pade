@@ -567,6 +567,14 @@
                             html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
                             addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
 
+                            // file upload by drag & drop
+
+                            var dropZone = $(that.el).find('.chat-body')[0];
+                            dropZone.removeEventListener('dragover', handleDragOver);
+                            dropZone.removeEventListener('drop', handleDropFileSelect);
+                            dropZone.addEventListener('dragover', handleDragOver, false);
+                            dropZone.addEventListener('drop', handleDropFileSelect, false);
+
                             var h5pButton = document.getElementById("h5p-" + id);
 
                             if (h5pButton && bgWindow)
@@ -943,6 +951,32 @@
 
         bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/index.html?owner=true&url=" + bgWindow.pade.activeUrl + "&jid=" + jid + "&type=" + chatType), null, 1024, 800);
     }
+
+    var handleDragOver = function handleDragOver(evt)
+    {
+        //console.log("handleDragOver");
+
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy';
+    };
+
+    var handleDropFileSelect = function handleDropFileSelect(evt)
+    {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        _converse.chatboxviews.each(function (view)
+        {
+            //console.log("handleDropFileSelect", view.model.get('type'));
+
+            if ((view.model.get('type') === "chatroom" || view.model.get('type') === "chatbox") && !view.model.get('hidden'))
+            {
+                var files = evt.dataTransfer.files;
+                view.model.sendFiles(files);
+            }
+        });
+    };
 
     var doH5p = function doH5p(view, id)
     {

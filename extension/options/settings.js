@@ -114,6 +114,11 @@ window.addEvent("domready", function () {
             reloadConverse(background);
         });
 
+        if (settings.manifest.userLocation)
+        {
+            var mapElement = settings.manifest.userLocation.element.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='location/index.html'></iframe>";
+        }
+
         if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
         {
             var keywords = settings.manifest.convSearchString.element.value;
@@ -1177,6 +1182,7 @@ function doDefaults()
     setDefaultSetting("notifyWhenClosed", true);
     setDefaultSetting("enableInfoPanel", true);
     setDefaultSetting("useMarkdown", true);
+    setDefaultSetting("enablePresenceStatus", true);
     setDefaultSetting("archivedMessagesPageSize", 51);
 
     // web apps

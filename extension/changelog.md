@@ -1,5 +1,9 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.0.3</b> -- <i>February ??, 2019</i></p>
+<ul>   
+</ul>
+
 <p><b>1.0.2</b> -- <i>February 13, 2019</i></p>
 <ul>
     <li><a href="https://github.com/igniterealtime/Pade/issues/118">Fixed #118: Notifications when converse is closed or room is not open</a></li>

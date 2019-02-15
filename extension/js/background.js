@@ -520,6 +520,7 @@ window.addEventListener("load", function()
     console.debug("pade loaded");
 
     chrome.contextMenus.removeAll();
+    chrome.contextMenus.create({id: "pade_dnd", type: "checkbox", title: "Do not disturb", contexts: ["browser_action"], onclick: dndCheckClick});
 
     if (getSetting("enableInverse", false) == false)
     {
@@ -844,6 +845,20 @@ function replyInverseChat(text)
     }
 }
 
+function dndCheckClick(info)
+{
+    if (!info.wasChecked && info.checked)
+    {
+        pade.busy = true;
+    }
+    else
+
+    if (info.wasChecked && !info.checked)
+    {
+        pade.busy = false;
+    }
+
+}
 
 function handleRightClick(info)
 {
@@ -863,6 +878,8 @@ function reloadApp()
 
 function startTone(name)
 {
+    if (pade.busy) return;  // no ringtone when I am busy
+
     if (getSetting("enableRingtone", false))
     {
         console.debug("startTone", name);
@@ -890,6 +907,8 @@ function stopTone()
 
 function notifyText(message, context, jid, buttons, callback, notifyId)
 {
+    if (pade.busy) return;  // no notifications when I am busy
+
     var opt = {
       type: "basic",
       title: chrome.i18n.getMessage('manifest_extensionName'),
@@ -924,6 +943,8 @@ function notifyText(message, context, jid, buttons, callback, notifyId)
 
 function notifyImage(message, context, imageUrl, buttons, callback)
 {
+    if (pade.busy) return;  // no notifications when I am busy
+
     var opt = {
       type: "image",
       title: chrome.i18n.getMessage('manifest_extensionName'),
@@ -944,6 +965,8 @@ function notifyImage(message, context, imageUrl, buttons, callback)
 
 function notifyProgress(message, context, progress, buttons, callback)
 {
+    if (pade.busy) return;  // no notifications when I am busy
+
     var opt = {
       type: "progress",
       title: chrome.i18n.getMessage('manifest_extensionName'),
@@ -965,6 +988,8 @@ function notifyProgress(message, context, progress, buttons, callback)
 
 function notifyList(message, context, items, buttons, callback, notifyId)
 {
+    if (pade.busy) return;  // no notifications when I am busy
+
     var opt = {
       type: "list",
       title: chrome.i18n.getMessage('manifest_extensionName'),
@@ -1440,25 +1465,39 @@ function addHandlers()
         var to = $(presence).attr('to');
         var type = $(presence).attr('type');
         var from = Strophe.getBareJidFromJid($(presence).attr('from'));
-
+        var statusMsg = null;
         var pres = "online";
-        if (type) pres = type;
 
-        $(presence).find('show').each(function()
-        {
-            pres = $(this).text();
-        });
+        if (type) pres = type;
+        if (!pade.presence[from]) pade.presence[from] = {};
 
         var contact = pade.participants[from];
 
         console.debug("presence tracker", pres, from, to, type, contact, pade.presence[from]);
 
-        if (pade.isReady && pade.presence[from] && pade.presence[from] != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
+        $(presence).find('show').each(function()
         {
-            if (contact.name && from) notifyText(contact.name, "Contact Tracker", from, [], null, from);
-        }
+            pres = $(this).text();
+            pade.presence[from].show = pres;
 
-        pade.presence[from] = pres;
+            if (pade.isReady && pade.presence[from] && pade.presence[from].show != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
+            {
+                if (contact.name && from) notifyText(contact.name, "Contact Tracker", from, [], null, from);
+            }
+        });
+
+        $(presence).find('status').each(function()
+        {
+            statusMsg = $(this).text();
+            pade.presence[from].show = pres;
+
+            if (pade.isReady && pade.presence[from] && pade.presence[from].status != statusMsg && getSetting("enablePresenceStatus", true) && contact)
+            {
+                if (contact.name && from) notifyText($(this).text(), contact.name + " " + from, from, [], null, from);
+            }
+        });
+
+        pade.presence[from] = {show: pres, status: statusMsg};
 
         if (contact && contact.type == "conversation" && getSetting("enableInverse", false) == false)
         {
@@ -1530,11 +1569,11 @@ function addHandlers()
                     }, workGroup);
                 });
 
-                console.log("agent-status", workGroup, agent, pade.fastpath[workGroup]);
+                console.debug("agent-status", workGroup, agent, pade.fastpath[workGroup]);
 
                 if (free)
                 {
-                    console.log("agent-status delete", workGroup, agent, pade.fastpath[workGroup]);
+                    console.debug("agent-status delete", workGroup, agent, pade.fastpath[workGroup]);
 
                     clearNotification(workGroup);
                     delete pade.fastpath[workGroup].conversations[agent];
@@ -1578,7 +1617,7 @@ function addHandlers()
                         }
                     }
                 });
-                console.log("notify-queue-details", workGroup, pade.fastpath[workGroup]);
+                console.debug("notify-queue-details", workGroup, pade.fastpath[workGroup]);
             });
 
             $(presence).find('notify-queue').each(function()
@@ -1620,7 +1659,7 @@ function addHandlers()
                     }
                 }
 
-                console.log("notify-queue presence", workGroup, pade.fastpath[workGroup]);
+                console.debug("notify-queue presence", workGroup, pade.fastpath[workGroup]);
             });
         }
 
@@ -1667,7 +1706,7 @@ function addHandlers()
                 {
                     if (getSetting("notifyWhenClosed", true))
                     {
-                        doNotification(body, jid, function()
+                        doNotification(body, jid + " " + from, function()
                         {
                             openInverseGroupChatWindow(from);
                         });
@@ -1990,7 +2029,7 @@ function fetchContacts(callback)
                 room: makeRoomName(node),
                 node: node,
                 jid: jid,
-                presence: pade.presence[jid] ? pade.presence[jid] : "unavailable",
+                presence: pade.presence[jid] ? pade.presence[jid].show : "unavailable",
                 open: "false",
                 active: false,
                 domain: domain

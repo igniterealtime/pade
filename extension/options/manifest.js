@@ -265,6 +265,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("Location"),
+            "name": "userLocation",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("Friends"),
             "name": "enableFriendships",
             "type": "checkbox",
@@ -367,6 +374,13 @@ this.manifest = {
             "name": "enablePresenceTracking",
             "type": "checkbox",
             "label": i18n.get("Notify when a contact becomes available")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "enablePresenceStatus",
+            "type": "checkbox",
+            "label": i18n.get("Notify when a contact changes status")
         },
         {
             "tab": i18n.get("general"),
