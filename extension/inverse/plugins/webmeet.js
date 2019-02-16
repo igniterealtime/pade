@@ -34,6 +34,8 @@
      var userProfiles = {};
      var PreviewDialog = null;
      var previewDialog = null;
+     var GeoLocationDialog = null;
+     var geoLocationDialog = null;
 
     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -144,6 +146,37 @@
 
                 }
             });
+
+            GeoLocationDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">Geo Location</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body"></div>' +
+                         '<div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>' +
+                         '</div> </div> </div>';
+                },
+                afterRender() {
+                    var that = this;
+                    var geoloc = this.model.get("geoloc");
+                    var view = this.model.get("view");
+                    var label = view.model.getDisplayName();
+
+                    this.el.addEventListener('shown.bs.modal', function()
+                    {
+                        if (geoloc)
+                        {
+                            var query = "?label=" + label + "&lat=" + geoloc.lat + "&lng=" + geoloc.lon + "&accuracy=" + geoloc.accuracy;
+                            that.el.querySelector('.modal-body').innerHTML = '<iframe frameborder="0" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;" src="/options/location/index.html' + query + '"></iframe>';
+                        }
+
+                    }, false);
+                }
+            });
+
 
             _converse.api.settings.update({
                 'initialize_message': 'Initializing webmeet',
@@ -516,6 +549,12 @@
 
                             if (bgWindow)
                             {
+                                if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
+                                {
+                                    html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
+                                    addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
+                                }
+
                                 if (bgWindow.pade.ofmeetUrl)
                                 {
                                     html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
@@ -603,6 +642,20 @@
                                     {
                                         doooB(view, id, jid, type);
                                     }
+
+                                }, false);
+                            }
+
+                            var geoLocButton = document.getElementById("webmeet-geolocation-" + id);
+
+                            if (geoLocButton && bgWindow)
+                            {
+                                geoLocButton.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+                                    geoLocationDialog.show();
 
                                 }, false);
                             }

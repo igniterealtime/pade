@@ -24,13 +24,13 @@ window.addEventListener("load", function()
             alert("To experience the full functionality of " + chrome.i18n.getMessage('manifest_shortExtensionName') + ", please connect audio and video devices.");
             console.error("Error trying to get the stream:: " + err.message);
         });
+
+        // register MIDI permissions for APC
+        navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+
+        // register location permissions
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
     }
-    // register MIDI permissions for APC
-    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-
-    // register location permissions
-    navigator.geolocation.getCurrentPosition(showPosition, showError);
-
 
     function onMIDISuccess(midiAccess) {
         console.debug('MIDI Access Object', midiAccess);

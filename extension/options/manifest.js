@@ -266,6 +266,13 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Location"),
+            "name": "publishLocation",
+            "type": "checkbox",
+            "label": i18n.get("Publish location to contacts")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Location"),
             "name": "userLocation",
             "type": "description",
             "text": ""

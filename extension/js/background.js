@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}}
 var callbacks = {}
 
 // uPort
@@ -89,7 +89,11 @@ window.addEventListener("load", function()
         if (idleState == "idle") pres.c("show").t("away").up().c("status").t(getSetting("idleMessage", "see you later"));
         if (idleState == "active") pres.c("status").t(getSetting("idleActiveMessage", "hello"));
 
-        if (pade.connection) pade.connection.send(pres);
+        if (pade.connection)
+        {
+            pade.connection.send(pres);
+            if (idleState == "active") publishUserLocation();   // republish location in case user has moved
+        }
     })
 
     chrome.runtime.onStartup.addListener(function()
@@ -1478,26 +1482,26 @@ function addHandlers()
         $(presence).find('show').each(function()
         {
             pres = $(this).text();
-            pade.presence[from].show = pres;
 
             if (pade.isReady && pade.presence[from] && pade.presence[from].show != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
             {
                 if (contact.name && from) notifyText(contact.name, "Contact Tracker", from, [], null, from);
             }
+
+            pade.presence[from].show = pres;
         });
 
         $(presence).find('status').each(function()
         {
             statusMsg = $(this).text();
-            pade.presence[from].show = pres;
 
             if (pade.isReady && pade.presence[from] && pade.presence[from].status != statusMsg && getSetting("enablePresenceStatus", true) && contact)
             {
                 if (contact.name && from) notifyText($(this).text(), contact.name + " " + from, from, [], null, from);
             }
-        });
 
-        pade.presence[from] = {show: pres, status: statusMsg};
+            pade.presence[from].status = statusMsg;
+        });
 
         if (contact && contact.type == "conversation" && getSetting("enableInverse", false) == false)
         {
@@ -1688,6 +1692,17 @@ function addHandlers()
         $(message).find('encrypted').each(function ()
         {
             encrypted = true;
+        });
+
+        $(message).find('geoloc').each(function ()
+        {
+            var accuracy = this.querySelector('accuracy').innerHTML;
+            var lat = this.querySelector('lat').innerHTML;
+            var lon = this.querySelector('lon').innerHTML;
+
+            pade.geoloc[offerer] = {accuracy: accuracy, lat: lat, lon: lon};
+
+            console.debug("Geolocation", offerer, pade.geoloc[offerer]);
         });
 
         if (encrypted) return true; // ignore
@@ -3270,9 +3285,11 @@ function doPadeConnect()
                 enableRemoteControl();
                 closeCredsWindow();
                 runMeetingPlanner();
+                publishUserLocation();
 
                 chrome.browserAction.setBadgeText({ text: "" });
                 pade.isReady = true;
+
             }, 3000);
         }
         else
@@ -3293,6 +3310,47 @@ function doPadeConnect()
     });
 }
 
+function publishUserLocation()
+{
+    var showPosition = function (position)
+    {
+        console.debug("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude, position);
+
+        var stanza = $iq({type: 'set'}).c('pubsub', {xmlns: "http://jabber.org/protocol/pubsub"}).c('publish', {node: "http://jabber.org/protocol/geoloc"}).c('item').c('geoloc', {xmlns: "http://jabber.org/protocol/geoloc"}).c("accuracy").t(position.coords.accuracy).up().c("lat").t(position.coords.latitude).up().c("lon").t(position.coords.longitude).up();
+
+        pade.connection.sendIQ(stanza, function(iq)
+        {
+            console.log("User location publish ok");
+
+        }, function(error){
+            console.error("showPosition", error);
+        });
+    }
+
+    var showError = function (error) {
+        var errorMsg = "";
+        switch(error.code) {
+        case error.PERMISSION_DENIED:
+          errorMsg = "User denied the request for Geolocation."
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMsg = "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          errorMsg = "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          errorMsg = "An unknown error occurred."
+          break;
+        }
+      console.error("Location - " + errorMsg, error);
+    }
+
+    if (getSetting("publishLocation", false))
+    {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    }
+}
 
 function doSetupStrophePlugins()
 {
@@ -3461,7 +3519,6 @@ function searchConversations(keyword, callback)
         }
 
     }).catch(function (err) {
-        console.error('convSearch error', err);
         callback("<p/><p/> Error - " + err, conversations, true);
     });
 
@@ -3647,7 +3704,7 @@ function setupWorkgroup()
     pade.connection.send($pres());
     pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
 
-    stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})
+    var stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})
 
     pade.connection.sendIQ(stanza, function(iq)
     {
