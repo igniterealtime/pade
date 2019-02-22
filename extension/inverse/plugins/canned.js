@@ -13,6 +13,7 @@
 
         'initialize': function () {
             _converse = this._converse;
+
             CannedDialog = _converse.BootstrapModal.extend({
                 initialize() {
                     _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
@@ -103,6 +104,24 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                if (!view.el.querySelector(".fa-sticky-note"))
+                {
+                    var id = view.model.get("box_id");
+                    addToolbarItem(view, id, "pade-canned-" + id, '<a class="fas fa-sticky-note" title="Canned Responses/Replies"></a>');
+
+                    var canned = document.getElementById("pade-canned-" + id);
+
+                    if (canned) canned.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation(view, id);
+                        doCannedMsg(view);
+
+                    }, false);
+                }
+            });
+
             console.log("canned plugin is ready");
         },
 
@@ -119,29 +138,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, canned) {
-                    var id = this.model.get("box_id");
-
-                    _converse.api.listen.on('renderToolbar', function(view)
-                    {
-                        if (id == view.model.get("box_id") && !view.el.querySelector(".fa-sticky-note"))
-                        {
-                            addToolbarItem(view, id, "pade-canned-" + id, '<a class="fas fa-sticky-note" title="Canned Responses/Replies"></a>');
-
-                            var canned = document.getElementById("pade-canned-" + id);
-
-                            if (canned) canned.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation(view, id);
-                                doCannedMsg(view);
-
-                            }, false);
-                        }
-                    });
-
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

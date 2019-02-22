@@ -76,6 +76,25 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                if (!view.el.querySelector(".fa-male"))
+                {
+                    var id = view.model.get("box_id");
+                    addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
+
+                    var directory = document.getElementById("pade-directory-" + id);
+
+                    if (directory) directory.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                        directoryDialog.show();
+                    }, false);
+                }
+            });
+
             console.log("directory plugin is ready");
         },
 
@@ -97,30 +116,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    var id = this.model.get("box_id");
-
-                    _converse.api.listen.on('renderToolbar', function(view)
-                    {
-                        if (id == view.model.get("box_id") && !view.el.querySelector(".fa-male"))
-                        {
-                            addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
-
-                            var directory = document.getElementById("pade-directory-" + id);
-
-                            if (directory) directory.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
-                                directoryDialog.show();
-                            }, false);
-                        }
-                    });
-
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

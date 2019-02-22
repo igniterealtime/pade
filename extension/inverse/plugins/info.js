@@ -53,6 +53,33 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                if (view.model.get("type") === "chatroom" && !view.el.querySelector(".fa-info"))
+                {
+                    var jid = view.model.get("jid");
+                    var id = view.model.get("box_id");
+
+                    addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
+
+                    var occupants = view.el.querySelector('.occupants');
+                    var infoButton = document.getElementById("pade-info-" + id);
+
+                    if (occupants && infoButton)
+                    {
+                        var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
+                        infoElement.style.display = "none";
+
+                        infoButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            toggleInfoBar(view, infoElement, id, jid);
+
+                        }, false);
+                    }
+                }
+            });
+
             console.log("info plugin is ready");
         },
 
@@ -76,42 +103,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-
-                    if (this.model.get("type") === "chatroom")
-                    {
-                        var id = this.model.get("box_id");
-
-                        _converse.api.listen.on('renderToolbar', function(view)
-                        {
-                            if (id == view.model.get("box_id") && !view.el.querySelector(".fa-info"))
-                            {
-                                var jid = view.model.get("jid");
-
-                                addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
-
-                                var occupants = view.el.querySelector('.occupants');
-                                var infoButton = document.getElementById("pade-info-" + id);
-
-                                if (occupants && infoButton)
-                                {
-                                    var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
-                                    infoElement.style.display = "none";
-
-                                    infoButton.addEventListener('click', function(evt)
-                                    {
-                                        evt.stopPropagation();
-                                        toggleInfoBar(view, infoElement, id, jid);
-
-                                    }, false);
-                                }
-                            }
-                        });
-                    }
-
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

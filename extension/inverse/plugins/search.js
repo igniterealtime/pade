@@ -89,6 +89,25 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                if (bgWindow && bgWindow.pade.chatAPIAvailable && !view.el.querySelector(".plugin-search"))
+                {
+                    var id = view.model.get("box_id");
+                    addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
+
+                    var search = document.getElementById("pade-search-" + id);
+
+                    if (search) search.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
+                        searchDialog.show();
+                    }, false);
+                }
+            });
+
             console.log("search plugin is ready");
         },
 
@@ -110,33 +129,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-
-                    if (bgWindow && bgWindow.pade.chatAPIAvailable)
-                    {
-                        var id = this.model.get("box_id");
-
-                        _converse.api.listen.on('renderToolbar', function(view)
-                        {
-                            if (id == view.model.get("box_id") && !view.el.querySelector(".plugin-search"))
-                            {
-                                addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
-
-                                var search = document.getElementById("pade-search-" + id);
-
-                                if (search) search.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
-                                    searchDialog.show();
-                                }, false);
-                            }
-                        });
-                    }
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             },
 

@@ -16,6 +16,7 @@
         'dependencies': [],
 
         'initialize': function () {
+            _converse = this._converse;
 
             chrome.runtime.onMessage.addListener(function(message)
             {
@@ -26,6 +27,27 @@
                     bgWindow.closeWebAppsWindow(chrome.extension.getURL("inverse/plugins/editor.html"));
                 }
             });
+
+
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                if (bgWindow && !view.el.querySelector(".plugin-markdown"))
+                {
+                    var id = view.model.get("box_id");
+                    addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="plugin-markdown fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
+
+                    var markdown = document.getElementById("webmeet-markdown-" + id);
+
+                    if (markdown) markdown.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        doMarkdown(view);
+
+                    }, false);
+                }
+            });
+
+            console.log("markdown plugin is ready");
         },
 
         'overrides': {
@@ -105,32 +127,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-
-                    if (bgWindow)
-                    {
-                        var id = this.model.get("box_id");
-
-                        _converse.api.listen.on('renderToolbar', function(view)
-                        {
-                            if (id == view.model.get("box_id") && !view.el.querySelector(".plugin-markdown"))
-                            {
-                                addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="plugin-markdown fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
-
-                                var markdown = document.getElementById("webmeet-markdown-" + id);
-
-                                if (markdown) markdown.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-                                    doMarkdown(view);
-
-                                }, false);
-                            }
-                        });
-                    }
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

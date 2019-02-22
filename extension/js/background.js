@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}}
+var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
 var callbacks = {}
 
 // uPort
@@ -83,16 +83,45 @@ window.addEventListener("load", function()
     {
         console.debug("chrome.idle.onStateChanged", idleState);
 
-        var pres = $pres();
+        var pres = $pres(), show = null, status = null;
 
-        if (idleState == "locked") pres.c("show").t("xa").up().c("status").t(getSetting("idleLockedMessage", "good bye"));
-        if (idleState == "idle") pres.c("show").t("away").up().c("status").t(getSetting("idleMessage", "see you later"));
-        if (idleState == "active") pres.c("status").t(getSetting("idleActiveMessage", "hello"));
+        if (idleState == "locked")
+        {
+            show = "xa";
+            status = getSetting("idleLockedMessage", "good bye");
+            pres.c("show").t(show).up().c("status").t(status);
+        }
+        else
+
+        if (idleState == "idle")
+        {
+            show = "away";
+            status = getSetting("idleLockedMessage", "see you later");
+            pres.c("show").t(show).up().c("status").t(status);
+        }
+        else
+
+        if (idleState == "active")
+        {
+            status = getSetting("idleLockedMessage", "hello");
+            pres.c("status").t(status);
+        }
 
         if (pade.connection)
         {
             pade.connection.send(pres);
             if (idleState == "active") publishUserLocation();   // republish location in case user has moved
+
+            if (pade.chatWindow)
+            {
+                var model = chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model;
+
+                if (model)
+                {
+                    if (show) model.set("status", show);
+                    if (status) model.set("status_message", status);
+                }
+            }
         }
     })
 
@@ -854,12 +883,16 @@ function dndCheckClick(info)
     if (!info.wasChecked && info.checked)
     {
         pade.busy = true;
+        pade.connection.send($pres().c("show").t("dnd").up());
+        if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "dnd");
     }
     else
 
     if (info.wasChecked && !info.checked)
     {
         pade.busy = false;
+        pade.connection.send($pres());
+        if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "online");
     }
 
 }
@@ -1727,6 +1760,18 @@ function addHandlers()
                         });
                     }
                 }
+            }
+        });
+
+        $(message).find('json').each(function ()
+        {
+            var namespace = $(this).attr("xmlns");
+
+            if (namespace == "urn:xmpp:json:0")
+            {
+                var json = JSON.parse($(this).text());
+
+                if (json && json.payment == "transferwise") pade.transferWise[offerer] = json.payment;
             }
         });
 
@@ -3286,6 +3331,7 @@ function doPadeConnect()
                 closeCredsWindow();
                 runMeetingPlanner();
                 publishUserLocation();
+                publishUserPayment();
 
                 chrome.browserAction.setBadgeText({ text: "" });
                 pade.isReady = true;
@@ -3309,6 +3355,34 @@ function doPadeConnect()
 
     });
 }
+
+function publishUserPayment()
+{
+    if (getSetting("enableTransferWise", false) && getSetting("transferWiseKey", null) != null)
+    {
+        fetch('https://api.sandbox.transferwise.tech/v1/profiles', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'GET'}).then(resp => { return resp.json()}).then(function(profile)
+        {
+            console.log("publishUserPayment", profile);
+
+            var json = {payment: "transferwise"}
+            var stanza = $iq({type: 'set'}).c('pubsub', {xmlns: "http://jabber.org/protocol/pubsub"}).c('publish', {node: "http://igniterealtime.org/protocol/payments/transferwise"}).c('item').c('json', {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up();
+
+            pade.connection.sendIQ(stanza, function(iq)
+            {
+                console.log("TransferWise publish ok");
+                pade.transferWiseProfile = profile;
+
+            }, function(error){
+                console.error("TransferWise", error);
+            });
+
+
+        }).catch(function (err) {
+            console.error("publishUserPayment", err);
+        });
+    }
+}
+
 
 function publishUserLocation()
 {

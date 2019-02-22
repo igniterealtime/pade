@@ -25,19 +25,10 @@
         moment = converse.env.moment;
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-     var _converse = null;
-     var baseUrl = null;
-     var messageCount = 0;
-     var h5pViews = {};
-     var pasteInputs = {};
-     var videoRecorder = null;
-     var userProfiles = {};
-     var PreviewDialog = null;
-     var previewDialog = null;
-     var GeoLocationDialog = null;
-     var geoLocationDialog = null;
+     var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
+     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, TransferWiseDialog = null, transferWiseDialog = null;
 
-    // The following line registers your plugin.
+     // The following line registers your plugin.
     converse.plugins.add("webmeet", {
 
         /* Optional dependencies are other plugins which might be
@@ -147,6 +138,82 @@
                 }
             });
 
+            TransferWiseDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                  var view = this.model.get("view");
+                  var email = view.model.vcard.get("email")
+                  var label = view.model.getDisplayName();
+
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">TransferWise Payment to ' + label + ' (' + email + ') </h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body"><form class="converse-form converse-form--modal profile-form" action="#">' +
+                         '<div class="form-group">' +
+                         '   <label for="tw-profile">Profile:</label>' +
+                         '   <select class="form-control" id="tw-profile" name="tw-profile">' +
+                         '       <option value="personal">Personal</option>' +
+                         '       <option value="business">Business</option>' +
+                         '   </select>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '   <label for="tw-currency-source">Source Currency:</label>' +
+                         '   <select class="form-control" id="tw-currency-source" name="tw-currency-source">' +
+                         '       <option value="GBP">Pound</option>' +
+                         '       <option value="USD">Dollar</option>' +
+                         '       <option value="EUR">Euro</option>' +
+                         '       <option value="AUD">Australian Dollar</option>' +
+                         '       <option value="NZD">New Zealand Dollar</option>' +
+                         '   </select>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '   <label for="tw-currency-target">Target Currency:</label>' +
+                         '   <select class="form-control" id="tw-currency-target" name="tw-currency-target">' +
+                         '       <option value="GBP">Pound</option>' +
+                         '       <option value="USD">Dollar</option>' +
+                         '       <option value="EUR">Euro</option>' +
+                         '       <option value="AUD">Australian Dollar</option>' +
+                         '       <option value="NZD">New Zealand Dollar</option>' +
+                         '   </select>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '  <label for="tw-amount-source" class="col-form-label">Source Amount (enter this or target amount, but not both):</label>' +
+                         '  <input id="tw-amount-source" type="text" class="form-control" name="tw-amount-source" value=""/>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '  <label for="tw-amount-target" class="col-form-label">Target Amount (enter this or source amount, but not both):</label>' +
+                         '  <input id="tw-amount-target" type="text" class="form-control" name="tw-amount-target" value=""/>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '  <label for="tw-description" class="col-form-label">Description:</label>' +
+                         '  <input id="tw-description" type="text" class="form-control" name="tw-descriptiont" value="' + label + '"/>' +
+                         '</div>' +
+                         '</form></div><div class="modal-footer"><button type="button" class="btn btn-success btn-transfer" data-dismiss="modal">Transfer</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button></div>' +
+                         '</div> </div> </div>';
+                },
+                events: {
+                    "click .btn-transfer": "transferAmount",
+                },
+
+                transferAmount() {
+                    var view = this.model.get("view");
+
+                    if (bgWindow)
+                    {
+                        var profile = this.el.querySelector("#tw-profile").value.trim();
+                        var sourceCurrency = this.el.querySelector("#tw-currency-source").value.trim();
+                        var targetCurrency = this.el.querySelector("#tw-currency-target").value.trim();
+                        var sourceAmount = this.el.querySelector("#tw-amount-source").value.trim();
+                        var targetAmount = this.el.querySelector("#tw-amount-target").value.trim();
+                        var description = this.el.querySelector("#tw-description").value.trim();
+
+                        transferWiseAmount(view, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, description);
+                    }
+                }
+            });
+
             GeoLocationDialog = _converse.BootstrapModal.extend({
                 initialize() {
                     _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
@@ -176,7 +243,6 @@
                     }, false);
                 }
             });
-
 
             _converse.api.settings.update({
                 'initialize_message': 'Initializing webmeet',
@@ -224,6 +290,278 @@
                     }
                 }
             });
+
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                console.debug('webmeet - renderToolbar', view.model);
+
+                var id = view.model.get("box_id");
+                var jid = view.model.get("jid");
+                var type = view.model.get("type");
+                var url = view.model.vcard.get("url")
+                var email = view.model.vcard.get("email")
+
+                if (getSetting("enablePasting", true))
+                {
+                    setupPastingHandlers(view, id, jid, type);
+                }
+
+
+                testFileUploadAvailable(view, function(isFileUploadAvailable)
+                {
+                    var html = '';
+
+                    if (type == "chatroom")
+                    {
+                        // hide occupants list by default
+                        view.model.set({'hidden_occupants': true});
+                        view.setOccupantsVisibility();
+                        view.scrollDown();
+                    }
+
+                    if (bgWindow)
+                    {
+                        if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
+                        {
+                            html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
+                            addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
+                        }
+
+                        if (bgWindow.pade.ofmeetUrl)
+                        {
+                            html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
+                            addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
+                        }
+
+                        if (bgWindow.pade.activeH5p && bgWindow.pade.chatAPIAvailable)
+                        {
+                            var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
+                            addToolbarItem(view, id, "h5p-" + id, html);
+                        }
+
+                        if (bgWindow.pade.activeUrl)
+                        {
+                            var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
+                            addToolbarItem(view, id, "oob-" + id, html);
+                        }
+
+                        if (isFileUploadAvailable)
+                        {
+                            html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
+                            addToolbarItem(view, id, "webmeet-screencast-" + id, html);
+                        }
+
+                        if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
+                        {
+                            html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
+                            addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+                        }
+
+                        if (getSetting("webinarMode", false) && bgWindow.pade.ofmeetUrl)
+                        {
+                            html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
+                            addToolbarItem(view, id, "webmeet-webinar-" + id, html);
+                        }
+
+                        if (getSetting("enableGooglePay", false))
+                        {
+                            addToolbarItem(view, id, "webmeet-googlepay-" + id, '<a class="plugin-googlepay fa" title="Google Pay. Click to open"><img height="16" src="plugins/css/images/google-pay-mark_800_gray.svg"/></a>');
+                        }
+
+                        if (getSetting("enablePayPalMe", false) && url && url.indexOf("https://www.paypal.me/") > -1)
+                        {
+                            addToolbarItem(view, id, "webmeet-paypalme-" + id, '<a class="plugin-paypalme fa" title="PayPal Me. Click to open"><img height="16" src="plugins/css/images/pp-acceptance-small.png"/></a>');
+                        }
+
+                        if (view.model.get('type') === "chatbox" && bgWindow.pade.transferWiseProfile && bgWindow.pade.transferWiseProfile.length > 0 && email)
+                        {
+                            addToolbarItem(view, id, "webmeet-transferwise-" + id, '<a class="plugin-transferwise fa" title="TransferWise. Click to open"><img height="16" src="plugins/css/images/transferwise.svg"/></a>');
+                        }
+
+
+                    }
+
+                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
+                    addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
+
+                    // file upload by drag & drop
+
+                    var dropZone = $(view.el).find('.chat-body')[0];
+                    dropZone.removeEventListener('dragover', handleDragOver);
+                    dropZone.removeEventListener('drop', handleDropFileSelect);
+                    dropZone.addEventListener('dragover', handleDragOver, false);
+                    dropZone.addEventListener('drop', handleDropFileSelect, false);
+
+                    var h5pButton = document.getElementById("h5p-" + id);
+
+                    if (h5pButton && bgWindow)
+                    {
+                        h5pButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
+                            {
+                                doH5p(view, id);
+                            }
+
+                        }, false);
+                    }
+
+                    var oobButton = document.getElementById("oob-" + id);
+
+                    if (oobButton && bgWindow)
+                    {
+                        oobButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
+                            {
+                                doooB(view, id, jid, type);
+                            }
+
+                        }, false);
+                    }
+
+                    var geoLocButton = document.getElementById("webmeet-geolocation-" + id);
+
+                    if (geoLocButton && bgWindow)
+                    {
+                        geoLocButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+                            geoLocationDialog.show();
+
+                        }, false);
+                    }
+
+
+                    var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
+
+                    if (handleJitsiMeet)
+                    {
+                        handleJitsiMeet.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
+
+                            if (confirm(jitsiConfirm))
+                            {
+                                doVideo(view);
+                            }
+
+                        }, false);
+                    }
+
+                    var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
+
+                    if (handleWebinarPresenter)
+                    {
+                        handleWebinarPresenter.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
+                            var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
+
+                            if (title && title != "")
+                            {
+                                doWebinarPresenter(view, title);
+                            }
+
+                        }, false);
+                    }
+
+                    var screencast = document.getElementById("webmeet-screencast-" + id);
+
+                    if (screencast)
+                    {
+                        screencast.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            toggleScreenCast(view);
+
+                        }, false);
+                    }
+
+                    var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
+
+                    if (scrolldown)
+                    {
+                        scrolldown.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            view.viewUnreadMessages()
+
+                        }, false);
+                    }
+
+                    var messageblast = document.getElementById("webmeet-messageblast-" + id);
+
+                    if (messageblast)
+                    {
+                        messageblast.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            bgWindow.openBlastWindow();
+
+                        }, false);
+                    }
+
+                    var googlePay = document.getElementById("webmeet-googlepay-" + id);
+
+                    if (googlePay)
+                    {
+                        googlePay.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            bgWindow.pade.activeView = view;
+                            var googlePayUrl = "https://pay.google.com/payments/u/0/home#sendRequestMoney";
+                            bgWindow.closeWebAppsWindow(googlePayUrl);
+                            bgWindow.openWebAppsWindow(googlePayUrl, null, 590, 820);
+
+                        }, false);
+                    }
+
+                    var payPalMe = document.getElementById("webmeet-paypalme-" + id);
+
+                    if (payPalMe)
+                    {
+                        payPalMe.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            bgWindow.pade.activeView = view;
+                            bgWindow.closeWebAppsWindow(url);
+                            bgWindow.openWebAppsWindow(url, null, 590, 880);
+
+                        }, false);
+                    }
+
+                    var transferWiseButton = document.getElementById("webmeet-transferwise-" + id);
+
+                    if (transferWiseButton && bgWindow)
+                    {
+                        transferWiseButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: view}) });
+                            transferWiseDialog.show();
+
+                        }, false);
+                    }
+
+
+                });
+            });
+
 
             window.addEventListener('message', function (event)
             {
@@ -517,258 +855,6 @@
 
                         bgWindow.openWebAppsWindow(chrome.extension.getURL("webcam/sip-video.html?url=sip:" + room), null, 800, 640)
                     }
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    console.debug('webmeet - renderToolbar', this.model);
-
-                    var that = this;
-                    var id = this.model.get("box_id");
-                    var jid = this.model.get("jid");
-                    var type = this.model.get("type");
-                    var url = this.model.vcard.get("url")
-
-                    if (getSetting("enablePasting", true))
-                    {
-                        setupPastingHandlers(this, id, jid, type);
-                    }
-
-                    _converse.api.listen.on('renderToolbar', function(view)
-                    {
-                        testFileUploadAvailable(id, view, function(isFileUploadAvailable)
-                        {
-                            var html = '';
-
-                            if (type == "chatroom")
-                            {
-                                // hide occupants list by default
-                                view.model.set({'hidden_occupants': true});
-                                view.setOccupantsVisibility();
-                                view.scrollDown();
-                            }
-
-                            if (bgWindow)
-                            {
-                                if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
-                                {
-                                    html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
-                                    addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
-                                }
-
-                                if (bgWindow.pade.ofmeetUrl)
-                                {
-                                    html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
-                                    addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
-                                }
-
-                                if (bgWindow.pade.activeH5p && bgWindow.pade.chatAPIAvailable)
-                                {
-                                    var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                                    addToolbarItem(view, id, "h5p-" + id, html);
-                                }
-
-                                if (bgWindow.pade.activeUrl)
-                                {
-                                    var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
-                                    addToolbarItem(view, id, "oob-" + id, html);
-                                }
-
-                                if (isFileUploadAvailable)
-                                {
-                                    html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
-                                    addToolbarItem(view, id, "webmeet-screencast-" + id, html);
-                                }
-
-                                if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
-                                {
-                                    html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
-                                    addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
-                                }
-
-                                if (getSetting("webinarMode", false) && bgWindow.pade.ofmeetUrl)
-                                {
-                                    html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
-                                    addToolbarItem(view, id, "webmeet-webinar-" + id, html);
-                                }
-
-                                if (getSetting("enableGooglePay", false))
-                                {
-                                    addToolbarItem(view, id, "webmeet-googlepay-" + id, '<a class="plugin-googlepay fa" title="Google Pay. Click to open"><img width="32" src="plugins/css/images/google-pay-mark_800_gray.svg"/></a>');
-                                }
-
-                                if (getSetting("enablePayPalMe", false) && url && url.indexOf("https://www.paypal.me/") > -1)
-                                {
-                                    addToolbarItem(view, id, "webmeet-paypalme-" + id, '<a class="plugin-paypalme fa" title="PayPal Me. Click to open"><img width="32" src="plugins/css/images/pp-acceptance-small.png"/></a>');
-                                }
-
-                            }
-
-                            html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
-                            addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
-
-                            // file upload by drag & drop
-
-                            var dropZone = $(that.el).find('.chat-body')[0];
-                            dropZone.removeEventListener('dragover', handleDragOver);
-                            dropZone.removeEventListener('drop', handleDropFileSelect);
-                            dropZone.addEventListener('dragover', handleDragOver, false);
-                            dropZone.addEventListener('drop', handleDropFileSelect, false);
-
-                            var h5pButton = document.getElementById("h5p-" + id);
-
-                            if (h5pButton && bgWindow)
-                            {
-                                h5pButton.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
-                                    {
-                                        doH5p(view, id);
-                                    }
-
-                                }, false);
-                            }
-
-                            var oobButton = document.getElementById("oob-" + id);
-
-                            if (oobButton && bgWindow)
-                            {
-                                oobButton.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
-                                    {
-                                        doooB(view, id, jid, type);
-                                    }
-
-                                }, false);
-                            }
-
-                            var geoLocButton = document.getElementById("webmeet-geolocation-" + id);
-
-                            if (geoLocButton && bgWindow)
-                            {
-                                geoLocButton.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
-                                    geoLocationDialog.show();
-
-                                }, false);
-                            }
-
-                            var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
-
-                            if (handleJitsiMeet)
-                            {
-                                handleJitsiMeet.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
-
-                                    if (confirm(jitsiConfirm))
-                                    {
-                                        doVideo(view);
-                                    }
-
-                                }, false);
-                            }
-
-                            var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
-
-                            if (handleWebinarPresenter)
-                            {
-                                handleWebinarPresenter.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
-                                    var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
-
-                                    if (title && title != "")
-                                    {
-                                        doWebinarPresenter(view, title);
-                                    }
-
-                                }, false);
-                            }
-
-                            var screencast = document.getElementById("webmeet-screencast-" + id);
-
-                            if (screencast)
-                            {
-                                screencast.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    toggleScreenCast(view);
-
-                                }, false);
-                            }
-
-                            var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
-
-                            if (scrolldown)
-                            {
-                                scrolldown.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-                                    view.viewUnreadMessages()
-
-                                }, false);
-                            }
-
-                            var messageblast = document.getElementById("webmeet-messageblast-" + id);
-
-                            if (messageblast)
-                            {
-                                messageblast.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-                                    bgWindow.openBlastWindow();
-
-                                }, false);
-                            }
-
-                            var googlePay = document.getElementById("webmeet-googlepay-" + id);
-
-                            if (googlePay)
-                            {
-                                googlePay.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    bgWindow.pade.activeView = view;
-                                    var googlePayUrl = "https://pay.google.com/payments/u/0/home#sendRequestMoney";
-                                    bgWindow.closeWebAppsWindow(googlePayUrl);
-                                    bgWindow.openWebAppsWindow(googlePayUrl, null, 590, 820);
-
-                                }, false);
-                            }
-
-                            var payPalMe = document.getElementById("webmeet-paypalme-" + id);
-
-                            if (payPalMe)
-                            {
-                                payPalMe.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    bgWindow.pade.activeView = view;
-                                    bgWindow.closeWebAppsWindow(url);
-                                    bgWindow.openWebAppsWindow(url, null, 590, 880);
-
-                                }, false);
-                            }
-
-                        });
-                    });
-
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             },
 
@@ -1420,12 +1506,132 @@
         view.model.sendMessage(view.model.getOutgoingMessageAttributes(inviteMsg));
     }
 
-    var testFileUploadAvailable = async function(id, view, callback)
+    var testFileUploadAvailable = async function(view, callback)
     {
-        if (id == view.model.get("box_id"))
+        const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
+        if (!view.el.querySelector(".fa-angle-double-down")) callback(result.length > 0);
+    }
+
+    var transferWiseAmount = function(view, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, description)
+    {
+        var label = view.model.getDisplayName();
+        var email = view.model.vcard.get("email");
+        var jid = view.model.vcard.get("jid");
+        var senderId = bgWindow.pade.transferWiseProfile[0].id;
+        var legalType = "PRIVATE";
+
+        if (bgWindow.pade.transferWiseProfile.length > 1)
         {
-            const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
-            if (!view.el.querySelector(".fa-angle-double-down")) callback(result.length > 0);
+            if (profile == bgWindow.pade.transferWiseProfile[1].type)
+            {
+                senderId = bgWindow.pade.transferWiseProfile[1].id;
+                legalType = "BUSINESS";
+            }
         }
+
+        console.debug("transferWiseAmount", jid, label, email, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, senderId, description);
+
+        var data = {
+            "profile": senderId,
+            "source": sourceCurrency,
+            "target": targetCurrency,
+            "rateType": "FIXED",
+            "type": "BALANCE_PAYOUT"
+        };
+
+        if (sourceAmount && sourceAmount != "")
+        {
+            data.sourceAmount = sourceAmount;
+        }
+        else
+
+        if (targetAmount && targetAmount != "")
+        {
+            data.targetAmount = targetAmount;
+        }
+
+
+        fetch('https://api.sandbox.transferwise.tech/v1/quotes', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => {if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(quote)
+        {
+            createEmailRecipient(senderId, targetCurrency, email, quote, description, legalType);
+
+        }).catch(function (err) {
+            console.error("transferWiseAmount", err);
+            alert("TransferWise payment failed\nUnable to get a quotet");
+        });
+    }
+
+    var createEmailRecipient = function(senderId, targetCurrency, email, quote, description, legalType)
+    {
+        console.log("createEmailRecipient", senderId, targetCurrency, email, quote, description, legalType);
+
+        var data = {
+            "profile": senderId,
+            "accountHolderName": description,
+            "currency": targetCurrency,
+            "type": "email",
+            "legalType": legalType,
+            "details": {
+                "email": email
+            }
+        };
+
+        fetch('https://api.sandbox.transferwise.tech/v1/accounts', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => { if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(recipient)
+        {
+            transferFund(quote, recipient);
+
+        }).catch(function (err) {
+            console.error("createEmailRecipient", err);
+            alert("TransferWise payment failed\nUnable to create email recipient");
+        });
+    }
+
+    var transferFund = function(quote, recipient)
+    {
+        console.log("transferFund", quote, recipient);
+
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c)
+        {
+          var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+
+        var data = {
+          "targetAccount": recipient.id,
+          "quote": quote.id,
+          "customerTransactionId": uuid,
+          "details" : {
+              "reference" : "",
+              "transferPurpose": "",
+              "sourceOfFunds": ""
+            }
+         };
+
+        fetch('https://api.sandbox.transferwise.tech/v1/transfers', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => { if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(transaction)
+        {
+            completeTransfer(quote, recipient, transaction);
+
+        }).catch(function (err) {
+            console.error("transferFund", err);
+            alert("TransferWise payment failed\nUnable to create a transfer transaction");
+        });
+
+    }
+
+    var completeTransfer = function(quote, recipient, transaction)
+    {
+        console.log("completeTransfer", quote, recipient, transaction);
+
+        var data = {"type": "BALANCE"};
+
+        fetch('https://api.sandbox.transferwise.tech/v1/transfers/' + transaction.id + '/payments', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => {if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(transfer)
+        {
+            alert("TransferWise payment transaction is " + transfer.status + ". Your transfer ID is: " + transaction.id + ".");
+
+        }).catch(function (err) {
+            console.error("completeTransfer", err);
+            alert("TransferWise payment failed\nUnable to complete the transfer");
+        });
+
     }
 }));

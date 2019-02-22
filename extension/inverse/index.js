@@ -274,7 +274,7 @@ function openGroupChat(jid, label, nick, properties)
 function getSetting(name, defaultValue)
 {
     var localStorage = window.localStorage
-    console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
+    //console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
 
     if (window.pade)
     {
@@ -298,7 +298,7 @@ function getSetting(name, defaultValue)
 
 function setSetting(name, value)
 {
-    console.debug("setSetting", name, value);
+    //console.debug("setSetting", name, value);
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 

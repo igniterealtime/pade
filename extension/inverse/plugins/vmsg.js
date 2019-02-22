@@ -51,6 +51,26 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                isFileUploadAvailable(view, function()
+                {
+                    var id = view.model.get("box_id");
+                    addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
+
+                    var vmsg = document.getElementById("pade-vmsg-" + id);
+
+                    if (vmsg) vmsg.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                        vmsgDialog.show();
+
+                    }, false);
+                });
+            });
+
             console.log("vmsg plugin is ready");
         },
 
@@ -76,26 +96,8 @@
 
                 renderToolbar: function renderToolbar(toolbar, options) {
 
-                    var id = this.model.get("box_id");
 
-                    _converse.api.listen.on('renderToolbar', function(view)
-                    {
-                        isFileUploadAvailable(id, view, function()
-                        {
-                            addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
 
-                            var vmsg = document.getElementById("pade-vmsg-" + id);
-
-                            if (vmsg) vmsg.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
-                                vmsgDialog.show();
-
-                            }, false);
-                        });
-                    });
 
                     return this.__super__.renderToolbar.apply(this, arguments);
                 }
@@ -103,13 +105,10 @@
         }
     });
 
-    var isFileUploadAvailable = async function(id, view, callback)
+    var isFileUploadAvailable = async function(view, callback)
     {
-        if (id == view.model.get("box_id"))
-        {
-            const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
-            if (result.length > 0 && !view.el.querySelector(".fa-microphone")) callback();
-        }
+        const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
+        if (result.length > 0 && !view.el.querySelector(".fa-microphone")) callback();
     }
 
     var newElement = function (el, id, html)

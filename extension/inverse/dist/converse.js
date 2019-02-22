@@ -57691,7 +57691,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           '__': __,
           'modal_title': __('About'),
           'version_name': _converse.VERSION_NAME,   // BAO
-          'first_subtitle': "", //__('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
+          'first_subtitle': getSetting("enableTransferWise", false) ? "<img height='16' src='plugins/css/images/transferwise.svg' />" : "", //__('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
           'second_subtitle': "", //__('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
         }));
       }

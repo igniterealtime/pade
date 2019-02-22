@@ -85,39 +85,26 @@
                 }
             });
 
-            console.log("invite plugin is ready");
-        },
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                if (view.model.get("type") === "chatroom" && inviteAvailable && !view.el.querySelector(".fa-user-plus"))
+                {
+                    var id = view.model.get("box_id");
+                    addToolbarItem(view, id, "pade-invite-" + id, '<a class="fas fa-user-plus" title="Invite others to this chat with a saved invitation"></a>');
 
-        'overrides': {
-            ChatBoxView: {
+                    var invite = document.getElementById("pade-invite-" + id);
 
-                renderToolbar: function renderToolbar(toolbar, options) {
-
-                    if (this.model.get("type") === "chatroom" && inviteAvailable)
+                    if (invite) invite.addEventListener('click', function(evt)
                     {
-                        var id = this.model.get("box_id");
+                        evt.stopPropagation();
 
-                        _converse.api.listen.on('renderToolbar', function(view)
-                        {
-                            if (id == view.model.get("box_id") && !view.el.querySelector(".fa-user-plus"))
-                            {
-                                addToolbarItem(view, id, "pade-invite-" + id, '<a class="fas fa-user-plus" title="Invite others to this chat with a saved invitation"></a>');
-
-                                var invite = document.getElementById("pade-invite-" + id);
-
-                                if (invite) invite.addEventListener('click', function(evt)
-                                {
-                                    evt.stopPropagation();
-
-                                    inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
-                                    inviteDialog.show();
-                                }, false);
-                            }
-                        });
-                    }
-                    return this.__super__.renderToolbar.apply(this, arguments);
+                        inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
+                        inviteDialog.show();
+                    }, false);
                 }
-            }
+            });
+
+            console.log("invite plugin is ready");
         }
     });
 

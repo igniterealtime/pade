@@ -1038,6 +1038,22 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Applications"),
+            "group": i18n.get("Payment Systems"),
+            "name": "enableTransferWise",
+            "type": "checkbox",
+            "label": i18n.get("Enable Transfer Wise")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("Payment Systems"),
+            "name": "transferWiseKey",
+            "type": "text",
+            "masked": true,
+            "label": i18n.get("TransferWise Key"),
+            "text": i18n.get("Enter TransferWise API Key"),
+        },
+        {
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "collabUrlListlabel",
             "type": "description",
