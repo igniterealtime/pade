@@ -1,0 +1,5 @@
+#conversejs.converse-fullscreen #controlbox .box-flyout, 
+#conversejs.converse-mobile #controlbox .box-flyout {
+    background-color: #333 !important; 
+    padding-bottom: 20px !important;     
+}

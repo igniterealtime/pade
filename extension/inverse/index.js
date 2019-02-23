@@ -167,6 +167,7 @@ window.addEventListener("load", function()
           view_mode: viewMode,
           visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableSip", false), 'clear': true },
           websocket_url: connUrl,
+          theme: 'concord',
           whitelisted_plugins: whitelistedPlugins
         };
 

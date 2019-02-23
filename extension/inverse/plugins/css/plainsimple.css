@@ -58,7 +58,7 @@
 #conversejs.converse-fullscreen #controlbox .box-flyout, 
 #conversejs.converse-mobile #controlbox .box-flyout {
     background-color: #F3F3F3 !important; 
-    padding-bottom: 20px; !important;     
+    padding-bottom: 20px !important;     
 }
 
 #conversejs .chatbox .sendXMPPMessage .chat-toolbar {

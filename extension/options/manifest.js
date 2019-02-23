@@ -942,8 +942,9 @@ this.manifest = {
             "type": "popupButton",
             "label": i18n.get("UI Theme"),
             "options": [
-                {"text": "Paper White", "value": "paperwhite"},
                 {"text": "Plain Simple", "value": "plainsimple"},
+                {"text": "Fly Concord", "value": "concord"},
+                {"text": "Paper White", "value": "paperwhite"},
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}
             ]

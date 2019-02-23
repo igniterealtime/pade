@@ -1,19 +1,27 @@
 
-var theme = "plainsimple";
+var __theme = "plainsimple";
 
 if (localStorage["store.settings.converseTheme"])
 {
-    theme = JSON.parse(localStorage["store.settings.converseTheme"]);
+    __theme = JSON.parse(localStorage["store.settings.converseTheme"]);
 }
 
-if (!document.getElementById(theme + '-css'))
+if (!document.getElementById(__theme + '-css'))
 {
     var head  = document.getElementsByTagName('head')[0];
     var link  = document.createElement('link');
-    link.id   = theme + '-css';
+    link.id   = __theme + '-css';
     link.rel  = 'stylesheet';
     link.type = 'text/css';
-    link.href = 'plugins/css/' + theme + '.css';
+    link.href = 'plugins/css/' + __theme + '.css';
     link.media = 'all';
     head.appendChild(link);
 }
+
+window.addEventListener("load", function()
+{
+    if (__theme == "concord")
+    {
+        document.getElementById("conversejs").classList.add("theme-concord");
+    }
+});
