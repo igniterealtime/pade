@@ -3358,9 +3358,11 @@ function doPadeConnect()
 
 function publishUserPayment()
 {
+    pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
+
     if (getSetting("enableTransferWise", false) && getSetting("transferWiseKey", null) != null)
     {
-        fetch('https://api.sandbox.transferwise.tech/v1/profiles', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'GET'}).then(resp => { return resp.json()}).then(function(profile)
+        fetch(pade.transferWiseUrl + '/profiles', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'GET'}).then(resp => { return resp.json()}).then(function(profile)
         {
             console.log("publishUserPayment", profile);
 

@@ -108,7 +108,7 @@ window.addEventListener("load", function()
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg"];
+        var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments"];
         var viewMode = window.pade ? 'overlayed' : 'fullscreen';
 
         if (getSetting("enableInfoPanel", false))
@@ -317,7 +317,7 @@ if (chrome.storage)
 {
     chrome.storage.local.get('avatars', function(data) {
       if (data && data.avatars) avatars = data.avatars;
-      console.debug('chrome.storage get', avatars);
+      //console.debug('chrome.storage get', avatars);
     });
 }
 
@@ -331,7 +331,7 @@ function setAvatar(nickname, avatar)
         if (chrome.storage)
         {
             chrome.storage.local.set({avatars: avatars}, function() {
-              console.debug('chrome.storage is set for ' + nickname, avatars);
+              //console.debug('chrome.storage is set for ' + nickname, avatars);
             });
         }
     }
@@ -386,7 +386,7 @@ function createAvatar(nickname, width, height, font)
     if (chrome.storage)
     {
         chrome.storage.local.set({avatars: avatars}, function() {
-          console.debug('chrome.storage is set for ' + nickname, avatars);
+          //console.debug('chrome.storage is set for ' + nickname, avatars);
         });
     }
     return avatars[nickname];
