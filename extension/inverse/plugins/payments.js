@@ -23,12 +23,13 @@
                 },
                 toHTML() {
                   var view = this.model.get("view");
-                  var email = view.model.vcard.get("email")
-                  var label = view.model.getDisplayName();
+                  var jid = view.model.get("jid");
+                  var email = view.model.vcard.get("email");
+                  var label = view.model.getDisplayName() + " (" + (view.model.get("profile") ? "Direct" : email) + ") ";
 
-                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
-                         '<div class="modal-header"><h1 class="modal-title">TransferWise Payment to ' + label + ' (' + email + ') </h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
-                         '<div class="modal-body"><form class="converse-form converse-form--modal profile-form" action="#">' +
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-md"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">TransferWise Payment to ' + label + '</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body">' +
                          '<div class="form-group">' +
                          '   <label for="tw-profile">Profile:</label>' +
                          '   <select class="form-control" id="tw-profile" name="tw-profile">' +
@@ -45,6 +46,8 @@
                          '       <option value="AUD">Australian Dollar</option>' +
                          '       <option value="NZD">New Zealand Dollar</option>' +
                          '   </select>' +
+                         '  <label for="tw-amount-source" class="col-form-label">Source Amount:</label>' +
+                         '  <input id="tw-amount-source" type="text" class="form-control" name="tw-amount-source" value="" placeholder="Enter this or target amount, but not both"/>' +
                          '</div>' +
                          '<div class="form-group">' +
                          '   <label for="tw-currency-target">Target Currency:</label>' +
@@ -55,40 +58,30 @@
                          '       <option value="AUD">Australian Dollar</option>' +
                          '       <option value="NZD">New Zealand Dollar</option>' +
                          '   </select>' +
+                         '  <label for="tw-amount-target" class="col-form-label">Target Amount:</label>' +
+                         '  <input id="tw-amount-target" type="text" class="form-control" name="tw-amount-target" value="" placeholder="Enter this or source amount, but not both"/>' +
                          '</div>' +
                          '<div class="form-group">' +
-                         '  <label for="tw-amount-source" class="col-form-label">Source Amount (enter this or target amount, but not both):</label>' +
-                         '  <input id="tw-amount-source" type="text" class="form-control" name="tw-amount-source" value=""/>' +
-                         '</div>' +
-                         '<div class="form-group">' +
-                         '  <label for="tw-amount-target" class="col-form-label">Target Amount (enter this or source amount, but not both):</label>' +
-                         '  <input id="tw-amount-target" type="text" class="form-control" name="tw-amount-target" value=""/>' +
+                         '  <label for="tw-estimated-delivery" class="col-form-label">Estimated Delivery:</label>' +
+                         '  <input disabled="true" id="tw-estimated-delivery" type="text" class="form-control" name="tw-estimated-delivery" value=""/>' +
+                         '  <label for="tw-fee" class="col-form-label">Fee:</label>' +
+                         '  <input disabled="true" id="tw-fee" type="text" class="form-control" name="tw-fee" value=""/>' +
+                         '  <label for="tw-rate" class="col-form-label">Rate:</label>' +
+                         '  <input disabled="true" id="tw-rate" type="text" class="form-control" name="tw-rate" value=""/>' +
                          '</div>' +
                          '<div class="form-group">' +
                          '  <label for="tw-description" class="col-form-label">Description:</label>' +
                          '  <input id="tw-description" type="text" class="form-control" name="tw-descriptiont" value="' + label + '"/>' +
                          '</div>' +
-                         '</form></div><div class="modal-footer"><button type="button" class="btn btn-success btn-transfer" data-dismiss="modal">Transfer</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button></div>' +
+                         '</div><div class="modal-footer"><button data-twstatus="getquote" type="button" class="btn btn-success btn-transfer">Get Quote</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>' +
                          '</div> </div> </div>';
                 },
                 events: {
-                    "click .btn-transfer": "transferAmount",
+                    "click .btn-transfer": "doTransferWise"
                 },
 
-                transferAmount() {
-                    var view = this.model.get("view");
-
-                    if (bgWindow)
-                    {
-                        var profile = this.el.querySelector("#tw-profile").value.trim();
-                        var sourceCurrency = this.el.querySelector("#tw-currency-source").value.trim();
-                        var targetCurrency = this.el.querySelector("#tw-currency-target").value.trim();
-                        var sourceAmount = this.el.querySelector("#tw-amount-source").value.trim();
-                        var targetAmount = this.el.querySelector("#tw-amount-target").value.trim();
-                        var description = this.el.querySelector("#tw-description").value.trim();
-
-                        transferWiseAmount(view, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, description);
-                    }
+                doTransferWise() {
+                    doTransferWise(this.model.get("view"), this.el);
                 }
             });
 
@@ -97,6 +90,7 @@
                 if (bgWindow)
                 {
                     var id = view.model.get("box_id");
+                    var jid = view.model.get("jid");
                     var email = view.model.vcard.get("email");
                     var url = view.model.vcard.get("url");
 
@@ -234,11 +228,43 @@
         placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
     }
 
-    var transferWiseAmount = function(view, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, description)
+    var doTransferWise = function(view, form)
     {
+        console.debug("doTransferWise", view, form);
+
+        var button = form.querySelector(".btn-transfer");
+
+        if (button.getAttribute("data-twstatus") == "getquote")
+        {
+            getTransferWiseQuote(view, form);
+        }
+        else
+
+        if (button.getAttribute("data-twstatus") == "transfer")
+        {
+            transferAmount(view, form);
+        }
+        else
+
+        if (button.getAttribute("data-twstatus") == "reciept")
+        {
+            downloadReciept(view, form);
+        }
+    }
+
+    var getTransferWiseQuote = function(view, form)
+    {
+        var profile = form.querySelector("#tw-profile").value.trim();
+        var sourceCurrency = form.querySelector("#tw-currency-source").value.trim();
+        var targetCurrency = form.querySelector("#tw-currency-target").value.trim();
+        var sourceAmount = form.querySelector("#tw-amount-source").value.trim();
+        var targetAmount = form.querySelector("#tw-amount-target").value.trim();
+        var description = form.querySelector("#tw-description").value.trim();
+        var button = form.querySelector(".btn-transfer");
+
         var label = view.model.getDisplayName();
         var email = view.model.vcard.get("email");
-        var jid = view.model.vcard.get("jid");
+        var jid = view.model.get("jid");
         var senderId = bgWindow.pade.transferWiseProfile[0].id;
         var legalType = "PRIVATE";
 
@@ -251,7 +277,7 @@
             }
         }
 
-        console.debug("transferWiseAmount", jid, label, email, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, senderId, description);
+        console.debug("getTransferWiseQuote", jid, label, email, profile, sourceCurrency, targetCurrency, sourceAmount, targetAmount, senderId, description);
 
         var data = {
             "profile": senderId,
@@ -271,11 +297,33 @@
         {
             data.targetAmount = targetAmount;
         }
+        else {
+            alert("Enter a source or target amount");
+            return;
+        }
 
 
         fetch(bgWindow.pade.transferWiseUrl + '/quotes', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => {if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(quote)
         {
-            createEmailRecipient(senderId, targetCurrency, email, quote, description, legalType);
+            view.model.set("twQuote", quote);
+            view.model.set("legalType", legalType);
+
+            form.querySelector("#tw-amount-source").value = quote.sourceAmount;
+            form.querySelector("#tw-amount-target").value = quote.targetAmount;
+
+            form.querySelector("#tw-amount-source").setAttribute("disabled", true);
+            form.querySelector("#tw-amount-target").setAttribute("disabled", true);
+            form.querySelector("#tw-currency-source").setAttribute("disabled", true);
+            form.querySelector("#tw-currency-target").setAttribute("disabled", true);
+            form.querySelector("#tw-profile").setAttribute("disabled", true);
+            form.querySelector("#tw-description").setAttribute("disabled", true);
+
+            form.querySelector("#tw-estimated-delivery").value = (new Date(quote.deliveryEstimate)).toString();
+            form.querySelector("#tw-fee").value = quote.fee;
+            form.querySelector("#tw-rate").value = quote.rate;
+
+            button.setAttribute("data-twstatus", "transfer");
+            button.innerHTML = "Transfer";
 
         }).catch(function (err) {
             console.error("transferWiseAmount", err);
@@ -283,7 +331,21 @@
         });
     }
 
-    var createEmailRecipient = function(senderId, targetCurrency, email, quote, description, legalType)
+    var transferAmount = function(view, form)
+    {
+        console.log("transferAmount", view, form);
+
+        var senderId = bgWindow.pade.transferWiseProfile[0].id;
+        var targetCurrency = form.querySelector("#tw-currency-target").value.trim();
+        var email = view.model.vcard.get("email");
+        var quote = view.model.get("twQuote");
+        var description = form.querySelector("#tw-description").value.trim();
+        var legalType = view.model.get("legalType");
+
+        createEmailRecipient(view, form, senderId, targetCurrency, email, quote, description, legalType);
+    }
+
+    var createEmailRecipient = function(view, form, senderId, targetCurrency, email, quote, description, legalType)
     {
         console.log("createEmailRecipient", senderId, targetCurrency, email, quote, description, legalType);
 
@@ -300,7 +362,7 @@
 
         fetch(bgWindow.pade.transferWiseUrl + '/accounts', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => { if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(recipient)
         {
-            transferFund(quote, recipient);
+            transferFund(view, form, quote, recipient);
 
         }).catch(function (err) {
             console.error("createEmailRecipient", err);
@@ -308,7 +370,7 @@
         });
     }
 
-    var transferFund = function(quote, recipient)
+    var transferFund = function(view, form, quote, recipient)
     {
         console.log("transferFund", quote, recipient);
 
@@ -331,7 +393,10 @@
 
         fetch(bgWindow.pade.transferWiseUrl + '/transfers', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => { if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(transaction)
         {
-            completeTransfer(quote, recipient, transaction);
+            if (confirm("Pleae confirm transfer. Are you sure?"))
+            {
+                completeTransfer(view, form, quote, recipient, transaction);
+            }
 
         }).catch(function (err) {
             console.error("transferFund", err);
@@ -340,7 +405,7 @@
 
     }
 
-    var completeTransfer = function(quote, recipient, transaction)
+    var completeTransfer = function(view, form, quote, recipient, transaction)
     {
         console.log("completeTransfer", quote, recipient, transaction);
 
@@ -348,13 +413,45 @@
 
         fetch(bgWindow.pade.transferWiseUrl + '/transfers/' + transaction.id + '/payments', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'POST', body: JSON.stringify(data)}).then(resp => {if (!resp.ok) throw Error(resp.statusText); return resp.json()}).then(function(transfer)
         {
+            view.model.set("twTransfer", transfer);
+            view.model.set("twTransaction", transaction);
+
             alert("TransferWise payment transaction is " + transfer.status + ". Your transfer ID is: " + transaction.id + ".");
+
+            if (transaction.status == "outgoing_payment_sent")
+            {
+                var button = form.querySelector(".btn-transfer");
+                button.setAttribute("data-twstatus", "reciept");
+                button.innerHTML = "Receipt";
+            }
+            var url = "https://transferwise.com/request/transferReceipt/" + transaction.id;
+            submitMessage(view, url);
 
         }).catch(function (err) {
             console.error("completeTransfer", err);
             alert("TransferWise payment failed\nUnable to complete the transfer");
         });
+    }
 
+    var downloadReciept = function(view, form)
+    {
+        console.log("downloadReciept", view, form);
+
+        var transaction = view.model.get("twTransaction");
+
+        fetch(bgWindow.pade.transferWiseUrl + '/transfers/' + transaction.id + '/receipt.pdf', {headers: {Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'GET'}).then(resp => { if (!resp.ok) throw Error(resp.statusText); return resp.blob()}).then(function(blob)
+        {
+            chrome.downloads.download({url: URL.createObjectURL(blob)});
+
+        }).catch(function (err) {
+            console.error("downloadReciept", err);
+            alert("TransferWise reciept failed\nUnable to get reciept for a transfer transaction");
+        });
+    }
+
+    var submitMessage = function(view, msg)
+    {
+        view.model.sendMessage(view.model.getOutgoingMessageAttributes(msg));
     }
 
 }));

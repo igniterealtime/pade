@@ -114,9 +114,14 @@ window.addEvent("domready", function () {
             reloadConverse(background);
         });
 
-        if (settings.manifest.userLocation)
+        if (settings.manifest.publishLocation && settings.manifest.userLocation)
         {
-            var mapElement = settings.manifest.userLocation.element.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>";
+            settings.manifest.publishLocation.addEvent("action", function ()
+            {
+                settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
+            });
+
+            settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
         }
 
         if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
@@ -1176,13 +1181,12 @@ function doDefaults()
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("converseRosterFilter", true);
-    setDefaultSetting("converseTheme", "plainsimple");
+    setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableBookmarks", true);
     setDefaultSetting("notifyRoomMentions", true);
     setDefaultSetting("notifyWhenClosed", true);
     setDefaultSetting("enableInfoPanel", true);
     setDefaultSetting("useMarkdown", true);
-    setDefaultSetting("enablePresenceStatus", true);
     setDefaultSetting("archivedMessagesPageSize", 51);
 
     // web apps

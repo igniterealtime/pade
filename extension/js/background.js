@@ -1,4 +1,8 @@
 var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
+
+//pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
+pade.transferWiseUrl = "https://api.transferwise.com/v1";
+
 var callbacks = {}
 
 // uPort
@@ -1510,7 +1514,7 @@ function addHandlers()
 
         var contact = pade.participants[from];
 
-        console.debug("presence tracker", pres, from, to, type, contact, pade.presence[from]);
+        console.debug("presence tracker", pres, from, to, type, contact, pade.presence[from], presence);
 
         $(presence).find('show').each(function()
         {
@@ -1528,7 +1532,7 @@ function addHandlers()
         {
             statusMsg = $(this).text();
 
-            if (pade.isReady && pade.presence[from] && pade.presence[from].status != statusMsg && getSetting("enablePresenceStatus", true) && contact)
+            if (pade.isReady && pade.presence[from] && pade.presence[from].status != statusMsg && getSetting("enablePresenceStatus", false) && contact)
             {
                 if (contact.name && from) notifyText($(this).text(), contact.name + " " + from, from, [], null, from);
             }
@@ -1700,10 +1704,33 @@ function addHandlers()
             });
         }
 
+        $(presence).find('geoloc').each(function ()
+        {
+            var accuracy = this.querySelector('accuracy').innerHTML;
+            var lat = this.querySelector('lat').innerHTML;
+            var lon = this.querySelector('lon').innerHTML;
+
+            pade.geoloc[from] = {accuracy: accuracy, lat: lat, lon: lon};
+
+            console.debug("Geolocation", from, pade.geoloc[from]);
+        });
+
+        $(presence).find('json').each(function ()
+        {
+            var namespace = $(this).attr("xmlns");
+
+            if (namespace == "urn:xmpp:json:0")
+            {
+                var json = JSON.parse($(this).text());
+                console.debug("json", from, json);
+            }
+
+        });
 
         return true;
 
     }, null, 'presence');
+
 
     pade.connection.addHandler(function(message)
     {
@@ -1770,8 +1797,6 @@ function addHandlers()
             if (namespace == "urn:xmpp:json:0")
             {
                 var json = JSON.parse($(this).text());
-
-                if (json && json.payment == "transferwise") pade.transferWise[offerer] = json.payment;
             }
         });
 
@@ -3309,8 +3334,8 @@ function doPadeConnect()
 
         if (status === Strophe.Status.CONNECTED)
         {
-            pade.connection.send($pres());
             addHandlers();
+            pade.connection.send($pres());
 
             chrome.browserAction.setBadgeText({ text: "Wait.." });
             chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
@@ -3331,7 +3356,7 @@ function doPadeConnect()
                 closeCredsWindow();
                 runMeetingPlanner();
                 publishUserLocation();
-                publishUserPayment();
+                setupUserPayment();
 
                 chrome.browserAction.setBadgeText({ text: "" });
                 pade.isReady = true;
@@ -3356,31 +3381,21 @@ function doPadeConnect()
     });
 }
 
-function publishUserPayment()
+function setupUserPayment()
 {
-    pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
-
     if (getSetting("enableTransferWise", false) && getSetting("transferWiseKey", null) != null)
     {
         fetch(pade.transferWiseUrl + '/profiles', {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getSetting("transferWiseKey") },  method: 'GET'}).then(resp => { return resp.json()}).then(function(profile)
         {
-            console.log("publishUserPayment", profile);
+            console.log("setupUserPayment", profile);
 
-            var json = {payment: "transferwise"}
-            var stanza = $iq({type: 'set'}).c('pubsub', {xmlns: "http://jabber.org/protocol/pubsub"}).c('publish', {node: "http://igniterealtime.org/protocol/payments/transferwise"}).c('item').c('json', {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up();
-
-            pade.connection.sendIQ(stanza, function(iq)
+            if (profile.length > 0)
             {
-                console.log("TransferWise publish ok");
                 pade.transferWiseProfile = profile;
-
-            }, function(error){
-                console.error("TransferWise", error);
-            });
-
+            }
 
         }).catch(function (err) {
-            console.error("publishUserPayment", err);
+            console.error("setupUserPayment", err);
         });
     }
 }
@@ -3401,6 +3416,8 @@ function publishUserLocation()
         }, function(error){
             console.error("showPosition", error);
         });
+
+        pade.connection.send($pres().c('geoloc', {xmlns: "http://jabber.org/protocol/geoloc"}).c("accuracy").t(position.coords.accuracy).up().c("lat").t(position.coords.latitude).up().c("lon").t(position.coords.longitude).up());
     }
 
     var showError = function (error) {

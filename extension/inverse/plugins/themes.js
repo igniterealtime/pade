@@ -1,5 +1,5 @@
 
-var __theme = "plainsimple";
+var __theme = "concord";
 
 if (localStorage["store.settings.converseTheme"])
 {
@@ -20,8 +20,5 @@ if (!document.getElementById(__theme + '-css'))
 
 window.addEventListener("load", function()
 {
-    if (__theme == "concord")
-    {
-        document.getElementById("conversejs").classList.add("theme-concord");
-    }
+    document.getElementById("conversejs").classList.add("theme-" + __theme);
 });
