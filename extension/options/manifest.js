@@ -1809,16 +1809,18 @@ if (getSetting("enableTouchPad", false) || getSetting("useStreamDeck", false))
 
 var overrides = Object.getOwnPropertyNames(branding);
 
+console.debug("branding - start", overrides, branding, this.manifest.settings);
+
 for (var i=0; i<overrides.length; i++)
 {
     var setting = overrides[i];
     var override = branding[setting];
 
-    var index = getStaticSetting(setting, this.manifest.settings);
+    var index = getStaticSetting(setting);
 
     if ( index > -1)
     {
-        if (override.value)
+        if (override.value != null && override.value != undefined)
         {
             var oldSetting = this.manifest.settings[index]
 
@@ -1836,21 +1838,20 @@ for (var i=0; i<overrides.length; i++)
         if (override.disable) this.manifest.settings.splice(index, 1);
     }
 
-    console.debug("branding - found " + i, index, setting, override.value, override.disable);
+    console.debug("branding - found", i, index, setting, override.value, override.disable, window.localStorage["store.settings." + setting]);
 }
 
-
-function getStaticSetting(name, settings)
+function getStaticSetting(name)
 {
-    var index = -1;
+    let zindex = -1;
 
-    for (var i=0; i<settings.length; i++)
+    for (let z=0; z<this.manifest.settings.length; z++)
     {
-        if (name == settings[i].name)
+        if (name === this.manifest.settings[z].name)
         {
-            index = i;
+            zindex = z;
             break;
         }
     }
-    return index;
+    return zindex;
 }

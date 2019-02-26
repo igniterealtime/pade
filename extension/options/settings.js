@@ -1315,9 +1315,9 @@ function setSetting(name, value)
 
 function setDefaultSetting(name, defaultValue)
 {
-    console.debug("setDefaultSetting", name, defaultValue);
+    console.debug("setDefaultSetting", name, defaultValue, window.localStorage["store.settings." + name]);
 
-    if (!window.localStorage["store.settings." + name])
+    if (!window.localStorage["store.settings." + name] && window.localStorage["store.settings." + name] != false)
     {
         if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
     }

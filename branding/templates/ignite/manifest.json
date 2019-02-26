@@ -1,0 +1,100 @@
+{
+  "manifest_version": 2,
+  "minimum_chrome_version": "34",  
+  "options_page": "options/index.html",  
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data: http: https:",  
+  "short_name": "__MSG_manifest_shortExtensionName__",
+  "name": "__MSG_manifest_extensionName__",
+  "description": "__MSG_manifest_extensionDescription__",
+  "version": "1.0.4",
+  "homepage_url": "https://igniterealtime.org/",
+    
+  "background": {
+        "persistent": true,
+        "scripts": [ 
+            "js/jquery.min.js", "js/libs.bundle.js", "js/strophe.reconnect.js", "js/strophe.vcard.js", "js/moment.js", "js/sip.js", "js/etherlynk.js", "js/background.js"
+        ]
+  }, 
+
+   "content_scripts": [ {
+      "all_frames": true,
+      "css": [ "cursor.css" ],
+      "js": [ "js/content.js", "js/jquery.min.js", "js/util.js", "js/ofmeet.js", "js/tinycolor.js" ],
+      "matches": [ "https://igniterealtime.org/*"]
+   } ],
+   
+  "browser_action": {
+      "default_icon": {
+         "19": "icon.png",
+         "38": "icon.png"
+      }   
+  },
+
+   "icons": {
+      "128": "image.png",
+      "16": "icon.png",
+      "48": "image.png"
+   }, 
+  
+  "web_accessible_resources": [
+    "*",   
+    "options/*",
+    "js/*",    
+    "pdf/*",     
+    "ringtones/*",       
+    "jitsi-meet/*",     
+    "groupchat/*"
+  ],
+  
+  "permissions": [
+    "background", 
+    "downloads",
+    "contextMenus", 
+    "desktopCapture",
+    "nativeMessaging",
+    "storage",
+    "tabs",
+    "idle", 
+    "notifications", 
+    "https://igniterealtime.org/*",    
+    "activeTab"
+  ],
+  
+  "commands": {
+    "activate_meeting": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+6"
+        },
+        "description": "Activate Meeting/Community App",
+        "global": true
+    },  
+    "activate_chat": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+7"
+        },
+        "description": "Activate Converse Client",
+        "global": true
+    },    
+    "activate_blogger_communicator": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+8"
+        },
+        "description": "Activate Blogger/Communicator",
+        "global": true
+    }, 
+    "activate_phone": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+9"
+        },
+        "description": "Activate SIP Phone",
+        "global": true
+    }    
+  },
+  "externally_connectable": {
+      "matches": [       
+          "*://xmpp.igniterealtime.org/*",         
+          "*://igniterealtime.org/*"               
+      ]
+  },
+  "default_locale": "en"  
+}

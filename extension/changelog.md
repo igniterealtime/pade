@@ -1,7 +1,21 @@
 <h1 id="changelog">Changelog</h1>
 
-<p><b>1.0.3</b> -- <i>February ??, 2019</i></p>
-<ul>   
+<p><b>1.0.4</b> -- <i>February 25, 2019</i></p>
+<ul>
+    <li>Added support for TranferWise payout API</li>
+    <li>Made concord theme the default theme</li>
+    <li>Made enablePresenceStatus false by default</li>
+    <li>Only show map when location is enabled</li>
+</ul>
+
+<p><b>1.0.3</b> -- <i>February 23, 2019</i></p>
+<ul>
+    <li>Restored back drag and drop file upload to Converse</li>
+    <li>Show notification when a contact's status changes</li>
+    <li>No notifications when user sets "Do not Disturb"</li>
+    <li>Add support for xmpp user locations (xep-0080)</li>
+    <li>Upgraded Converse to 4.1.2</li>
+    <li>Added concord theme to Converse</li>
 </ul>
 
 <p><b>1.0.2</b> -- <i>February 13, 2019</i></p>
