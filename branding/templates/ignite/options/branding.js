@@ -111,6 +111,8 @@ var branding = {
     enablePayPalMe          : {disable: true},
     enableTransferWise      : {disable: true},
     transferWiseKey         : {disable: true},
+    useAnonymous            : {disable: false, value: true},
+    autoJoinRooms           : {disable: false, value: "open_chat@conference.igniterealtime.org\nopenfire@conference.igniterealtime.org\npade@conference.igniterealtime.org\nsmack@conference.igniterealtime.org"},
 
     ofmeetUrl               : {disable: true, value: "https://meet.jit.si/"},
 }

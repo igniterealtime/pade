@@ -134,8 +134,10 @@
 
                 var initPade = function initPade()
                 {
-                    var myNick = _converse.xmppstatus.vcard.get('fullname') || Strophe.getNodeFromJid(_converse.bare_jid);
+                    var myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
                     var stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });
+
+                    console.debug("initPade", myNick);
 
                     var bookmarkRoom = function bookmarkRoom(json)
                     {

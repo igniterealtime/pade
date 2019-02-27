@@ -116,12 +116,26 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.publishLocation && settings.manifest.userLocation)
         {
-            settings.manifest.publishLocation.addEvent("action", function ()
+            var setPublish = function()
             {
                 settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
-            });
+            }
 
-            settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
+            settings.manifest.publishLocation.addEvent("action", setPublish);
+            setPublish();
+        }
+
+        if (settings.manifest.useAnonymous)
+        {
+            var setAnon = function()
+            {
+                if (settings.manifest.username) settings.manifest.username.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
+                if (settings.manifest.password) settings.manifest.password.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
+                if (settings.manifest.register) settings.manifest.register.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
+            }
+
+            settings.manifest.useAnonymous.addEvent("action", setAnon);
+            setAnon();
         }
 
         if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
@@ -1058,17 +1072,40 @@ window.addEvent("domready", function () {
 
         function validateCredentials()
         {
-            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
+            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.displayname"])
             {
                 var lynks = {};
 
                 lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
                 lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
-                lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
                 lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
-                lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+                lynks.jid = lynks.domain;
 
-                if (lynks.server && lynks.domain && lynks.username && lynks.password)
+                if (!getSetting("useAnonymous", false))
+                {
+                    if (window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
+                    {
+                        lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
+                        lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
+
+                        if (lynks.username && lynks.password && lynks.username != "" && lynks.password != "")
+                        {
+                            lynks.jid = lynks.username + "@" + lynks.domain;
+                        }
+                        else {
+                            settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
+                            return;
+                        }
+                    }
+                    else {
+                        settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
+                        return;
+                    }
+                }
+
+                console.debug("validateCredentials", lynks);
+
+                if (lynks.server && lynks.domain)
                 {
                     if (lynks.server.indexOf(":") == -1)
                     {
@@ -1092,9 +1129,9 @@ window.addEvent("domready", function () {
                             background.setupSasl(token);
                         }
 
-                        connection.connect(lynks.username + "@" + lynks.domain + "/" + lynks.username, lynks.password, function (status)
+                        connection.connect(lynks.jid + "/" + lynks.displayname, lynks.password, function (status)
                         {
-                            console.debug("status", status, lynks.username, lynks.displayname);
+                            console.debug("status", status, lynks.jid, lynks.displayname);
 
                             if (status === 5)
                             {
@@ -1115,11 +1152,9 @@ window.addEvent("domready", function () {
                 else {
                     if (!lynks.server) settings.manifest.status.element.innerHTML = '<b style="color:red">bad server</b>';
                     if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b style="color:red">bad domain</b>';
-                    if (!lynks.username) settings.manifest.status.element.innerHTML = '<b style="color:red">bad username</b>';
-                    if (!lynks.password) settings.manifest.status.element.innerHTML = '<b style="color:red">bad password</b>';
                 }
 
-            } else settings.manifest.status.element.innerHTML = '<b style="color:red">bad server, domain, username or password</b>';
+            } else settings.manifest.status.element.innerHTML = '<b style="color:red">missing server, domain or display name</b>';
         }
     });
 
@@ -1187,6 +1222,8 @@ function doDefaults()
     setDefaultSetting("notifyWhenClosed", true);
     setDefaultSetting("enableInfoPanel", true);
     setDefaultSetting("useMarkdown", true);
+    setDefaultSetting("enablePasting", true);
+    setDefaultSetting("converseAutoReOpen", true)
     setDefaultSetting("archivedMessagesPageSize", 51);
 
     // web apps

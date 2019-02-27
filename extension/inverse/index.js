@@ -93,10 +93,27 @@ window.addEventListener("load", function()
 
     if (server)
     {
+        var anonUser = getSetting("useAnonymous", false);
         var domain = getSetting("domain", null);
         var username = getSetting("username", null);
         var password = getSetting("password", null);
         var displayname = getSetting("displayname", username);
+
+        var autoJoinRooms = undefined;
+        var tempRooms = getSetting("autoJoinRooms", "lobby@conference." + domain).split("\n");
+
+        if (tempRooms.length > 0)
+        {
+            autoJoinRooms = [];
+
+            for (var i=0; i<tempRooms.length; i++)
+            {
+                if (tempRooms[i])
+                {
+                    autoJoinRooms.push({jid: tempRooms[i].indexOf("@") == -1 ? tempRooms[i] + "@conference." + domain : tempRooms[i], nick: displayname});
+                }
+            }
+        }
 
         var autoAway = getSetting("idleTimeout", 300);
         var autoXa = autoAway * 3;
@@ -134,11 +151,12 @@ window.addEventListener("load", function()
           allow_logout: false,
           allow_muc_invitations: true,
           archived_messages_page_size: getSetting("archivedMessagesPageSize", 10),
-          authentication: "login",
+          authentication: anonUser ? "anonymous" : "login",
+          auto_join_rooms: autoJoinRooms,
           auto_away: autoAway,
           auto_xa: autoXa,
           auto_list_rooms: getSetting("allowNonRosterMessaging", false),
-          auto_login: username != null,
+          auto_login: username != null || anonUser,
           auto_reconnect: getSetting("autoReconnect", true),
           bosh_service_url: "https://" + server + "/http-bind/",
           debug: getSetting("converseDebug", false),
@@ -147,7 +165,7 @@ window.addEventListener("load", function()
           fullname: displayname,
           hide_open_bookmarks: true,
           i18n: getSetting("language", "en"),
-          jid : username + "@" + domain,
+          jid : anonUser ? domain : username + "@" + domain,
           locked_domain: domain,
           message_archiving: "never",
           message_carbons: getSetting("messageCarbons", true),
@@ -159,7 +177,7 @@ window.addEventListener("load", function()
           notification_icon: '../image.png',
           webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
-          password: password,
+          password: anonUser ? null : password,
           play_sounds: getSetting("conversePlaySounds", false),
           roster_groups: getSetting("rosterGroups", false),
           show_message_load_animation: false,

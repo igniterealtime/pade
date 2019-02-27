@@ -21,6 +21,13 @@ this.manifest = {
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
+            "name": "useAnonymous",
+            "type": "checkbox",
+            "label": i18n.get("Use Anonymous Connection")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("connection"),
             "name": "useWebsocket",
             "type": "checkbox",
             "label": i18n.get("Use Websockets")
@@ -823,6 +830,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "converseAutoReOpen",
+            "type": "checkbox",
+            "label": i18n.get("Auto re-open Converse if it was open after reconnect")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")
@@ -892,6 +906,14 @@ this.manifest = {
             "max": 121,
             "min": 1,
             "step": 10
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Multi-User Chat"),
+            "name": "autoJoinRooms",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of room JIDs to auto-join. For example:\n\nopen_chat@conference.igniterealtime.org\nxsf@muc.xmpp.org"),
         },
         {
             "tab": i18n.get("Converse"),
@@ -997,7 +1019,7 @@ this.manifest = {
             "name": "interestList",
             "type": "textarea",
             "label": i18n.get(""),
-            "text": i18n.get("List of words of interest. For example:\npade\nxmpp\nsip"),
+            "text": i18n.get("List of words of interest. For example:\n\npade\nxmpp\nsip"),
         },
         {
             "tab": i18n.get("Converse"),

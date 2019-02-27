@@ -135,8 +135,7 @@ window.addEventListener("load", function()
 
         setTimeout(function()   // wait for 3 secs before starting apps for background dependencies to be active and ready
         {
-            if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false))
-                openChatWindow("inverse/index.html", null, "minimized");
+            reopenConverse();
 
             if (getSetting("enableCommunity", false) && getSetting("communityAutoStart", false))
                 openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), "minimized", 1024, 800);
@@ -604,8 +603,7 @@ window.addEventListener("load", function()
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
     chrome.browserAction.setBadgeText({ text: 'off' });
 
-
-    if (pade.server && pade.domain && pade.password)
+    if (pade.server && pade.domain && ((!getSetting("useAnonymous", false) && pade.password) || getSetting("useAnonymous", false)))
     {
         if (pade.username)
         {
@@ -3320,17 +3318,24 @@ function getConnection(connUrl)
 function doPadeConnect()
 {
     var connUrl = "https://" + pade.server + "/http-bind/";
+    var connJid = pade.username + "@" + pade.domain  + "/" + chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + Math.random().toString(36).substr(2,9);
 
     if (getSetting("useWebsocket", false))
     {
         connUrl = "wss://" + pade.server + "/ws/";
     }
 
+    if (getSetting("useAnonymous", false))
+    {
+        connJid = pade.domain;
+        pade.password = null;
+    }
+
     pade.connection = getConnection(connUrl);
 
-    pade.connection.connect(pade.username + "@" + pade.domain + "/" + chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + Math.random().toString(36).substr(2,9), pade.password, function (status)
+    pade.connection.connect(connJid, pade.password, function (status)
     {
-        console.debug("pade.connection ===>", status);
+        console.debug("pade.connection ===>", status, connUrl, connJid);
 
         if (status === Strophe.Status.CONNECTED)
         {
@@ -3345,18 +3350,24 @@ function doPadeConnect()
 
             setTimeout(function()
             {
-                fetchContacts(function(contact)
+                if (!getSetting("useAnonymous", false))
                 {
-                    handleContact(contact);
-                });
+                    fetchContacts(function(contact)
+                    {
+                        handleContact(contact);
+                    });
 
-                updateVCard();
-                setupStreamDeck();
-                enableRemoteControl();
+                    updateVCard();
+                    setupStreamDeck();
+                    enableRemoteControl();
+                    runMeetingPlanner();
+                    publishUserLocation();
+                    setupUserPayment();
+                }
+
                 closeCredsWindow();
-                runMeetingPlanner();
-                publishUserLocation();
-                setupUserPayment();
+
+                if (getSetting("converseAutoReOpen", true)) reopenConverse();
 
                 chrome.browserAction.setBadgeText({ text: "" });
                 pade.isReady = true;
@@ -3379,6 +3390,12 @@ function doPadeConnect()
         }
 
     });
+}
+
+function reopenConverse()
+{
+    if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false) && !pade.chatWindow)
+        openChatWindow("inverse/index.html", null, "minimized");
 }
 
 function setupUserPayment()
@@ -3784,10 +3801,13 @@ function executeMeetingPlanner()
 
 function checkForChatAPI()
 {
-    if (pade.server) searchConversations("__DUMMY__", function(html, conversations, error)
+    if (pade.username && !getSetting("useAnonymous", false))
     {
-        pade.chatAPIAvailable = !error;
-    });
+        if (pade.server) searchConversations("__DUMMY__", function(html, conversations, error)
+        {
+            pade.chatAPIAvailable = !error;
+        });
+    }
 }
 
 function setupWorkgroup()
