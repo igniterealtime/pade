@@ -2,7 +2,7 @@ var __domain = getSetting("domain");
 var __server = getSetting("server");
 var connUrl = "https://" + __server + "/http-bind/";
 
-if (getSetting("useWebsocket", false))
+if (getSetting("useWebsocket", true))
 {
     connUrl = "wss://" + __server + "/ws/";
 }

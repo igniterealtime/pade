@@ -432,6 +432,21 @@ this.manifest = {
         },
         {
             "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "presNotifyWhitelist",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com"),
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Auto Presence"),
+            "name": "presNotifyWhitelistDesc",
+            "text": i18n.get("List of contact JIDs to to be considered when showing desktop notifications of changed contact status"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("general"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "unregisterUrlProtocols",
             "type": "description",
@@ -844,13 +859,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "messageCarbons",
-            "type": "checkbox",
-            "label": i18n.get("Enable message carbons")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "conversePlaySounds",
             "type": "checkbox",
             "label": i18n.get("Enable sound notification")
@@ -879,16 +887,16 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "allowNonRosterMessaging",
+            "name": "autoSubscribe",
             "type": "checkbox",
-            "label": i18n.get("Allow non roster messaging")
+            "label": i18n.get("Automatically subscribe back to any contact requests")
         },
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "autoListRooms",
+            "name": "autoJoinOnInvite",
             "type": "checkbox",
-            "label": i18n.get("Auto List Rooms")
+            "label": i18n.get("Automatically join a chatroom on invite without any confirmation")
         },
         {
             "tab": i18n.get("Converse"),
@@ -900,20 +908,26 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "converseDefaultState",
+            "type": "popupButton",
+            "label": i18n.get("Default Presence State"),
+            "options": [
+                {"text": "I am online", "value": "online"},
+                {"text": "I am free to chat", "value": "chat"},
+                {"text": "I am busy", "value": "dnd"},
+                {"text": "I am away", "value": "away"},
+                {"text": "I am away for an extended period", "value": "xa"}
+            ]
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "archivedMessagesPageSize",
             "type": "slider",
             "label": i18n.get("Archived Messages Page Size"),
             "max": 121,
             "min": 1,
             "step": 10
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Multi-User Chat"),
-            "name": "autoJoinRooms",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("List of room JIDs to auto-join. For example:\n\nopen_chat@conference.igniterealtime.org\nxsf@muc.xmpp.org"),
         },
         {
             "tab": i18n.get("Converse"),
@@ -953,6 +967,27 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "hideOfflineUsers",
+            "type": "checkbox",
+            "label": i18n.get("Hide offline users")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "showOnlyOnlineUsers",
+            "type": "checkbox",
+            "label": i18n.get("Show only online users")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "showSendButton",
+            "type": "checkbox",
+            "label": i18n.get("Show send button which can be clicked to send a message")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "enableInfoPanel",
             "type": "checkbox",
             "label": i18n.get("Enable Information Panel")
@@ -970,6 +1005,57 @@ this.manifest = {
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}
             ]
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
+            "name": "messageCarbons",
+            "type": "checkbox",
+            "label": i18n.get("Enable message carbons")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
+            "name": "allowNonRosterMessaging",
+            "type": "checkbox",
+            "label": i18n.get("Accept chat messages from contacts not in your roster list")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
+            "name": "autoJoinPrivateChats",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
+            "name": "autoJoinPrivateChatsDesc",
+            "text": i18n.get("List of contact JIDs to auto-open"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Multi-User Chat"),
+            "name": "autoListRooms",
+            "type": "checkbox",
+            "label": i18n.get("Auto List Rooms")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Multi-User Chat"),
+            "name": "autoJoinRooms",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of room JIDs. For example:\n\nopen_chat@conference.igniterealtime.org\nxsf@muc.xmpp.org"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Multi-User Chat"),
+            "name": "autoJoinRoomsDesc",
+            "text": i18n.get("List of room JIDs to auto-join"),
+            "type": "description"
         },
         {
             "tab": i18n.get("Converse"),

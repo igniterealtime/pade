@@ -1520,7 +1520,10 @@ function addHandlers()
 
             if (pade.isReady && pade.presence[from] && pade.presence[from].show != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
             {
-                if (contact.name && from) notifyText(contact.name, "Contact Tracker", from, [], null, from);
+                var whiteList = getSetting("presNotifyWhitelist", null);
+                var validToSend = !!contact.name && (!whiteList || whiteList.indexOf(from) > -1);
+
+                if (validToSend) notifyText(contact.name, "Contact Tracker", from, [], null, from);
             }
 
             pade.presence[from].show = pres;
@@ -1532,7 +1535,10 @@ function addHandlers()
 
             if (pade.isReady && pade.presence[from] && pade.presence[from].status != statusMsg && getSetting("enablePresenceStatus", false) && contact)
             {
-                if (contact.name && from) notifyText($(this).text(), contact.name + " " + from, from, [], null, from);
+                var whiteList = getSetting("presNotifyWhitelist", null);
+                var validToSend = !!contact.name && (!whiteList || whiteList.indexOf(from) > -1);
+
+                if (validToSend) notifyText($(this).text(), contact.name + " " + from, from, [], null, from);
             }
 
             pade.presence[from].status = statusMsg;
@@ -1853,9 +1859,10 @@ function addHandlers()
 
             if ((pade.chatWindow && !pade.converseChats[offerer]) || pade.minimised)
             {
+                pade.converseChats[offerer] = from;
+
                 doNotification(body, offerer, function()
                 {
-                    pade.converseChats[offerer] = from;
                     chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
                     chrome.windows.update(pade.chatWindow.id, {focused: true});
                 });

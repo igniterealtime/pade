@@ -1210,6 +1210,7 @@ function doDefaults()
     // converse
     setDefaultSetting("enableInverse", true);
     setDefaultSetting("allowNonRosterMessaging", true);
+    setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
@@ -1217,6 +1218,8 @@ function doDefaults()
     setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("converseRosterFilter", true);
     setDefaultSetting("converseTheme", "concord");
+    setDefaultSetting("converseDefaultState", "online");
+    setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("enableBookmarks", true);
     setDefaultSetting("notifyRoomMentions", true);
     setDefaultSetting("notifyWhenClosed", true);

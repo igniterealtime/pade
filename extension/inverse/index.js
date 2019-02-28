@@ -114,6 +114,18 @@ window.addEventListener("load", function()
                 }
             }
         }
+        var autoJoinPrivateChats = undefined;
+        var tempJids = getSetting("autoJoinPrivateChats", "").split("\n");
+
+        if (tempJids.length > 0)
+        {
+            autoJoinPrivateChats = [];
+
+            for (var i=0; i<tempJids.length; i++)
+            {
+                if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i]);
+            }
+        }
 
         var autoAway = getSetting("idleTimeout", 300);
         var autoXa = autoAway * 3;
@@ -146,31 +158,38 @@ window.addEventListener("load", function()
         var config =
         {
           allow_bookmarks: true,
+          allow_chat_pending_contacts: true,
           allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
           allow_public_bookmarks: true,
           allow_logout: false,
           allow_muc_invitations: true,
-          archived_messages_page_size: getSetting("archivedMessagesPageSize", 10),
+          archived_messages_page_size: getSetting("archivedMessagesPageSize", 51),
           authentication: anonUser ? "anonymous" : "login",
           auto_join_rooms: autoJoinRooms,
+          auto_join_private_chats: autoJoinPrivateChats,
           auto_away: autoAway,
           auto_xa: autoXa,
-          auto_list_rooms: getSetting("allowNonRosterMessaging", false),
+          auto_list_rooms: getSetting("autoListRooms", true),
           auto_login: username != null || anonUser,
           auto_reconnect: getSetting("autoReconnect", true),
+          auto_subscribe: getSetting("autoSubscribe", false),
+          auto_join_on_invite: getSetting("autoJoinOnInvite", false),
           bosh_service_url: "https://" + server + "/http-bind/",
           debug: getSetting("converseDebug", false),
           default_domain: domain,
+          default_state: getSetting("converseDefaultState", "online"),
           domain_placeholder: domain,
           fullname: displayname,
           hide_open_bookmarks: true,
+          hide_offline_users: getSetting("hideOfflineUsers", true),
           i18n: getSetting("language", "en"),
           jid : anonUser ? domain : username + "@" + domain,
           locked_domain: domain,
           message_archiving: "never",
           message_carbons: getSetting("messageCarbons", true),
           muc_domain: "conference." + getSetting("domain", null),
-          muc_nickname_from_jid: true,
+          muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
+          muc_nickname_from_jid: false,
           muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
           nickname: displayname,
           notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
@@ -179,8 +198,11 @@ window.addEventListener("load", function()
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
           password: anonUser ? null : password,
           play_sounds: getSetting("conversePlaySounds", false),
+          priority: 1,
           roster_groups: getSetting("rosterGroups", false),
           show_message_load_animation: false,
+          show_only_online_users: getSetting("showOnlyOnlineUsers", false),
+          show_send_button: getSetting("showSendButton", false),
           sounds_path: 'sounds/',
           view_mode: viewMode,
           visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableSip", false), 'clear': true },
@@ -189,6 +211,7 @@ window.addEventListener("load", function()
           whitelisted_plugins: whitelistedPlugins
         };
 
+        console.log("converse.initialize", config);
         converse.initialize( config );
     }
 });
