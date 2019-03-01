@@ -1218,7 +1218,8 @@ function doDefaults()
     setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("converseRosterFilter", true);
     setDefaultSetting("converseTheme", "concord");
-    setDefaultSetting("converseDefaultState", "online");
+    setDefaultSetting("converseOpenState", "online");
+    setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("enableBookmarks", true);
     setDefaultSetting("notifyRoomMentions", true);

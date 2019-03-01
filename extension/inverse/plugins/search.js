@@ -5,10 +5,10 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var SearchDialog = null;
     var searchDialog = null;
     var searchAvailable = false;
+    var moment = converse.env.moment;
 
     converse.plugins.add("search", {
         'dependencies': [],
@@ -25,7 +25,7 @@
                   return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
-                         '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a Lucene query string and press Enter to search" ><p/><div id="pade-search-results"></div>' +
+                         '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" ><p/><div id="pade-search-results"></div>' +
                          '</div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
@@ -59,31 +59,47 @@
                 },
 
                 doSearch() {
+                    var view = this.model.get("view");
+                    var jid = view.model.get("jid");
+                    var type = view.model.get("type");
+
                     var that = this;
                     var keyword = that.model.get("keyword");
+                    var searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'ig');
+                    var tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "gim");
 
-                    if (keyword != "" && bgWindow)
+                    console.debug("doSearch", keyword, jid);
+
+                    if (keyword != "")
                     {
                         var searchResults = that.el.querySelector("#pade-search-results");
+                        searchResults.innerHTML = "No Match";
 
-                        bgWindow.searchConversations(keyword, function(html, conversations, error)
+                        _converse.api.archive.query({before: '', max: 9999999, 'groupchat':  type === "chatroom", 'with': jid}, messages =>
                         {
-                            console.debug("searchConversations", conversations, error);
+                            var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
 
-                            searchResults.innerHTML = html;
-
-                            setTimeout(function()
+                            for (var i=0; i<messages.length; i++)
                             {
-                                for (var i=0; i<conversations.length; i++)
+                                if (messages[i].querySelector('body'))
                                 {
-                                    that.el.querySelector("#conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
-                                    {
-                                        e.stopPropagation();
-                                        chrome.extension.getViews({windowId: bgWindow.pade.chatWindow.id})[0].openChatPanel(e.target.title);
+                                    var body = messages[i].querySelector('body').innerHTML;
+                                    var delay = messages[i].querySelector('forwarded').querySelector('delay');
+                                    var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
+                                    var time = delay ? delay.getAttribute('stamp') : moment().format();
+                                    var pretty_time = moment(time).format('MMM DD<br/>HH:mm:ss');
+                                    var pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
 
-                                    }, false);
+                                    if (searchRegExp.test(body))
+                                    {
+                                        var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
+                                        html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
+                                    }
                                 }
-                            }, 1000);
+                            }
+
+                            html =  html + "</table>";
+                            searchResults.innerHTML = html;
                         });
                     }
                 }
@@ -91,7 +107,7 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                if (bgWindow && bgWindow.pade.chatAPIAvailable && !view.el.querySelector(".plugin-search"))
+                if (!view.el.querySelector(".plugin-search"))
                 {
                     var id = view.model.get("box_id");
                     addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
@@ -102,7 +118,7 @@
                     {
                         evt.stopPropagation();
 
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({}) });
+                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
                         searchDialog.show();
                     }, false);
                 }

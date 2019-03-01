@@ -407,14 +407,16 @@
 
         console.debug("createContentSummary", jid, id);
 
-        _converse.api.archive.query({before: '', max: 9999999, 'groupchat': true, 'with': jid}, messages => {
+        _converse.api.archive.query({before: '', max: 9999999, 'groupchat': true, 'with': jid}, messages =>
+        {
+            //console.debug("createContentSummary - query", messages);
 
             for (var i=0; i<messages.length; i++)
             {
                 var body = messages[i].querySelector('body');
                 var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
 
-                //console.debug("archived msg", i, from, body);
+                console.debug("archived msg", i, from, body);
 
                 if (body)
                 {

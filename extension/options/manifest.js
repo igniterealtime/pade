@@ -21,16 +21,16 @@ this.manifest = {
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
-            "name": "useAnonymous",
+            "name": "useWebsocket",
             "type": "checkbox",
-            "label": i18n.get("Use Anonymous Connection")
+            "label": i18n.get("Use a websocket connection to server")
         },
         {
             "tab": i18n.get("connection"),
             "group": i18n.get("connection"),
-            "name": "useWebsocket",
+            "name": "useAnonymous",
             "type": "checkbox",
-            "label": i18n.get("Use Websockets")
+            "label": i18n.get("Use an anonymous connection to server")
         },
         {
             "tab": i18n.get("connection"),
@@ -908,9 +908,23 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "converseDefaultState",
+            "name": "converseOpenState",
             "type": "popupButton",
-            "label": i18n.get("Default Presence State"),
+            "label": i18n.get("Window Open presence state"),
+            "options": [
+                {"text": "I am online", "value": "online"},
+                {"text": "I am free to chat", "value": "chat"},
+                {"text": "I am busy", "value": "dnd"},
+                {"text": "I am away", "value": "away"},
+                {"text": "I am away for an extended period", "value": "xa"}
+            ]
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "converseCloseState",
+            "type": "popupButton",
+            "label": i18n.get("Window Close presence state"),
             "options": [
                 {"text": "I am online", "value": "online"},
                 {"text": "I am free to chat", "value": "chat"},
@@ -1105,7 +1119,14 @@ this.manifest = {
             "name": "interestList",
             "type": "textarea",
             "label": i18n.get(""),
-            "text": i18n.get("List of words of interest. For example:\n\npade\nxmpp\nsip"),
+            "text": i18n.get("List words of interest. For example:\n\npade\nxmpp\nsip"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
+            "name": "interestListDesc",
+            "text": i18n.get("List words of interest to be tracked and hash tagged"),
+            "type": "description"
         },
         {
             "tab": i18n.get("Converse"),

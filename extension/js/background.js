@@ -453,7 +453,21 @@ window.addEventListener("load", function()
             pade.minimised = false;
             pade.converseChats = {};
 
-            if (pade.activeWorkgroup) setupWorkgroup(); // needed because presence has reset status
+            if (pade.activeWorkgroup)
+            {
+                setupWorkgroup(); // needed because presence has reset status
+            }
+            else {
+                var show = getSetting("converseCloseState", "online");
+
+                if (show == "online")
+                {
+                     pade.connection.send($pres());
+                }
+                else {
+                    pade.connection.send($pres().c("show").t(show).up());
+                }
+            }
         }
 
         if (pade.sip.window && win == pade.sip.window.id)
@@ -3821,7 +3835,16 @@ function setupWorkgroup()
 {
     console.debug("setupWorkgroup", pade.activeWorkgroup);
 
-    pade.connection.send($pres());
+    var show = getSetting("converseCloseState", "online");
+
+    if (show == "online")
+    {
+         pade.connection.send($pres());
+    }
+    else {
+        pade.connection.send($pres().c("show").t(show).up());
+    }
+
     pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
 
     var stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})
