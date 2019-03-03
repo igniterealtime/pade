@@ -34,8 +34,6 @@ window.addEventListener("load", function()
         location.href = href;
     }
 
-    if (!window.pade) document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse";
-
     if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false) || getSetting("useSmartIdCard", false))
     {
         converse.env.Strophe.addConnectionPlugin('ofchatsasl',
@@ -100,7 +98,7 @@ window.addEventListener("load", function()
         var displayname = getSetting("displayname", username);
 
         var autoJoinRooms = undefined;
-        var tempRooms = getSetting("autoJoinRooms", "lobby@conference." + domain).split("\n");
+        var tempRooms = getSetting("autoJoinRooms", anonUser ? "lobby@conference." + domain : "").split("\n");
 
         if (tempRooms.length > 0)
         {
@@ -110,7 +108,7 @@ window.addEventListener("load", function()
             {
                 if (tempRooms[i])
                 {
-                    autoJoinRooms.push({jid: tempRooms[i].indexOf("@") == -1 ? tempRooms[i] + "@conference." + domain : tempRooms[i], nick: displayname});
+                    autoJoinRooms.push({jid: tempRooms[i].indexOf("@") == -1 ? tempRooms[i].trim() + "@conference." + domain : tempRooms[i], nick: displayname});
                 }
             }
         }
@@ -123,7 +121,7 @@ window.addEventListener("load", function()
 
             for (var i=0; i<tempJids.length; i++)
             {
-                if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i]);
+                if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i].trim());
             }
         }
 
@@ -181,7 +179,7 @@ window.addEventListener("load", function()
           domain_placeholder: domain,
           fullname: displayname,
           hide_open_bookmarks: true,
-          hide_offline_users: getSetting("hideOfflineUsers", true),
+          hide_offline_users: getSetting("hideOfflineUsers", false),
           i18n: getSetting("language", "en"),
           jid : anonUser ? domain : username + "@" + domain,
           locked_domain: domain,
@@ -201,7 +199,7 @@ window.addEventListener("load", function()
           priority: 1,
           roster_groups: getSetting("rosterGroups", false),
           show_message_load_animation: false,
-          show_only_online_users: getSetting("showOnlyOnlineUsers", false),
+          show_only_online_users: getSetting("converseShowOnlyOnlineUsers", false),
           show_send_button: getSetting("showSendButton", false),
           sounds_path: 'sounds/',
           view_mode: viewMode,

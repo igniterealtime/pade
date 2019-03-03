@@ -988,7 +988,7 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "showOnlyOnlineUsers",
+            "name": "converseShowOnlyOnlineUsers",
             "type": "checkbox",
             "label": i18n.get("Show only online users")
         },
@@ -1090,28 +1090,28 @@ this.manifest = {
             "group": i18n.get("Notifications"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",
-            "label": i18n.get("Notify all room messages")
+            "label": i18n.get("Notify on all new groupchat messages")
         },
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
             "name": "notifyWhenClosed",
             "type": "checkbox",
-            "label": i18n.get("Notify when closed")
+            "label": i18n.get("Notify on all new groupchat messages from a closed local groupchat room")
         },
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
             "name": "notifyRoomMentions",
             "type": "checkbox",
-            "label": i18n.get("Notify on room mentions")
+            "label": i18n.get("Notify when my name is mentioned in groupchat conversations")
         },
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
             "name": "notifyOnInterests",
             "type": "checkbox",
-            "label": i18n.get("Notify on any interest")
+            "label": i18n.get("Notify when any interest listed below is mentioned")
         },
         {
             "tab": i18n.get("Converse"),

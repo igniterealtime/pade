@@ -69336,6 +69336,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins.add('converse-vca
     }
 
     function createStanza(type, jid, vcard_el) {
+console.log("WWWWWWWWWWWWWWWWWW - createStanza",  type, jid, vcard_el);
       const iq = $iq(jid ? {
         'type': type,
         'to': jid

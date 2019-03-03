@@ -982,7 +982,7 @@ function notifyText(message, context, jid, buttons, callback, notifyId)
         });
     }
 
-    if (jid)
+    if (jid && jid.indexOf("@conference." == -1))
     {
         getVCard(jid, function(vCard)
         {
@@ -1799,7 +1799,7 @@ function addHandlers()
                 {
                     if (getSetting("notifyWhenClosed", true))
                     {
-                        doNotification(body, jid + " " + from, function()
+                        doNotification(body, jid + " " + from, jid, function()
                         {
                             openInverseGroupChatWindow(from);
                         });
@@ -1864,7 +1864,7 @@ function addHandlers()
 
             if (!pade.chatWindow || getSetting("enableInverse", false) == false)
             {
-                doNotification(body, offerer, function()
+                doNotification(body, offerer, offerer, function()
                 {
                     openChatWindow("inverse/index.html#converse/chat?jid=" + offerer, true);
                 });
@@ -1875,9 +1875,9 @@ function addHandlers()
             {
                 pade.converseChats[offerer] = from;
 
-                doNotification(body, offerer, function()
+                doNotification(body, offerer, offerer, function()
                 {
-                    chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(from);
+                    chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(offerer);
                     chrome.windows.update(pade.chatWindow.id, {focused: true});
                 });
             }
@@ -2036,11 +2036,11 @@ function addHandlers()
     }, null, 'message');
 }
 
-function doNotification(body, offerer, callback)
+function doNotification(body, label, offerer, callback)
 {
-    console.debug("doNotification", body, offerer)
+    console.debug("doNotification", body, label, offerer)
 
-    notifyText(body, offerer, offerer, [{title: "View", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+    notifyText(body, label, offerer, [{title: "View", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
     {
         if (buttonIndex == 0)   // accept
         {
@@ -2903,6 +2903,8 @@ function logCall(target, direction, duration)
 
 function getVCard(jid, callback, errorback)
 {
+    jid = jid.trim();
+
     if (pade.vcards[jid])
     {
        if (callback) callback(pade.vcards[jid]);

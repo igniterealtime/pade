@@ -63,6 +63,8 @@
                     if (win == -1) notified = false;
                     if (win == bgWindow.pade.chatWindow.id) notified = false;
                 });
+
+                document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse - " + _converse.VERSION_NAME;
             }
 
             _converse.log("The \"pade\" plugin is being initialized");

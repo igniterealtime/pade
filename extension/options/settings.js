@@ -1080,6 +1080,7 @@ window.addEvent("domready", function () {
                 lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
                 lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
                 lynks.jid = lynks.domain;
+                lynks.password = null;
 
                 if (!getSetting("useAnonymous", false))
                 {
@@ -1090,7 +1091,7 @@ window.addEvent("domready", function () {
 
                         if (lynks.username && lynks.password && lynks.username != "" && lynks.password != "")
                         {
-                            lynks.jid = lynks.username + "@" + lynks.domain;
+                            lynks.jid = lynks.username + "@" + lynks.domain + "/" + lynks.displayname;
                         }
                         else {
                             settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
@@ -1129,7 +1130,7 @@ window.addEvent("domready", function () {
                             background.setupSasl(token);
                         }
 
-                        connection.connect(lynks.jid + "/" + lynks.displayname, lynks.password, function (status)
+                        connection.connect(lynks.jid, lynks.password, function (status)
                         {
                             console.debug("status", status, lynks.jid, lynks.displayname);
 
@@ -1143,6 +1144,7 @@ window.addEvent("domready", function () {
                             {
                                 setDefaultPassword(settings);
                                 settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
+                                console.log("WWWWWWWW", lynks, connUrl);
                             }
                         });
                     } else {
@@ -1220,7 +1222,6 @@ function doDefaults()
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
-    setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("enableBookmarks", true);
     setDefaultSetting("notifyRoomMentions", true);
     setDefaultSetting("notifyWhenClosed", true);
