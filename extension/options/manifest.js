@@ -350,9 +350,16 @@ this.manifest = {
         {
             "tab": i18n.get("general"),
             "group": i18n.get("Preferences"),
+            "name": "wgEnabled",
+            "type": "checkbox",
+            "label": i18n.get("Enable Workgroups (Fastpath)")
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Preferences"),
             "name": "wgNotifications",
             "type": "checkbox",
-            "label": i18n.get("Workgroup Notifications")
+            "label": i18n.get("Enable Workgroup Notifications")
         },
         {
             "tab": i18n.get("general"),
@@ -1051,14 +1058,21 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("Multi-User Chat"),
+            "group": i18n.get("Private Chat"),
+            "name": "saveAutoJoinChats",
+            "type": "checkbox",
+            "label": i18n.get("Save list of open chat conversations")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "autoListRooms",
             "type": "checkbox",
             "label": i18n.get("Auto List Rooms")
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("Multi-User Chat"),
+            "group": i18n.get("Group Chat"),
             "name": "autoJoinRooms",
             "type": "textarea",
             "label": i18n.get(""),
@@ -1066,10 +1080,17 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("Multi-User Chat"),
+            "group": i18n.get("Group Chat"),
             "name": "autoJoinRoomsDesc",
             "text": i18n.get("List of room JIDs to auto-join"),
             "type": "description"
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "saveAutoJoinRooms",
+            "type": "checkbox",
+            "label": i18n.get("Save list of open groupchat conversations")
         },
         {
             "tab": i18n.get("Converse"),

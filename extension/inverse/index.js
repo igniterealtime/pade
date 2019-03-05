@@ -1,9 +1,29 @@
 window.addEventListener("unload", function()
 {
+    console.debug("inverse addListener unload");
     setSetting("chatWindow", {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
 });
 
 window.addEventListener("load", function()
+{
+    console.debug("inverse addListener load");
+    doConverse();
+
+});
+
+window.addEventListener('message', function (event)
+{
+    console.debug("inverse addListener message", event.data);
+
+    if (event.data && event.data.action)
+    {
+        if (event.data.action == "pade.action.open.chat") openChat(event.data.from, event.data.name);
+        if (event.data.action == "pade.action.open.chat.panel") openChatPanel(event.data.from);
+        if (event.data.action == "pade.action.open.group.chat") openGroupChat(event.data.jid, event.data.label, event.data.nick, event.data.properties);
+    }
+});
+
+function doConverse()
 {
     function getUniqueID()
     {
@@ -98,7 +118,9 @@ window.addEventListener("load", function()
         var displayname = getSetting("displayname", username);
 
         var autoJoinRooms = undefined;
-        var tempRooms = getSetting("autoJoinRooms", anonUser ? "lobby@conference." + domain : "").split("\n");
+        var autoJoinPrivateChats = undefined;
+
+        var tempRooms = getSetting("autoJoinRooms", "").split("\n");
 
         if (tempRooms.length > 0)
         {
@@ -112,7 +134,6 @@ window.addEventListener("load", function()
                 }
             }
         }
-        var autoJoinPrivateChats = undefined;
         var tempJids = getSetting("autoJoinPrivateChats", "").split("\n");
 
         if (tempJids.length > 0)
@@ -121,7 +142,7 @@ window.addEventListener("load", function()
 
             for (var i=0; i<tempJids.length; i++)
             {
-                if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i].trim());
+                if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i].indexOf("@") == -1 ? tempJids[i].trim() + "@" + domain : tempJids[i].trim());
             }
         }
 
@@ -198,7 +219,10 @@ window.addEventListener("load", function()
           play_sounds: getSetting("conversePlaySounds", false),
           priority: 1,
           roster_groups: getSetting("rosterGroups", false),
+          show_controlbox_by_default: false,
           show_message_load_animation: false,
+          show_desktop_notifications: false,
+          show_chatstate_notifications: false,
           show_only_online_users: getSetting("converseShowOnlyOnlineUsers", false),
           show_send_button: getSetting("showSendButton", false),
           sounds_path: 'sounds/',
@@ -212,19 +236,7 @@ window.addEventListener("load", function()
         console.log("converse.initialize", config);
         converse.initialize( config );
     }
-});
-
-window.addEventListener('message', function (event)
-{
-    console.debug("inverse addListener message", event.data);
-
-    if (event.data && event.data.action)
-    {
-        if (event.data.action == "pade.action.open.chat") openChat(event.data.from, event.data.name);
-        if (event.data.action == "pade.action.open.chat.panel") openChatPanel(event.data.from);
-        if (event.data.action == "pade.action.open.group.chat") openGroupChat(event.data.jid, event.data.label, event.data.nick, event.data.properties);
-    }
-});
+}
 
 function openChat(from, name)
 {

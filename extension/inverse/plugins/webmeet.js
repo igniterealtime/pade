@@ -713,6 +713,27 @@
 
                         bgWindow.openWebAppsWindow(chrome.extension.getURL("webcam/sip-video.html?url=sip:" + room), null, 800, 640)
                     }
+                },
+
+                afterShown: function() {
+
+                    var id = this.model.get("box_id");
+                    var jid = this.model.get("jid");
+                    var type = this.model.get("type");
+
+                    // active conversations, reset unread indicator
+
+                    console.log("afterShown", id, jid, type);
+
+                    var openButton = document.getElementById("pade-active-" + id);
+
+                    if (openButton)
+                    {
+                        openButton.innerText = this.model.getDisplayName();
+                        openButton.style.fontWeight = "normal";
+                    }
+
+                    return this.__super__.afterShown.apply(this, arguments);
                 }
             },
 

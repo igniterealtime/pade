@@ -93,6 +93,11 @@
     background-color: #A53A69;  
     cursor: pointer;
 }
+.pade-active-conv {
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis    
+}
 
 /* logo branding */
 

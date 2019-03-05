@@ -1,4 +1,4 @@
-var pade = {gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, converseChats: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
+var pade = {autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
 pade.transferWiseUrl = "https://api.transferwise.com/v1";
@@ -451,7 +451,16 @@ window.addEventListener("load", function()
         {
             pade.chatWindow = null;
             pade.minimised = false;
-            pade.converseChats = {};
+
+            if (getSetting("saveAutoJoinRooms", false))
+            {
+                setSetting("autoJoinRooms", Object.getOwnPropertyNames(pade.autoJoinRooms).join("\n"));
+            }
+
+            if (getSetting("saveAutoJoinChats", false))
+            {
+                setSetting("autoJoinPrivateChats", Object.getOwnPropertyNames(pade.autoJoinPrivateChats).join("\n"));
+            }
 
             if (pade.activeWorkgroup)
             {
@@ -960,6 +969,8 @@ function stopTone()
 
 function notifyText(message, context, jid, buttons, callback, notifyId)
 {
+    console.debug("notifyText", message, context, jid, buttons, notifyId);
+
     if (pade.busy) return;  // no notifications when I am busy
 
     var opt = {
@@ -982,10 +993,12 @@ function notifyText(message, context, jid, buttons, callback, notifyId)
         });
     }
 
-    if (jid && jid.indexOf("@conference." == -1))
+    if (jid && jid.indexOf("@" > -1) && jid.indexOf("@conference." == -1))
     {
         getVCard(jid, function(vCard)
         {
+            console.debug("notifyText vcard", vCard);
+
             if (vCard.avatar) opt.iconUrl = vCard.avatar;
             doNotify();
 
@@ -1274,7 +1287,6 @@ function closeChatWindow()
     {
         chrome.windows.remove(pade.chatWindow.id);
         pade.chatWindow = null;
-        pade.converseChats = {};
     }
 }
 
@@ -1869,18 +1881,6 @@ function addHandlers()
                     openChatWindow("inverse/index.html#converse/chat?jid=" + offerer, true);
                 });
             }
-            else
-
-            if ((pade.chatWindow && !pade.converseChats[offerer]) || pade.minimised)
-            {
-                pade.converseChats[offerer] = from;
-
-                doNotification(body, offerer, offerer, function()
-                {
-                    chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(offerer);
-                    chrome.windows.update(pade.chatWindow.id, {focused: true});
-                });
-            }
         });
 
         $(message).find('x').each(function ()
@@ -2146,43 +2146,46 @@ function fetchContacts(callback)
         console.error(error);
     });
 
-    pade.connection.sendIQ($iq({type: 'get', to: "workgroup." + pade.connection.domain}).c('workgroups', {jid: pade.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"}).tree(), function(resp)
+    if (getSetting("wgEnabled", false))
     {
-        $(resp).find('workgroup').each(function()
+        pade.connection.sendIQ($iq({type: 'get', to: "workgroup." + pade.connection.domain}).c('workgroups', {jid: pade.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"}).tree(), function(resp)
         {
-            var jid = $(this).attr('jid');
-            var name = Strophe.getNodeFromJid(jid);
-            var room = 'workgroup-' + name + "@conference." + pade.connection.domain;
-
-            console.debug("get workgroups", room, jid);
-
-            if (callback) callback(
+            $(resp).find('workgroup').each(function()
             {
-                id: roomCount++,
-                type: "room",
-                jid: room,
-                presence: "room",
-                name: 'workgroup-' + name,
-                pinned: true,
-                open: true,
-                room: 'workgroup-' + name,
-                domain: pade.connection.domain
+                var jid = $(this).attr('jid');
+                var name = Strophe.getNodeFromJid(jid);
+                var room = 'workgroup-' + name + "@conference." + pade.connection.domain;
+
+                console.debug("get workgroups", room, jid);
+
+                if (callback) callback(
+                {
+                    id: roomCount++,
+                    type: "room",
+                    jid: room,
+                    presence: "room",
+                    name: 'workgroup-' + name,
+                    pinned: true,
+                    open: true,
+                    room: 'workgroup-' + name,
+                    domain: pade.connection.domain
+                });
+
+                if (callback) callback(
+                {
+                    id: workgroupCount++,
+                    type: "workgroup",
+                    jid: jid,
+                    presence: "open",
+                    name: name,
+                    domain: pade.connection.domain
+                });
             });
 
-            if (callback) callback(
-            {
-                id: workgroupCount++,
-                type: "workgroup",
-                jid: jid,
-                presence: "open",
-                name: name,
-                domain: pade.connection.domain
-            });
+        }, function (error) {
+            console.warn("Workgroups not available");
         });
-
-    }, function (error) {
-        console.warn("Workgroups not available");
-    });
+    }
 
     etherlynk.connect();
 
@@ -2217,7 +2220,6 @@ function fetchContacts(callback)
             connectSIP();
         });
     }
-
 }
 
 function makePhoneCall(line, destination, callback)

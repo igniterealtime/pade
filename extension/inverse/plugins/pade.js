@@ -205,14 +205,18 @@
 
                 _converse.on('message', function (data)
                 {
-                    var  message = data.stanza;
-                    var full_from_jid = message.getAttribute('from');
-                    var from_jid = Strophe.getBareJidFromJid(full_from_jid);
+                    //console.debug("pade plugin - onMessage", data);
+
+                    var message = data.stanza;
+                    var chatbox = data.chatbox;
                     var body = message.querySelector('body');
-                    var chatbox = _converse.chatboxes.get(from_jid);
 
                     if (body && chatbox)
                     {
+                        var jid = Strophe.getBareJidFromJid(chatbox.get("jid"));
+                        var type = chatbox.get("type");
+                        var display_name = chatbox.getDisplayName();
+
                         // draw attention to new messages
                         // done here instead of background.js becasue of chatroom messages
 
@@ -222,14 +226,56 @@
                             notified = true;
                         }
 
-                        if (chatbox.get('type') == "chatroom")  // chatboxes handled in background.js
+                        if (type == "chatroom")  // chatboxes handled in background.js
                         {
                             var myNick =  chatbox.get('nick');
                             var theNick =  chatbox.get('name');
 
-                            if (bgWindow) scanMessage(from_jid, body.innerHTML, theNick, myNick);
+                            if (bgWindow) scanMessage(chatbox, message, jid, body.innerHTML, theNick, myNick);
                         }
+
+                        else
+
+                        if (_converse.shouldNotifyOfMessage(message))
+                        {
+                            bgWindow.notifyText(body.innerHTML, display_name, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+                            {
+                                if (buttonIndex == 0)
+                                {
+                                    _converse.api.chats.open(jid);
+                                    chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+                                }
+
+                            }, jid);
+                        }
+
+                        setActiveConversationsUread(chatbox);
+                   }
+                });
+
+                _converse.api.listen.on('chatBoxOpened', function (chatbox)
+                {
+                    console.log("chatBoxOpened", chatbox);
+                    if (bgWindow) bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
+
+                });
+
+                _converse.api.listen.on('chatBoxClosed', function (chatbox)
+                {
+                    console.log("chatBoxClosed", chatbox);
+
+                    if (bgWindow)
+                    {
+                        if (chatbox.model.get("type") == "chatbox") delete bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")];
+                        if (chatbox.model.get("type") == "chatroom") delete bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")];
                     }
+                });
+
+                _converse.api.listen.on('chatRoomOpened', function (chatbox)
+                {
+                    console.log("chatRoomOpened", chatbox);
+                    if (bgWindow) bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
+
                 });
 
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
@@ -291,55 +337,115 @@
         }
     });
 
-    var scanMessage = function(fromJid, body, fromNick, myNick)
+    var setActiveConversationsUread = function(chatbox)
     {
-        console.debug("scanMessage", fromJid, body, fromNick, myNick);
+        // active conversations, add unread indicator
 
-        var interestList = getSetting("interestList", "").split("\n");
+        var id = chatbox.get("box_id");
+        var numUnreadBox = chatbox.get("num_unread");
+        var numUnreadRoom = chatbox.get("num_unread_general");
+        var chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
+        var openButton = document.getElementById("pade-active-" + id);
 
-        if (bgWindow.pade.minimised && body)
+        if (openButton)
         {
-            if (getSetting("notifyAllRoomMessages", false))
+            if (numUnreadBox != "0" && chatType == "chat")
             {
-                // TODO move to background page
-                notifyMe(body, fromNick, fromJid);
+                openButton.innerText = chatbox.getDisplayName() + " (" + numUnreadBox + ")";
+                openButton.style.fontWeight = "bold";
             }
-            else {
-                var alerted = false;
+            else
 
-                if (getSetting("notifyOnInterests", false))
+            if (numUnreadRoom != "0" && chatType == "groupchat")
+            {
+                openButton.innerText = chatbox.getDisplayName() + " (" + numUnreadRoom + ")";
+                openButton.style.fontWeight = "bold";
+            }
+        }
+    }
+
+    var setActiveConversationsRead = function(chatbox)
+    {
+        // active conversations, remove unread indicator
+
+        var id = chatbox.get("box_id");
+        var openButton = document.getElementById("pade-active-" + id);
+
+        if (openButton)
+        {
+            openButton.innerText = chatbox.getDisplayName();
+            openButton.style.fontWeight = "normal";
+        }
+    }
+
+
+    var scanMessage = function(chatbox, message, fromJid, body, fromNick, myNick)
+    {
+        //console.debug("scanMessage", chatbox, message, fromJid, body, fromNick, myNick);
+
+        if (_converse.shouldNotifyOfMessage(message))
+        {
+            bgWindow.notifyText(body, fromNick, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+            {
+                if (buttonIndex == 0)
                 {
-                    for (var i=0; i<interestList.length; i++)
+                    _converse.api.rooms.open(fromJid);
+                    chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+
+                    if (chatbox) setActiveConversationsRead(chatbox);
+                }
+
+            }, fromJid);
+        }
+
+        else {
+
+            var interestList = getSetting("interestList", "").split("\n");
+
+            if (bgWindow.pade.minimised && body)
+            {
+                if (getSetting("notifyAllRoomMessages", false))
+                {
+                    // TODO move to background page
+                    notifyMe(body, fromNick, fromJid);
+                }
+                else {
+                    var alerted = false;
+
+                    if (getSetting("notifyOnInterests", false))
                     {
-                        interestList[i] = interestList[i].trim();
-
-                        if (interestList[i] != "")
+                        for (var i=0; i<interestList.length; i++)
                         {
-                            var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+                            interestList[i] = interestList[i].trim();
 
-                            if (searchRegExp.test(body))
+                            if (interestList[i] != "")
                             {
-                                // TODO move to background page using server-sent events
-                                notifyMe(body, fromNick, fromJid);
-                                alerted = true;
-                                break;
+                                var searchRegExp = new RegExp('^(.*)(\s?' + interestList[i] + ')', 'ig');
+
+                                if (searchRegExp.test(body))
+                                {
+                                    // TODO move to background page using server-sent events
+                                    notifyMe(body, fromNick, fromJid);
+                                    alerted = true;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
 
-                // track groupchat mentions
+                    // track groupchat mentions
 
-                if (!alerted && getSetting("notifyRoomMentions", false))
-                {
-                    var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
-                    if (mentioned) notifyMe(body, fromNick, fromJid);
+                    if (!alerted && getSetting("notifyRoomMentions", false))
+                    {
+                        var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
+                        if (mentioned) notifyMe(body, fromNick, fromJid, chatbox);
+                    }
                 }
             }
         }
     }
 
-    var notifyMe = function(text, fromNick, fromJid)
+    var notifyMe = function(text, fromNick, fromJid, chatbox)
     {
         console.debug("notifyMe", text, fromNick, fromJid);
 
@@ -352,6 +458,8 @@
                 _converse.api.rooms.open(fromJid);
                 bgWindow.pade.minimised = false;    // needed to reset if minimised is confused
                 chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+
+                if (chatbox) setActiveConversationsRead(chatbox);
             }
 
         }, fromJid);

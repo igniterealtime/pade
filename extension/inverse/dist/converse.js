@@ -57531,7 +57531,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         "click a.show-profile": "showProfileModal",
         "click a.change-status": "showStatusChangeModal",
         "click .show-client-info": "showClientInfoModal",
-        "click .show-preferences": "showPreferences",      // BAO
+        "click .show-preferences": "showPreferences",                       // BAO
+        "click .show-active-conversations": "showActiveConversations",      // BAO
         "click .logout": "logOut"
       },
 
@@ -57550,7 +57551,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           '_converse': _converse,
           'title_change_settings': __('Change settings'),
           'title_change_status': __('Click to change your chat status'),
-          'title_preferences': __('Preferences/Options'),               // BAO
+          'title_preferences': __('Preferences/Options'),                   // BAO
+          'title_conversations': __('Active Conversations'),                // BAO
           'title_log_out': __('Log out'),
           'info_details': __('Show details about this chat client'),
           'title_your_profile': __('Your profile')
@@ -57579,6 +57581,97 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         }
 
         this.status_modal.show(ev);
+      },
+
+      showActiveConversations(ev) { // BAO
+
+        const roomDiv = document.getElementById("chatrooms");
+        const chatDiv = document.getElementById("converse-roster");
+        let activeDiv = document.getElementById("active-conversations");
+
+        let display = roomDiv.style.display;
+
+        if (display != "none")
+        {
+            roomDiv.style.display = "none";
+            chatDiv.style.display = "none";
+
+            if (!activeDiv)
+            {
+                activeDiv = document.createElement("div");
+                activeDiv.id = "active-conversations";
+                activeDiv.classList.add("controlbox-section");
+                roomDiv.parentElement.appendChild(activeDiv);
+            }
+
+            _converse.chatboxes.each(function (chatbox)
+            {
+                if (chatbox.vcard)
+                {
+                    //console.log("showActiveConversations", chatbox);
+
+                    const content = chatbox.get("status") ? chatbox.get("status") : "";
+                    const chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
+                    const numUnread = chatType == "chat" ? chatbox.get("num_unread") : chatbox.get("num_unread_general");
+                    const id = chatbox.get('box_id');
+                    const jid = chatbox.get('jid');
+
+                    const msg_content = document.createElement("div");
+                    msg_content.setAttribute("class", "message chat-msg "  + chatType);
+
+                    let display_name = chatbox.getDisplayName();
+                    if (!display_name || display_name.trim() == "") display_name = jid;
+
+                    let label = display_name;
+
+                    if (numUnread != "0")
+                    {
+                        label = display_name + " (" + numUnread + ")";
+                    }
+
+                    let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
+
+                    if (label && _converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image && getSetting("converseRosterIcons"))
+                    {
+                        dataUri = createAvatar(display_name);
+                    }
+                    else {
+                        setAvatar(display_name, dataUri);
+                    }
+
+                    msg_content.innerHTML = '<img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/><span title="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" ' + (numUnread != '0' ? 'style="font-weight: bold;"' : '') + ' class="pade-active-conv">' + label + '</span>';
+                    activeDiv.appendChild(msg_content);
+
+                    const openButton = document.getElementById("pade-active-" + id);
+
+                    if (openButton)
+                    {
+                        openButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            let jid = evt.target.getAttribute("data-jid");
+                            let type = evt.target.getAttribute("data-type");
+
+                            if (jid)
+                            {
+                                if (type == "chat") _converse.api.chats.open(jid);
+                                else
+                                if (type == "groupchat") _converse.api.rooms.open(jid);
+                            }
+                            this.innerHTML = evt.target.title;
+                            this.style.fontWeight = "normal";
+
+                        }, false);
+                    }
+                }
+            });
+
+        } else {
+            roomDiv.style.display = "";
+            chatDiv.style.display = "";
+            if (activeDiv) roomDiv.parentElement.removeChild(activeDiv);
+        }
       },
 
       showPreferences(ev) { // BAO
@@ -69336,7 +69429,6 @@ _converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins.add('converse-vca
     }
 
     function createStanza(type, jid, vcard_el) {
-console.log("WWWWWWWWWWWWWWWWWW - createStanza",  type, jid, vcard_el);
       const iq = $iq(jid ? {
         'type': type,
         'to': jid
@@ -94328,11 +94420,11 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/profile_view.html -->\n<div class="userinfo controlbox-padded">\n<div class="controlbox-section profile d-flex">\n    <a class="show-profile" href="#">\n        <canvas class="avatar align-self-center" height="40" width="40"></canvas>\n    </a>\n    <span class="username w-100 align-self-center">' +
-__e(o.fullname) +
-'</span>\n    <a class="controlbox-heading__btn show-client-info fa fa-info-circle align-self-center" title="' +
-__e(o.info_details) +
-'"></a>\n    ' +    // BAO
-'<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="' +
+__e(o.fullname) + '</span>\n' + // BAO
+'<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="' +   // BAO
+__e(o.title_conversations) +
+'"></a>\n    ' +
+'<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="' + // BAO
 __e(o.title_preferences) +
 '"></a>\n    ';
  if (o._converse.allow_logout) { ;

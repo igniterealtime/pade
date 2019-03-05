@@ -6,7 +6,7 @@
   "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
   "description": "__MSG_manifest_extensionDescription__",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "homepage_url": "https://igniterealtime.org/",
     
   "background": {
