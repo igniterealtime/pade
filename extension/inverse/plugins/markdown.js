@@ -116,7 +116,6 @@
             },
 
             ChatBoxView: {
-
                 parseMessageForCommands: function(text) {
                     console.debug('markdown - parseMessageForCommands', text);
 

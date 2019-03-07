@@ -49475,6 +49475,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
+        'click .chat-msg__action-quote': 'onMessageQuoteButtonClicked',    // BAO
+        'click .chat-msg__action-pin': 'onMessagePinButtonClicked',    // BAO
         'click .chatbox-navback': 'showControlBox',
         'click .close-chatbox-button': 'close',
         'click .new-msgs-indicator': 'viewUnreadMessages',
@@ -50148,6 +50150,29 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         }
 
         this.insertIntoTextArea('', true, false);
+      },
+
+      onMessageQuoteButtonClicked(ev) { // BAO
+        ev.preventDefault();
+
+        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
+        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
+
+        this.insertIntoTextArea('>' + message.get('message') + "\n\n", false, false);
+      },
+
+      onMessagePinButtonClicked(ev) { // BAO
+        ev.preventDefault();
+
+        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
+        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
+
+        let pos = message.indexOf("\n");
+        if (pos == -1) pos = message.indexOf(".");
+
+        const pinnedMessage = pos == -1 ? message : message.substring(0, pos);
+
+        console.debug("onMessagePinButtonClicked", message_el.getAttribute('data-msgid'), pinnedMessage);
       },
 
       onMessageEditButtonClicked(ev) {
@@ -53703,6 +53728,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
+        'click .chat-msg__action-quote': 'onMessageQuoteButtonClicked',    // BAO
+        'click .chat-msg__action-pin': 'onMessagePinButtonClicked',    // BAO
         'click .chatbox-navback': 'showControlBox',
         'click .close-chatbox-button': 'close',
         'click .configure-chatroom-button': 'getAndRenderConfigurationForm',
@@ -57584,94 +57611,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
       },
 
       showActiveConversations(ev) { // BAO
-
-        const roomDiv = document.getElementById("chatrooms");
-        const chatDiv = document.getElementById("converse-roster");
-        let activeDiv = document.getElementById("active-conversations");
-
-        let display = roomDiv.style.display;
-
-        if (display != "none")
-        {
-            roomDiv.style.display = "none";
-            chatDiv.style.display = "none";
-
-            if (!activeDiv)
-            {
-                activeDiv = document.createElement("div");
-                activeDiv.id = "active-conversations";
-                activeDiv.classList.add("controlbox-section");
-                roomDiv.parentElement.appendChild(activeDiv);
-            }
-
-            _converse.chatboxes.each(function (chatbox)
-            {
-                if (chatbox.vcard)
-                {
-                    //console.log("showActiveConversations", chatbox);
-
-                    const content = chatbox.get("status") ? chatbox.get("status") : "";
-                    const chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
-                    const numUnread = chatType == "chat" ? chatbox.get("num_unread") : chatbox.get("num_unread_general");
-                    const id = chatbox.get('box_id');
-                    const jid = chatbox.get('jid');
-
-                    const msg_content = document.createElement("div");
-                    msg_content.setAttribute("class", "message chat-msg "  + chatType);
-
-                    let display_name = chatbox.getDisplayName();
-                    if (!display_name || display_name.trim() == "") display_name = jid;
-
-                    let label = display_name;
-
-                    if (numUnread != "0")
-                    {
-                        label = display_name + " (" + numUnread + ")";
-                    }
-
-                    let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
-
-                    if (label && _converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image && getSetting("converseRosterIcons"))
-                    {
-                        dataUri = createAvatar(display_name);
-                    }
-                    else {
-                        setAvatar(display_name, dataUri);
-                    }
-
-                    msg_content.innerHTML = '<img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/><span title="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" ' + (numUnread != '0' ? 'style="font-weight: bold;"' : '') + ' class="pade-active-conv">' + label + '</span>';
-                    activeDiv.appendChild(msg_content);
-
-                    const openButton = document.getElementById("pade-active-" + id);
-
-                    if (openButton)
-                    {
-                        openButton.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            let jid = evt.target.getAttribute("data-jid");
-                            let type = evt.target.getAttribute("data-type");
-
-                            if (jid)
-                            {
-                                if (type == "chat") _converse.api.chats.open(jid);
-                                else
-                                if (type == "groupchat") _converse.api.rooms.open(jid);
-                            }
-                            this.innerHTML = evt.target.title;
-                            this.style.fontWeight = "normal";
-
-                        }, false);
-                    }
-                }
-            });
-
-        } else {
-            roomDiv.style.display = "";
-            chatDiv.style.display = "";
-            if (activeDiv) roomDiv.parentElement.removeChild(activeDiv);
-        }
+        handleActiveConversations();
       },
 
       showPreferences(ev) { // BAO
@@ -63358,7 +63298,7 @@ _converse.initialize = async function (settings, callback) {
 
   //this.generateResource = () => `/converse.js-${Math.floor(Math.random() * 139749528).toString()}`;
   // BAO
-  this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${_converse.VERSION_NAME}-${Math.floor(Math.random() * 139749528).toString()}`;
+  this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${_converse.VERSION_NAME}-${BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS}-${Math.floor(Math.random() * 139749528).toString()}`;
 
   this.sendCSI = function (stat) {
     /* Send out a Chat Status Notification (XEP-0352)
@@ -93494,7 +93434,7 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/file_progress.html -->\n<div class="message chat-msg" data-isodate="' +
+__p += '<!-- src/templates/file_progress.html -->\n<div id="msg-' + __e(o.msgid) + '" class="message chat-msg" data-isodate="' + // BAO
 __e(o.time) +
 '" data-msgid="' +
 __e(o.msgid) +
@@ -94000,7 +93940,7 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/message.html -->\n<div class="message chat-msg ' +
+__p += '<!-- src/templates/message.html -->\n<div id="msg-' + __e(o.msgid) + '" class="message chat-msg ' + // BAO
 __e(o.type) +
 ' ';
  if (o.is_me_message) { ;

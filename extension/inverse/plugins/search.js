@@ -8,6 +8,8 @@
     var SearchDialog = null;
     var searchDialog = null;
     var searchAvailable = false;
+
+    var Strophe = converse.env.Strophe;
     var moment = converse.env.moment;
 
     converse.plugins.add("search", {
@@ -68,39 +70,47 @@
                     var searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'ig');
                     var tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "gim");
 
-                    console.debug("doSearch", keyword, jid);
+                    var messages = view.model.messages.models;
+
+                    console.debug("doSearch", keyword, jid, messages);
 
                     if (keyword != "")
                     {
                         var searchResults = that.el.querySelector("#pade-search-results");
                         searchResults.innerHTML = "No Match";
 
-                        _converse.api.archive.query({before: '', max: 9999999, 'groupchat':  type === "chatroom", 'with': jid}, messages =>
+                        var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
+
+                        for (var i=0; i<messages.length; i++)
                         {
-                            var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
+                            var body = messages[i].get('message');
+                            var from = messages[i].get('from');
+                            var pretty_time = moment(messages[i].get('time')).format('MMM DD<br/>HH:mm:ss');
+                            var pretty_from = messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
 
-                            for (var i=0; i<messages.length; i++)
+                            if (searchRegExp.test(body))
                             {
-                                if (messages[i].querySelector('body'))
-                                {
-                                    var body = messages[i].querySelector('body').innerHTML;
-                                    var delay = messages[i].querySelector('forwarded').querySelector('delay');
-                                    var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
-                                    var time = delay ? delay.getAttribute('stamp') : moment().format();
-                                    var pretty_time = moment(time).format('MMM DD<br/>HH:mm:ss');
-                                    var pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
-
-                                    if (searchRegExp.test(body))
-                                    {
-                                        var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
-                                        html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
-                                    }
-                                }
+                                var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
+                                html = html + "<tr><td>" + pretty_time + "</td><td><a href='#' id='search-" + messages[i].get('msgid') + "'>" + tagged + "</a></td><td>" + pretty_from + "</td></tr>";
                             }
+                        }
 
-                            html =  html + "</table>";
-                            searchResults.innerHTML = html;
-                        });
+                        html =  html + "</table>";
+                        searchResults.innerHTML = html;
+
+                        for (var i=0; i<messages.length; i++)
+                        {
+                            var button = that.el.querySelector("#search-" + messages[i].get('msgid'));
+
+                            if (button) button.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                var elmnt = document.getElementById("msg-" + evt.target.id.substring(7));
+                                if (elmnt) elmnt.scrollIntoView(false);
+
+                            }, false);
+                        }
                     }
                 }
             });
@@ -138,7 +148,7 @@
 
                     if (command === "search")
                     {
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: match[2]}) });
+                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: this, keyword: match[2]}) });
                         searchDialog.show();
                         return true;
                     }
@@ -154,6 +164,9 @@
                 {
                     await this.__super__.renderChatMessage.apply(this, arguments);
                     var that = this;
+                    var source = that.model.get("type") == "groupchat" ? that.model.get("from") : that.model.get("jid");
+                    var box_jid = Strophe.getBareJidFromJid(source);
+                    var box = _converse.chatboxes.get(box_jid);
 
                     if (searchAvailable)
                     {
@@ -164,7 +177,7 @@
                                 evt.stopPropagation();
 
                                 console.debug("pade.hashtag click", badge.innerText);
-                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({keyword: badge.innerText}) });
+                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: box, keyword: badge.innerText}) });
                                 searchDialog.show();
                             }, false);
                         });

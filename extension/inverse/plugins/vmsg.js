@@ -92,14 +92,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-
-
-
-
-                    return this.__super__.renderToolbar.apply(this, arguments);
                 }
             }
         }

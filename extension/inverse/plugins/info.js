@@ -124,7 +124,12 @@
             infoElement.innerHTML = getHTML(id, jid);
 
             createContentSummary(jid, id);
-            createWorkgroups(jid, id);
+
+            if (bgWindow && bgWindow.pade.activeWorkgroup)
+            {
+                createWorkgroups(jid, id);
+            }
+
             createMylinks(jid, id);
             createBroadcastEndpoints(jid, id);
 

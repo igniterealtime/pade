@@ -35,6 +35,10 @@
 
 /* converse customisation*/
 
+#conversejs .message.chat-msg .chat-msg__actions .chat-msg__action {
+    padding: 3px;
+}
+
 #conversejs.converse-fullscreen .flyout {
   border-radius: 0;
   border: 0.85px solid #3AA569;

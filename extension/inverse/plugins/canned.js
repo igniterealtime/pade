@@ -127,7 +127,6 @@
 
         'overrides': {
             ChatBoxView: {
-
                 parseMessageForCommands: function(text) {
                     console.debug('canned - parseMessageForCommands', text);
 

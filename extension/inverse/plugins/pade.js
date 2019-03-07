@@ -213,9 +213,10 @@
 
                     if (body && chatbox)
                     {
-                        var jid = Strophe.getBareJidFromJid(chatbox.get("jid"));
+                        var jid = chatbox.get("jid");
                         var type = chatbox.get("type");
-                        var display_name = chatbox.getDisplayName();
+                        var display_name = chatbox.getDisplayName().trim();
+                        if (!display_name || display_name == "") display_name = jid;
 
                         // draw attention to new messages
                         // done here instead of background.js becasue of chatroom messages
@@ -249,33 +250,34 @@
                             }, jid);
                         }
 
-                        setActiveConversationsUread(chatbox);
+                        setActiveConversationsUread(chatbox, body.innerHTML);
                    }
                 });
 
                 _converse.api.listen.on('chatBoxOpened', function (chatbox)
                 {
-                    console.log("chatBoxOpened", chatbox);
+                    console.debug("chatBoxOpened", chatbox);
                     if (bgWindow) bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
-
                 });
 
                 _converse.api.listen.on('chatBoxClosed', function (chatbox)
                 {
-                    console.log("chatBoxClosed", chatbox);
+                    console.debug("chatBoxClosed", chatbox);
 
                     if (bgWindow)
                     {
                         if (chatbox.model.get("type") == "chatbox") delete bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")];
                         if (chatbox.model.get("type") == "chatroom") delete bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")];
                     }
+
+                    const activeDiv = document.getElementById("active-conversations");
+                    if (activeDiv) removeActiveConversation(chatbox, activeDiv);
                 });
 
                 _converse.api.listen.on('chatRoomOpened', function (chatbox)
                 {
-                    console.log("chatRoomOpened", chatbox);
+                    console.debug("chatRoomOpened", chatbox);
                     if (bgWindow) bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
-
                 });
 
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
@@ -311,6 +313,57 @@
                     }
 
                     await this.__super__.renderChatMessage.apply(this, arguments);
+
+                    // action button for quoting, pinning
+                    //console.debug("renderChatMessage", this.model);
+
+                    var messageActionButtons = this.el.querySelector('.chat-msg__message');
+
+                    if (messageActionButtons)
+                    {
+                        if (!messageActionButtons.querySelector('.chat-msg__action-quote'))
+                        {
+                            var ele = document.createElement("div");
+                            ele.classList.add("chat-msg__actions");
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-quote fas fa-quote-right" title="Quote this message"></button>';
+                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                        }
+
+                        if (!messageActionButtons.querySelector('.chat-msg__action-pin') && this.model.get("type") === "groupchat")
+                        {
+                            var ele = document.createElement("div");
+                            ele.classList.add("chat-msg__actions");
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
+                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                        }
+                    }
+                }
+            },
+
+            ChatBoxView: {
+
+                afterShown: function() {
+
+                    var id = this.model.get("box_id");
+                    var jid = this.model.get("jid");
+                    var type = this.model.get("type");
+
+                    var display_name = this.model.getDisplayName().trim();
+                    if (!display_name || display_name == "") display_name = jid;
+
+                    // active conversations, reset unread indicator
+
+                    console.debug("afterShown", id, jid, type);
+
+                    var openButton = document.getElementById("pade-active-" + id);
+
+                    if (openButton)
+                    {
+                        openButton.innerText = display_name;
+                        openButton.style.fontWeight = "normal";
+                    }
+
+                    return this.__super__.afterShown.apply(this, arguments);
                 }
             },
 
@@ -337,7 +390,7 @@
         }
     });
 
-    var setActiveConversationsUread = function(chatbox)
+    var setActiveConversationsUread = function(chatbox, newMessage)
     {
         // active conversations, add unread indicator
 
@@ -347,25 +400,37 @@
         var chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
         var openButton = document.getElementById("pade-active-" + id);
 
+        var jid = chatbox.get("jid");
+        var display_name = chatbox.getDisplayName().trim();
+        if (!display_name || display_name == "") display_name = jid;
+
         if (openButton)
         {
             if (numUnreadBox != "0" && chatType == "chat")
             {
-                openButton.innerText = chatbox.getDisplayName() + " (" + numUnreadBox + ")";
+                openButton.innerText = display_name + " (" + numUnreadBox + ")";
                 openButton.style.fontWeight = "bold";
             }
             else
 
             if (numUnreadRoom != "0" && chatType == "groupchat")
             {
-                openButton.innerText = chatbox.getDisplayName() + " (" + numUnreadRoom + ")";
+                openButton.innerText = display_name + " (" + numUnreadRoom + ")";
                 openButton.style.fontWeight = "bold";
             }
+
+            if (newMessage) openButton.title = newMessage;
+
+        } else {
+            const activeDiv = document.getElementById("active-conversations");
+            if (activeDiv) addActiveConversation(chatbox, activeDiv, newMessage);
         }
     }
 
     var setActiveConversationsRead = function(chatbox)
     {
+        console.debug("setActiveConversationsRead", chatbox);
+
         // active conversations, remove unread indicator
 
         var id = chatbox.get("box_id");
@@ -373,7 +438,11 @@
 
         if (openButton)
         {
-            openButton.innerText = chatbox.getDisplayName();
+            var jid = chatbox.get("jid");
+            var display_name = chatbox.getDisplayName().trim();
+            if (display_name || display_name == "") display_name = jid;
+
+            openButton.innerText = display_name;
             openButton.style.fontWeight = "normal";
         }
     }
