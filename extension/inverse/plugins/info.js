@@ -102,6 +102,33 @@
                     }
                     else
 
+                    if (command === "clearpins")
+                    {
+                        var id = this.model.get("box_id");
+                        var jid = this.model.get("jid");
+
+                        chrome.storage.local.get('pinned', function(data)
+                        {
+                            console.debug('chrome.storage get', data);
+
+                            let pinned = {};
+                            if (data && data.pinned) pinned = data.pinned;
+                            const keys = Object.getOwnPropertyNames(pinned);
+
+                            for (var i=0; i<keys.length; i++)
+                            {
+                                const item = pinned[keys[i]];
+                                if (item.from == jid) delete pinned[keys[i]];
+                            }
+
+                            chrome.storage.local.set({pinned: pinned}, function() {
+                              console.debug('chrome.storage is set for pinned', pinned);
+                            });
+                        });
+
+                        return true;
+                    }
+
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
                 }
             }
@@ -124,6 +151,7 @@
             infoElement.innerHTML = getHTML(id, jid);
 
             createContentSummary(jid, id);
+            createMediaContentSummary(jid, id);
 
             if (bgWindow && bgWindow.pade.activeWorkgroup)
             {
@@ -408,13 +436,76 @@
 
     var createContentSummary = function(jid, id)
     {
+        console.debug("createContentSummary", jid, id);
+
+        if (chrome.storage)
+        {
+            let pinned = {};
+
+            chrome.storage.local.get('pinned', function(data)
+            {
+                console.debug('chrome.storage get', data);
+
+                if (data && data.pinned) pinned = data.pinned;
+                const keys = Object.getOwnPropertyNames(pinned);
+                const count = document.getElementById(id + "-pinned-count");
+                const detail = document.getElementById(id + "-pinned-details");
+
+                if (detail && count && keys.length > 0)
+                {
+                    let counter = 0;
+
+                    for (var i=0; i<keys.length; i++)
+                    {
+                        const item = pinned[keys[i]];
+
+                        if (item.from == jid)
+                        {
+                            detail.insertAdjacentElement('afterEnd', newPinnedItemElement('li', item, "mediaItem"));
+                            counter++;
+                        }
+                    }
+                    count.innerHTML = counter;
+                }
+
+            });
+        }
+    }
+
+    var newPinnedItemElement = function(el, item, className)
+    {
+        console.debug('newPinnedItemElement', item);
+        // {from: from, msgId: msgId, message: pinnedMessage, nick : nick}
+
+        item.ele = document.createElement(el);
+
+        item.ele.name = item.msgId;
+        item.ele.title = item.nick + " says " + item.message;
+        item.ele.innerHTML = item.message;
+        item.ele.classList.add(className);
+        document.body.appendChild(item.ele);
+
+        item.ele.addEventListener('click', function(evt)
+        {
+            evt.stopPropagation();
+            console.debug("pinned item clicked", evt.target.name, evt.target.title);
+
+            var elmnt = document.getElementById("msg-" + evt.target.name);
+            if (elmnt) elmnt.scrollIntoView(false);
+        });
+
+        return item.ele;
+    }
+
+    var createMediaContentSummary = function(jid, id)
+    {
         var media = {photo:{urls:[]}, video:{urls:[]}, link:{urls:[]}, vmsg:{urls:[]}, ppt:{urls:[]}};
 
-        console.debug("createContentSummary", jid, id);
+        console.debug("createMediaContentSummary", jid, id);
 
         _converse.api.archive.query({before: '', max: 9999999, 'groupchat': true, 'with': jid}, messages =>
         {
-            //console.debug("createContentSummary - query", messages);
+            //console.debug("createMediaContentSummary - query", messages);
 
             for (var i=0; i<messages.length; i++)
             {
@@ -488,7 +579,12 @@
     {
         console.debug("getHTML", jid, id);
 
-        var html = '<h3>Media Content</h3>' +
+        var html = '<h3>This Conversation</h3>' +
+                   '<details>' +
+                   '    <summary id="' + id + '-pinned-details">Pinned Messages (<span id="' + id + '-pinned-count">0</span>)<span style="float: right;" class="fas fa-thumbtack"/></summary>' +
+                   '</details>' +
+
+                   '<h3>Media Content</h3>' +
                    '<details>' +
                    '    <summary id="' + id + '-photo-details">Photos (<span id="' + id + '-photo-count">0</span>)<span style="float: right;" class="fa fa-photo"/></summary>' +
                    '</details>' +

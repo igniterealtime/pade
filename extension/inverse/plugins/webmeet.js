@@ -134,6 +134,7 @@
 
                         console.debug("uploadImage/Preview", html);
                     }
+                    document.execCommand("cut");
 
                 }
             });
@@ -951,7 +952,7 @@
 
     var handleDragOver = function handleDragOver(evt)
     {
-        //console.log("handleDragOver");
+        //console.debug("handleDragOver");
 
         evt.stopPropagation();
         evt.preventDefault();
@@ -965,7 +966,7 @@
 
         _converse.chatboxviews.each(function (view)
         {
-            //console.log("handleDropFileSelect", view.model.get('type'));
+            //console.debug("handleDropFileSelect", view.model.get('type'));
 
             if ((view.model.get('type') === "chatroom" || view.model.get('type') === "chatbox") && !view.model.get('hidden'))
             {
@@ -1235,7 +1236,7 @@
 
         if (command === "pade")
         {
-            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "\n\n"]);
+            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "\n\n"]);
             view.viewUnreadMessages();
             return true;
         }

@@ -1005,7 +1005,7 @@ function openInverseChatWindow(jid)
     }
 }
 
-function openInverseGroupChatWindow(jid)
+function openInverseGroupChatWindow(jid, message, nickname, userJid)
 {
     if (jid.indexOf("@") == -1) jid = jid + "@conference." + pade.domain;
     var room = Strophe.getNodeFromJid(jid);
@@ -1014,7 +1014,7 @@ function openInverseGroupChatWindow(jid)
     {
         openChatWindow("inverse/index.html#converse/room?jid=" + jid, true);
     } else {
-        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, room, pade.displayName)
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, room, pade.displayName, null, message, nickname, userJid)
         chrome.windows.update(pade.chatWindow.id, {focused: true});
     }
 }
@@ -1963,7 +1963,7 @@ function addHandlers()
                     {
                         doNotification(body, jid + " " + from, jid, function()
                         {
-                            openInverseGroupChatWindow(from);
+                            openInverseGroupChatWindow(from, body, nickname, jid);
                         });
                     }
                 }

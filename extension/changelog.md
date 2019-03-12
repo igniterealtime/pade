@@ -1,5 +1,33 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.0.8</b> -- <i>March 12, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/130">Fixed #130: Add O/S id to the resource string</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/124">Fixed #124: Conversation tab support</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/133">Fixed #133: Message action buttons</a></li>
+</ul>
+
+<p><b>1.0.7</b> -- <i>March 4, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/124">Fixing #124: Conversation tab support</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/127">Fixed #127: Errors related to notifications in version 1.0.6</a></li>
+    <li>New setting to enable/disable workgroup (fastpath) support</li>
+</ul>
+
+<p><b>1.0.6</b> -- <i>March 3, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/125">Fixed #125: Bugs in version 1.0.5</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/126">Fixed #126: Fix websocket exception cause by Pade</a></li>
+</ul>
+
+<p><b>1.0.5</b> -- <i>March 1, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/121">Fixed #121: Auto-re-open Converse if it was open after reconnect</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/122">Fixed #122: Add support for Anonymous connection</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/123">Fixed #123: Support for automatically setting chat status</a></li>
+    <li>Refactored Converse settings/preferences UI</li>
+</ul>
+
 <p><b>1.0.4</b> -- <i>February 25, 2019</i></p>
 <ul>
     <li>Added support for TranferWise payout API</li>

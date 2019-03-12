@@ -181,23 +181,26 @@
                             console.error("bookmarks error", error);
                         });
 
-                        stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
-
-                        _converse.connection.sendIQ(stanza, function(iq)
+                        if (bgWindow && bgWindow.pade.activeWorkgroup)
                         {
-                            $(iq).find('workgroup').each(function()
+                            stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
+
+                            _converse.connection.sendIQ(stanza, function(iq)
                             {
-                                var name = Strophe.getNodeFromJid($(this).attr('jid'));
-                                var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
-                                var json = {name: name, jid: jid, autojoin: true};
+                                $(iq).find('workgroup').each(function()
+                                {
+                                    var name = Strophe.getNodeFromJid($(this).attr('jid'));
+                                    var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
+                                    var json = {name: name, jid: jid, autojoin: true};
 
-                                console.debug('pade workgroup recieved', json);
-                                if (_converse.bookmarks) bookmarkRoom(json);
+                                    console.debug('pade workgroup recieved', json);
+                                    if (_converse.bookmarks) bookmarkRoom(json);
+                                });
+
+                            }, function(error){
+                                console.error("workgroups error", error);
                             });
-
-                        }, function(error){
-                            console.error("workgroups error", error);
-                        });
+                        }
                     }
 
                     console.log("pade plugin is ready");
@@ -205,8 +208,6 @@
 
                 _converse.on('message', function (data)
                 {
-                    //console.debug("pade plugin - onMessage", data);
-
                     var message = data.stanza;
                     var chatbox = data.chatbox;
                     var body = message.querySelector('body');
@@ -251,6 +252,34 @@
                         }
 
                         setActiveConversationsUread(chatbox, body.innerHTML);
+                   }
+                   else {
+                        const json = data.stanza.querySelector('json');
+
+                        if (json)
+                        {
+                            const data = JSON.parse(json.innerHTML);
+                            console.debug("pade plugin - JSON", data);
+
+                            if (data.reaction && data.msgId)
+                            {
+                                chrome.storage.local.get(data.msgId, function(obj) {
+                                    console.debug("get reaction emoji", data);
+
+                                    if (!obj[data.msgId]) obj[data.msgId] = {};
+                                    if (!obj[data.msgId][data.reaction]) obj[data.msgId][data.reaction] = 0;
+
+                                    obj[data.msgId][data.reaction]++;
+
+                                    chrome.storage.local.set(obj, function() {
+                                      console.debug('set emoji reaction', obj);
+                                    });
+
+                                    displayReaction(data.reaction, data.msgId, obj[data.msgId][data.reaction]);
+
+                                });
+                            }
+                        }
                    }
                 });
 
@@ -321,11 +350,18 @@
 
                     if (messageActionButtons)
                     {
-                        if (!messageActionButtons.querySelector('.chat-msg__action-quote'))
+                        if (!messageActionButtons.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
                         {
                             var ele = document.createElement("div");
                             ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-quote fas fa-quote-right" title="Quote this message"></button>';
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-dislike far fa-frown" title="React negative to this message"></button>';
+                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                        }
+                        if (!messageActionButtons.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
+                        {
+                            var ele = document.createElement("div");
+                            ele.classList.add("chat-msg__actions");
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-like far fa-smile" title="React positive to this message"></button>';
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
 
@@ -336,7 +372,34 @@
                             ele.innerHTML = '<button class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
+                        if (!messageActionButtons.querySelector('.chat-msg__action-forward'))
+                        {
+                            var ele = document.createElement("div");
+                            ele.classList.add("chat-msg__actions");
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-forward fa fa-share" title="Share this message to clipboard"></button>';
+                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                        }
+                        if (!messageActionButtons.querySelector('.chat-msg__action-reply'))
+                        {
+                            var ele = document.createElement("div");
+                            ele.classList.add("chat-msg__actions");
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-reply fas fa-reply" title="Reply this message"></button>';
+                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                        }
                     }
+
+                    const msgId = this.model.get("msgid");
+
+                    chrome.storage.local.get(msgId, function(obj)
+                    {
+                        console.debug("get reaction emoji", msgId, obj, obj[msgId]);
+
+                        if (obj[msgId])
+                        {
+                            if (obj[msgId]["like"])     displayReaction("like", msgId, obj[msgId]["like"]);
+                            if (obj[msgId]["dislike"])  displayReaction("dislike", msgId, obj[msgId]["dislike"]);
+                        }
+                    });
                 }
             },
 
@@ -356,12 +419,15 @@
                     console.debug("afterShown", id, jid, type);
 
                     var openButton = document.getElementById("pade-active-" + id);
+                    var openBadge = document.getElementById("pade-badge-" + id);
 
                     if (openButton)
                     {
                         openButton.innerText = display_name;
-                        openButton.style.fontWeight = "normal";
+                        openButton.style.fontWeight = "bold";
                     }
+
+                    if (openBadge) openBadge.setAttribute("data-badge", "0");
 
                     return this.__super__.afterShown.apply(this, arguments);
                 }
@@ -390,6 +456,28 @@
         }
     });
 
+    var displayReaction = function(reaction, msgId, count)
+    {
+        console.debug("displayReaction", reaction, msgId, count);
+
+        const msgDiv = document.querySelector("#msg-" + msgId + " .chat-msg__text");
+
+        if (msgDiv)
+        {
+           let reactionDiv = document.querySelector("#msg-" + msgId + " .chat-msg__reaction-" + reaction);
+
+            if (!reactionDiv)
+            {
+                reactionDiv = document.createElement("span");
+                reactionDiv.classList.add("chat-msg__reaction-" + reaction);
+                msgDiv.insertAdjacentElement('afterEnd', reactionDiv);
+            }
+
+            const emoji = reaction == "like" ? "far fa-smile" : "far fa-frown";
+            reactionDiv.innerHTML = '<li class="' + emoji + '"> ' + count + ' </li>';
+        }
+    }
+
     var setActiveConversationsUread = function(chatbox, newMessage)
     {
         // active conversations, add unread indicator
@@ -399,24 +487,23 @@
         var numUnreadRoom = chatbox.get("num_unread_general");
         var chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
         var openButton = document.getElementById("pade-active-" + id);
+        var openBadge = document.getElementById("pade-badge-" + id);
 
         var jid = chatbox.get("jid");
         var display_name = chatbox.getDisplayName().trim();
         if (!display_name || display_name == "") display_name = jid;
 
-        if (openButton)
+        if (openBadge && openButton)
         {
             if (numUnreadBox != "0" && chatType == "chat")
             {
-                openButton.innerText = display_name + " (" + numUnreadBox + ")";
-                openButton.style.fontWeight = "bold";
+                openBadge.setAttribute("data-badge", numUnreadBox);
             }
             else
 
             if (numUnreadRoom != "0" && chatType == "groupchat")
             {
-                openButton.innerText = display_name + " (" + numUnreadRoom + ")";
-                openButton.style.fontWeight = "bold";
+                openBadge.setAttribute("data-badge", numUnreadRoom);
             }
 
             if (newMessage) openButton.title = newMessage;
@@ -434,17 +521,8 @@
         // active conversations, remove unread indicator
 
         var id = chatbox.get("box_id");
-        var openButton = document.getElementById("pade-active-" + id);
-
-        if (openButton)
-        {
-            var jid = chatbox.get("jid");
-            var display_name = chatbox.getDisplayName().trim();
-            if (display_name || display_name == "") display_name = jid;
-
-            openButton.innerText = display_name;
-            openButton.style.fontWeight = "normal";
-        }
+        var openBadge = document.getElementById("pade-badge-" + id);
+        if (openBadge) openBadge.setAttribute("data-badge", "0");
     }
 
 

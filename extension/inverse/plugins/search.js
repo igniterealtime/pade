@@ -90,8 +90,8 @@
 
                             if (searchRegExp.test(body))
                             {
-                                var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
-                                html = html + "<tr><td>" + pretty_time + "</td><td><a href='#' id='search-" + messages[i].get('msgid') + "'>" + tagged + "</a></td><td>" + pretty_from + "</td></tr>";
+                                var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' id='search-" + messages[i].get('msgid') + "'>$1</a></span>");
+                                html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
                             }
                         }
 

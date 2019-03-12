@@ -49475,8 +49475,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
-        'click .chat-msg__action-quote': 'onMessageQuoteButtonClicked',    // BAO
+        'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',    // BAO
+        'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',    // BAO
         'click .chat-msg__action-pin': 'onMessagePinButtonClicked',    // BAO
+        'click .chat-msg__action-like': 'onMessageLikeButtonClicked',    // BAO
+        'click .chat-msg__action-dislike': 'onMessageDislikeButtonClicked',    // BAO
         'click .chatbox-navback': 'showControlBox',
         'click .close-chatbox-button': 'close',
         'click .new-msgs-indicator': 'viewUnreadMessages',
@@ -50152,13 +50155,62 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         this.insertIntoTextArea('', true, false);
       },
 
-      onMessageQuoteButtonClicked(ev) { // BAO
+      onMessageReplyButtonClicked(ev) { // BAO
         ev.preventDefault();
 
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
-        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
+        let replyMessage = window.getSelection().toString();
 
-        this.insertIntoTextArea('>' + message.get('message') + "\n\n", false, false);
+        if (!replyMessage || replyMessage == "")
+        {
+            const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
+            let pos = message.indexOf("\n");
+            if (pos == -1) pos = message.indexOf(".");
+            replyMessage = pos == -1 ? message : message.substring(0, pos);
+        }
+
+        this.insertIntoTextArea('>' + replyMessage + "\n\n", false, false);
+      },
+
+      onMessageForwardButtonClicked(ev) { // BAO
+        ev.preventDefault();
+
+        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
+        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
+
+        navigator.clipboard.writeText(message).then(function() {
+            console.debug('onMessageForwardButtonClicked', message);
+        }, function(err) {
+            console.error('onMessageForwardButtonClicked', err);
+        });
+      },
+
+      onMessageLikeButtonClicked(ev) { // BAO
+        ev.preventDefault();
+
+        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
+        const msgId = message_el.getAttribute('data-msgid');
+        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
+        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
+
+        console.debug('onMessageDislikeButtonClicked', msgId, from);
+
+        const json = {event: "pade.emoji.reation", reaction: "like", msgId: msgId, nick: nick};
+        _converse.connection.send($msg({type: 'groupchat', 'to': from}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)));
+      },
+
+      onMessageDislikeButtonClicked(ev) { // BAO
+        ev.preventDefault();
+
+        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
+        const msgId = message_el.getAttribute('data-msgid');
+        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
+        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
+
+        console.debug('onMessageDislikeButtonClicked', msgId, from);
+
+        const json = {event: "pade.emoji.reation", reaction: "dislike", msgId: msgId, nick: nick};
+        _converse.connection.send($msg({type: 'groupchat', 'to': from}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)));
       },
 
       onMessagePinButtonClicked(ev) { // BAO
@@ -50171,8 +50223,23 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         if (pos == -1) pos = message.indexOf(".");
 
         const pinnedMessage = pos == -1 ? message : message.substring(0, pos);
+        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
+        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
+        const msgId = message_el.getAttribute('data-msgid');
 
-        console.debug("onMessagePinButtonClicked", message_el.getAttribute('data-msgid'), pinnedMessage);
+        if (chrome.storage)
+        {
+            let pinned = {};
+
+            chrome.storage.local.get('pinned', function(data) {
+                if (data && data.pinned) pinned = data.pinned;
+                pinned[from + "-" + msgId] = {from: from, msgId: msgId, message: pinnedMessage, nick: nick};
+
+                chrome.storage.local.set({pinned: pinned}, function() {
+                  console.debug('chrome.storage is set for pinned', pinned);
+                });
+            });
+        }
       },
 
       onMessageEditButtonClicked(ev) {
@@ -53728,8 +53795,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
-        'click .chat-msg__action-quote': 'onMessageQuoteButtonClicked',    // BAO
+        'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',    // BAO
+        'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',    // BAO
         'click .chat-msg__action-pin': 'onMessagePinButtonClicked',    // BAO
+        'click .chat-msg__action-like': 'onMessageLikeButtonClicked',    // BAO
+        'click .chat-msg__action-dislike': 'onMessageDislikeButtonClicked',    // BAO
         'click .chatbox-navback': 'showControlBox',
         'click .close-chatbox-button': 'close',
         'click .configure-chatroom-button': 'getAndRenderConfigurationForm',
@@ -91887,7 +91957,7 @@ _core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (_converse,
         var markedText = marked(text.replace(/&gt;+/g, '>'), {renderer: renderer});
         var checkText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 
-        //console.log("addMarkdown", markedText, checkText, text);
+        //console.debug("addMarkdown", markedText, checkText, text);
 
         if (markedText.indexOf(checkText) > -1 || markedText.indexOf(text) > -1)
         {
@@ -93818,7 +93888,7 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape; // BAO
-__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><i class="icon-conversejs"></i>' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h1>\n        <p class="brand-subtitle">' +
+__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><img src="/image.png"/>&nbsp;' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h1>\n        <p class="brand-subtitle">' +
 __e(o.version_name) +
 '</p>\n</div>\n</div>\n'; // BAO
 return __p

@@ -9481,7 +9481,7 @@ readers do not read off random characters that represent icons */
   --fullpage-chat-head-height: 40px;
   --fullpage-chatbox-button-size: 24px;
   --list-toggle-font-weight: bold;
-  --list-item-link-color: #F1F1F1;
+  --list-item-link-color: inherit;    /* BAO */
   --list-item-link-hover-color: #000; /* BAO */
   --list-item-open-color: #444;
   --list-item-open-hover-color: #444; }

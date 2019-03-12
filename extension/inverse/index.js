@@ -445,19 +445,17 @@ function replyInverseChat(text)
     }
 }
 
-function openGroupChat(jid, label, nick, properties)
+function openGroupChat(jid, label, nick, props, message, nickname, userJid)
 {
-    console.debug("openGroupChat", jid, label, nick, properties);
+    console.debug("openGroupChat", jid, label, nick, props, message, nickname, userJid);
 
     if (_inverse)
     {
-        if (!properties) properties = {name: label, nick: nick};
+        if (!props) props = {name: label, nick: nick};
 
-        _inverse.api.rooms.open(jid, properties);
+        _inverse.api.rooms.open(jid, props);
 
-        console.debug("openGroupChat - subject", properties.question);
-
-        if (properties.question)
+        if (props.question)
         {
             setTimeout(function()
             {
@@ -467,7 +465,30 @@ function openGroupChat(jid, label, nick, properties)
                     type: "groupchat"
                 }).c("subject", {
                     xmlns: "jabber:client"
-                }).t(properties.question).tree());
+                }).t(props.question).tree());
+
+            }, 1000);
+        }
+
+        if (message)
+        {
+            setTimeout(function()
+            {
+                const view = _converse.chatboxviews.get(jid);
+
+                if (view)
+                {
+                    const msg = view.model.getOutgoingMessageAttributes(message);
+
+                    if (nickname)
+                    {
+                        msg.fullname = nickname;
+                        msg.nick = nickname;
+                    }
+
+                    if (jid) msg.from = jid;
+                    view.model.messages.create(msg);
+                }
 
             }, 1000);
         }
@@ -684,16 +705,9 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
         let display_name = chatbox.getDisplayName();
         if (!display_name || display_name.trim() == "") display_name = jid;
 
-        let label = display_name;
-
-        if (numUnread != "0")
-        {
-            label = display_name + " (" + numUnread + ")";
-        }
-
         let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
 
-        if (label && _converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image && getSetting("converseRosterIcons"))
+        if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image && getSetting("converseRosterIcons"))
         {
             dataUri = createAvatar(display_name);
         }
@@ -701,10 +715,11 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
             setAvatar(display_name, dataUri);
         }
 
-        msg_content.innerHTML = '<img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" ' + (numUnread != '0' ? 'style="font-weight: bold;"' : '') + ' class="pade-active-conv">' + label + '</span>';
+        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" ' + (numUnread != '0' ? 'style="font-weight: bold;"' : '') + ' class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
         activeDiv.appendChild(msg_content);
 
         const openButton = document.getElementById("pade-active-" + id);
+        const openBadge = document.getElementById("pade-badge-" + id);
 
         if (openButton)
         {
@@ -722,8 +737,34 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
                     else
                     if (type == "groupchat") _converse.api.rooms.open(jid);
                 }
+
+                _converse.chatboxes.each(function (chatbox)
+                {
+                    const itemId = chatbox.get('box_id');
+                    const itemLabel = document.getElementById("pade-active-" + itemId);
+                    if (itemLabel) itemLabel.style.fontWeight = "normal";
+                });
+
                 this.innerHTML = label;
-                this.style.fontWeight = "normal";
+                this.style.fontWeight = "bold";
+
+                if (openBadge) openBadge.setAttribute("data-badge", "0");
+
+            }, false);
+        }
+
+        const closeButton = document.getElementById("pade-active-conv-close-" + id);
+
+        if (closeButton)
+        {
+            closeButton.addEventListener('click', function(evt)
+            {
+                evt.stopPropagation();
+
+                const jid = evt.target.getAttribute("data-jid");
+                const view = _converse.chatboxviews.get(jid);
+
+                if (view) view.close();
 
             }, false);
         }
