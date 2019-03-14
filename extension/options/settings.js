@@ -59,6 +59,21 @@ window.addEvent("domready", function () {
             });
         }
 
+        if (settings.manifest.exportPreferences) settings.manifest.exportPreferences.addEvent("action", function ()
+        {
+            exportPreferences(settings);
+        });
+
+        if (settings.manifest.importPreferences)
+        {
+            settings.manifest.importPreferences.element.innerHTML = "<input id='importPreferences' type='file' name='files[]'>";
+
+            document.getElementById("importPreferences").addEventListener('change', function(event)
+            {
+                importPreferences(event, settings);
+            });
+        }
+
         if (settings.manifest.uploadApp)
         {
             settings.manifest.uploadApp.element.innerHTML = "<input id='uploadApplication' type='file' name='files[]'>";
@@ -1444,6 +1459,76 @@ function uploadApplication(event, settings, background)
 
     } else {
         settings.manifest.uploadStatus.element.innerHTML = '<b style="color:red">user not configured</b>';
+    }
+}
+
+function exportPreferences(settings)
+{
+    settings.manifest.importExportStatus.element.innerHTML = 'Exporting preferences, please wait....';
+    const brandingExport = JSON.parse(JSON.stringify(branding));
+
+    for (var i = 0; i < localStorage.length; i++)
+    {
+        if (localStorage.key(i).startsWith("store.settings.") && localStorage.key(i).indexOf("password") == -1)
+        {
+            const key = localStorage.key(i).substring(15);
+            settings.manifest.importExportStatus.element.innerHTML = 'Processing....' + localStorage.key(i);
+
+            if (!brandingExport[key]) brandingExport[key] = {disable: false};
+            brandingExport[key].value = localStorage.getItem(localStorage.key(i));
+        }
+    }
+
+    console.log("exportPreferences", brandingExport);
+
+    const blob = new Blob([JSON.stringify(brandingExport)], {type: "application/json"});
+
+    chrome.downloads.download({url: URL.createObjectURL(blob), filename: "pade.json"}, function(id)
+    {
+        settings.manifest.importExportStatus.element.innerHTML = 'Exported....pade.json';
+    });
+}
+
+
+function importPreferences(event, settings)
+{
+    if (event.target.files.length > 0)
+    {
+        var file = event.target.files[0];
+        settings.manifest.importExportStatus.element.innerHTML = "Importing preferences from " + file.name;
+
+            var reader = new FileReader();
+
+            reader.onload = function(event)
+            {
+                try {
+                    const json = JSON.parse(event.target.result);
+                    const keys = Object.getOwnPropertyNames(json);
+
+                    console.log("importPreferences", keys);
+
+                    for (var i=0; i<keys.length; i++)
+                    {
+                        window.localStorage["store.settings." + keys[i]] = json[keys[i]].value;
+                    }
+
+                    window.location.reload();
+
+                } catch (ex) {
+                    console.error("uploadAvatar - error", ex);
+                    settings.manifest.importExportStatus.element.innerHTML = '<b style="color:red">File could not be read! Error ' + ex;
+                }
+            };
+
+            reader.onerror = function(event) {
+                console.error("uploadAvatar - error", event);
+                settings.manifest.importExportStatus.element.innerHTML = '<b style="color:red">File could not be read! Error ' + event.target.error.code;
+            };
+
+            reader.readAsText(file);
+
+    } else {
+        settings.manifest.importExportStatus.element.innerHTML = '<b style="color:red">No file was selected</b>';
     }
 }
 

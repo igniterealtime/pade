@@ -50159,17 +50159,21 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         ev.preventDefault();
 
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
+        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
+        const type = message.get('type');
+        const prefix = (type == "groupchat") ? message.get('nick') + ": " : "";
+
         let replyMessage = window.getSelection().toString();
 
         if (!replyMessage || replyMessage == "")
         {
-            const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
-            let pos = message.indexOf("\n");
-            if (pos == -1) pos = message.indexOf(".");
-            replyMessage = pos == -1 ? message : message.substring(0, pos);
+            const text = message.get('message');
+            let pos = text.indexOf("\n");
+            if (pos == -1) pos = text.indexOf(".");
+            replyMessage = pos == -1 ? text : text.substring(0, pos);
         }
 
-        this.insertIntoTextArea('>' + replyMessage + "\n\n", false, false);
+        this.insertIntoTextArea('>' + prefix + replyMessage + "\n\n", false, false);
       },
 
       onMessageForwardButtonClicked(ev) { // BAO
@@ -61622,7 +61626,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
 
         if (chatbox.get('nick') === nick) {
           return _converse.xmppstatus.vcard;
-        } else {
+        } else if (nick) {  // BAO
           let vcard;
 
           if (this.get('vcard_jid')) {

@@ -159,6 +159,41 @@ this.manifest = {
         },
         {
             "tab": i18n.get("connection"),
+            "group": i18n.get("Preferences"),
+            "name": "exportPreferences",
+            "type": "button",
+            "text": i18n.get("Export")
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("Preferences"),
+            "name": "exportPreferencesDesc",
+            "text": i18n.get("Use this feature to <b>export</b> all current user preferences to an external branding file (pade.json)"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("Preferences"),
+            "name": "importPreferences",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("Preferences"),
+            "name": "importPreferencesDesc",
+            "text": i18n.get("Use this feature to <b>import</b> all current user preferences from an external branding file"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("connection"),
+            "group": i18n.get("Preferences"),
+            "name": "importExportStatus",
+            "type": "description",
+            "text": ""
+        },
+        {
+            "tab": i18n.get("connection"),
             "group": i18n.get("About"),
             "name": "credits",
             "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + chrome.runtime.getManifest().version + " Ignite Realtime Community</a>"),
@@ -296,14 +331,7 @@ this.manifest = {
             "group": i18n.get("Avatar/Picture"),
             "name": "uploadAvatarLabel",
             "type": "description",
-            "text": i18n.get("upload_avatar")
-        },
-        {
-            "tab": i18n.get("general"),
-            "group": i18n.get("Avatar/Picture"),
-            "name": "updateAvatar",
-            "type": "checkbox",
-            "label": i18n.get("Update vCard with browser generated avatar")
+            "text": i18n.get("Upload a local PNG/JPEG file as user image")
         },
         {
             "tab": i18n.get("general"),
@@ -311,6 +339,13 @@ this.manifest = {
             "name": "uploadAvatar",
             "type": "description",
             "text": ""
+        },
+        {
+            "tab": i18n.get("general"),
+            "group": i18n.get("Avatar/Picture"),
+            "name": "updateAvatar",
+            "type": "checkbox",
+            "label": i18n.get("Update vCard with browser generated avatar")
         },
         {
             "tab": i18n.get("general"),

@@ -104,6 +104,11 @@
     width: 100%;
 }
 
+.pade-active-panel:hover {
+    background-color: #E5E5E5 !important;  
+    color: #151515 !important;      
+}
+
 .pade-active-conv:hover + .pade-active-conv-close {
     visibility: visible; 
 }

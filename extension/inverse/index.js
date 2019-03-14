@@ -354,7 +354,7 @@ function doConverse()
           i18n: getSetting("language", "en"),
           jid : anonUser ? domain : username + "@" + domain,
           locked_domain: domain,
-          message_archiving: "always",
+          //message_archiving: "always",
           message_carbons: getSetting("messageCarbons", true),
           muc_domain: "conference." + getSetting("domain", null),
           muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
@@ -648,7 +648,7 @@ function handleActiveConversations()
     if (display != "none")
     {
         roomDiv.style.display = "none";
-        chatDiv.style.display = "none";
+        if (chatDiv) chatDiv.style.display = "none";
 
         if (!activeDiv)
         {
@@ -665,7 +665,7 @@ function handleActiveConversations()
 
     } else {
         roomDiv.style.display = "";
-        chatDiv.style.display = "";
+        if (chatDiv) chatDiv.style.display = "";
         if (activeDiv) roomDiv.parentElement.removeChild(activeDiv);
     }
 }
@@ -700,7 +700,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
         const jid = chatbox.get('jid');
 
         const msg_content = document.createElement("div");
-        msg_content.setAttribute("class", "message chat-msg "  + chatType);
+        msg_content.setAttribute("class", "message chat-msg pade-active-panel "  + chatType);
 
         let display_name = chatbox.getDisplayName();
         if (!display_name || display_name.trim() == "") display_name = jid;
@@ -715,7 +715,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
             setAvatar(display_name, dataUri);
         }
 
-        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" ' + (numUnread != '0' ? 'style="font-weight: bold;"' : '') + ' class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
+        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
         activeDiv.appendChild(msg_content);
 
         const openButton = document.getElementById("pade-active-" + id);
