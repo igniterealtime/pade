@@ -56,7 +56,7 @@
             window._inverse = _converse;
             window.inverse = converse;
 
-            if (bgWindow.pade.chatWindow)
+            if (bgWindow && bgWindow.pade.chatWindow)
             {
                 chrome.windows.onFocusChanged.addListener(function(win)
                 {
@@ -263,7 +263,7 @@
                             const data = JSON.parse(json.innerHTML);
                             console.debug("pade plugin - JSON", data);
 
-                            if (data.reaction && data.msgId)
+                            if (chrome.storage && data.reaction && data.msgId)
                             {
                                 chrome.storage.local.get(data.msgId, function(obj) {
                                     console.debug("get reaction emoji", data);
@@ -352,26 +352,29 @@
 
                     if (messageActionButtons)
                     {
-                        if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
+                        if (chrome.storage)
                         {
-                            var ele = document.createElement("div");
-                            ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-dislike far fa-frown" title="React negative to this message"></button>';
-                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
-                        }
-                        if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
-                        {
-                            var ele = document.createElement("div");
-                            ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-like far fa-smile" title="React positive to this message"></button>';
-                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
+                            {
+                                var ele = document.createElement("div");
+                                ele.classList.add("chat-msg__actions");
+                                ele.innerHTML = '<button class="chat-msg__action chat-msg__action-dislike far fa-frown" title="React negative to this message"></button>';
+                                messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            }
+                            if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
+                            {
+                                var ele = document.createElement("div");
+                                ele.classList.add("chat-msg__actions");
+                                ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-like far fa-smile" title="React positive to this message"></button>';
+                                messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            }
                         }
 
                         if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-pin') && this.model.get("type") === "groupchat")
                         {
                             var ele = document.createElement("div");
                             ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
+                            ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
                         if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-forward'))
@@ -385,14 +388,14 @@
                         {
                             var ele = document.createElement("div");
                             ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-reply fas fa-reply" title="Reply this message"></button>';
+                            ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-reply fas fa-reply" title="Reply this message"></button>';
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
                     }
 
                     const msgId = this.model.get("msgid");
 
-                    chrome.storage.local.get(msgId, function(obj)
+                    if (chrome.storage) chrome.storage.local.get(msgId, function(obj)
                     {
                         if (obj[msgId])
                         {
@@ -495,13 +498,13 @@
 
         if (openBadge && openButton)
         {
-            if (numUnreadBox != "0" && chatType == "chat")
+            if (chatType == "chat")
             {
                 openBadge.setAttribute("data-badge", numUnreadBox);
             }
             else
 
-            if (numUnreadRoom != "0" && chatType == "groupchat")
+            if (chatType == "groupchat")
             {
                 openBadge.setAttribute("data-badge", numUnreadRoom);
             }

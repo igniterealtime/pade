@@ -367,7 +367,7 @@ function doConverse()
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
           password: anonUser ? null : password,
           play_sounds: getSetting("conversePlaySounds", false),
-          priority: 1,
+          priority: 0,
           roster_groups: getSetting("rosterGroups", false),
           show_controlbox_by_default: false,
           show_message_load_animation: false,

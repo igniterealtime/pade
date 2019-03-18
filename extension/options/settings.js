@@ -1270,7 +1270,7 @@ function setDefaultServer()
             setDefaultSetting("server", server);
             setDefaultSetting("domain", domain);
 
-            fetch("https://" + server + "/pade.json", {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
+            fetch("https://" + server + "/pade.json", {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
             {
                 console.debug("setDefaultServer - found branding", json);
                 var overrides = Object.getOwnPropertyNames(json);

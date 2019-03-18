@@ -52485,7 +52485,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
         let extra_classes = this.model.get('is_delayed') && 'delayed' || '';
 
         if (this.model.get('type') === 'groupchat' && this.model.get('sender') === 'them') {
-          if (this.model.collection.chatbox.isUserMentioned(this.model)) {
+          if (this.model.collection.chatbox.isUserMentioned && this.model.collection.chatbox.isUserMentioned(this.model)) { // BAO
             // Add special class to mark groupchat messages
             // in which we are mentioned.
             extra_classes += ' mentioned';
@@ -57652,8 +57652,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           '_converse': _converse,
           'title_change_settings': __('Change settings'),
           'title_change_status': __('Click to change your chat status'),
-          'title_preferences': __('Preferences/Options'),                   // BAO
-          'title_conversations': __('Active Conversations'),                // BAO
+          'title_preferences': __('Click to open Preferences/Options window'),            // BAO
+          'title_conversations': __('Click to toggle conversations view'),                // BAO
           'title_log_out': __('Log out'),
           'info_details': __('Show details about this chat client'),
           'title_your_profile': __('Your profile')
@@ -61637,26 +61637,32 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
 
           if (!vcard) {
             let jid;
-            const occupant = chatbox.occupants.findWhere({
-              'nick': nick
-            });
 
-            if (occupant && occupant.get('jid')) {
-              jid = occupant.get('jid');
-              this.save({
-                'vcard_jid': jid
-              }, {
-                'silent': true
-              });
+            if (chatbox.occupants)                              // BAO
+            {
+                const occupant = chatbox.occupants.findWhere({
+                  'nick': nick
+                });
+
+                if (occupant && occupant.get('jid')) {
+                  jid = occupant.get('jid');
+                  this.save({
+                    'vcard_jid': jid
+                  }, {
+                    'silent': true
+                  });
+                } else {
+                  jid = this.get('from');
+                }
+
+                vcard = _converse.vcards.findWhere({
+                  'jid': jid
+                }) || _converse.vcards.create({
+                  'jid': jid
+                });
             } else {
-              jid = this.get('from');
+                vcard = _converse.vcards.create({'jid': this.get('from')});
             }
-
-            vcard = _converse.vcards.findWhere({
-              'jid': jid
-            }) || _converse.vcards.create({
-              'jid': jid
-            });
           }
 
           return vcard;

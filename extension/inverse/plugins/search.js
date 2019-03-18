@@ -163,21 +163,20 @@
                 renderChatMessage: async function renderChatMessage()
                 {
                     await this.__super__.renderChatMessage.apply(this, arguments);
-                    var that = this;
-                    var source = that.model.get("type") == "groupchat" ? that.model.get("from") : that.model.get("jid");
-                    var box_jid = Strophe.getBareJidFromJid(source);
-                    var box = _converse.chatboxes.get(box_jid);
+
+                    var box_jid = Strophe.getBareJidFromJid(this.model.get("from") || this.model.get("jid"));
+                    var view = _converse.chatboxviews.get(box_jid);
 
                     if (searchAvailable)
                     {
-                        converse.env._.each(that.el.querySelectorAll('.badge-hash-tag'), function (badge)
+                        converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
                         {
                             badge.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
 
                                 console.debug("pade.hashtag click", badge.innerText);
-                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: box, keyword: badge.innerText}) });
+                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: badge.innerText}) });
                                 searchDialog.show();
                             }, false);
                         });
