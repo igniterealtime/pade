@@ -973,7 +973,7 @@ var ofmeet = (function(of)
         localStorage.removeItem("xmpp_username_override");
         localStorage.removeItem("xmpp_password_override");
 
-        APP.conference._room.leave();
+        if (APP.conference._room) APP.conference._room.leave();
 
         hangup();
 
@@ -1058,6 +1058,11 @@ var ofmeet = (function(of)
             interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("stats"), 1);
             interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("tileview"), 1);
         }
+    }
+
+    if (!OFMEET_CONFIG.converseEmbedOfMeet)
+    {
+        interfaceConfig.TOOLBAR_BUTTONS.splice(interfaceConfig.TOOLBAR_BUTTONS.indexOf("hangup"), 1);
     }
     return of;
 

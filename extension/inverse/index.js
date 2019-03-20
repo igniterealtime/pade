@@ -307,7 +307,8 @@ function doConverse()
         }
 
         var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments"];
-        var viewMode = window.pade ? 'overlayed' : 'fullscreen';
+        //var viewMode = window.pade ? 'overlayed' : 'fullscreen';
+        viewMode = 'fullscreen';
 
         if (getSetting("enableInfoPanel", false))
         {
@@ -316,7 +317,7 @@ function doConverse()
 
         if (getSetting("useMarkdown", false))
         {
-            whitelistedPlugins.push("markdown");
+            if (!chrome.pade) whitelistedPlugins.push("markdown");
         }
 
         if (getSetting("enableCannedResponses", false))
@@ -494,146 +495,6 @@ function openGroupChat(jid, label, nick, props, message, nickname, userJid)
         }
     }
 }
-function getSetting(name, defaultValue)
-{
-    var localStorage = window.localStorage
-    //console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
-
-    if (window.pade)
-    {
-        if (name == "username") return window.pade.username;
-        if (name == "password") return window.pade.password;
-        if (name == "domain") return window.pade.domain;
-        if (name == "server") return window.pade.server;
-    }
-
-    var value = defaultValue;
-
-    if (localStorage["store.settings." + name])
-    {
-        value = JSON.parse(localStorage["store.settings." + name]);
-
-        if (name == "password") value = getPassword(value, localStorage);
-    }
-
-    return value;
-}
-
-function setSetting(name, value)
-{
-    //console.debug("setSetting", name, value);
-    window.localStorage["store.settings." + name] = JSON.stringify(value);
-}
-
-function getPassword(password, localStorage)
-{
-    if (!password || password == "") return null;
-    if (password.startsWith("token-")) return atob(password.substring(6));
-
-    localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
-    return password;
-}
-
-var avatars = {}
-
-if (chrome.storage)
-{
-    chrome.storage.local.get('avatars', function(data) {
-      if (data && data.avatars) avatars = data.avatars;
-      //console.debug('chrome.storage get', avatars);
-    });
-}
-
-function setAvatar(nickname, avatar)
-{
-    if (nickname && !avatars[nickname])
-    {
-       nickname = nickname.toLowerCase();
-       avatars[nickname] = avatar;
-
-        if (chrome.storage)
-        {
-            chrome.storage.local.set({avatars: avatars}, function() {
-              //console.debug('chrome.storage is set for ' + nickname, avatars);
-            });
-        }
-    }
-}
-
-function createAvatar(nickname, width, height, font)
-{
-    nickname = nickname.toLowerCase();
-
-    if (avatars[nickname])
-    {
-        return avatars[nickname];
-    }
-
-    if (!width) width = 32;
-    if (!height) height = 32;
-    if (!font) font = "16px Arial";
-
-    var canvas = document.createElement('canvas');
-    canvas.style.display = 'none';
-    canvas.width = width;
-    canvas.height = height;
-    document.body.appendChild(canvas);
-    var context = canvas.getContext('2d');
-    context.fillStyle = getRandomColor(nickname);
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = font;
-    context.fillStyle = "#fff";
-
-    var first, last;
-    var name = nickname.split(" ");
-    var l = name.length - 1;
-
-    if (name && name[0] && name.first != '')
-    {
-        first = name[0][0];
-        last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
-
-        if (last) {
-            var initials = first + last;
-            context.fillText(initials.toUpperCase(), 3, 23);
-        } else {
-            var initials = first;
-            context.fillText(initials.toUpperCase(), 10, 23);
-        }
-        var data = canvas.toDataURL();
-        document.body.removeChild(canvas);
-    }
-
-    avatars[nickname] = canvas.toDataURL();
-
-    if (chrome.storage)
-    {
-        chrome.storage.local.set({avatars: avatars}, function() {
-          //console.debug('chrome.storage is set for ' + nickname, avatars);
-        });
-    }
-    return avatars[nickname];
-}
-
-var nickColors = {}
-
-function getRandomColor(nickname)
-{
-    if (nickColors[nickname])
-    {
-        return nickColors[nickname];
-    }
-    else {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        nickColors[nickname] = color;
-        return color;
-    }
-}
 
 function handleActiveConversations()
 {
@@ -768,5 +629,106 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
 
             }, false);
         }
+    }
+}
+
+var avatars = {}
+
+if (chrome.storage)
+{
+    chrome.storage.local.get('avatars', function(data) {
+      if (data && data.avatars) avatars = data.avatars;
+      //console.debug('chrome.storage get', avatars);
+    });
+}
+
+function setAvatar(nickname, avatar)
+{
+    if (nickname && !avatars[nickname])
+    {
+       nickname = nickname.toLowerCase();
+       avatars[nickname] = avatar;
+
+        if (chrome.storage)
+        {
+            chrome.storage.local.set({avatars: avatars}, function() {
+              //console.debug('chrome.storage is set for ' + nickname, avatars);
+            });
+        }
+    }
+}
+
+function createAvatar(nickname, width, height, font)
+{
+    nickname = nickname.toLowerCase();
+
+    if (avatars[nickname])
+    {
+        return avatars[nickname];
+    }
+
+    if (!width) width = 32;
+    if (!height) height = 32;
+    if (!font) font = "16px Arial";
+
+    var canvas = document.createElement('canvas');
+    canvas.style.display = 'none';
+    canvas.width = width;
+    canvas.height = height;
+    document.body.appendChild(canvas);
+    var context = canvas.getContext('2d');
+    context.fillStyle = getRandomColor(nickname);
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.font = font;
+    context.fillStyle = "#fff";
+
+    var first, last;
+    var name = nickname.split(" ");
+    var l = name.length - 1;
+
+    if (name && name[0] && name.first != '')
+    {
+        first = name[0][0];
+        last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
+
+        if (last) {
+            var initials = first + last;
+            context.fillText(initials.toUpperCase(), 3, 23);
+        } else {
+            var initials = first;
+            context.fillText(initials.toUpperCase(), 10, 23);
+        }
+        var data = canvas.toDataURL();
+        document.body.removeChild(canvas);
+    }
+
+    avatars[nickname] = canvas.toDataURL();
+
+    if (chrome.storage)
+    {
+        chrome.storage.local.set({avatars: avatars}, function() {
+          //console.debug('chrome.storage is set for ' + nickname, avatars);
+        });
+    }
+    return avatars[nickname];
+}
+
+var nickColors = {}
+
+function getRandomColor(nickname)
+{
+    if (nickColors[nickname])
+    {
+        return nickColors[nickname];
+    }
+    else {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        nickColors[nickname] = color;
+        return color;
     }
 }

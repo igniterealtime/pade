@@ -93898,7 +93898,7 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape; // BAO
-__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><img src="/image.png"/>&nbsp;' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h1>\n        <p class="brand-subtitle">' +
+__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><img src="../image.png"/>&nbsp;' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h1>\n        <p class="brand-subtitle">' +
 __e(o.version_name) +
 '</p>\n</div>\n</div>\n'; // BAO
 return __p

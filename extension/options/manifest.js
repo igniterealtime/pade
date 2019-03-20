@@ -3,83 +3,83 @@ this.manifest = {
     "icon": "../icon.png",
     "settings": [
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "server",
             "type": "text",
             "label": i18n.get("server"),
             "text": "server_name:port or ip_address:port"
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "domain",
             "type": "text",
             "label": i18n.get("domain"),
             "text": "domain name"
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "useWebsocket",
             "type": "checkbox",
             "label": i18n.get("Use a websocket connection to server")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "useAnonymous",
             "type": "checkbox",
             "label": i18n.get("Use an anonymous connection to server")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "useWinSSO",
             "type": "checkbox",
             "label": i18n.get("Use Windows Single Sign On (SSO)")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "useCredsMgrApi",
             "type": "checkbox",
             "label": i18n.get("Use Credential Management API SSO")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
             "name": "useSmartIdCard",
             "type": "checkbox",
             "label": i18n.get("Use E-Residency Smart ID")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
             "name": "displayname",
             "type": "text",
             "label": i18n.get("displayname"),
             "text": i18n.get("Another User")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
             "name": "username",
             "type": "text",
             "label": i18n.get("username"),
             "text": i18n.get("another.user")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
             "name": "email",
             "type": "text",
             "label": i18n.get("email"),
             "text": "name@domain"
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
             "name": "password",
             "type": "text",
             "label": i18n.get("password"),
@@ -87,42 +87,42 @@ this.manifest = {
             "masked": true
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
             "name": "connect",
             "type": "button",
             "text": i18n.get("login")
         },
         {
-            "tab": i18n.get("connection"),
-            "group": i18n.get("login"),
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
             "name": "status",
             "text": i18n.get(""),
             "type": "description"
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Registration"),
             "name": "register",
             "type": "button",
             "text": i18n.get("Register New Account")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("uPort"),
             "name": "useUport",
             "type": "checkbox",
             "label": i18n.get("Open Identity System for the Decentralized Web")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("uPort"),
             "name": "uport",
             "type": "button",
             "text": i18n.get("QR Code")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("uPort"),
             "name": "uportPermission",
             "type": "text",
@@ -130,98 +130,98 @@ this.manifest = {
             "text": i18n.get("uport_permission")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("TOTP"),
             "name": "useTotp",
             "type": "checkbox",
             "label": i18n.get("Time based One-Time Password - Use OfChat and FreeOTP or Google Authernticator App")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("TOTP"),
             "name": "qrcode",
             "type": "button",
             "text": i18n.get("QR Code")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Certificate"),
             "name": "useClientCert",
             "type": "checkbox",
             "label": i18n.get("Use Client Certificate (No password required)")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Certificate"),
             "name": "certificate",
             "type": "button",
             "text": i18n.get("Download")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Preferences"),
             "name": "exportPreferences",
             "type": "button",
             "text": i18n.get("Export")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Preferences"),
             "name": "exportPreferencesDesc",
             "text": i18n.get("Use this feature to <b>export</b> all current user preferences to an external branding file (pade.json)"),
             "type": "description"
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Preferences"),
             "name": "importPreferences",
             "type": "description",
             "text": ""
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Preferences"),
             "name": "importPreferencesDesc",
             "text": i18n.get("Use this feature to <b>import</b> all current user preferences from an external branding file"),
             "type": "description"
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Preferences"),
             "name": "importExportStatus",
             "type": "description",
             "text": ""
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "credits",
             "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + chrome.runtime.getManifest().version + " Ignite Realtime Community</a>"),
             "type": "description"
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "factoryReset",
             "type": "button",
             "text": i18n.get("Factory Reset")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "changelog",
             "type": "button",
             "text": i18n.get("Change Log")
         },
         {
-            "tab": i18n.get("connection"),
+            "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "help",
             "type": "button",
             "text": i18n.get("Help")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Language"),
             "name": "language",
             "type": "popupButton",
@@ -251,7 +251,7 @@ this.manifest = {
             ]
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "phone",
             "type": "text",
@@ -259,7 +259,7 @@ this.manifest = {
             "text": "+447925488496"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "sms",
             "type": "text",
@@ -267,7 +267,7 @@ this.manifest = {
             "text": "+447925488496"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "country",
             "type": "text",
@@ -275,7 +275,7 @@ this.manifest = {
             "text": "Country code: GB, US"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "exten",
             "type": "text",
@@ -283,7 +283,7 @@ this.manifest = {
             "label": i18n.get("Phone Extension")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "role",
             "type": "text",
@@ -291,7 +291,7 @@ this.manifest = {
             "text": "List of comma separated roles"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "url",
             "type": "text",
@@ -299,147 +299,147 @@ this.manifest = {
             "text": "http://my-home-page.com"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Profile"),
             "name": "saveProfile",
             "type": "button",
             "text": i18n.get("Save on Server")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Location"),
             "name": "publishLocation",
             "type": "checkbox",
             "label": i18n.get("Publish location to contacts")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Location"),
             "name": "userLocation",
             "type": "description",
             "text": ""
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Friends"),
             "name": "enableFriendships",
             "type": "checkbox",
             "label": i18n.get("Enable Direct Friendships")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Avatar/Picture"),
             "name": "uploadAvatarLabel",
             "type": "description",
             "text": i18n.get("Upload a local PNG/JPEG file as user image")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Avatar/Picture"),
             "name": "uploadAvatar",
             "type": "description",
             "text": ""
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Avatar/Picture"),
             "name": "updateAvatar",
             "type": "checkbox",
             "label": i18n.get("Update vCard with browser generated avatar")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Avatar/Picture"),
             "name": "uploadAvatarStatus",
             "type": "description",
             "text": ""
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "saveWinPositions",
             "type": "checkbox",
             "label": i18n.get("Save Window postions and sizes")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "desktopShareMode",
             "type": "checkbox",
             "label": i18n.get("Desktop Share mode only")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "showOnlyOnlineUsers",
             "type": "checkbox",
             "label": i18n.get("Show Only Online Users")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "popupWindow",
             "type": "checkbox",
             "label": i18n.get("Popup Window")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "wgEnabled",
             "type": "checkbox",
             "label": i18n.get("Enable Workgroups (Fastpath)")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "wgNotifications",
             "type": "checkbox",
             "label": i18n.get("Enable Workgroup Notifications")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "showSharedCursor",
             "type": "checkbox",
             "label": i18n.get("Show Shared Cursor")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "enableRingtone",
             "type": "checkbox",
             "label": i18n.get("Enable Ringtone")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "enableRemoteControl",
             "type": "checkbox",
             "label": i18n.get("Enable Remote Control")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "useJabra",
             "type": "checkbox",
             "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "enablePresenceTracking",
             "type": "checkbox",
             "label": i18n.get("Notify when a contact becomes available")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "enablePresenceStatus",
             "type": "checkbox",
             "label": i18n.get("Notify when a contact changes status")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "idleTimeout",
             "type": "slider",
@@ -449,7 +449,7 @@ this.manifest = {
             "step": 30
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "idleMessage",
             "type": "text",
@@ -457,7 +457,7 @@ this.manifest = {
             "text": "see you later"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "idleActiveMessage",
             "type": "text",
@@ -465,7 +465,7 @@ this.manifest = {
             "text": "hello"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "idleLockedMessage",
             "type": "text",
@@ -473,7 +473,7 @@ this.manifest = {
             "text": "good bye"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "presNotifyWhitelist",
             "type": "textarea",
@@ -481,56 +481,56 @@ this.manifest = {
             "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com"),
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "presNotifyWhitelistDesc",
             "text": i18n.get("List of contact JIDs to to be considered when showing desktop notifications of changed contact status"),
             "type": "description"
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "unregisterUrlProtocols",
             "type": "description",
             "text": i18n.get("Goto chrome://settings/handlers to un-register protocol handlers")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerIMProtocol",
             "type": "checkbox",
             "label": i18n.get("IM: user@domain - one-to-one instant messaging")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerXMPPProtocol",
             "type": "checkbox",
             "label": i18n.get("XMPP: chat-room - group-chat in a multi-user chat room")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerSIPProtocol",
             "type": "checkbox",
             "label": i18n.get("SIP: destination@domain - SIP audio/video conference")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerTELProtocol",
             "type": "checkbox",
             "label": i18n.get("TEL: destination@domain - telephone call")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerMEETProtocol",
             "type": "checkbox",
             "label": i18n.get("WEB+MEET: meeting-room - Openfire meeting")
         },
         {
-            "tab": i18n.get("general"),
+            "tab": i18n.get("General"),
             "group": i18n.get("URL Protocol Handlers"),
             "name": "registerUrlProtocols",
             "type": "button",
@@ -984,6 +984,13 @@ this.manifest = {
             "max": 121,
             "min": 1,
             "step": 10
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "converseEmbedOfMeet",
+            "type": "checkbox",
+            "label": i18n.get("Embed Openfire Meetings in Converse")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1818,8 +1825,8 @@ if (getSetting("useSmartIdCard", false))
 {
     this.manifest.settings.push(
     {
-        "tab": i18n.get("connection"),
-        "group": i18n.get("connection"),
+        "tab": i18n.get("Connection"),
+        "group": i18n.get("Connection"),
         "name": "smartCardIframe",
         "text": i18n.get(""),
         "type": "description",
@@ -1831,7 +1838,7 @@ if (getSetting("enableFriendships", false))
 {
     this.manifest.settings.push(
     {
-        "tab": i18n.get("general"),
+        "tab": i18n.get("General"),
         "group": i18n.get("Friends"),
         "name": "friendType",
         "type": "popupButton",
@@ -1846,7 +1853,7 @@ if (getSetting("enableFriendships", false))
 
     this.manifest.settings.push(
     {
-        "tab": i18n.get("general"),
+        "tab": i18n.get("General"),
         "group": i18n.get("Friends"),
         "name": "friendId",
         "type": "text",
@@ -1856,7 +1863,7 @@ if (getSetting("enableFriendships", false))
 
     this.manifest.settings.push(
     {
-        "tab": i18n.get("general"),
+        "tab": i18n.get("General"),
         "group": i18n.get("Friends"),
         "name": "friendName",
         "type": "text",
@@ -1866,7 +1873,7 @@ if (getSetting("enableFriendships", false))
 
     this.manifest.settings.push(
     {
-        "tab": i18n.get("general"),
+        "tab": i18n.get("General"),
         "group": i18n.get("Friends"),
         "name": "friendGroups",
         "type": "textarea",
@@ -1876,7 +1883,7 @@ if (getSetting("enableFriendships", false))
 
     this.manifest.settings.push(
     {
-        "tab": i18n.get("general"),
+        "tab": i18n.get("General"),
         "group": i18n.get("Friends"),
         "name": "friendCreate",
         "type": "button",

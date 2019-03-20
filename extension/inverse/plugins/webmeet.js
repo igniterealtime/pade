@@ -232,6 +232,8 @@
 
                 testFileUploadAvailable(view, function(isFileUploadAvailable)
                 {
+                    console.log('webmeet - testFileUploadAvailable', isFileUploadAvailable, bgWindow.pade.ofmeetUrl);
+
                     var html = '';
 
                     if (type == "chatroom")
@@ -287,6 +289,12 @@
                         }
                     }
 
+                    html = '<a class="fa fa-sync" title="Refresh"></a>';
+                    addToolbarItem(view, id, "webmeet-refresh-" + id, html);
+
+                    html = '<a class="far fa-trash-alt" title="Trash local storage of chat history"></a>';
+                    addToolbarItem(view, id, "webmeet-trash-" + id, html);
+
                     html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
                     addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
 
@@ -298,11 +306,11 @@
                     dropZone.addEventListener('dragover', handleDragOver, false);
                     dropZone.addEventListener('drop', handleDropFileSelect, false);
 
-                    var h5pButton = document.getElementById("h5p-" + id);
-
-                    if (h5pButton && bgWindow)
+                    if (bgWindow)
                     {
-                        h5pButton.addEventListener('click', function(evt)
+                        var h5pButton = document.getElementById("h5p-" + id);
+
+                        if (h5pButton) h5pButton.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
 
@@ -312,13 +320,11 @@
                             }
 
                         }, false);
-                    }
 
-                    var oobButton = document.getElementById("oob-" + id);
 
-                    if (oobButton && bgWindow)
-                    {
-                        oobButton.addEventListener('click', function(evt)
+                        var oobButton = document.getElementById("oob-" + id);
+
+                        if (oobButton) oobButton.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
 
@@ -328,13 +334,10 @@
                             }
 
                         }, false);
-                    }
 
-                    var geoLocButton = document.getElementById("webmeet-geolocation-" + id);
+                        var geoLocButton = document.getElementById("webmeet-geolocation-" + id);
 
-                    if (geoLocButton && bgWindow)
-                    {
-                        geoLocButton.addEventListener('click', function(evt)
+                        if (geoLocButton) geoLocButton.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
 
@@ -342,82 +345,87 @@
                             geoLocationDialog.show();
 
                         }, false);
-                    }
 
+                        var messageblast = document.getElementById("webmeet-messageblast-" + id);
 
-                    var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
-
-                    if (handleJitsiMeet)
-                    {
-                        handleJitsiMeet.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
-
-                            if (confirm(jitsiConfirm))
-                            {
-                                doVideo(view);
-                            }
-
-                        }, false);
-                    }
-
-                    var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
-
-                    if (handleWebinarPresenter)
-                    {
-                        handleWebinarPresenter.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
-                            var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
-
-                            if (title && title != "")
-                            {
-                                doWebinarPresenter(view, title);
-                            }
-
-                        }, false);
-                    }
-
-                    var screencast = document.getElementById("webmeet-screencast-" + id);
-
-                    if (screencast)
-                    {
-                        screencast.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            toggleScreenCast(view);
-
-                        }, false);
-                    }
-
-                    var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
-
-                    if (scrolldown)
-                    {
-                        scrolldown.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-                            view.viewUnreadMessages()
-
-                        }, false);
-                    }
-
-                    var messageblast = document.getElementById("webmeet-messageblast-" + id);
-
-                    if (messageblast)
-                    {
-                        messageblast.addEventListener('click', function(evt)
+                        if (messageblast) messageblast.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
                             bgWindow.openBlastWindow();
 
                         }, false);
                     }
+
+                    var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
+
+                    if (handleJitsiMeet) handleJitsiMeet.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
+
+                        if (confirm(jitsiConfirm))
+                        {
+                            doVideo(view);
+                        }
+
+                    }, false);
+
+
+                    var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
+
+                    if (handleWebinarPresenter) handleWebinarPresenter.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
+                        var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
+
+                        if (title && title != "")
+                        {
+                            doWebinarPresenter(view, title);
+                        }
+
+                    }, false);
+
+                    var screencast = document.getElementById("webmeet-screencast-" + id);
+
+                    if (screencast) screencast.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        toggleScreenCast(view);
+
+                    }, false);
+
+                    var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
+
+                    if (scrolldown) scrolldown.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        view.viewUnreadMessages()
+
+                    }, false);
+
+                    var refresh = document.getElementById("webmeet-refresh-" + id);
+
+                    if (refresh) refresh.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        view.close();
+                        openChatbox(view);
+
+                    }, false);
+
+                    var trash = document.getElementById("webmeet-trash-" + id);
+
+                    if (trash) trash.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        view.clearMessages();
+
+                    }, false);
+
                 });
             });
 
@@ -740,6 +748,19 @@
         }
     });
 
+    var openChatbox = function openChatbox(view)
+    {
+        let jid = view.model.get("jid");
+        let type = view.model.get("type");
+
+        if (jid)
+        {
+            if (type == "chatbox") _converse.api.chats.open(jid);
+            else
+            if (type == "chatroom") _converse.api.rooms.open(jid);
+        }
+    }
+
     var setupPastingHandlers = function(view, id, jid, type)
     {
         console.debug("setupPastingHandlers", id, jid, type);
@@ -825,11 +846,72 @@
             {
                 if (document.getElementById(chatId)) document.getElementById(chatId).onclick = function()
                 {
-                    var target = chat.model.get("type") == "groupchat" ? chat.model.get("from") : chat.model.get("jid");
-                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"), title, Strophe.getBareJidFromJid(target), chat);
+                    var target = Strophe.getBareJidFromJid(chat.model.get("from") || chat.model.get("jid"));
+                    var view = _converse.chatboxviews.get(target);
+                    callback(avRoom, Strophe.getBareJidFromJid(chat.model.get("from")), chat.model.get("type"), title, target, view);
                 }
             });
         }
+    }
+
+    var openVideoWindow = function openVideoWindow(room, mode, view)
+    {
+        if (getSetting("converseEmbedOfMeet", false) && bgWindow)
+        {
+            var url = bgWindow.getVideoWindowUrl(room, mode);
+            var div = view.el.querySelector(".box-flyout");
+
+            if (div)
+            {
+                div.innerHTML = '<iframe src="' + url + '" id="jitsimeet" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" scrolling="no" style="z-index: 2147483647;width:100%;height:-webkit-fill-available;height:-moz-available;"></iframe>';
+
+                var jitsiDiv = div.querySelector('#jitsimeet');
+                var firstTime = true;
+
+                jitsiDiv.addEventListener("load", function ()
+                {
+                    console.debug("doVideo - load", this);
+
+                    if (!firstTime) // meeting closed and root url is loaded
+                    {
+                        view.close();
+                        openChatbox(view);
+                    }
+
+                    if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
+
+                });
+            }
+
+        } else {
+
+            if ( _converse.view_mode === 'overlayed')
+            {
+                if (window.pade && window.pade.url && window.pade.ofmeetUrl)
+                {
+                    url = window.pade.ofmeetUrl + room + (mode ? "&mode=" + mode : "");
+                    window.open(url, location.href);
+                }
+            } else {
+                bgWindow.openVideoWindow(room, mode);
+            }
+        }
+    }
+
+    var doVideo = function doVideo(view)
+    {
+        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+        console.debug("doVideo", room, view);
+
+        var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + bgWindow.pade.ofmeetUrl + room;
+        submitMessage(view, inviteMsg);
+        doAVConference(room, null, null, null, null, view);
+    }
+
+    var doAVConference = function doAVConference(room, from, chatType, title, target, view)
+    {
+        console.debug("doAVConference", room, view);
+        openVideoWindow(room, null, view);
     }
 
     var handleWebinarAttendee = function handleWebinarAttendee(room, from, chatType, title, target, view)
@@ -837,7 +919,7 @@
         console.debug("handleWebinarAttendee", room, view);
 
         var mode = view.model.get("sender") == "me" ? "presenter" : "attendee";
-        bgWindow.openVideoWindow(room, mode);
+        openVideoWindow(room, mode, view);
     }
 
     var doWebinarPresenter = function doWebinarPresenter(view, title)
@@ -845,53 +927,10 @@
         console.debug("doWebinarPresenter", view, title);
 
         var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
-        var url = null;
+        openVideoWindow(room, "presenter", view);
 
-        if ( _converse.view_mode === 'overlayed')
-        {
-            if (window.pade && window.pade.url)
-            {
-                url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
-                window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room + "&mode=presenter", location.href);
-            }
-        }
-        else {
-            url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
-            if (bgWindow) bgWindow.openVideoWindow(room, "presenter");
-        }
-
-        if (url) submitMessage(view, title + ' ' + url);
-    }
-
-    var doAVConference = function doAVConference(room)
-    {
-        console.debug("doAVConference", room);
-        var url = null;
-
-        if ( _converse.view_mode === 'overlayed')
-        {
-            if (window.pade && window.pade.url && window.pade.ofmeetUrl)
-            {
-                url = window.pade.ofmeetUrl + room;
-                window.open(window.pade.url + "jitsi-meet/chrome.index.html?room=" + room, location.href);
-            }
-        }
-        else if (bgWindow) {
-            url = bgWindow.pade.ofmeetUrl + room;
-            bgWindow.openVideoWindow(room);
-        }
-        return url;
-    }
-
-    var doVideo = function doVideo(view)
-    {
-        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
-        url = doAVConference(room);
-
-        console.debug("doVideo", room, url, view);
-
-        var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
-        submitMessage(view, inviteMsg);
+        var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
+        submitMessage(view, title + ' ' + url);
     }
 
     var doExit = function doExit(event)
@@ -1083,24 +1122,30 @@
     {
         if (videoRecorder == null)
         {
-            chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], null, function(streamId)
+            getDisplayMedia({ video: true }).then(stream =>
             {
-                navigator.mediaDevices.getUserMedia({
-                    audio: false,
-                    video: {
-                        mandatory: {
-                            chromeMediaSource: 'desktop',
-                            chromeMediaSourceId: streamId
-                        }
-                    }
-                }).then((stream) => handleStream(stream, view)).catch((e) => handleError(e))
-            })
+                handleStream(stream, view);
+
+            }, error => {
+                handleError(error)
+            });
 
         } else {
             videoRecorder.stop();
         }
 
         return true;
+    }
+
+    var getDisplayMedia = function getDisplayMedia()
+    {
+        if (navigator.getDisplayMedia) {
+          return navigator.getDisplayMedia({video: true});
+        } else if (navigator.mediaDevices.getDisplayMedia) {
+          return navigator.mediaDevices.getDisplayMedia({video: true});
+        } else {
+          return navigator.mediaDevices.getUserMedia({video: {mediaSource: 'screen'}});
+        }
     }
 
     var handleStream = function handleStream (stream, view)
@@ -1284,15 +1329,16 @@
                                 }
                             }
 
-                            bgWindow.openVideoWindow(meeting.room);
+                            openVideoWindow(meeting.room, null, view);
                             return true;
                         }
                     }
 
                     // use specified room
-                    var url = doAVConference(args[0]);
-                    var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + url;
+
+                    var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + bgWindow.pade.ofmeetUrl + args[0];
                     submitMessage(view, inviteMsg);
+                    doAVConference(args[0], null, null, null, null, view);
                 }
             }
             else
@@ -1368,7 +1414,7 @@
     var testFileUploadAvailable = async function(view, callback)
     {
         const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
-        if (!view.el.querySelector(".fa-angle-double-down")) callback(result.length > 0);
+        callback(result.length > 0);
     }
 
 }));

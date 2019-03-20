@@ -81,12 +81,3 @@ if (channel)
         channel.postMessage(event.data);
     });
 }
-
-if (!document.getElementById("ofmeet-extension-installed"))
-{
-    var div = document.createElement('div');
-    div.id = "ofmeet-extension-installed";
-    div.style = "display: none;";
-    document.body.appendChild(div);
-}
-

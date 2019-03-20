@@ -196,7 +196,7 @@ window.addEvent("domready", function () {
 
                             if (e.target.title && getSetting("enableInverse"))
                             {
-                                if (background.pade.chatWindow)
+                                if (background.pade.chatWindow.id)
                                 {
                                     chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
                                 }
@@ -265,7 +265,7 @@ window.addEvent("domready", function () {
 
                         if (getSetting("enableInverse"))
                         {
-                            if (background.pade.chatWindow)
+                            if (background.pade.chatWindow.id)
                             {
                                 chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(user.id, user.title);
                             }
@@ -1241,9 +1241,8 @@ function doDefaults()
     setDefaultSetting("notifyRoomMentions", true);
     setDefaultSetting("notifyWhenClosed", true);
     setDefaultSetting("enableInfoPanel", true);
-    setDefaultSetting("useMarkdown", true);
     setDefaultSetting("enablePasting", true);
-    setDefaultSetting("converseAutoReOpen", true)
+    setDefaultSetting("converseAutoReOpen", true);
     setDefaultSetting("archivedMessagesPageSize", 51);
 
     // web apps

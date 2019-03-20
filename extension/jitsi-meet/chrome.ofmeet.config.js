@@ -49,6 +49,7 @@ OFMEET_CONFIG = {
     room: urlParam("room") || getUrl(),
     domain:__domain,
     ofmeetUrl: __ofmeetUrl,
+    converseEmbedOfMeet: getSetting("converseEmbedOfMeet", false),
     enableTranscription: getSetting("enableTranscription", false),
     transcribeLanguage: getSetting("transcribeLanguage", "en-GB"),
     recordAudio: getSetting("recordAudio", false),

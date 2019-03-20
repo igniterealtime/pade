@@ -1027,3 +1027,109 @@ var etherlynk = (function(lynk)
     return lynk;
 
 }(etherlynk || {}));
+
+// Common global background functions
+
+function searchConversations(keyword, callback)
+{
+    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
+    var url =  "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/messages" + query;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("searchConversations", url, options);
+    var conversations = [];
+
+    fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
+    {
+        console.debug("searchConversations", messages.conversation);
+
+        if (messages.conversation instanceof Array)
+        {
+            conversations = messages.conversation;
+            callback(processConvSearch(conversations, keyword), conversations, false);
+        }
+        else if (messages.conversation) {
+            conversations = [messages.conversation];
+            callback(processConvSearch([messages.conversation], keyword), conversations, false);
+        }
+        else {
+            callback("<p/><p/>No conversations found", conversations, false);
+        }
+
+    }).catch(function (err) {
+        callback("<p/><p/> Error - " + err, conversations, true);
+    });
+
+}
+
+function pdfConversations(keyword, callback)
+{
+    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
+    var url = "https://" + getSetting("server") + "/dashboard/pdf?keywords=" + keyword;
+    //var url = "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/pdf" + query;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("pdfConversations", url, options);
+    var conversations = [];
+
+    fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
+    {
+        console.debug("pdfConversations", blob);
+        callback(blob, false);
+
+    }).catch(function (err) {
+        //console.error('convSearch error', err);
+        callback(null, true);
+    });
+
+}
+
+function processConvSearch(conversations, keyword)
+{
+    if (!conversations || conversations.length == 0) return "<p/><p/>No conversations found";
+
+    keyword = keyword.replace(/[^a-zA-Z ]/g, "");
+
+    var query = new RegExp("(\\b" + keyword + "\\b)", "gim");
+    var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Chat</th><th>Conversation</th></tr>";
+
+    console.debug("processConvSearch", conversations, keyword);
+
+    for (var i=conversations.length-1; i>=0; i--)
+    {
+        var conversation = conversations[i];
+
+        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[0].split("/")[0];
+
+        if (jid == pade.jid) jid = conversation.participantList[1].split("/")[0]
+        var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
+        var suffix = "</a>";
+
+        var date = moment(conversation.startDate).format('MMM DD YYYY <br/> HH:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('HH:mm:ss');
+        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom.split("@")[0] + suffix + "<br/>" + "(" + conversation.participantList.length + ")" : prefix + conversation.participantList[0].split("@")[0] + suffix + "<br/>" + "<a title='" + conversation.participantList[1].split("/")[0] + "'>" + conversation.participantList[1].split("@")[0] + "</a>";
+
+        var messages = conversation.messages.message;
+
+        if (!messages instanceof Array)
+        {
+            messages = [messages]
+        }
+
+        var convHtml = "";
+
+        for (var j=0; j<messages.length; j++)
+        {
+            if (messages[j].body.indexOf("has left the room") == -1 && messages[j].body.indexOf("has joined the room") == -1)
+            {
+                convHtml = convHtml + "[" + moment(messages[j].sentDate).format('hh:mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
+            }
+        }
+
+        html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";
+    }
+
+    html =  html + "</table>" + "<p/><p/>";
+    var enew = html.replace(/(<span>|<\/span>)/igm, "");
+    var newe = enew.replace(query, "<span style=background-color:#FF9;color:#555;>$1</span>");
+    return newe;
+}
