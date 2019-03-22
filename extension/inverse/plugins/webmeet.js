@@ -232,14 +232,14 @@
 
                 testFileUploadAvailable(view, function(isFileUploadAvailable)
                 {
-                    console.log('webmeet - testFileUploadAvailable', isFileUploadAvailable, bgWindow.pade.ofmeetUrl);
+                    console.debug('webmeet - testFileUploadAvailable', isFileUploadAvailable, bgWindow.pade.ofmeetUrl);
 
                     var html = '';
 
                     if (type == "chatroom")
                     {
                         // hide occupants list by default
-                        view.model.set({'hidden_occupants': true});
+                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", false)});
                         view.setOccupantsVisibility();
                         view.scrollDown();
                     }

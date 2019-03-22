@@ -23,18 +23,24 @@ window.addEvent("domready", function () {
         if (credWin && win == credWin.id) credWin = null;
     });
 
+    var background = chrome.extension.getBackgroundPage();
     document.getElementById("settings-label").innerHTML = chrome.i18n.getMessage('settings')
 
-    doDefaults();
+    doDefaults(background);
 
     new FancySettings.initWithManifest(function (settings)
     {
-        var background = chrome.extension.getBackgroundPage();
         var avatar = getSetting("avatar");
 
         if (avatar)
         {
             document.getElementById("avatar").innerHTML = "<img style='width: 64px;' src='" + avatar + "' />";
+        }
+
+        if (chrome.pade)    // browser mode
+        {
+            settings.manifest.server.element.parentElement.style.display = "none";
+            settings.manifest.domain.element.parentElement.style.display = "none";
         }
 
         if (settings.manifest.meetingPlanner)
@@ -151,6 +157,18 @@ window.addEvent("domready", function () {
 
             settings.manifest.useAnonymous.addEvent("action", setAnon);
             setAnon();
+        }
+
+        if (settings.manifest.useBasicAuth)
+        {
+            var setBasicAuth = function()
+            {
+                if (settings.manifest.username) settings.manifest.username.element.parentElement.style.display = getSetting("useBasicAuth", false) ? "none" : "";
+                if (settings.manifest.password) settings.manifest.password.element.parentElement.style.display = getSetting("useBasicAuth", false) ? "none" : "";
+            }
+
+            settings.manifest.useBasicAuth.addEvent("action", setBasicAuth);
+            setBasicAuth();
         }
 
         if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
@@ -1097,7 +1115,7 @@ window.addEvent("domready", function () {
                 lynks.jid = lynks.domain;
                 lynks.password = null;
 
-                if (!getSetting("useAnonymous", false))
+                if (!getSetting("useAnonymous", false) && !getSetting("useBasicAuth", false))
                 {
                     if (window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
                     {
@@ -1131,37 +1149,61 @@ window.addEvent("domready", function () {
 
                     if (isNumeric(lynks.server.substring(lynks.server.indexOf(":") + 1)))
                     {
-                        var connUrl = "https://" + lynks.server + "/http-bind/";
-
-                        if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
+                        var doConnect = function(creds)
                         {
-                            connUrl = "wss://" + lynks.server + "/ws/";
-                        }
-                        var connection = background.getConnection(connUrl);
+                            var connUrl = "https://" + lynks.server + "/http-bind/";
 
-                        if (window.localStorage["store.settings.useTotp"] && JSON.parse(window.localStorage["store.settings.useTotp"]))
-                        {
-                            var token = lynks.username + ":" + lynks.password;
-                            background.setupSasl(token);
-                        }
-
-                        connection.connect(lynks.jid, lynks.password, function (status)
-                        {
-                            console.debug("status", status, lynks.jid, lynks.displayname);
-
-                            if (status === 5)
+                            if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
                             {
-                                setTimeout(function() { background.reloadApp(); }, 1000);
+                                connUrl = "wss://" + lynks.server + "/ws/";
                             }
-                            else
+                            var connection = background.getConnection(connUrl);
 
-                            if (status === 4)
+                            connection.connect(creds.jid, creds.password, function (status)
                             {
-                                setDefaultPassword(settings);
-                                settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
-                                console.log("WWWWWWWW", lynks, connUrl);
+                                console.debug("status", status, creds.jid, creds.displayname);
+
+                                if (status === 5)
+                                {
+                                    setTimeout(function() { background.reloadApp(); }, 1000);
+                                }
+                                else
+
+                                if (status === 4)
+                                {
+                                    setDefaultPassword(settings);
+                                    settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
+                                }
+                            });
+                        }
+
+                        if (getSetting("useBasicAuth", false))
+                        {
+                            fetch("https://" + lynks.server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+                            {
+                                lynks.username = token.username;
+                                lynks.password = token.password;
+                                lynks.jid = lynks.username + "@" + lynks.domain + "/" + lynks.displayname;
+
+                                doConnect(lynks);
+
+                            }).catch(function (err) {
+                                console.error('access denied error', err);
+                                settings.manifest.status.element.innerHTML = 'Error ' + err;
+                            });
+
+                        }
+                        else {
+
+                            if (window.localStorage["store.settings.useTotp"] && JSON.parse(window.localStorage["store.settings.useTotp"]))
+                            {
+                                var token = lynks.username + ":" + lynks.password;
+                                background.setupSasl(token);
                             }
-                        });
+
+                            doConnect(lynks);
+                        }
+
                     } else {
                         settings.manifest.status.element.innerHTML = '<b style="color:red" style="color:red">bad server port. use server:port or ipaddress:port</b>';
                     }
@@ -1182,8 +1224,16 @@ function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function doDefaults()
+function doDefaults(background)
 {
+    if (chrome.pade)    // browser mode
+    {
+        setDefaultSetting("server", location.host);
+        setDefaultSetting("domain", location.hostname);
+        setDefaultSetting("useBasicAuth", true);
+        setDefaultSetting("converseEmbedOfMeet", true);
+    }
+
     // connection
     setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
     setDefaultSetting("useWebsocket", true);
@@ -1596,6 +1646,8 @@ function uploadAvatar(event, settings)
 
 function reloadConverse(background)
 {
+    console.log("reloadConverse", background);
+
     if (background.pade.chatWindow.id)
     {
         chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].location.reload();

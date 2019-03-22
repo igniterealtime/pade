@@ -27,34 +27,6 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("Connection"),
-            "name": "useAnonymous",
-            "type": "checkbox",
-            "label": i18n.get("Use an anonymous connection to server")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Connection"),
-            "name": "useWinSSO",
-            "type": "checkbox",
-            "label": i18n.get("Use Windows Single Sign On (SSO)")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Connection"),
-            "name": "useCredsMgrApi",
-            "type": "checkbox",
-            "label": i18n.get("Use Credential Management API SSO")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Connection"),
-            "name": "useSmartIdCard",
-            "type": "checkbox",
-            "label": i18n.get("Use E-Residency Smart ID")
-        },
-        {
-            "tab": i18n.get("Connection"),
             "group": i18n.get("Login"),
             "name": "displayname",
             "type": "text",
@@ -131,28 +103,63 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("TOTP"),
+            "group": i18n.get("Authentication"),
+            "name": "useBasicAuth",
+            "type": "checkbox",
+            "label": i18n.get("Use Basic Authentication (requires chat api plugin)")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
+            "name": "useAnonymous",
+            "type": "checkbox",
+            "label": i18n.get("Use an Anonymous identity")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
+            "name": "useWinSSO",
+            "type": "checkbox",
+            "label": i18n.get("Use Windows Single Sign On (SSO)")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
+            "name": "useCredsMgrApi",
+            "type": "checkbox",
+            "label": i18n.get("Use Credential Management API SSO")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
+            "name": "useSmartIdCard",
+            "type": "checkbox",
+            "label": i18n.get("Use E-Residency Smart ID")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
             "name": "useTotp",
             "type": "checkbox",
             "label": i18n.get("Time based One-Time Password - Use OfChat and FreeOTP or Google Authernticator App")
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("TOTP"),
+            "group": i18n.get("Authentication"),
             "name": "qrcode",
             "type": "button",
             "text": i18n.get("QR Code")
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("Certificate"),
+            "group": i18n.get("Authentication"),
             "name": "useClientCert",
             "type": "checkbox",
             "label": i18n.get("Use Client Certificate (No password required)")
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("Certificate"),
+            "group": i18n.get("Authentication"),
             "name": "certificate",
             "type": "button",
             "text": i18n.get("Download")
@@ -445,7 +452,7 @@ this.manifest = {
             "type": "slider",
             "label": i18n.get("Timeout (secs)"),
             "max": 900,
-            "min": 60,
+            "min": 0,
             "step": 30
         },
         {
@@ -950,6 +957,21 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enableHomePage",
+            "type": "checkbox",
+            "label": i18n.get("Enable Home Page")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "homePage",
+            "type": "text",
+            "label": i18n.get("Home Page"),
+            "text": chrome.runtime.getManifest().homepage_url
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseOpenState",
             "type": "popupButton",
             "label": i18n.get("Window Open presence state"),
@@ -1104,6 +1126,13 @@ this.manifest = {
             "name": "saveAutoJoinChats",
             "type": "checkbox",
             "label": i18n.get("Save list of open chat conversations")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "alwaysShowOccupants",
+            "type": "checkbox",
+            "label": i18n.get("Aways show occupants")
         },
         {
             "tab": i18n.get("Converse"),

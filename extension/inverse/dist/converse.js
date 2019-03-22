@@ -58747,7 +58747,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
             'jid': room.get('jid')
           }));
 
-          return bookmark.get('name');
+          return bookmark ? bookmark.get('name') : room.get('name');    // BAO
         } else {
           return room.get('name');
         }
@@ -58854,7 +58854,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
             'jid': this.model.get('jid')
           }));
 
-          return bookmark.get('name');
+          return bookmark ? bookmark.get('name') : this.model.get('name');
         } else {
           return this.model.get('name');
         }

@@ -1,5 +1,7 @@
 var OFMEET_CONFIG = {};
 
+OFMEET_CONFIG.bgWin = chrome.extension.getBackgroundPage();
+
 // mandatory
 
 var __server = getSetting("server");
@@ -15,8 +17,8 @@ if (__baseUrl.indexOf("https://" + __server) == -1)
 }
 
 var __displayname = getSetting("displayname");
-var __username = getSetting("username");
-var __password = getSetting("password");
+var __username = OFMEET_CONFIG.bgWin.pade.username;
+var __password = OFMEET_CONFIG.bgWin.pade.password;
 var __email = getSetting("email", null);
 var __mode = urlParam("mode");
 var __ofmeetUrl = __mode ? "https://" + __server + "/webinar/" : getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
@@ -59,16 +61,6 @@ OFMEET_CONFIG = {
         return '<iframe src=' + url + ' id="ofmeet-content" style="width: 100%; height: 100%; border: 0;padding-left: 0px; padding-top: 0px;">';
     },
 };
-
-OFMEET_CONFIG.bgWin = chrome.extension.getBackgroundPage();
-
-if (!OFMEET_CONFIG.bgWin)
-{
-    chrome.runtime.getBackgroundPage(function(win)
-    {
-        OFMEET_CONFIG.bgWin = win;
-    });
-}
 
 window.addEventListener("DOMContentLoaded", function()
 {
@@ -124,20 +116,9 @@ function getSetting(name, defaultValue)
     if (window.localStorage["store.settings." + name])
     {
         value = JSON.parse(window.localStorage["store.settings." + name]);
-
-        if (name == "password") value = getPassword(value);
     }
 
     return value;
-}
-
-function getPassword(password)
-{
-    if (!password || password == "") return null;
-    if (password.startsWith("token-")) return atob(password.substring(6));
-
-    window.localStorage["store.settings.password"] = JSON.stringify("token-" + btoa(password));
-    return password;
 }
 
 function createAvatar()

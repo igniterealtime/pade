@@ -1,11 +1,11 @@
 if (!window.chrome || !window.chrome.extension)
 {
-    window.pade = getBackgroundPage().pade;
-
     var appName = "BeeKeeper";
     var appVer = "1.1.1";
 
     window.chrome = {
+        pade: true,
+
         storage : {
             local : {
                 get : function(query, callback) {
@@ -13,11 +13,11 @@ if (!window.chrome || !window.chrome.extension)
                 },
                 set : function(data, callback) {
                     if (callback) callback({});
-                }
+                },
+                clear : function() {
+                },
             }
         },
-
-        pade: true,
 
         downloads: {
             download: function(json, callback) {
@@ -30,13 +30,26 @@ if (!window.chrome || !window.chrome.extension)
                 addListener: function(win)  {
                 }
             },
-
             onFocusChanged: {
                 addListener: function(win) {
                 }
             },
-
+            onCreated: {
+                addListener: function(win) {
+                }
+            },
+            onRemoved: {
+                addListener: function(win) {
+                }
+            },
+            create: function(data, callback) {
+                console.log("create window", data);
+                openUrl(data);
+            },
             update: function(id, prop) {
+
+            },
+            remove: function(id) {
 
             },
         },
@@ -47,21 +60,22 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             getBackgroundPage: function() {
-                return getBackgroundPage();
+                return top;
             },
 
             getViews: function(filter) {
-                return []
+                return [top.opener.document.getElementById("inverse").contentWindow]
             }
         },
 
         tabs : {
             query : function(data, callback) {
-                if (callback) callback();
+                if (callback) callback([]);
             },
 
             create : function(data, callback) {
-                if (callback) callback();
+                console.log("create tab", data);
+                openUrl(data);
             },
 
             update : function(tabId, options, callback) {
@@ -69,25 +83,103 @@ if (!window.chrome || !window.chrome.extension)
             }
         },
 
+        idle : {
+            onStateChanged: {
+                addListener: function(win)  {
+                }
+            },
+        },
+
+        notifications : {
+            onClosed: {
+                addListener: function(notificationId, byUser)  {
+                }
+            },
+            onButtonClicked: {
+                addListener: function(notificationId, buttonIndex)  {
+                }
+            },
+            onClicked: {
+                addListener: function(notificationId)  {
+                }
+            },
+            create: function(notifyId, opt, callback)  {
+                createNotification(notifyId, opt, callback);
+            }
+        },
+
         runtime : {
             getManifest : function() {
                 return {
-                    version: appVer
+                    version: appVer,
+                    homepage_url: "https://igniterealtime.org"
                 }
             },
             onMessage: {
                 addListener: function(win)  {
                 }
             },
+            onInstalled: {
+                addListener: function(details)  {
+                }
+            },
+            onStartup: {
+                addListener: function(details)  {
+                }
+            },
+            onMessageExternal: {
+                addListener: function(request, sender, sendResponse)  {
+                }
+            },
+            onConnect: {
+                addListener: function(port)  {
+                }
+            },
+            onConnect: {
+                addListener: function(port)  {
+                }
+            },
+            onConnect: {
+                addListener: function(port)  {
+                }
+            },
             getURL : function(file) {
                 return document.location.protocol + '//' + document.location.host + '/apps/' + file;
+            },
+            reload: function() {
+
+                if (localStorage["store.settings.server"])
+                {
+                    if (top.opener)
+                    {
+                        top.opener.location.reload();
+                        top.close();
+                    }
+                    else {
+                        top.location.href = "/apps/index.html";
+                    }
+                }
+                else {
+                    location.reload();
+                }
+            }
+        },
+
+        commands : {
+            onCommand: {
+                addListener: function(comand)  {
+                }
             },
         },
 
         browserAction : {
             setIcon : function(data, callback) {
                 if (callback) callback();
-            }
+            },
+            onClicked: {
+                addListener: function(notificationId)  {
+                }
+            },
         },
 
         i18n: {
@@ -103,67 +195,24 @@ if (!window.chrome || !window.chrome.extension)
     };
 }
 
-function getBackgroundPage()
+function createNotification(notifyId, opt, callback)
 {
-    var server = getSetting("server", null);
-    var domain = getSetting("domain", null);
-    var username = getSetting("username", null);
-    var password = getSetting("password", null);
-    var avatar = getSetting("avatar", null);
-    var ofmeetUrl = getSetting("ofmeetUrl", null);
+    console.debug("createNotification", notifyId, opt);
 
-    if (!ofmeetUrl) ofmeetUrl = "https://" + server + "/ofmeet/";
+    var prompt = new Notification(opt.contextMessage,
+    {
+        body: opt.message,
+        icon: opt.iconUrl,
+        requireInteraction: opt.requireInteraction
+    });
 
-    return {
-        openWebAppsWindow: function(url, status, width, height)
-        {
-            if (!width) width = 1024;
-            if (!height) height = 768;
-
-            if (url.startsWith("_")) url = url.substring(1);
-            var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : "https://" + url.trim());
-
-            console.debug("openWebAppsWindow", httpUrl, width, height);
-            window.open(httpUrl, httpUrl);
-        },
-
-        notifyText: function(message, context, jid, buttons, callback, notifyId) {
-            notifyText(message, context, jid, buttons, callback, notifyId)
-        },
-
-        openVideoWindow: function(room, mode)
-        {
-            var url = ofmeetUrl;
-            if (room) url = url + room;
-            window.open(url, url);
-        },
-
-        getVideoWindowUrl: function(room, mode)
-        {
-            var url = chrome.runtime.getURL("jitsi-meet/chrome.index.html");
-            if (room) url = url + "?room=" + room + (mode ? "&mode=" + mode : "");
-            return url;
-        },
-
-        pade: {
-            autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {},
-            transferWiseUrl: "https://api.transferwise.com/v1", // "https://api.sandbox.transferwise.tech/v1";
-            server: server,
-            domain: domain,
-            username: username,
-            password: password,
-            avatar: avatar,
-            ofmeetUrl: ofmeetUrl,
-            chatWindow: {},
-            busy: false,
-            jid: username + "@" + domain,
-        },
-
-        searchConversations: function(keywords, callback) {
-            searchConversations(keywords, callback);
-        },
+    prompt.onclick = function(event)
+    {
+        event.preventDefault();
+        if (callback) callback(notifyId, 0);
     }
 }
+
 function getSetting(name, defaultValue)
 {
     var localStorage = window.localStorage
@@ -195,6 +244,15 @@ function setSetting(name, value)
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
+function setDefaultSetting(name, defaultValue)
+{
+    console.debug("setDefaultSetting", name, defaultValue, window.localStorage["store.settings." + name]);
+
+    if (!window.localStorage["store.settings." + name] && window.localStorage["store.settings." + name] != false)
+    {
+        if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
+    }
+}
 function getPassword(password, localStorage)
 {
     if (!password || password == "") return null;
@@ -204,24 +262,15 @@ function getPassword(password, localStorage)
     return password;
 }
 
-function notifyText(message, context, jid, buttons, callback, notifyId)
+function openUrl(data)
 {
-    console.debug("notifyText", message, context, jid, buttons, notifyId);
+    var optionsPage = data.url.indexOf("options/index.html") > -1;
 
-    //if (pade.busy) return;  // no notifications when I am busy
-
-    if (!notifyId) notifyId = Math.random().toString(36).substr(2,9);
-
-    var prompt = new Notification(context,
+    if (optionsPage)
     {
-        body: message,
-        icon: chrome.runtime.getURL("image.png"),
-        requireInteraction: !!buttons && !!callback
-    });
-
-    prompt.onclick = function(event)
-    {
-        event.preventDefault();
-        if (callback && buttons) callback(notifyId, 0);
+        window.open("/apps/options.html", "options");
     }
-};
+    else {
+        window.open(data.url, data.url);
+    }
+}

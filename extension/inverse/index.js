@@ -9,13 +9,46 @@ window.addEventListener("load", function()
     console.debug("inverse addListener load");
 
     BrowserDetect.init();
-    doConverse();
 
+    if (chrome.pade)    // browser mode
+    {
+        setDefaultSetting("useBasicAuth", true);
+        setDefaultSetting("ofmeetUrl", "https://" + location.host + "/ofmeet/");
+
+        setSetting("server", location.host);
+        setSetting("domain", location.hostname);
+
+    }
+
+    var server = getSetting("server");
+    var username = getSetting("username");
+    var password = getSetting("password");
+    var anonUser = getSetting("useAnonymous", false);
+
+    if (getSetting("useBasicAuth", false))
+    {
+        fetch("https://" + server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+        {
+            username = token.username;
+            password = token.password;
+
+            doConverse(server, username, password, false);
+
+        }).catch(function (err) {
+            console.error('access denied error', err);
+
+            doConverse(server, username, password, true);
+        });
+
+    }
+    else {
+        doConverse(server, username, password, anonUser);
+    }
 });
 
 window.addEventListener('message', function (event)
 {
-    console.debug("inverse addListener message", event.data);
+    //console.debug("inverse addListener message", event.data);
 
     if (event.data && event.data.action)
     {
@@ -173,8 +206,10 @@ var BrowserDetect = {
     ]
 };
 
-function doConverse()
+function doConverse(server, username, password, anonUser)
 {
+    console.log("doConverse", server, username, password, anonUser);
+
     function getUniqueID()
     {
         return Math.random().toString(36).substr(2, 9);
@@ -257,14 +292,11 @@ function doConverse()
             }
         });
     }
-    var server = getSetting("server", null);
 
     if (server)
     {
-        var anonUser = getSetting("useAnonymous", false);
+        var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
         var domain = getSetting("domain", null);
-        var username = getSetting("username", null);
-        var password = getSetting("password", null);
         var displayname = getSetting("displayname", username);
 
         var autoJoinRooms = undefined;
@@ -307,8 +339,13 @@ function doConverse()
         }
 
         var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments"];
-        //var viewMode = window.pade ? 'overlayed' : 'fullscreen';
-        viewMode = 'fullscreen';
+        var viewMode = chrome.pade ? 'fullscreen' : (window.pade ? 'overlayed' : 'fullscreen');
+
+        if (getSetting("enableHomePage", false))
+        {
+            viewMode = 'overlayed';
+            document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url)
+        }
 
         if (getSetting("enableInfoPanel", false))
         {

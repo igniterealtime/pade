@@ -215,6 +215,30 @@ window.addEventListener("unload", function ()
 
 window.addEventListener("load", function()
 {
+    if (chrome.pade)    // browser mode
+    {
+        setDefaultSetting("useBasicAuth", true);
+        setDefaultSetting("ofmeetUrl", "https://" + location.host + "/ofmeet/");
+
+        setSetting("server", location.host);
+        setSetting("domain", location.hostname);
+
+        fetch("https://" + location.host + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+        {
+            username = token.username;
+            password = token.password;
+
+            setupBrowserMode(username, password);
+
+        }).catch(function (err) {
+            console.error('access denied error', err);
+
+            setupBrowserMode(); // anonymous mode
+        });
+
+        return;
+    }
+
     chrome.runtime.onInstalled.addListener(function(details)
     {
         if (details.reason == "install")
@@ -619,12 +643,15 @@ window.addEventListener("load", function()
             else {
                 var show = getSetting("converseCloseState", "online");
 
-                if (show == "online")
+                if (pade.connection)
                 {
-                     pade.connection.send($pres());
-                }
-                else {
-                    pade.connection.send($pres().c("show").t(show).up());
+                    if (show == "online")
+                    {
+                         pade.connection.send($pres());
+                    }
+                    else {
+                        pade.connection.send($pres().c("show").t(show).up());
+                    }
                 }
             }
         }
@@ -659,7 +686,7 @@ window.addEventListener("load", function()
 
             pade.videoWindow = null;
             pade.minimised = false;
-            pade.connection.send($pres());  // needed because JitsiMeet send unavailable
+           if (pade.connection) pade.connection.send($pres());  // needed because JitsiMeet send unavailable
 
             etherlynk.stopRecorder();
         }
@@ -707,12 +734,6 @@ window.addEventListener("load", function()
 
     });
 
-    if (getSetting("desktopShareMode", false))
-    {
-        console.log("pade screen share mode only");
-        return;
-    }
-
     pade.server = getSetting("server", null);
     pade.domain = getSetting("domain", null);
     pade.username = getSetting("username", null);
@@ -722,9 +743,10 @@ window.addEventListener("load", function()
 
     if (!pade.ofmeetUrl) pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
 
-    chrome.idle.setDetectionInterval(getSetting("idleTimeout", 300));
-
     checkForChatAPI();
+
+    var idleTimeout = getSetting("idleTimeout", 300);
+    if (idleTimeout > 0) chrome.idle.setDetectionInterval(idleTimeout);
 
     console.debug("pade loaded");
 
@@ -776,7 +798,7 @@ window.addEventListener("load", function()
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
     chrome.browserAction.setBadgeText({ text: 'off' });
 
-    if (pade.server && pade.domain && ((!getSetting("useAnonymous", false) && pade.password) || getSetting("useAnonymous", false)))
+    if (pade.server && pade.domain && ((!getSetting("useAnonymous", false) && !getSetting("useBasicAuth", false) && pade.password) || (getSetting("useAnonymous", false) || getSetting("useBasicAuth", false))))
     {
         if (pade.username)
         {
@@ -1058,7 +1080,7 @@ function dndCheckClick(info)
     if (!info.wasChecked && info.checked)
     {
         pade.busy = true;
-        pade.connection.send($pres().c("show").t("dnd").up());
+        if (pade.connection) pade.connection.send($pres().c("show").t("dnd").up());
         if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "dnd");
     }
     else
@@ -1066,7 +1088,7 @@ function dndCheckClick(info)
     if (info.wasChecked && !info.checked)
     {
         pade.busy = false;
-        pade.connection.send($pres());
+        if (pade.connection) pade.connection.send($pres());
         if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "online");
     }
 
@@ -1139,6 +1161,11 @@ function notifyText(message, context, jid, buttons, callback, notifyId)
     {
         chrome.notifications.create(notifyId, opt, function(notificationId)
         {
+            if (chrome.pade)
+            {
+                if (callback) callback(notificationId, 0);
+            }
+            else
             if (callback) callbacks[notificationId] = callback;
         });
     }
@@ -2759,6 +2786,16 @@ function setSetting(name, value)
     window.localStorage["store.settings." + name] = JSON.stringify(value);
 }
 
+function setDefaultSetting(name, defaultValue)
+{
+    console.debug("setDefaultSetting", name, defaultValue, window.localStorage["store.settings." + name]);
+
+    if (!window.localStorage["store.settings." + name] && window.localStorage["store.settings." + name] != false)
+    {
+        if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);
+    }
+}
+
 function getSetting(name, defaultValue)
 {
     //console.debug("getSetting", name, defaultValue);
@@ -3068,7 +3105,11 @@ function getVCard(jid, callback, errorback)
     {
        if (callback) callback(pade.vcards[jid]);
 
-    } else {
+    }
+    else
+
+    if (pade.connection)
+    {
         pade.connection.vCard.get(jid, function(vCard)
         {
             pade.vcards[jid] = vCard;
@@ -3078,7 +3119,8 @@ function getVCard(jid, callback, errorback)
             if (errorback) errorback(error);
             console.error(error);
         });
-    }
+
+    } else errorback();
 }
 
 function setVCard(vCard, callback, errorback)
@@ -3499,79 +3541,107 @@ function getConnection(connUrl)
 
 function doPadeConnect()
 {
+    var resource = chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS + "-" + Math.random().toString(36).substr(2,9);
     var connUrl = "https://" + pade.server + "/http-bind/";
-    var connJid = pade.username + "@" + pade.domain  + "/" + chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS + "-" + Math.random().toString(36).substr(2,9);
 
     if (getSetting("useWebsocket", false))
     {
         connUrl = "wss://" + pade.server + "/ws/";
     }
 
+    var connJid = pade.username + "@" + pade.domain  + "/" + resource;
+
+    pade.connection = getConnection(connUrl);
+
+    var doXmppConnect = function()
+    {
+        pade.connection.connect(connJid, pade.password, function (status)
+        {
+            console.debug("pade.connection ===>", status, connUrl, connJid);
+
+            if (status === Strophe.Status.CONNECTED)
+            {
+                addHandlers();
+                pade.connection.send($pres());
+
+                chrome.browserAction.setBadgeText({ text: "Wait.." });
+                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
+
+                pade.presence = {};
+                pade.participants = {};
+
+                setTimeout(function()
+                {
+                    if (!getSetting("useAnonymous", false))
+                    {
+                        fetchContacts(function(contact)
+                        {
+                            handleContact(contact);
+                        });
+
+                        updateVCard();
+                        setupStreamDeck();
+                        enableRemoteControl();
+                        runMeetingPlanner();
+                        publishUserLocation();
+                        setupUserPayment();
+                    }
+
+                    closeCredsWindow();
+
+                    if (getSetting("converseAutoReOpen", true)) reopenConverse();
+
+                    chrome.browserAction.setBadgeText({ text: "" });
+                    pade.isReady = true;
+
+                }, 3000);
+            }
+            else
+
+            if (status === Strophe.Status.DISCONNECTED)
+            {
+                chrome.browserAction.setBadgeText({ text: "off" });
+                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
+            }
+            else
+
+            if (status === Strophe.Status.AUTHFAIL)
+            {
+               doExtensionPage("options/index.html");
+               closeCredsWindow();
+            }
+
+        });
+    }
+
     if (getSetting("useAnonymous", false))
     {
         connJid = pade.domain;
         pade.password = null;
+
+        doXmppConnect();
     }
+    else
 
-    pade.connection = getConnection(connUrl);
-
-    pade.connection.connect(connJid, pade.password, function (status)
+    if (getSetting("useBasicAuth", false))
     {
-        console.debug("pade.connection ===>", status, connUrl, connJid);
-
-        if (status === Strophe.Status.CONNECTED)
+        fetch("https://" + pade.server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
         {
-            addHandlers();
-            pade.connection.send($pres());
+            pade.username = token.username;
+            pade.password = token.password;
+            pade.jid = pade.username + "@" + pade.domain;
+            connJid = pade.username + "@" + pade.domain  + "/" + resource;
 
-            chrome.browserAction.setBadgeText({ text: "Wait.." });
-            chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
+            doXmppConnect();
 
-            pade.presence = {};
-            pade.participants = {};
+        }).catch(function (err) {
+            console.error('access denied error', err);
+            doExtensionPage("options/index.html");
+        });
 
-            setTimeout(function()
-            {
-                if (!getSetting("useAnonymous", false))
-                {
-                    fetchContacts(function(contact)
-                    {
-                        handleContact(contact);
-                    });
-
-                    updateVCard();
-                    setupStreamDeck();
-                    enableRemoteControl();
-                    runMeetingPlanner();
-                    publishUserLocation();
-                    setupUserPayment();
-                }
-
-                closeCredsWindow();
-
-                if (getSetting("converseAutoReOpen", true)) reopenConverse();
-
-                chrome.browserAction.setBadgeText({ text: "" });
-                pade.isReady = true;
-
-            }, 3000);
-        }
-        else
-
-        if (status === Strophe.Status.DISCONNECTED)
-        {
-            chrome.browserAction.setBadgeText({ text: "off" });
-            chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
-        }
-        else
-
-        if (status === Strophe.Status.AUTHFAIL)
-        {
-           doExtensionPage("options/index.html");
-           closeCredsWindow();
-        }
-
-    });
+    }
+    else
+    doXmppConnect();
 }
 
 function reopenConverse()
@@ -3927,4 +3997,127 @@ function setupWorkgroup()
     }, function(error){
         console.error("agent-status-request error", error);
     });
+}
+function searchConversations(keyword, callback)
+{
+    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
+    var url =  "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/messages" + query;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("searchConversations", url, options);
+    var conversations = [];
+
+    fetch(url, options).then(function(response){ return response.json()}).then(function(messages)
+    {
+        console.debug("searchConversations", messages.conversation);
+
+        if (messages.conversation instanceof Array)
+        {
+            conversations = messages.conversation;
+            callback(processConvSearch(conversations, keyword), conversations, false);
+        }
+        else if (messages.conversation) {
+            conversations = [messages.conversation];
+            callback(processConvSearch([messages.conversation], keyword), conversations, false);
+        }
+        else {
+            callback("<p/><p/>No conversations found", conversations, false);
+        }
+
+    }).catch(function (err) {
+        callback("<p/><p/> Error - " + err, conversations, true);
+    });
+
+}
+
+function pdfConversations(keyword, callback)
+{
+    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
+    var url = "https://" + getSetting("server") + "/dashboard/pdf?keywords=" + keyword;
+    //var url = "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/pdf" + query;
+    var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
+
+    console.debug("pdfConversations", url, options);
+    var conversations = [];
+
+    fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
+    {
+        console.debug("pdfConversations", blob);
+        callback(blob, false);
+
+    }).catch(function (err) {
+        //console.error('convSearch error', err);
+        callback(null, true);
+    });
+
+}
+
+function processConvSearch(conversations, keyword)
+{
+    if (!conversations || conversations.length == 0) return "<p/><p/>No conversations found";
+
+    keyword = keyword.replace(/[^a-zA-Z ]/g, "");
+
+    var query = new RegExp("(\\b" + keyword + "\\b)", "gim");
+    var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Chat</th><th>Conversation</th></tr>";
+
+    console.debug("processConvSearch", conversations, keyword);
+
+    for (var i=conversations.length-1; i>=0; i--)
+    {
+        var conversation = conversations[i];
+
+        var jid = conversation.chatRoom ? conversation.chatRoom : conversation.participantList[0].split("/")[0];
+
+        if (jid == pade.jid) jid = conversation.participantList[1].split("/")[0]
+        var prefix = "<a href='#' id='conversation-" + conversation.conversationID + "' title='" + jid + "'>";
+        var suffix = "</a>";
+
+        var date = moment(conversation.startDate).format('MMM DD YYYY <br/> HH:mm:ss') + "<br/>" + moment(conversation.lastActivity).format('HH:mm:ss');
+        var partcipants = conversation.chatRoom ? prefix + conversation.chatRoom.split("@")[0] + suffix + "<br/>" + "(" + conversation.participantList.length + ")" : prefix + conversation.participantList[0].split("@")[0] + suffix + "<br/>" + "<a title='" + conversation.participantList[1].split("/")[0] + "'>" + conversation.participantList[1].split("@")[0] + "</a>";
+
+        var messages = conversation.messages.message;
+
+        if (!messages instanceof Array)
+        {
+            messages = [messages]
+        }
+
+        var convHtml = "";
+
+        for (var j=0; j<messages.length; j++)
+        {
+            if (messages[j].body.indexOf("has left the room") == -1 && messages[j].body.indexOf("has joined the room") == -1)
+            {
+                convHtml = convHtml + "[" + moment(messages[j].sentDate).format('hh:mm:ss') + "] <b>" + messages[j].from.split("@")[0] + ":</b>&nbsp;" + messages[j].body + "<p/>"
+            }
+        }
+
+        html = html + "<tr><td>" + date + "</td><td>" + partcipants + "</td><td>" + convHtml + "</td></tr>";
+    }
+
+    html =  html + "</table>" + "<p/><p/>";
+    var enew = html.replace(/(<span>|<\/span>)/igm, "");
+    var newe = enew.replace(query, "<span style=background-color:#FF9;color:#555;>$1</span>");
+    return newe;
+}
+
+function setupBrowserMode(username, password)
+{
+    pade.server = getSetting("server", location.host);
+    pade.domain = getSetting("domain", location.hostname);
+    pade.username = getSetting("username", username);
+    pade.password = getSetting("password", password);
+    pade.jid = pade.username ? (pade.username + "@" + pade.domain) : pade.domain;
+    pade.displayName = getSetting("displayname", (pade.username ? pade.username : "Anonymous"));
+
+    pade.chatWindow = {id: 1};
+
+    pade.ofmeetUrl = getSetting("ofmeetUrl", null);
+    if (!pade.ofmeetUrl) pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
+    if (pade.username) pade.avatar = getSetting("avatar", createAvatar(pade.username));
+
+    checkForChatAPI();
+
+    console.log("pade in browser mode");
 }

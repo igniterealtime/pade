@@ -25,6 +25,7 @@ if (channel)
             }
             else {
                 var script2 = document.createElement('script');
+                script2.async = false;
                 script2.innerHTML = "window.pade = " + JSON.stringify(message) + ";"
                 document.body.appendChild(script2);
 
@@ -33,7 +34,7 @@ if (channel)
                     var css = document.createElement('link');
                     css.type = "text/css";
                     css.rel = "stylesheet";
-                    css.href = message.url + "inverse/css/" + file + ".css";
+                    css.href = message.url + file + ".css";
                     document.body.appendChild(css);
                 }
 
@@ -49,19 +50,43 @@ if (channel)
                 {
                     var div = document.createElement('div');
                     div.id = id;
+                    //div.class = "theme-concord";
                     document.body.appendChild(div);
                 }
 
-                loadCSS("font-awesome.min");
-                loadCSS("converse");
-                loadCSS("community");
+                loadCSS("inverse/css/font-awesome.min");
+                loadCSS("inverse/css/converse");
+                loadCSS("inverse/css/community");
+
+                loadCSS("inverse/plugins/css/pade");
+                loadCSS("inverse/plugins/css/marked");
+                loadCSS("inverse/plugins/css/search");
+                loadCSS("inverse/plugins/css/info");
+                loadCSS("inverse/plugins/css/custom");
+
+                loadJS("inverse/chrome");
+                loadJS("inverse/plugins/themes");
 
                 loadJS("inverse/dist/libsignal-protocol");
                 loadJS("inverse/dist/converse");
                 loadJS("inverse/dist/jquery.min");
+
+                loadJS("inverse/plugins/info");
+                loadJS("inverse/plugins/payments");
+                loadJS("inverse/plugins/markdown");
+                loadJS("inverse/plugins/canned");
+                loadJS("inverse/plugins/search");
+                loadJS("inverse/plugins/directory");
+                loadJS("inverse/plugins/invite");
+                loadJS("inverse/plugins/vmsg");
                 loadJS("inverse/plugins/webmeet");
                 loadJS("inverse/plugins/pade");
+
                 loadJS("inverse/plugins/libs/paste");
+                loadJS("inverse/plugins/libs/marked");
+                loadJS("inverse/plugins/libs/marked-forms");
+                loadJS("inverse/plugins/libs/to-markdown");
+                loadJS("inverse/plugins/libs/clipboard2markdown");
                 loadJS("inverse/index");
 
                 loadDIV("conversejs");
