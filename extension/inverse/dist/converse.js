@@ -50169,7 +50169,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         {
             const text = message.get('message');
             let pos = text.indexOf("\n");
-            if (pos == -1) pos = text.indexOf(".");
             replyMessage = pos == -1 ? text : text.substring(0, pos);
         }
 
@@ -50182,11 +50181,20 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
         const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
 
-        navigator.clipboard.writeText(message).then(function() {
-            console.debug('onMessageForwardButtonClicked', message);
-        }, function(err) {
-            console.error('onMessageForwardButtonClicked', err);
-        });
+        if (chrome.storage)
+        {
+            chrome.storage.local.get("pade.notepad", function(obj) {
+                console.debug("get pade.notepad", obj);
+
+                if (!obj["pade.notepad"]) obj["pade.notepad"] = "";
+
+                obj["pade.notepad"] = obj["pade.notepad"] + "\n\n" + message;
+
+                chrome.storage.local.set(obj, function() {
+                  console.debug('set pade.notepad', obj);
+                });
+            });
+        }
       },
 
       onMessageLikeButtonClicked(ev) { // BAO
@@ -50199,8 +50207,14 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         console.debug('onMessageDislikeButtonClicked', msgId, from);
 
-        const json = {event: "pade.emoji.reation", reaction: "like", msgId: msgId, nick: nick};
-        _converse.connection.send($msg({type: 'groupchat', 'to': from}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)));
+        if (msgId && msgId.trim() != "")
+        {
+            const json = {event: "pade.emoji.reation", reaction: "like", msgId: msgId, nick: nick};
+            _converse.connection.send($msg({type: 'groupchat', 'to': from})
+                .c("body").t("/me " +  __("likes") + " #" + msgId + " :-)").up()
+                .c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up()
+                .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
+        }
       },
 
       onMessageDislikeButtonClicked(ev) { // BAO
@@ -50213,20 +50227,28 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         console.debug('onMessageDislikeButtonClicked', msgId, from);
 
-        const json = {event: "pade.emoji.reation", reaction: "dislike", msgId: msgId, nick: nick};
-        _converse.connection.send($msg({type: 'groupchat', 'to': from}).c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)));
+        if (msgId && msgId.trim() != "")
+        {
+            const json = {event: "pade.emoji.reation", reaction: "dislike", msgId: msgId, nick: nick};
+            _converse.connection.send($msg({type: 'groupchat', 'to': from})
+                .c("body").t("/me " + __("dislikes") + " #" + msgId + " :-(").up()
+                .c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up()
+                .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
+        }
       },
 
       onMessagePinButtonClicked(ev) { // BAO
         ev.preventDefault();
 
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
-        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
+        const msg = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
+        const message = msg.get('message');
+        const type = msg.get('type');
+        const prefix = (type == "groupchat") ? msg.get('nick') + ": " : "";
 
         let pos = message.indexOf("\n");
-        if (pos == -1) pos = message.indexOf(".");
 
-        const pinnedMessage = pos == -1 ? message : message.substring(0, pos);
+        const pinnedMessage = prefix + (pos == -1 ? message : message.substring(0, pos));
         const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
         const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
         const msgId = message_el.getAttribute('data-msgid');
@@ -52376,7 +52398,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
             'whiteList': {}
           });
 
-          if (getSetting("useMarkdown", false))   // BAO
+          if (getSetting("useMarkdown", true))   // BAO
           {
               msg_content.innerHTML = _.flow(_.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].geoUriToHttp, _, _converse.geouri_replacement), _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMentionsMarkup, _, this.model.get('references'), this.model.collection.chatbox), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addHyperlinks, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addMarkdown, _converse), _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].renderNewLines, _.partial(_converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_8__["default"].addEmoji, _converse, _))(text);
 
@@ -91978,7 +92000,7 @@ _core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (_converse,
         markedText = markedText.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
 
         // BAO do hashtags
-        markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span title='hashtag' class='badge badge-hash-tag'>$2</span>");
+        markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span data-hashtag='$2' title='hashtag' class='badge badge-hash-tag'>$2</span>");
 
         return markedText;
 };

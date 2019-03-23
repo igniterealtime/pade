@@ -55,7 +55,7 @@
     "storage",
     "tabs",
     "idle", 
-    "notifications", 
+    "notifications",
     "http://*/*", 
     "https://*/*"
   ],

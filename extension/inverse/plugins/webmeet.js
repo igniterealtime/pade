@@ -26,7 +26,7 @@
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
-     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null;
+     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null;
 
      // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -169,6 +169,57 @@
                 }
             });
 
+            NotepadDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                    return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">Notepad</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body"></div>' +
+                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-share" data-dismiss="modal">Share</button> <button type="button" class="btn btn-danger">Clear</button><button type="button" class="btn" data-dismiss="modal">Close</button></div>' +
+                         '</div> </div> </div>';
+                },
+                afterRender() {
+                    var that = this;
+                    var view = this.model.get("view");
+                    var notepad = view.model.get("notepad");
+
+                    this.el.addEventListener('shown.bs.modal', function()
+                    {
+                        if (!notepad) notepad = "";
+                        that.el.querySelector('.modal-body').innerHTML = '<textarea class="pade-notepad" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:200px;">' + notepad + '</textarea>';
+
+                    }, false);
+                },
+                events: {
+                    "click .btn-share": "shareNotePad",
+                    "click .btn-danger": "clearNotePad",
+                },
+
+                shareNotePad() {
+                    const message = this.el.querySelector('.pade-notepad').value;
+
+                    navigator.clipboard.writeText(message).then(function() {
+                        console.debug('shareNotePad', message);
+
+                        chrome.storage.local.set({"pade.notepad": message}, function(obj) {
+                          console.debug('set shareNotePad', obj);
+                        });
+                    }, function(err) {
+                        console.error('shareNotePad', err);
+                    });
+                },
+                clearNotePad() {
+                    this.el.querySelector('textarea').value = "";
+
+                    chrome.storage.local.set({"pade.notepad": ""}, function(obj) {
+                      console.debug('set shareNotePad', obj);
+                    });
+                }
+            });
+
             _converse.api.settings.update({
                 'initialize_message': 'Initializing webmeet',
                 'visible_toolbar_buttons': {
@@ -288,6 +339,9 @@
                             addToolbarItem(view, id, "webmeet-webinar-" + id, html);
                         }
                     }
+
+                    html = '<a class="fa fa-pencil-alt" title="Notepad"></a>';
+                    addToolbarItem(view, id, "webmeet-notepad-" + id, html);
 
                     html = '<a class="fa fa-sync" title="Refresh"></a>';
                     addToolbarItem(view, id, "webmeet-refresh-" + id, html);
@@ -423,6 +477,15 @@
                     {
                         evt.stopPropagation();
                         view.clearMessages();
+
+                    }, false);
+
+                    var notepad = document.getElementById("webmeet-notepad-" + id);
+
+                    if (notepad) notepad.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        openNotepad(view);
 
                     }, false);
 
@@ -748,6 +811,20 @@
         }
     });
 
+    var openNotepad = function(view)
+    {
+        chrome.storage.local.get("pade.notepad", function(obj)
+        {
+            console.debug("get pade.notepad", obj);
+
+            if (!obj["pade.notepad"]) obj["pade.notepad"] = "";
+
+            view.model.set("notepad", obj["pade.notepad"]);
+            notepadDialog = new NotepadDialog({'model': new converse.env.Backbone.Model({view: view}) });
+            notepadDialog.show();
+        });
+    }
+
     var openChatbox = function openChatbox(view)
     {
         let jid = view.model.get("jid");
@@ -790,13 +867,13 @@
         }).on('pasteTextRich', function(ev, data){
             console.debug("pasteTextRich", data);
 
-            if (getSetting("useMarkdown", false))
+            if (getSetting("useMarkdown", true))
                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
         }).on('pasteTextHtml', function(ev, data){
             console.debug("pasteTextHtml", data);
 
-            if (getSetting("useMarkdown", false))
+            if (getSetting("useMarkdown", true))
                 pasteInputs[id][0].value = pasteInputs[id][0].value.replace(data.text, clipboard2Markdown.convert(data.text));
 
         }).on('focus', function(){
@@ -1281,8 +1358,15 @@
 
         if (command === "pade")
         {
-            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "\n\n"]);
+            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "\n\n"]);
             view.viewUnreadMessages();
+            return true;
+        }
+        else
+
+        if (command == "notepad")
+        {
+            openNotepad(view);
             return true;
         }
         else

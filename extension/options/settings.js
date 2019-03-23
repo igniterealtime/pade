@@ -712,6 +712,11 @@ window.addEvent("domready", function () {
             background.reloadApp();
         });
 
+        if (settings.manifest.enableHomePage) settings.manifest.enableHomePage.addEvent("action", function ()
+        {
+            reloadConverse(background);
+        });
+
         if (settings.manifest.factoryReset) settings.manifest.factoryReset.addEvent("action", function ()
         {
             if (confirm(chrome.i18n.getMessage("resetConfirm")))
@@ -1294,6 +1299,10 @@ function doDefaults(background)
     setDefaultSetting("enablePasting", true);
     setDefaultSetting("converseAutoReOpen", true);
     setDefaultSetting("archivedMessagesPageSize", 51);
+    setDefaultSetting("allowMsgPinning", true);
+    setDefaultSetting("allowMsgReaction", true);
+    setDefaultSetting("alwaysShowOccupants", true);
+    setDefaultSetting("useMarkdown", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");
@@ -1648,7 +1657,7 @@ function reloadConverse(background)
 {
     console.log("reloadConverse", background);
 
-    if (background.pade.chatWindow.id)
+    if (background.pade.chatWindow)
     {
         chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].location.reload();
     }

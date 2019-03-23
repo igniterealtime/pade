@@ -1108,6 +1108,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Private Chat"),
+            "name": "saveAutoJoinChats",
+            "type": "checkbox",
+            "label": i18n.get("Save list of open chat conversations")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
             "name": "autoJoinPrivateChats",
             "type": "textarea",
             "label": i18n.get(""),
@@ -1119,13 +1126,6 @@ this.manifest = {
             "name": "autoJoinPrivateChatsDesc",
             "text": i18n.get("List of contact JIDs to auto-open"),
             "type": "description"
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Private Chat"),
-            "name": "saveAutoJoinChats",
-            "type": "checkbox",
-            "label": i18n.get("Save list of open chat conversations")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1144,6 +1144,27 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Group Chat"),
+            "name": "allowMsgPinning",
+            "type": "checkbox",
+            "label": i18n.get("Allow messages to be pinned")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "allowMsgReaction",
+            "type": "checkbox",
+            "label": i18n.get("Allow message reaction")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "saveAutoJoinRooms",
+            "type": "checkbox",
+            "label": i18n.get("Save list of open groupchat conversations")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "autoJoinRooms",
             "type": "textarea",
             "label": i18n.get(""),
@@ -1155,13 +1176,6 @@ this.manifest = {
             "name": "autoJoinRoomsDesc",
             "text": i18n.get("List of room JIDs to auto-join"),
             "type": "description"
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Group Chat"),
-            "name": "saveAutoJoinRooms",
-            "type": "checkbox",
-            "label": i18n.get("Save list of open groupchat conversations")
         },
         {
             "tab": i18n.get("Converse"),

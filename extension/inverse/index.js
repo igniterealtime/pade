@@ -352,7 +352,7 @@ function doConverse(server, username, password, anonUser)
             whitelistedPlugins.push("info");
         }
 
-        if (getSetting("useMarkdown", false))
+        if (getSetting("useMarkdown", true))
         {
             if (!chrome.pade) whitelistedPlugins.push("markdown");
         }

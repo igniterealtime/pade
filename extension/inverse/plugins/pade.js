@@ -210,6 +210,7 @@
                 {
                     var message = data.stanza;
                     var chatbox = data.chatbox;
+                    var json = data.stanza.querySelector('json');
                     var body = message.querySelector('body');
 
                     if (body && chatbox)
@@ -254,35 +255,32 @@
                         }
 
                         setActiveConversationsUread(chatbox, body.innerHTML);
-                   }
-                   else {
-                        const json = data.stanza.querySelector('json');
+                    }
 
-                        if (json)
+                    if (json)
+                    {
+                        const data = JSON.parse(json.innerHTML);
+                        console.debug("pade plugin - JSON", data);
+
+                        if (chrome.storage && data.reaction && data.msgId)
                         {
-                            const data = JSON.parse(json.innerHTML);
-                            console.debug("pade plugin - JSON", data);
+                            chrome.storage.local.get(data.msgId, function(obj) {
+                                console.debug("get reaction emoji", data);
 
-                            if (chrome.storage && data.reaction && data.msgId)
-                            {
-                                chrome.storage.local.get(data.msgId, function(obj) {
-                                    console.debug("get reaction emoji", data);
+                                if (!obj[data.msgId]) obj[data.msgId] = {};
+                                if (!obj[data.msgId][data.reaction]) obj[data.msgId][data.reaction] = 0;
 
-                                    if (!obj[data.msgId]) obj[data.msgId] = {};
-                                    if (!obj[data.msgId][data.reaction]) obj[data.msgId][data.reaction] = 0;
+                                obj[data.msgId][data.reaction]++;
 
-                                    obj[data.msgId][data.reaction]++;
-
-                                    chrome.storage.local.set(obj, function() {
-                                      console.debug('set emoji reaction', obj);
-                                    });
-
-                                    displayReaction(data.reaction, data.msgId, obj[data.msgId][data.reaction]);
-
+                                chrome.storage.local.set(obj, function() {
+                                  console.debug('set emoji reaction', obj);
                                 });
-                            }
+
+                                displayReaction(data.reaction, data.msgId, obj[data.msgId][data.reaction]);
+
+                            });
                         }
-                   }
+                    }
                 });
 
                 _converse.api.listen.on('chatBoxOpened', function (chatbox)
@@ -352,7 +350,7 @@
 
                     if (messageActionButtons)
                     {
-                        if (chrome.storage)
+                        if (getSetting("allowMsgReaction", true))
                         {
                             if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
                             {
@@ -370,18 +368,22 @@
                             }
                         }
 
-                        if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-pin') && this.model.get("type") === "groupchat")
+                        if (getSetting("allowMsgPinning", true))
                         {
-                            var ele = document.createElement("div");
-                            ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
-                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-pin') && this.model.get("type") === "groupchat")
+                            {
+                                var ele = document.createElement("div");
+                                ele.classList.add("chat-msg__actions");
+                                ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
+                                messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            }
                         }
+
                         if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-forward'))
                         {
                             var ele = document.createElement("div");
                             ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-forward fa fa-share" title="Share this message to clipboard"></button>';
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-forward fa fa-share" title="Add this message to Notepad"></button>';
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
                         if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-reply'))

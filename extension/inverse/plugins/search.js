@@ -7,7 +7,6 @@
 }(this, function (converse) {
     var SearchDialog = null;
     var searchDialog = null;
-    var searchAvailable = false;
 
     var Strophe = converse.env.Strophe;
     var moment = converse.env.moment;
@@ -167,20 +166,32 @@
                     var box_jid = Strophe.getBareJidFromJid(this.model.get("from") || this.model.get("jid"));
                     var view = _converse.chatboxviews.get(box_jid);
 
-                    if (searchAvailable)
+                    converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
                     {
-                        converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
-                        {
-                            badge.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
+                        var oldMsg = view.model.messages.findWhere({'msgid': badge.getAttribute("data-hashtag")});
 
-                                console.debug("pade.hashtag click", badge.innerText);
-                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: badge.innerText}) });
+                        if (oldMsg)
+                        {
+                            const nick = Strophe.getResourceFromJid(oldMsg.get('from'));
+                            badge.title = nick + ": " + oldMsg.get('message');
+                            badge.innerText = "this";
+                        }
+
+                        badge.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+
+                            console.debug("pade.hashtag click", evt.target);
+
+                            const tag = document.getElementById("msg-" + this.getAttribute("data-hashtag"));
+
+                            if (tag) tag.scrollIntoView(false);
+                            else {
+                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: this.getAttribute("data-hashtag")}) });
                                 searchDialog.show();
-                            }, false);
-                        });
-                    }
+                            }
+                        }, false);
+                    });
                 }
             }
         }

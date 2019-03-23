@@ -55,8 +55,11 @@
     "storage",
     "tabs",
     "idle", 
+    "webRequest",
+    "webRequestBlocking",    
     "notifications", 
     "https://igniterealtime.org/*",    
+    "https://discourse.igniterealtime.org/*",      
     "activeTab"
   ],
   
