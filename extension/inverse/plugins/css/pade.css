@@ -39,6 +39,10 @@
     padding: 3px;
 }
 
+#conversejs .chat-msg__reaction {
+    padding-right: 10px;
+}
+
 #conversejs.converse-fullscreen .flyout {
   border-radius: 0;
   border: 0.85px solid #3AA569;

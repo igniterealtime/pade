@@ -969,6 +969,10 @@
                     url = window.pade.ofmeetUrl + room + (mode ? "&mode=" + mode : "");
                     window.open(url, location.href);
                 }
+                else {
+                    url = bgWindow.pade.ofmeetUrl + room + (mode ? "&mode=" + mode : "");
+                    window.open(url, location.href);
+                }
             } else {
                 bgWindow.openVideoWindow(room, mode);
             }

@@ -50202,17 +50202,25 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
         const msgId = message_el.getAttribute('data-msgid');
+        const message = this.model.messages.findWhere({'msgid': msgId});
         const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
         const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
 
-        console.debug('onMessageDislikeButtonClicked', msgId, from);
+        let postfix = "";
+
+        if (message)
+        {
+            var moment_time = moment(message.get('time'));
+            postfix = " " + nick + ": " + moment_time.format(_converse.time_format);
+        }
+
+        console.debug('onMessageLikeButtonClicked', msgId, from);
 
         if (msgId && msgId.trim() != "")
         {
             const json = {event: "pade.emoji.reation", reaction: "like", msgId: msgId, nick: nick};
             _converse.connection.send($msg({type: 'groupchat', 'to': from})
-                .c("body").t("/me " +  __("likes") + " #" + msgId + " :-)").up()
-                .c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up()
+                .c("body").t(":thumbsup:" + postfix).up()
                 .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
         }
       },
@@ -50222,8 +50230,17 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
         const msgId = message_el.getAttribute('data-msgid');
+        const message = this.model.messages.findWhere({'msgid': msgId});
         const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
         const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
+
+        let postfix = "";
+
+        if (message)
+        {
+            var moment_time = moment(message.get('time'));
+            postfix = " " + nick + ": " + moment_time.format(_converse.time_format);
+        }
 
         console.debug('onMessageDislikeButtonClicked', msgId, from);
 
@@ -50231,8 +50248,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         {
             const json = {event: "pade.emoji.reation", reaction: "dislike", msgId: msgId, nick: nick};
             _converse.connection.send($msg({type: 'groupchat', 'to': from})
-                .c("body").t("/me " + __("dislikes") + " #" + msgId + " :-(").up()
-                .c("json", {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up()
+                .c("body").t(":thumbsdown:" + postfix).up()
                 .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
         }
       },
@@ -62374,6 +62390,10 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
 
               if (oobUrl) attrs['oob_url'] = oobUrl.textContent;
               if (oobDesc) attrs['oob_desc'] = oobDesc.textContent;    // BAO
+        });
+
+        _.each(sizzle(`attach-to[xmlns="urn:xmpp:message-attaching:1"]`, stanza), attach => {   // BAO
+              attrs['msg_attach_id'] = attach.getAttribute('id');
         });
 
         if (spoiler) {

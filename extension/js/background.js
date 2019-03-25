@@ -2044,7 +2044,7 @@ function addHandlers()
 
             if (!pade.messageCount) pade.messageCount = 0;
 
-            if (pade.minimised)
+            if (!pade.chatWindow)
             {
                 pade.messageCount++;
                 chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });

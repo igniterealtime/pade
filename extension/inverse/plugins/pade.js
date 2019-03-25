@@ -25,7 +25,7 @@
 
      var _converse = null;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-     var notified = false;
+     var notified = true;
 
     // The following line registers your plugin.
     converse.plugins.add("pade", {
@@ -61,7 +61,13 @@
                 chrome.windows.onFocusChanged.addListener(function(win)
                 {
                     if (win == -1) notified = false;
-                    if (win == bgWindow.pade.chatWindow.id) notified = false;
+
+                    if (win == bgWindow.pade.chatWindow.id)
+                    {
+                        notified = true;
+                        chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                        chrome.browserAction.setBadgeText({ text: ""});
+                    }
                 });
 
                 document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse - " + _converse.VERSION_NAME;
@@ -210,7 +216,7 @@
                 {
                     var message = data.stanza;
                     var chatbox = data.chatbox;
-                    var json = data.stanza.querySelector('json');
+                    var attachTo = data.stanza.querySelector('attach-to');
                     var body = message.querySelector('body');
 
                     if (body && chatbox)
@@ -223,10 +229,20 @@
                         // draw attention to new messages
                         // done here instead of background.js becasue of chatroom messages
 
-                        if (bgWindow.pade.chatWindow && !notified)
+                        var numUnreadBox = chatbox.get("num_unread");
+                        var numUnreadRoom = chatbox.get("num_unread_general");
+
+                        if (!notified)
                         {
                             chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
-                            notified = true;
+
+                            if (bgWindow)
+                            {
+                                bgWindow.pade.messageCount++;
+
+                                chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                                chrome.browserAction.setBadgeText({ text: bgWindow.pade.messageCount.toString() });
+                            }
                         }
 
                         if (type == "chatroom")  // chatboxes handled in background.js
@@ -257,27 +273,28 @@
                         setActiveConversationsUread(chatbox, body.innerHTML);
                     }
 
-                    if (json)
+                    if (body && attachTo)
                     {
-                        const data = JSON.parse(json.innerHTML);
-                        console.debug("pade plugin - JSON", data);
+                        const msgId = attachTo.getAttribute("id");
+                        const reaction = (body.innerHTML.indexOf(":-(") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1) ? "dislike" : "like";
 
-                        if (chrome.storage && data.reaction && data.msgId)
+                        console.debug("pade plugin - attach-to", msgId, reaction);
+
+                        if (chrome.storage && msgId)
                         {
-                            chrome.storage.local.get(data.msgId, function(obj) {
+                            chrome.storage.local.get(msgId, function(obj) {
                                 console.debug("get reaction emoji", data);
 
-                                if (!obj[data.msgId]) obj[data.msgId] = {};
-                                if (!obj[data.msgId][data.reaction]) obj[data.msgId][data.reaction] = 0;
+                                if (!obj[msgId]) obj[msgId] = {};
+                                if (!obj[msgId][reaction]) obj[msgId][reaction] = 0;
 
-                                obj[data.msgId][data.reaction]++;
+                                obj[msgId][reaction]++;
 
                                 chrome.storage.local.set(obj, function() {
                                   console.debug('set emoji reaction', obj);
                                 });
 
-                                displayReaction(data.reaction, data.msgId, obj[data.msgId][data.reaction]);
-
+                                displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
                             });
                         }
                     }
@@ -318,9 +335,17 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
+                    const body = this.model.get('message');
+                    const msgAttachId = this.model.get("msg_attach_id");
+
+                    if (msgAttachId && body.indexOf(msgAttachId) == -1)
+                    {
+                        const reaction = (body.indexOf(":-(") > -1 || body.indexOf(":thumbsdown:") > -1) ? ":thumbsdown:" : ":thumbsup:";
+                        this.model.set('message', "/me " + reaction + " #" + msgAttachId);
+                    }
+
                     if (getSetting("notifyOnInterests", false))
                     {
-                        var body = this.model.get('message');
                         var highlightedBody = body;
                         var interestList = getSetting("interestList", "").split("\n");
 
@@ -344,7 +369,7 @@
                     await this.__super__.renderChatMessage.apply(this, arguments);
 
                     // action button for quoting, pinning
-                    //console.debug("renderChatMessage", this.model);
+
 
                     var messageActionButtons = this.el.querySelector('.chat-msg__message');
 
@@ -356,14 +381,14 @@
                             {
                                 var ele = document.createElement("div");
                                 ele.classList.add("chat-msg__actions");
-                                ele.innerHTML = '<button class="chat-msg__action chat-msg__action-dislike far fa-frown" title="React negative to this message"></button>';
+                                ele.innerHTML = '<button class="chat-msg__action chat-msg__action-dislike far fa-thumbs-down" title="React negative to this message"></button>';
                                 messageActionButtons.insertAdjacentElement('afterEnd', ele);
                             }
                             if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
                             {
                                 var ele = document.createElement("div");
                                 ele.classList.add("chat-msg__actions");
-                                ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-like far fa-smile" title="React positive to this message"></button>';
+                                ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-like far fa-thumbs-up" title="React positive to this message"></button>';
                                 messageActionButtons.insertAdjacentElement('afterEnd', ele);
                             }
                         }
@@ -383,7 +408,7 @@
                         {
                             var ele = document.createElement("div");
                             ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-forward fa fa-share" title="Add this message to Notepad"></button>';
+                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-forward fas fa-share" title="Add this message to Notepad"></button>';
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
                         if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-reply'))
@@ -401,8 +426,7 @@
                     {
                         if (obj[msgId])
                         {
-                            if (obj[msgId]["like"])     displayReaction("like", msgId, obj[msgId]["like"]);
-                            if (obj[msgId]["dislike"])  displayReaction("dislike", msgId, obj[msgId]["dislike"]);
+                            displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
                         }
                     });
                 }
@@ -461,25 +485,29 @@
         }
     });
 
-    var displayReaction = function(reaction, msgId, count)
+    var displayReactions = function(msgId, positives, negatives)
     {
-        console.debug("displayReaction", reaction, msgId, count);
+        console.debug("displayReactions", positives, negatives);
 
         const msgDiv = document.querySelector("#msg-" + msgId + " .chat-msg__text");
 
         if (msgDiv)
         {
-           let reactionDiv = document.querySelector("#msg-" + msgId + " .chat-msg__reaction-" + reaction);
+           let reactionDiv = document.querySelector("#msg-" + msgId + " .chat-msg__reactions");
 
             if (!reactionDiv)
             {
-                reactionDiv = document.createElement("span");
-                reactionDiv.classList.add("chat-msg__reaction-" + reaction);
+                reactionDiv = document.createElement("div");
+                reactionDiv.classList.add("chat-msg__reactions");
                 msgDiv.insertAdjacentElement('afterEnd', reactionDiv);
             }
 
-            const emoji = reaction == "like" ? "far fa-smile" : "far fa-frown";
-            reactionDiv.innerHTML = '<li class="' + emoji + '"> ' + count + ' </li>';
+            let div =  '<table><tr>';
+            if (positives) div = div + '<td class="chat-msg__reaction far fa-thumbs-up"> ' + positives + '</td>';
+            if (negatives) div = div + '<td class="chat-msg__reaction far fa-thumbs-down"> ' + negatives + '</td>';
+            div = div + '</tr></table>';
+
+            reactionDiv.innerHTML = div;
         }
     }
 

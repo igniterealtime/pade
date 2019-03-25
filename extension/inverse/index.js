@@ -721,6 +721,8 @@ function createAvatar(nickname, width, height, font)
 
     var first, last;
     var name = nickname.split(" ");
+    if (name.length == 1) name = nickname.split(".");
+    if (name.length == 1) name = nickname.split("-");
     var l = name.length - 1;
 
     if (name && name[0] && name.first != '')
