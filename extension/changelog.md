@@ -1,5 +1,35 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.1.3</b> -- <i>March 25, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/139">Fixed #139: Add support for XEP-0367: Message Attaching</a></li>
+</ul>
+
+<p><b>1.1.2</b> -- <i>March 25, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/139">Fixing #139: Add support for XEP-0367: Message Attaching</a></li>
+</ul>
+
+<p><b>1.1.1</b> -- <i>March 23, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/139">Fixing #139: Add support for XEP-0367: Message Attaching</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/138">Fixed #138: Support Converse overlayed mode and an iframe Home Page</a></li>
+    <!--li><a href="https://github.com/igniterealtime/Pade/issues/136">Fixing #136: Presence rapidly toggling between states by itself</a></li-->
+    <li><a href="https://github.com/igniterealtime/Pade/issues/135">Fixed #135: Add clear and refresh icons to Converse toolbar</a></li>
+</ul>
+
+<p><b>1.1.0</b> -- <i>March 18, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/124">Fixed #124: Conversation tab support</a></li>
+</ul>
+
+<p><b>1.0.9</b> -- <i>March 14, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/131">Fixed #131: Generate a branding file automatically from current UI</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/133">Fixed #133: Message action buttons</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/124">Fixing #124: Conversation tab support</a></li>
+</ul>
+
 <p><b>1.0.8</b> -- <i>March 12, 2019</i></p>
 <ul>
     <li><a href="https://github.com/igniterealtime/Pade/issues/130">Fixed #130: Add O/S id to the resource string</a></li>
