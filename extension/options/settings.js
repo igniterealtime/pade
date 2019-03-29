@@ -146,6 +146,15 @@ window.addEvent("domready", function () {
             setPublish();
         }
 
+        if (settings.manifest.password) settings.manifest.password.element.addEventListener("keyup", function(event)
+        {
+          if (event.keyCode === 13)
+          {
+            event.preventDefault();
+            settings.manifest.connect.element.click();
+          }
+        });
+
         if (settings.manifest.useAnonymous)
         {
             var setAnon = function()
@@ -621,6 +630,16 @@ window.addEvent("domready", function () {
             }
         }
 
+        if (settings.manifest.autoReconnect) settings.manifest.autoReconnect.addEvent("action", function ()
+        {
+            if (getSetting("autoReconnect", true))
+            {
+                background.pade.connection.connectionmanager.enable();
+            }
+            else {
+                background.pade.connection.connectionmanager.disable();
+            }
+        });
 
         if (settings.manifest.ofmeetUrl) settings.manifest.ofmeetUrl.addEvent("action", function ()
         {
@@ -1284,11 +1303,12 @@ function doDefaults(background)
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);
+    setDefaultSetting("autoReconnectConverse", true);
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
-    setDefaultSetting("converseRosterFilter", true);
+    setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");

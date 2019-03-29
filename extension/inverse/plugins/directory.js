@@ -221,7 +221,7 @@
         console.debug('displayUsers', userList);
 
         var users = removeDuplicates(userList);
-        var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>ID</th><th>Email</th><th>Phone</th></tr>";
+        var html = "<table style='margin-left: 15px'><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr>";
         var count = 0;
 
         for (var i=0; i<users.length; i++)
@@ -230,7 +230,7 @@
             if (!user.email) user.email = "";
             if (!user.caller_id_number) user.caller_id_number = "";
 
-            html = html + "<tr><td><a class='plugin-directory-jid' title='click here to open chat with " + user.name + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><a class='plugin-directory-phone' name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td></tr>";
+            html = html + "<tr><td><a class='plugin-directory-jid' title='click here to open chat with " + user.jid + "' id='" + user.jid + "' href='#'>" + user.jid + "</a></td><td>" + user.name + "</td><td>" + user.email + "</td><td><a class='plugin-directory-phone' name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td></tr>";
         }
         html = html + "</table>"
 

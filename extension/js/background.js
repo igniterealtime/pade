@@ -239,23 +239,23 @@ window.addEventListener("load", function()
         return;
     }
 
-    if (chrome.webRequest) chrome.webRequest.onHeadersReceived.addListener(
-        function(info) {
-            var headers = info.responseHeaders;
-            for (var i=headers.length-1; i>=0; --i) {
-                var header = headers[i].name.toLowerCase();
-                if (header == 'x-frame-options' || header == 'frame-options') {
-                    headers.splice(i, 1); // Remove header
+    if (chrome.webRequest)
+    {
+        chrome.webRequest.onHeadersReceived.addListener(
+            function(info) {
+                var headers = info.responseHeaders;
+                for (var i=headers.length-1; i>=0; --i) {
+                    var header = headers[i].name.toLowerCase();
+                    if (header == 'x-frame-options' || header == 'frame-options' || header == 'content-security-policy') {
+                        headers.splice(i, 1); // Remove header
+                    }
                 }
-            }
-            return {responseHeaders: headers};
-        },
-        {
-            urls: [ '*://*/*' ], // Pattern to match all http(s) pages
-            types: [ 'sub_frame' ]
-        },
-        ['blocking', 'responseHeaders']
-    );
+                return {responseHeaders: headers};
+            },
+            {urls: [ "<all_urls>" ], types: [ 'sub_frame' ]},
+            ['blocking', 'responseHeaders']
+        );
+    }
 
     chrome.runtime.onInstalled.addListener(function(details)
     {
@@ -278,6 +278,8 @@ window.addEventListener("load", function()
     chrome.idle.onStateChanged.addListener(function(idleState)
     {
         console.debug("chrome.idle.onStateChanged", idleState);
+
+        if (pade.busy) return;  // no presence broadcast while I am busy
 
         var pres = $pres(), show = null, status = null;
 
@@ -308,16 +310,20 @@ window.addEventListener("load", function()
             pade.connection.send(pres);
             if (idleState == "active") publishUserLocation();   // republish location in case user has moved
 
+/*
+            // causes presence ping pong
+
             if (pade.chatWindow)
             {
                 var model = chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model;
 
                 if (model)
                 {
-                    if (show) model.set("status", show);
+                    model.set("status", show ? show : "online");
                     if (status) model.set("status_message", status);
                 }
             }
+*/
         }
     })
 
@@ -607,6 +613,7 @@ window.addEventListener("load", function()
 
             if (!pade.minimised)
             {
+                chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
                 chrome.browserAction.setBadgeText({ text: "" });
                 pade.messageCount = 0;
             }
@@ -3571,6 +3578,11 @@ function doPadeConnect()
 
     pade.connection = getConnection(connUrl);
 
+    if (!getSetting("autoReconnect", true))
+    {
+        pade.connection.connectionmanager.disable();
+    }
+
     var doXmppConnect = function()
     {
         pade.connection.connect(connJid, pade.password, function (status)
@@ -3580,8 +3592,10 @@ function doPadeConnect()
             if (status === Strophe.Status.CONNECTED)
             {
                 addHandlers();
+
                 pade.connection.send($pres());
 
+                chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
                 chrome.browserAction.setBadgeText({ text: "Wait.." });
                 chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
 
@@ -3609,6 +3623,7 @@ function doPadeConnect()
 
                     if (getSetting("converseAutoReOpen", true)) reopenConverse();
 
+                    chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
                     chrome.browserAction.setBadgeText({ text: "" });
                     pade.isReady = true;
 
@@ -3618,6 +3633,7 @@ function doPadeConnect()
 
             if (status === Strophe.Status.DISCONNECTED)
             {
+                chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
                 chrome.browserAction.setBadgeText({ text: "off" });
                 chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
             }

@@ -27,6 +27,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
+            "name": "autoReconnect",
+            "type": "checkbox",
+            "label": i18n.get("Auto reconnect background connection")
+        },
+        {
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Login"),
             "name": "displayname",
             "type": "text",
@@ -894,9 +901,16 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "autoReconnectConverse",
+            "type": "checkbox",
+            "label": i18n.get("Auto reconnect Converse connection")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseAutoReOpen",
             "type": "checkbox",
-            "label": i18n.get("Auto re-open Converse if it was open after reconnect")
+            "label": i18n.get("Auto re-open Converse if it was open after background reconnection")
         },
         {
             "tab": i18n.get("Converse"),
@@ -925,13 +939,6 @@ this.manifest = {
             "name": "enableBookmarks",
             "type": "checkbox",
             "label": i18n.get("Enable server bookmarks")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "autoReconnect",
-            "type": "checkbox",
-            "label": i18n.get("Auto reconnect")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1073,13 +1080,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "enableInfoPanel",
-            "type": "checkbox",
-            "label": i18n.get("Enable Information Panel")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
             "name": "converseTheme",
             "type": "popupButton",
             "label": i18n.get("UI Theme"),
@@ -1130,9 +1130,16 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Group Chat"),
+            "name": "enableInfoPanel",
+            "type": "checkbox",
+            "label": i18n.get("Enable Information Panel")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "alwaysShowOccupants",
             "type": "checkbox",
-            "label": i18n.get("Aways show occupants")
+            "label": i18n.get("Always show occupants")
         },
         {
             "tab": i18n.get("Converse"),

@@ -255,7 +255,7 @@
 
                         else
 
-                        if (_converse.shouldNotifyOfMessage(message))
+                        if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
                         {
                             bgWindow.notifyText(body.innerHTML, display_name, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
                             {
@@ -563,7 +563,7 @@
     {
         //console.debug("scanMessage", chatbox, message, fromJid, body, fromNick, myNick);
 
-        if (_converse.shouldNotifyOfMessage(message))
+        if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
         {
             bgWindow.notifyText(body, fromNick, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
             {

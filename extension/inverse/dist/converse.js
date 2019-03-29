@@ -50210,8 +50210,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         if (message)
         {
-            var moment_time = moment(message.get('time'));
-            postfix = " " + nick + ": " + moment_time.format(_converse.time_format);
+            let text = message.get('message');
+            let pos = text.indexOf("\n");
+            text = pos == -1 ? text : text.substring(0, pos);
+            postfix = " " + nick + ": " + text;
         }
 
         console.debug('onMessageLikeButtonClicked', msgId, from);
@@ -50238,8 +50240,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         if (message)
         {
-            var moment_time = moment(message.get('time'));
-            postfix = " " + nick + ": " + moment_time.format(_converse.time_format);
+            let text = message.get('message');
+            let pos = text.indexOf("\n");
+            text = pos == -1 ? text : text.substring(0, pos);
+            postfix = " " + nick + ": " + text;
         }
 
         console.debug('onMessageDislikeButtonClicked', msgId, from);
