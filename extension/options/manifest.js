@@ -726,16 +726,16 @@ this.manifest = {
                 {"text": "Lithuania", "value": "lt-LT"},
                 {"text": "Malaysia", "value": "ms-MY"},
                 {"text": "Morocco", "value": "ar-MA"},
-                {"text": "México", "value": "es-MX"},
+                {"text": "MÃ©xico", "value": "es-MX"},
                 {"text": "Netherlands", "value": "nl-NL"},
                 {"text": "New Zealand", "value": "en-NZ"},
                 {"text": "Nicaragua", "value": "es-NI"},
                 {"text": "Norway", "value": "nb-NO"},
                 {"text": "Oman", "value": "ar-OM"},
                 {"text": "Palestinian Territory", "value": "ar-PS"},
-                {"text": "Panamá", "value": "es-PA"},
+                {"text": "PanamÃ¡", "value": "es-PA"},
                 {"text": "Paraguay", "value": "es-PY"},
-                {"text": "Perú", "value": "es-PE"},
+                {"text": "PerÃº", "value": "es-PE"},
                 {"text": "Philippines", "value": "en-PH"},
                 {"text": "Philippines", "value": "fil-PH"},
                 {"text": "Poland", "value": "pl-PL"},
@@ -1132,7 +1132,7 @@ this.manifest = {
             "group": i18n.get("Group Chat"),
             "name": "alwaysShowOccupants",
             "type": "checkbox",
-            "label": i18n.get("Aways show occupants")
+            "label": i18n.get("Always show occupants")
         },
         {
             "tab": i18n.get("Converse"),
