@@ -111,6 +111,13 @@ this.manifest = {
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
+            "name": "restartDesc",
+            "type": "description",
+            "text": i18n.get("<b>These settings can restart application</b>")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
             "name": "useBasicAuth",
             "type": "checkbox",
             "label": i18n.get("Use Basic Authentication (requires chat api plugin)")
@@ -127,14 +134,14 @@ this.manifest = {
             "group": i18n.get("Authentication"),
             "name": "useWinSSO",
             "type": "checkbox",
-            "label": i18n.get("Use Windows Single Sign On (SSO)")
+            "label": i18n.get("Use Windows Single Sign On")
         },
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
             "name": "useCredsMgrApi",
             "type": "checkbox",
-            "label": i18n.get("Use Credential Management API SSO")
+            "label": i18n.get("Use Credential Management API.")
         },
         {
             "tab": i18n.get("Connection"),
@@ -162,7 +169,7 @@ this.manifest = {
             "group": i18n.get("Authentication"),
             "name": "useClientCert",
             "type": "checkbox",
-            "label": i18n.get("Use Client Certificate (No password required)")
+            "label": i18n.get("Use Client Certificate with no password.")
         },
         {
             "tab": i18n.get("Connection"),
@@ -378,27 +385,6 @@ this.manifest = {
         {
             "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
-            "name": "desktopShareMode",
-            "type": "checkbox",
-            "label": i18n.get("Desktop Share mode only")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
-            "name": "showOnlyOnlineUsers",
-            "type": "checkbox",
-            "label": i18n.get("Show Only Online Users")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
-            "name": "popupWindow",
-            "type": "checkbox",
-            "label": i18n.get("Popup Window")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
             "name": "wgEnabled",
             "type": "checkbox",
             "label": i18n.get("Enable Workgroups (Fastpath)")
@@ -409,34 +395,6 @@ this.manifest = {
             "name": "wgNotifications",
             "type": "checkbox",
             "label": i18n.get("Enable Workgroup Notifications")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
-            "name": "showSharedCursor",
-            "type": "checkbox",
-            "label": i18n.get("Show Shared Cursor")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
-            "name": "enableRingtone",
-            "type": "checkbox",
-            "label": i18n.get("Enable Ringtone")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
-            "name": "enableRemoteControl",
-            "type": "checkbox",
-            "label": i18n.get("Enable Remote Control")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
-            "name": "useJabra",
-            "type": "checkbox",
-            "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
         },
         {
             "tab": i18n.get("General"),
@@ -616,6 +574,48 @@ this.manifest = {
             "max": 30,
             "min": 5,
             "step": 5
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "showOnlyOnlineUsers",
+            "type": "checkbox",
+            "label": i18n.get("Show Only Online Users in browser menu. <b>(This will restart application)</b>")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "popupWindow",
+            "type": "checkbox",
+            "label": i18n.get("Popup Window")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "showSharedCursor",
+            "type": "checkbox",
+            "label": i18n.get("Show Shared Cursor")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "enableRingtone",
+            "type": "checkbox",
+            "label": i18n.get("Enable Ringtone")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "enableRemoteControl",
+            "type": "checkbox",
+            "label": i18n.get("Enable Remote Control <b>(This will restart application)</b>")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
+            "name": "useJabra",
+            "type": "checkbox",
+            "label": i18n.get("Use Jabra Speakerphone (Models 410, 510, 710 & 810)")
         },
         {
             "tab": i18n.get("Meetings"),
@@ -889,7 +889,7 @@ this.manifest = {
             "group": i18n.get("General"),
             "name": "enableInverse",
             "type": "checkbox",
-            "label": i18n.get("Enable Converse")
+            "label": i18n.get("Enable Converse <b>(This will restart application)</b>")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1438,7 +1438,7 @@ this.manifest = {
             "group": i18n.get("Phone"),
             "name": "enableSip",
             "type": "checkbox",
-            "label": i18n.get("Enable CTX SIP Phone")
+            "label": i18n.get("Enable CTX SIP Phone <b>(This will restart application)</b>")
         },
         {
             "tab": i18n.get("Applications"),

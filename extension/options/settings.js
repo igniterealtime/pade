@@ -807,11 +807,6 @@ window.addEvent("domready", function () {
             }
         });
 
-        if (settings.manifest.desktopShareMode) settings.manifest.desktopShareMode.addEvent("action", function ()
-        {
-            background.reloadApp();
-        });
-
         if (settings.manifest.showOnlyOnlineUsers) settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
         {
             background.reloadApp();

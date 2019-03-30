@@ -15,7 +15,6 @@ var branding = {
     communityUrl            : {disable: true},
     country                 : {disable: true},
     credits                 : {disable: false, value: "<a href='https://desktop-545pc5b:7443/docs' target='_blank' style='font-size: 16px;'>Dele Olajide</a>"},
-    desktopShareMode        : {disable: true},
     disableChatButton       : {disable: true},
     domain                  : {disable: true, value: "desktop-545pc5b"},
     drawioDescription       : {disable: true},

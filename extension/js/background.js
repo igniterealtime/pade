@@ -1,4 +1,4 @@
-var pade = {autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
+var pade = {sip: {}, autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
 pade.transferWiseUrl = "https://api.transferwise.com/v1";
@@ -246,7 +246,7 @@ window.addEventListener("load", function()
                 var headers = info.responseHeaders;
                 for (var i=headers.length-1; i>=0; --i) {
                     var header = headers[i].name.toLowerCase();
-                    if (header == 'x-frame-options' || header == 'frame-options' || header == 'content-security-policy') {
+                    if (header == 'x-frame-options' || header == 'frame-options') {
                         headers.splice(i, 1); // Remove header
                     }
                 }
@@ -286,32 +286,32 @@ window.addEventListener("load", function()
         if (idleState == "locked")
         {
             show = "xa";
-            status = getSetting("idleLockedMessage", "good bye");
-            pres.c("show").t(show).up().c("status").t(status);
+            pres.c("show").t(show).up();
+
+            status = getSetting("idleLockedMessage");
+            if (status) pres.c("status").t(status);
         }
         else
 
         if (idleState == "idle")
         {
             show = "away";
-            status = getSetting("idleLockedMessage", "see you later");
-            pres.c("show").t(show).up().c("status").t(status);
+            pres.c("show").t(show).up();
+
+            status = getSetting("idleMessage");
+            if (status) pres.c("status").t(status);
         }
         else
 
         if (idleState == "active")
         {
-            status = getSetting("idleLockedMessage", "hello");
-            pres.c("status").t(status);
+            status = getSetting("idleActiveMessage");
+            if (status) pres.c("status").t(status);
         }
 
         if (pade.connection)
         {
-            pade.connection.send(pres);
             if (idleState == "active") publishUserLocation();   // republish location in case user has moved
-
-/*
-            // causes presence ping pong
 
             if (pade.chatWindow)
             {
@@ -323,7 +323,9 @@ window.addEventListener("load", function()
                     if (status) model.set("status_message", status);
                 }
             }
-*/
+            else {
+                pade.connection.send(pres);
+            }
         }
     })
 
@@ -3251,6 +3253,8 @@ function createAvatar(nickname, width, height, font)
 
     var first, last;
     var name = nickname.split(" ");
+    if (name.length == 1) name = nickname.split(".");
+    if (name.length == 1) name = nickname.split("-");
     var l = name.length - 1;
 
     if (name && name[0] && name.first != '')

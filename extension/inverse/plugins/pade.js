@@ -336,6 +336,14 @@
                 renderChatMessage: async function renderChatMessage()
                 {
                     const body = this.model.get('message');
+
+                    if (body.indexOf(":lol:") > -1)
+                    {
+                        const newBody = body.replace(":lol:", ":smiley:");
+                        this.model.set('message', newBody);
+                    }
+
+
                     const msgAttachId = this.model.get("msg_attach_id");
 
                     if (msgAttachId && body.indexOf(msgAttachId) == -1)
