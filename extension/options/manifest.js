@@ -1782,6 +1782,29 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Search"),
+            "group": i18n.get("Rooms Directory"),
+            "name": "roomsSearchString",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter the search text"),
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Rooms Directory"),
+            "name": "roomsSearch",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("search")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Rooms Directory"),
+            "name": "roomsSearchResults",
+            "text": i18n.get(""),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Search"),
             "group": i18n.get("Invitation List"),
             "name": "meetingName",
             "type": "text",

@@ -1,4 +1,4 @@
-var uportWin = null, credWin = null;
+var uportWin = null, credWin = null, message_handler;
 
 window.addEventListener("load", function()
 {
@@ -146,14 +146,22 @@ window.addEvent("domready", function () {
             setPublish();
         }
 
-        if (settings.manifest.password) settings.manifest.password.element.addEventListener("keyup", function(event)
+        var enterToClick = function (text, button)
         {
-          if (event.keyCode === 13)
-          {
-            event.preventDefault();
-            settings.manifest.connect.element.click();
-          }
-        });
+            if (settings.manifest[text]) settings.manifest[text].element.addEventListener("keyup", function(event)
+            {
+              if (event.keyCode === 13)
+              {
+                event.preventDefault();
+                settings.manifest[button].element.click();
+              }
+            });
+        }
+
+        enterToClick("password", "connect");
+        enterToClick("searchString", "search");
+        enterToClick("convSearchString", "convSearch");
+        enterToClick("roomsSearchString", "roomsSearch");
 
         if (settings.manifest.useAnonymous)
         {
@@ -237,6 +245,94 @@ window.addEvent("domready", function () {
 
                     }
                 }
+            });
+        });
+
+        if (settings.manifest.roomsSearch) settings.manifest.roomsSearch.addEvent("action", function ()
+        {
+            var searchString = settings.manifest.roomsSearchString.element.value;
+            var foundRooms = [];
+
+            settings.manifest.roomsSearchResults.element.innerHTML = "please wait....";
+
+            var messageHandler = function(message)
+            {
+                var body = message.querySelector('body');
+                var from = message.querySelector('forwarded').querySelector('message').getAttribute('from');
+
+                var timestamp = undefined;
+                var delay = message.querySelector('forwarded').querySelector('delay');
+                if (delay) timestamp = delay.getAttribute('stamp');
+                var stamp = moment(timestamp).format('MMM DD YYYY HH:mm:ss')
+
+                if (body)
+                {
+                    const nick = from.split("/")[1];
+                    const room = from.split("/")[0];
+                    const msg = body.innerHTML;
+                    const div = document.getElementById("pade-room-conv-" + room);
+
+                    console.debug("roomsSearch message", stamp, nick, room, msg, message, div);
+
+                    if (div)
+                    {
+                        div.innerHTML = div.innerHTML + stamp + " <b>" + nick + "</b> " + msg + "<br/>"
+                    }
+
+                }
+
+                return true;
+
+            }
+
+            background.findRooms(function(items)
+            {
+                console.debug("roomsSearch", items);
+
+                if (message_handler) background.pade.connection.deleteHandler(message_handler);
+                message_handler = background.pade.connection.addHandler(messageHandler, 'urn:xmpp:mam:2', 'message');
+
+                var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>Conversation</th></tr>";
+
+                for (var i=0; i<items.length; i++)
+                {
+                    var jid = items[i].getAttribute('jid');
+                    var name = items[i].getAttribute('name');
+
+                    if (!searchString || searchString.length == 0 || jid.indexOf(searchString) > -1 || name.indexOf(searchString) > -1)
+                    {
+                        html = html + "<tr><td><a data-jid='" + jid + "' title='" + name + "' id='pade-room-" + jid + "' href='#'>" + name + "</a></td><td id='pade-room-conv-" + jid + "'></td></tr>";
+
+                        foundRooms.push({jid: jid, name: name});
+                        background.roomHistory(jid);
+                    }
+                }
+                html = html + "</table>"
+                settings.manifest.roomsSearchResults.element.innerHTML = html;
+
+                for (var i=0; i<foundRooms.length; i++)
+                {
+                    document.getElementById("pade-room-" + foundRooms[i].jid).addEventListener("click", function(e)
+                    {
+                        e.stopPropagation();
+                        var room = e.target.getAttribute("data-jid");
+                        var title = e.target.title;
+
+                        console.debug("findRooms - click", room);
+
+                        if (getSetting("enableInverse"))
+                        {
+                            if (background.pade.chatWindow.id)
+                            {
+                                chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(room, title);
+                            }
+                            else {
+                                background.openChatsWindow("inverse/index.html#converse/chat?jid=" + room, title);
+                            }
+                        }
+                    });
+                }
+
             });
         });
 
@@ -1683,3 +1779,4 @@ function avatarError(error)
     console.error("uploadAvatar - error", error);
     settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">picture/avatar cannot be uploaded and saved</b>';
 }
+

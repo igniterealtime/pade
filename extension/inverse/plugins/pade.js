@@ -218,8 +218,9 @@
                     var chatbox = data.chatbox;
                     var attachTo = data.stanza.querySelector('attach-to');
                     var body = message.querySelector('body');
+                    var history = message.querySelector('forwarded')
 
-                    if (body && chatbox)
+                    if (!history && body && chatbox)
                     {
                         var jid = chatbox.get("jid");
                         var type = chatbox.get("type");
@@ -273,7 +274,7 @@
                         setActiveConversationsUread(chatbox, body.innerHTML);
                     }
 
-                    if (body && attachTo)
+                    if (!history && body && attachTo)
                     {
                         const msgId = attachTo.getAttribute("id");
                         const reaction = (body.innerHTML.indexOf(":-(") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1) ? "dislike" : "like";

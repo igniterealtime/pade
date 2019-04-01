@@ -2041,6 +2041,10 @@ function addHandlers()
             }
         });
 
+        var history = message.querySelector('forwarded')
+
+        if (history) return true; // ignore historical notifications
+
         $(message).find('body').each(function ()
         {
             var body = $(this).text();
@@ -4158,4 +4162,40 @@ function setupBrowserMode(username, password)
     checkForChatAPI();
 
     console.log("pade in browser mode");
+}
+
+function findRooms(callback)
+{
+    if (pade.connection)
+    {
+        var iq = $iq({'to': "conference." + pade.connection.domain, 'from': pade.connection.jid, 'type': "get"}).c("query", {xmlns: "http://jabber.org/protocol/disco#items"});
+
+        pade.connection.sendIQ(iq, function(resp)
+        {
+            if (callback) callback(resp.querySelectorAll('item'));
+
+        }, function (err) {
+            console.error("roomSearch", err);
+        });
+    }
+}
+
+function roomHistory(jid)
+{
+    const queryid = pade.connection.getUniqueId();
+    const iq = $iq({to: jid, type: 'set'}).c('query', {'xmlns': 'urn:xmpp:mam:2', 'queryid': queryid});
+    const start = moment().startOf('day').format();
+
+    iq.c('x', {'xmlns': 'jabber:x:data', 'type': 'submit'})
+        .c('field', {'var': 'FORM_TYPE','type': 'hidden'}).c('value').t('urn:xmpp:mam:2').up().up()
+        .c('field', {'var': 'start'}).c('value').t(start).up().up().up()
+        .c('set', {'xmlns': 'http://jabber.org/protocol/rsm'}).c('max').t(100).up().up();
+
+    pade.connection.sendIQ(iq, function(resp)
+    {
+        console.log("roomHistory", resp);
+
+    }, function (err) {
+        console.error("roomHistory", err);
+    });
 }
