@@ -785,7 +785,7 @@ this.manifest = {
             "group": i18n.get("General Settings"),
             "name": "channelLastN",
             "type": "slider",
-            "label": i18n.get("Maximium Video Streams"),
+            "label": i18n.get("Maximum Video Streams"),
             "max": 32,
             "min": -1,
             "step": 1
