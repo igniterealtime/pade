@@ -1,6 +1,6 @@
 var OFMEET_CONFIG = {};
 
-OFMEET_CONFIG.bgWin = chrome.extension.getBackgroundPage();
+__bgWin = chrome.extension.getBackgroundPage();
 
 // mandatory
 
@@ -17,8 +17,8 @@ if (__baseUrl.indexOf("https://" + __server) == -1)
 }
 
 var __displayname = getSetting("displayname");
-var __username = OFMEET_CONFIG.bgWin.pade.username;
-var __password = OFMEET_CONFIG.bgWin.pade.password;
+var __username = __bgWin.pade.username;
+var __password = __bgWin.pade.password;
 var __email = getSetting("email", null);
 var __mode = urlParam("mode");
 var __ofmeetUrl = __mode ? "https://" + __server + "/webinar/" : getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
@@ -36,6 +36,7 @@ var __showSharedCursor = getSetting("showSharedCursor", true);
 
 
 OFMEET_CONFIG = {
+    bgWin: __bgWin,
     emailAddress: __email,
     nickName:__displayname ? __displayname : __username,
     username:__username,

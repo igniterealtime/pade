@@ -3175,9 +3175,18 @@ function updateVCard()
     getVCard(jid, function(vCard)
     {
         avatar = vCard.avatar;
-        if (!avatar || avatar == "") avatar = createAvatar(pade.displayName);
 
-        setSetting("avatar", avatar);
+        if (!avatar || avatar == "")
+        {
+            avatar = createAvatar(pade.displayName);
+
+            if (getSetting("updateAvatar", false))
+            {
+                updateVCardAvatar(jid, avatar)
+            }
+
+            setSetting("avatar", avatar);
+        }
 
     }, function(error) {
         avatar = createAvatar(pade.displayName);
@@ -3240,6 +3249,18 @@ function updateVCardAvatar(jid, avatar)
 
 function createAvatar(nickname, width, height, font)
 {
+    nickname = nickname.toLowerCase();
+
+    if (avatars[nickname])
+    {
+        return avatars[nickname];
+    }
+
+    if (getSetting("converseRandomAvatars", false))
+    {
+        return "https://" + pade.server + "/randomavatar/" + nickname
+    }
+
     if (!width) width = 32;
     if (!height) height = 32;
     if (!font) font = "16px Arial";
@@ -3299,6 +3320,29 @@ function getRandomColor(nickname)
         return color;
     }
 }
+
+var avatars = {}
+
+chrome.storage.local.get('avatars', function(data)
+{
+    if (data && data.avatars) avatars = data.avatars;
+    //console.debug('chrome.storage get', avatars);
+});
+
+
+function setAvatar(nickname, avatar)
+{
+    if (nickname && !avatars[nickname])
+    {
+        nickname = nickname.toLowerCase();
+        avatars[nickname] = avatar;
+
+        chrome.storage.local.set({avatars: avatars}, function() {
+          //console.debug('chrome.storage is set for ' + nickname, avatars);
+        });
+    }
+}
+
 
 function createStreamDeckImage(text, fill)
 {

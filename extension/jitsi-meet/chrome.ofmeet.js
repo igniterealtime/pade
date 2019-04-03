@@ -36,6 +36,11 @@ var ofmeet = (function(of)
 
     of.createAvatar = function(nickname, width, height, font)
     {
+        if (getSetting("converseRandomAvatars", false))
+        {
+            return "https://" + pade.server + "/randomavatar/" + nickname
+        }
+
         if (!width) width = 32;
         if (!height) height = 32;
         if (!font) font = "16px Arial";
@@ -56,6 +61,8 @@ var ofmeet = (function(of)
         if (nickname)
         {
             var name = nickname.split(" ");
+            if (name.length == 1) name = nickname.split(".");
+            if (name.length == 1) name = nickname.split("-");
             var l = name.length - 1;
 
             if (name && name[0] && name.first != '')
