@@ -64,7 +64,7 @@ var branding = {
     remotePassword          : {disable: true},
     remoteUsername          : {disable: true},
     role                    : {disable: true},
-    saveWinPositions        : {disable: true},
+    saveWinPositions        : {disable: false},
     saveProfile             : {disable: true},
     server                  : {disable: true, value: "igniterealtime.org:443"},
     showOnlyOnlineUsers     : {disable: true},

@@ -50,6 +50,13 @@
                     }
 
                     this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + this.model.get("url");
+                },
+                events: {
+                    "click .btn-danger": "clearIframe",
+                },
+
+                clearIframe() {
+                    this.el.querySelector('.modal-body').innerHTML = "about:blank";
                 }
             });
 
@@ -499,7 +506,7 @@
 
     var createMediaContentSummary = function(jid, id)
     {
-        var media = {photo:{urls:[]}, video:{urls:[]}, link:{urls:[]}, vmsg:{urls:[]}, ppt:{urls:[]}};
+        var media = {meetings:{rooms:[]}, recordings:{urls:[]}, photo:{urls:[]}, video:{urls:[]}, link:{urls:[]}, vmsg:{urls:[]}, ppt:{urls:[]}};
 
         console.debug("createMediaContentSummary", jid, id);
 
@@ -517,7 +524,7 @@
                 if (body)
                 {
                     var str = body.innerHTML;
-                    var urls = str.match(/(https?:\/\/[^\s]+)/g);
+                    var urls = str.match(/((http|https|ftp)?:\/\/[^\s]+)/g);
 
                     if (urls && urls.length > 0)
                     {
@@ -527,6 +534,20 @@
                             var file = urls[j].substring(pos + 1);
 
                             console.debug("media", i, j, from, file, urls[j]);
+
+                            if (isAudioMeetingURL(urls[j]))
+                            {
+                                file = file.substring(file.indexOf(".") + 1);
+                                media.recordings.urls.push({url: urls[j], file: file, from: from, type: "audio"});
+                            }
+                            else
+
+                            if (isVideoMeetingURL(urls[j]))
+                            {
+                                file = file.substring(file.indexOf(".") + 1);
+                                media.recordings.urls.push({url: urls[j], file: file, from: from, type: "video"});
+                            }
+                            else
 
                             if (isAudioURL(file))
                             {
@@ -556,12 +577,28 @@
                             {
                                 media.ppt.urls.push({url: urls[j], file: file, from: from, type: "h5p"});
                             }
+                            else
+
+                            if (isMeeting(urls[j]))
+                            {
+                                media.meetings.rooms.push({url: urls[j], room: file, from: from, recordings: []});
+                            }
 
                             else {
                                 media.link.urls.push({url: urls[j], file: urls[j], from: from, type: "link"});
                             }
                         }
                     }
+                }
+            }
+
+            if (getSetting("postVideoRecordingUrl", false))
+            {
+                renderMeeting(id, media.meetings.rooms);
+
+                for (var z=0; z<media.meetings.rooms.length; z++)
+                {
+                    renderMedia(id, media.meetings.rooms[z].room, media.recordings.urls, true);
                 }
             }
 
@@ -583,7 +620,7 @@
                    '<details>' +
                    '    <summary id="' + id + '-pinned-details">Pinned Messages (<span id="' + id + '-pinned-count">0</span>)<span style="float: right;" class="fas fa-thumbtack"/></summary>' +
                    '</details>' +
-
+                   '<h3 id="' + id + '-meeting-recordings">Meeting Recordings</h3>' +
                    '<h3>Media Content</h3>' +
                    '<details>' +
                    '    <summary id="' + id + '-photo-details">Photos (<span id="' + id + '-photo-count">0</span>)<span style="float: right;" class="fa fa-photo"/></summary>' +
@@ -595,7 +632,7 @@
                    '    <summary id="' + id + '-link-details">Shared Links (<span id="' + id + '-link-count">0</span>)<span style="float: right;" class="fas fa-link"/></summary>' +
                    '</details>' +
                    '<details>' +
-                   '    <summary id="' + id + '-vmsg-details">Voice Messages (<span id="' + id + '-vmsg-count">0</span>)<span style="float: right;" class="fa fa-file-audio"/></summary>' +
+                   '    <summary id="' + id + '-vmsg-details">Voice Messages (<span id="' + id + '-vmsg-count">0</span>)<span style="float: right;" class="fas fa-microphone"/></summary>' +
                    '</details>' +
                    '<details>' +
                    '    <summary id="' + id + '-ppt-details">Interactive Content (<span id="' + id + '-ppt-count">0</span>)<span style="float: right;" class="fa fa-file-powerpoint"/></summary>' +
@@ -645,6 +682,25 @@
     {
       const filename = url.toLowerCase();
       return filename.indexOf("/h5p/") > -1
+    };
+
+    var isAudioMeetingURL = function (url)
+    {
+      const filename = url.toLowerCase();
+      return filename.indexOf("/ofmeet-cdn/recordings/") > -1 && filename.endsWith(".audio.webm");
+    };
+
+    var isVideoMeetingURL = function (url)
+    {
+      const filename = url.toLowerCase();
+      return filename.indexOf("/ofmeet-cdn/recordings/") > -1 && filename.endsWith(".video.webm");
+    };
+
+    var isMeeting = function (url)
+    {
+      const ofmeetUrl = getSetting("ofmeetUrl", null);
+      const filename = url.toLowerCase();
+      return ofmeetUrl && filename.indexOf(ofmeetUrl) > -1
     };
 
     var isPDFURL = function (url)
@@ -727,7 +783,7 @@
         return item.ele;
     }
 
-    var renderMedia = function (id, eleName, urls)
+    var renderMedia = function (id, eleName, urls, check)
     {
         urls.sort(sortUrls);
 
@@ -736,13 +792,42 @@
 
         if (detail && count && urls.length > 0)
         {
-            count.innerHTML = urls.length;
+            var total = 0;
 
             for (var i=0; i<urls.length; i++)
             {
-                detail.insertAdjacentElement('afterEnd', newItemElement('li', urls[i], "mediaItem"));
+                if (!check || (check && urls[i].url.indexOf(eleName) > -1))
+                {
+                    total++;
+                    detail.insertAdjacentElement('afterEnd', newItemElement('li', urls[i], "mediaItem"));
+                }
+            }
+
+            count.innerHTML = total;
+        }
+    }
+
+    var renderMeeting = function (id, meetings)
+    {
+        meetings.sort(sortUrls);
+        var summary = document.getElementById(id + "-meeting-recordings");
+
+        if (summary && meetings.length > 0)
+        {
+            for (var i=0; i<meetings.length; i++)
+            {
+                summary.insertAdjacentElement('afterEnd', newMeetingElement(id, meetings[i]));
             }
         }
+    }
+
+    var newMeetingElement = function(id, item)
+    {
+        item.ele = document.createElement("details");
+        item.ele.title = item.url;
+        item.ele.innerHTML = '<summary id="' + id + '-' + item.room + '-details">' + item.room + ' (<span id="' + id + '-' + item.room + '-count">0</span>)<span style="float: right;" class="fa fa-video fas fa-microphone"/></summary>';
+        document.body.appendChild(item.ele);
+        return item.ele;
     }
 
     var hideElement = function (el)

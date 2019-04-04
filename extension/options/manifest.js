@@ -676,6 +676,13 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
+            "name": "postVideoRecordingUrl",
+            "type": "checkbox",
+            "label": i18n.get("Post Audio/Video recording URL to chat")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
             "name": "enableTranscription",
             "type": "checkbox",
             "label": i18n.get("Enable Voice-to-Text Transcription")

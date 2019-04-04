@@ -596,18 +596,25 @@ var ofmeet = (function(of)
 
         OFMEET_CONFIG.bgWin.etherlynk.startRecorder(audioStream, videoStream, OFMEET_CONFIG.room, APP.conference.getMyUserId(), audioFileName, videoFileName);
 
-        var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
-        var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
-
-        if (OFMEET_CONFIG.recordVideo)
+        if (getSetting("postVideoRecordingUrl", false))
         {
-            APP.conference._room.sendOfText(videoFileUrl);
-        }
-        else
+            var audioFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + audioFileName;
+            var videoFileUrl = "https://" + OFMEET_CONFIG.hostname + "/ofmeet-cdn/recordings/" + videoFileName;
 
-        if (OFMEET_CONFIG.recordAudio)
-        {
-            APP.conference._room.sendOfText(audioFileUrl);
+            var currentChat = OFMEET_CONFIG.bgWin.getSelectedChatBox();
+
+            if (OFMEET_CONFIG.recordVideo)
+            {
+                APP.conference._room.sendOfText(videoFileUrl);
+                if (currentChat) currentChat.model.sendMessage(currentChat.model.getOutgoingMessageAttributes(videoFileUrl));
+            }
+            else
+
+            if (OFMEET_CONFIG.recordAudio)
+            {
+                APP.conference._room.sendOfText(audioFileUrl);
+                if (currentChat) currentChat.model.sendMessage(currentChat.model.getOutgoingMessageAttributes(audioFileUrl));
+            }
         }
     }
 
