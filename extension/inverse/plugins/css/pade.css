@@ -182,6 +182,10 @@
     font-size: 0.5em;
 }
 
+#conversejs .chat-status {  /* hack for XA presence */
+    font-size: 0.5em !important;
+}
+
 #conversejs #controlbox .controlbox-pane .controlbox-padded {
   padding-top: 4px;
 }

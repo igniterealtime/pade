@@ -654,7 +654,7 @@
                     var body = this.model.get('message');
                     var oobUrl = this.model.get('oob_url');
                     var oobDesc = this.model.get('oob_desc');
-                    var nonCollab = !oobDesc
+                    var nonCollab = !oobDesc || oobDesc == ""
                     var letsCollaborate = getSetting("letsCollaborate", chrome.i18n.getMessage("collaborateOn"));
 
                     // TODO - collaborative documents identified by oob_desc available for UI display
