@@ -1318,7 +1318,7 @@ function openOffice365Window(business, state)
 {
     var data = {url: "https://mail.office365.com", type: "popup", focused: true, incognito: !business};
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;
@@ -1356,7 +1356,7 @@ function openApcWindow(state)
 {
     var data = {url: chrome.runtime.getURL("apc.html"), type: "popup", focused: true};
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;
@@ -1392,7 +1392,7 @@ function openGmailWindow(email, state)
 
     var data = {url: url, type: "popup", focused: true};
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;
@@ -1431,7 +1431,7 @@ function openWebAppsWindow(url, state, width, height)
 
     console.debug("openWebAppsWindow", data, state, width, height);
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;
@@ -1465,7 +1465,7 @@ function openPhoneWindow(focus, state, url)
 
     var data = {url: chrome.runtime.getURL("phone/index-ext.html") + (url ? "?url=" + url: ""), type: "popup", focused: focus};
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;
@@ -1501,7 +1501,7 @@ function openChatWindow(url, update, state)
 
     if (url.indexOf("#") > -1) width = 761;    // width of mobile view_mode
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;
@@ -1656,7 +1656,7 @@ function openVertoWindow(state)
 {
     var data = {url: "https://" + pade.username + ":" + pade.password + "@" + pade.server + "/dashboard/verto", type: "popup", focused: true};
 
-    if (state == "minimized")
+    if (state == "minimized" && getSetting("openWinMinimized", true))
     {
         delete data.focused;
         data.state = state;

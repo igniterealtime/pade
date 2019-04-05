@@ -1355,6 +1355,7 @@ function doDefaults(background)
     setDefaultServer();
 
     // preferences
+    setDefaultSetting("openWinMinimized", true);
     setDefaultSetting("language", "en");
     setDefaultSetting("friendType", "xmpp");
     setDefaultSetting("popupWindow", true);

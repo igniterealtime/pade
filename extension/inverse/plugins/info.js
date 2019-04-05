@@ -517,9 +517,10 @@
             for (var i=0; i<messages.length; i++)
             {
                 var body = messages[i].querySelector('body');
+                var msgId = messages[i].querySelector('forwarded').querySelector('message').getAttribute('id');
                 var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
 
-                console.debug("archived msg", i, from, body);
+                console.debug("archived msg", i, from, body, msgId);
 
                 if (body)
                 {
@@ -538,54 +539,54 @@
                             if (isAudioMeetingURL(urls[j]))
                             {
                                 file = file.substring(file.indexOf(".") + 1);
-                                media.recordings.urls.push({url: urls[j], file: file, from: from, type: "audio"});
+                                media.recordings.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "audio"});
                             }
                             else
 
                             if (isVideoMeetingURL(urls[j]))
                             {
                                 file = file.substring(file.indexOf(".") + 1);
-                                media.recordings.urls.push({url: urls[j], file: file, from: from, type: "video"});
+                                media.recordings.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "video"});
                             }
                             else
 
                             if (isAudioURL(file))
                             {
-                                media.vmsg.urls.push({url: urls[j], file: file, from: from, type: "audio"});
+                                media.vmsg.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "audio"});
                             }
                             else
 
                             if (isImageURL(file))
                             {
-                                media.photo.urls.push({url: urls[j], file: file, from: from, type: "image"});
+                                media.photo.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "image"});
                             }
                             else
 
                             if (isVideoURL(file))
                             {
-                                media.video.urls.push({url: urls[j], file: file, from: from, type: "video"});
+                                media.video.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "video"});
                             }
                             else
 
                             if (isOnlyOfficeDoc(file))
                             {
-                                media.ppt.urls.push({url: urls[j], file: file, from: from, type: "doc"});
+                                media.ppt.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "doc"});
                             }
                             else
 
                             if (isH5p(urls[j]))
                             {
-                                media.ppt.urls.push({url: urls[j], file: file, from: from, type: "h5p"});
+                                media.ppt.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
                             }
                             else
 
                             if (isMeeting(urls[j]))
                             {
-                                media.meetings.rooms.push({url: urls[j], room: file, from: from, recordings: []});
+                                media.meetings.rooms.push({id: msgId, url: urls[j], room: file, from: from, recordings: []});
                             }
 
                             else {
-                                media.link.urls.push({url: urls[j], file: urls[j], from: from, type: "link"});
+                                media.link.urls.push({id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
                             }
                         }
                     }
@@ -757,7 +758,7 @@
     var newItemElement = function(el, item, className)
     {
         item.ele = document.createElement(el);
-
+        item.ele.setAttribute('msgid', item.id);
         item.ele.name = item.type;
         item.ele.title = item.url;
         item.ele.innerHTML = item.file || item.url;
@@ -767,12 +768,21 @@
         item.ele.addEventListener('click', function(evt)
         {
             evt.stopPropagation();
-            console.debug("media item clicked", evt.target.name, evt.target.title);
+            console.debug("media item clicked", evt.target.name, evt.target.title, evt.target.getAttribute('msgid'));
+
+            var elmnt = document.getElementById("msg-" + evt.target.getAttribute('msgid'));
+            if (elmnt) elmnt.scrollIntoView(false);
 
             if (evt.target.name == "image" || evt.target.name == "audio" || evt.target.name == "video")
             {
                 previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: evt.target.title, type: evt.target.name}) });
                 previewDialog.show();
+            }
+            else
+
+            if (evt.target.name == "link")
+            {
+                window.open(evt.target.title, evt.target.title);
             }
             else {  // insert into textarea
                 replyInverseChat(evt.target.title);
@@ -798,13 +808,26 @@
             {
                 if (!check || (check && urls[i].url.indexOf(eleName) > -1))
                 {
-                    total++;
-                    detail.insertAdjacentElement('afterEnd', newItemElement('li', urls[i], "mediaItem"));
+                    validateUrl(urls[i], function(url)
+                    {
+                        total++;
+                        count.innerHTML = total;
+                        detail.insertAdjacentElement('afterEnd', newItemElement('li', url, "mediaItem"));
+                    });
                 }
             }
-
-            count.innerHTML = total;
         }
+    }
+
+    var validateUrl = function(url, callback)
+    {
+        fetch(url.url).then(function(response)
+        {
+            if (response.ok)
+            {
+                callback(url);
+            }
+        });
     }
 
     var renderMeeting = function (id, meetings)

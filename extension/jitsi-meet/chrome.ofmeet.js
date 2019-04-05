@@ -606,14 +606,14 @@ var ofmeet = (function(of)
             if (OFMEET_CONFIG.recordVideo)
             {
                 APP.conference._room.sendOfText(videoFileUrl);
-                if (currentChat) currentChat.model.sendMessage(currentChat.model.getOutgoingMessageAttributes(videoFileUrl));
+                if (currentChat) currentChat.model.sendMessage(videoFileUrl);
             }
             else
 
             if (OFMEET_CONFIG.recordAudio)
             {
                 APP.conference._room.sendOfText(audioFileUrl);
-                if (currentChat) currentChat.model.sendMessage(currentChat.model.getOutgoingMessageAttributes(audioFileUrl));
+                if (currentChat) currentChat.model.sendMessage(audioFileUrl);
             }
         }
     }

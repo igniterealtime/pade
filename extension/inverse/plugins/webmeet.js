@@ -1496,7 +1496,7 @@
 
     var submitMessage = function(view, inviteMsg)
     {
-        view.model.sendMessage(view.model.getOutgoingMessageAttributes(inviteMsg));
+        view.model.sendMessage(inviteMsg);
     }
 
     var testFileUploadAvailable = async function(view, callback)

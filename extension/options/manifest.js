@@ -380,7 +380,14 @@ this.manifest = {
             "group": i18n.get("Preferences"),
             "name": "saveWinPositions",
             "type": "checkbox",
-            "label": i18n.get("Save Window postions and sizes")
+            "label": i18n.get("Save window postions and sizes")
+        },
+        {
+            "tab": i18n.get("General"),
+            "group": i18n.get("Preferences"),
+            "name": "openWinMinimized",
+            "type": "checkbox",
+            "label": i18n.get("Open auto-start windows minimized")
         },
         {
             "tab": i18n.get("General"),
