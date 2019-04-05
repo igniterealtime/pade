@@ -11,3 +11,7 @@
 #conversejs .chat-head-chatbox .chat-title {
     color: white;
 }
+
+#conversejs .chatroom-body .chat-info {
+    color: var(--redder-orange) !important;
+}

@@ -182,8 +182,8 @@
     font-size: 0.5em;
 }
 
-#conversejs .chat-status {  /* hack for XA presence */
-    font-size: 0.5em !important;
+#conversejs #converse-roster .roster-contacts .roster-group li.current-xmpp-contact span.far {
+    font-size: 0.5em;
 }
 
 #conversejs #controlbox .controlbox-pane .controlbox-padded {

@@ -1399,7 +1399,7 @@ function doDefaults(background)
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
-    setDefaultSetting("hideOfflineUsers", true);
+    setDefaultSetting("converseRosterFilter", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");

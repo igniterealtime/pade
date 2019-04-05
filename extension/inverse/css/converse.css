@@ -9450,7 +9450,7 @@ readers do not read off random characters that represent icons */
   --controlbox-heading-color: #777;
   --controlbox-heading-font-weight: bold;
   --chat-topic-display: none;
-  --chat-info-display: none;
+  --chat-info-display: block;   /* BAO */
   --chat-textarea-background-color: #F6F6F6;
   --chat-correcting-color: #FFFFC0;
   --chat-head-text-color: #999;
@@ -11907,6 +11907,7 @@ body.converse-fullscreen {
   #conversejs .message.chat-msg:hover {
     background-color: rgba(0, 0, 0, 0.035); }
     #conversejs .message.chat-msg:hover .chat-msg__actions .chat-msg__action {
+      display: block; /* BAO */
       opacity: 1; }
   #conversejs .message.chat-msg.correcting.groupchat {
     background-color: var(--chatroom-correcting-color); }
@@ -11984,6 +11985,7 @@ body.converse-fullscreen {
     padding: 0;
     border: none;
     opacity: 0;
+    display: none; /* BAO */
     background: transparent;
     cursor: pointer; }
     #conversejs .message.chat-msg .chat-msg__actions .chat-msg__action:focus {

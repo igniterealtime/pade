@@ -1740,34 +1740,26 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Audio/Video Capture")
         },
-        {                                   // search
+        {                                               // search
             "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearchString",
+            "group": i18n.get("Rooms Directory"),
+            "name": "roomsSearchString",
             "type": "text",
             "label": i18n.get(""),
-            "text": i18n.get("Enter the keywords delimted by space"),
+            "text": i18n.get("Enter the search text"),
         },
         {
             "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearch",
+            "group": i18n.get("Rooms Directory"),
+            "name": "roomsSearch",
             "type": "button",
             "label": i18n.get(""),
             "text": i18n.get("search")
         },
         {
             "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convPdf",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Download PDF File")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearchResults",
+            "group": i18n.get("Rooms Directory"),
+            "name": "roomsSearchResults",
             "text": i18n.get(""),
             "type": "description"
         },
@@ -1791,29 +1783,6 @@ this.manifest = {
             "tab": i18n.get("Search"),
             "group": i18n.get("User Directory"),
             "name": "searchResults",
-            "text": i18n.get(""),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Rooms Directory"),
-            "name": "roomsSearchString",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter the search text"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Rooms Directory"),
-            "name": "roomsSearch",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("search")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Rooms Directory"),
-            "name": "roomsSearchResults",
             "text": i18n.get(""),
             "type": "description"
         },
@@ -1848,6 +1817,37 @@ this.manifest = {
             "type": "button",
             "label": i18n.get(""),
             "text": i18n.get("Save for Later")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearchString",
+            "type": "text",
+            "label": i18n.get(""),
+            "text": i18n.get("Enter the keywords delimted by space"),
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearch",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("search")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convPdf",
+            "type": "button",
+            "label": i18n.get(""),
+            "text": i18n.get("Download PDF File")
+        },
+        {
+            "tab": i18n.get("Search"),
+            "group": i18n.get("Conversations"),
+            "name": "convSearchResults",
+            "text": i18n.get(""),
+            "type": "description"
         }
     ],
     "alignment": [

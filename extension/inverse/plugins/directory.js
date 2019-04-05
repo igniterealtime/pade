@@ -23,12 +23,20 @@
                     this.model.on('change', this.render, this);
                 },
                 toHTML() {
+                  const box = getSelectedChatBox();
+                  let inviteButton = "";
+
+                  if (box && box.model.get("type") == "chatroom")
+                  {
+                      inviteButton = '<button type="button" class="btn btn-success" data-dismiss="modal">Invite</button>';
+                  }
+
                   return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title"><b>User Directory</b></h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
                          '<input id="pade-directory-query" class="form-control" type="text" placeholder="Type a query string and press [Enter] to search user directory" ><p/><div id="pade-directory-results"></div>' +
                          '</div>' +
-                         '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
+                         '<div class="modal-footer">' + inviteButton + '<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
@@ -47,7 +55,8 @@
                   }, false);
                 },
                 events: {
-                    'keyup #pade-directory-query': 'keyUp'
+                    'keyup #pade-directory-query': 'keyUp',
+                    'click .btn-success': 'doInvite'
                 },
 
                 keyUp(ev) {
@@ -72,6 +81,30 @@
                         {
                             displayUsers(userList, directoryResults);
                         });
+                    }
+                },
+
+                doInvite() {
+                    var invitees = this.el.querySelectorAll(".check-invitee");
+
+                    if (bgWindow)
+                    {
+                        var chatRoom = getSelectedChatBox();
+
+                        if (chatRoom)
+                        {
+                            var roomJid = chatRoom.model.get("jid");
+
+                            for (var i=0; i<invitees.length; i++)
+                            {
+                                console.debug('inviting - jid', invitees[i].getAttribute("data-jid"), invitees[i].checked);
+
+                                if (invitees[i].checked)
+                                {
+                                    chatRoom.model.directInvite(invitees[i].getAttribute("data-jid"), "Please join me in");
+                                }
+                            }
+                        }
                     }
                 }
             });
@@ -220,17 +253,24 @@
     {
         console.debug('displayUsers', userList);
 
+        var box = getSelectedChatBox();
+        var inviteHdr = "";
+        if (box && box.model.get("type") == "chatroom") inviteHdr = "<th>Invite</th>";
+
         var users = removeDuplicates(userList);
-        var html = "<table style='margin-left: 15px'><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr>";
+        var html = "<table style='margin-left: 15px'><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th>" + inviteHdr + "</tr>";
         var count = 0;
 
         for (var i=0; i<users.length; i++)
         {
             var user = users[i];
+            var inviteDetail = "";
+            if (box && box.model.get("type") == "chatroom") inviteDetail = "<td><input class='check-invitee' data-jid='" + user.jid + "' type='checkbox'></td>";
+
             if (!user.email) user.email = "";
             if (!user.caller_id_number) user.caller_id_number = "";
 
-            html = html + "<tr><td><a class='plugin-directory-jid' title='click here to open chat with " + user.jid + "' id='" + user.jid + "' href='#'>" + user.jid + "</a></td><td>" + user.name + "</td><td>" + user.email + "</td><td><a class='plugin-directory-phone' name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td></tr>";
+            html = html + "<tr><td><a class='plugin-directory-jid' title='click here to open chat with " + user.jid + "' id='" + user.jid + "' href='#'>" + user.jid + "</a></td><td>" + user.name + "</td><td>" + user.email + "</td><td><a class='plugin-directory-phone' name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td>" + inviteDetail + "</tr>";
         }
         html = html + "</table>"
 
