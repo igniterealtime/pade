@@ -1415,6 +1415,7 @@ function doDefaults(background)
     setDefaultSetting("allowMsgReaction", true);
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("useMarkdown", true);
+    setDefaultSetting("showToolbarIcons", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

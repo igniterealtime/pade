@@ -142,28 +142,6 @@
         return true;
     }
 
-    var newElement = function(el, id, html)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        document.body.appendChild(ele);
-        return ele;
-    }
-
-    var addToolbarItem = function(view, id, label, html)
-    {
-        var placeHolder = view.el.querySelector('#place-holder');
-
-        if (!placeHolder)
-        {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
-    }
-
     var getSelectedChatBox = function()
     {
         var views = _converse.chatboxviews.model.models;

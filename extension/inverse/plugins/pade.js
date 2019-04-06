@@ -220,6 +220,8 @@
                     var body = message.querySelector('body');
                     var history = message.querySelector('forwarded')
 
+                    console.debug("pade plugin message", history, body, chatbox);
+
                     if (!history && body && chatbox)
                     {
                         var jid = chatbox.get("jid");
@@ -274,10 +276,10 @@
                         setActiveConversationsUread(chatbox, body.innerHTML);
                     }
 
-                    if (!history && body && attachTo)
+                    if (!history && body && attachTo && (body.innerHTML.indexOf(":thumbsup:") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1))
                     {
                         const msgId = attachTo.getAttribute("id");
-                        const reaction = (body.innerHTML.indexOf(":-(") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1) ? "dislike" : "like";
+                        const reaction = body.innerHTML.indexOf(":thumbsdown:") > -1 ? "dislike" : "like";
 
                         console.debug("pade plugin - attach-to", msgId, reaction);
 
@@ -336,6 +338,8 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
+                    //console.debug("renderChatMessage", this.model);
+
                     const body = this.model.get('message');
 
                     if (body.indexOf(":lol:") > -1)
@@ -344,13 +348,15 @@
                         this.model.set('message', newBody);
                     }
 
+                    const msgAttachId = this.model.get("msg_attach_to");
 
-                    const msgAttachId = this.model.get("msg_attach_id");
-
-                    if (msgAttachId && body.indexOf(msgAttachId) == -1)
+                    if (msgAttachId && body.indexOf(msgAttachId) == -1) // very important check (duplicates)
                     {
-                        const reaction = (body.indexOf(":-(") > -1 || body.indexOf(":thumbsdown:") > -1) ? ":thumbsdown:" : ":thumbsup:";
-                        this.model.set('message', "/me " + reaction + " #" + msgAttachId);
+                        if (body.indexOf(":thumbsup:") > -1 || body.indexOf(":thumbsdown:") > -1)
+                        {
+                            const reaction = (body.indexOf(":thumbsdown:") > -1) ? ":thumbsdown:" : ":thumbsup:";
+                            this.model.set('message', "/me " + reaction + " #" + msgAttachId);
+                        }
                     }
 
                     if (getSetting("notifyOnInterests", false))
@@ -377,13 +383,33 @@
 
                     await this.__super__.renderChatMessage.apply(this, arguments);
 
-                    // action button for quoting, pinning
 
+                    // action button for quoting, pinning
 
                     var messageActionButtons = this.el.querySelector('.chat-msg__message');
 
                     if (messageActionButtons)
                     {
+                        // looking for blockquote
+
+                        var blockQuote = messageActionButtons.querySelector('blockquote');
+
+                        if (blockQuote && msgAttachId)
+                        {
+                            blockQuote.setAttribute('msgid', msgAttachId);
+
+                            blockQuote.addEventListener('click', function(evt)
+                            {
+                                //evt.stopPropagation();
+
+                                var elmnt = document.getElementById("msg-" + evt.target.getAttribute('msgid'));
+                                if (elmnt) elmnt.scrollIntoView(false);
+
+                            }, false);
+                        }
+
+                        // adding message reactions
+
                         if (getSetting("allowMsgReaction", true))
                         {
                             if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
@@ -428,6 +454,8 @@
                             messageActionButtons.insertAdjacentElement('afterEnd', ele);
                         }
                     }
+
+                    // render message reaction totals
 
                     const msgId = this.model.get("msgid");
 

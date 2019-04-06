@@ -70,14 +70,15 @@
                     addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
 
                     var occupants = view.el.querySelector('.occupants');
-                    var infoButton = document.getElementById("pade-info-" + id);
 
-                    if (occupants && infoButton)
+                    if (occupants)
                     {
-                        var infoElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-infobox'));
+                        var infoElement = occupants.insertAdjacentElement('afterEnd', __newElement('div', null, null, 'plugin-infobox'));
                         infoElement.style.display = "none";
 
-                        infoButton.addEventListener('click', function(evt)
+                        var infoButton = document.getElementById("pade-info-" + id);
+
+                        if (infoButton) infoButton.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
                             toggleInfoBar(view, infoElement, id, jid);
@@ -243,7 +244,7 @@
                 {
                     if (htmlArray[i].ele)
                     {
-                        var element = newElement('div', null, htmlArray[i].html);
+                        var element = __newElement('div', null, htmlArray[i].html);
                         htmlArray[i].ele.insertAdjacentElement('afterEnd', element);
 
                         element.addEventListener('click', function(evt)
@@ -297,7 +298,7 @@
                     console.debug('createBroadcastEndpoints', jid, name);
 
                     var html = '<li title="' + jid + '">' + name + '</li>';
-                    var element = newElement('div', null, html);
+                    var element = __newElement('div', null, html);
 
                     element.addEventListener('click', function(evt)
                     {
@@ -348,7 +349,7 @@
                         html += '<input name="info_active_workgroup" type="radio" ' + checked + ' value="' + jid + '"/>&nbsp;' + name + '<br/>';
                     }
 
-                    var element = newElement('div', null, html);
+                    var element = __newElement('div', null, html);
 
                     element.addEventListener('click', function(evt)
                     {
@@ -404,7 +405,7 @@
                     }
                     html += '</table>';
 
-                    queueDetail.insertAdjacentElement('afterEnd', newElement('div', null, html));
+                    queueDetail.insertAdjacentElement('afterEnd', __newElement('div', null, html));
                 }
 
                 var keys = Object.getOwnPropertyNames(fastpath.conversations);
@@ -423,7 +424,7 @@
                         console.debug("createWorkgroups conversation", conversation);
 
                         var html = '<li title="' + conversation.question + '">' + conversation.username + ' (' + conversation.agent + ')</li>';
-                        var element = newElement('div', null, html);
+                        var element = __newElement('div', null, html);
 
                         element.addEventListener('click', function(evt)
                         {
@@ -520,6 +521,11 @@
                 var msgId = messages[i].querySelector('forwarded').querySelector('message').getAttribute('id');
                 var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
 
+                var timestamp = undefined;
+                var delay = messages[i].querySelector('forwarded').querySelector('delay');
+                if (delay) timestamp = delay.getAttribute('stamp');
+                var stamp = moment(timestamp).format('MMM DD YYYY HH:mm:ss');
+
                 console.debug("archived msg", i, from, body, msgId);
 
                 if (body)
@@ -539,54 +545,54 @@
                             if (isAudioMeetingURL(urls[j]))
                             {
                                 file = file.substring(file.indexOf(".") + 1);
-                                media.recordings.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "audio"});
+                                media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
                             }
                             else
 
                             if (isVideoMeetingURL(urls[j]))
                             {
                                 file = file.substring(file.indexOf(".") + 1);
-                                media.recordings.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "video"});
+                                media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
                             }
                             else
 
                             if (isAudioURL(file))
                             {
-                                media.vmsg.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "audio"});
+                                media.vmsg.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
                             }
                             else
 
                             if (isImageURL(file))
                             {
-                                media.photo.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "image"});
+                                media.photo.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "image"});
                             }
                             else
 
                             if (isVideoURL(file))
                             {
-                                media.video.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "video"});
+                                media.video.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
                             }
                             else
 
                             if (isOnlyOfficeDoc(file))
                             {
-                                media.ppt.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "doc"});
+                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "doc"});
                             }
                             else
 
                             if (isH5p(urls[j]))
                             {
-                                media.ppt.urls.push({id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
+                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
                             }
                             else
 
                             if (isMeeting(urls[j]))
                             {
-                                media.meetings.rooms.push({id: msgId, url: urls[j], room: file, from: from, recordings: []});
+                                media.meetings.rooms.push({timestamp: stamp, id: msgId, url: urls[j], room: file, from: from, recordings: []});
                             }
 
                             else {
-                                media.link.urls.push({id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
+                                media.link.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
                             }
                         }
                     }
@@ -758,9 +764,11 @@
     var newItemElement = function(el, item, className)
     {
         item.ele = document.createElement(el);
-        item.ele.setAttribute('msgid', item.id);
-        item.ele.name = item.type;
-        item.ele.title = item.url;
+        item.ele.setAttribute('data-msgid', item.id);
+        item.ele.setAttribute('data-url', item.url);
+        item.ele.setAttribute('data-timestamp', item.timestamp);
+        item.ele.setAttribute('data-type', item.type);
+        item.ele.title = item.timestamp + ': ' + item.url;
         item.ele.innerHTML = item.file || item.url;
         item.ele.classList.add(className);
         document.body.appendChild(item.ele);
@@ -768,24 +776,29 @@
         item.ele.addEventListener('click', function(evt)
         {
             evt.stopPropagation();
-            console.debug("media item clicked", evt.target.name, evt.target.title, evt.target.getAttribute('msgid'));
 
-            var elmnt = document.getElementById("msg-" + evt.target.getAttribute('msgid'));
+            const type = evt.target.getAttribute('data-type');
+            const url = evt.target.getAttribute('data-url');
+            const msgId = evt.target.getAttribute('data-msgid');
+
+            console.debug("media item clicked", type, url, msgId);
+
+            var elmnt = document.getElementById("msg-" + msgId);
             if (elmnt) elmnt.scrollIntoView(false);
 
-            if (evt.target.name == "image" || evt.target.name == "audio" || evt.target.name == "video")
+            if (type == "image" || type == "audio" || type == "video")
             {
-                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: evt.target.title, type: evt.target.name}) });
+                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: url, type: type}) });
                 previewDialog.show();
             }
             else
 
-            if (evt.target.name == "link")
+            if (type == "link")
             {
-                window.open(evt.target.title, evt.target.title);
+                window.open(url, "pade-media-link");
             }
             else {  // insert into textarea
-                replyInverseChat(evt.target.title);
+                replyInverseChat(url);
             }
 
         });
@@ -804,29 +817,39 @@
         {
             var total = 0;
 
-            for (var i=0; i<urls.length; i++)
+            urls.forEach(function(element)
             {
-                if (!check || (check && urls[i].url.indexOf(eleName) > -1))
+                if (!check || (check && element.url.indexOf(eleName) > -1)) // find specific meeting div
                 {
-                    validateUrl(urls[i], function(url)
+                    validateUrl(element, function(url)
                     {
-                        total++;
-                        count.innerHTML = total;
-                        detail.insertAdjacentElement('afterEnd', newItemElement('li', url, "mediaItem"));
+                        if (url)
+                        {
+                            total++;
+                            count.innerHTML = total;
+                            detail.insertAdjacentElement('afterEnd', newItemElement('li', url, "mediaItem"));
+                        }
                     });
                 }
-            }
+            });
         }
     }
 
     var validateUrl = function(url, callback)
     {
+        console.debug("validateUrl check", url);
+
         fetch(url.url).then(function(response)
         {
             if (response.ok)
             {
                 callback(url);
+                console.debug("validateUrl check ok", url);
+            } else {
+                callback();
             }
+        }).catch(function (err) {
+            callback();
         });
     }
 
@@ -874,28 +897,5 @@
         el.classList.remove(className);
       }
       return el;
-    }
-
-    var newElement = function(el, id, html, className)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        if (className) ele.classList.add(className);
-        document.body.appendChild(ele);
-        return ele;
-    }
-
-    var addToolbarItem = function(view, id, label, html)
-    {
-        var placeHolder = view.el.querySelector('#place-holder');
-
-        if (!placeHolder)
-        {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
     }
 }));

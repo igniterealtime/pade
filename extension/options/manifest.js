@@ -380,7 +380,7 @@ this.manifest = {
             "group": i18n.get("Preferences"),
             "name": "saveWinPositions",
             "type": "checkbox",
-            "label": i18n.get("Save window postions and sizes")
+            "label": i18n.get("Save window positions and sizes")
         },
         {
             "tab": i18n.get("General"),
@@ -1040,7 +1040,14 @@ this.manifest = {
             "group": i18n.get("User Interface"),
             "name": "rosterGroups",
             "type": "checkbox",
-            "label": i18n.get("Show roster groups")
+            "label": i18n.get("Show Roster groups")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "showToolbarIcons",
+            "type": "checkbox",
+            "label": i18n.get("Show Advanced toolbar icons")
         },
         {
             "tab": i18n.get("Converse"),

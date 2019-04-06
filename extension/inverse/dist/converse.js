@@ -48715,15 +48715,21 @@ const AvatarMixin = {
       return;
     }
 
-    const image_type = this.model.vcard.get('image_type'),
-          image = this.model.vcard.get('image');
-
-    // BAO
-
-    var display_name = this.model.vcard.attributes.fullname || this.model.vcard.get('jid');
-    var dataUri = "data:" + image_type + ";base64," + image;
+   // BAO
 
     const defaultAvatar = "PD94bWwgdmVyc2lvbj0iMS4wIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiA8cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0iIzU1NSIvPgogPGNpcmNsZSBjeD0iNjQiIGN5PSI0MSIgcj0iMjQiIGZpbGw9IiNmZmYiLz4KIDxwYXRoIGQ9Im0yOC41IDExMiB2LTEyIGMwLTEyIDEwLTI0IDI0LTI0IGgyMyBjMTQgMCAyNCAxMiAyNCAyNCB2MTIiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==";
+    let image_type = "image/png";
+    let image = defaultAvatar;
+    let display_name = this.model.get('jid');
+
+    if (this.model.vcard)
+    {
+        image_type = this.model.vcard.get('image_type');
+        image = this.model.vcard.get('image');
+        display_name = this.model.vcard.attributes.fullname || this.model.vcard.get('jid');
+    }
+
+    var dataUri = "data:" + image_type + ";base64," + image;
 
     if (!image || (display_name && defaultAvatar == image && getSetting("converseRosterIcons")))
     {
@@ -49984,7 +49990,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         ev.preventDefault();
 
         const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg');
-        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
+        const msgId = message_el.getAttribute('data-msgid');
+        const message = this.model.messages.findWhere({'msgid': msgId});
         const type = message.get('type');
         const prefix = (type == "groupchat") ? message.get('nick') + ": " : "";
 
@@ -49998,6 +50005,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         }
 
         this.insertIntoTextArea('>' + prefix + replyMessage + "\n\n", false, false);
+        __origins['>' + prefix + replyMessage] = msgId;
       },
 
       onMessageForwardButtonClicked(ev) { // BAO
@@ -62498,6 +62506,14 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           }
         }
 
+        if (message.get('msg_attach_to'))       // BAO
+        {
+            stanza.c("attach-to", {
+                'xmlns': "urn:xmpp:message-attaching:1",
+                'id': message.get('msg_attach_to')
+            }).root();
+        }
+
         (message.get('references') || []).forEach(reference => {
           const attrs = {
             'xmlns': Strophe.NS.REFERENCE,
@@ -62540,6 +62556,15 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         const is_spoiler = this.get('composing_spoiler'),
               origin_id = _converse.connection.getUniqueId();
 
+        let attach_to = undefined;                          // BAO
+        const key = text.split("\n")[0];
+
+        if (__origins[key])
+        {
+            attach_to = __origins[key];
+            delete __origins[key];
+        }
+
         return {
           'jid': this.get('jid'),
           'nickname': this.get('nickname'),
@@ -62553,7 +62578,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           'message': text ? u.httpToGeoUri(u.shortnameToUnicode(text), _converse) : undefined,
           'is_spoiler': is_spoiler,
           'spoiler_hint': is_spoiler ? spoiler_hint : undefined,
-          'type': this.get('message_type')
+          'type': this.get('message_type'),
+          'msg_attach_to': attach_to // BAO
         };
       },
 
@@ -62771,7 +62797,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         });
 
         _.each(sizzle(`attach-to[xmlns="urn:xmpp:message-attaching:1"]`, stanza), attach => {   // BAO
-              attrs['msg_attach_id'] = attach.getAttribute('id');
+              attrs['msg_attach_to'] = attach.getAttribute('id');
         });
 
         if (spoiler) {
@@ -67155,6 +67181,15 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
 
         const origin_id = _converse.connection.getUniqueId();
 
+        let attach_to = undefined;                          // BAO
+        const key = text.split("\n")[0];
+
+        if (__origins[key])
+        {
+            attach_to = __origins[key];
+            delete __origins[key];
+        }
+
         return {
           'msgid': origin_id,
           'origin_id': origin_id,
@@ -67167,7 +67202,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
           'references': references,
           'sender': 'me',
           'spoiler_hint': is_spoiler ? spoiler_hint : undefined,
-          'type': 'groupchat'
+          'type': 'groupchat',
+          'msg_attach_to': attach_to // BAO
         };
       },
 

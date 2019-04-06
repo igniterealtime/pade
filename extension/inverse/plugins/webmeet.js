@@ -290,7 +290,7 @@
                     if (type == "chatroom")
                     {
                         // hide occupants list by default
-                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", false)});
+                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", true)});
                         view.setOccupantsVisibility();
                         view.scrollDown();
                     }
@@ -1327,29 +1327,6 @@
         }).catch(function (err) {
             console.error('preview link', err);
         });
-    }
-
-    var newElement = function(el, id, html, className)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        if (className) ele.classList.add(className);
-        document.body.appendChild(ele);
-        return ele;
-    }
-
-    var addToolbarItem = function(view, id, label, html)
-    {
-        var placeHolder = view.el.querySelector('#place-holder');
-
-        if (!placeHolder)
-        {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'))
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
     }
 
     var handleCommand = function(view, text)

@@ -101,6 +101,15 @@
     background-color: #A53A69;  
     cursor: pointer;
 }
+
+.chat-msg__text blockquote { 
+    cursor: pointer;
+}
+
+.chat-msg__text blockquote > * {
+  pointer-events: none;
+}
+
 .pade-active-conv {
     cursor: pointer;
     overflow: hidden;
