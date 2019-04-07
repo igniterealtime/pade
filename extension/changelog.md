@@ -5,8 +5,8 @@
     <li>Upgrade Converse to ver 4.2.0</li>
     <li>Align application minor version number with Converse (1.2.0) from now on</li>
     <li>Enable the User Directory tool in Converse to now invite people to the opened groupchat</li>
-    <li>Use the reply action in Converse to create quoted text that is now clickable. Clicking on scrolls the quoted message into view.</li>
-    <li>Click a URL in the Media Summary to open the actual page in the main browser window and make the original message in the conversation is scrolled into view.</li>
+    <li>Use the reply action in Converse to create quoted text that is now clickable. Clicking on it scrolls the quoted message into view.</li>
+    <li>Click a URL in the Media Summary to open the actual page in the main browser window and make the original message in the conversation scroll into view.</li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/148">Fixed #148: Cleanup media content which is no longer available from the Information > Media Content listing</a></li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/154">Fixed #154: If Meeting Recording is enabled, app crashes before meeting finishes</a></li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/153">Fixed #153: Option to show join/leave messages</a></li>
@@ -250,7 +250,7 @@
 
 <p><b>0.7.2</b> -- <i>October 29, 2018</i></p>
 <ul>
-    <li><a href="https://github.com/igniterealtime/Pade/issues/86">Fixed #86: Make Converse and other Pàdé app windows remember position and size</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/86">Fixed #86: Make Converse and other PÃ dÃ© app windows remember position and size</a></li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/84">Fixed #84: Add support for ONLYOFFICE collaborative editors</a></li>
 </ul>
 
@@ -263,7 +263,7 @@
 <ul>
     <li><a href="https://github.com/igniterealtime/Pade/issues/83">Fixed #83: Validate connection details before connecting</a></li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/73">Fixed #73: Realtime Collaboration on Diagrams, with mxGraph (which powers Draw.io) enhancement</a></li>
-    <li><a href="https://github.com/igniterealtime/Pade/issues/82">Fixed #82: Improve Pàdé full text search and make accessible from Converse</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/82">Fixed #82: Improve PÃ dÃ© full text search and make accessible from Converse</a></li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/81">Fixed #81: Implement the ability to invite people to an ad-hoc meeting</a></li>
     <li><a href="https://github.com/igniterealtime/Pade/issues/80">Fixed #80: Fix a number of UX issues</a></li>
 </ul>
