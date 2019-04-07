@@ -1,5 +1,34 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.2.0</b> -- <i>April 7, 2019</i></p>
+<ul>
+    <li>Upgrade Converse to ver 4.2.0</li>
+    <li>Align application minor version number with Converse (1.2.0) from now on</li>
+    <li>Enable the User Directory tool in Converse to now invite people to the opened groupchat</li>
+    <li>Use the reply action in Converse to create quoted text that is now clickable. Clicking on scrolls the quoted message into view.</li>
+    <li>Click a URL in the Media Summary to open the actual page in the main browser window and make the original message in the conversation is scrolled into view.</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/148">Fixed #148: Cleanup media content which is no longer available from the Information > Media Content listing</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/154">Fixed #154: If Meeting Recording is enabled, app crashes before meeting finishes</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/153">Fixed #153: Option to show join/leave messages</a></li>
+</ul>
+
+<p><b>1.1.5</b> -- <i>April 1, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/137">Fixed #137: Add Chat rooms directory search with history preview</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/143">Fixed #143: Add warning text next to settings that will close the config window auomatically</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/145">Fixed #145: Pade keeps re-setting my online status message to "hello"</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/146">Fixed #146: A typo in settings</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/147">Fixed #147: :lol: does not LOL</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/149">Fixed #149: manifest.js is not in UTF</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/150">Fixed #150: Timeout for Chrome notification</a></li>
+</ul>
+
+<p><b>1.1.4</b> -- <i>March 27, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/136">Fixed #136: Presence rapidly toggling between states by itself</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/142">Fixed #142: Password field should save and login by pressing enter</a></li>
+</ul>
+
 <p><b>1.1.3</b> -- <i>March 25, 2019</i></p>
 <ul>
     <li><a href="https://github.com/igniterealtime/Pade/issues/139">Fixed #139: Add support for XEP-0367: Message Attaching</a></li>

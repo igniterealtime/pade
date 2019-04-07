@@ -228,18 +228,42 @@ function doConverse(server, username, password, anonUser)
     var url = urlParam("url");
     var domain = getSetting("domain", null);
 
-    if (url && (url.indexOf("im:") == 0 || url.indexOf("xmpp:") == 0) && window.location.hash == "")
+    if (bgWindow && bgWindow.pade.chatWindow)
     {
-        var href = "index.html#converse/chat?jid=" + url.substring(3);
-        if (url.indexOf("xmpp:") == 0) href = "index.html#converse/room?jid=" + url.substring(5);
-
-        if (href.indexOf("@") == -1 && domain != null)
+        if (url && (url.indexOf("im:") == 0) && window.location.hash == "")
         {
-            href = href + "@" + (url.indexOf("xmpp:") == 0 ? "conference." + domain : domain);
+            var jid = url.substring(3);
+            if (jid.indexOf("@") == -1 && domain != null) jid = jid + "@" + domain;
+
+            chrome.extension.getViews({windowId: bgWindow.pade.chatWindow.id})[0].openChat(jid);
+            chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+            window.close();
         }
+        else
 
+        if (url && (url.indexOf("xmpp:") == 0) && window.location.hash == "")
+        {
+            jid = url.substring(5);
+            if (jid.indexOf("@") == -1 && domain != null) jid = jid + "@" + "conference." + domain;
 
-        location.href = href;
+            chrome.extension.getViews({windowId: bgWindow.pade.chatWindow.id})[0].openGroupChat(jid);
+            chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+            window.close();
+        }
+    }
+    else {
+
+        if (url && (url.indexOf("im:") == 0 || url.indexOf("xmpp:") == 0) && window.location.hash == "")
+        {
+            var href = "index.html#converse/chat?jid=" + url.substring(3);
+            if (url.indexOf("xmpp:") == 0) href = "index.html#converse/room?jid=" + url.substring(5);
+
+            if (href.indexOf("@") == -1 && domain != null)
+            {
+                href = href + "@" + (url.indexOf("xmpp:") == 0 ? "conference." + domain : domain);
+            }
+            location.href = href;
+        }
     }
 
     if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false) || getSetting("useSmartIdCard", false))
@@ -600,7 +624,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
         const jid = chatbox.get('jid');
 
         const msg_content = document.createElement("div");
-        msg_content.setAttribute("class", "message chat-msg pade-active-panel "  + chatType);
+        msg_content.classList.add("pade-active-panel");
 
         let display_name = chatbox.getDisplayName();
         if (!display_name || display_name.trim() == "") display_name = jid;

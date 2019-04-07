@@ -163,29 +163,22 @@ window.addEvent("domready", function () {
         enterToClick("convSearchString", "convSearch");
         enterToClick("roomsSearchString", "roomsSearch");
 
+        var setAnonBasicAuth = function()
+        {
+            if (settings.manifest.username) settings.manifest.username.element.parentElement.style.display = getSetting("useAnonymous", false) || getSetting("useBasicAuth", false) ? "none" : "";
+            if (settings.manifest.password) settings.manifest.password.element.parentElement.style.display = getSetting("useAnonymous", false) || getSetting("useBasicAuth", false) ? "none" : "";
+            if (settings.manifest.register) settings.manifest.register.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
+        }
+        setAnonBasicAuth();
+
         if (settings.manifest.useAnonymous)
         {
-            var setAnon = function()
-            {
-                if (settings.manifest.username) settings.manifest.username.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
-                if (settings.manifest.password) settings.manifest.password.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
-                if (settings.manifest.register) settings.manifest.register.element.parentElement.style.display = getSetting("useAnonymous", false) ? "none" : "";
-            }
-
-            settings.manifest.useAnonymous.addEvent("action", setAnon);
-            setAnon();
+            settings.manifest.useAnonymous.addEvent("action", setAnonBasicAuth);
         }
 
         if (settings.manifest.useBasicAuth)
         {
-            var setBasicAuth = function()
-            {
-                if (settings.manifest.username) settings.manifest.username.element.parentElement.style.display = getSetting("useBasicAuth", false) ? "none" : "";
-                if (settings.manifest.password) settings.manifest.password.element.parentElement.style.display = getSetting("useBasicAuth", false) ? "none" : "";
-            }
-
-            settings.manifest.useBasicAuth.addEvent("action", setBasicAuth);
-            setBasicAuth();
+            settings.manifest.useBasicAuth.addEvent("action", setAnonBasicAuth);
         }
 
         if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
@@ -377,9 +370,25 @@ window.addEvent("domready", function () {
 
                 settings.manifest.searchResults.element.innerHTML = "<p/><p/>" + html;
 
-                for (var i=0; i<users.length; i++)
+                users.forEach(function(theUser)
                 {
-                    document.getElementById(users[i].jid).addEventListener("click", function(e)
+                    var element = document.getElementById(theUser.jid);
+
+                    var setAvatar = function(imgHref)
+                    {
+                        element.innerHTML = "<img style='width: 22px;' src='" + imgHref + "'>" + element.innerHTML;
+                    }
+
+                    background.getVCard(theUser.jid, function(vCard)
+                    {
+                        console.debug("displayUsers vcard", vCard);
+                        setAvatar(vCard.avatar ? vCard.avatar : background.createAvatar(element.innerHTML));
+
+                    }, function() {
+                        setAvatar(background.createAvatar(element.innerHTML));
+                    });
+
+                    element.addEventListener("click", function(e)
                     {
                         e.stopPropagation();
                         var user = e.target;
@@ -402,7 +411,7 @@ window.addEvent("domready", function () {
                         }
                     });
 
-                    document.getElementById("check-" + users[i].jid).addEventListener("click", function(e)
+                    document.getElementById("check-" + theUser.jid).addEventListener("click", function(e)
                     {
                         e.stopPropagation();
                         var invitation = e.target;
@@ -424,7 +433,7 @@ window.addEvent("domready", function () {
                         settings.manifest.invitationList.element.value = inviteList.join("\n").trim();
                     });
 
-                    document.getElementById("phone-" + users[i].jid).addEventListener("click", function(e)
+                    document.getElementById("phone-" + theUser.jid).addEventListener("click", function(e)
                     {
                         e.stopPropagation();
                         var user = e.target;
@@ -441,7 +450,7 @@ window.addEvent("domready", function () {
 
                         } else alert("Phone Extension not configured");
                     });
-                }
+                });
             });
         });
 

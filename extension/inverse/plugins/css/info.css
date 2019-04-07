@@ -35,6 +35,11 @@
   text-overflow: ellipsis;
 }
 
+.mediaItem:hover {
+    background-color: var(--text-color);
+    color: var(--occupants-background-color);
+}
+
 .plugin-infobox li {
     height: 18px !important;
 }

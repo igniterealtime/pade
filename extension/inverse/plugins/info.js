@@ -768,7 +768,7 @@
         item.ele.setAttribute('data-url', item.url);
         item.ele.setAttribute('data-timestamp', item.timestamp);
         item.ele.setAttribute('data-type', item.type);
-        item.ele.title = item.timestamp + ': ' + item.url;
+        item.ele.title = item.from + ' ' + item.timestamp + ': ' + item.file;
         item.ele.innerHTML = item.file || item.url;
         item.ele.classList.add(className);
         document.body.appendChild(item.ele);

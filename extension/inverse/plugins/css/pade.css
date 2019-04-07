@@ -117,6 +117,14 @@
     width: 100%;
 }
 
+.pade-active-panel {
+  display: inline-flex;
+  width: 100%;
+  flex-direction: row;
+  /*overflow: auto;*/
+  padding: 0.125rem 1rem !important; 
+}
+  
 .pade-active-panel:hover {
     background-color: #E5E5E5 !important;  
     color: #151515 !important;      

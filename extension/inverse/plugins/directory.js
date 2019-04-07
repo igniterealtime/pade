@@ -260,11 +260,25 @@
         {
             var jids = directoryResults.querySelectorAll(".plugin-directory-jid");
 
-            for (var i=0; i<jids.length; i++)
+            jids.forEach(function(element)
             {
-                console.debug('displayUsers - jids', jids);
+                console.debug('displayUsers - jids', element.innerHTML);
 
-                jids[i].addEventListener("click", function(e)
+                var setAvatar = function(imgHref)
+                {
+                    element.innerHTML = "<img style='width: 22px;' src='" + imgHref + "'>" + element.innerHTML;
+                }
+
+                if (bgWindow) bgWindow.getVCard(element.innerHTML, function(vCard)
+                {
+                    console.debug("displayUsers vcard", vCard);
+                    setAvatar(vCard.avatar ? vCard.avatar : bgWindow.createAvatar(element.innerHTML));
+
+                }, function() {
+                    setAvatar(bgWindow.createAvatar(element.innerHTML));
+                });
+
+                element.addEventListener("click", function(e)
                 {
                     e.stopPropagation();
                     var user = e.target;
@@ -272,7 +286,7 @@
                     console.debug("findUsers - click", user.id, user.name, user.title);
                     _converse.api.chats.open(user.id)
                 });
-            }
+            });
 
             var phones = directoryResults.querySelectorAll(".plugin-directory-phone");
 
