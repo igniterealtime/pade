@@ -380,7 +380,7 @@ this.manifest = {
             "group": i18n.get("Preferences"),
             "name": "saveWinPositions",
             "type": "checkbox",
-            "label": i18n.get("Save window positions and sizes")
+            "label": i18n.get("Save window position and size")
         },
         {
             "tab": i18n.get("General"),
