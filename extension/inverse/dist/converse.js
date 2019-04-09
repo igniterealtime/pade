@@ -67172,6 +67172,19 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
         const is_spoiler = this.get('composing_spoiler');
         var references;
 
+        let attach_to = undefined;                          // BAO
+
+        if (text)
+        {
+            const key = text.split("\n")[0];
+
+            if (__origins[key])
+            {
+                attach_to = __origins[key];
+                delete __origins[key];
+            }
+        }
+
         var _this$parseTextForRef = this.parseTextForReferences(text);
 
         var _this$parseTextForRef2 = _slicedToArray(_this$parseTextForRef, 2);
@@ -67180,15 +67193,6 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
         references = _this$parseTextForRef2[1];
 
         const origin_id = _converse.connection.getUniqueId();
-
-        let attach_to = undefined;                          // BAO
-        const key = text.split("\n")[0];
-
-        if (__origins[key])
-        {
-            attach_to = __origins[key];
-            delete __origins[key];
-        }
 
         return {
           'msgid': origin_id,
@@ -67886,7 +67890,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
         const attrs = _converse.ChatBox.prototype.getUpdatedMessageAttributes.call(this, message, stanza);
 
         const from = stanza.getAttribute('from');
-        const own_message = Strophe.getResourceFromJid(from) == this.get('nick');
+        const own_message = from ? Strophe.getResourceFromJid(from) == this.get('nick') : null; // BAO
 
         if (own_message) {
           const stanza_id = sizzle(`stanza-id[xmlns="${Strophe.NS.SID}"]`, stanza).pop();

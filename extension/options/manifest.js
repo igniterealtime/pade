@@ -1096,7 +1096,7 @@ this.manifest = {
             "group": i18n.get("User Interface"),
             "name": "converseShowOnlyOnlineUsers",
             "type": "checkbox",
-            "label": i18n.get("Show only online users")
+            "label": i18n.get("Show only users with available presence")
         },
         {
             "tab": i18n.get("Converse"),

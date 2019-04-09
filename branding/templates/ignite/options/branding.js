@@ -97,6 +97,7 @@ var branding = {
     useUport                : {disable: true},
     useSmartIdCard          : {disable: true},
     useWinSSO               : {disable: true, value: false},
+    useBasicAuth            : {disable: true, value: false},
     gmailAccounts           : {disable: true},
 
     changelog               : {disable: false},
