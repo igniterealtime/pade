@@ -10286,7 +10286,7 @@ body.converse-fullscreen {
     position: relative;
     width: 100%;
     cursor: pointer;
-    background-color: var(--chat-head-color);
+    background-color: var(--chat-head-color) !important; /* BAO */
     color: var(--light-background-color);
     padding: 0.5em;
     font-size: 0.9em;

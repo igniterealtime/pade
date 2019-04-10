@@ -415,7 +415,22 @@ this.manifest = {
             "group": i18n.get("Auto Presence"),
             "name": "enablePresenceStatus",
             "type": "checkbox",
-            "label": i18n.get("Notify when a contact changes status")
+            "label": i18n.get("Notify when a contact changes their status message")
+        },
+        {
+            "tab": i18n.get("General"),
+            "group": i18n.get("Auto Presence"),
+            "name": "presNotifyWhitelist",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com"),
+        },
+        {
+            "tab": i18n.get("General"),
+            "group": i18n.get("Auto Presence"),
+            "name": "presNotifyWhitelistDesc",
+            "text": i18n.get("List of contact JIDs to to be considered when showing desktop notifications of changed contact status"),
+            "type": "description"
         },
         {
             "tab": i18n.get("General"),
@@ -450,21 +465,6 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("Locked Message"),
             "text": "good bye"
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Auto Presence"),
-            "name": "presNotifyWhitelist",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com"),
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Auto Presence"),
-            "name": "presNotifyWhitelistDesc",
-            "text": i18n.get("List of contact JIDs to to be considered when showing desktop notifications of changed contact status"),
-            "type": "description"
         },
         {
             "tab": i18n.get("General"),
