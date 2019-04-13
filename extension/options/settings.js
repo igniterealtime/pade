@@ -1425,6 +1425,7 @@ function doDefaults(background)
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
+    setDefaultSetting("enableNotesTool", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

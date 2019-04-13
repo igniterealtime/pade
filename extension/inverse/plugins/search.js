@@ -89,7 +89,7 @@
 
                             if (searchRegExp.test(body))
                             {
-                                var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' id='search-" + messages[i].get('msgid') + "'>$1</a></span>");
+                                var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' name='" + messages[i].get('msgid') + "' id='search-" + messages[i].get('msgid') + "'>$1</a></span>");
                                 html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
                             }
                         }
@@ -105,7 +105,9 @@
                             {
                                 evt.stopPropagation();
 
-                                var elmnt = document.getElementById("msg-" + evt.target.id.substring(7));
+                                var elmnt = document.getElementById("msg-" + evt.target.name);
+                                // chrome bug
+                                //if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
                                 if (elmnt) elmnt.scrollIntoView(false);
 
                             }, false);
@@ -176,6 +178,9 @@
                             badge.title = nick + ": " + oldMsg.get('message');
                             badge.innerText = "this";
                         }
+                        else {
+                           badge.innerText = ""; // can't find old message, don't show long msg-id
+                        }
 
                         badge.addEventListener('click', function(evt)
                         {
@@ -185,7 +190,7 @@
 
                             const tag = document.getElementById("msg-" + this.getAttribute("data-hashtag"));
 
-                            if (tag) tag.scrollIntoView(false);
+                            if (tag) tag.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
                             else {
                                 searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: this.getAttribute("data-hashtag")}) });
                                 searchDialog.show();

@@ -54083,11 +54083,18 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         this.model.on('configurationNeeded', this.getAndRenderConfigurationForm, this);
         this.model.on('destroy', this.hide, this);
         this.model.on('show', this.show, this);
-        this.model.occupants.on('add', this.onOccupantAdded, this);
-        this.model.occupants.on('remove', this.onOccupantRemoved, this);
-        this.model.occupants.on('change:show', this.showJoinOrLeaveNotification, this);
-        this.model.occupants.on('change:role', this.informOfOccupantsRoleChange, this);
-        this.model.occupants.on('change:affiliation', this.informOfOccupantsAffiliationChange, this);
+
+        // BAO
+
+        if (getSetting("showGroupChatStatusMessages", true))
+        {
+            this.model.occupants.on('add', this.onOccupantAdded, this);
+            this.model.occupants.on('remove', this.onOccupantRemoved, this);
+            this.model.occupants.on('change:show', this.showJoinOrLeaveNotification, this);
+            this.model.occupants.on('change:role', this.informOfOccupantsRoleChange, this);
+            this.model.occupants.on('change:affiliation', this.informOfOccupantsAffiliationChange, this);
+        }
+
         this.createEmojiPicker();
         this.createOccupantsView();
         this.render().insertIntoDOM();
@@ -55046,8 +55053,14 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         if (!is_self) {
           if (code in _converse.muc.action_info_messages) {
-            nick = Strophe.getResourceFromJid(stanza.getAttribute('from'));
-            return __(_converse.muc.action_info_messages[code], nick);
+
+            // BAO
+
+            if (getSetting("showGroupChatStatusMessages", false))
+            {
+                nick = Strophe.getResourceFromJid(stanza.getAttribute('from'));
+                return __(_converse.muc.action_info_messages[code], nick);
+            }
           }
         } else if (code in _converse.muc.new_nickname_messages) {
           if (is_self && code === "210") {
@@ -62557,12 +62570,16 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
               origin_id = _converse.connection.getUniqueId();
 
         let attach_to = undefined;                          // BAO
-        const key = text.split("\n")[0];
 
-        if (__origins[key])
+        if (text)
         {
-            attach_to = __origins[key];
-            delete __origins[key];
+            const key = text.split("\n")[0];
+
+            if (__origins[key])
+            {
+                attach_to = __origins[key];
+                delete __origins[key];
+            }
         }
 
         return {

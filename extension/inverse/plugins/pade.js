@@ -250,10 +250,11 @@
 
                         if (type == "chatroom")  // chatboxes handled in background.js
                         {
+                            var theNick =  message.getAttribute("from").split("/")[1];
+                            var myName =  chatbox.get('name');
                             var myNick =  chatbox.get('nick');
-                            var theNick =  chatbox.get('name');
 
-                            if (bgWindow) scanMessage(chatbox, message, jid, body.innerHTML, theNick, myNick);
+                            if (bgWindow) scanMessage(chatbox, message, jid, body.innerHTML, theNick, myNick, myName);
                         }
 
                         else
@@ -403,7 +404,7 @@
                                 //evt.stopPropagation();
 
                                 var elmnt = document.getElementById("msg-" + evt.target.getAttribute('msgid'));
-                                if (elmnt) elmnt.scrollIntoView(false);
+                                if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
 
                             }, false);
                         }
@@ -596,13 +597,15 @@
     }
 
 
-    var scanMessage = function(chatbox, message, fromJid, body, fromNick, myNick)
+    var scanMessage = function(chatbox, message, fromJid, body, fromNick, myNick, myName)
     {
-        //console.debug("scanMessage", chatbox, message, fromJid, body, fromNick, myNick);
+        console.debug("scanMessage", chatbox, message, fromJid, body, fromNick, myNick, myName);
 
         if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
         {
-            bgWindow.notifyText(body, fromNick, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+            var jid = fromJid + "/" + fromNick;
+
+            bgWindow.notifyText(body, fromNick, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
             {
                 if (buttonIndex == 0)
                 {
@@ -665,10 +668,11 @@
     var notifyMe = function(text, fromNick, fromJid, chatbox)
     {
         console.debug("notifyMe", text, fromNick, fromJid);
+        var jid = fromJid + "/" + fromNick;
 
         _converse.playSoundNotification();
 
-        bgWindow.notifyText(text, fromNick, null, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+        bgWindow.notifyText(text, fromNick, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
         {
             if (buttonIndex == 0)
             {

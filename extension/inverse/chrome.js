@@ -1,7 +1,7 @@
 if (!window.chrome || !window.chrome.extension)
 {
-    var appName = "BeeKeeper";
-    var appVer = "1.1.1";
+    var appName = "Pade";
+    var appVer = "1.2.3";
 
     window.chrome = {
         pade: true,

@@ -1,0 +1,23 @@
+@font-face {
+    font-family: Neucha;
+    src: url("fonts/neucha.ttf") format("opentype");
+}
+
+#conversejs, #conversejs-bg, .converse-fullscreen {
+  --normal-font: Neucha, "Helvetica", "Arial", sans-serif;
+  --heading-font: Neucha, 'Muli', normal;
+  --branding-font: Neucha, 'Baumans', cursive;  
+}
+  
+
+#conversejs.converse-fullscreen .chatroom .box-flyout, #conversejs.converse-mobile .chatroom .box-flyout {
+    background-color: #E77051;
+    border: 0.85px solid #E77051;
+    border-top: 0.8em solid #E77051;
+    width: 100%;
+}
+
+#conversejs.converse-fullscreen #controlbox .box-flyout, #conversejs.converse-mobile #controlbox .box-flyout {
+    padding-bottom: 20px; !important;  
+    background-color: white;    
+}

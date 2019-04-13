@@ -499,7 +499,7 @@
             console.debug("pinned item clicked", evt.target.name, evt.target.title);
 
             var elmnt = document.getElementById("msg-" + evt.target.name);
-            if (elmnt) elmnt.scrollIntoView(false);
+            if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
         });
 
         return item.ele;
@@ -784,7 +784,7 @@
             console.debug("media item clicked", type, url, msgId);
 
             var elmnt = document.getElementById("msg-" + msgId);
-            if (elmnt) elmnt.scrollIntoView(false);
+            if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
 
             if (type == "image" || type == "audio" || type == "video")
             {

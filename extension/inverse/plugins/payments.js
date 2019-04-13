@@ -429,7 +429,7 @@
 
     var submitMessage = function(view, msg)
     {
-        view.model.sendMessage(view.model.getOutgoingMessageAttributes(msg));
+        view.model.sendMessage(msg);
     }
 
 }));

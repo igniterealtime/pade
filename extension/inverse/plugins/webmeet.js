@@ -338,10 +338,19 @@
                             html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
                             addToolbarItem(view, id, "webmeet-webinar-" + id, html);
                         }
+
+                        if (getSetting("enableTasksTool", false))
+                        {
+                            html = '<a class="fa fa-tasks" title="Tasks"></a>';
+                            addToolbarItem(view, id, "webmeet-tasks-" + id, html);
+                        }
                     }
 
-                    html = '<a class="fa fa-pencil-alt" title="Notepad"></a>';
-                    addToolbarItem(view, id, "webmeet-notepad-" + id, html);
+                    if (getSetting("enableNotesTool", true))
+                    {
+                        html = '<a class="fa fa-pencil-alt" title="Notepad"></a>';
+                        addToolbarItem(view, id, "webmeet-notepad-" + id, html);
+                    }
 
                     html = '<a class="fa fa-sync" title="Refresh"></a>';
                     addToolbarItem(view, id, "webmeet-refresh-" + id, html);
@@ -477,6 +486,15 @@
                     {
                         evt.stopPropagation();
                         view.clearMessages();
+
+                    }, false);
+
+                    var tasks = document.getElementById("webmeet-tasks-" + id);
+
+                    if (tasks) tasks.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        openTasks(view);
 
                     }, false);
 
@@ -810,6 +828,16 @@
             }
         }
     });
+
+    var openTasks = function(view)
+    {
+        chrome.storage.local.get("pade.tasks", function(obj)
+        {
+            var url = chrome.extension.getURL("tasks/index.html");
+            bgWindow.openWebAppsWindow(url, null, 1400, 900);
+        });
+    }
+
 
     var openNotepad = function(view)
     {

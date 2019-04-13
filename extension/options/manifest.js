@@ -929,6 +929,20 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enableNotesTool",
+            "type": "checkbox",
+            "label": i18n.get("Enable Notes Tool")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "enableTasksTool",
+            "type": "checkbox",
+            "label": i18n.get("Enable Tasks Tool")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")
@@ -1115,6 +1129,7 @@ this.manifest = {
                 {"text": "Plain Simple", "value": "plainsimple"},
                 {"text": "Fly Concord", "value": "concord"},
                 {"text": "Paper White", "value": "paperwhite"},
+                {"text": "Hand Write", "value": "handwrite"},
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}
             ]

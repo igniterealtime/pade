@@ -5,7 +5,6 @@
 }
 #conversejs table {
     color: #333;
-    font-family: Helvetica, Arial, sans-serif;
     border-collapse:
     collapse; border-spacing: 0;
     width: 95%;
@@ -55,7 +54,6 @@
   padding: 0 12px 0 12px; 
 }
 #conversejs #controlbox .controlbox-section .controlbox-heading {
-  font-family: "Century Gothic", futura, "URW Gothic L", Verdana, sans-serif;
   margin: 0 0 0.5em 0;
   margin-top: 10px;
   text-transform: uppercase; 

@@ -1197,6 +1197,13 @@ function notifyText(message, context, jid, buttons, callback, notifyId)
         });
     }
 
+    if (avatars[jid])
+    {
+        opt.iconUrl = avatars[jid];
+        doNotify();
+    }
+    else
+
     if (jid && jid.indexOf("@" > -1) && jid.indexOf("@conference." == -1))
     {
         getVCard(jid, function(vCard)
@@ -3322,11 +3329,16 @@ function getRandomColor(nickname)
 }
 
 var avatars = {}
+var vuex = {};
 
 chrome.storage.local.get('avatars', function(data)
 {
     if (data && data.avatars) avatars = data.avatars;
-    //console.debug('chrome.storage get', avatars);
+});
+
+chrome.storage.local.get('vuex', function(data)
+{
+    if (data && data.vuex) vuex = data.vuex;
 });
 
 
