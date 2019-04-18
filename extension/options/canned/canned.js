@@ -13,7 +13,7 @@ var defaultAnswers = [
   },
   {
     name: 'Common: Misunderstanding',
-    description: "I understand the problem and will be happy to help you. Let’s see what I can do."
+    description: "I understand the problem and will be happy to help you. Let's see what I can do."
   },
   {
     name: 'Common: Angry',
