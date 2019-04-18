@@ -1,10 +1,10 @@
 var defaultAnswers = [
   {
-    name: 'Comon: Welcome',
+    name: 'Common: Welcome',
     description: "Hi there, how can I help you? :-)"
   },
   {
-    name: 'Comon: Pause',
+    name: 'Common: Pause',
     description: "I'm checking something, one moment, please."
   },
   {
