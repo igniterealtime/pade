@@ -228,13 +228,7 @@ function shvl_es_t(t,n,r){return void 0===(t=(n.split?n.split("."):n).reduce(fun
   function setState(key, state, storage)
   {
     const data = JSON.stringify(state);
-
-    chrome.storage.local.set({'vuex': data}, function()
-    {
-        console.debug("vuex - setState", key, data);
-    });
-
-    if (bgWin) bgWin.vuex = data;
+    if (bgWin) bgWin.setTasks(data);
     return storage.setItem(key, data);
   }
 

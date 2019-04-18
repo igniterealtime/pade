@@ -2,8 +2,9 @@ var bgWin = chrome.extension.getBackgroundPage();
 
 if (bgWin)
 {
-    sessionStorage.setItem('vuex', bgWin.vuex);
-    console.debug("vuex - initial", bgWin.vuex);
+    const tasks = bgWin.getTasks();
+    sessionStorage.setItem('vuex', tasks);
+    console.debug("tasks - initial", tasks);
 }
 window.addEventListener("unload", function()
 {

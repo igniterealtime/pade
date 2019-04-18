@@ -1,4 +1,4 @@
-var pade = {sip: {}, autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
+var pade = {tasks: {}, sip: {}, autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
 pade.transferWiseUrl = "https://api.transferwise.com/v1";
@@ -3329,7 +3329,6 @@ function getRandomColor(nickname)
 }
 
 var avatars = {}
-var vuex = {};
 
 chrome.storage.local.get('avatars', function(data)
 {
@@ -3338,8 +3337,78 @@ chrome.storage.local.get('avatars', function(data)
 
 chrome.storage.local.get('vuex', function(data)
 {
-    if (data && data.vuex) vuex = data.vuex;
+    if (data && data.vuex) pade.tasks = data.vuex;
 });
+
+function fetchTasks()
+{
+    pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("scratchpad", {xmlns: "scratchpad:tasks"}).tree(), function(resp)
+    {
+        var tasks = resp.querySelectorAll('task');
+        console.debug("get tasks", resp, tasks);
+
+        tasks.forEach(function(task)
+        {
+            console.debug("get task", task);
+
+        });
+
+    }, function (error) {
+        console.error("get tasks", error);
+    });
+
+}
+
+function getTasks()
+{
+    return pade.tasks;
+}
+
+function setTasks(data)
+{
+    chrome.storage.local.set({'vuex': data}, function()
+    {
+        pade.tasks = data;
+    });
+
+    // export to Openfire for Spark compatibility
+
+    var vuex  = JSON.parse(data);
+    console.debug("setTasks - board", vuex);
+
+    if (!vuex.board || !vuex.board.lists) return;
+
+    let iq = $iq({type: "set"}).c("query", {xmlns: "jabber:iq:private"}).c("scratchpad", {xmlns: "scratchpad:tasks"}).c("tasks", {showAll: "true"});
+
+    vuex.board.lists.forEach(function(list)
+    {
+        console.debug("setTasks - list", list);
+
+        list.items.forEach(function(item)
+        {
+            console.debug("setTasks - item", item);
+
+            let dueDate = new Date();
+            let creationDate = new Date();
+
+            if (item.date)
+            {
+                dueDate = new Date(item.date);
+                creationDate = new Date(item.date);
+            }
+
+            iq.c("task").c("title").t(item.title).up().c("dueDate").t(dueDate.getTime()).up().c("creationDate").t(creationDate.getTime()).up().c("completed").t("false").up().up()
+        });
+    });
+
+    pade.connection.sendIQ(iq.tree(), function(resp)
+    {
+        console.debug("set tasks", resp);
+
+    }, function (error) {
+        console.error("set tasks", error);
+    });
+}
 
 
 function setAvatar(nickname, avatar)
@@ -3681,6 +3750,7 @@ function doPadeConnect()
                         runMeetingPlanner();
                         publishUserLocation();
                         setupUserPayment();
+                        //fetchTasks();
                     }
 
                     closeCredsWindow();

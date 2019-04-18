@@ -241,6 +241,7 @@
 
                             if (bgWindow)
                             {
+                                if (!bgWindow.pade.messageCount) bgWindow.pade.messageCount = 0;
                                 bgWindow.pade.messageCount++;
 
                                 chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
