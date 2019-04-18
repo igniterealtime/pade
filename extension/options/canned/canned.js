@@ -1,10 +1,10 @@
 var defaultAnswers = [
   {
-    name: 'Comon: Welcome',
+    name: 'Common: Welcome',
     description: "Hi there, how can I help you? :-)"
   },
   {
-    name: 'Comon: Pause',
+    name: 'Common: Pause',
     description: "I'm checking something, one moment, please."
   },
   {
@@ -13,7 +13,7 @@ var defaultAnswers = [
   },
   {
     name: 'Common: Misunderstanding',
-    description: "I understand the problem and will be happy to help you. Let’s see what I can do."
+    description: "I understand the problem and will be happy to help you. Let's see what I can do."
   },
   {
     name: 'Common: Angry',
