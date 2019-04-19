@@ -42,6 +42,21 @@
     padding-right: 10px;
 }
 
+#conversejs .chat-msg__body {
+    position: relative;
+}
+#conversejs .chat-msg__actions {
+    align-items: center;
+    background-color: rgba(255,255,255,.75);
+    border-radius: 9rem;
+    display: flex;
+    flex-direction: row;
+    height: 2rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 #conversejs.converse-fullscreen .flyout {
   border-radius: 0;
   border: 0.85px solid #3AA569;
