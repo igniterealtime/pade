@@ -44,14 +44,15 @@
 
 #conversejs .chat-msg__body {
     position: relative;
+    overflow: hidden !important;       
 }
 #conversejs .chat-msg__actions {
-    align-items: center;
-    background-color: rgba(255,255,255,.75);
+    vertical-align: middle !important;
+    background-color: rgba(255,255,255,1);
     border-radius: 9rem;
     display: flex;
     flex-direction: row;
-    height: 2rem;
+    height: 1.5rem;
     position: absolute;
     right: 0;
     top: 0;

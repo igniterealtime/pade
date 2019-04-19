@@ -414,22 +414,26 @@
 
                         var messageActionButtons = this.el.querySelector('.chat-msg__actions');
 
-                        if (getSetting("allowMsgReaction", true))
+                        if (!messageActionButtons)
                         {
-                            if (!messageActionButtons.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
-                            {
-                                var ele = document.createElement("button");
-                                ele.classList.add("chat-msg__action", "chat-msg__action-dislike", "far", "fa-thumbs-down");
-                                ele.title = "React negative to this message";
-                                messageActionButtons.appendChild(ele);
-                            }
-                            if (!messageActionButtons.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
-                            {
-                                var ele = document.createElement("button");
-                                ele.classList.add("chat-msg__action", "chat-msg__action-like", "far", "fa-thumbs-up");
-                                ele.title = "React positive to this message";
-                                messageActionButtons.appendChild(ele);
-                            }
+                            messageActionButtons = document.createElement("viv");
+                            messageActionButtons.classList.add("chat-msg__actions");
+                            messageDiv.parentElement.appendChild(messageActionButtons);
+                        }
+
+                        if (!messageActionButtons.querySelector('.chat-msg__action-reply'))
+                        {
+                            var ele = document.createElement("button");
+                            ele.classList.add("chat-msg__action", "chat-msg__action-reply", "fas", "fa-reply");
+                            ele.title = "Reply this message";
+                            messageActionButtons.appendChild(ele);
+                        }
+                        if (!messageActionButtons.querySelector('.chat-msg__action-forward'))
+                        {
+                            var ele = document.createElement("button");
+                            ele.classList.add("chat-msg__action", "chat-msg__action-forward", "fas", "fa-share");
+                            ele.title = "Add this message to Notepad";
+                            messageActionButtons.appendChild(ele);
                         }
 
                         if (getSetting("allowMsgPinning", true))
@@ -443,19 +447,24 @@
                             }
                         }
 
-                        if (!messageActionButtons.querySelector('.chat-msg__action-forward'))
+                        if (getSetting("allowMsgReaction", true))
                         {
-                            var ele = document.createElement("button");
-                            ele.classList.add("chat-msg__action", "chat-msg__action-forward", "fas", "fa-share");
-                            ele.title = "Add this message to Notepad";
-                            messageActionButtons.appendChild(ele);
-                        }
-                        if (!messageActionButtons.querySelector('.chat-msg__action-reply'))
-                        {
-                            var ele = document.createElement("button");
-                            ele.classList.add("chat-msg__action", "chat-msg__action-reply", "fas", "fa-reply");
-                            ele.title = "Reply this message";
-                            messageActionButtons.appendChild(ele);
+                            if (!messageActionButtons.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
+                            {
+                                var ele = document.createElement("button");
+                                ele.classList.add("chat-msg__action", "chat-msg__action-like", "far", "fa-thumbs-up");
+                                ele.title = "React positive to this message";
+                                messageActionButtons.appendChild(ele);
+                            }
+
+                            if (!messageActionButtons.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
+                            {
+                                var ele = document.createElement("button");
+                                ele.classList.add("chat-msg__action", "chat-msg__action-dislike", "far", "fa-thumbs-down");
+                                ele.title = "React negative to this message";
+                                messageActionButtons.appendChild(ele);
+                            }
+
                         }
                     }
 

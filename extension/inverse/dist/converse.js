@@ -38985,6 +38985,12 @@ Strophe.Connection.prototype = {
     this._uniqueId = 0;
   },
 
+  injectMessage: function injectMessage(data) // BAO
+  {
+    const elem = new DOMParser().parseFromString(data, "text/xml").documentElement;
+    this._dataRecv(elem, data);
+  },
+
   /** Function: pause
    *  Pause the request manager.
    *
