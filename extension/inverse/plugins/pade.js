@@ -388,13 +388,13 @@
 
                     // action button for quoting, pinning
 
-                    var messageActionButtons = this.el.querySelector('.chat-msg__message');
+                    var messageDiv = this.el.querySelector('.chat-msg__message');
 
-                    if (messageActionButtons)
+                    if (messageDiv)
                     {
                         // looking for blockquote
 
-                        var blockQuote = messageActionButtons.querySelector('blockquote');
+                        var blockQuote = messageDiv.querySelector('blockquote');
 
                         if (blockQuote && msgAttachId)
                         {
@@ -412,48 +412,50 @@
 
                         // adding message reactions
 
+                        var messageActionButtons = this.el.querySelector('.chat-msg__actions');
+
                         if (getSetting("allowMsgReaction", true))
                         {
-                            if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
+                            if (!messageActionButtons.querySelector('.chat-msg__action-dislike') && this.model.get("type") === "groupchat")
                             {
-                                var ele = document.createElement("div");
-                                ele.classList.add("chat-msg__actions");
-                                ele.innerHTML = '<button class="chat-msg__action chat-msg__action-dislike far fa-thumbs-down" title="React negative to this message"></button>';
-                                messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                                var ele = document.createElement("button");
+                                ele.classList.add("chat-msg__action", "chat-msg__action-dislike", "far", "fa-thumbs-down");
+                                ele.title = "React negative to this message";
+                                messageActionButtons.appendChild(ele);
                             }
-                            if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
+                            if (!messageActionButtons.querySelector('.chat-msg__action-like') && this.model.get("type") === "groupchat")
                             {
-                                var ele = document.createElement("div");
-                                ele.classList.add("chat-msg__actions");
-                                ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-like far fa-thumbs-up" title="React positive to this message"></button>';
-                                messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                                var ele = document.createElement("button");
+                                ele.classList.add("chat-msg__action", "chat-msg__action-like", "far", "fa-thumbs-up");
+                                ele.title = "React positive to this message";
+                                messageActionButtons.appendChild(ele);
                             }
                         }
 
                         if (getSetting("allowMsgPinning", true))
                         {
-                            if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-pin') && this.model.get("type") === "groupchat")
+                            if (!messageActionButtons.querySelector('.chat-msg__action-pin') && this.model.get("type") === "groupchat")
                             {
-                                var ele = document.createElement("div");
-                                ele.classList.add("chat-msg__actions");
-                                ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-pin fas fa-thumbtack" title="Pin this message"></button>';
-                                messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                                var ele = document.createElement("button");
+                                ele.classList.add("chat-msg__action", "chat-msg__action-pin", "fas", "fa-thumbtack");
+                                ele.title = "Pin this message";
+                                messageActionButtons.appendChild(ele);
                             }
                         }
 
-                        if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-forward'))
+                        if (!messageActionButtons.querySelector('.chat-msg__action-forward'))
                         {
-                            var ele = document.createElement("div");
-                            ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button class="chat-msg__action chat-msg__action-forward fas fa-share" title="Add this message to Notepad"></button>';
-                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            var ele = document.createElement("button");
+                            ele.classList.add("chat-msg__action", "chat-msg__action-forward", "fas", "fa-share");
+                            ele.title = "Add this message to Notepad";
+                            messageActionButtons.appendChild(ele);
                         }
-                        if (!messageActionButtons.parentElement.querySelector('.chat-msg__action-reply'))
+                        if (!messageActionButtons.querySelector('.chat-msg__action-reply'))
                         {
-                            var ele = document.createElement("div");
-                            ele.classList.add("chat-msg__actions");
-                            ele.innerHTML = '<button style="padding-left: 10px;" class="chat-msg__action chat-msg__action-reply fas fa-reply" title="Reply this message"></button>';
-                            messageActionButtons.insertAdjacentElement('afterEnd', ele);
+                            var ele = document.createElement("button");
+                            ele.classList.add("chat-msg__action", "chat-msg__action-reply", "fas", "fa-reply");
+                            ele.title = "Reply this message";
+                            messageActionButtons.appendChild(ele);
                         }
                     }
 
