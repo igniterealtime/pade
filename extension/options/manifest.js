@@ -1161,7 +1161,7 @@ this.manifest = {
             "name": "autoJoinPrivateChats",
             "type": "textarea",
             "label": i18n.get(""),
-            "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com"),
+            "text": i18n.get("List of contact JIDs. For example:\n\nuser@domain.org\nanother@domain.com/Title"),
         },
         {
             "tab": i18n.get("Converse"),

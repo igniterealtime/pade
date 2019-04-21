@@ -35,7 +35,7 @@
 /* converse customisation*/
 
 #conversejs .message.chat-msg .chat-msg__actions .chat-msg__action {
-    padding: 3px;
+    padding: 5px;
 }
 
 #conversejs .chat-msg__reaction {

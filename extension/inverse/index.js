@@ -364,7 +364,7 @@ function doConverse(server, username, password, anonUser)
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments"];
+        var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
         var viewMode = chrome.pade ? 'fullscreen' : (window.pade ? 'overlayed' : 'fullscreen');
 
         if (getSetting("enableHomePage", false))

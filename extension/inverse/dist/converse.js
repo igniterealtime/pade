@@ -38985,12 +38985,6 @@ Strophe.Connection.prototype = {
     this._uniqueId = 0;
   },
 
-  injectMessage: function injectMessage(data) // BAO
-  {
-    const elem = new DOMParser().parseFromString(data, "text/xml").documentElement;
-    this._dataRecv(elem, data);
-  },
-
   /** Function: pause
    *  Pause the request manager.
    *
@@ -39355,6 +39349,12 @@ Strophe.Connection.prototype = {
 
   /* jshint unused:true */
 
+  injectMessage: function injectMessage(data) // BAO
+  {
+    const elem = new DOMParser().parseFromString('<wrapper>' + data + '</wrapper>', "text/xml").documentElement;
+    this._dataRecv(elem, data);
+  },
+
   /** Function: send
    *  Send a stanza.
    *
@@ -39370,6 +39370,30 @@ Strophe.Connection.prototype = {
   send: function send(elem) {
     if (elem === null) {
       return;
+    }
+
+    // BAO - Interceptor for messages sennt to user@pade.domain to be handled by gateway plugin
+
+    if (elem.nodeTree && typeof elem.nodeTree.getAttribute === "function")
+    {
+        const target = elem.nodeTree.getAttribute("to");
+
+        if (target && target.indexOf("pade." + this.domain) > -1)
+        {
+            if (typeof this.injectedMessage === "function") this.injectedMessage(elem.nodeTree);
+            return;
+        }
+    }
+
+    if (typeof elem.getAttribute === "function")
+    {
+        const target = elem.getAttribute("to");
+
+        if (target && target.indexOf("pade." + this.domain) > -1)
+        {
+            if (typeof this.injectedMessage === "function") this.injectedMessage(elem);
+            return;
+        }
     }
 
     if (typeof elem.sort === "function") {
@@ -62110,7 +62134,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         if (this.get('type') === 'groupchat') {
           return this.get('nick');
         } else {
-          return this.vcard.get('fullname') || this.get('from');
+          return this.vcard.get('fullname') || this.get('fullname') || this.get('from');    // BAO
         }
         // BAO
         //return this.get('nickname') || this.vcard.get('nickname') || this.vcard.get('fullname') || this.get('jid');
@@ -62300,7 +62324,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
       },
 
       getDisplayName() {
-        return this.vcard.get('fullname') || this.get('jid');
+        return this.vcard.get('fullname') || this.get('fullname') || this.get('jid'); // BAO
       },
 
       getUpdatedMessageAttributes(message, stanza) {
@@ -63154,7 +63178,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
         }
 
         if (_.isString(jid)) {
-          _converse.api.chats.open(jid);
+          _converse.api.chats.open(Strophe.getBareJidFromJid(jid), {fullname: Strophe.getResourceFromJid(jid)});    // BAO
         } else {
           _converse.log('Invalid jid criteria specified for "auto_join_private_chats"', Strophe.LogLevel.ERROR);
         }
@@ -67031,7 +67055,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
       },
 
       getDisplayName() {
-        return this.get('name') || this.get('jid');
+        return this.get('name') || this.get('fullname') || this.get('jid');  // BAO
       },
 
       /**
