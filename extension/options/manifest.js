@@ -1243,6 +1243,45 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("Feeds"),
+            "name": "enableRssFeeds",
+            "type": "checkbox",
+            "label": i18n.get("Enable RSS and Atom feeds")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Feeds"),
+            "name": "showRssSummary",
+            "type": "checkbox",
+            "label": i18n.get("Show RSS and Atom feed summary")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Feeds"),
+            "name": "rssAtomFeedUrls",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of rss or atom feed urls. For example:\n\nhttps://discourse.igniterealtime.org/c/blogs/ignite-realtime-blogs.rss"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Feeds"),
+            "name": "rssAtomFeedUrlsDesc",
+            "text": i18n.get("List of rss or atom urls to feed from"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Feeds"),
+            "name": "feedCheck",
+            "type": "slider",
+            "label": i18n.get("RSS check interval (mins)"),
+            "max": 60,
+            "min": 5,
+            "step": 5
+        },
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",

@@ -1426,6 +1426,7 @@ function doDefaults(background)
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
+    setDefaultSetting("feedCheck", 10);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");
