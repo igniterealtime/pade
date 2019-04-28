@@ -116,4 +116,8 @@ var branding = {
     autoJoinRooms           : {disable: false, value: "open_chat@conference.igniterealtime.org\nopenfire@conference.igniterealtime.org\npade@conference.igniterealtime.org\nsmack@conference.igniterealtime.org"},
 
     ofmeetUrl               : {disable: true, value: "https://meet.jit.si/"},
+
+    enableRssFeeds          : {disable: false, value: true},
+    showRssSummary          : {disable: false, value: false},
+    rssAtomFeedUrls         : {disable: false, value: "https://discourse.igniterealtime.org/latest.rss\nhttps://github.com/igniterealtime/Openfire/commits/master.atom"},
 }

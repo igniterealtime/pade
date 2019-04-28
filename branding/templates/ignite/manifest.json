@@ -6,7 +6,7 @@
   "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
   "description": "__MSG_manifest_extensionDescription__",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "homepage_url": "https://igniterealtime.org/",
     
   "background": {
@@ -60,7 +60,8 @@
     "unlimitedStorage",
     "notifications", 
     "https://igniterealtime.org/*",    
-    "https://discourse.igniterealtime.org/*",      
+    "https://discourse.igniterealtime.org/*", 
+    "https://github.com/*",    
     "activeTab"
   ],
   

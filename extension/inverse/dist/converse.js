@@ -37182,7 +37182,7 @@ Strophe.Bosh.prototype = {
    */
   _reqToData: function _reqToData(req) {
     try {
-      return req.getResponse();
+      return req.getResponse ? req.getResponse() : req; // BAO
     } catch (e) {
       if (e.message !== "parsererror") {
         throw e;

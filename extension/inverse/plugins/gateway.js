@@ -9,12 +9,25 @@
     var Strophe = converse.env.Strophe;
     var moment = converse.env.moment;
     var feedInterval;
+    var htmlTemp = {};
 
     converse.plugins.add("gateway", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
+
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                console.debug('gateway - renderToolbar', view.model);
+
+                var jid = view.model.get("jid");
+
+                if (jid === "rss@pade." + _converse.connection.domain)
+                {
+                    rssCheck();
+                }
+            });
 
             console.log("gateway plugin is ready");
         },
@@ -74,6 +87,8 @@
                                 console.log('RSS roster creation ok');
                                 _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + jid + '"/>');
 
+                                rssCheck();
+
                             }).catch(function (err) {
                                 console.error('RSS roster creation error', err);
                             });
@@ -91,6 +106,27 @@
                 _converse.__super__.onConnected.apply(this, arguments);
             },
 
+            MessageView: {
+
+                renderChatMessage: async function renderChatMessage()
+                {
+                    await this.__super__.renderChatMessage.apply(this, arguments);
+
+                    if (getSetting("showRssSummary", false))
+                    {
+                        var messageDiv = this.el.querySelector('.chat-msg__text');
+                        var msgId = this.model.get("msgid");
+                        var html = htmlTemp[msgId];
+
+                        if (messageDiv && html)
+                        {
+                            messageDiv.innerHTML = html;
+                            delete htmlTemp[msgId];
+                        }
+                    }
+                }
+            },
+
             ChatBoxView: {
 
                 parseMessageForCommands: function(text) {
@@ -106,25 +142,6 @@
                     else
 
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
-                },
-
-                afterShown: function() {
-
-                    var id = this.model.get("box_id");
-                    var jid = this.model.get("jid");
-                    var type = this.model.get("type");
-
-                    var display_name = this.model.getDisplayName().trim();
-                    if (!display_name || display_name == "") display_name = jid;
-
-                    if (jid === "rss@pade." + _converse.connection.domain)
-                    {
-                        console.debug("afterShown", id, jid, type);
-                        rssCheck();
-                    }
-
-
-                    return this.__super__.afterShown.apply(this, arguments);
                 }
             }
         }
@@ -136,6 +153,8 @@
 
         rssUrls.forEach(function(rssUrl)
         {
+            if (!rssUrl || rssUrl == "") return;
+
             var feed = {
                 path: rssUrl
             }
@@ -161,19 +180,25 @@
                                 var msgId = "rss-feed-" + btoa(post.guid);
                                 var msgDiv = document.getElementById("msg-" + msgId);
 
-                                if (!msgDiv && post.title && post.title.trim() != "")
+                                if (post.title && post.title.trim() != "")
                                 {
                                     var body = "### " + post.title + "\n" + feed.title + " - " + stamp;
+                                    htmlTemp[msgId] = "<h3><a target='_blank' href='" + post.link + "'>" + post.title + "</a></h3>" + feed.title + " - " + stamp;
 
                                     if (getSetting("showRssSummary", false))
                                     {
-                                        body = body + '\n' + clipboard2Markdown.convert(post.summary)
+                                        body = body + '\n' + clipboard2Markdown.convert(post.summary);
+                                        htmlTemp[msgId] = htmlTemp[msgId] + "<br/>" + post.summary;
                                     }
                                     body = body + '\n' + post.link;
+                                    htmlTemp[msgId] = htmlTemp[msgId] + "<p/><a target='_blank' href='" + post.link + "'>" + post.link + "</a>";
 
                                     console.debug("rssCheck post", body);
 
-                                    _converse.connection.injectMessage('<message id="' + msgId + '" type="chat" to="' + _converse.connection.jid + '" from="' + "rss@pade." + _converse.connection.domain + '"><body>' + body + '</body><origin-id xmlns="urn:xmpp:sid:0" id="' + msgId + '"/></message>');
+                                    if (!msgDiv)
+                                    {
+                                        _converse.connection.injectMessage('<message id="' + msgId + '" type="chat" to="' + _converse.connection.jid + '" from="' + "rss@pade." + _converse.connection.domain + '"><body>' + body + '</body><origin-id xmlns="urn:xmpp:sid:0" id="' + msgId + '"/></message>');
+                                    }
                                 }
                             });
                         });
