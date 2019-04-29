@@ -25,7 +25,6 @@ To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/deta
 
 On your [Openfire] server, you will need at least the two [Openfire Meetings](https://github.com/igniterealtime/community-plugins/tree/master/ofmeet) [(download from here)](https://github.com/igniterealtime/community-plugins/raw/master/openfire_4_1_5/target/openfire/plugins/ofmeet.jar) plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks/readme.html) [(download from here)](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks.jar) plugin. If you are running an [Openfire] server lower than 4.2, you will also need the websocket plugin.
 
-
 For the advanced telephony features with SIP and a REST API, you will need the [Openfire chat plugin](https://github.com/igniterealtime/openfire-chat/releases) and the [Openfire Switch plugin](https://github.com/igniterealtime/openfire-switch/releases)
 
 -------
