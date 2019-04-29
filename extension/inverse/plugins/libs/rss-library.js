@@ -8739,13 +8739,13 @@ function(t, e) {
                 }, x.find.CLASS = w.getElementsByClassName && function(t, e) {
                     if (void 0 !== e.getElementsByClassName && N) return e.getElementsByClassName(t);
                 }, D = [], L = [], (w.qsa = dt.test(P.querySelectorAll)) && (o(function(t) {
-                    R.appendChild(t).innerHTML = "<a id='" + I + "'></a><select id='" + I + "-\r\\' msallowcapture=''><option selected=''></option></select>",
+                    R.appendChild(t).innerHTML = "<a target='_blank' id='" + I + "'></a><select id='" + I + "-\r\\' msallowcapture=''><option selected=''></option></select>",
                         t.querySelectorAll("[msallowcapture^='']").length && L.push("[*^$]=" + tt + "*(?:''|\"\")"),
                         t.querySelectorAll("[selected]").length || L.push("\\[" + tt + "*(?:value|" + Z + ")"),
                         t.querySelectorAll("[id~=" + I + "-]").length || L.push("~="), t.querySelectorAll(":checked").length || L.push(":checked"),
                         t.querySelectorAll("a#" + I + "+*").length || L.push(".#.+[+~]");
                 }), o(function(t) {
-                    t.innerHTML = "<a href='' disabled='disabled'></a><select disabled='disabled'><option/></select>";
+                    t.innerHTML = "<a target='_blank' href='' disabled='disabled'></a><select disabled='disabled'><option/></select>";
                     var e = P.createElement("input");
                     e.setAttribute("type", "hidden"), t.appendChild(e).setAttribute("name", "D"), t.querySelectorAll("[name=d]").length && L.push("name" + tt + "*[*^$|!~]?="),
                         2 !== t.querySelectorAll(":enabled").length && L.push(":enabled", ":disabled"),
@@ -9093,7 +9093,7 @@ function(t, e) {
             O(), w.sortDetached = o(function(t) {
                 return 1 & t.compareDocumentPosition(P.createElement("fieldset"));
             }), o(function(t) {
-                return t.innerHTML = "<a href='#'></a>", "#" === t.firstChild.getAttribute("href");
+                return t.innerHTML = "<a target='_blank' href='#'></a>", "#" === t.firstChild.getAttribute("href");
             }) || i("type|href|height|width", function(t, e, n) {
                 if (!n) return t.getAttribute(e, "type" === e.toLowerCase() ? 1 : 2);
             }), w.attributes && o(function(t) {

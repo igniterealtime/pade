@@ -99,6 +99,7 @@
 
                     const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
                     const command = match[1].toLowerCase();
+                    const view = this;
 
                     if (command === "info")
                     {
@@ -106,6 +107,62 @@
                         var jid = this.model.get("jid");
                         var infoElement = this.el.querySelector('.plugin-infobox');
                         if (infoElement) toggleInfoBar(this, infoElement, id, jid);
+                        return true;
+                    }
+                    else
+
+                    if (command === "feed" && this.model.get("type") == "chatroom")
+                    {
+                        if (!match[2])
+                        {
+                            alert("Missing Feed URL. Try /feed <url>");
+                            return true;
+                        }
+
+                        const id = this.model.get("box_id");
+                        const feedId = 'feed-' + id;
+
+                        chrome.storage.local.get(feedId, function(data)
+                        {
+                            if (!data) data = {};
+                            if (!data[feedId]) data[feedId] = {};
+
+                            var feed = {path:  match[2]};
+
+                            fetch(feed.path).then(function(response)
+                            {
+                                if (response.ok)
+                                {
+                                    return response.text().then(function(body)
+                                    {
+                                        var parser = new RSSParser(feed);
+                                        parser.setResult(body);
+
+                                        parser.parse(function(parser)
+                                        {
+                                            data[feedId][feed.path] = {url: feed.path, title: feed.title};
+
+                                            chrome.storage.local.set(data, function(data)
+                                            {
+                                                console.log("feed stored ok", feedId, data);
+
+                                                view.close();
+                                                _converse.api.rooms.open(view.model.get("jid"));
+
+                                                alert("Feed " + feed.title + " added\n" + feed.path);
+                                            });
+                                        });
+                                    });
+                                } else {
+                                    alert("Bad Feed URL \n" + feed.path);
+                                    console.error("RSSParser", response)
+                                }
+                            }).catch(function (err) {
+                                alert("Cannot fetch Feed URL \n" + feed.path);
+                                console.error("RSSParser", err)
+                            });
+                        });
+
                         return true;
                     }
                     else
@@ -158,7 +215,7 @@
 
             infoElement.innerHTML = getHTML(id, jid);
 
-            createContentSummary(jid, id);
+            createContentSummary(view, jid, id);
             createMediaContentSummary(jid, id);
 
             if (bgWindow && bgWindow.pade.activeWorkgroup)
@@ -442,7 +499,7 @@
         }
     }
 
-    var createContentSummary = function(jid, id)
+    var createContentSummary = function(view, jid, id)
     {
         console.debug("createContentSummary", jid, id);
 
@@ -452,7 +509,7 @@
 
             chrome.storage.local.get('pinned', function(data)
             {
-                console.debug('chrome.storage get', data);
+                console.debug('chrome.storage get pinned', data);
 
                 if (data && data.pinned) pinned = data.pinned;
                 const keys = Object.getOwnPropertyNames(pinned);
@@ -474,6 +531,33 @@
                         }
                     }
                     count.innerHTML = counter;
+                }
+
+            });
+
+            const feedId = 'feed-' + id;
+
+            chrome.storage.local.get(feedId, function(data)
+            {
+                console.debug('chrome.storage get feed', data);
+
+                if (data && data[feedId])
+                {
+                    const keys = Object.getOwnPropertyNames(data[feedId]);
+                    const count = document.getElementById(id + "-feed-count");
+                    const detail = document.getElementById(id + "-feed-details");
+
+                    if (detail && count && keys.length > 0)
+                    {
+                        let counter = 0;
+
+                        for (var i=0; i<keys.length; i++)
+                        {
+                            detail.insertAdjacentElement('afterEnd', newFeedItemElement('li', data[feedId][keys[i]], "mediaItem", id, view));
+                            counter++;
+                        }
+                        count.innerHTML = counter;
+                    }
                 }
 
             });
@@ -500,6 +584,54 @@
 
             var elmnt = document.getElementById("msg-" + evt.target.name);
             if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
+        });
+
+        return item.ele;
+    }
+
+    var newFeedItemElement = function(el, item, className, id, view)
+    {
+        console.debug('newFeedItemElement', item, id);
+        // {url: url, title: title}
+
+        item.ele = document.createElement(el);
+
+        item.ele.setAttribute("data-id", id);
+        item.ele.setAttribute("data-url", item.url);
+
+        item.ele.title = item.title;
+        item.ele.innerHTML = item.url;
+        item.ele.classList.add(className);
+        document.body.appendChild(item.ele);
+
+        item.ele.addEventListener('click', function(evt)
+        {
+            evt.stopPropagation();
+
+            const id = evt.target.getAttribute("data-id");
+            const url = evt.target.getAttribute("data-url");
+
+            console.debug("feed item clicked", id, url);
+
+            if (confirm("Do you wish to remove feed " + evt.target.title + "\n" + url))
+            {
+                const feedId = 'feed-' + id;
+
+                chrome.storage.local.get(feedId, function(data)
+                {
+                    if (data && data[feedId] && data[feedId][url])
+                    {
+                        delete data[feedId][url]
+
+                        chrome.storage.local.set(data, function(data)
+                        {
+                            console.log("feed stored ok", feedId, data);
+                            alert("Feed " + evt.target.title + " removed");
+                        });
+                    }
+                });
+            }
+
         });
 
         return item.ele;
@@ -624,6 +756,9 @@
         console.debug("getHTML", jid, id);
 
         var html = '<h3>This Conversation</h3>' +
+                   '<details>' +
+                   '    <summary id="' + id + '-feed-details">Feeds (<span id="' + id + '-feed-count">0</span>)<span style="float: right;" class="far fa-newspaper"/></summary>' +
+                   '</details>' +
                    '<details>' +
                    '    <summary id="' + id + '-pinned-details">Pinned Messages (<span id="' + id + '-pinned-count">0</span>)<span style="float: right;" class="fas fa-thumbtack"/></summary>' +
                    '</details>' +

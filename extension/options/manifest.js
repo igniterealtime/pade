@@ -1258,6 +1258,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Feeds"),
+            "name": "useRssDate",
+            "type": "checkbox",
+            "label": i18n.get("User fetch date timestamp")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Feeds"),
             "name": "rssAtomFeedUrls",
             "type": "textarea",
             "label": i18n.get(""),

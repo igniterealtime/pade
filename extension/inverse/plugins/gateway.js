@@ -17,24 +17,30 @@
         'initialize': function () {
             _converse = this._converse;
 
-            _converse.api.listen.on('renderToolbar', function(view)
-            {
-                console.debug('gateway - renderToolbar', view.model);
-
-                var jid = view.model.get("jid");
-
-                if (jid === "rss@pade." + _converse.connection.domain)
-                {
-                    rssCheck();
-                }
-            });
-
             console.log("gateway plugin is ready");
         },
 
         'overrides': {
             onConnected: function () {
                 var _converse = this;
+
+                _converse.api.listen.on('chatRoomOpened', function (view)
+                {
+                    console.debug("chatRoomOpened", view);
+                    rssGroupChatCheck(view);
+                });
+
+                _converse.api.listen.on('chatBoxOpened', function (view)
+                {
+                    console.debug("gateway chatBoxOpened", view);
+
+                    var jid = view.model.get("jid");
+
+                    if (jid === "rss@pade." + _converse.connection.domain)
+                    {
+                        rssChatCheck();
+                    }
+                });
 
                 Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
                 {
@@ -59,8 +65,8 @@
 
                     if (getSetting("enableRssFeeds", false))
                     {
-                        var feedCheck = getSetting("feedCheck", 10) * 60000;
-                        //var feedCheck = 5000;
+                        //var feedCheck = getSetting("feedCheck", 10) * 60000;
+                        var feedCheck = 5000;
                         feedInterval = setInterval(rssCheck, feedCheck);
 
                         var jid = "rss@pade." + _converse.connection.domain;
@@ -87,11 +93,11 @@
                                 console.log('RSS roster creation ok');
                                 _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + jid + '"/>');
 
-                                rssCheck();
-
                             }).catch(function (err) {
                                 console.error('RSS roster creation error', err);
                             });
+
+                            rssChatCheck();
                         }
 
 
@@ -120,8 +126,9 @@
 
                         if (messageDiv && html)
                         {
+                            console.debug("renderChatMessage", msgId, html);
                             messageDiv.innerHTML = html;
-                            delete htmlTemp[msgId];
+                            //delete htmlTemp[msgId];
                         }
                     }
                 }
@@ -129,28 +136,57 @@
 
             ChatBoxView: {
 
-                parseMessageForCommands: function(text) {
-                    console.debug('gateway - parseMessageForCommands', text);
-
-                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
-                    const command = match[1].toLowerCase();
-
-                    if (command === "???")
-                    {
-                        return true;
-                    }
-                    else
-
-                    return this.__super__.parseMessageForCommands.apply(this, arguments);
-                }
             }
         }
     });
 
     function rssCheck()
     {
-        var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
+        rssChatCheck();
 
+        _converse.chatboxviews.model.models.forEach(function(view)
+        {
+            if (view.get('type') === "chatroom")
+            {
+                rssGroupChatCheck(_converse.chatboxviews.views[view.id]);
+            }
+        });
+    }
+
+    function rssChatCheck()
+    {
+        var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
+        console.debug("rssChatCheck", rssUrls);
+
+        rssCheckEach(false, rssUrls, "rss-feed-", function(msgId, body, title, delay)
+        {
+           return '<message id="' + msgId + '" type="chat" to="' + _converse.connection.jid + '" from="' + "rss@pade." + _converse.connection.domain + '"><body>' + body + '</body><origin-id xmlns="urn:xmpp:sid:0" id="' + msgId + '"/>' + delay + '</message>';
+        });
+    }
+
+    function rssGroupChatCheck(view)
+    {
+        const id = view.model.get("box_id");
+        const jid = view.model.get("jid")
+        const feedId = 'feed-' + id;
+
+        chrome.storage.local.get(feedId, function(data)
+        {
+            if (data && data[feedId])
+            {
+                const rssUrls = Object.getOwnPropertyNames(data[feedId]);
+                console.debug("rssGroupChatCheck", feedId, rssUrls);
+
+                rssCheckEach(true, rssUrls, "rss-feed-" + id + "-", function(msgId, body, title, delay)
+                {
+                   return '<message id="' + msgId + '" type="groupchat" to="' + _converse.connection.jid + '" from="' + jid + '/' + title + '"><body>' + body + '</body><origin-id xmlns="urn:xmpp:sid:0" id="' + msgId + '"/>' + delay + '</message>';
+                });
+            }
+        });
+    }
+
+    function rssCheckEach(groupChat, rssUrls, prefix, callback)
+    {
         rssUrls.forEach(function(rssUrl)
         {
             if (!rssUrl || rssUrl == "") return;
@@ -174,40 +210,49 @@
                         {
                             parser.posts.forEach(function(post)
                             {
-                                console.debug("rssCheck pre", post.title, post);
+                                console.debug("rssCheckEach pre", post.title, post);
 
-                                var stamp = moment(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
-                                var msgId = "rss-feed-" + btoa(post.guid);
-                                var msgDiv = document.getElementById("msg-" + msgId);
+                                var stamp = " - " + moment(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
+                                var delay = "";
+
+                                if (getSetting("useRssDate", false) == false)
+                                {
+                                    var delayStamp = moment(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');
+                                    delay = "<delay xmlns='urn:xmpp:delay' from='" + _converse.connection.domain + "' stamp='" + delayStamp + "'/>";
+                                    stamp = "";
+                                }
+
+                                var msgId = prefix + btoa(post.guid);
 
                                 if (post.title && post.title.trim() != "")
                                 {
-                                    var body = "### " + post.title + "\n" + feed.title + " - " + stamp;
-                                    htmlTemp[msgId] = "<h3><a target='_blank' href='" + post.link + "'>" + post.title + "</a></h3>" + feed.title + " - " + stamp;
+                                    var body = post.title + "\n" + (groupChat ? stamp : feed.title + stamp);
+                                    htmlTemp[msgId] = "<b><a target='_blank' href='" + post.link + "'>" + post.title + "</a></b>" + (groupChat ? stamp : feed.title + stamp);
 
                                     if (getSetting("showRssSummary", false))
                                     {
                                         body = body + '\n' + clipboard2Markdown.convert(post.summary);
-                                        htmlTemp[msgId] = htmlTemp[msgId] + "<br/>" + post.summary;
+                                        htmlTemp[msgId] = htmlTemp[msgId] + "<br/>" + post.summary.replace(/<a /g, '<a target=_blank ');
                                     }
                                     body = body + '\n' + post.link;
                                     htmlTemp[msgId] = htmlTemp[msgId] + "<p/><a target='_blank' href='" + post.link + "'>" + post.link + "</a>";
 
-                                    console.debug("rssCheck post", body);
+                                    console.debug("rssCheckEach post", body);
+                                    var msgDiv = document.getElementById("msg-" + msgId);
 
-                                    if (!msgDiv)
+                                    if (!msgDiv && callback)
                                     {
-                                        _converse.connection.injectMessage('<message id="' + msgId + '" type="chat" to="' + _converse.connection.jid + '" from="' + "rss@pade." + _converse.connection.domain + '"><body>' + body + '</body><origin-id xmlns="urn:xmpp:sid:0" id="' + msgId + '"/></message>');
+                                        _converse.connection.injectMessage(callback(msgId, body, feed.title, delay));
                                     }
                                 }
                             });
                         });
                     });
                 } else {
-                    console.error("RSSParser", response)
+                    console.error("rssCheckEach", response)
                 }
             }).catch(function (err) {
-                console.error("RSSParser", err)
+                console.error("rssCheckEach", err)
             });
 
 

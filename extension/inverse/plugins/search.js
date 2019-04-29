@@ -99,7 +99,7 @@
 
                         for (var i=0; i<messages.length; i++)
                         {
-                            var button = that.el.querySelector("#search-" + messages[i].get('msgid'));
+                            var button = document.getElementById("search-" + messages[i].get('msgid'));
 
                             if (button) button.addEventListener('click', function(evt)
                             {
