@@ -943,6 +943,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enableTranslation",
+            "type": "checkbox",
+            "label": i18n.get("Enable Google translation service")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")

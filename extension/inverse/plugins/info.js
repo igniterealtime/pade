@@ -115,7 +115,7 @@
                     {
                         if (!match[2])
                         {
-                            alert("Missing Feed URL. Try /feed <url>");
+                            view.showHelpMessages(["Missing Feed URL", "Try /feed http://feeds.bbci.co.uk/news/rss.xml"]);
                             return true;
                         }
 

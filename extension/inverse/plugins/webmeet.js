@@ -1367,9 +1367,71 @@
 
         if (command === "pade")
         {
-            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "<strong>/feed [url]</strong> Add an RSS/Atom Feed to this groupchat", "\n\n"]);
+            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "<strong>/feed [url]</strong> Add an RSS/Atom Feed to this groupchat", "<strong>/tron [source] [target]</strong> Activate chat translation from source to target and reverse on incoming", "<strong>/troff</strong> De-activate any active chat translation", "\n\n"]);
             view.viewUnreadMessages();
             return true;
+        }
+        else
+
+        if (command === "troff" && getSetting("enableTranslation", false))
+        {
+            const id = view.model.get("box_id");
+            const tronId = 'translate-' + id;
+
+            chrome.storage.local.remove(tronId, function(obj)
+            {
+                console.log("translation removed ok", obj);
+
+                view.showHelpMessages(["Translation disabled"]);
+                view.viewUnreadMessages();
+            });
+            return true;
+        }
+        else
+
+        if (command === "tron" && getSetting("enableTranslation", false))
+        {
+            const id = view.model.get("box_id");
+            const tronId = 'translate-' + id;
+
+            if (args.length == 0)
+            {
+                chrome.storage.local.get(tronId, function(data)
+                {
+                    let msg = "Translation disabled";
+
+                    if (data && data[tronId])
+                    {
+                        msg = "Translation enabled from " + data[tronId].source + " to " + data[tronId].target
+                    }
+
+                    view.showHelpMessages([msg]);
+                    view.viewUnreadMessages();
+                });
+
+                return true;
+            }
+            else
+
+            if (args.length < 2)
+            {
+                view.showHelpMessages(["Use as /tron <source> <target>", "<source> and <target> can be a valid language code like any of these en, de, es, fr, it, nl, pt, ja, ko, zh-CN"]);
+                return true;
+            }
+
+            let data = {};
+            data[tronId] = {source: args[0], target: args[1]};
+
+            chrome.storage.local.set(data, function(obj)
+            {
+                console.log("translation saved ok", obj);
+
+                view.showHelpMessages(["Translation enabled for " + args[0] + " to " + args[1]]);
+                view.viewUnreadMessages();
+            });
+
+            return true;
+
         }
         else
 

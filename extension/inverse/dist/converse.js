@@ -49909,10 +49909,14 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
         return this;
       },
 
+      modifyChatBody(text) {    // BAO
+          return text;
+      },
+
       async onFormSubmitted(ev) {
         ev.preventDefault();
         const textarea = this.el.querySelector('.chat-textarea'),
-              message = textarea.value;
+              message = this.modifyChatBody(textarea.value);    // BAO
 
         if (!message.replace(/\s/g, '').length) {
           return;
@@ -49947,7 +49951,12 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
            * @example _converse.api.listen.on('messageSend', data => { ... });
            */
 
-          _converse.api.trigger('messageSend', message);
+          //_converse.api.trigger('messageSend', message);
+
+            _converse.api.trigger('messageSend', {  // BAO
+              'message': message,
+              'chatbox': this.model
+            });
         }
 
         textarea.removeAttribute('disabled');

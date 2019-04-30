@@ -65,8 +65,7 @@
 
                     if (getSetting("enableRssFeeds", false))
                     {
-                        //var feedCheck = getSetting("feedCheck", 10) * 60000;
-                        var feedCheck = 5000;
+                        var feedCheck = getSetting("feedCheck", 10) * 60000;
                         feedInterval = setInterval(rssCheck, feedCheck);
 
                         var jid = "rss@pade." + _converse.connection.domain;

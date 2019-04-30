@@ -165,38 +165,42 @@
                 {
                     await this.__super__.renderChatMessage.apply(this, arguments);
 
-                    var box_jid = Strophe.getBareJidFromJid(this.model.get("from") || this.model.get("jid"));
+                    var source = this.model.get("type") == "groupchat" ? this.model.get("from") : this.model.get("jid");
+                    var box_jid = Strophe.getBareJidFromJid(source);
                     var view = _converse.chatboxviews.get(box_jid);
 
-                    converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
+                    if (view)
                     {
-                        var oldMsg = view.model.messages.findWhere({'msgid': badge.getAttribute("data-hashtag")});
-
-                        if (oldMsg)
+                        converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
                         {
-                            const nick = Strophe.getResourceFromJid(oldMsg.get('from'));
-                            badge.title = nick + ": " + oldMsg.get('message');
-                            badge.innerText = "this";
-                        }
-                        else {
-                           badge.innerText = ""; // can't find old message, don't show long msg-id
-                        }
+                            var oldMsg = view.model.messages.findWhere({'msgid': badge.getAttribute("data-hashtag")});
 
-                        badge.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            console.debug("pade.hashtag click", evt.target);
-
-                            const tag = document.getElementById("msg-" + this.getAttribute("data-hashtag"));
-
-                            if (tag) tag.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
-                            else {
-                                searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: this.getAttribute("data-hashtag")}) });
-                                searchDialog.show();
+                            if (oldMsg)
+                            {
+                                const nick = Strophe.getResourceFromJid(oldMsg.get('from'));
+                                badge.title = nick + ": " + oldMsg.get('message');
+                                badge.innerText = "this";
                             }
-                        }, false);
-                    });
+                            else {
+                               // can't find old message, we assume hashtag
+                            }
+
+                            badge.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                console.debug("pade.hashtag click", evt.target);
+
+                                const tag = document.getElementById("msg-" + this.getAttribute("data-hashtag"));
+
+                                if (tag) tag.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
+                                else {
+                                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: this.getAttribute("data-hashtag")}) });
+                                    searchDialog.show();
+                                }
+                            }, false);
+                        });
+                    }
                 }
             }
         }

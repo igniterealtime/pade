@@ -215,19 +215,51 @@
                 _converse.on('message', function (data)
                 {
                     var message = data.stanza;
+                    var isTranslation = message.getAttribute("data-translation");
+                    if (isTranslation) return;
+
                     var chatbox = data.chatbox;
                     var attachTo = data.stanza.querySelector('attach-to');
                     var body = message.querySelector('body');
-                    var history = message.querySelector('forwarded')
+                    var history = message.querySelector('forwarded');
 
-                    console.debug("pade plugin message", history, body, chatbox);
+                    console.debug("pade plugin message", history, body, chatbox, message);
 
                     if (!history && body && chatbox)
                     {
+                        var id = chatbox.get("box_id");
                         var jid = chatbox.get("jid");
                         var type = chatbox.get("type");
                         var display_name = chatbox.getDisplayName().trim();
                         if (!display_name || display_name == "") display_name = jid;
+
+                        // add translation
+
+                        if (getSetting("enableTranslation", false) && !body.innerHTML.startsWith("/"))
+                        {
+                            const tronId = 'translate-' + id;
+
+                            chrome.storage.local.get(tronId, function(obj)
+                            {
+                                if (obj && obj[tronId])
+                                {
+                                    fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].target + "&tl=" + obj[tronId].source + "&dt=t&q=" + body.innerHTML).then(function(response){ return response.json()}).then(function(json)
+                                    {
+                                        console.log('translation ok', json[0][0][0]);
+
+                                        const msgType = message.getAttribute("type");
+                                        const msgFrom = message.getAttribute("from");
+                                        const body = "*" + json[0][0][0] + "*";
+
+                                        const stanza = '<message data-translation="true" type="' + msgType + '" to="' + _converse.connection.jid + '" from="' + msgFrom + '"><body>' + body + '</body></message>';
+                                        _converse.connection.injectMessage(stanza);
+
+                                    }).catch(function (err) {
+                                        console.error('translation error', err);
+                                    });
+                                }
+                            });
+                        }
 
                         // draw attention to new messages
                         // done here instead of background.js becasue of chatroom messages
@@ -287,9 +319,8 @@
 
                         if (chrome.storage && msgId)
                         {
-                            chrome.storage.local.get(msgId, function(obj) {
-                                console.debug("get reaction emoji", data);
-
+                            chrome.storage.local.get(msgId, function(obj)
+                            {
                                 if (!obj[msgId]) obj[msgId] = {};
                                 if (!obj[msgId][reaction]) obj[msgId][reaction] = 0;
 
@@ -302,6 +333,35 @@
                                 displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
                             });
                         }
+                    }
+                });
+
+
+                _converse.api.listen.on('messageSend', function(data)
+                {
+                    // The message is at `data.message`
+                    // The original chatbox is at `data.chatbox`.
+
+                    var id = data.chatbox.get("box_id");
+
+                    if (getSetting("enableTranslation", false) && !data.message.startsWith("/"))
+                    {
+                        const tronId = 'translate-' + id;
+
+                        chrome.storage.local.get(tronId, function(obj)
+                        {
+                            if (obj && obj[tronId])
+                            {
+                                fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + data.message).then(function(response){ return response.json()}).then(function(json)
+                                {
+                                    console.log('translation ok', json[0][0][0]);
+                                    data.chatbox.sendMessage("*" + json[0][0][0] + "*");
+
+                                }).catch(function (err) {
+                                    console.error('translation error', err);
+                                });
+                            }
+                        });
                     }
                 });
 
@@ -341,7 +401,6 @@
                 renderChatMessage: async function renderChatMessage()
                 {
                     //console.debug("renderChatMessage", this.model);
-
                     const body = this.model.get('message');
 
                     if (body.indexOf(":lol:") > -1)
@@ -509,6 +568,10 @@
                     if (openBadge) openBadge.setAttribute("data-badge", "0");
 
                     return this.__super__.afterShown.apply(this, arguments);
+                },
+
+                modifyChatBody: function(text) {
+                    return text;
                 }
             },
 
