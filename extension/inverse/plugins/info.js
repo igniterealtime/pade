@@ -101,6 +101,16 @@
                     const command = match[1].toLowerCase();
                     const view = this;
 
+                    if (command === "subject" || command === "topic")
+                    {
+                        var id = this.model.get("box_id");
+                        var jid = this.model.get("jid");
+
+                        console.log("new threaded conversation", match[2]);
+
+                    }
+                    else
+
                     if (command === "info")
                     {
                         var id = this.model.get("box_id");
@@ -146,10 +156,16 @@
                                             {
                                                 console.log("feed stored ok", feedId, data);
 
-                                                view.close();
-                                                _converse.api.rooms.open(view.model.get("jid"));
+                                                view.showHelpMessages(["Feed " + feed.title + " added\n" + feed.path]);
+                                                view.viewUnreadMessages();
 
-                                                alert("Feed " + feed.title + " added\n" + feed.path);
+                                                setTimeout(function()
+                                                {
+                                                    view.close();
+                                                    _converse.api.rooms.open(view.model.get("jid"));
+
+                                                }, 3000);
+
                                             });
                                         });
                                     });
@@ -403,7 +419,7 @@
                         var checked = bgWindow.pade.activeWorkgroup.jid == jid ? "checked" : "";
 
                         console.debug("get workgroups", room, jid);
-                        html += '<input name="info_active_workgroup" type="radio" ' + checked + ' value="' + jid + '"/>&nbsp;' + name + '<br/>';
+                        html += '<input id="info_active_workgroup-' + id + '" type="radio" ' + checked + ' value="' + jid + '"/>&nbsp;' + name + '<br/>';
                     }
 
                     var element = __newElement('div', null, html);
@@ -412,7 +428,7 @@
                     {
                         evt.stopPropagation();
 
-                        var activeWorkgroup = document.getElementsByName("info_active_workgroup");
+                        var activeWorkgroup = document.getElementsById(evt.target.id);
 
                         for (var i=0; i<activeWorkgroup.length; i++)
                         {
@@ -561,7 +577,101 @@
                 }
 
             });
+
+            if (getSetting("enableThreading", false))
+            {
+                const topicId = 'topic-' + id;
+
+                chrome.storage.local.get(topicId, function(data)
+                {
+                    console.debug('chrome.storage get topics', data);
+
+                    if (data && data[topicId])
+                    {
+                        const keys = Object.getOwnPropertyNames(data[topicId]);
+                        const count = document.getElementById(id + "-topics-count");
+                        const detail = document.getElementById(id + "-topics-details");
+
+                        if (detail && count && keys.length > 0)
+                        {
+                            let counter = 0;
+
+                            for (var i=0; i<keys.length; i++)
+                            {
+                                if (typeof data[topicId][keys[i]] == "object")
+                                {
+                                    detail.insertAdjacentElement('afterEnd', newTopicItemElement(data[topicId][keys[i]], "mediaItem", id, view));
+                                    counter++;
+                                }
+                            }
+                            detail.insertAdjacentElement('afterEnd', newTopicItemElement({text: "reset", author: "system"}, "mediaItem", id, view));
+                            count.innerHTML = counter;
+                        }
+                    }
+
+                });
+            }
         }
+    }
+
+    var newTopicItemElement = function(item, className, id, view)
+    {
+        console.debug('newTopicItemElement', item);
+        // {author: author, text: text}
+
+        const topicId = "topic-" + id;
+        let checked = window.chatThreads[topicId] ? window.chatThreads[topicId] == item.text : item.text == "reset";
+
+        item.ele = document.createElement("div");
+        item.ele.title = "topic " + item.text + " set by " + item.author;
+        item.ele.id = "topic-div-" + id;
+        item.ele.innerHTML = '<input name="topic-selection" class="topic-radio-button" type="radio" ' + (checked ? "checked" : "" )+ ' value="' + item.text + '"/>&nbsp;' + item.text + '<br/>';
+        item.ele.classList.add(className);
+        document.body.appendChild(item.ele);
+
+        item.ele.addEventListener('click', function(evt)
+        {
+            console.debug("topic item clicked", evt.target.value, evt.target.checked);
+
+            if (evt.target.value && evt.target.checked)
+            {
+                let targetValue = evt.target.value;
+
+                if (evt.target.value == "reset")
+                {
+                     delete window.chatThreads[topicId];
+                     view.model.set("thread", undefined);
+                     targetValue = undefined;
+                }
+                else {
+                    window.chatThreads[topicId] = evt.target.value;
+                    view.model.set("thread", evt.target.value);
+                }
+
+                chrome.storage.local.get(topicId, function(obj)
+                {
+                    if (obj[topicId]) obj[topicId].thread = targetValue;
+
+                    chrome.storage.local.set(obj, function() {
+                        console.log("active subject set", evt.target.value, id, obj);
+                    });
+                });
+
+                var jid = view.model.get("jid");
+
+                view.close();
+                _converse.api.rooms.open(jid);
+
+                setTimeout(function()
+                {
+                    var infoElement = view.el.querySelector('.plugin-infobox');
+                    if (infoElement) toggleInfoBar(view, infoElement, id, jid);
+
+                }, 1000);
+            }
+        });
+
+        return item.ele;
     }
 
     var newPinnedItemElement = function(el, item, className)
@@ -570,7 +680,6 @@
         // {from: from, msgId: msgId, message: pinnedMessage, nick : nick}
 
         item.ele = document.createElement(el);
-
         item.ele.name = item.msgId;
         item.ele.title = item.nick + " says " + item.message;
         item.ele.innerHTML = item.message;
@@ -626,7 +735,18 @@
                         chrome.storage.local.set(data, function(data)
                         {
                             console.log("feed stored ok", feedId, data);
-                            alert("Feed " + evt.target.title + " removed");
+
+                            view.showHelpMessages(["Feed " + evt.target.title + " removed"]);
+                            view.viewUnreadMessages();
+                            view.clearMessages();
+
+                            setTimeout(function()
+                            {
+                                view.close();
+                                _converse.api.rooms.open(view.model.get("jid"));
+
+                            }, 3000);
+
                         });
                     }
                 });
@@ -757,12 +877,21 @@
 
         var html = '<h3>This Conversation</h3>' +
                    '<details>' +
-                   '    <summary id="' + id + '-feed-details">Feeds (<span id="' + id + '-feed-count">0</span>)<span style="float: right;" class="far fa-newspaper"/></summary>' +
-                   '</details>' +
-                   '<details>' +
                    '    <summary id="' + id + '-pinned-details">Pinned Messages (<span id="' + id + '-pinned-count">0</span>)<span style="float: right;" class="fas fa-thumbtack"/></summary>' +
                    '</details>' +
-                   '<h3 id="' + id + '-meeting-recordings">Meeting Recordings</h3>' +
+                   '<details>' +
+                   '    <summary id="' + id + '-feed-details">Feeds (<span id="' + id + '-feed-count">0</span>)<span style="float: right;" class="far fa-newspaper"/></summary>' +
+                   '</details>';
+
+
+        if (getSetting("enableThreading", false))
+        {
+           html += '<details>' +
+                   '    <summary id="' + id + '-topics-details">Topics (<span id="' + id + '-topics-count">0</span>)<span style="float: right;" class="fas fa-comments"/></summary>' +
+                   '</details>';
+        }
+
+           html += '<h3 id="' + id + '-meeting-recordings">Meeting Recordings</h3>' +
                    '<h3>Media Content</h3>' +
                    '<details>' +
                    '    <summary id="' + id + '-photo-details">Photos (<span id="' + id + '-photo-count">0</span>)<span style="float: right;" class="fa fa-photo"/></summary>' +

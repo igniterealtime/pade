@@ -62558,6 +62558,11 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           }
         }
 
+        if (message.get('thread'))       // BAO
+        {
+            stanza.c("thread").t(message.get('thread')).root();
+        }
+
         if (message.get('msg_attach_to'))       // BAO
         {
             stanza.c("attach-to", {
@@ -62635,6 +62640,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           'is_spoiler': is_spoiler,
           'spoiler_hint': is_spoiler ? spoiler_hint : undefined,
           'type': this.get('message_type'),
+          'thread': this.get('thread'),
           'msg_attach_to': attach_to // BAO
         };
       },
@@ -67263,6 +67269,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
           'sender': 'me',
           'spoiler_hint': is_spoiler ? spoiler_hint : undefined,
           'type': 'groupchat',
+          'thread': this.get('thread'),
           'msg_attach_to': attach_to // BAO
         };
       },
@@ -67909,8 +67916,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
        * @method _converse.ChatRoom#subjectChangeHandled
        * @param { object } attrs - The message attributes
        */
-      subjectChangeHandled(attrs) {
-        if (attrs.subject && !attrs.thread && !attrs.message) {
+      subjectChangeHandled(attrs, forwarded) {
+        if (attrs.subject && !attrs.thread && !attrs.message && !forwarded) {   // BAO
           // https://xmpp.org/extensions/xep-0045.html#subject-mod
           // -----------------------------------------------------
           // The subject is changed by sending a message of type "groupchat" to the <room@service>,
@@ -67993,8 +68000,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-muc
         }
 
         const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
-
-        if (attrs.nick && !this.subjectChangeHandled(attrs) && !this.ignorableCSN(attrs) && (attrs['chat_state'] || !_utils_form__WEBPACK_IMPORTED_MODULE_4__["default"].isEmptyMessage(attrs))) {
+        // BAO
+        if (attrs.nick && !this.subjectChangeHandled(attrs, forwarded) && !this.ignorableCSN(attrs) && (attrs['chat_state'] || !_utils_form__WEBPACK_IMPORTED_MODULE_4__["default"].isEmptyMessage(attrs))) {
           const msg = this.messages.create(attrs);
           this.incrementUnreadMsgCounter(msg);
 

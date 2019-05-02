@@ -950,6 +950,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enableThreading",
+            "type": "checkbox",
+            "label": i18n.get("Enable message threading")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")
@@ -1267,7 +1274,7 @@ this.manifest = {
             "group": i18n.get("Feeds"),
             "name": "useRssDate",
             "type": "checkbox",
-            "label": i18n.get("User fetch date timestamp")
+            "label": i18n.get("Replace published timestamp with fetch timestamp")
         },
         {
             "tab": i18n.get("Converse"),

@@ -27,6 +27,8 @@
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var notified = true;
 
+     window.chatThreads = {};
+
     // The following line registers your plugin.
     converse.plugins.add("pade", {
 
@@ -71,6 +73,21 @@
                 });
 
                 document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse - " + _converse.VERSION_NAME;
+            }
+
+            if (getSetting("enableThreading", false))
+            {
+                // set active thread id
+
+                chrome.storage.local.get(null, function(obj)
+                {
+                    const boxes = Object.getOwnPropertyNames(obj);
+
+                    boxes.forEach(function(box)
+                    {
+                        if (box.startsWith("topic-")) window.chatThreads[box] = obj[box].thread
+                    })
+                });
             }
 
             _converse.log("The \"pade\" plugin is being initialized");
@@ -369,6 +386,7 @@
                 {
                     console.debug("chatBoxOpened", chatbox);
                     if (bgWindow) bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
+
                 });
 
                 _converse.api.listen.on('chatBoxClosed', function (chatbox)
@@ -389,6 +407,12 @@
                 {
                     console.debug("chatRoomOpened", chatbox);
                     if (bgWindow) bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
+
+                    if (getSetting("enableThreading", false))
+                    {
+                        const box_id = chatbox.model.get("box_id");
+                        chatbox.model.set("thread", window.chatThreads['topic-' + box_id]);
+                    }
                 });
 
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
@@ -400,8 +424,29 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    //console.debug("renderChatMessage", this.model);
+                    console.debug("renderChatMessage", this.model);
+
                     const body = this.model.get('message');
+
+                    if (getSetting("enableThreading", false))
+                    {
+                        const msgThread = this.model.get('thread');
+                        const source = this.model.get("type") == "groupchat" ? this.model.get("from") : this.model.get("jid");
+                        const box_jid = Strophe.getBareJidFromJid(source);
+                        const box = _converse.chatboxes.get(box_jid);
+
+                        if (box)
+                        {
+                            const box_id = box.get("box_id");
+                            const boxThread = window.chatThreads['topic-' + box_id];
+                            console.log("renderChatMessage", box_jid, box_id, boxThread, msgThread);
+
+                            if (boxThread)
+                            {
+                                if (!msgThread || msgThread != boxThread) return false; // thread mode, filter non thread messages
+                            }
+                        }
+                    }
 
                     if (body.indexOf(":lol:") > -1)
                     {
@@ -541,6 +586,32 @@
                 }
             },
 
+            ChatRoomView: {
+
+                setChatRoomSubject: function() {
+
+                    if (getSetting("enableThreading", false))
+                    {
+                        const subject = this.model.get('subject');
+                        const id = this.model.get("box_id");
+                        const topicId = 'topic-' + id;
+
+                        chrome.storage.local.get(topicId, function(obj)
+                        {
+                            if (!obj) obj = {};
+                            if (!obj[topicId]) obj[topicId] = {};
+                            if (!obj[topicId][subject.text]) obj[topicId][subject.text] = subject;
+
+                            chrome.storage.local.set(obj, function() {
+                                console.log("new subject added", subject, id, obj);
+                            });
+                        });
+                    }
+
+                    return this.__super__.setChatRoomSubject.apply(this, arguments);
+                }
+            },
+
             ChatBoxView: {
 
                 afterShown: function() {
@@ -571,6 +642,36 @@
                 },
 
                 modifyChatBody: function(text) {
+
+                    if (getSetting("enableThreading", false))
+                    {
+                        const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+                        const command = match[1].toLowerCase();
+
+                        if ((command === "subject" || command === "topic") && match[2])
+                        {
+                            console.log("new threaded conversation", match[2]);
+
+                            const id = this.model.get("box_id");
+                            const topicId = 'topic-' + id;
+
+                            window.chatThreads[topicId] = match[2];
+                            this.model.set("thread", match[2]);
+
+                            chrome.storage.local.get(topicId, function(obj)
+                            {
+                                if (!obj) obj = {};
+                                if (!obj[topicId]) obj[topicId] = {};
+
+                                obj[topicId].thread = match[2];
+
+                                chrome.storage.local.set(obj, function() {
+                                    console.log("active subject set", match[2], id, obj);
+                                });
+                            });
+                        }
+                    }
+
                     return text;
                 }
             },

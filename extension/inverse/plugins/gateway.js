@@ -38,6 +38,7 @@
 
                     if (jid === "rss@pade." + _converse.connection.domain)
                     {
+                        view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
                         rssChatCheck();
                     }
                 });
@@ -72,6 +73,7 @@
                         var name = "RSS Feed";
 
                         _converse.api.chats.open(jid, {fullname: name});
+                        rssChatCheck();
 
                         if (bgWindow.pade.chatAPIAvailable)
                         {
@@ -95,8 +97,6 @@
                             }).catch(function (err) {
                                 console.error('RSS roster creation error', err);
                             });
-
-                            rssChatCheck();
                         }
 
 
