@@ -48907,7 +48907,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins
           'jid': contact.get('jid')
         });
 
-        if (chatbox) {
+        if (chatbox && chatbox.addRelatedContact) { // BAO
           chatbox.addRelatedContact(contact);
         }
       });
@@ -62838,6 +62838,16 @@ _converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins.add('converse-cha
           attrs.from = stanza.getAttribute('from');
           attrs.nick = Strophe.unescapeNode(Strophe.getResourceFromJid(attrs.from));
           attrs.sender = attrs.nick === this.get('nick') ? 'me' : 'them';
+
+          // BAO
+          // handle unthreaded messages
+
+          if (getSetting("showUnThreaded", false))
+          {
+            const subject = this.get('subject');
+            if (!attrs.thread && !attrs.subject && subject) attrs.thread = subject.text;    // use trending topic/subject for unthreaded messages
+          }
+
         } else {
           attrs.from = Strophe.getBareJidFromJid(stanza.getAttribute('from'));
 

@@ -78,16 +78,7 @@
             if (getSetting("enableThreading", false))
             {
                 // set active thread id
-
-                chrome.storage.local.get(null, function(obj)
-                {
-                    const boxes = Object.getOwnPropertyNames(obj);
-
-                    boxes.forEach(function(box)
-                    {
-                        if (box.startsWith("topic-")) window.chatThreads[box] = obj[box].thread
-                    })
-                });
+                resetAllMsgCount();
             }
 
             _converse.log("The \"pade\" plugin is being initialized");
@@ -262,7 +253,7 @@
                                 {
                                     fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].target + "&tl=" + obj[tronId].source + "&dt=t&q=" + body.innerHTML).then(function(response){ return response.json()}).then(function(json)
                                     {
-                                        console.log('translation ok', json[0][0][0]);
+                                        console.debug('translation ok', json[0][0][0]);
 
                                         const msgType = message.getAttribute("type");
                                         const msgFrom = message.getAttribute("from");
@@ -371,7 +362,7 @@
                             {
                                 fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + data.message).then(function(response){ return response.json()}).then(function(json)
                                 {
-                                    console.log('translation ok', json[0][0][0]);
+                                    console.debug('translation ok', json[0][0][0]);
                                     data.chatbox.sendMessage("*" + json[0][0][0] + "*");
 
                                 }).catch(function (err) {
@@ -401,6 +392,23 @@
 
                     const activeDiv = document.getElementById("active-conversations");
                     if (activeDiv) removeActiveConversation(chatbox, activeDiv);
+
+                    // reset threads
+
+                    if (getSetting("enableThreading", false))
+                    {
+                        const box_id = chatbox.model.get("box_id");
+                        const topicId = 'topic-' + box_id;
+
+                        if (window.chatThreads[topicId])
+                        {
+                            chrome.storage.local.get(topicId, function(obj)
+                            {
+                                resetMsgCount(obj, topicId);
+                            });
+
+                        }
+                    }
                 });
 
                 _converse.api.listen.on('chatRoomOpened', function (chatbox)
@@ -411,7 +419,13 @@
                     if (getSetting("enableThreading", false))
                     {
                         const box_id = chatbox.model.get("box_id");
-                        chatbox.model.set("thread", window.chatThreads['topic-' + box_id]);
+                        const topicId = 'topic-' + box_id;
+
+                        if (window.chatThreads[topicId])
+                        {
+                            const topic = window.chatThreads[topicId].topic;
+                            if (topic) chatbox.model.set("thread", topic);
+                        }
                     }
                 });
 
@@ -438,12 +452,18 @@
                         if (box)
                         {
                             const box_id = box.get("box_id");
-                            const boxThread = window.chatThreads['topic-' + box_id];
-                            console.log("renderChatMessage", box_jid, box_id, boxThread, msgThread);
+                            const topicId = 'topic-' + box_id;
 
-                            if (boxThread)
+                            console.debug("renderChatMessage", box_jid, box_id, msgThread, window.chatThreads[topicId]);
+
+                            if (!window.chatThreads[topicId]) window.chatThreads[topicId] = {topic: msgThread}
+
+                            if (window.chatThreads[topicId][msgThread] == undefined) window.chatThreads[topicId][msgThread] = 0;
+                            window.chatThreads[topicId][msgThread]++;
+
+                            if (window.chatThreads[topicId].topic)
                             {
-                                if (!msgThread || msgThread != boxThread) return false; // thread mode, filter non thread messages
+                                if (!msgThread || msgThread != window.chatThreads[topicId].topic) return false; // thread mode, filter non thread messages
                             }
                         }
                     }
@@ -590,11 +610,26 @@
 
                 setChatRoomSubject: function() {
 
+                    const retValue = this.__super__.setChatRoomSubject.apply(this, arguments);
+
                     if (getSetting("enableThreading", false))
                     {
                         const subject = this.model.get('subject');
                         const id = this.model.get("box_id");
                         const topicId = 'topic-' + id;
+
+                        if (getSetting("broadcastThreading", false))
+                        {
+                            let publicMsg = "has reset threading";
+                            if (window.chatThreads[topicId].topic) publicMsg = "is threading with " + window.chatThreads[topicId].topic;
+                            this.model.sendMessage("/me " + publicMsg);
+                        }
+                        else {
+                            let privateMsg = "This groupchat has no threading";
+                            if (window.chatThreads[topicId].topic) privateMsg = "This groupchat thread is set to " + window.chatThreads[topicId].topic;
+                            this.showHelpMessages([privateMsg]);
+                            this.viewUnreadMessages();
+                        }
 
                         chrome.storage.local.get(topicId, function(obj)
                         {
@@ -603,12 +638,12 @@
                             if (!obj[topicId][subject.text]) obj[topicId][subject.text] = subject;
 
                             chrome.storage.local.set(obj, function() {
-                                console.log("new subject added", subject, id, obj);
+                                console.debug("new subject added", subject, id, obj);
                             });
                         });
                     }
 
-                    return this.__super__.setChatRoomSubject.apply(this, arguments);
+                    return retValue;
                 }
             },
 
@@ -650,13 +685,17 @@
 
                         if ((command === "subject" || command === "topic") && match[2])
                         {
-                            console.log("new threaded conversation", match[2]);
+                            console.debug("new threaded conversation", match[2]);
 
                             const id = this.model.get("box_id");
                             const topicId = 'topic-' + id;
 
-                            window.chatThreads[topicId] = match[2];
+                            if (!window.chatThreads[topicId]) window.chatThreads[topicId] = {};
+                            if (window.chatThreads[topicId][match[2]] == undefined) window.chatThreads[topicId][match[2]] = 0;
+
+                            window.chatThreads[topicId].topic = match[2];
                             this.model.set("thread", match[2]);
+                            const view = this;
 
                             chrome.storage.local.get(topicId, function(obj)
                             {
@@ -666,7 +705,7 @@
                                 obj[topicId].thread = match[2];
 
                                 chrome.storage.local.set(obj, function() {
-                                    console.log("active subject set", match[2], id, obj);
+                                    console.debug("active subject set", match[2], id, obj);
                                 });
                             });
                         }
@@ -861,4 +900,36 @@
 
         }, fromJid);
     };
+
+    var resetAllMsgCount = function()
+    {
+        chrome.storage.local.get(null, function(obj)
+        {
+            const boxes = Object.getOwnPropertyNames(obj);
+
+            boxes.forEach(function(box)
+            {
+                if (box.startsWith("topic-"))
+                {
+                    resetMsgCount(obj, box);
+                }
+            });
+        });
+    }
+
+    var resetMsgCount = function(obj, box)
+    {
+        window.chatThreads[box] = {topic: obj[box].thread};
+
+        const topics = Object.getOwnPropertyNames(obj[box]);
+
+        topics.forEach(function(topic)
+        {
+            if (typeof obj[box][topic] == "object")
+            {
+                window.chatThreads[box][topic] = 0;
+                console.debug("initialise message thread", box, topic);
+            }
+        });
+    }
 }));

@@ -3112,6 +3112,21 @@ function setSipStatus(status)
     });
 }
 
+function changePassword(callback, errorback)
+{
+    var newPass = JSON.parse(window.localStorage["store.settings.password"]);
+
+    pade.connection.sendIQ($iq({type: 'set', to: pade.connection.domain}).c('query', {xmlns: "jabber:iq:register"}).c('username').t(pade.username).up().c('password').t(newPass).tree(), function(status)
+    {
+        console.debug("changePassword", status);
+        if (callback) callback(status);
+
+    }, function (error) {
+        console.error("changePassword", error);
+        if (errorback) errorback(error);
+    });
+}
+
 function logCall(target, direction, duration)
 {
     if (direction == "dialed")

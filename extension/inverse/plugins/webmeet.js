@@ -476,7 +476,7 @@
                     {
                         evt.stopPropagation();
                         view.close();
-                        openChatbox(view);
+                        setTimeout(function() { openChatbox(view); });
 
                     }, false);
 
@@ -980,7 +980,7 @@
                     if (!firstTime) // meeting closed and root url is loaded
                     {
                         view.close();
-                        openChatbox(view);
+                        setTimeout(function() { openChatbox(view) });
                     }
 
                     if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
@@ -1367,7 +1367,7 @@
 
         if (command === "pade")
         {
-            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "<strong>/feed [url]</strong> Add an RSS/Atom Feed to this groupchat", "<strong>/tron [source] [target]</strong> Activate chat translation from source to target and reverse on incoming", "<strong>/troff</strong> De-activate any active chat translation", "\n\n"]);
+            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "<strong>/feed [url]</strong> Add an RSS/Atom Feed to this groupchat", "<strong>/tron [source] [target]</strong> Activate chat translation from source to target and reverse on incoming", "<strong>/troff</strong> De-activate any active chat translation", "<strong>/?</strong> search wikipedia", "\n\n"]);
             view.viewUnreadMessages();
             return true;
         }
@@ -1546,6 +1546,39 @@
             return true;
         }
         else
+
+        if (command == "?")
+        {
+            if (match[2])
+            {
+                fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + match[2], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
+                {
+                    console.log('wikipedia ok', json);
+
+                    const type = view.model.get("type") == "chatbox" ? "chat" : "groupchat";
+
+                    const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
+                    const from = view.model.get("jid") + (type == "groupchat" ? "/Wikipedia" : "");
+
+                    const stanza = '<message data-translation="true" type="' + type + '" to="' + _converse.connection.jid + '" from="' + from + '"><body>' + body + '</body></message>';
+                    _converse.connection.injectMessage(stanza);
+
+                    if (json.type == "standard")
+                    {
+                        navigator.clipboard.writeText(body).then(function() {
+                            console.debug('wikipedia clipboard ok');
+                        }, function(err) {
+                            console.error('wikipedia clipboard error', err);
+                        });
+                    }
+
+                }).catch(function (err) {
+                    console.error('wikipedia error', err);
+                });
+
+                return true;
+            }
+        }
 
         if (command == "who")
         {

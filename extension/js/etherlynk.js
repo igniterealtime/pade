@@ -458,12 +458,22 @@ var etherlynk = (function(lynk)
         }
 
         var uri = 'sip:default@' + options.hosts.sip;
-        var wsServers = "wss://" + options.hosts.server + "/sip/proxy?url=ws://" + options.hosts.sip + ":5066";
+
+        var wsServers = "wss://" + pade.sip.server;
+
+        if (getSetting("sipUseOfSwitch", false))
+        {
+            wsServers = "wss://" + options.hosts.server + "/sip/proxy?url=ws://" + options.hosts.sip + ":5066";
+        }
 
         if (pade.sip.authUsername)
         {
             uri = 'sip:' + pade.sip.authUsername + '@' + pade.sip.server;
-            wsServers = "wss://" + options.hosts.server + "/sip/proxy?url=ws://" + pade.sip.server + ":5066";
+
+            if (getSetting("sipUseOfSwitch", false))
+            {
+                wsServers = "wss://" + options.hosts.server + "/sip/proxy?url=ws://" + pade.sip.server + ":5066";
+            }
         }
 
         var sipIdentity = pade.sip.displayPhoneNum ? pade.sip.displayPhoneNum:  options.nickName;

@@ -104,6 +104,12 @@ window.addEvent("domready", function () {
             registerUser();
         });
 
+        if (settings.manifest.changePassword) settings.manifest.changePassword.addEvent("action", function ()
+        {
+            settings.manifest.status.element.innerHTML = 'Changing password, please wait....';
+            changePassword();
+        });
+
         if (settings.manifest.remoteConnect) settings.manifest.remoteConnect.addEvent("action", function ()
         {
             var host = getSetting("server", null);
@@ -1132,6 +1138,23 @@ window.addEvent("domready", function () {
             }
         });
 
+        function changePassword()
+        {
+            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.password"] && window.localStorage["store.settings.username"])
+            {
+                background.changePassword(function(status)
+                {
+                    settings.manifest.status.element.innerHTML = 'password changed ok';
+                    setTimeout(function() { background.reloadApp() }, 1000);
+
+                }, function (error) {
+                    settings.manifest.status.element.innerHTML = '<b style="color:red">change password error</b>';
+                });
+            }
+            else {
+                settings.manifest.status.element.innerHTML = '<b style="color:red">bad server, domain, username or password</b>';
+            }
+        }
 
         function registerUser()
         {

@@ -88,6 +88,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
+            "group": i18n.get("Registration"),
+            "name": "changePassword",
+            "type": "button",
+            "text": i18n.get("Change Password")
+        },
+        {
+            "tab": i18n.get("Connection"),
             "group": i18n.get("uPort"),
             "name": "useUport",
             "type": "checkbox",
@@ -950,13 +957,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "enableThreading",
-            "type": "checkbox",
-            "label": i18n.get("Enable message threading")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "converseDebug",
             "type": "checkbox",
             "label": i18n.get("Enable Debug")
@@ -1147,6 +1147,27 @@ this.manifest = {
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}
             ]
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Message Threading"),
+            "name": "enableThreading",
+            "type": "checkbox",
+            "label": i18n.get("Enable message threading")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Message Threading"),
+            "name": "showUnThreaded",
+            "type": "checkbox",
+            "label": i18n.get("Show messages with no threads")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Message Threading"),
+            "name": "broadcastThreading",
+            "type": "checkbox",
+            "label": i18n.get("Broadcast threading to groupchat")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1447,7 +1468,7 @@ this.manifest = {
             "group": i18n.get("TouchPad"),
             "name": "enableTouchPad",
             "type": "checkbox",
-            "label": i18n.get("Enable Communicator TouchPad")
+            "label": i18n.get("Enable Communicator TouchPad <b>The ofswitch plugin for Openfire is required for this</b>")
         },
         {
             "tab": i18n.get("Applications"),
@@ -1534,7 +1555,7 @@ this.manifest = {
             "group": i18n.get("Phone"),
             "name": "sipDescription",
             "type": "description",
-            "text": i18n.get("SIP Phone. <b>The ofswitch plugin for Openfire is required for this</b>")
+            "text": i18n.get("SIP Phone. <b>The sip plugin for Openfire is required for this</b>")
         },
         {
             "tab": i18n.get("Applications"),
@@ -1553,9 +1574,16 @@ this.manifest = {
         {
             "tab": i18n.get("Applications"),
             "group": i18n.get("Phone"),
+            "name": "sipUseOfSwitch",
+            "type": "checkbox",
+            "label": i18n.get("The ofswitch plugin is available")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("Phone"),
             "name": "enableVerto",
             "type": "checkbox",
-            "label": i18n.get("Enable Verto Communicator")
+            "label": i18n.get("Enable Verto Communicator.<b>The ofswitch plugin for Openfire is required for this</b>")
         },
         {                                        // draw.io web apps
             "tab": i18n.get("Applications"),

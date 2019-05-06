@@ -604,7 +604,7 @@
                                     counter++;
                                 }
                             }
-                            detail.insertAdjacentElement('afterEnd', newTopicItemElement({text: "reset", author: "system"}, "mediaItem", id, view));
+                            detail.insertAdjacentElement('afterEnd', newTopicItemElement({text: "All Topics", author: "system"}, "mediaItem", id, view));
                             count.innerHTML = counter;
                         }
                     }
@@ -620,12 +620,13 @@
         // {author: author, text: text}
 
         const topicId = "topic-" + id;
-        let checked = window.chatThreads[topicId] ? window.chatThreads[topicId] == item.text : item.text == "reset";
+        const count = window.chatThreads[topicId][item.text] != undefined && item.text != "All Topics" ? window.chatThreads[topicId][item.text] : "";
+        let checked = window.chatThreads[topicId].topic ? window.chatThreads[topicId].topic == item.text : item.text == "All Topics";
 
         item.ele = document.createElement("div");
-        item.ele.title = "topic " + item.text + " set by " + item.author;
+        item.ele.title = "topic " + item.text + " set by " + item.author + " (" + count + ")";
         item.ele.id = "topic-div-" + id;
-        item.ele.innerHTML = '<input name="topic-selection" class="topic-radio-button" type="radio" ' + (checked ? "checked" : "" )+ ' value="' + item.text + '"/>&nbsp;' + item.text + '<br/>';
+        item.ele.innerHTML = '<input name="topic-selection" class="topic-radio-button" type="radio" ' + (checked ? "checked" : "" )+ ' value="' + item.text + '"/>&nbsp;' + item.text + '<span style="float: right;">' + count + '</span><br/>';
         item.ele.classList.add(className);
         document.body.appendChild(item.ele);
 
@@ -637,14 +638,20 @@
             {
                 let targetValue = evt.target.value;
 
-                if (evt.target.value == "reset")
+                if (evt.target.value == "All Topics")
                 {
-                     delete window.chatThreads[topicId];
+                     window.chatThreads[topicId].topic = undefined;
                      view.model.set("thread", undefined);
                      targetValue = undefined;
                 }
                 else {
-                    window.chatThreads[topicId] = evt.target.value;
+                    if (!window.chatThreads[topicId])
+                    {
+                        window.chatThreads[topicId] = {topic: evt.target.value};
+                        window.chatThreads[topicId][evt.target.value] = 0;
+                    }
+
+                    window.chatThreads[topicId].topic = evt.target.value;
                     view.model.set("thread", evt.target.value);
                 }
 
@@ -653,21 +660,13 @@
                     if (obj[topicId]) obj[topicId].thread = targetValue;
 
                     chrome.storage.local.set(obj, function() {
-                        console.log("active subject set", evt.target.value, id, obj);
+                        console.log("active subject set",targetValue, id, obj);
+
+                        var jid = view.model.get("jid");
+                        view.close();
+                        setTimeout(function() { _converse.api.rooms.open(jid)});
                     });
                 });
-
-                var jid = view.model.get("jid");
-
-                view.close();
-                _converse.api.rooms.open(jid);
-
-                setTimeout(function()
-                {
-                    var infoElement = view.el.querySelector('.plugin-infobox');
-                    if (infoElement) toggleInfoBar(view, infoElement, id, jid);
-
-                }, 1000);
             }
         });
 
@@ -887,7 +886,7 @@
         if (getSetting("enableThreading", false))
         {
            html += '<details>' +
-                   '    <summary id="' + id + '-topics-details">Topics (<span id="' + id + '-topics-count">0</span>)<span style="float: right;" class="fas fa-comments"/></summary>' +
+                   '    <summary id="' + id + '-topics-details">Topic Threads (<span id="' + id + '-topics-count">0</span>)<span style="float: right;" class="fas fa-comments"/></summary>' +
                    '</details>';
         }
 
