@@ -32,6 +32,10 @@
     vertical-align: top;
 }
 
+#conversejs .mention {
+  cursor: pointer; 
+}
+
 /* converse customisation*/
 
 #conversejs .message.chat-msg .chat-msg__actions .chat-msg__action {

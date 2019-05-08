@@ -919,17 +919,20 @@
 
     var resetMsgCount = function(obj, box)
     {
-        window.chatThreads[box] = {topic: obj[box].thread};
-
-        const topics = Object.getOwnPropertyNames(obj[box]);
-
-        topics.forEach(function(topic)
+        if (obj[box])
         {
-            if (typeof obj[box][topic] == "object")
+            window.chatThreads[box] = {topic: obj[box].thread};
+
+            const topics = Object.getOwnPropertyNames(obj[box]);
+
+            topics.forEach(function(topic)
             {
-                window.chatThreads[box][topic] = 0;
-                console.debug("initialise message thread", box, topic);
-            }
-        });
+                if (typeof obj[box][topic] == "object")
+                {
+                    window.chatThreads[box][topic] = 0;
+                    console.debug("initialise message thread", box, topic);
+                }
+            });
+        }
     }
 }));

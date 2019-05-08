@@ -1450,7 +1450,8 @@ function doDefaults(background)
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
     setDefaultSetting("enableRssFeeds", true);
-    setDefaultSetting("feedCheck", 10);
+    setDefaultSetting("rssFeedCheck", 10);
+    setDefaultSetting("beeFeedCheck", 10);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");

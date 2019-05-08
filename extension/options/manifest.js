@@ -1278,52 +1278,6 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("Feeds"),
-            "name": "enableRssFeeds",
-            "type": "checkbox",
-            "label": i18n.get("Enable RSS and Atom feeds")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Feeds"),
-            "name": "showRssSummary",
-            "type": "checkbox",
-            "label": i18n.get("Show RSS and Atom feed summary")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Feeds"),
-            "name": "useRssDate",
-            "type": "checkbox",
-            "label": i18n.get("Replace published timestamp with fetch timestamp")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Feeds"),
-            "name": "rssAtomFeedUrls",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("List of rss or atom feed urls. For example:\n\nhttps://discourse.igniterealtime.org/c/blogs/ignite-realtime-blogs.rss"),
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Feeds"),
-            "name": "rssAtomFeedUrlsDesc",
-            "text": i18n.get("List of rss or atom urls to feed from"),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Feeds"),
-            "name": "feedCheck",
-            "type": "slider",
-            "label": i18n.get("RSS check interval (mins)"),
-            "max": 60,
-            "min": 5,
-            "step": 5
-        },
-        {
-            "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",
@@ -1965,9 +1919,105 @@ this.manifest = {
             "name": "convSearchResults",
             "text": i18n.get(""),
             "type": "description"
-        }
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "enableRssFeeds",
+            "type": "checkbox",
+            "label": i18n.get("Enable RSS and Atom feeds")
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "showRssSummary",
+            "type": "checkbox",
+            "label": i18n.get("Show RSS and Atom feed summary")
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "useRssDate",
+            "type": "checkbox",
+            "label": i18n.get("Replace published timestamp with fetch timestamp")
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "rssFeedTitle",
+            "type": "text",
+            "label": i18n.get("Title"),
+            "text": i18n.get("RSS Feed"),
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "rssAtomFeedUrls",
+            "type": "textarea",
+            "label": i18n.get(""),
+            "text": i18n.get("List of rss or atom feed urls. For example:\n\nhttps://discourse.igniterealtime.org/c/blogs/ignite-realtime-blogs.rss"),
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "rssAtomFeedUrlsDesc",
+            "text": i18n.get("List of rss or atom urls to feed from"),
+            "type": "description"
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "rssFeedCheck",
+            "type": "slider",
+            "label": i18n.get("Check interval (mins)"),
+            "max": 60,
+            "min": 5,
+            "step": 5
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("BeeKeeper"),
+            "name": "enableBeeKeeper",
+            "type": "checkbox",
+            "label": i18n.get("Enable BeeKeeper posts feed")
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("BeeKeeper"),
+            "name": "beeKeeperTitle",
+            "type": "text",
+            "label": i18n.get("Title"),
+            "text": i18n.get("BeeKeeper"),
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("BeeKeeper"),
+            "name": "beeKeeperTopic",
+            "type": "text",
+            "label": i18n.get("Default topic name"),
+            "text": i18n.get("post"),
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("BeeKeeper"),
+            "name": "beeKeeperUrl",
+            "type": "text",
+            "label": i18n.get("Access Url"),
+            "text": i18n.get("https://playgroundapi.industrioushive.com"),
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("BeeKeeper"),
+            "name": "beeFeedCheck",
+            "type": "slider",
+            "label": i18n.get("Check interval (mins)"),
+            "max": 60,
+            "min": 5,
+            "step": 5
+        },
     ],
     "alignment": [
+        [   "beeKeeperTitle", "beeKeeperUrl"],
         [
             "server",
             "uportPermission",

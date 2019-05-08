@@ -92749,6 +92749,9 @@ _core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (_converse,
         // BAO do hashtags
         markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span data-hashtag='$2' title='hashtag' class='badge badge-hash-tag'>$2</span>");
 
+        // BAO do mentions
+        markedText = markedText.replace(/(^|\s)@([a-z\d-]+)/ig, "$1<span data-mention='$2' title='mention' class='mention mention--self badge badge-info'>$2</span>");
+
         return markedText;
 };
 _core__WEBPACK_IMPORTED_MODULE_2__["default"].addEmoji = function (_converse, text) {

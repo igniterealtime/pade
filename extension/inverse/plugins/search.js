@@ -165,39 +165,56 @@
                 {
                     await this.__super__.renderChatMessage.apply(this, arguments);
 
-                    var source = this.model.get("type") == "groupchat" ? this.model.get("from") : this.model.get("jid");
+                    var source = this.model.get("from") || this.model.get("jid");
                     var box_jid = Strophe.getBareJidFromJid(source);
                     var view = _converse.chatboxviews.get(box_jid);
 
                     if (view)
                     {
-                        converse.env._.each(this.el.querySelectorAll('.badge-hash-tag'), function (badge)
+                        this.el.querySelectorAll('.badge-hash-tag').forEach(function(hashtag)
                         {
-                            var oldMsg = view.model.messages.findWhere({'msgid': badge.getAttribute("data-hashtag")});
+                            var oldMsg = view.model.messages.findWhere({'msgid': hashtag.getAttribute("data-hashtag")});
 
                             if (oldMsg)
                             {
                                 const nick = Strophe.getResourceFromJid(oldMsg.get('from'));
-                                badge.title = nick + ": " + oldMsg.get('message');
-                                badge.innerText = "this";
-                            }
-                            else {
-                               // can't find old message, we assume hashtag
+                                hashtag.title = nick + ": " + oldMsg.get('message');
+                                hashtag.innerText = "this";
                             }
 
-                            badge.addEventListener('click', function(evt)
+                            hashtag.addEventListener('click', function(evt)
                             {
                                 evt.stopPropagation();
 
                                 console.debug("pade.hashtag click", evt.target);
 
-                                const tag = document.getElementById("msg-" + this.getAttribute("data-hashtag"));
+                                const tag = document.getElementById("msg-" + evt.target.getAttribute("data-hashtag"));
+
+                                // can't find old message, we default to groupchat room
 
                                 if (tag) tag.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
                                 else {
-                                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: this.getAttribute("data-hashtag")}) });
-                                    searchDialog.show();
+                                    const roomJid = evt.target.getAttribute("data-hashtag") + "@conference." + _converse.connection.domain;
+                                    _converse.api.rooms.open(roomJid, {name: evt.target.getAttribute("data-hashtag"), nick: getSetting("displayname")});
+
                                 }
+                            }, false);
+                        });
+
+                        this.el.querySelectorAll('.mention').forEach(function(mention)
+                        {
+                            mention.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                console.debug("pade.mention click", evt.target);
+
+                                const contact = _converse.roster.findWhere({'user_id': evt.target.getAttribute("data-mention")});
+
+                                if (contact) {
+                                    _converse.api.chats.open(contact.get("jid"), {fullname: contact.get("nickname") || contact.get("fullname")});
+                                }
+
                             }, false);
                         });
                     }
