@@ -13,39 +13,59 @@ window.addEventListener("load", function()
 
     BrowserDetect.init();
 
+    var anonUser = getSetting("useAnonymous", false);
+    var username = getSetting("username");
+    var password = getSetting("password");
+    var server = getSetting("server", location.host);
+
+    var doBasicAuth = function()
+    {
+        if (getSetting("useBasicAuth", false))
+        {
+            fetch("https://" + server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+            {
+                username = token.username;
+                password = token.password;
+
+                doConverse(server, username, password, false);
+
+            }).catch(function (err) {
+                console.error('access denied error', err);
+
+                doConverse(server, username, password, true);
+            });
+
+        }
+        else {
+            doConverse(server, username, password, anonUser);
+        }
+    }
+
     if (chrome.pade)    // browser mode
     {
-        setDefaultSetting("useBasicAuth", true);
-        setDefaultSetting("ofmeetUrl", "https://" + location.host + "/ofmeet/");
+        setDefaultSetting("useWebsocket", false);
+        setDefaultSetting("useBasicAuth", false);
+        setDefaultSetting("ofmeetUrl", "https://" + server + "/ofmeet/");
 
         setSetting("server", location.host);
         setSetting("domain", location.hostname);
 
-    }
-
-    var server = getSetting("server");
-    var username = getSetting("username");
-    var password = getSetting("password");
-    var anonUser = getSetting("useAnonymous", false);
-
-    if (getSetting("useBasicAuth", false))
-    {
-        fetch("https://" + server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+        top.getCredentials(function(credential)
         {
-            username = token.username;
-            password = token.password;
+            if (credential)
+            {
+                username = credential.id;
+                password = credential.password;
 
-            doConverse(server, username, password, false);
-
-        }).catch(function (err) {
-            console.error('access denied error', err);
-
-            doConverse(server, username, password, true);
+                doConverse(server, username, password, anonUser);
+            }
+            else {
+                doBasicAuth();
+            }
         });
-
     }
     else {
-        doConverse(server, username, password, anonUser);
+        doBasicAuth();
     }
 });
 
@@ -211,7 +231,7 @@ var BrowserDetect = {
 
 function doConverse(server, username, password, anonUser)
 {
-    console.log("doConverse", server, username, password, anonUser);
+    console.log("doConverse", server, username, anonUser);
 
     function getUniqueID()
     {
@@ -228,7 +248,7 @@ function doConverse(server, username, password, anonUser)
     var url = urlParam("url");
     var domain = getSetting("domain", null);
 
-    if (bgWindow && bgWindow.pade.chatWindow)
+    if (bgWindow && bgWindow.pade && bgWindow.pade.chatWindow)
     {
         if (url && (url.indexOf("im:") == 0) && window.location.hash == "")
         {
@@ -359,7 +379,7 @@ function doConverse(server, username, password, anonUser)
 
         var connUrl = undefined;
 
-        if (getSetting("useWebsocket", true))
+        if (getSetting("useWebsocket", false))
         {
             connUrl = "wss://" + server + "/ws/";
         }
@@ -582,7 +602,19 @@ function handleActiveConversations()
             roomDiv.parentElement.appendChild(activeDiv);
         }
 
-        _converse.chatboxes.each(function (chatbox)
+        var compare = function ( x, y )
+        {
+            const one = x.get("name");
+            const two = y.get("name");
+            const a = one ? one.toLowerCase() : "";
+            const b = two ? two.toLowerCase() : "";
+
+            if ( a < b ) return -1;
+            if ( a > b ) return 1;
+            return 0;
+        }
+
+        _converse.chatboxes.models.sort(compare).forEach(function (chatbox)
         {
             addActiveConversation(chatbox, activeDiv);
         });

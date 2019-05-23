@@ -1377,13 +1377,16 @@ function doDefaults(background)
     {
         setDefaultSetting("server", location.host);
         setDefaultSetting("domain", location.hostname);
-        setDefaultSetting("useBasicAuth", true);
+        setDefaultSetting("useBasicAuth", false);
         setDefaultSetting("converseEmbedOfMeet", true);
+        setDefaultSetting("useWebsocket", false);
+    }
+    else {
+        setDefaultSetting("useWebsocket", true);
     }
 
     // connection
     setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
-    setDefaultSetting("useWebsocket", true);
     setDefaultServer();
 
     // preferences
@@ -1452,9 +1455,10 @@ function doDefaults(background)
     setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 10);
     setDefaultSetting("beeFeedCheck", 10);
+    setDefaultSetting("beeKeeperPageSize", 25);
 
     // web apps
-    setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com");
+    setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com");
 
     // only office
     setDefaultSetting("onlyOfficeVersion", "5.2.2-2");

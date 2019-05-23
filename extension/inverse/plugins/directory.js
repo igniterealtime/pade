@@ -260,22 +260,22 @@
         {
             var jids = directoryResults.querySelectorAll(".plugin-directory-jid");
 
+            var setTheAvatar = function(imgHref)
+            {
+                element.innerHTML = "<img style='width: 22px;' src='" + imgHref + "'>" + element.innerHTML;
+            }
+
             jids.forEach(function(element)
             {
                 console.debug('displayUsers - jids', element.innerHTML);
 
-                var setAvatar = function(imgHref)
-                {
-                    element.innerHTML = "<img style='width: 22px;' src='" + imgHref + "'>" + element.innerHTML;
-                }
-
                 if (bgWindow) bgWindow.getVCard(element.innerHTML, function(vCard)
                 {
                     console.debug("displayUsers vcard", vCard);
-                    setAvatar(vCard.avatar ? vCard.avatar : bgWindow.createAvatar(element.innerHTML));
+                    setTheAvatar(vCard.avatar ? vCard.avatar : bgWindow.createAvatar(element.innerHTML));
 
                 }, function() {
-                    setAvatar(bgWindow.createAvatar(element.innerHTML));
+                    setTheAvatar(bgWindow.createAvatar(element.innerHTML));
                 });
 
                 element.addEventListener("click", function(e)

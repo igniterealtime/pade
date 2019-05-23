@@ -120,4 +120,11 @@ var branding = {
     enableRssFeeds          : {disable: false, value: true},
     showRssSummary          : {disable: false, value: false},
     rssAtomFeedUrls         : {disable: false, value: "https://discourse.igniterealtime.org/latest.rss\nhttps://github.com/igniterealtime/Openfire/commits/master.atom"},
+
+    enableBeeKeeper         : {disable: true, value: false},
+    beeKeeperTitle          : {disable: true},
+    beeKeeperTopic          : {disable: true},
+    beeKeeperUrl            : {disable: true},
+    beeFeedCheck            : {disable: true},
+    beeKeeperPageSize       : {disable: true},
 }

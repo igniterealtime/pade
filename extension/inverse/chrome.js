@@ -1,7 +1,9 @@
 if (!window.chrome || !window.chrome.extension)
 {
     var appName = "Pade";
-    var appVer = "1.2.3";
+    var appVer = "1.2.7";
+
+    // setup chrome shim
 
     window.chrome = {
         pade: true,
@@ -104,7 +106,8 @@ if (!window.chrome || !window.chrome.extension)
                 }
             },
             create: function(notifyId, opt, callback)  {
-                createNotification(notifyId, opt, callback);
+                // TODO fix non-stop notifications
+                //createNotification(notifyId, opt, callback);
             }
         },
 

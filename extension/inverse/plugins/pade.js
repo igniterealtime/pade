@@ -432,6 +432,25 @@
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
 
                 _converse.__super__.onConnected.apply(this, arguments);
+
+                if (chrome.pade)    // browser mode
+                {
+                    const username = Strophe.getNodeFromJid(_converse.connection.jid);
+                    const password = _converse.connection.pass;
+
+                    if (username && password)
+                    {
+                        if (top.setCredentials)    // save new credentials
+                        {
+                            top.setCredentials({id: username, password: password});
+                        }
+
+                        if (top.webpush && top.webpush.registerServiceWorker) // register webpush service worker
+                        {
+                            top.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
+                        }
+                    }
+                }
             },
 
             MessageView: {

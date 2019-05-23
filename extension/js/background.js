@@ -217,23 +217,41 @@ window.addEventListener("load", function()
 {
     if (chrome.pade)    // browser mode
     {
-        setDefaultSetting("useBasicAuth", true);
+        setDefaultSetting("useBasicAuth", false);
+        setDefaultSetting("useWebsocket", false);
         setDefaultSetting("ofmeetUrl", "https://" + location.host + "/ofmeet/");
 
         setSetting("server", location.host);
         setSetting("domain", location.hostname);
 
-        fetch("https://" + location.host + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+        getCredentials(function(credential)
         {
-            username = token.username;
-            password = token.password;
+            if (credential)
+            {
+                username = credential.id;
+                password = credential.password;
 
-            setupBrowserMode(username, password);
+                setupBrowserMode(username, password);
+            }
+            else {
 
-        }).catch(function (err) {
-            console.error('access denied error', err);
+                if (getSetting("useBasicAuth", false))
+                {
+                    fetch("https://" + location.host + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+                    {
+                        username = token.username;
+                        password = token.password;
 
-            setupBrowserMode(); // anonymous mode
+                        setupBrowserMode(username, password);
+
+                    }).catch(function (err) {
+                        console.error('access denied error', err);
+
+                        setupBrowserMode(); // anonymous mode
+                    });
+
+                } else setupBrowserMode(); // login screen
+            }
         });
 
         return;
@@ -1166,19 +1184,19 @@ function stopTone()
 }
 
 
-function notifyText(message, context, jid, buttons, callback, notifyId)
+function notifyText(message, title, jid, buttons, callback, notifyId)
 {
-    console.debug("notifyText", message, context, jid, buttons, notifyId);
+    console.debug("notifyText", title, message, jid, buttons, notifyId);
 
     if (pade.busy) return;  // no notifications when I am busy
 
     var opt = {
       type: "basic",
-      title: chrome.i18n.getMessage('manifest_extensionName'),
+      title: title,
       iconUrl: chrome.runtime.getURL("image.png"),
       message: message,
       buttons: buttons,
-      contextMessage: context,
+      contextMessage: chrome.i18n.getMessage('manifest_extensionName'),
       requireInteraction: !!buttons && !!callback
     }
 
@@ -1218,18 +1236,18 @@ function notifyText(message, context, jid, buttons, callback, notifyId)
     else doNotify();
 };
 
-function notifyImage(message, context, imageUrl, buttons, callback)
+function notifyImage(message, title, imageUrl, buttons, callback)
 {
     if (pade.busy) return;  // no notifications when I am busy
 
     var opt = {
       type: "image",
-      title: chrome.i18n.getMessage('manifest_extensionName'),
+      title: title,
       iconUrl: chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
-      contextMessage: context,
+      contextMessage: chrome.i18n.getMessage('manifest_extensionName'),
       imageUrl: imageUrl
     }
     var id = Math.random().toString(36).substr(2,9);
@@ -1240,18 +1258,18 @@ function notifyImage(message, context, imageUrl, buttons, callback)
     });
 };
 
-function notifyProgress(message, context, progress, buttons, callback)
+function notifyProgress(message, title, progress, buttons, callback)
 {
     if (pade.busy) return;  // no notifications when I am busy
 
     var opt = {
       type: "progress",
-      title: chrome.i18n.getMessage('manifest_extensionName'),
+      title: title,
       iconUrl: chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
-      contextMessage: context,
+      contextMessage: chrome.i18n.getMessage('manifest_extensionName'),
       progress: progress
     }
     var id = Math.random().toString(36).substr(2,9);
@@ -1263,18 +1281,18 @@ function notifyProgress(message, context, progress, buttons, callback)
 };
 
 
-function notifyList(message, context, items, buttons, callback, notifyId)
+function notifyList(message, title, items, buttons, callback, notifyId)
 {
     if (pade.busy) return;  // no notifications when I am busy
 
     var opt = {
       type: "list",
-      title: chrome.i18n.getMessage('manifest_extensionName'),
+      title: title,
       iconUrl: chrome.runtime.getURL("image.png"),
 
       message: message,
       buttons: buttons,
-      contextMessage: context,
+      contextMessage: chrome.i18n.getMessage('manifest_extensionName'),
       items: items,
       requireInteraction: !!buttons && !!callback
     }
@@ -3298,7 +3316,9 @@ function createAvatar(nickname, width, height, font)
     context.font = font;
     context.fillStyle = "#fff";
 
-    var first, last;
+    var first, last, pos = nickname.indexOf("@");
+    if (pos > 0) nickname = nickname.substring(0, pos);
+
     var name = nickname.split(" ");
     if (name.length == 1) name = nickname.split(".");
     if (name.length == 1) name = nickname.split("-");

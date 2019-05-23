@@ -49989,9 +49989,9 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
             }
 
             return this.onFormSubmitted(ev);
-          } else if (ev.keyCode === _converse.keycodes.UP_ARROW && !ev.target.selectionEnd) {
+          } else if (ev.keyCode === _converse.keycodes.UP_ARROW && !ev.target.selectionEnd && getSetting("UseUpDownCursorKeys", false)) {   // BAO
             return this.editEarlierMessage();
-          } else if (ev.keyCode === _converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length) {
+          } else if (ev.keyCode === _converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length  && getSetting("UseUpDownCursorKeys", false)) {  // BAO
             return this.editLaterMessage();
           }
         }
@@ -50082,20 +50082,20 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         if (message)
         {
+            const type = message.get('type');
             let text = message.get('message');
             let pos = text.indexOf("\n");
             text = pos == -1 ? text : text.substring(0, pos);
-            postfix = " " + nick + ": " + text;
-        }
+            postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
 
-        console.debug('onMessageLikeButtonClicked', msgId, from);
+            console.debug('onMessageLikeButtonClicked', msgId, from, type);
 
-        if (msgId && msgId.trim() != "")
-        {
-            const json = {event: "pade.emoji.reation", reaction: "like", msgId: msgId, nick: nick};
-            _converse.connection.send($msg({type: 'groupchat', 'to': from})
-                .c("body").t(":thumbsup:" + postfix).up()
-                .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
+            if (msgId && msgId.trim() != "")
+            {
+                _converse.connection.send($msg({type: type, 'to': from})
+                    .c("body").t(":thumbsup:" + postfix).up()
+                    .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
+            }
         }
       },
 
@@ -50112,20 +50112,20 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
 
         if (message)
         {
+            const type = message.get('type');
             let text = message.get('message');
             let pos = text.indexOf("\n");
             text = pos == -1 ? text : text.substring(0, pos);
-            postfix = " " + nick + ": " + text;
-        }
+            postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
 
-        console.debug('onMessageDislikeButtonClicked', msgId, from);
+            console.debug('onMessageDislikeButtonClicked', msgId, from);
 
-        if (msgId && msgId.trim() != "")
-        {
-            const json = {event: "pade.emoji.reation", reaction: "dislike", msgId: msgId, nick: nick};
-            _converse.connection.send($msg({type: 'groupchat', 'to': from})
-                .c("body").t(":thumbsdown:" + postfix).up()
-                .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
+            if (msgId && msgId.trim() != "")
+            {
+                _converse.connection.send($msg({type: type, 'to': from})
+                    .c("body").t(":thumbsdown:" + postfix).up()
+                    .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
+            }
         }
       },
 
@@ -95344,7 +95344,7 @@ __e(o.default_domain) +
 '\n            </div>\n            ';
  } else { ;
 __p += '\n                <input class="form-control" autofocus="autofocus" required="required" type="text" name="domain" placeholder="' +
-__e(o.domain_placeholder) +
+__e(o.domain_placeholder) + '" value="' + __e(o.domain_placeholder) + // BAO
 '"/>\n                <p class="form-text text-muted">' +
 __e(o.help_providers) +
 ' <a href="' +

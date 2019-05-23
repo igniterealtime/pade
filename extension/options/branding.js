@@ -2,8 +2,13 @@ var branding = {
     uport                   : {disable: true},
     uportPermission         : {disable: true},
     useUport                : {disable: true},
-
 /*
+    enableBeeKeeper         : {disable: true, value: false},
+    beeKeeperTitle          : {disable: true},
+    beeKeeperTopic          : {disable: true},
+    beeKeeperUrl            : {disable: true},
+    beeFeedCheck            : {disable: true},
+    beeKeeperPageSize       : {disable: true},
     audioOnly               : {disable: true},
     blastDescription        : {disable: true},
     blogDescription         : {disable: true},

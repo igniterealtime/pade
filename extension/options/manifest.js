@@ -1080,6 +1080,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "UseUpDownCursorKeys",
+            "type": "checkbox",
+            "label": i18n.get("Use UP & DOWN cursor keys to edit messages")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "showGroupChatStatusMessages",
             "type": "checkbox",
             "label": i18n.get("Show GroupChat Status Messages")
@@ -2014,6 +2021,16 @@ this.manifest = {
             "max": 60,
             "min": 5,
             "step": 5
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("BeeKeeper"),
+            "name": "beeKeeperPageSize",
+            "type": "slider",
+            "label": i18n.get("Messages Page Size"),
+            "max": 125,
+            "min": 5,
+            "step": 10
         },
     ],
     "alignment": [
