@@ -260,7 +260,7 @@
         {
             var jids = directoryResults.querySelectorAll(".plugin-directory-jid");
 
-            var setTheAvatar = function(imgHref)
+            var setTheAvatar = function(element, imgHref)
             {
                 element.innerHTML = "<img style='width: 22px;' src='" + imgHref + "'>" + element.innerHTML;
             }
@@ -272,10 +272,10 @@
                 if (bgWindow) bgWindow.getVCard(element.innerHTML, function(vCard)
                 {
                     console.debug("displayUsers vcard", vCard);
-                    setTheAvatar(vCard.avatar ? vCard.avatar : bgWindow.createAvatar(element.innerHTML));
+                    setTheAvatar(element, vCard.avatar ? vCard.avatar : bgWindow.createAvatar(element.innerHTML));
 
                 }, function() {
-                    setTheAvatar(bgWindow.createAvatar(element.innerHTML));
+                    setTheAvatar(element, bgWindow.createAvatar(element.innerHTML));
                 });
 
                 element.addEventListener("click", function(e)

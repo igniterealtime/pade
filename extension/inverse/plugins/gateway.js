@@ -213,7 +213,7 @@
                 _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + jid + '"/>');
 
             }).catch(function (err) {
-                console.error('createRosterEntry', err);
+                console.error('createRosterEntry', err, url, options);
             });
         }
     }

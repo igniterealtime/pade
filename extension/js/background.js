@@ -226,12 +226,16 @@ window.addEventListener("load", function()
 
         getCredentials(function(credential)
         {
+            var setupCreds = function(username, password)
+            {
+                removeSetting("username");
+                removeSetting("password");
+                setupBrowserMode(username, password);
+            }
+
             if (credential)
             {
-                username = credential.id;
-                password = credential.password;
-
-                setupBrowserMode(username, password);
+                setupCreds(credential.id, credential.password);
             }
             else {
 
@@ -239,14 +243,11 @@ window.addEventListener("load", function()
                 {
                     fetch("https://" + location.host + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
                     {
-                        username = token.username;
-                        password = token.password;
-
-                        setupBrowserMode(username, password);
+                        setupCreds(token.username, token.password);
 
                     }).catch(function (err) {
-                        console.error('access denied error', err);
 
+                        console.error('access denied error', err);
                         setupBrowserMode(); // anonymous mode
                     });
 

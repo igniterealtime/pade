@@ -1,7 +1,7 @@
 if (!window.chrome || !window.chrome.extension)
 {
     var appName = "Pade";
-    var appVer = "1.2.7";
+    var appVer = "1.2.8";
 
     // setup chrome shim
 
@@ -11,13 +11,35 @@ if (!window.chrome || !window.chrome.extension)
         storage : {
             local : {
                 get : function(query, callback) {
-                    if (callback) callback({});
+
+                    var data = {};
+
+                    if (window.localStorage[query])
+                    {
+                        data[query] = JSON.parse(window.localStorage[query]);
+                    }
+                    console.debug("storage.local.get", data);
+                    if (callback) callback(data);
                 },
                 set : function(data, callback) {
-                    if (callback) callback({});
+
+                    var keys = Object.getOwnPropertyNames(data);
+
+                    if (keys.length > 0)
+                    {
+                        window.localStorage[keys[0]] = JSON.stringify(data[keys[0]]);
+                    }
+                    console.debug("storage.local.set", data);
+                    if (callback) callback(data);
                 },
                 clear : function() {
+                    console.debug("storage.local.clear");
+                    localStorage.clear();
                 },
+                remove : function(key) {
+                    console.debug("storage.local.remove", key);
+                    localStorage.removeItem(key);
+                }
             }
         },
 
@@ -45,7 +67,7 @@ if (!window.chrome || !window.chrome.extension)
                 }
             },
             create: function(data, callback) {
-                console.log("create window", data);
+                console.debug("create window", data);
                 openUrl(data);
             },
             update: function(id, prop) {
@@ -76,7 +98,7 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             create : function(data, callback) {
-                console.log("create tab", data);
+                console.debug("create tab", data);
                 openUrl(data);
             },
 
