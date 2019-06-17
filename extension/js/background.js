@@ -1,4 +1,21 @@
-var pade = {tasks: {}, sip: {}, autoJoinRooms: {}, autoJoinPrivateChats: {}, gmailWindow: [], webAppsWindow: [], vcards: {}, questions: {}, collabDocs: {}, collabList: [], userProfiles: {}, fastpath: {}, geoloc: {}, transferWise: {}}
+var pade = {
+    participants: {},
+    presence: {},
+    tasks: {},
+    sip: {},
+    autoJoinRooms: {},
+    autoJoinPrivateChats: {},
+    gmailWindow: [],
+    webAppsWindow: [],
+    vcards: {},
+    questions: {},
+    collabDocs: {},
+    collabList: [],
+    userProfiles: {},
+    fastpath: {},
+    geoloc: {},
+    transferWise: {}
+}
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
 pade.transferWiseUrl = "https://api.transferwise.com/v1";
@@ -224,12 +241,14 @@ window.addEventListener("load", function()
         setSetting("server", location.host);
         setSetting("domain", location.hostname);
 
-        getCredentials(function(credential)
+        top.getCredentials(function(credential)
         {
             var setupCreds = function(username, password)
             {
-                removeSetting("username");
-                removeSetting("password");
+                removeSetting("password");  // don't store password
+
+                setDefaultSetting("username", username);
+                setDefaultSetting("displayname", username);
                 setupBrowserMode(username, password);
             }
 
@@ -1723,6 +1742,8 @@ function doExtensionPage(url)
 
 function addHandlers()
 {
+    console.debug('addHandlers');
+
     pade.connection.addHandler(function(iq)
     {
         console.debug('fastpath handler', iq);
@@ -3767,9 +3788,6 @@ function doPadeConnect()
                 chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
                 chrome.browserAction.setBadgeText({ text: "Wait.." });
                 chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
-
-                pade.presence = {};
-                pade.participants = {};
 
                 setTimeout(function()
                 {

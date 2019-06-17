@@ -8,7 +8,13 @@ if (!window.chrome || !window.chrome.extension)
     window.chrome = {
         pade: true,
 
-        storage : {
+        contextMenus: {
+            create: function(data) {
+                console.debug("create menu", data);
+            },
+        },
+
+        storage: {
             local : {
                 get : function(query, callback) {
 
@@ -129,8 +135,11 @@ if (!window.chrome || !window.chrome.extension)
             },
             create: function(notifyId, opt, callback)  {
                 // TODO fix non-stop notifications
-                //createNotification(notifyId, opt, callback);
-            }
+                createNotification(notifyId, opt, callback);
+            },
+            clear: function(notifyId, callback)  {
+                callback(true);
+            },
         },
 
         runtime : {
@@ -205,6 +214,9 @@ if (!window.chrome || !window.chrome.extension)
                 addListener: function(notificationId)  {
                 }
             },
+            setBadgeBackgroundColor: function(data) {},
+            setBadgeText: function(data) {},
+            setTitle: function(data) {},
         },
 
         i18n: {

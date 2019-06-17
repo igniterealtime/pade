@@ -35,7 +35,11 @@ window.addEventListener("load", function()
     {
         navigator.geolocation.getCurrentPosition(function(position)
         {
-            var name = JSON.parse(localStorage["store.settings.displayname"]);
+            var name = "Me";
+
+            if (localStorage["store.settings.displayname"]) {
+                name = JSON.parse(localStorage["store.settings.displayname"]);
+            }
             showMap({lat: position.coords.latitude, lng: position.coords.longitude, accuracy: position.coords.accuracy}, name)
 
         }, function() {

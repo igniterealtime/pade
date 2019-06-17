@@ -149,6 +149,7 @@ window.addEvent("domready", function () {
             var setPublish = function()
             {
                 settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
+                background.publishUserLocation();
             }
 
             settings.manifest.publishLocation.addEvent("action", setPublish);
@@ -1451,7 +1452,6 @@ function doDefaults(background)
     setDefaultSetting("archivedMessagesPageSize", 51);
     setDefaultSetting("allowMsgPinning", true);
     setDefaultSetting("allowMsgReaction", true);
-    setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);

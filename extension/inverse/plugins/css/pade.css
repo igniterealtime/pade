@@ -3,6 +3,7 @@
 .pade-preview-image {
     max-width: -webkit-fill-available;
 }
+
 #conversejs table {
     color: #333;
     border-collapse:
@@ -102,6 +103,12 @@
 
 #conversejs .chatbox .sendXMPPMessage .chat-textarea {
   resize: vertical; 
+}
+
+
+#conversejs .badge, conversejs .occupant-nick {
+    display: inline-flex;
+    align-items: center;
 }
 
 #conversejs .occupant .badge {

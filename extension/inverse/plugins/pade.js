@@ -431,10 +431,13 @@
 
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
 
-                _converse.__super__.onConnected.apply(this, arguments);
-
                 if (chrome.pade)    // browser mode
                 {
+                    top.pade.connection = _converse.connection;
+                    top.addHandlers();
+                    top.publishUserLocation();
+                    top.setupUserPayment();
+
                     const username = Strophe.getNodeFromJid(_converse.connection.jid);
                     const password = _converse.connection.pass;
 
@@ -451,6 +454,9 @@
                         }
                     }
                 }
+
+                _converse.__super__.onConnected.apply(this, arguments);
+
             },
 
             MessageView: {

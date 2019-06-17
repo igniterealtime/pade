@@ -162,7 +162,7 @@
                         if (geoloc)
                         {
                             var query = "?label=" + label + "&lat=" + geoloc.lat + "&lng=" + geoloc.lon + "&accuracy=" + geoloc.accuracy;
-                            that.el.querySelector('.modal-body').innerHTML = '<iframe frameborder="0" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;" src="/options/location/index.html' + query + '"></iframe>';
+                            that.el.querySelector('.modal-body').innerHTML = '<iframe frameborder="0" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;" src="../options/location/index.html' + query + '"></iframe>';
                         }
 
                     }, false);
@@ -290,7 +290,7 @@
                     if (type == "chatroom")
                     {
                         // hide occupants list by default
-                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", true)});
+                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", false)});
                         view.setOccupantsVisibility();
                         view.scrollDown();
                     }
@@ -1367,7 +1367,7 @@
 
         if (command === "pade")
         {
-            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "<strong>/feed [url]</strong> Add an RSS/Atom Feed to this groupchat", "<strong>/tron [source] [target]</strong> Activate chat translation from source to target and reverse on incoming", "<strong>/troff</strong> De-activate any active chat translation", "<strong>/?</strong> search wikipedia", "\n\n"]);
+            view.showHelpMessages(["<strong>/app [url]</strong> Open a supported web app", "<strong>/chat [room]</strong> Join another chatroom", "<strong>/find</strong> Perform the user directory search with keyword", "<strong>/im [user]</strong> Open chatbox IM session with another user", "<strong>/info</strong> Toggle info panel", "<strong>/invite [invitation-list]</strong> Invite people in an invitation-list to this chatroom", "<strong>/md</strong> Open markdown editor window", "<strong>/meet [room|invitation-list]</strong> Initiate a Jitsi Meet in a room or invitation-list", "<strong>/msg [query]</strong> Replace the textarea text with the first canned message that matches query", "<strong>/pref</strong> Open the options and features (preferences) window", "<strong>/screencast</strong> Toggle between starting and stopping a screencast", "<strong>/search [query]</strong> Perform the conversations text search with query", "<strong>/sip [destination]</strong> Initiate a phone call using SIP videophone", "<strong>/tel [destination]</strong> Initiate a phone call using soft telephone or FreeSWITCH remote call control if enabled", "<strong>/vmsg</strong> Popuup voice message dialog", "<strong>/who</strong> Toggle occupants list", "<strong>/tw</strong> Open TransferWise payment dialog", "<strong>/pp</strong> Open PayPal Me payment dialog", "<strong>/gp</strong> Open Google Pay payment dialog", "<strong>/clearpins</strong> Clear all pinned messages for this conversation", "<strong>/notepad</strong> Open Notepad", "<strong>/feed [url]</strong> Add an RSS/Atom Feed to this groupchat", "<strong>/tron [source] [target]</strong> Activate chat translation from source to target and reverse on incoming", "<strong>/troff</strong> De-activate any active chat translation", "<strong>/? or /wiki</strong> search wikipedia", "\n\n"]);
             view.viewUnreadMessages();
             return true;
         }
@@ -1547,7 +1547,7 @@
         }
         else
 
-        if (command == "?")
+        if (command == "?" || command == "wiki")
         {
             if (match[2])
             {
