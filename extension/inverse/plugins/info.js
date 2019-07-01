@@ -49,7 +49,7 @@
                         this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + this.model.get("url") + '"/>';
                     }
 
-                    this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + this.model.get("url");
+                    this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + this.model.get("url") + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
                 },
                 events: {
                     "click .btn-danger": "clearIframe",
@@ -762,112 +762,147 @@
 
         console.debug("createMediaContentSummary", jid, id);
 
-        _converse.api.archive.query({before: '', max: 9999999, 'groupchat': true, 'with': jid}, messages =>
-        {
-            //console.debug("createMediaContentSummary - query", messages);
+        _converse.api.archive.query({before: '', max: 999, 'groupchat': true, 'with': jid},
 
-            for (var i=0; i<messages.length; i++)
+            function(messages)
             {
-                var body = messages[i].querySelector('body');
-                var msgId = messages[i].querySelector('forwarded').querySelector('message').getAttribute('id');
-                var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
+                console.debug("createMediaContentSummary - query", messages);
 
-                var timestamp = undefined;
-                var delay = messages[i].querySelector('forwarded').querySelector('delay');
-                if (delay) timestamp = delay.getAttribute('stamp');
-                var stamp = moment(timestamp).format('MMM DD YYYY HH:mm:ss');
-
-                console.debug("archived msg", i, from, body, msgId);
-
-                if (body)
+                for (var i=0; i<messages.length; i++)
                 {
-                    var str = body.innerHTML;
-                    var urls = str.match(/((http|https|ftp)?:\/\/[^\s]+)/g);
+                    var body = messages[i].querySelector('body');
+                    var attachTo = messages[i].querySelector('attach-to');
+                    var msgId = messages[i].querySelector('forwarded').querySelector('message').getAttribute('id');
+                    var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
 
-                    if (urls && urls.length > 0)
+                    var timestamp = undefined;
+                    var delay = messages[i].querySelector('forwarded').querySelector('delay');
+                    if (delay) timestamp = delay.getAttribute('stamp');
+                    var stamp = moment(timestamp).format('MMM DD YYYY HH:mm:ss');
+
+                    console.debug("archived msg", i, from, body, msgId);
+
+                    if (body)
                     {
-                        for (var j=0; j<urls.length; j++)
+                        if (attachTo) resetReactions(body, attachTo);
+
+                        var str = body.innerHTML;
+                        var urls = str.match(/((http|https|ftp)?:\/\/[^\s]+)/g);
+
+                        if (urls && urls.length > 0)
                         {
-                            var pos = urls[j].lastIndexOf("/");
-                            var file = urls[j].substring(pos + 1);
-
-                            console.debug("media", i, j, from, file, urls[j]);
-
-                            if (isAudioMeetingURL(urls[j]))
+                            for (var j=0; j<urls.length; j++)
                             {
-                                file = file.substring(file.indexOf(".") + 1);
-                                media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
-                            }
-                            else
+                                var pos = urls[j].lastIndexOf("/");
+                                var file = urls[j].substring(pos + 1);
 
-                            if (isVideoMeetingURL(urls[j]))
-                            {
-                                file = file.substring(file.indexOf(".") + 1);
-                                media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
-                            }
-                            else
+                                console.debug("media", i, j, from, file, urls[j]);
 
-                            if (isAudioURL(file))
-                            {
-                                media.vmsg.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
-                            }
-                            else
+                                if (isAudioMeetingURL(urls[j]))
+                                {
+                                    file = file.substring(file.indexOf(".") + 1);
+                                    media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
+                                }
+                                else
 
-                            if (isImageURL(file))
-                            {
-                                media.photo.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "image"});
-                            }
-                            else
+                                if (isVideoMeetingURL(urls[j]))
+                                {
+                                    file = file.substring(file.indexOf(".") + 1);
+                                    media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
+                                }
+                                else
 
-                            if (isVideoURL(file))
-                            {
-                                media.video.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
-                            }
-                            else
+                                if (isAudioURL(file))
+                                {
+                                    media.vmsg.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
+                                }
+                                else
 
-                            if (isOnlyOfficeDoc(file))
-                            {
-                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "doc"});
-                            }
-                            else
+                                if (isImageURL(file))
+                                {
+                                    media.photo.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "image"});
+                                }
+                                else
 
-                            if (isH5p(urls[j]))
-                            {
-                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
-                            }
-                            else
+                                if (isVideoURL(file))
+                                {
+                                    media.video.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
+                                }
+                                else
 
-                            if (isMeeting(urls[j]))
-                            {
-                                media.meetings.rooms.push({timestamp: stamp, id: msgId, url: urls[j], room: file, from: from, recordings: []});
-                            }
+                                if (isOnlyOfficeDoc(file))
+                                {
+                                    media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "doc"});
+                                }
+                                else
 
-                            else {
-                                media.link.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
+                                if (isH5p(urls[j]))
+                                {
+                                    media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
+                                }
+                                else
+
+                                if (isMeeting(urls[j]))
+                                {
+                                    media.meetings.rooms.push({timestamp: stamp, id: msgId, url: urls[j], room: file, from: from, recordings: []});
+                                }
+
+                                else {
+                                    media.link.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if (getSetting("postVideoRecordingUrl", false))
-            {
-                renderMeeting(id, media.meetings.rooms);
-
-                for (var z=0; z<media.meetings.rooms.length; z++)
+                if (getSetting("postVideoRecordingUrl", false))
                 {
-                    renderMedia(id, media.meetings.rooms[z].room, media.recordings.urls, true);
+                    renderMeeting(id, media.meetings.rooms);
+
+                    for (var z=0; z<media.meetings.rooms.length; z++)
+                    {
+                        renderMedia(id, media.meetings.rooms[z].room, media.recordings.urls, true);
+                    }
                 }
+
+                renderMedia(id, "vmsg", media.vmsg.urls);
+                renderMedia(id, "photo", media.photo.urls);
+                renderMedia(id, "video", media.video.urls);
+                renderMedia(id, "ppt", media.ppt.urls);
+                renderMedia(id, "link", media.link.urls);
+
+                console.debug("media", media);
+            },
+
+            function(error)
+            {
+                console.error("createMediaContentSummary", error);
+                alert("Timeout error fetching archived messages");
             }
+        );
+    }
 
-            renderMedia(id, "vmsg", media.vmsg.urls);
-            renderMedia(id, "photo", media.photo.urls);
-            renderMedia(id, "video", media.video.urls);
-            renderMedia(id, "ppt", media.ppt.urls);
-            renderMedia(id, "link", media.link.urls);
+    var resetReactions = function(body, attachTo)
+    {
+        if (body.innerHTML.indexOf(":thumbsup:") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1)
+        {
+            const attachId = attachTo.getAttribute("id");
+            const reaction = body.innerHTML.indexOf(":thumbsdown:") > -1 ? "dislike" : "like";
 
-            console.debug("media", media);
-        });
+            if (chrome.storage && attachId)
+            {
+                chrome.storage.local.get(attachId, function(obj)
+                {
+                    if (!obj[attachId]) obj[attachId] = {};
+                    if (!obj[attachId][reaction]) obj[attachId][reaction] = 0;
+
+                    obj[attachId][reaction]++;
+
+                    console.debug("info plugin - attach-to", attachId, reaction, obj[attachId][reaction]);
+                    chrome.storage.local.set(obj);
+                });
+            }
+        }
     }
 
     var getHTML = function(id, jid)
@@ -1028,6 +1063,7 @@
     {
         item.ele = document.createElement(el);
         item.ele.setAttribute('data-msgid', item.id);
+        item.ele.setAttribute('data-from', item.from);
         item.ele.setAttribute('data-url', item.url);
         item.ele.setAttribute('data-timestamp', item.timestamp);
         item.ele.setAttribute('data-type', item.type);
@@ -1043,6 +1079,8 @@
             const type = evt.target.getAttribute('data-type');
             const url = evt.target.getAttribute('data-url');
             const msgId = evt.target.getAttribute('data-msgid');
+            const timestamp = evt.target.getAttribute('data-timestamp');
+            const from = evt.target.getAttribute('data-from');
 
             console.debug("media item clicked", type, url, msgId);
 
@@ -1051,7 +1089,7 @@
 
             if (type == "image" || type == "audio" || type == "video")
             {
-                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: url, type: type}) });
+                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: url, type: type, timestamp: timestamp, from: from}) });
                 previewDialog.show();
             }
             else

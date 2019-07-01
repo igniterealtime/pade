@@ -113,27 +113,6 @@
                         }
                     }
 
-                    if (getSetting("enableGooglePay", false))
-                    {
-                        addToolbarItem(view, id, "webmeet-googlepay-" + id, '<a class="plugin-googlepay fa" title="Google Pay. Click to open"><img height="16" src="plugins/css/images/google-pay-mark_800_gray.svg"/></a>');
-
-                        var googlePay = document.getElementById("webmeet-googlepay-" + id);
-
-                        if (googlePay)
-                        {
-                            googlePay.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                bgWindow.pade.activeView = view;
-                                var googlePayUrl = "https://pay.google.com/payments/u/0/home#sendRequestMoney";
-                                bgWindow.closeWebAppsWindow(googlePayUrl);
-                                bgWindow.openWebAppsWindow(googlePayUrl, null, 590, 820);
-
-                            }, false);
-                        }
-                    }
-
                     if (getSetting("enablePayPalMe", false) && url && url.indexOf("https://www.paypal.me/") > -1)
                     {
                         addToolbarItem(view, id, "webmeet-paypalme-" + id, '<a class="plugin-paypalme fa" title="PayPal Me. Click to open"><img height="16" src="plugins/css/images/pp-acceptance-small.png"/></a>');
@@ -177,16 +156,6 @@
                         {
                             transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: this}) });
                             transferWiseDialog.show();
-                            return true;
-                        }
-                        else
-
-                        if (command === "gp" && getSetting("enableGooglePay", false))
-                        {
-                            bgWindow.pade.activeView = this;
-                            var googlePayUrl = "https://pay.google.com/payments/u/0/home#sendRequestMoney";
-                            bgWindow.closeWebAppsWindow(googlePayUrl);
-                            bgWindow.openWebAppsWindow(googlePayUrl, null, 590, 820);
                             return true;
                         }
                         else

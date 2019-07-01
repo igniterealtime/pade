@@ -43,7 +43,7 @@
 
                 _converse.api.listen.on('chatRoomOpened', function (view)
                 {
-                    console.debug("chatRoomOpened", view);
+                    console.debug("gateway chatRoomOpened", view);
                     rssGroupChatCheck(view);
                     beeKeeperGroupChatCheck(view);
                 });
@@ -133,14 +133,6 @@
                         }
                     }
 
-                    if (getSetting("enableRssFeeds", false))
-                    {
-                        var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
-                        rssInterval = setInterval(rssRefresh, rssFeedCheck);
-
-                        createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), "RSS Feed");
-                    }
-
                     window.addEventListener("unload", function ()
                     {
                         console.debug("gateway unloading all feed refreshing");
@@ -151,6 +143,15 @@
                 });
 
                 _converse.__super__.onConnected.apply(this, arguments);
+
+                if (getSetting("enableRssFeeds", false))
+                {
+                    var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
+                    rssInterval = setInterval(rssRefresh, rssFeedCheck);
+
+                    createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), "RSS Feed");
+                }
+
             },
 
             MessageView: {

@@ -922,6 +922,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "clearCacheAtStartup",
+            "type": "checkbox",
+            "label": i18n.get("Clear chat history cache at startup")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "autoReconnectConverse",
             "type": "checkbox",
             "label": i18n.get("Auto reconnect Converse connection")
@@ -1351,13 +1358,6 @@ this.manifest = {
             "text": i18n.get("Please join webinar at"),
         },
         {                                       // Applications
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Payment Systems"),
-            "name": "enableGooglePay",
-            "type": "checkbox",
-            "label": i18n.get("Enable Google Pay")
-        },
-        {
             "tab": i18n.get("Applications"),
             "group": i18n.get("Payment Systems"),
             "name": "enablePayPalMe",

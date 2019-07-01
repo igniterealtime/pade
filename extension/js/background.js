@@ -14,7 +14,8 @@ var pade = {
     userProfiles: {},
     fastpath: {},
     geoloc: {},
-    transferWise: {}
+    transferWise: {},
+    startupList: {}
 }
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
@@ -309,6 +310,7 @@ window.addEventListener("load", function()
             if (thisVersion != details.previousVersion)
             {
                 doExtensionPage("changelog.html");
+                pade.startUp = true;
             }
         }
     });
@@ -370,6 +372,7 @@ window.addEventListener("load", function()
     chrome.runtime.onStartup.addListener(function()
     {
         console.log("onStartup");
+        pade.startUp = true;
 
         setTimeout(function()   // wait for 3 secs before starting apps for background dependencies to be active and ready
         {

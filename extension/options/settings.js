@@ -1431,6 +1431,7 @@ function doDefaults(background)
 
     // converse
     setDefaultSetting("enableInverse", true);
+    setDefaultSetting("clearCacheAtStartup", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);

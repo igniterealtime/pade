@@ -373,11 +373,66 @@
                     }
                 });
 
-                _converse.api.listen.on('chatBoxOpened', function (chatbox)
+                _converse.api.listen.on('chatRoomOpened', function (view)
                 {
-                    console.debug("chatBoxOpened", chatbox);
-                    if (bgWindow) bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
+                    const jid = view.model.get("jid");
 
+                    if (bgWindow)
+                    {
+                        if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
+                        {
+                            console.debug("pade plugin chatRoomOpened", jid);
+                            bgWindow.pade.startupList[jid] = view;
+
+                            setTimeout(function()
+                            {
+                                view.content.innerHTML = '';
+                                view.model.messages.reset();
+                                view.model.messages.browserStorage._clear();
+                                view.close();
+                                _converse.api.rooms.open(jid);
+                            });
+                        }
+
+                        bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
+                    }
+
+                    if (getSetting("enableThreading", false))
+                    {
+                        const box_id = view.model.get("box_id");
+                        const topicId = 'topic-' + box_id;
+
+                        if (window.chatThreads[topicId])
+                        {
+                            const topic = window.chatThreads[topicId].topic;
+                            if (topic) view.model.set("thread", topic);
+                        }
+                    }
+                });
+
+                _converse.api.listen.on('chatBoxOpened', function (view)
+                {
+                    const jid = view.model.get("jid");
+                    console.debug("pade plugin chatBoxOpened", jid);
+
+                    if (bgWindow)
+                    {
+                        bgWindow.pade.autoJoinPrivateChats[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
+
+                        if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
+                        {
+                            bgWindow.pade.startupList[jid] = view;
+
+                            setTimeout(function()
+                            {
+                                view.content.innerHTML = '';
+                                view.model.messages.reset();
+                                view.model.messages.browserStorage._clear();
+                                view.close();
+                                _converse.api.chats.open(jid);
+                            });
+                        }
+                    }
                 });
 
                 _converse.api.listen.on('chatBoxClosed', function (chatbox)

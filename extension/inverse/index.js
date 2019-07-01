@@ -529,9 +529,9 @@ function replyInverseChat(text)
     }
 }
 
-function openGroupChat(jid, label, nick, props, message, nickname, userJid)
+function openGroupChat(jid, label, nick, props)
 {
-    console.debug("openGroupChat", jid, label, nick, props, message, nickname, userJid);
+    console.debug("openGroupChat", jid, label, nick, props);
 
     if (_inverse)
     {
@@ -550,29 +550,6 @@ function openGroupChat(jid, label, nick, props, message, nickname, userJid)
                 }).c("subject", {
                     xmlns: "jabber:client"
                 }).t(props.question).tree());
-
-            }, 1000);
-        }
-
-        if (message)
-        {
-            setTimeout(function()
-            {
-                const view = _converse.chatboxviews.get(jid);
-
-                if (view)
-                {
-                    const msg = view.model.getOutgoingMessageAttributes(message);
-
-                    if (nickname)
-                    {
-                        msg.fullname = nickname;
-                        msg.nick = nickname;
-                    }
-
-                    if (jid) msg.from = jid;
-                    view.model.messages.create(msg);
-                }
 
             }, 1000);
         }
