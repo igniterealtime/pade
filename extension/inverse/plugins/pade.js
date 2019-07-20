@@ -25,7 +25,7 @@
 
      var _converse = null;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-     var notified = true;
+     var notified = false;
 
      window.chatThreads = {};
 
@@ -275,17 +275,25 @@
                         var numUnreadBox = chatbox.get("num_unread");
                         var numUnreadRoom = chatbox.get("num_unread_general");
 
-                        if (!notified)
+                        if (document.hasFocus())
                         {
-                            chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
+                            chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                            chrome.browserAction.setBadgeText({ text: "" });
+                        }
+                        else {
 
-                            if (bgWindow)
+                            if (!notified)
                             {
-                                if (!bgWindow.pade.messageCount) bgWindow.pade.messageCount = 0;
-                                bgWindow.pade.messageCount++;
+                                chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
 
-                                chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
-                                chrome.browserAction.setBadgeText({ text: bgWindow.pade.messageCount.toString() });
+                                if (bgWindow)
+                                {
+                                    if (!bgWindow.pade.messageCount) bgWindow.pade.messageCount = 0;
+                                    bgWindow.pade.messageCount++;
+
+                                    chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                                    chrome.browserAction.setBadgeText({ text: bgWindow.pade.messageCount.toString() });
+                                }
                             }
                         }
 
@@ -508,6 +516,12 @@
                             top.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
                         }
                     }
+
+                    window.addEventListener('focus', function(evt)
+                    {
+                        chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                        chrome.browserAction.setBadgeText({ text: "" });
+                    });
                 }
 
                 _converse.__super__.onConnected.apply(this, arguments);
@@ -620,9 +634,17 @@
 
                         if (!messageActionButtons)
                         {
-                            messageActionButtons = document.createElement("viv");
+                            messageActionButtons = document.createElement("div");
                             messageActionButtons.classList.add("chat-msg__actions");
                             messageDiv.parentElement.appendChild(messageActionButtons);
+                        }
+
+                        if (!messageActionButtons.querySelector('.chat-msg__action-delete') && this.model.get("type") !== 'headline' && !this.isMeCommand() && this.model.get('sender') === 'me')
+                        {
+                            var ele = document.createElement("button");
+                            ele.classList.add("chat-msg__action", "chat-msg__action-delete", "far", "fa-trash-alt");
+                            ele.title = "Delete this message";
+                            messageActionButtons.appendChild(ele);
                         }
 
                         if (!messageActionButtons.querySelector('.chat-msg__action-reply'))
@@ -632,6 +654,7 @@
                             ele.title = "Reply this message";
                             messageActionButtons.appendChild(ele);
                         }
+
                         if (!messageActionButtons.querySelector('.chat-msg__action-forward'))
                         {
                             var ele = document.createElement("button");

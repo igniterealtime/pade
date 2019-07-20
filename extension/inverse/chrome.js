@@ -1,7 +1,8 @@
 if (!window.chrome || !window.chrome.extension)
 {
     var appName = "Pade";
-    var appVer = "1.2.8";
+    var appVer = "1.2.11";
+    var badgeBackgroundColor = {color: '#ff0000'};
 
     // setup chrome shim
 
@@ -94,7 +95,7 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             getViews: function(filter) {
-                return [top.opener.document.getElementById("inverse").contentWindow]
+                return [top.document.getElementById("inverse").contentWindow]
             }
         },
 
@@ -214,9 +215,49 @@ if (!window.chrome || !window.chrome.extension)
                 addListener: function(notificationId)  {
                 }
             },
-            setBadgeBackgroundColor: function(data) {},
-            setBadgeText: function(data) {},
-            setTitle: function(data) {},
+            setBadgeBackgroundColor: function(data) {
+               //badgeBackgroundColor = data;
+            },
+
+            setBadgeText: function(data) {
+              if (!data || !data.text) return;
+
+              var favicon = top.document.getElementById('favicon');
+              var faviconSize = 16;
+
+              var canvas = document.createElement('canvas');
+              canvas.width = faviconSize;
+              canvas.height = faviconSize;
+
+              var context = canvas.getContext('2d');
+              var img = document.createElement('img');
+              img.src = favicon.href;
+
+              img.onload = () => {
+                  // Draw Original Favicon as Background
+                  context.drawImage(img, 0, 0, faviconSize, faviconSize);
+
+                  // Draw Notification Circle
+                  context.beginPath();
+                  context.arc( canvas.width - faviconSize / 3 , faviconSize / 3, faviconSize / 3, 0, 2*Math.PI);
+                  context.fillStyle = badgeBackgroundColor.color;
+                  context.fill();
+
+                  // Draw Notification Number
+                  context.font = '10px "helvetica", sans-serif';
+                  context.textAlign = "center";
+                  context.textBaseline = "middle";
+                  context.fillStyle = '#FFFFFF';
+                  context.fillText(data.text, canvas.width - faviconSize / 3, faviconSize / 3);
+
+                  // Replace favicon
+                  favicon.href = canvas.toDataURL('image/png');
+                };
+
+            },
+            setTitle: function(data) {
+                if (data && data.title) document.title = data.title;
+            },
         },
 
         i18n: {

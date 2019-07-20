@@ -7,6 +7,7 @@
 }(this, function (converse) {
     var VmsgDialog = null;
     var vmsgDialog = null;
+    var _converse = null;
 
     converse.plugins.add("vmsg", {
         'dependencies': [],

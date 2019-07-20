@@ -688,61 +688,40 @@ window.addEvent("domready", function () {
         {
             settings.manifest.useSmartIdCard.addEvent("action", function ()
             {
+                if (!getSetting("useSmartIdCard", false)) setSetting("password", "");
                 location.reload()
             });
 
-            var server = getSetting("server", null);
-            var buttonUrl = "https://id.smartid.ee/oauth/authorize?client_id=s5D6gnTwOqmFISb7KY5maMe2XgEcKNOa&redirect_uri=https://igniterealtime.github.io/pade/redirect.html&response_type=code&method=ee-id-card";
-            var idFrame = document.getElementById("id-login-iframe");
-
-            if (idFrame && server)
+            if (getSetting("useSmartIdCard", false) && !getSetting("password", null)) startSmartIdLogin(function(code)
             {
-                window.addEventListener('message', function (event)
+                console.debug("Smart-ID CODE", code);
+
+                fetch("https://" + getSetting("server", location.host) + "/apps/smartidcard?code=" + code, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
                 {
-                    if (event.data.url && event.data.event == "ofmeet.event.url.ready")
+                    console.debug("Smart-ID DATA", json);
+
+                    var fullName = null;
+                    var email = null;
+
+                    if (json.firstname && json.lastname)
                     {
-                        console.debug("Smart-ID URL", event.data.url);
-
-                        var pos = event.data.url.indexOf( "https://igniterealtime.github.io/pade/redirect.html?code=" );
-
-                        if (pos > -1)
-                        {
-                            code = event.data.url.substring(pos + 57);
-                            console.debug("Smart-ID CODE", code);
-
-                            fetch("https://" + server + "/apps/smartidcard?code=" + code, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
-                            {
-                                console.debug("Smart-ID DATA", json);
-
-                                var fullName = null;
-                                var email = null;
-
-                                if (json.firstname && json.lastname)
-                                {
-                                    fullName = json.firstname + " " + json.lastname;
-                                }
-
-                                if (json.email) email = json.email;
-
-                                setSetting("username", json.idcode);
-                                setSetting("password", json.password);
-
-                                if (fullName) setSetting("displayname", fullName);
-                                if (email) setSetting("email", email);
-
-                                idFrame.src = buttonUrl;
-                                background.reloadApp();
-
-                            }).catch(function (err) {
-                                console.error("Smart-ID DATA", err);
-                                idFrame.outerHTML = "<b><a title='" + err + "'>Error</a></b>";
-                            });
-                        }
+                        fullName = json.firstname + " " + json.lastname;
                     }
-                });
 
-                idFrame.src = buttonUrl;
-            }
+                    if (json.email) email = json.email;
+
+                    setSetting("username", json.idcode);
+                    setSetting("password", json.password);
+
+                    if (fullName) setSetting("displayname", fullName);
+                    if (email) setSetting("email", email);
+
+                    background.reloadApp();
+
+                }).catch(function (err) {
+                    console.error("Smart-ID DATA", err);
+                });
+            });
         }
 
         if (settings.manifest.autoReconnect) settings.manifest.autoReconnect.addEvent("action", function ()
@@ -994,7 +973,7 @@ window.addEvent("domready", function () {
                     chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
                     {
                         uportWin = win;
-                        chrome.windows.update(win.id, {drawAttention: true, width: 500, height: 700});
+                        chrome.windows.update(win.id, {drawAttention: true, width: 680, height: 800});
                     });
                 }
             }
@@ -1394,7 +1373,6 @@ function doDefaults(background)
     setDefaultServer();
 
     // preferences
-    setDefaultSetting("openWinMinimized", true);
     setDefaultSetting("language", "en");
     setDefaultSetting("friendType", "xmpp");
     setDefaultSetting("popupWindow", true);
@@ -1440,7 +1418,7 @@ function doDefaults(background)
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
-    setDefaultSetting("converseRosterFilter", true);
+    setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
@@ -1826,3 +1804,36 @@ function avatarError(error)
     settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">picture/avatar cannot be uploaded and saved</b>';
 }
 
+function startSmartIdLogin(callback)
+{
+    var buttonUrl = "https://id.smartid.ee/oauth/authorize?client_id=s5D6gnTwOqmFISb7KY5maMe2XgEcKNOa&redirect_uri=https://igniterealtime.github.io/Pade/index.html&response_type=code";
+    var idTab = null;
+
+    var gup = function (url, name)
+    {
+        name = name.replace(/[[]/, "\[").replace(/[]]/, "\]");
+        var regexS = "[\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(url);
+
+        if (results == null) return ""; else return results[1];
+    }
+
+    chrome.tabs.create({url: buttonUrl, active: true}, function(tab)
+    {
+        console.log("startSmartIdLogin tab", tab);
+        idTab = tab;
+
+        chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab2)
+        {
+            if (tabId == idTab.id && changeInfo.url && changeInfo.url.startsWith("https://igniterealtime.github.io/Pade/index.html"))
+            {
+                var code = gup(changeInfo.url, 'code');
+                if (idTab) chrome.tabs.remove(idTab.id);
+                callback(code);
+
+                console.log("startSmartIdLogin code", code);
+            }
+        })
+    });
+}

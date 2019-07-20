@@ -459,7 +459,7 @@ function doConverse(server, username, password, anonUser)
           show_chatstate_notifications: false,
           show_only_online_users: getSetting("converseShowOnlyOnlineUsers", false),
           show_send_button: getSetting("showSendButton", false),
-          sounds_path: 'sounds/',
+          sounds_path: chrome.runtime.getURL('inverse/sounds/'),
           view_mode: viewMode,
           visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableSip", false), 'clear': true },
           websocket_url: connUrl,

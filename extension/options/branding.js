@@ -1,8 +1,4 @@
 var branding = {
-    uport                   : {disable: true},
-    uportPermission         : {disable: true},
-    useUport                : {disable: true},
-
     enableBeeKeeper         : {disable: true, value: false},
     beeKeeperTitle          : {disable: true},
     beeKeeperTopic          : {disable: true},
@@ -10,6 +6,10 @@ var branding = {
     beeFeedCheck            : {disable: true},
     beeKeeperPageSize       : {disable: true},
 /*
+    uport                   : {disable: true},
+    uportPermission         : {disable: true},
+    useUport                : {disable: true},
+
     audioOnly               : {disable: true},
     blastDescription        : {disable: true},
     blogDescription         : {disable: true},

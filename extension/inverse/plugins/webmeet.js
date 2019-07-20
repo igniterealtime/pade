@@ -315,7 +315,7 @@
                             addToolbarItem(view, id, "h5p-" + id, html);
                         }
 
-                        if (bgWindow.pade.activeUrl)
+                        if (bgWindow.pade.activeUrl && getSetting("enableCollaboration", false))
                         {
                             var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
                             addToolbarItem(view, id, "oob-" + id, html);
@@ -678,7 +678,7 @@
                     // TODO - collaborative documents identified by oob_desc available for UI display
                     // Neeed to extend XEP or use better method
 
-                    if (oobUrl)
+                    if (oobUrl && getSetting("enableCollaboration", false))
                     {
                         if (!oobDesc)
                         {

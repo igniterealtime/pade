@@ -173,18 +173,6 @@ BrowserDetect.init();
 
 var callbacks = {}
 
-// uPort
-
-function uportRequestedCredentials(creds)
-{
-    console.debug("uportRequestedCredentials", creds.publicEncKey, creds.address, creds.name);
-}
-
-function uportError(error)
-{
-    console.error("uportError", error);
-}
-
 window.addEventListener("unload", function ()
 {
     console.log("pade unloading applications");
@@ -861,12 +849,13 @@ window.addEventListener("load", function()
     addOffice365Personal();
     addWebApps();
     addGmail();
-    updateCollabUrlList();
+
+    if (getSetting("enableCollaboration", false)) updateCollabUrlList();
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
     chrome.browserAction.setBadgeText({ text: 'off' });
 
-    if (pade.server && pade.domain && ((!getSetting("useAnonymous", false) && !getSetting("useBasicAuth", false) && pade.password) || (getSetting("useAnonymous", false) || getSetting("useBasicAuth", false))))
+    if (pade.server && pade.domain && ((!getSetting("useAnonymous", false) && !getSetting("useBasicAuth", false) && pade.password) || getSetting("useCredsMgrApi", false) || (getSetting("useAnonymous", false) || getSetting("useBasicAuth", false))))
     {
         if (pade.username)
         {
@@ -905,7 +894,7 @@ function handleContact(contact)
 {
     console.debug("handleContact", contact);
 
-    if (contact.type == "url")
+    if (contact.type == "url" && getSetting("enableCollaboration", false))
     {
         if (contact.id == 0)
         {
@@ -1145,11 +1134,16 @@ function replyInverseChat(text)
 
 function dndCheckClick(info)
 {
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
+
     if (!info.wasChecked && info.checked)
     {
         pade.busy = true;
         if (pade.connection) pade.connection.send($pres().c("show").t("dnd").up());
         if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "dnd");
+
+        chrome.browserAction.setBadgeText({ text: "DND" });
+        chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Do not Disturb"});
     }
     else
 
@@ -1158,6 +1152,9 @@ function dndCheckClick(info)
         pade.busy = false;
         if (pade.connection) pade.connection.send($pres());
         if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "online");
+
+        chrome.browserAction.setBadgeText({ text: "" });
+        chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
     }
 
 }
@@ -1366,7 +1363,7 @@ function openOffice365Window(business, state)
 {
     var data = {url: "https://mail.office365.com", type: "popup", focused: true, incognito: !business};
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -1404,7 +1401,7 @@ function openApcWindow(state)
 {
     var data = {url: chrome.runtime.getURL("apc.html"), type: "popup", focused: true};
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -1440,7 +1437,7 @@ function openGmailWindow(email, state)
 
     var data = {url: url, type: "popup", focused: true};
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -1479,7 +1476,7 @@ function openWebAppsWindow(url, state, width, height)
 
     console.debug("openWebAppsWindow", data, state, width, height);
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -1513,7 +1510,7 @@ function openPhoneWindow(focus, state, url)
 
     var data = {url: chrome.runtime.getURL("phone/index-ext.html") + (url ? "?url=" + url: ""), type: "popup", focused: focus};
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -1549,7 +1546,7 @@ function openChatWindow(url, update, state)
 
     if (url.indexOf("#") > -1) width = 761;    // width of mobile view_mode
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -1704,7 +1701,7 @@ function openVertoWindow(state)
 {
     var data = {url: "https://" + pade.username + ":" + pade.password + "@" + pade.server + "/dashboard/verto", type: "popup", focused: true};
 
-    if (state == "minimized" && getSetting("openWinMinimized", true))
+    if (state == "minimized" && getSetting("openWinMinimized", false))
     {
         delete data.focused;
         data.state = state;
@@ -3204,7 +3201,7 @@ function getVCard(jid, callback, errorback)
     }
     else
 
-    if (pade.connection)
+    if (pade.connection && pade.connection.vCard)
     {
         pade.connection.vCard.get(jid, function(vCard)
         {
@@ -3221,7 +3218,7 @@ function getVCard(jid, callback, errorback)
 
 function setVCard(vCard, callback, errorback)
 {
-    pade.connection.vCard.set(vCard, function(resp)
+    if (pade.connection.vCard) pade.connection.vCard.set(vCard, function(resp)
     {
         if (callback) callback(resp);
 
@@ -4028,6 +4025,8 @@ function doSetupStrophePlugins()
 
             var server = getSetting("server", null);
             var url = "https://" + server + "/apps/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
+
+            console.debug("doSetupStrophePlugins - CredsMgrApi", server, url);
 
             chrome.windows.create({url: url, type: "popup"}, function (win)
             {

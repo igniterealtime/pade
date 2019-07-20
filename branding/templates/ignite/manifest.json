@@ -6,7 +6,7 @@
   "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
   "description": "__MSG_manifest_extensionDescription__",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "homepage_url": "https://igniterealtime.org/",
     
   "background": {
@@ -15,13 +15,6 @@
             "js/jquery.min.js", "js/libs.bundle.js", "js/strophe.reconnect.js", "js/strophe.vcard.js", "js/moment.js", "js/sip.js", "js/etherlynk.js", "js/background.js"
         ]
   }, 
-
-   "content_scripts": [ {
-      "all_frames": true,
-      "css": [ "cursor.css" ],
-      "js": [ "js/content.js", "js/jquery.min.js", "js/util.js", "js/ofmeet.js", "js/tinycolor.js" ],
-      "matches": [ "https://igniterealtime.org/*"]
-   } ],
    
   "browser_action": {
       "default_icon": {
@@ -50,7 +43,6 @@
     "background", 
     "downloads",
     "contextMenus", 
-    "desktopCapture",
     "nativeMessaging",
     "storage",
     "tabs",

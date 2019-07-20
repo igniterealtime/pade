@@ -81,42 +81,6 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("Registration"),
-            "name": "register",
-            "type": "button",
-            "text": i18n.get("Register New Account")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Registration"),
-            "name": "changePassword",
-            "type": "button",
-            "text": i18n.get("Change Password")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("uPort"),
-            "name": "useUport",
-            "type": "checkbox",
-            "label": i18n.get("Open Identity System for the Decentralized Web")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("uPort"),
-            "name": "uport",
-            "type": "button",
-            "text": i18n.get("QR Code")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("uPort"),
-            "name": "uportPermission",
-            "type": "text",
-            "label": i18n.get("permission"),
-            "text": i18n.get("uport_permission")
-        },
-        {
-            "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
             "name": "restartDesc",
             "type": "description",
@@ -184,6 +148,42 @@ this.manifest = {
             "name": "certificate",
             "type": "button",
             "text": i18n.get("Download")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Registration"),
+            "name": "register",
+            "type": "button",
+            "text": i18n.get("Register New Account")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Registration"),
+            "name": "changePassword",
+            "type": "button",
+            "text": i18n.get("Change Password")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("uPort"),
+            "name": "useUport",
+            "type": "checkbox",
+            "label": i18n.get("Open Identity System for the Decentralized Web")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("uPort"),
+            "name": "uport",
+            "type": "button",
+            "text": i18n.get("QR Code")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("uPort"),
+            "name": "uportPermission",
+            "type": "text",
+            "label": i18n.get("permission"),
+            "text": i18n.get("uport_permission")
         },
         {
             "tab": i18n.get("Connection"),
@@ -1383,6 +1383,13 @@ this.manifest = {
         {
             "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
+            "name": "enableCollaboration",
+            "type": "checkbox",
+            "label": i18n.get("Enable Collaboration - <b>requires enabling of context scripts in manifest.json</b>")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("Collaboration"),
             "name": "collabUrlListlabel",
             "type": "description",
             "text": i18n.get("List of collaboration/co-browse urls")
@@ -2090,19 +2097,6 @@ var getSetting = function (name)
     }
 
     return value;
-}
-
-if (getSetting("useSmartIdCard", false))
-{
-    this.manifest.settings.push(
-    {
-        "tab": i18n.get("Connection"),
-        "group": i18n.get("Connection"),
-        "name": "smartCardIframe",
-        "text": i18n.get(""),
-        "type": "description",
-        "text": "<iframe id='id-login-iframe' allowtransparency='true' width='200' height='46' frameborder='0' scrolling='no'></iframe>"
-    });
 }
 
 if (getSetting("enableFriendships", false))

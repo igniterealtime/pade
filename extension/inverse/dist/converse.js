@@ -49289,6 +49289,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
+        'click .chat-msg__action-delete': 'onMessageDeleteButtonClicked',       // BAO
         'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',         // BAO
         'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',     // BAO
         'click .chat-msg__action-pin': 'onMessagePinButtonClicked',             // BAO
@@ -50157,6 +50158,27 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
                   console.debug('chrome.storage is set for pinned', pinned);
                 });
             });
+        }
+      },
+
+      onMessageDeleteButtonClicked(ev) {    // BAO
+        ev.preventDefault();
+        const idx = this.model.messages.findLastIndex('correcting'),
+              currently_correcting = idx >= 0 ? this.model.messages.at(idx) : null,
+              message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_21__["default"].ancestor(ev.target, '.chat-msg'),
+              message = this.model.messages.findWhere({
+          'msgid': message_el.getAttribute('data-msgid')
+        });
+
+        if (currently_correcting !== message) {
+          if (!_.isNil(currently_correcting)) {
+            currently_correcting.save('correcting', false);
+          }
+
+          message.save('correcting', true);
+          this.model.sendMessage("** deleted **");
+        } else {
+          message.save('correcting', false);
         }
       },
 
@@ -54083,6 +54105,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_5__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
+        'click .chat-msg__action-delete': 'onMessageDeleteButtonClicked',       // BAO
         'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',         // BAO
         'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',     // BAO
         'click .chat-msg__action-pin': 'onMessagePinButtonClicked',             // BAO
