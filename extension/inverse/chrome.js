@@ -3,6 +3,20 @@ if (!window.chrome || !window.chrome.extension)
     var appName = "Pade";
     var appVer = "1.2.11";
     var badgeBackgroundColor = {color: '#ff0000'};
+    var i18nMessages = {};
+
+    if (window.localStorage["store.settings.language"])
+    {
+        appLanguage = JSON.parse(window.localStorage["store.settings.language"]);
+    }
+
+    fetch("_locales/" + appLanguage + "/messages.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(messages)
+    {
+        console.debug("i18nMessages", messages);
+        i18nMessages = messages;
+    }).catch(function (err) {
+        console.error("i18nMessages", err);
+    });
 
     // setup chrome shim
 
@@ -262,6 +276,8 @@ if (!window.chrome || !window.chrome.extension)
 
         i18n: {
             getMessage: function(message) {
+                if (i18nMessages[message]) return i18nMessages[message].message;
+
                 if (message == "manifest_extensionDescription") return appName;
                 if (message == "manifest_extensionName") return appName;
                 if (message == "manifest_shortExtensionName") return appName;
