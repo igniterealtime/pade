@@ -833,12 +833,12 @@ function updateWindowCoordinates(win, winId, coordinates)
 
 function doExtensionPage(url)
 {
+    const tabUrl = chrome.runtime.getURL(url);
+
     if (chrome.tabs && chrome.tabs.query)
     {
         chrome.tabs.query({}, function(tabs)
         {
-            const tabUrl = chrome.runtime.getURL(url);
-
             if (tabs)
             {
                 var tab = tabs.filter(function(t) { return t.url === tabUrl; });
@@ -847,14 +847,14 @@ function doExtensionPage(url)
                 {
                     chrome.tabs.update(tab[0].id, {highlighted: true, active: true});
 
-                }else{
-                    chrome.tabs.create({url: tabUrl, active: true});
+                } else{
+                    window.open(tabUrl, btoa(url));
                 }
             }
         });
     }
     else {
-        window.open(url, url);
+        window.open(tabUrl, btoa(url));
     }
 }
 
