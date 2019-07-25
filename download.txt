@@ -1,0 +1,1 @@
+https://clients2.google.com/service/update2/crx?response=redirect&acceptformat=crx2,crx3&prodversion=72.0&x=id%3Dfohfnhgabmicpkjcpjpjongpijcffaba%26installsource%3Dondemand%26uc

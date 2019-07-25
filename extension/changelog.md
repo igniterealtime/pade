@@ -1,5 +1,82 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>2.0.0</b> -- <i>July ??, 2019</i></p>
+<ul>
+    <li>New version 2.0.0 with breaking changes</li>
+</ul>
+
+<p><b>1.2.12</b> -- <i>July ??, 2019</i></p>
+<ul>
+    <li>PWA mode now uses browser extension language local files</li>
+</ul>
+
+<p><b>1.2.11</b> -- <i>July 20, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/192">Fixed #192: RSS Feeds on apps client</a></li>
+    <li>Removed redundant browser extension permissions like desktopCapture</li>
+    <li>Disabled context scripts in manifest.json</li>
+    <li>Fixed broken uPort and e-Residency registration mechanisms. Refresh libraries</li>
+</ul>
+
+<p><b>1.2.10</b> -- <i>June 30, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/189">Fixed #189: Media Summary not working with igniterealtime.org openfire server</a></li>
+    <li>Removed Google Pay from payments</li>
+    <li>New option/setting to clear Converse chat history cache at startup.</li>
+</ul>
+
+<p><b>1.2.9</b> -- <i>June 17, 2019</i></p>
+<ul>
+    <li>Added a proposal for better badges alignment</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/181">Fixed #181: Branding parameters are not applied to main web page in PWA mode</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/182">Fixed #182: PWA mode / geolocalisation is not working PC and Mobile phone</a></li>
+</ul>
+
+<p><b>1.2.8</b> -- <i>May 24, 2019</i></p>
+<ul>
+    <li>Sort list of active conversations</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/180">Fixed #180: Make the application work as a web page and as a progressive web app</a></li>
+</ul>
+
+<p><b>1.2.6</b> -- <i>May 6th, 2019</i></p>
+<ul>
+    <li>Added new command /? to search for keywords in wikipedia and paste results in conversation for requestor only.</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/166">Fixed #166: Support RSS & Atom feeds</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/170">Fixed #170: Add support for chat language translation</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/171">Fixed #171: Change my user password in Padé</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/172">Fixed #172: Add support for message threading</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/176">Fixed #176: Remove dependency on ofswitch plugin and support for hosted FreeSWITCH servers</a></li>
+</ul>
+
+<p><b>1.2.5</b> -- <i>April 25, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/165">Fixed #165: Xmpp account creation</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/166">Fixing #166: Support RSS & Atom feeds</a></li>
+</ul>
+
+<p><b>1.2.4</b> -- <i>April 20, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/164">Fixed #164: Better positioning of the msg action icons to stop affectng the message text flow</a></li>
+</ul>
+
+<p><b>1.2.3</b> -- <i>April 15, 2019</i></p>
+<ul>
+    <li>Added a new skin/theme for converse called "hand write" based on the "paper white" theme with the Neucha font</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/119">Fixing #119: Support the tasks and note feature of Spark</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/157">Fixed #157: Improve notification popup</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/160">Fixed #160: In version 1.2.2. Sending messages through the Markdown Editor does not work.</a></li>
+</ul>
+
+<p><b>1.2.2</b> -- <i>April 11, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/148">Fixed #158: File uploading stopped working with version 1.2.0</a></li>
+</ul>
+
+<p><b>1.2.1</b> -- <i>April 11, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/148">Fixing #158: File uploading stopped working with version 1.2.0</a></li>
+</ul>
+
 <p><b>1.2.0</b> -- <i>April 7, 2019</i></p>
 <ul>
     <li>Upgrade Converse to ver 4.2.0</li>

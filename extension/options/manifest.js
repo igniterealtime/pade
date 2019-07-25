@@ -7,16 +7,16 @@ this.manifest = {
             "group": i18n.get("Connection"),
             "name": "server",
             "type": "text",
-            "label": i18n.get("server"),
-            "text": "server_name:port or ip_address:port"
+            "label": i18n.get("Server"),
+            "text": "example.com:7443"
         },
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Connection"),
             "name": "domain",
             "type": "text",
-            "label": i18n.get("domain"),
-            "text": "domain name"
+            "label": i18n.get("Domain"),
+            "text": "example.com"
         },
         {
             "tab": i18n.get("Connection"),
@@ -37,7 +37,7 @@ this.manifest = {
             "group": i18n.get("Login"),
             "name": "displayname",
             "type": "text",
-            "label": i18n.get("displayname"),
+            "label": i18n.get("Display Name"),
             "text": i18n.get("Another User")
         },
         {
@@ -45,7 +45,7 @@ this.manifest = {
             "group": i18n.get("Login"),
             "name": "username",
             "type": "text",
-            "label": i18n.get("username"),
+            "label": i18n.get("Username"),
             "text": i18n.get("another.user")
         },
         {
@@ -53,7 +53,7 @@ this.manifest = {
             "group": i18n.get("Login"),
             "name": "email",
             "type": "text",
-            "label": i18n.get("email"),
+            "label": i18n.get("Email"),
             "text": "name@domain"
         },
         {
@@ -61,7 +61,7 @@ this.manifest = {
             "group": i18n.get("Login"),
             "name": "password",
             "type": "text",
-            "label": i18n.get("password"),
+            "label": i18n.get("Password"),
             "text": i18n.get("Pa55w0rd!!#"),
             "masked": true
         },
@@ -70,7 +70,7 @@ this.manifest = {
             "group": i18n.get("Login"),
             "name": "connect",
             "type": "button",
-            "text": i18n.get("login")
+            "text": i18n.get("Login")
         },
         {
             "tab": i18n.get("Connection"),
@@ -182,7 +182,7 @@ this.manifest = {
             "group": i18n.get("uPort"),
             "name": "uportPermission",
             "type": "text",
-            "label": i18n.get("permission"),
+            "label": i18n.get("Permission"),
             "text": i18n.get("uport_permission")
         },
         {
@@ -224,7 +224,7 @@ this.manifest = {
             "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "credits",
-            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + chrome.runtime.getManifest().version + " Ignite Realtime Community</a>"),
+            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>Ver " + chrome.runtime.getManifest().version + " Ignite Realtime Community</a>"),
             "type": "description"
         },
         {
@@ -283,7 +283,7 @@ this.manifest = {
             "group": i18n.get("Profile"),
             "name": "phone",
             "type": "text",
-            "label": i18n.get("phone"),
+            "label": i18n.get("Phone"),
             "text": "+447925488496"
         },
         {
@@ -299,7 +299,7 @@ this.manifest = {
             "group": i18n.get("Profile"),
             "name": "country",
             "type": "text",
-            "label": i18n.get("country"),
+            "label": i18n.get("Country"),
             "text": "Country code: GB, US"
         },
         {
@@ -315,7 +315,7 @@ this.manifest = {
             "group": i18n.get("Profile"),
             "name": "role",
             "type": "text",
-            "label": i18n.get("role"),
+            "label": i18n.get("Role"),
             "text": "List of comma separated roles"
         },
         {
@@ -323,7 +323,7 @@ this.manifest = {
             "group": i18n.get("Profile"),
             "name": "url",
             "type": "text",
-            "label": i18n.get("url"),
+            "label": i18n.get("Url"),
             "text": "http://my-home-page.com"
         },
         {

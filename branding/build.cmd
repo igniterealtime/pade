@@ -7,7 +7,7 @@ xcopy templates\home home /h/i/c/k/e/r/y/s
 cd home
 "C:\Program Files\7-Zip\7z" a -tzip ..\home.zip *
 
-cd \Projects\Ignite\Pade\branding
+cd \Projects\Ignite\Pade2\branding
 
 RMDIR work /S /Q
 del /F /Q work.zip
@@ -16,7 +16,7 @@ xcopy templates\work work /h/i/c/k/e/r/y/s
 cd work
 "C:\Program Files\7-Zip\7z" a -tzip ..\work.zip *
 
-cd \Projects\Ignite\Pade\branding
+cd \Projects\Ignite\Pade2\branding
 
 RMDIR ignite /S /Q
 del /F /Q ignite.zip

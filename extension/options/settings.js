@@ -37,15 +37,6 @@ window.addEvent("domready", function () {
             document.getElementById("avatar").innerHTML = "<img style='width: 64px;' src='" + avatar + "' />";
         }
 
-        if (chrome.pade)    // browser mode
-        {
-            settings.manifest.server.element.parentElement.style.display = "none";
-            settings.manifest.domain.element.parentElement.style.display = "none";
-            settings.manifest.connect.element.parentElement.style.display = "none";
-
-            document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " - Settings";
-        }
-
         if (settings.manifest.meetingPlanner)
         {
             var planner = settings.manifest.meetingPlanner.element;
@@ -234,13 +225,7 @@ window.addEvent("domready", function () {
 
                             if (e.target.title && getSetting("enableInverse"))
                             {
-                                if (background.pade.chatWindow.id)
-                                {
-                                    chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
-                                }
-                                else {
-                                    background.openChatWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
-                                }
+                                background.openChatPanel(e.target.title);
                             }
                         }, false);
 
@@ -292,8 +277,8 @@ window.addEvent("domready", function () {
             {
                 console.debug("roomsSearch", items);
 
-                if (message_handler) background.pade.connection.deleteHandler(message_handler);
-                message_handler = background.pade.connection.addHandler(messageHandler, 'urn:xmpp:mam:2', 'message');
+                if (message_handler) background._converse.connection.deleteHandler(message_handler);
+                message_handler = background._converse.connection.addHandler(messageHandler, 'urn:xmpp:mam:2', 'message');
 
                 var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>Conversation</th></tr>";
 
@@ -325,13 +310,7 @@ window.addEvent("domready", function () {
 
                         if (getSetting("enableInverse"))
                         {
-                            if (background.pade.chatWindow.id)
-                            {
-                                chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(room, title);
-                            }
-                            else {
-                                background.openChatsWindow("inverse/index.html#converse/chat?jid=" + room, title);
-                            }
+                            background.openChat(room, title);
                         }
                     });
                 }
@@ -407,13 +386,7 @@ window.addEvent("domready", function () {
 
                         if (getSetting("enableInverse"))
                         {
-                            if (background.pade.chatWindow.id)
-                            {
-                                chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(user.id, user.title);
-                            }
-                            else {
-                                background.openChatsWindow("inverse/index.html#converse/chat?jid=" + user.id, user.title);
-                            }
+                            background.openChat(user.id, user.title);
                         }
                         else {
                             background.acceptCall(user.title, user.id, user.name);
@@ -728,10 +701,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("autoReconnect", true))
             {
-                background.pade.connection.connectionmanager.enable();
+                background._converse.connection.connectionmanager.enable();
             }
             else {
-                background.pade.connection.connectionmanager.disable();
+                background._converse.connection.connectionmanager.disable();
             }
         });
 
@@ -935,12 +908,12 @@ window.addEvent("domready", function () {
         {
             if (getSetting("registerIMProtocol"))
             {
-                navigator.registerProtocolHandler("im",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Conversation");
+                navigator.registerProtocolHandler("im",  chrome.extension.getURL("handler.html?url=%s"), "Pade - Conversation");
             }
 
             if (getSetting("registerXMPPProtocol"))
             {
-                navigator.registerProtocolHandler("xmpp",  chrome.extension.getURL("inverse/index.html?url=%s"), "Pade - Meeting");
+                navigator.registerProtocolHandler("xmpp",  chrome.extension.getURL("handler.html?url=%s"), "Pade - Meeting");
             }
 
             if (getSetting("registerSIPProtocol"))
@@ -1281,6 +1254,8 @@ window.addEvent("domready", function () {
                     {
                         var doConnect = function(creds)
                         {
+                            console.log("doConnect", lynks, creds);
+
                             var connUrl = "https://" + lynks.server + "/http-bind/";
 
                             if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
@@ -1295,7 +1270,7 @@ window.addEvent("domready", function () {
 
                                 if (status === 5)
                                 {
-                                    setTimeout(function() { background.reloadApp(); }, 1000);
+                                    setTimeout(function() { background.reloadApp(); window.close();}, 1000);
                                 }
                                 else
 
@@ -1356,17 +1331,8 @@ function isNumeric(n) {
 
 function doDefaults(background)
 {
-    if (chrome.pade)    // browser mode
-    {
-        setDefaultSetting("server", location.host);
-        setDefaultSetting("domain", location.hostname);
-        setDefaultSetting("useBasicAuth", false);
-        setDefaultSetting("converseEmbedOfMeet", true);
-        setDefaultSetting("useWebsocket", false);
-    }
-    else {
-        setDefaultSetting("useWebsocket", true);
-    }
+
+    setDefaultSetting("useWebsocket", true);
 
     // connection
     setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
@@ -1418,7 +1384,7 @@ function doDefaults(background)
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseRosterIcons", true);
-    setDefaultSetting("hideOfflineUsers", true);
+    setDefaultSetting("converseRosterFilter", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
@@ -1794,7 +1760,7 @@ function reloadConverse(background)
 
     if (background.pade.chatWindow)
     {
-        chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].location.reload();
+        chrome.runtime.reload();
     }
 }
 

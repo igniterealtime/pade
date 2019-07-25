@@ -25,19 +25,8 @@ window.addEventListener("load", function()
             console.error("Error trying to get the stream:: " + err.message);
         });
 
-        // register MIDI permissions for APC
-        navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-
         // register location permissions
         navigator.geolocation.getCurrentPosition(showPosition, showError);
-    }
-
-    function onMIDISuccess(midiAccess) {
-        console.debug('MIDI Access Object', midiAccess);
-    }
-
-    function onMIDIFailure(e) {
-        console.error("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + e);
     }
 
     function showPosition(position) {

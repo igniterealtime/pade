@@ -65,28 +65,27 @@ OFMEET_CONFIG = {
 
 window.addEventListener("DOMContentLoaded", function()
 {
-    chrome.runtime.getBackgroundPage(function(win)
+    var win = chrome.extension.getBackgroundPage();
+
+    createAvatar();     // default avatar
+
+    OFMEET_CONFIG.activeUrl = win.pade.activeUrl;
+    if (OFMEET_CONFIG.emailAddress) APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
+
+    win.findUsers(__username, function(users)
     {
-        createAvatar();     // default avatar
-
-        OFMEET_CONFIG.activeUrl = win.pade.activeUrl;
-        if (OFMEET_CONFIG.emailAddress) APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
-
-        win.findUsers(__username, function(users)
+        if (users[0] && users[0].email && users[0].email != "")
         {
-            if (users[0] && users[0].email && users[0].email != "")
-            {
-                OFMEET_CONFIG.emailAddress = users[0].email;
-                APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
-            }
-        });
-
-        if (win.pade.avatar) OFMEET_CONFIG.userAvatar = win.pade.avatar;
-
-        if (OFMEET_CONFIG.nickName)        APP.conference.changeLocalDisplayName(OFMEET_CONFIG.nickName);
-        if (OFMEET_CONFIG.userAvatar)      APP.conference.changeLocalAvatarUrl(OFMEET_CONFIG.userAvatar);
-
+            OFMEET_CONFIG.emailAddress = users[0].email;
+            APP.conference.changeLocalEmail(OFMEET_CONFIG.emailAddress);
+        }
     });
+
+    if (win.pade.avatar) OFMEET_CONFIG.userAvatar = win.pade.avatar;
+
+    if (OFMEET_CONFIG.nickName)        APP.conference.changeLocalDisplayName(OFMEET_CONFIG.nickName);
+    if (OFMEET_CONFIG.userAvatar)      APP.conference.changeLocalAvatarUrl(OFMEET_CONFIG.userAvatar);
+
 });
 
 function getUrl()

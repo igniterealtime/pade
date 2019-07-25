@@ -1,0 +1,17 @@
+#conversejs.converse-fullscreen #controlbox .box-flyout, 
+#conversejs.converse-mobile #controlbox .box-flyout {
+    background-color: #333 !important; 
+    padding-bottom: 20px !important;     
+}
+
+#conversejs .chat-head-chatroom .chat-title {
+    color: black;
+}
+
+#conversejs .chat-head-chatbox .chat-title {
+    color: white;
+}
+
+#conversejs .chatroom-body .chat-info {
+    color: var(--redder-orange) !important;
+}
