@@ -918,9 +918,9 @@ window.addEvent("domready", function () {
                 var host = JSON.parse(window.localStorage["store.settings.server"]);
                 var url = "https://" + host + "/dashboard/qrcode.jsp";
 
-                chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
+                chrome.windows.create({url: url, type: "popup"}, function (win)
                 {
-                    chrome.windows.update(win.id, {drawAttention: true, width: 400, height: 270});
+                    chrome.windows.update(win.id, {drawAttention: true, focused: true, width: 400, height: 270});
                 });
             }
         });
@@ -961,21 +961,18 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.uport) settings.manifest.uport.addEvent("action", function ()
         {
-            if (getSetting("useUport"))
+            if (getSetting("useUport") || getSetting("useIrma"))
             {
-                if (uportWin)
+                if (uportWin) chrome.windows.remove(uportWin.id);
+
+                var url = "uport/index.html";
+                if (getSetting("useIrma")) url = "irma/index.html";
+
+                chrome.windows.create({url: chrome.extension.getURL(url), type: "popup"}, function (win)
                 {
-                    chrome.windows.update(uportWin.id, {drawAttention: true, focused: true});
-
-                } else {
-                    var url = chrome.extension.getURL("uport/index.html");
-
-                    chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
-                    {
-                        uportWin = win;
-                        chrome.windows.update(win.id, {drawAttention: true, width: 680, height: 800});
-                    });
-                }
+                    uportWin = win;
+                    chrome.windows.update(win.id, {drawAttention: true, focused: true, width: 680, height: 800});
+                });
             }
         });
 

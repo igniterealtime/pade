@@ -165,21 +165,28 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("uPort"),
+            "group": i18n.get("Identity"),
             "name": "useUport",
             "type": "checkbox",
-            "label": i18n.get("Open Identity System for the Decentralized Web")
+            "label": i18n.get("uPort - Open Identity System for the Decentralized Web")
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("uPort"),
+            "group": i18n.get("Identity"),
+            "name": "useIrma",
+            "type": "checkbox",
+            "label": i18n.get("IRMA - I Reveal My Attributes")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Identity"),
             "name": "uport",
             "type": "button",
             "text": i18n.get("QR Code")
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("uPort"),
+            "group": i18n.get("Identity"),
             "name": "uportPermission",
             "type": "text",
             "label": i18n.get("permission"),

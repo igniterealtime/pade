@@ -1,0 +1,155 @@
+.irma-load6 .irma-loader {
+  font-size: 50px;
+  text-indent: -9999em;
+  overflow: hidden;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  margin: 65px auto;
+  position: relative;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: irma-load6 1.7s infinite ease;
+  animation: irma-load6 1.7s infinite ease; }
+
+@-webkit-keyframes irma-load6 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    box-shadow: 0 -0.83em 0 -0.4em #004289, 0 -0.83em 0 -0.42em #004289, 0 -0.83em 0 -0.44em #004289, 0 -0.83em 0 -0.46em #004289, 0 -0.83em 0 -0.477em #004289; }
+  5%, 95% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, 0 -0.83em 0 -0.42em #004289, 0 -0.83em 0 -0.44em #004289, 0 -0.83em 0 -0.46em #004289, 0 -0.83em 0 -0.477em #004289; }
+  10%,
+  59% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, -0.087em -0.825em 0 -0.42em #004289, -0.173em -0.812em 0 -0.44em #004289, -0.256em -0.789em 0 -0.46em #004289, -0.297em -0.775em 0 -0.477em #004289; }
+  20% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, -0.338em -0.758em 0 -0.42em #004289, -0.555em -0.617em 0 -0.44em #004289, -0.671em -0.488em 0 -0.46em #004289, -0.749em -0.34em 0 -0.477em #004289; }
+  38% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, -0.377em -0.74em 0 -0.42em #004289, -0.645em -0.522em 0 -0.44em #004289, -0.775em -0.297em 0 -0.46em #004289, -0.82em -0.09em 0 -0.477em #004289; }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    box-shadow: 0 -0.83em 0 -0.4em #004289, 0 -0.83em 0 -0.42em #004289, 0 -0.83em 0 -0.44em #004289, 0 -0.83em 0 -0.46em #004289, 0 -0.83em 0 -0.477em #004289; } }
+
+@keyframes irma-load6 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    box-shadow: 0 -0.83em 0 -0.4em #004289, 0 -0.83em 0 -0.42em #004289, 0 -0.83em 0 -0.44em #004289, 0 -0.83em 0 -0.46em #004289, 0 -0.83em 0 -0.477em #004289; }
+  5%, 95% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, 0 -0.83em 0 -0.42em #004289, 0 -0.83em 0 -0.44em #004289, 0 -0.83em 0 -0.46em #004289, 0 -0.83em 0 -0.477em #004289; }
+  10%,
+  59% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, -0.087em -0.825em 0 -0.42em #004289, -0.173em -0.812em 0 -0.44em #004289, -0.256em -0.789em 0 -0.46em #004289, -0.297em -0.775em 0 -0.477em #004289; }
+  20% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, -0.338em -0.758em 0 -0.42em #004289, -0.555em -0.617em 0 -0.44em #004289, -0.671em -0.488em 0 -0.46em #004289, -0.749em -0.34em 0 -0.477em #004289; }
+  38% {
+    box-shadow: 0 -0.83em 0 -0.4em #004289, -0.377em -0.74em 0 -0.42em #004289, -0.645em -0.522em 0 -0.44em #004289, -0.775em -0.297em 0 -0.46em #004289, -0.82em -0.09em 0 -0.477em #004289; }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    box-shadow: 0 -0.83em 0 -0.4em #004289, 0 -0.83em 0 -0.42em #004289, 0 -0.83em 0 -0.44em #004289, 0 -0.83em 0 -0.46em #004289, 0 -0.83em 0 -0.477em #004289; } }
+
+#irma-server-modal .modal-content {
+  font: 100% Ubuntu, sans-serif;
+  font-size: 14px;
+  background-color: #004289;
+  padding-top: 1px; }
+
+p#irma-text {
+  color: #004289;
+  line-height: 130%; }
+
+.irma-page {
+  margin: 0px auto; }
+
+.irma-content {
+  background-color: white;
+  position: relative;
+  left: 0px;
+  width: 330px;
+  margin: 40px;
+  box-sizing: content-box;
+  border-style: solid;
+  border-width: 0px;
+  border-color: #004289;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  padding: 20px;
+  font-weight: 200;
+  z-index: 1; }
+
+.irma-button-box {
+  width: 370px;
+  box-sizing: content-box;
+  padding-top: 5px;
+  margin-left: 40px;
+  margin-top: -40px;
+  margin-right: 40px;
+  text-align: right; }
+
+.irma-logo-top {
+  position: absolute;
+  left: -40px;
+  top: -40px;
+  width: 160px;
+  box-sizing: content-box;
+  z-index: 2; }
+
+.irma-title {
+  position: absolute;
+  top: -30px;
+  right: 0px;
+  height: 40px;
+  box-sizing: content-box;
+  text-align: right;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 20px; }
+
+.irma-option-container {
+  text-align: center;
+  margin: 30px auto; }
+
+.irma-option-box {
+  width: 230px;
+  height: 230px;
+  box-sizing: content-box;
+  border-style: solid;
+  border-width: medium;
+  border-color: #d0d0d0;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-radius: 6px;
+  padding: 6px;
+  display: inline-block;
+  margin: 5px; }
+
+.irma-button {
+  height: 40px;
+  display: inline-block;
+  box-sizing: content-box;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 16px;
+  text-align: center;
+  background-color: #888;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 0px none;
+  cursor: pointer; }
+
+#irma-text {
+  text-align: justify;
+  padding-left: 125px; }
