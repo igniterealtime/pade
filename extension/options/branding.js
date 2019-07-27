@@ -145,4 +145,9 @@ var branding = {
     importPreferences       : {disable: true},
     importPreferencesDesc   : {disable: true},
     importExportStatus      : {disable: true},
+
+    enableSignalWire        : {disable: true},
+    signalWireSpace         : {disable: true},
+    signalWireKey           : {disable: true},
+    signalWireId            : {disable: true},
 }

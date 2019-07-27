@@ -1336,6 +1336,10 @@ function doDefaults(background)
 
     // connection
     setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
+
+    setDefaultSetting("signalWireId", chrome.i18n.getMessage("signalwire_id"));
+    setDefaultSetting("signalWireKey", chrome.i18n.getMessage("signalwire_key"));
+    setDefaultSetting("signalWireSpace", chrome.i18n.getMessage("signalwire_space"));
     setDefaultServer();
 
     // preferences
@@ -1400,7 +1404,6 @@ function doDefaults(background)
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
-    setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 10);
     setDefaultSetting("beeFeedCheck", 10);
     setDefaultSetting("beeKeeperPageSize", 25);

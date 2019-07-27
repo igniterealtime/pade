@@ -1,97 +1,58 @@
 {
-  "manifest_version": 2,
-  "minimum_chrome_version": "34",  
-  "options_page": "options/index.html",  
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data: http: https:",  
-  "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data: http: https:",    
+  "version": "2.0.0",
+  "manifest_version": 2,
   "description": "__MSG_manifest_extensionDescription__",
-  "version": "1.2.12",
   "homepage_url": "https://igniterealtime.org/",
-    
-  "background": {
-        "persistent": true,
-        "scripts": [ 
-            "js/jquery.min.js", "js/libs.bundle.js", "js/strophe.reconnect.js", "js/strophe.vcard.js", "js/moment.js", "js/sip.js", "js/etherlynk.js", "js/background.js"
-        ]
-  }, 
-   
-  "browser_action": {
-      "default_icon": {
-         "19": "icon.png",
-         "38": "icon.png"
-      }   
-  },
-
-   "icons": {
+  "icons": {
       "128": "image.png",
       "16": "icon.png",
       "48": "image.png"
-   }, 
-  
-  "web_accessible_resources": [
-    "*",   
-    "options/*",
-    "js/*",    
-    "pdf/*",     
-    "ringtones/*",       
-    "jitsi-meet/*",     
-    "groupchat/*"
-  ],
-  
+  },
+  "default_locale": "en",
+  "background": {
+    "persistent": true,
+    "page": "index.html"
+  },
   "permissions": [
     "background", 
+    "contextMenus",      
     "downloads",
-    "contextMenus", 
-    "nativeMessaging",
     "storage",
-    "tabs",
-    "idle", 
-    "webRequest",
-    "webRequestBlocking",  
-    "unlimitedStorage",
-    "notifications", 
-    "https://igniterealtime.org/*",    
-    "https://discourse.igniterealtime.org/*", 
-    "https://github.com/*",    
-    "activeTab"
+    "idle",   
+    "unlimitedStorage",    
+    "notifications",
+    "http://*/*", 
+    "https://*/*"    
   ],
-  
   "commands": {
-    "activate_meeting": {
+    "activate_converse": {
         "suggested_key": {
-          "default": "Ctrl+Shift+6"
+          "default": "Ctrl+Shift+0"
         },
-        "description": "Activate Meeting/Community App",
+        "description": "Activate __MSG_manifest_extensionName__",
         "global": true
-    },  
-    "activate_chat": {
-        "suggested_key": {
-          "default": "Ctrl+Shift+7"
-        },
-        "description": "Activate Converse Client",
-        "global": true
-    },    
-    "activate_blogger_communicator": {
-        "suggested_key": {
-          "default": "Ctrl+Shift+8"
-        },
-        "description": "Activate Blogger/Communicator",
-        "global": true
-    }, 
-    "activate_phone": {
+    },   
+    "activate_settings": {
         "suggested_key": {
           "default": "Ctrl+Shift+9"
         },
-        "description": "Activate SIP Phone",
+        "description": "Activate __MSG_manifest_extensionName__ Settings",
         "global": true
     }    
+  },  
+  "options_ui": {
+    "open_in_tab": true,  
+    "page": "options/index.html"
+  }, 
+  "browser_action": {
+    "default_icon": {
+      "19": "icon.png",
+      "38": "icon.png"
+    }
   },
-  "externally_connectable": {
-      "matches": [       
-          "*://xmpp.igniterealtime.org/*",         
-          "*://igniterealtime.org/*"               
-      ]
-  },
-  "default_locale": "en"  
+  "default_locale": "en"    
 }
+
+

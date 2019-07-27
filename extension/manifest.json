@@ -22,9 +22,7 @@
     "storage",
     "idle",   
     "unlimitedStorage",    
-    "notifications",
-    "http://*/*", 
-    "https://*/*"
+    "notifications"
   ],
   "commands": {
     "activate_converse": {

@@ -137,7 +137,7 @@
                             if (!data) data = {};
                             if (!data[feedId]) data[feedId] = {};
 
-                            var feed = {path: match[2], url: chrome.pade ? "https://" + bgWindow.pade.server + "/apps/download?url=" + match[2] : match[2]};
+                            var feed = {path: match[2], url: "https://" + bgWindow.pade.server + "/apps/download?url=" + match[2]};
 
                             fetch(feed.url).then(function(response)
                             {

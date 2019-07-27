@@ -1029,6 +1029,11 @@ function initConverse()
         whitelistedPlugins.push("markdown");
     }
 
+    if (getSetting("enableSignalWire", false))
+    {
+        whitelistedPlugins.push("signalwire");
+    }
+
     if (getSetting("enableCannedResponses", false))
     {
         whitelistedPlugins.push("canned");

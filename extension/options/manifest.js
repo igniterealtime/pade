@@ -1382,6 +1382,38 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Applications"),
+            "group": i18n.get("SignalWire"),
+            "name": "enableSignalWire",
+            "type": "checkbox",
+            "label": i18n.get("Enable SignalWire")
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("SignalWire"),
+            "name": "signalWireSpace",
+            "type": "text",
+            "label": i18n.get("Space"),
+            "text": i18n.get("Enter SignalWire Space"),
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("SignalWire"),
+            "name": "signalWireId",
+            "type": "text",
+            "label": i18n.get("Project ID"),
+            "text": i18n.get("Enter SignalWire Project ID"),
+        },
+        {
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("SignalWire"),
+            "name": "signalWireKey",
+            "type": "text",
+            "masked": true,
+            "label": i18n.get("Project Key"),
+            "text": i18n.get("Enter SignalWire Project Key"),
+        },
+        {
+            "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
             "name": "enableCollaboration",
             "type": "checkbox",
@@ -1939,7 +1971,7 @@ this.manifest = {
             "group": i18n.get("RSS/Atom"),
             "name": "enableRssFeeds",
             "type": "checkbox",
-            "label": i18n.get("Enable RSS and Atom feeds")
+            "label": i18n.get("Enable RSS and Atom feeds <b>(requires chat api plugin)</b>")
         },
         {
             "tab": i18n.get("Feeds"),
@@ -2081,6 +2113,10 @@ this.manifest = {
             "ofmeetInvitation",
             "letsCollaborate",
             "webinarInvite"
+        ],
+        [
+            "signalWireSpace",
+            "signalWireKey"
         ]
     ]
 };

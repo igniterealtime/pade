@@ -192,7 +192,7 @@
             // when pade.chat (pwa), use proxy servlet in chat api plugin to fetch feed URL contents and avoid CORS
 
             var feed = {
-                path: chrome.pade ? "https://" + bgWindow.pade.server + "/apps/download?url=" + rssUrl : rssUrl
+                path: "https://" + bgWindow.pade.server + "/apps/download?url=" + rssUrl
             }
 
             fetch(feed.path).then(function(response)
