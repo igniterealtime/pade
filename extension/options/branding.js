@@ -38,7 +38,7 @@ var branding = {
     updateCollabUrlList     : {disable: true},
     collabUrlList           : {disable: true},
     exten                   : {disable: true},
-    language                : {disable: true},
+    language                : {disable: false},
     of365AutoStart          : {disable: true},
     onlyOfficeDescription   : {disable: true},
     onlyOfficeVersion       : {disable: true},

@@ -1278,6 +1278,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "enableAudioConfs",
+            "type": "checkbox",
+            "label": i18n.get("Enable Audio Conferences")
+        },
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("Canned Responses"),
             "name": "enableCannedResponses",
             "type": "checkbox",

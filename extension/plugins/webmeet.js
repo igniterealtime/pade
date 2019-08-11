@@ -224,7 +224,6 @@
                 'initialize_message': 'Initializing webmeet',
                 'visible_toolbar_buttons': {
                     'emoji': true,
-                    'call': false,
                     'clear': true
                 },
 

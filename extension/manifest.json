@@ -14,7 +14,7 @@
   "background": {
     "persistent": true,
     "page": "index.html"
-  },
+  }, 
   "permissions": [
     "background", 
     "contextMenus",      
@@ -22,7 +22,9 @@
     "storage",
     "idle",   
     "unlimitedStorage",    
-    "notifications"
+    "notifications",
+    "http://*/*", 
+    "https://*/*"  
   ],
   "commands": {
     "activate_converse": {
