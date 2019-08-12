@@ -1421,6 +1421,10 @@ function doDefaults(background)
     setDefaultSetting("onlyheader", true);
     setDefaultSetting("onlystatusBar", true);
     setDefaultSetting("onlyautosave", true);
+
+    // audioconf
+    setDefaultSetting("audioConfRingback", true);
+    setDefaultSetting("audioConfPlacement", "bottom-right");
 }
 
 function setDefaultServer()

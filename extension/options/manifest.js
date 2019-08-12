@@ -1279,9 +1279,84 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Audio Conferences"),
-            "name": "enableAudioConfs",
+            "name": "audioConfEnable",
             "type": "checkbox",
             "label": i18n.get("Enable Audio Conferences")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfDialpad",
+            "type": "checkbox",
+            "label": i18n.get("Enable Dialpad")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfRingback",
+            "type": "checkbox",
+            "label": i18n.get("Enable Ringback")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfRegister",
+            "type": "checkbox",
+            "label": i18n.get("Register with SIP proxy")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfPlacement",
+            "type": "popupButton",
+            "label": i18n.get("Placement"),
+            "options": [
+                {"text": "Top Left", "value": "top-left"},
+                {"text": "Top Right", "value": "top-right"},
+                {"text": "Bottom Left", "value": "bottom-left"},
+                {"text": "Bottom Right", "value": "bottom-right"}
+            ]
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfDomain",
+            "type": "text",
+            "label": i18n.get("SIP Domain"),
+            "text": i18n.get("sip-domain.com"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfServer",
+            "type": "text",
+            "label": i18n.get("SIP Server"),
+            "text": i18n.get("wss://sip-proxy.com:443/web-socket"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfUri",
+            "type": "text",
+            "label": i18n.get("SIP URI"),
+            "text": i18n.get("sip:extension@sip-proxy.com"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfUsername",
+            "type": "text",
+            "label": i18n.get("SIP Username"),
+            "text": i18n.get("sip-username"),
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Audio Conferences"),
+            "name": "audioConfPassword",
+            "type": "text",
+            "label": i18n.get("SIP Password"),
+            "text": i18n.get("sip-password"),
+            "masked": true
         },
         {
             "tab": i18n.get("Converse"),
@@ -2124,6 +2199,13 @@ this.manifest = {
         [
             "signalWireSpace",
             "signalWireKey"
+        ],
+        [
+            "audioConfDomain",
+            "audioConfServer",
+            "audioConfUri",
+            "audioConfUsername",
+            "audioConfPassword"
         ]
     ]
 };

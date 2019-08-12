@@ -1039,7 +1039,7 @@ function initConverse()
         whitelistedPlugins.push("canned");
     }
 
-    if (getSetting("enableAudioConfs", false))
+    if (getSetting("audioConfEnable", false))
     {
         whitelistedPlugins.push("audioconf");
     }
@@ -1097,7 +1097,7 @@ function initConverse()
       show_send_button: getSetting("showSendButton", false),
       sounds_path: chrome.runtime.getURL('sounds/'),
       view_mode: 'fullscreen',
-      visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableAudioConfs", false), 'clear': true },
+      visible_toolbar_buttons: {'emoji': true, 'call': getSetting("audioConfEnable", false), 'clear': true },
       websocket_url: connUrl,
       theme: 'concord',
       whitelisted_plugins: whitelistedPlugins
