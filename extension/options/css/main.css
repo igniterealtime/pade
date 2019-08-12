@@ -130,3 +130,14 @@ body.measuring .tab-content, body.measuring #search-result-container {
     opacity: 0;
     overflow: hidden;
 }
+
+input.button {
+    border-radius: 4px;
+    padding: 4px 8px;    
+    border: none;
+    color: white;
+    background-color: #777777;    
+    cursor: pointer;    
+    text-decoration: none;
+    display: inline-block;    
+}
