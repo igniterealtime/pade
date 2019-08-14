@@ -1414,7 +1414,6 @@ function doDefaults(background)
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
-    setDefaultSetting("converseRosterIcons", true);
     setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
@@ -1435,6 +1434,7 @@ function doDefaults(background)
     setDefaultSetting("rssFeedCheck", 10);
     setDefaultSetting("beeFeedCheck", 10);
     setDefaultSetting("beeKeeperPageSize", 25);
+    setDefaultSetting("alwaysShowOccupants", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com");

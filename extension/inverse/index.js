@@ -384,7 +384,7 @@ function doConverse(server, username, password, anonUser)
             connUrl = "wss://" + server + "/ws/";
         }
 
-        var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
+        var whitelistedPlugins = ["background", "search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
         var viewMode = chrome.pade ? 'fullscreen' : (window.pade ? 'overlayed' : 'fullscreen');
 
         if (getSetting("enableHomePage", false))
@@ -443,6 +443,7 @@ function doConverse(server, username, password, anonUser)
           muc_domain: "conference." + getSetting("domain", null),
           muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
           muc_nickname_from_jid: false,
+          muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", true),
           muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
           nickname: displayname,
           notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
@@ -640,7 +641,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
 
         let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
 
-        if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image && getSetting("converseRosterIcons"))
+        if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image)
         {
             dataUri = createAvatar(display_name);
         }

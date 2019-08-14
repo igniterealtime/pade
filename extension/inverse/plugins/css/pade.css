@@ -11,6 +11,11 @@
     width: 95%;
 }
 
+#conversejs .hiddenx {
+    opacity: 0 !important;
+    display: none !important; 
+}
+    
 #conversejs td, th {
     border: 1px solid transparent; /* No more visible border */
     height: 30px;

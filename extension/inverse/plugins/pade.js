@@ -21,7 +21,7 @@
         $build = converse.env.$build,
         b64_sha1 = converse.env.b64_sha1,
         _ = converse.env._,
-        moment = converse.env.moment;
+        dayjs = converse.env.dayjs;
 
      var _converse = null;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
@@ -32,28 +32,9 @@
     // The following line registers your plugin.
     converse.plugins.add("pade", {
 
-        /* Optional dependencies are other plugins which might be
-           * overridden or relied upon, and therefore need to be loaded before
-           * this plugin. They are called "optional" because they might not be
-           * available, in which case any overrides applicable to them will be
-           * ignored.
-           *
-           * NB: These plugins need to have already been loaded via require.js.
-           *
-           * It's possible to make optional dependencies non-optional.
-           * If the setting "strict_plugin_dependencies" is set to true,
-           * an error will be raised if the plugin is not found.
-           */
-        'dependencies': [],
+        dependencies: [],
 
-        /* Converse.js's plugin mechanism will call the initialize
-         * method on any plugin (if it exists) as soon as the plugin has
-         * been loaded.
-         */
-        'initialize': function () {
-            /* Inside this method, you have access to the private
-             * `_converse` object.
-             */
+        initialize: function () {
             _converse = this._converse;
             window._inverse = _converse;
             window.inverse = converse;
@@ -80,8 +61,6 @@
                 // set active thread id
                 resetAllMsgCount();
             }
-
-            _converse.log("The \"pade\" plugin is being initialized");
 
             /* From the `_converse` object you can get any configuration
              * options that the user might have passed in via
@@ -110,44 +89,276 @@
                 // The original chatbox is at `data.chatbox`.
             });
 
-            /* Besides `_converse.api.settings.update`, there is also a
-             * `_converse.api.promises.add` method, which allows you to
-             * add new promises that your plugin is obligated to fulfill.
-             *
-             * This method takes a string or a list of strings which
-             * represent the promise names:
-             *
-             *      _converse.api.promises.add('myPromise');
-             *
-             * Your plugin should then, when appropriate, resolve the
-             * promise by calling `_converse.api.emit`, which will also
-             * emit an event with the same name as the promise.
-             * For example:
-             *
-             *      _converse.api.emit('operationCompleted');
-             *
-             * Other plugins can then either listen for the event
-             * `operationCompleted` like so:
-             *
-             *      _converse.api.listen.on('operationCompleted', function { ... });
-             *
-             * or they can wait for the promise to be fulfilled like so:
-             *
-             *      _converse.api.waitUntil('operationCompleted', function { ... });
-             */
-        },
+            _converse.on('message', function (data)
+            {
+                var message = data.stanza;
+                var isTranslation = message.getAttribute("data-translation");
+                if (isTranslation) return;
 
-        /* If you want to override some function or a Backbone model or
-         * view defined elsewhere in converse.js, then you do that under
-         * the "overrides" namespace.
-         */
-        'overrides': {
-            /* For example, the private *_converse* object has a
-             * method "onConnected". You can override that method as follows:
-             */
-            'onConnected': function () {
-                var _converse = this;
+                var chatbox = data.chatbox;
+                var attachTo = data.stanza.querySelector('attach-to');
+                var body = message.querySelector('body');
+                var history = message.querySelector('forwarded');
 
+                console.debug("pade plugin message", history, body, chatbox, message);
+
+                if (!history && body && chatbox)
+                {
+                    var id = chatbox.get("box_id");
+                    var jid = chatbox.get("jid");
+                    var type = chatbox.get("type");
+                    var display_name = chatbox.getDisplayName().trim();
+                    if (!display_name || display_name == "") display_name = jid;
+
+                    // add translation
+
+                    if (getSetting("enableTranslation", false) && !body.innerHTML.startsWith("/"))
+                    {
+                        const tronId = 'translate-' + id;
+
+                        chrome.storage.local.get(tronId, function(obj)
+                        {
+                            if (obj && obj[tronId])
+                            {
+                                fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].target + "&tl=" + obj[tronId].source + "&dt=t&q=" + body.innerHTML).then(function(response){ return response.json()}).then(function(json)
+                                {
+                                    console.debug('translation ok', json[0][0][0]);
+
+                                    const msgType = message.getAttribute("type");
+                                    const msgFrom = message.getAttribute("from");
+                                    const body = "*" + json[0][0][0] + "*";
+
+                                    const stanza = '<message data-translation="true" type="' + msgType + '" to="' + _converse.connection.jid + '" from="' + msgFrom + '"><body>' + body + '</body></message>';
+                                    _converse.connection.injectMessage(stanza);
+
+                                }).catch(function (err) {
+                                    console.error('translation error', err);
+                                });
+                            }
+                        });
+                    }
+
+                    // draw attention to new messages
+                    // done here instead of background.js becasue of chatroom messages
+
+                    var numUnreadBox = chatbox.get("num_unread");
+                    var numUnreadRoom = chatbox.get("num_unread_general");
+
+                    if (document.hasFocus())
+                    {
+                        chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                        chrome.browserAction.setBadgeText({ text: "" });
+                    }
+                    else {
+
+                        if (!notified)
+                        {
+                            chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
+
+                            if (bgWindow)
+                            {
+                                if (!bgWindow.pade.messageCount) bgWindow.pade.messageCount = 0;
+                                bgWindow.pade.messageCount++;
+
+                                chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                                chrome.browserAction.setBadgeText({ text: bgWindow.pade.messageCount.toString() });
+                            }
+                        }
+                    }
+
+                    if (type == "chatroom")  // chatboxes handled in background.js
+                    {
+                        var theNick =  message.getAttribute("from").split("/")[1];
+                        var myName =  chatbox.get('name');
+                        var myNick =  chatbox.get('nick');
+
+                        if (bgWindow) scanMessage(chatbox, message, jid, body.innerHTML, theNick, myNick, myName);
+                    }
+
+                    else
+
+                    if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
+                    {
+                        bgWindow.notifyText(body.innerHTML, display_name, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+                        {
+                            if (buttonIndex == 0)
+                            {
+                                _converse.api.chats.open(jid);
+                                chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
+
+                                if (chatbox) setActiveConversationsRead(chatbox);
+                            }
+
+                        }, jid);
+                    }
+
+                    setActiveConversationsUread(chatbox, body.innerHTML);
+                }
+
+                if (!history && body && attachTo && (body.innerHTML.indexOf(":thumbsup:") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1))
+                {
+                    const msgId = attachTo.getAttribute("id");
+                    const reaction = body.innerHTML.indexOf(":thumbsdown:") > -1 ? "dislike" : "like";
+
+                    console.debug("pade plugin - attach-to", msgId, reaction);
+
+                    if (chrome.storage && msgId)
+                    {
+                        chrome.storage.local.get(msgId, function(obj)
+                        {
+                            if (!obj[msgId]) obj[msgId] = {};
+                            if (!obj[msgId][reaction]) obj[msgId][reaction] = 0;
+
+                            obj[msgId][reaction]++;
+
+                            chrome.storage.local.set(obj, function() {
+                              console.debug('set emoji reaction', obj);
+                            });
+
+                            displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
+                        });
+                    }
+                }
+            });
+
+            _converse.api.listen.on('messageSend', function(data)
+            {
+                // The message is at `data.message`
+                // The original chatbox is at `data.chatbox`.
+
+                var id = data.chatbox.get("box_id");
+
+                if (getSetting("enableTranslation", false) && !data.message.startsWith("/"))
+                {
+                    const tronId = 'translate-' + id;
+
+                    chrome.storage.local.get(tronId, function(obj)
+                    {
+                        if (obj && obj[tronId])
+                        {
+                            fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + data.message).then(function(response){ return response.json()}).then(function(json)
+                            {
+                                console.debug('translation ok', json[0][0][0]);
+                                data.chatbox.sendMessage("*" + json[0][0][0] + "*");
+
+                            }).catch(function (err) {
+                                console.error('translation error', err);
+                            });
+                        }
+                    });
+                }
+            });
+
+            _converse.api.listen.on('chatRoomOpened', function (view)
+            {
+                const jid = view.model.get("jid");
+                console.debug("chatRoomOpened", view);
+
+                if (getSetting("enableThreading", false))
+                {
+                    const box_id = view.model.get("box_id");
+                    const topicId = 'topic-' + box_id;
+
+                    if (window.chatThreads[topicId])
+                    {
+                        const topic = window.chatThreads[topicId].topic;
+                        if (topic) view.model.set("thread", topic);
+                    }
+                }
+
+                if (bgWindow)
+                {
+                    bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: view.model.get("jid"), type: view.model.get("type")};
+
+                    if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
+                    {
+                        console.debug("pade plugin chatRoomOpened", jid);
+                        bgWindow.pade.startupList[jid] = view;
+
+                        setTimeout(function()
+                        {
+                            view.content.innerHTML = '';
+                            view.model.messages.reset();
+                            view.model.messages.browserStorage._clear();
+                            view.close();
+                            _converse.api.rooms.open(jid);
+                        });
+                    }
+
+                    bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
+                }
+
+                if (getSetting("enableThreading", false))
+                {
+                    const box_id = view.model.get("box_id");
+                    const topicId = 'topic-' + box_id;
+
+                    if (window.chatThreads[topicId])
+                    {
+                        const topic = window.chatThreads[topicId].topic;
+                        if (topic) view.model.set("thread", topic);
+                    }
+                }
+            });
+
+            _converse.api.listen.on('chatBoxOpened', function (view)
+            {
+                const jid = view.model.get("jid");
+                console.debug("pade plugin chatBoxOpened", jid);
+
+                if (bgWindow)
+                {
+                    bgWindow.pade.autoJoinPrivateChats[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
+
+                    if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
+                    {
+                        bgWindow.pade.startupList[jid] = view;
+
+                        setTimeout(function()
+                        {
+                            view.content.innerHTML = '';
+                            view.model.messages.reset();
+                            view.model.messages.browserStorage._clear();
+                            view.close();
+                            _converse.api.chats.open(jid);
+                        });
+                    }
+                }
+            });
+
+            _converse.api.listen.on('chatBoxClosed', function (chatbox)
+            {
+                console.debug("chatBoxClosed", chatbox);
+
+                if (bgWindow)
+                {
+                    if (chatbox.model.get("type") == "chatbox") delete bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")];
+                    if (chatbox.model.get("type") == "chatroom") delete bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")];
+                }
+
+                const activeDiv = document.getElementById("active-conversations");
+                if (activeDiv) removeActiveConversation(chatbox, activeDiv);
+
+                // reset threads
+
+                if (getSetting("enableThreading", false))
+                {
+                    const box_id = chatbox.model.get("box_id");
+                    const topicId = 'topic-' + box_id;
+
+                    if (window.chatThreads[topicId])
+                    {
+                        chrome.storage.local.get(topicId, function(obj)
+                        {
+                            resetMsgCount(obj, topicId);
+                        });
+
+                    }
+                }
+            });
+
+            _converse.api.listen.on('connected', function()
+            {
                 var initPade = function initPade()
                 {
                     var myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
@@ -220,278 +431,6 @@
                     console.log("pade plugin is ready");
                 }
 
-                _converse.on('message', function (data)
-                {
-                    var message = data.stanza;
-                    var isTranslation = message.getAttribute("data-translation");
-                    if (isTranslation) return;
-
-                    var chatbox = data.chatbox;
-                    var attachTo = data.stanza.querySelector('attach-to');
-                    var body = message.querySelector('body');
-                    var history = message.querySelector('forwarded');
-
-                    console.debug("pade plugin message", history, body, chatbox, message);
-
-                    if (!history && body && chatbox)
-                    {
-                        var id = chatbox.get("box_id");
-                        var jid = chatbox.get("jid");
-                        var type = chatbox.get("type");
-                        var display_name = chatbox.getDisplayName().trim();
-                        if (!display_name || display_name == "") display_name = jid;
-
-                        // add translation
-
-                        if (getSetting("enableTranslation", false) && !body.innerHTML.startsWith("/"))
-                        {
-                            const tronId = 'translate-' + id;
-
-                            chrome.storage.local.get(tronId, function(obj)
-                            {
-                                if (obj && obj[tronId])
-                                {
-                                    fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].target + "&tl=" + obj[tronId].source + "&dt=t&q=" + body.innerHTML).then(function(response){ return response.json()}).then(function(json)
-                                    {
-                                        console.debug('translation ok', json[0][0][0]);
-
-                                        const msgType = message.getAttribute("type");
-                                        const msgFrom = message.getAttribute("from");
-                                        const body = "*" + json[0][0][0] + "*";
-
-                                        const stanza = '<message data-translation="true" type="' + msgType + '" to="' + _converse.connection.jid + '" from="' + msgFrom + '"><body>' + body + '</body></message>';
-                                        _converse.connection.injectMessage(stanza);
-
-                                    }).catch(function (err) {
-                                        console.error('translation error', err);
-                                    });
-                                }
-                            });
-                        }
-
-                        // draw attention to new messages
-                        // done here instead of background.js becasue of chatroom messages
-
-                        var numUnreadBox = chatbox.get("num_unread");
-                        var numUnreadRoom = chatbox.get("num_unread_general");
-
-                        if (document.hasFocus())
-                        {
-                            chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
-                            chrome.browserAction.setBadgeText({ text: "" });
-                        }
-                        else {
-
-                            if (!notified)
-                            {
-                                chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
-
-                                if (bgWindow)
-                                {
-                                    if (!bgWindow.pade.messageCount) bgWindow.pade.messageCount = 0;
-                                    bgWindow.pade.messageCount++;
-
-                                    chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
-                                    chrome.browserAction.setBadgeText({ text: bgWindow.pade.messageCount.toString() });
-                                }
-                            }
-                        }
-
-                        if (type == "chatroom")  // chatboxes handled in background.js
-                        {
-                            var theNick =  message.getAttribute("from").split("/")[1];
-                            var myName =  chatbox.get('name');
-                            var myNick =  chatbox.get('nick');
-
-                            if (bgWindow) scanMessage(chatbox, message, jid, body.innerHTML, theNick, myNick, myName);
-                        }
-
-                        else
-
-                        if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
-                        {
-                            bgWindow.notifyText(body.innerHTML, display_name, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
-                            {
-                                if (buttonIndex == 0)
-                                {
-                                    _converse.api.chats.open(jid);
-                                    chrome.windows.update(bgWindow.pade.chatWindow.id, {focused: true});
-
-                                    if (chatbox) setActiveConversationsRead(chatbox);
-                                }
-
-                            }, jid);
-                        }
-
-                        setActiveConversationsUread(chatbox, body.innerHTML);
-                    }
-
-                    if (!history && body && attachTo && (body.innerHTML.indexOf(":thumbsup:") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1))
-                    {
-                        const msgId = attachTo.getAttribute("id");
-                        const reaction = body.innerHTML.indexOf(":thumbsdown:") > -1 ? "dislike" : "like";
-
-                        console.debug("pade plugin - attach-to", msgId, reaction);
-
-                        if (chrome.storage && msgId)
-                        {
-                            chrome.storage.local.get(msgId, function(obj)
-                            {
-                                if (!obj[msgId]) obj[msgId] = {};
-                                if (!obj[msgId][reaction]) obj[msgId][reaction] = 0;
-
-                                obj[msgId][reaction]++;
-
-                                chrome.storage.local.set(obj, function() {
-                                  console.debug('set emoji reaction', obj);
-                                });
-
-                                displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
-                            });
-                        }
-                    }
-                });
-
-
-                _converse.api.listen.on('messageSend', function(data)
-                {
-                    // The message is at `data.message`
-                    // The original chatbox is at `data.chatbox`.
-
-                    var id = data.chatbox.get("box_id");
-
-                    if (getSetting("enableTranslation", false) && !data.message.startsWith("/"))
-                    {
-                        const tronId = 'translate-' + id;
-
-                        chrome.storage.local.get(tronId, function(obj)
-                        {
-                            if (obj && obj[tronId])
-                            {
-                                fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + data.message).then(function(response){ return response.json()}).then(function(json)
-                                {
-                                    console.debug('translation ok', json[0][0][0]);
-                                    data.chatbox.sendMessage("*" + json[0][0][0] + "*");
-
-                                }).catch(function (err) {
-                                    console.error('translation error', err);
-                                });
-                            }
-                        });
-                    }
-                });
-
-                _converse.api.listen.on('chatRoomOpened', function (view)
-                {
-                    const jid = view.model.get("jid");
-
-                    if (bgWindow)
-                    {
-                        if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
-                        {
-                            console.debug("pade plugin chatRoomOpened", jid);
-                            bgWindow.pade.startupList[jid] = view;
-
-                            setTimeout(function()
-                            {
-                                view.content.innerHTML = '';
-                                view.model.messages.reset();
-                                view.model.messages.browserStorage._clear();
-                                view.close();
-                                _converse.api.rooms.open(jid);
-                            });
-                        }
-
-                        bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
-                    }
-
-                    if (getSetting("enableThreading", false))
-                    {
-                        const box_id = view.model.get("box_id");
-                        const topicId = 'topic-' + box_id;
-
-                        if (window.chatThreads[topicId])
-                        {
-                            const topic = window.chatThreads[topicId].topic;
-                            if (topic) view.model.set("thread", topic);
-                        }
-                    }
-                });
-
-                _converse.api.listen.on('chatBoxOpened', function (view)
-                {
-                    const jid = view.model.get("jid");
-                    console.debug("pade plugin chatBoxOpened", jid);
-
-                    if (bgWindow)
-                    {
-                        bgWindow.pade.autoJoinPrivateChats[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
-
-                        if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
-                        {
-                            bgWindow.pade.startupList[jid] = view;
-
-                            setTimeout(function()
-                            {
-                                view.content.innerHTML = '';
-                                view.model.messages.reset();
-                                view.model.messages.browserStorage._clear();
-                                view.close();
-                                _converse.api.chats.open(jid);
-                            });
-                        }
-                    }
-                });
-
-                _converse.api.listen.on('chatBoxClosed', function (chatbox)
-                {
-                    console.debug("chatBoxClosed", chatbox);
-
-                    if (bgWindow)
-                    {
-                        if (chatbox.model.get("type") == "chatbox") delete bgWindow.pade.autoJoinPrivateChats[chatbox.model.get("jid")];
-                        if (chatbox.model.get("type") == "chatroom") delete bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")];
-                    }
-
-                    const activeDiv = document.getElementById("active-conversations");
-                    if (activeDiv) removeActiveConversation(chatbox, activeDiv);
-
-                    // reset threads
-
-                    if (getSetting("enableThreading", false))
-                    {
-                        const box_id = chatbox.model.get("box_id");
-                        const topicId = 'topic-' + box_id;
-
-                        if (window.chatThreads[topicId])
-                        {
-                            chrome.storage.local.get(topicId, function(obj)
-                            {
-                                resetMsgCount(obj, topicId);
-                            });
-
-                        }
-                    }
-                });
-
-                _converse.api.listen.on('chatRoomOpened', function (chatbox)
-                {
-                    console.debug("chatRoomOpened", chatbox);
-                    if (bgWindow) bgWindow.pade.autoJoinRooms[chatbox.model.get("jid")] = {jid: chatbox.model.get("jid"), type: chatbox.model.get("type")};
-
-                    if (getSetting("enableThreading", false))
-                    {
-                        const box_id = chatbox.model.get("box_id");
-                        const topicId = 'topic-' + box_id;
-
-                        if (window.chatThreads[topicId])
-                        {
-                            const topic = window.chatThreads[topicId].topic;
-                            if (topic) chatbox.model.set("thread", topic);
-                        }
-                    }
-                });
-
                 Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
 
                 if (chrome.pade)    // browser mode
@@ -523,10 +462,10 @@
                         chrome.browserAction.setBadgeText({ text: "" });
                     });
                 }
+            });
+        },
 
-                _converse.__super__.onConnected.apply(this, arguments);
-
-            },
+        overrides: {
 
             MessageView: {
 

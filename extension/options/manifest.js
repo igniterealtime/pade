@@ -1108,13 +1108,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "converseRosterIcons",
-            "type": "checkbox",
-            "label": i18n.get("Enable Coloured Deterministic Roster Icons")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
             "name": "converseRandomAvatars",
             "type": "checkbox",
             "label": i18n.get("Use Random Avatars. <b>(requires randomavatar plugin for openfire)</b>")

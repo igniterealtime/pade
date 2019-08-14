@@ -22,7 +22,7 @@
         b64_sha1 = converse.env.b64_sha1,
         _ = converse.env._,
         Backbone = converse.env.Backbone,
-        moment = converse.env.moment;
+        dayjs = converse.env.dayjs;
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
@@ -267,6 +267,27 @@
                 }
             });
 
+            _converse.api.listen.on('chatRoomOpened', function (view)
+            {
+                const jid = view.model.get("jid");
+                const chat_area = view.el.querySelector('.chat-area');
+                const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
+
+                console.debug("chatRoomOpened", jid, chat_area.classList, occupants_area.classList);
+
+                if (!getSetting("alwaysShowOccupants", false))
+                {
+                    chat_area.classList.add('full');
+                    occupants_area.classList.add('hiddenx');
+                }
+            });
+
+            _converse.api.listen.on('chatBoxOpened', function (view)
+            {
+                const jid = view.model.get("jid");
+                console.log("chatBoxOpened", jid);
+            });
+
             _converse.api.listen.on('renderToolbar', function(view)
             {
                 console.debug('webmeet - renderToolbar', view.model);
@@ -286,14 +307,6 @@
                     console.debug('webmeet - testFileUploadAvailable', isFileUploadAvailable, bgWindow.pade.ofmeetUrl);
 
                     var html = '';
-
-                    if (type == "chatroom")
-                    {
-                        // hide occupants list by default
-                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", false)});
-                        view.setOccupantsVisibility();
-                        view.scrollDown();
-                    }
 
                     if (bgWindow)
                     {
@@ -510,80 +523,8 @@
                 });
             });
 
-
-            window.addEventListener('message', function (event)
+            _converse.api.listen.on('connected', function()
             {
-                if (event.data.event == "ofmeet.event.xapi")
-                {
-                    console.debug("webmeet xpi handler", h5pViews, event.data);
-
-                    if (event.data.action == "completed")
-                    {
-                        if (h5pViews[event.data.id])
-                        {
-                            console.debug("webmeet xpi handler", h5pViews, event.data);
-
-                            var view = h5pViews[event.data.id];
-                            var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
-
-                            if (view.get("message_type") == "groupchat")
-                            {
-                                nick = view.get("nick");
-                            }
-                            var msg = nick + " completed " + event.data.category + " in " + event.data.id + " and scored " + Math.round(event.data.value * 100) / 100 + "%";
-
-                            var attrs = view.getOutgoingMessageAttributes(msg);
-                            view.sendMessage(attrs);
-                        }
-                    }
-                }
-
-            });
-
-            console.log("webmeet plugin is ready");
-
-            /* Besides `_converse.api.settings.update`, there is also a
-             * `_converse.api.promises.add` method, which allows you to
-             * add new promises that your plugin is obligated to fulfill.
-             *
-             * This method takes a string or a list of strings which
-             * represent the promise names:
-             *
-             *      _converse.api.promises.add('myPromise');
-             *
-             * Your plugin should then, when appropriate, resolve the
-             * promise by calling `_converse.api.emit`, which will also
-             * emit an event with the same name as the promise.
-             * For example:
-             *
-             *      _converse.api.emit('operationCompleted');
-             *
-             * Other plugins can then either listen for the event
-             * `operationCompleted` like so:
-             *
-             *      _converse.api.listen.on('operationCompleted', function { ... });
-             *
-             * or they can wait for the promise to be fulfilled like so:
-             *
-             *      _converse.api.waitUntil('operationCompleted', function { ... });
-             */
-        },
-
-        /* If you want to override some function or a Backbone model or
-         * view defined elsewhere in converse.js, then you do that under
-         * the "overrides" namespace.
-         */
-        'overrides': {
-            /* For example, the private *_converse* object has a
-             * method "onConnected". You can override that method as follows:
-             */
-            'onConnected': function () {
-                // Overrides the onConnected method in converse.js
-
-                // Top-level functions in "overrides" are bound to the
-                // inner "_converse" object.
-                var _converse = this;
-
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
@@ -623,25 +564,51 @@
                                 _converse.connection.sendIQ( setVCard(vCard), function(resp)
                                 {
                                     console.debug("set vcard ok", resp);
-                                    _converse.__super__.onConnected.apply(this, arguments);
 
                                 }, function(err) {
                                     console.error("set vcard error", err);
-                                    _converse.__super__.onConnected.apply(this, arguments);
                                 });
                             }
 
                             sourceImage.src = uPort.avatar;
                         }
-                        else {
-                            _converse.__super__.onConnected.apply(this, arguments);
-                        }
                     });
                 }
-                else {
-                    _converse.__super__.onConnected.apply(this, arguments);
+            });
+
+            window.addEventListener('message', function (event)
+            {
+                if (event.data.event == "ofmeet.event.xapi")
+                {
+                    console.debug("webmeet xpi handler", h5pViews, event.data);
+
+                    if (event.data.action == "completed")
+                    {
+                        if (h5pViews[event.data.id])
+                        {
+                            console.debug("webmeet xpi handler", h5pViews, event.data);
+
+                            var view = h5pViews[event.data.id];
+                            var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
+
+                            if (view.get("message_type") == "groupchat")
+                            {
+                                nick = view.get("nick");
+                            }
+                            var msg = nick + " completed " + event.data.category + " in " + event.data.id + " and scored " + Math.round(event.data.value * 100) / 100 + "%";
+
+                            var attrs = view.getOutgoingMessageAttributes(msg);
+                            view.sendMessage(attrs);
+                        }
+                    }
                 }
-            },
+
+            });
+
+            console.log("webmeet plugin is ready");
+        },
+
+        overrides: {
 
             MessageView: {
 
@@ -775,6 +742,11 @@
             },
 
             ChatBoxView: {
+
+                renderToolbar: function renderToolbar(toolbar, options) {
+                    var result = this.__super__.renderToolbar.apply(this, arguments);
+                    return result;
+                },
 
                 parseMessageForCommands: function(text) {
 
@@ -916,11 +888,11 @@
     {
         if (getSetting("converseTimeAgo", false))
         {
-            var moment_time = moment(chat.model.get('time'));
-            var pretty_time = moment_time.format(_converse.time_format);
+            var dayjs_time = dayjs(chat.model.get('time'));
+            var pretty_time = dayjs_time.format(_converse.time_format);
 
             var timeEle = chat.el.querySelector('.chat-msg__time');
-            var timeAgo = moment_time.fromNow(true);
+            var timeAgo = dayjs_time.fromNow(true);
 
             if (timeEle && timeEle.innerHTML)
             {
@@ -931,9 +903,9 @@
 
     var setupContentHandler = function(chat, avRoom, content, callback, chatId, title)
     {
-        var moment_time = moment(chat.model.get('time'));
-        var pretty_time = moment_time.format(_converse.time_format);
-        var time = moment_time.format();
+        var dayjs_time = dayjs(chat.model.get('time'));
+        var pretty_time = dayjs_time.format(_converse.time_format);
+        var time = dayjs_time.format();
 
         var msg_content = document.createElement("div");
         msg_content.setAttribute("class", "message chat-msg groupchat");
@@ -1112,7 +1084,7 @@
         evt.stopPropagation();
         evt.preventDefault();
 
-        _converse.chatboxviews.each(function (view)
+        _converse.chatboxviews.forEach(function (view)
         {
             //console.debug("handleDropFileSelect", view.model.get('type'));
 
@@ -1589,7 +1561,6 @@
         else
 
         if (command == "screencast") return toggleScreenCast(view);
-
 
         return false;
     }
