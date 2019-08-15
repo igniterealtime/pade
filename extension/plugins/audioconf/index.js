@@ -6,6 +6,13 @@
     }
 }(this, function (converse) {
     var _converse = null;
+    var Strophe = converse.env.Strophe,
+        $iq = converse.env.$iq,
+        $msg = converse.env.$msg,
+        $pres = converse.env.$pres,
+        $build = converse.env.$build,
+        b64_sha1 = converse.env.b64_sha1,
+        _ = converse.env._;
 
     converse.plugins.add("audioconf", {
         'dependencies': [],

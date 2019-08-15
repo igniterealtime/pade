@@ -1101,13 +1101,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "converseRosterIcons",
-            "type": "checkbox",
-            "label": i18n.get("Enable Coloured Deterministic Roster Icons")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
             "name": "converseRandomAvatars",
             "type": "checkbox",
             "label": i18n.get("Use Random Avatars. <b>(requires randomavatar plugin for openfire)</b>")
@@ -1232,6 +1225,27 @@ this.manifest = {
             "name": "alwaysShowOccupants",
             "type": "checkbox",
             "label": i18n.get("Always show occupants")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "fetchMembersList",
+            "type": "checkbox",
+            "label": i18n.get("Fetch Members List")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "autoCreateNickname",
+            "type": "checkbox",
+            "label": i18n.get("Auto Create Nickname")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "moderatorTools",
+            "type": "checkbox",
+            "label": i18n.get("Enable Moderator Tools GUI")
         },
         {
             "tab": i18n.get("Converse"),

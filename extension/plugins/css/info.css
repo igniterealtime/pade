@@ -1,9 +1,8 @@
 
 .plugin-infobox {
-    border-left: 0.1em solid #707070 !important;
-    width: 100%;
-    overflow-y: scroll;    
-    padding: 6px !important;      
+    width: 100%;   
+    /*overflow: hidden !important;   */
+    overflow-y: auto;      
 }
 
 .plugin-infobox h3 {

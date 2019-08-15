@@ -1407,6 +1407,9 @@ function doDefaults(background)
     setDefaultSetting("rssFeedCheck", 10);
     setDefaultSetting("beeFeedCheck", 10);
     setDefaultSetting("beeKeeperPageSize", 25);
+    setDefaultSetting("alwaysShowOccupants", true);
+    setDefaultSetting("autoCreateNickname", true);
+    setDefaultSetting("moderatorTools", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com");

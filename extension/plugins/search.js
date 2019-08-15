@@ -9,12 +9,12 @@
     var searchDialog = null;
 
     var Strophe = converse.env.Strophe;
-    var moment = converse.env.moment;
+    var dayjs = converse.env.dayjs;
 
     converse.plugins.add("search", {
-        'dependencies': [],
+        dependencies: [],
 
-        'initialize': function () {
+        initialize: function () {
             _converse = this._converse;
 
             SearchDialog = _converse.BootstrapModal.extend({
@@ -84,8 +84,10 @@
                         {
                             var body = messages[i].get('message');
                             var from = messages[i].get('from');
-                            var pretty_time = moment(messages[i].get('time')).format('MMM DD<br/>HH:mm:ss');
-                            var pretty_from = messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
+                            var pretty_time = dayjs(messages[i].get('time')).format('MMM DD<br/>HH:mm:ss');
+                            var pretty_from = from;
+
+                            if (from) pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
 
                             if (searchRegExp.test(body))
                             {

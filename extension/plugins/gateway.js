@@ -7,40 +7,36 @@
 }(this, function (converse) {
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var Strophe = converse.env.Strophe;
-    var moment = converse.env.moment;
+    var dayjs = converse.env.dayjs;
     var rssInterval, htmlTemp = {};
 
     converse.plugins.add("gateway", {
-        'dependencies': [],
+        dependencies: [],
 
-        'initialize': function () {
+        initialize: function () {
             _converse = this._converse;
-            console.log("gateway plugin is ready");
-        },
 
-        'overrides': {
-            onConnected: function () {
-                var _converse = this;
+            _converse.api.listen.on('chatRoomOpened', function (view)
+            {
+                console.debug("gateway chatRoomOpened", view);
+                rssGroupChatCheck(view);
+            });
 
-                _converse.api.listen.on('chatRoomOpened', function (view)
+            _converse.api.listen.on('chatBoxOpened', function (view)
+            {
+                console.debug("gateway chatBoxOpened", view);
+
+                var jid = view.model.get("jid");
+
+                if (jid === "rss@pade." + _converse.connection.domain)
                 {
-                    console.debug("gateway chatRoomOpened", view);
-                    rssGroupChatCheck(view);
-                });
+                    view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
+                    rssChatCheck();
+                }
+            });
 
-                _converse.api.listen.on('chatBoxOpened', function (view)
-                {
-                    console.debug("gateway chatBoxOpened", view);
-
-                    var jid = view.model.get("jid");
-
-                    if (jid === "rss@pade." + _converse.connection.domain)
-                    {
-                        view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
-                        rssChatCheck();
-                    }
-                });
-
+            _converse.api.listen.on('connected', function()
+            {
                 Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
                 {
                     _converse.connection.injectedMessage = function(element)
@@ -61,8 +57,6 @@
                     });
                 });
 
-                _converse.__super__.onConnected.apply(this, arguments);
-
                 if (getSetting("enableRssFeeds", false))
                 {
                     var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
@@ -70,8 +64,12 @@
 
                     createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), "RSS Feed");
                 }
+            });
 
-            },
+            console.log("gateway plugin is ready");
+        },
+
+        'overrides': {
 
             MessageView: {
 
@@ -111,8 +109,6 @@
 
     var createRosterEntry = function(jid, name, groups)
     {
-        _converse.api.chats.open(jid, {fullname: name});
-
         if (bgWindow.pade.chatAPIAvailable)
         {
             var body = {
@@ -135,6 +131,9 @@
             }).catch(function (err) {
                 console.error('createRosterEntry', err, url, options);
             });
+        }
+        else {
+            _converse.api.chats.open(jid, {fullname: name});
         }
     }
 
@@ -212,12 +211,12 @@
                             {
                                 console.debug("rssCheckEach pre", post.title, post);
 
-                                var stamp = " - " + moment(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
+                                var stamp = " - " + dayjs(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
                                 var delay = "";
 
                                 if (getSetting("useRssDate", false) == false)
                                 {
-                                    var delayStamp = moment(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');
+                                    var delayStamp = dayjs(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');
                                     delay = "<delay xmlns='urn:xmpp:delay' from='" + _converse.connection.domain + "' stamp='" + delayStamp + "'/>";
                                     stamp = "";
                                 }

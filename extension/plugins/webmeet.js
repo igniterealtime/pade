@@ -22,7 +22,7 @@
         b64_sha1 = converse.env.b64_sha1,
         _ = converse.env._,
         Backbone = converse.env.Backbone,
-        moment = converse.env.moment;
+        dayjs = converse.env.dayjs;
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
@@ -30,29 +30,9 @@
 
      // The following line registers your plugin.
     converse.plugins.add("webmeet", {
+        dependencies: [],
 
-        /* Optional dependencies are other plugins which might be
-           * overridden or relied upon, and therefore need to be loaded before
-           * this plugin. They are called "optional" because they might not be
-           * available, in which case any overrides applicable to them will be
-           * ignored.
-           *
-           * NB: These plugins need to have already been loaded via require.js.
-           *
-           * It's possible to make optional dependencies non-optional.
-           * If the setting "strict_plugin_dependencies" is set to true,
-           * an error will be raised if the plugin is not found.
-           */
-        'dependencies': [],
-
-        /* Converse.js's plugin mechanism will call the initialize
-         * method on any plugin (if it exists) as soon as the plugin has
-         * been loaded.
-         */
-        'initialize': function () {
-            /* Inside this method, you have access to the private
-             * `_converse` object.
-             */
+        initialize: function () {
             _converse = this._converse;
 
             if (bgWindow)
@@ -239,15 +219,6 @@
                 webinar_invitation: 'Please join webinar at'
             });
 
-            /* The user can then pass in values for the configuration
-             * settings when `converse.initialize` gets called.
-             * For example:
-             *
-             *      converse.initialize({
-             *           "initialize_message": "My plugin has been initialized"
-             *      });
-             */
-
             _converse.on('messageAdded', function (data) {
                 // The message is at `data.message`
                 // The original chatbox is at `data.chatbox`.
@@ -264,6 +235,27 @@
                         h5pViews[id] = data.chatbox;
                     }
                 }
+            });
+
+            _converse.api.listen.on('chatRoomOpened', function (view)
+            {
+                const jid = view.model.get("jid");
+                const chat_area = view.el.querySelector('.chat-area');
+                const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
+
+                console.debug("chatRoomOpened", jid, chat_area.classList, occupants_area.classList);
+
+                if (!getSetting("alwaysShowOccupants", false))
+                {
+                    chat_area.classList.add('full');
+                    occupants_area.classList.add('hiddenx');
+                }
+            });
+
+            _converse.api.listen.on('chatBoxOpened', function (view)
+            {
+                const jid = view.model.get("jid");
+                console.log("chatBoxOpened", jid);
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
@@ -286,16 +278,14 @@
 
                     var html = '';
 
-                    if (type == "chatroom")
-                    {
-                        // hide occupants list by default
-                        view.model.set({'hidden_occupants': !getSetting("alwaysShowOccupants", false)});
-                        view.setOccupantsVisibility();
-                        view.scrollDown();
-                    }
-
                     if (bgWindow)
                     {
+                        if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
+                        {
+                            html = '<a class="fa fa-wrench" title="Open Groupchat Moderator Tools GUI"></a>';
+                            addToolbarItem(view, id, "moderator-tools-" + id, html);
+                        }
+
                         if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
                         {
                             html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
@@ -394,6 +384,15 @@
                             {
                                 doooB(view, id, jid, type);
                             }
+
+                        }, false);
+
+                        var moderatorTools = document.getElementById("moderator-tools-" + id);
+
+                        if (moderatorTools) moderatorTools.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            view.showModeratorToolsModal('');
 
                         }, false);
 
@@ -509,80 +508,8 @@
                 });
             });
 
-
-            window.addEventListener('message', function (event)
+            _converse.api.listen.on('connected', function()
             {
-                if (event.data.event == "ofmeet.event.xapi")
-                {
-                    console.debug("webmeet xpi handler", h5pViews, event.data);
-
-                    if (event.data.action == "completed")
-                    {
-                        if (h5pViews[event.data.id])
-                        {
-                            console.debug("webmeet xpi handler", h5pViews, event.data);
-
-                            var view = h5pViews[event.data.id];
-                            var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
-
-                            if (view.get("message_type") == "groupchat")
-                            {
-                                nick = view.get("nick");
-                            }
-                            var msg = nick + " completed " + event.data.category + " in " + event.data.id + " and scored " + Math.round(event.data.value * 100) / 100 + "%";
-
-                            var attrs = view.getOutgoingMessageAttributes(msg);
-                            view.sendMessage(attrs);
-                        }
-                    }
-                }
-
-            });
-
-            console.log("webmeet plugin is ready");
-
-            /* Besides `_converse.api.settings.update`, there is also a
-             * `_converse.api.promises.add` method, which allows you to
-             * add new promises that your plugin is obligated to fulfill.
-             *
-             * This method takes a string or a list of strings which
-             * represent the promise names:
-             *
-             *      _converse.api.promises.add('myPromise');
-             *
-             * Your plugin should then, when appropriate, resolve the
-             * promise by calling `_converse.api.emit`, which will also
-             * emit an event with the same name as the promise.
-             * For example:
-             *
-             *      _converse.api.emit('operationCompleted');
-             *
-             * Other plugins can then either listen for the event
-             * `operationCompleted` like so:
-             *
-             *      _converse.api.listen.on('operationCompleted', function { ... });
-             *
-             * or they can wait for the promise to be fulfilled like so:
-             *
-             *      _converse.api.waitUntil('operationCompleted', function { ... });
-             */
-        },
-
-        /* If you want to override some function or a Backbone model or
-         * view defined elsewhere in converse.js, then you do that under
-         * the "overrides" namespace.
-         */
-        'overrides': {
-            /* For example, the private *_converse* object has a
-             * method "onConnected". You can override that method as follows:
-             */
-            'onConnected': function () {
-                // Overrides the onConnected method in converse.js
-
-                // Top-level functions in "overrides" are bound to the
-                // inner "_converse" object.
-                var _converse = this;
-
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
@@ -622,25 +549,52 @@
                                 _converse.connection.sendIQ( setVCard(vCard), function(resp)
                                 {
                                     console.debug("set vcard ok", resp);
-                                    _converse.__super__.onConnected.apply(this, arguments);
 
                                 }, function(err) {
                                     console.error("set vcard error", err);
-                                    _converse.__super__.onConnected.apply(this, arguments);
                                 });
                             }
 
                             sourceImage.src = uPort.avatar;
                         }
-                        else {
-                            _converse.__super__.onConnected.apply(this, arguments);
-                        }
                     });
                 }
-                else {
-                    _converse.__super__.onConnected.apply(this, arguments);
+            });
+
+
+            window.addEventListener('message', function (event)
+            {
+                if (event.data.event == "ofmeet.event.xapi")
+                {
+                    console.debug("webmeet xpi handler", h5pViews, event.data);
+
+                    if (event.data.action == "completed")
+                    {
+                        if (h5pViews[event.data.id])
+                        {
+                            console.debug("webmeet xpi handler", h5pViews, event.data);
+
+                            var view = h5pViews[event.data.id];
+                            var nick = _converse.xmppstatus.vcard.get('nickname') || _converse.xmppstatus.vcard.get('fullname') || _converse.connection.jid;
+
+                            if (view.get("message_type") == "groupchat")
+                            {
+                                nick = view.get("nick");
+                            }
+                            var msg = nick + " completed " + event.data.category + " in " + event.data.id + " and scored " + Math.round(event.data.value * 100) / 100 + "%";
+
+                            var attrs = view.getOutgoingMessageAttributes(msg);
+                            view.sendMessage(attrs);
+                        }
+                    }
                 }
-            },
+
+            });
+
+            console.log("webmeet plugin is ready");
+        },
+
+        overrides: {
 
             MessageView: {
 
@@ -805,10 +759,7 @@
                 }
             },
 
-            /* Override converse.js's XMPPStatus Backbone model so that we can override the
-             * function that sends out the presence stanza.
-             */
-            'XMPPStatus': {
+            XMPPStatus: {
                 'sendPresence': function (type, status_message, jid) {
                     // The "_converse" object is available via the __super__
                     // attribute.
@@ -915,11 +866,11 @@
     {
         if (getSetting("converseTimeAgo", false))
         {
-            var moment_time = moment(chat.model.get('time'));
-            var pretty_time = moment_time.format(_converse.time_format);
+            var dayjs_time = dayjs(chat.model.get('time'));
+            var pretty_time = dayjs_time.format(_converse.time_format);
 
             var timeEle = chat.el.querySelector('.chat-msg__time');
-            var timeAgo = moment_time.fromNow(true);
+            var timeAgo = dayjs_time.fromNow(true);
 
             if (timeEle && timeEle.innerHTML)
             {
@@ -930,9 +881,9 @@
 
     var setupContentHandler = function(chat, avRoom, content, callback, chatId, title)
     {
-        var moment_time = moment(chat.model.get('time'));
-        var pretty_time = moment_time.format(_converse.time_format);
-        var time = moment_time.format();
+        var dayjs_time = dayjs(chat.model.get('time'));
+        var pretty_time = dayjs_time.format(_converse.time_format);
+        var time = dayjs_time.format();
 
         var msg_content = document.createElement("div");
         msg_content.setAttribute("class", "message chat-msg groupchat");
@@ -1111,7 +1062,7 @@
         evt.stopPropagation();
         evt.preventDefault();
 
-        _converse.chatboxviews.each(function (view)
+        _converse.chatboxviews.forEach(function (view)
         {
             //console.debug("handleDropFileSelect", view.model.get('type'));
 

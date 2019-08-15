@@ -10,12 +10,13 @@
     var infoDialog = null;
     var Strophe = converse.env.Strophe;
     var $iq = converse.env.$iq;
-    var moment = converse.env.moment;
+    var dayjs = converse.env.dayjs;
+    var panelHTML = {};
 
     converse.plugins.add("info", {
-        'dependencies': [],
+        dependencies: [],
 
-        'initialize': function () {
+        initialize: function () {
             _converse = this._converse;
 
             PreviewDialog = _converse.BootstrapModal.extend({
@@ -73,15 +74,12 @@
 
                     if (occupants)
                     {
-                        var infoElement = occupants.insertAdjacentElement('afterEnd', __newElement('div', null, null, 'plugin-infobox'));
-                        infoElement.style.display = "none";
-
                         var infoButton = __converse.div.parentNode.getElementById("pade-info-" + id);
 
                         if (infoButton) infoButton.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
-                            toggleInfoBar(view, infoElement, id, jid);
+                            toggleInfoBar(view, id, jid);
 
                         }, false);
                     }
@@ -115,8 +113,7 @@
                     {
                         var id = this.model.get("box_id");
                         var jid = this.model.get("jid");
-                        var infoElement = this.el.querySelector('.plugin-infobox');
-                        if (infoElement) toggleInfoBar(this, infoElement, id, jid);
+                        toggleInfoBar(this, id, jid);
                         return true;
                     }
                     else
@@ -216,20 +213,15 @@
         }
     });
 
-    var toggleInfoBar = function(view, infoElement, id, jid)
+    var toggleInfoBar = function(view, id, jid)
     {
-        var chat_area = view.el.querySelector('.chat-area');
+        const chat_area = view.el.querySelector('.chat-area');
+        const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
 
-        if (infoElement.style.display == "none")
+        if (!panelHTML[id])
         {
-            infoElement.style.display = "";
-            removeClass('full', chat_area);
-            removeClass('col-12', chat_area);
-            addClass('col-md-9', chat_area);
-            addClass('col-8', chat_area);
-            addClass('hidden', view.el.querySelector('.occupants'));
-
-            infoElement.innerHTML = getHTML(id, jid);
+            panelHTML[id] = occupants_area.innerHTML;
+            occupants_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
 
             createContentSummary(view, jid, id);
             createMediaContentSummary(jid, id);
@@ -243,12 +235,8 @@
             createBroadcastEndpoints(jid, id);
 
         } else {
-            infoElement.style.display = "none"
-            removeClass('col-md-9', chat_area);
-            removeClass('col-8', chat_area);
-            addClass('full', chat_area);
-            addClass('col-12', chat_area);
-            hideElement(view.el.querySelector('.occupants'));
+            occupants_area.innerHTML = panelHTML[id];
+            panelHTML[id] = null;
         }
         view.scrollDown();
     }
@@ -464,9 +452,9 @@
                     {
                         if (props[i] == "oldest" || props[i] == "joinTime")
                         {
-                            var moment_time = fastpath[props[i]];
-                            moment_time = moment_time.substring(0,4) + "-" + moment_time.substring(4,6) + "-" + moment_time.substring(6);
-                            html += '<tr><td>' + props[i] + '</td><td>' + moment(moment_time).fromNow() + '</td></tr>'
+                            var dayjs_time = fastpath[props[i]];
+                            dayjs_time = dayjs_time.substring(0,4) + "-" + dayjs_time.substring(4,6) + "-" + dayjs_time.substring(6);
+                            html += '<tr><td>' + props[i] + '</td><td>' + dayjs(dayjs_time).fromNow() + '</td></tr>'
                         }
                         else
 
@@ -762,124 +750,119 @@
 
         console.debug("createMediaContentSummary", jid, id);
 
-        _converse.api.archive.query({before: '', max: 999, 'groupchat': true, 'with': jid},
+        _converse.api.archive.query({before: '', max: 999, 'groupchat': true, 'with': jid}).then(function(result) {
+            const messages = result.messages;
+            console.debug("createMediaContentSummary - query", messages);
 
-            function(messages)
+            for (var i=0; i<messages.length; i++)
             {
-                console.debug("createMediaContentSummary - query", messages);
+                var body = messages[i].querySelector('body');
+                var attachTo = messages[i].querySelector('attach-to');
+                var msgId = messages[i].querySelector('forwarded').querySelector('message').getAttribute('id');
+                var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
 
-                for (var i=0; i<messages.length; i++)
+                var timestamp = undefined;
+                var delay = messages[i].querySelector('forwarded').querySelector('delay');
+                if (delay) timestamp = delay.getAttribute('stamp');
+                var stamp = dayjs(timestamp).format('MMM DD YYYY HH:mm:ss');
+
+                console.debug("archived msg", i, from, body, msgId);
+
+                if (body)
                 {
-                    var body = messages[i].querySelector('body');
-                    var attachTo = messages[i].querySelector('attach-to');
-                    var msgId = messages[i].querySelector('forwarded').querySelector('message').getAttribute('id');
-                    var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from').split("/")[1];
+                    if (attachTo) resetReactions(body, attachTo);
 
-                    var timestamp = undefined;
-                    var delay = messages[i].querySelector('forwarded').querySelector('delay');
-                    if (delay) timestamp = delay.getAttribute('stamp');
-                    var stamp = moment(timestamp).format('MMM DD YYYY HH:mm:ss');
+                    var str = body.innerHTML;
+                    var urls = str.match(/((http|https|ftp)?:\/\/[^\s]+)/g);
 
-                    console.debug("archived msg", i, from, body, msgId);
-
-                    if (body)
+                    if (urls && urls.length > 0)
                     {
-                        if (attachTo) resetReactions(body, attachTo);
-
-                        var str = body.innerHTML;
-                        var urls = str.match(/((http|https|ftp)?:\/\/[^\s]+)/g);
-
-                        if (urls && urls.length > 0)
+                        for (var j=0; j<urls.length; j++)
                         {
-                            for (var j=0; j<urls.length; j++)
+                            var pos = urls[j].lastIndexOf("/");
+                            var file = urls[j].substring(pos + 1);
+
+                            console.debug("media", i, j, from, file, urls[j]);
+
+                            if (isAudioMeetingURL(urls[j]))
                             {
-                                var pos = urls[j].lastIndexOf("/");
-                                var file = urls[j].substring(pos + 1);
+                                file = file.substring(file.indexOf(".") + 1);
+                                media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
+                            }
+                            else
 
-                                console.debug("media", i, j, from, file, urls[j]);
+                            if (isVideoMeetingURL(urls[j]))
+                            {
+                                file = file.substring(file.indexOf(".") + 1);
+                                media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
+                            }
+                            else
 
-                                if (isAudioMeetingURL(urls[j]))
-                                {
-                                    file = file.substring(file.indexOf(".") + 1);
-                                    media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
-                                }
-                                else
+                            if (isAudioURL(file))
+                            {
+                                media.vmsg.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
+                            }
+                            else
 
-                                if (isVideoMeetingURL(urls[j]))
-                                {
-                                    file = file.substring(file.indexOf(".") + 1);
-                                    media.recordings.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
-                                }
-                                else
+                            if (isImageURL(file))
+                            {
+                                media.photo.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "image"});
+                            }
+                            else
 
-                                if (isAudioURL(file))
-                                {
-                                    media.vmsg.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "audio"});
-                                }
-                                else
+                            if (isVideoURL(file))
+                            {
+                                media.video.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
+                            }
+                            else
 
-                                if (isImageURL(file))
-                                {
-                                    media.photo.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "image"});
-                                }
-                                else
+                            if (isOnlyOfficeDoc(file))
+                            {
+                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "doc"});
+                            }
+                            else
 
-                                if (isVideoURL(file))
-                                {
-                                    media.video.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "video"});
-                                }
-                                else
+                            if (isH5p(urls[j]))
+                            {
+                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
+                            }
+                            else
 
-                                if (isOnlyOfficeDoc(file))
-                                {
-                                    media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "doc"});
-                                }
-                                else
+                            if (isMeeting(urls[j]))
+                            {
+                                media.meetings.rooms.push({timestamp: stamp, id: msgId, url: urls[j], room: file, from: from, recordings: []});
+                            }
 
-                                if (isH5p(urls[j]))
-                                {
-                                    media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "h5p"});
-                                }
-                                else
-
-                                if (isMeeting(urls[j]))
-                                {
-                                    media.meetings.rooms.push({timestamp: stamp, id: msgId, url: urls[j], room: file, from: from, recordings: []});
-                                }
-
-                                else {
-                                    media.link.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
-                                }
+                            else {
+                                media.link.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: urls[j], from: from, type: "link"});
                             }
                         }
                     }
                 }
-
-                if (getSetting("postVideoRecordingUrl", false))
-                {
-                    renderMeeting(id, media.meetings.rooms);
-
-                    for (var z=0; z<media.meetings.rooms.length; z++)
-                    {
-                        renderMedia(id, media.meetings.rooms[z].room, media.recordings.urls, true);
-                    }
-                }
-
-                renderMedia(id, "vmsg", media.vmsg.urls);
-                renderMedia(id, "photo", media.photo.urls);
-                renderMedia(id, "video", media.video.urls);
-                renderMedia(id, "ppt", media.ppt.urls);
-                renderMedia(id, "link", media.link.urls);
-
-                console.debug("media", media);
-            },
-
-            function(error)
-            {
-                console.error("createMediaContentSummary", error);
-                alert("Timeout error fetching archived messages");
             }
-        );
+
+            if (getSetting("postVideoRecordingUrl", false))
+            {
+                renderMeeting(id, media.meetings.rooms);
+
+                for (var z=0; z<media.meetings.rooms.length; z++)
+                {
+                    renderMedia(id, media.meetings.rooms[z].room, media.recordings.urls, true);
+                }
+            }
+
+            renderMedia(id, "vmsg", media.vmsg.urls);
+            renderMedia(id, "photo", media.photo.urls);
+            renderMedia(id, "video", media.video.urls);
+            renderMedia(id, "ppt", media.ppt.urls);
+            renderMedia(id, "link", media.link.urls);
+
+            console.debug("media", media);
+
+        }).catch(function (err) {
+            console.error("createMediaContentSummary", err);
+            alert("Timeout error fetching archived messages");
+        });
     }
 
     var resetReactions = function(body, attachTo)

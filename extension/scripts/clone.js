@@ -18,5 +18,4 @@ window.addEventListener("load", function()
     link.src = "scripts/converse.js";
     link.async = false;
     head.appendChild(link);
-
 });

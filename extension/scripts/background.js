@@ -380,6 +380,9 @@ window.addEventListener("load", function()
       console.log("Notification.requestPermission", result);
     });
 
+
+    __converse.div = document.documentElement;
+
     chrome.contextMenus.removeAll();
     chrome.contextMenus.create({id: "pade_dnd", type: "checkbox", title: "Do not disturb", contexts: ["browser_action"], onclick: dndCheckClick});
 
@@ -935,18 +938,14 @@ function initConverse()
 
         initialize: function () {
             _converse = this._converse;
-            console.log("background plugin is initializing..", _converse);
-        },
 
-        overrides: {
-            onConnected: function ()
+            _converse.api.listen.on('disconnected', function() {
+                setBadge("wait..", '#ff0000', "Disconnected");
+            });
+
+            _converse.api.listen.on('connected', function()
             {
                 console.log("background plugin is connected", _converse.connection);
-                _converse.__super__.onConnected.apply(this, arguments);
-
-                _converse.api.listen.on('disconnected', function() {
-                    setBadge("wait..", '#ff0000', "Disconnected");
-                });
 
                 const idleTimeout = getSetting("idleTimeout", 300);
                 if (idleTimeout > 0) chrome.idle.setDetectionInterval(idleTimeout);
@@ -976,7 +975,9 @@ function initConverse()
                 if (getSetting("converseAutoReOpen", true)) reopenConverse();
                 pade.isReady = true;
                 console.log("background plugin is ready", _converse);
-            }
+            });
+
+            console.log("background plugin is initializing..", _converse);
         }
     });
 
@@ -1074,11 +1075,12 @@ function initConverse()
       i18n: getSetting("language", "en"),
       jid : anonUser ? pade.domain : pade.username + "@" + pade.domain,
       locked_domain: pade.domain,
-      //message_archiving: "always",
+      message_archiving: "always",
       message_carbons: getSetting("messageCarbons", true),
       muc_domain: "conference." + pade.domain,
       muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
-      muc_nickname_from_jid: false,
+      muc_fetch_members: getSetting("fetchMembersList", false),
+      muc_nickname_from_jid: getSetting("autoCreateNickname", true),
       muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
       nickname: pade.displayName,
       notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
@@ -1105,8 +1107,6 @@ function initConverse()
 
     console.log("converse.initialize", config);
     converse.initialize( config );
-
-    __converse.div = document.documentElement;
 }
 
 function initStrophe()
