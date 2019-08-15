@@ -109,8 +109,6 @@
 
     var createRosterEntry = function(jid, name, groups)
     {
-        _converse.api.chats.open(jid, {fullname: name});
-
         if (bgWindow.pade.chatAPIAvailable)
         {
             var body = {
@@ -133,6 +131,9 @@
             }).catch(function (err) {
                 console.error('createRosterEntry', err, url, options);
             });
+        }
+        else {
+            _converse.api.chats.open(jid, {fullname: name});
         }
     }
 

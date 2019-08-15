@@ -310,6 +310,12 @@
 
                     if (bgWindow)
                     {
+                        if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
+                        {
+                            html = '<a class="fa fa-wrench" title="Open Groupchat Moderator Tools GUI"></a>';
+                            addToolbarItem(view, id, "moderator-tools-" + id, html);
+                        }
+
                         if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
                         {
                             html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
@@ -408,6 +414,15 @@
                             {
                                 doooB(view, id, jid, type);
                             }
+
+                        }, false);
+
+                        var moderatorTools = document.getElementById("moderator-tools-" + id);
+
+                        if (moderatorTools) moderatorTools.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            view.showModeratorToolsModal('');
 
                         }, false);
 

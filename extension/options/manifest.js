@@ -1236,6 +1236,27 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Group Chat"),
+            "name": "fetchMembersList",
+            "type": "checkbox",
+            "label": i18n.get("Fetch Members List")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "autoCreateNickname",
+            "type": "checkbox",
+            "label": i18n.get("Auto Create Nickname")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "moderatorTools",
+            "type": "checkbox",
+            "label": i18n.get("Enable Moderator Tools GUI")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "autoListRooms",
             "type": "checkbox",
             "label": i18n.get("Auto List Rooms")

@@ -578,7 +578,7 @@
                             messageDiv.parentElement.appendChild(messageActionButtons);
                         }
 
-                        if (!messageActionButtons.querySelector('.chat-msg__action-delete') && this.model.get("type") !== 'headline' && !this.isMeCommand() && this.model.get('sender') === 'me')
+                        if (!messageActionButtons.querySelector('.chat-msg__action-delete') && this.model.get("type") !== 'headline' && !this.model.isMeCommand() && this.model.get('sender') === 'me')
                         {
                             var ele = document.createElement("button");
                             ele.classList.add("chat-msg__action", "chat-msg__action-delete", "far", "fa-trash-alt");

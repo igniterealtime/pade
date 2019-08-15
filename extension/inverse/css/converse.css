@@ -10869,7 +10869,7 @@ readers do not read off random characters that represent icons */
   --controlbox-heading-color: #777;
   --controlbox-heading-font-weight: bold;
   --chat-topic-display: none;
-  --chat-info-display: block;   /* BAO */
+  --chat-info-display: none;
   --chat-textarea-background-color: #F6F6F6;
   --chat-correcting-color: #FFFFC0;
   --chat-head-text-color: #999;
@@ -11129,7 +11129,6 @@ body.converse-fullscreen {
   #conversejs input[type=text], #conversejs input[type=password],
   #conversejs button {
     font-size: var(--font-size);
-    padding: 0.25em;
     min-height: 0; }
   #conversejs strong {
     font-weight: 700; }
@@ -11340,7 +11339,7 @@ body.converse-fullscreen {
     width: 1em;
     display: block;
     text-align: center;
-    margin: 2em;
+    padding: 0.5em 0;
     font-size: 24px; }
   #conversejs .left {
     float: left; }
@@ -11549,7 +11548,6 @@ body.converse-fullscreen {
   #conversejs form.converse-form input[type=submit] {
     padding-left: 1em;
     padding-right: 1em;
-    margin: 0.5em 0;
     border: none; }
   #conversejs form.converse-form input.error {
     border: 1px solid var(--error-color);
@@ -12710,6 +12708,16 @@ body.converse-fullscreen {
 #conversejs.converse-overlayed #controlbox #converse-login-panel {
   height: 100%; }
 
+#conversejs #converse-modals .modal-body {
+  margin-bottom: 2em; }
+
+#conversejs #converse-modals .scrollable-container {
+  max-height: 50vh;
+  overflow-y: auto; }
+
+#conversejs #converse-modals .role-form, #conversejs #converse-modals .affiliation-form {
+  padding: 2em 0 1em 0; }
+
 #conversejs #converse-modals .set-xmpp-status {
   margin: 1em; }
   #conversejs #converse-modals .set-xmpp-status .custom-control-label {
@@ -13486,7 +13494,7 @@ body.converse-fullscreen {
   #conversejs .message.chat-msg:hover {
     background-color: rgba(0, 0, 0, 0.035); }
     #conversejs .message.chat-msg:hover .chat-msg__actions .chat-msg__action {
-      display: block; /* BAO */    
+      display: block; /* BAO */        
       opacity: 1; }
   #conversejs .message.chat-msg.correcting.groupchat {
     background-color: var(--chatroom-correcting-color); }
@@ -13572,7 +13580,7 @@ body.converse-fullscreen {
     padding: 0;
     border: none;
     opacity: 0;
-    display: none; /* BAO */    
+    display: none; /* BAO */      
     background: transparent;
     cursor: pointer; }
     #conversejs .message.chat-msg .chat-msg__actions .chat-msg__action:focus {
@@ -13629,7 +13637,7 @@ body.converse-fullscreen {
     width: 100%; }
   #conversejs .message.chat-msg .chat-msg__receipt {
     margin-right: 0.5em;
-    font-size: 8px; /* BAO */        
+    font-size: 8px; /* BAO */      
     color: var(--message-receipt-color); }
 
 #conversejs .chatroom-body .message.onload {

@@ -1,7 +1,8 @@
 if (!window.chrome || !window.chrome.extension)
 {
     var appName = "Pade";
-    var appVer = "1.2.11";
+    var appVer = "1.3.0";
+    var appLanguage = "en";
     var badgeBackgroundColor = {color: '#ff0000'};
     var i18nMessages = {};
 
@@ -10,7 +11,7 @@ if (!window.chrome || !window.chrome.extension)
         appLanguage = JSON.parse(window.localStorage["store.settings.language"]);
     }
 
-    fetch("_locales/" + appLanguage + "/messages.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(messages)
+    fetch("https://" + location.host + "/apps/_locales/" + appLanguage + "/messages.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(messages)
     {
         console.debug("i18nMessages", messages);
         i18nMessages = messages;
