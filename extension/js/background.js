@@ -14,8 +14,7 @@ var pade = {
     userProfiles: {},
     fastpath: {},
     geoloc: {},
-    transferWise: {},
-    startupList: {}
+    transferWise: {}
 }
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";

@@ -61781,7 +61781,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-cha
 
         const auto_join = _converse.auto_join_private_chats.concat(room_jids);
 
-        if (_converse.singleton && !_.includes(auto_join, attrs.jid)) {
+        if (_converse.singleton && !_.includes(auto_join, attrs.jid) && !_converse.auto_join_on_invite) {   // BAO
           const msg = "".concat(attrs.jid, " is not allowed because singleton is true and it's not being auto_joined");
 
           _converse.log(msg, Strophe.LogLevel.WARN);
@@ -67063,7 +67063,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
 
           const chatbox = _.get(this, 'collection.chatbox');
 
-          chatbox.occupants.off('add', this.onOccupantAdded, this);
+          if (chatbox) chatbox.occupants.off('add', this.onOccupantAdded, this);    // BAO
         }
       },
 

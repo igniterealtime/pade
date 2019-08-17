@@ -241,11 +241,14 @@
     background-color: #444 !important; 
 }
 
-#conversejs .message.chat-msg .chat-msg__heading .chat-msg__author{
-    font-weight: bold; 
-    font-size: 100%;    
+#conversejs .chat-msg__time { 
+  width: 120px;   
 }
 
+#conversejs .message.chat-msg .chat-msg__heading .chat-msg__author{
+    font-weight: bold; 
+    font-size: 110%;    
+}
 /* candy colors */
 
 #conversejs span.colored {

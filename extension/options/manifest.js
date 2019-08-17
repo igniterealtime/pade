@@ -405,14 +405,14 @@ this.manifest = {
         },
         {
             "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
+            "group": i18n.get("Fastpath (Workgroups)"),
             "name": "wgEnabled",
             "type": "checkbox",
             "label": i18n.get("Enable Workgroups (Fastpath)")
         },
         {
             "tab": i18n.get("General"),
-            "group": i18n.get("Preferences"),
+            "group": i18n.get("Fastpath (Workgroups)"),
             "name": "wgNotifications",
             "type": "checkbox",
             "label": i18n.get("Enable Workgroup Notifications")
@@ -929,9 +929,9 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "clearCacheAtStartup",
+            "name": "clearCacheOnConnect",
             "type": "checkbox",
-            "label": i18n.get("Clear chat history cache at startup")
+            "label": i18n.get("Clear chat history cache at connection")
         },
         {
             "tab": i18n.get("Converse"),

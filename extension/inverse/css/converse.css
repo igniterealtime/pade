@@ -10865,11 +10865,11 @@ readers do not read off random characters that represent icons */
   --avatar-border-radius: 100%;
   --avatar-border: 0px;
   --avatar-background-color: none;
-  --controlbox-pane-background-color: #333;
+  --controlbox-pane-background-color: #111; /* BAO*/
   --controlbox-heading-color: #777;
   --controlbox-heading-font-weight: bold;
-  --chat-topic-display: none;
-  --chat-info-display: none;
+  --chat-topic-display: block; /* BAO */
+  --chat-info-display: block; /* BAO */
   --chat-textarea-background-color: #F6F6F6;
   --chat-correcting-color: #FFFFC0;
   --chat-head-text-color: #999;

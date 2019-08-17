@@ -22,7 +22,8 @@
         b64_sha1 = converse.env.b64_sha1,
         _ = converse.env._,
         Backbone = converse.env.Backbone,
-        dayjs = converse.env.dayjs;
+        dayjs = converse.env.dayjs,
+        doneIt = false;
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
@@ -264,6 +265,23 @@
                         console.debug("messageAdded h5p", id);
                         h5pViews[id] = data.chatbox;
                     }
+                }
+            });
+
+            _converse.on('message', function (data)
+            {
+                var message = data.stanza;
+                var body = message.querySelector('body');
+                var history = message.querySelector('forwarded');
+
+                if (getSetting("converseTimeAgo", false) && !history && body)
+                {
+                    setTimeout(function()
+                    {
+                        timeago.cancel();
+                        var locale = navigator.language.replace('-', '_');
+                        timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+                    }, 30000);
                 }
             });
 
@@ -759,6 +777,20 @@
             ChatBoxView: {
 
                 renderToolbar: function renderToolbar(toolbar, options) {
+
+                    if (getSetting("converseTimeAgo", false) && !doneIt)
+                    {
+                        doneIt = true;
+
+                        setTimeout(function()
+                        {
+                            console.debug("timeago render");
+                            timeago.cancel();
+                            var locale = navigator.language.replace('-', '_');
+                            timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+                        }, 30000);
+                    }
+
                     var result = this.__super__.renderToolbar.apply(this, arguments);
                     return result;
                 },
@@ -901,17 +933,27 @@
 
     var renderTimeAgoChatMessage = function(chat)
     {
+        var iso8601 = function (date)
+        {
+            return date.getUTCFullYear()
+                + "-" + (date.getUTCMonth()+1)
+                + "-" + date.getUTCDate()
+                + "T" + date.getUTCHours()
+                + ":" + date.getUTCMinutes()
+                + ":" + date.getUTCSeconds() + "Z";
+        }
+
         if (getSetting("converseTimeAgo", false))
         {
             var dayjs_time = dayjs(chat.model.get('time'));
             var pretty_time = dayjs_time.format(_converse.time_format);
 
             var timeEle = chat.el.querySelector('.chat-msg__time');
-            var timeAgo = dayjs_time.fromNow(true);
+            var timeAgo = timeago.format(chat.model.get('time')); //dayjs_time.fromNow(true);
 
             if (timeEle && timeEle.innerHTML)
             {
-                timeEle.innerHTML = pretty_time + " (" + timeAgo + ")";
+                timeEle.innerHTML = '<span class="chat-msg__time_span" title="' + pretty_time + '" datetime="' + iso8601(new Date(chat.model.get('time'))) + '">' + timeAgo + '</span>';
             }
         }
     }

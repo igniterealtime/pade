@@ -1,10 +1,11 @@
 <h1 id="changelog">Changelog</h1>
 
-<p><b>1.3.0</b> -- <i>August ??, 2019</i></p>
+<p><b>1.3.0</b> -- <i>August 17, 2019</i></p>
 <ul>
-    <li>Upgraded to Converse 5.0</li>
     <li>PWA mode now uses browser extension language local files</li>
     <li>Added support for IRMA Identity registration</li>
+    <li>Upgraded to Converse 5.0.1</li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/197">Fixed #197: Time ago is broken in Converse 5.0.1</a></li>
 </ul>
 
 <p><b>1.2.11</b> -- <i>July 20, 2019</i></p>
