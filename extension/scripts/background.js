@@ -20,8 +20,7 @@ var pade = {
     userProfiles: {},
     fastpath: {},
     geoloc: {},
-    transferWise: {},
-    startupList: {}
+    transferWise: {}
 };
 
 var nickColors = {}, callbacks = {}, avatars = {}, __origins = {}, __converse = {}, _converse = null;
@@ -1065,6 +1064,7 @@ function initConverse()
       auto_subscribe: getSetting("autoSubscribe", false),
       auto_join_on_invite: getSetting("autoJoinOnInvite", false),
       bosh_service_url: "https://" + pade.server + "/http-bind/",
+      clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
       debug: getSetting("converseDebug", false),
       default_domain: pade.domain,
       default_state: getSetting("converseOpenState", "online"),
@@ -1082,6 +1082,7 @@ function initConverse()
       muc_fetch_members: getSetting("fetchMembersList", false),
       muc_nickname_from_jid: getSetting("autoCreateNickname", true),
       muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
+      muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", true),
       nickname: pade.displayName,
       notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
       notification_icon: 'image.png',

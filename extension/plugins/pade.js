@@ -175,10 +175,12 @@
             {
                 // The message is at `data.message`
                 // The original chatbox is at `data.chatbox`.
+                console.debug("messageSend", data);
 
                 var id = data.chatbox.get("box_id");
+                var body = data.message.get("message");
 
-                if (getSetting("enableTranslation", false) && !data.message.startsWith("/"))
+                if (getSetting("enableTranslation", false) && !body.startsWith("/"))
                 {
                     const tronId = 'translate-' + id;
 
@@ -186,7 +188,7 @@
                     {
                         if (obj && obj[tronId])
                         {
-                            fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + data.message).then(function(response){ return response.json()}).then(function(json)
+                            fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + body).then(function(response){ return response.json()}).then(function(json)
                             {
                                 console.debug('translation ok', json[0][0][0]);
                                 data.chatbox.sendMessage("*" + json[0][0][0] + "*");
@@ -219,23 +221,6 @@
 
                 if (bgWindow)
                 {
-                    bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: view.model.get("jid"), type: view.model.get("type")};
-
-                    if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
-                    {
-                        console.debug("pade plugin chatRoomOpened", jid);
-                        bgWindow.pade.startupList[jid] = view;
-
-                        setTimeout(function()
-                        {
-                            view.content.innerHTML = '';
-                            view.model.messages.reset();
-                            view.model.messages.browserStorage._clear();
-                            view.close();
-                            _converse.api.rooms.open(jid);
-                        });
-                    }
-
                     bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
                 }
 
@@ -260,20 +245,6 @@
                 if (bgWindow)
                 {
                     bgWindow.pade.autoJoinPrivateChats[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
-
-                    if (bgWindow.pade.startUp && getSetting("clearCacheAtStartup", true) && !bgWindow.pade.startupList[jid])
-                    {
-                        bgWindow.pade.startupList[jid] = view;
-
-                        setTimeout(function()
-                        {
-                            view.content.innerHTML = '';
-                            view.model.messages.reset();
-                            view.model.messages.browserStorage._clear();
-                            view.close();
-                            _converse.api.chats.open(jid);
-                        });
-                    }
                 }
             });
 
@@ -706,11 +677,11 @@
     {
         console.debug("displayReactions", positives, negatives);
 
-        const msgDiv = document.querySelector("#msg-" + msgId + " .chat-msg__text");
+        const msgDiv = __converse.div.parentNode.querySelector("#msg-" + msgId + " .chat-msg__text");
 
         if (msgDiv)
         {
-           let reactionDiv = document.querySelector("#msg-" + msgId + " .chat-msg__reactions");
+           let reactionDiv = __converse.div.parentNode.querySelector("#msg-" + msgId + " .chat-msg__reactions");
 
             if (!reactionDiv)
             {

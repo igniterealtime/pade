@@ -922,9 +922,9 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "clearCacheAtStartup",
+            "name": "clearCacheOnConnect",
             "type": "checkbox",
-            "label": i18n.get("Clear chat history cache at startup")
+            "label": i18n.get("Clear chat history cache at connection")
         },
         {
             "tab": i18n.get("Converse"),

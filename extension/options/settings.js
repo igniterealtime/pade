@@ -1379,7 +1379,7 @@ function doDefaults(background)
 
     // converse
     setDefaultSetting("enableInverse", true);
-    setDefaultSetting("clearCacheAtStartup", true);
+    setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);
@@ -1408,7 +1408,6 @@ function doDefaults(background)
     setDefaultSetting("beeFeedCheck", 10);
     setDefaultSetting("beeKeeperPageSize", 25);
     setDefaultSetting("alwaysShowOccupants", true);
-    setDefaultSetting("autoCreateNickname", true);
     setDefaultSetting("moderatorTools", true);
 
     // web apps
