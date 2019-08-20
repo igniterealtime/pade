@@ -358,12 +358,6 @@
                             addToolbarItem(view, id, "oob-" + id, html);
                         }
 
-                        if (isFileUploadAvailable)
-                        {
-                            html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
-                            addToolbarItem(view, id, "webmeet-screencast-" + id, html);
-                        }
-
                         if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
                         {
                             html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
@@ -388,6 +382,9 @@
                         html = '<a class="fa fa-pencil-alt" title="Notepad"></a>';
                         addToolbarItem(view, id, "webmeet-notepad-" + id, html);
                     }
+
+                    html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
+                    addToolbarItem(view, id, "webmeet-screencast-" + id, html);
 
                     html = '<a class="fa fa-sync" title="Refresh"></a>';
                     addToolbarItem(view, id, "webmeet-refresh-" + id, html);
@@ -775,6 +772,11 @@
             },
 
             ChatBoxView: {
+
+                onPaste(ev) {
+                    console.debug("onPaste", ev);
+                    // TODO Replace jquery paste library with this. For now stop duplication by disabling default converse pasting event handling
+                },
 
                 renderToolbar: function renderToolbar(toolbar, options) {
 

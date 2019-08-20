@@ -1619,6 +1619,8 @@ function uploadApplication(event, settings, background)
                 var putUrl = "https://" + server + "/dashboard/upload?name=" + file.name + "&username=" + username;
                 var req = new XMLHttpRequest();
 
+                settings.manifest.uploadStatus.element.innerHTML = '<b style="color:green">uploading...</b>';
+
                 req.onreadystatechange = function()
                 {
                   if (this.readyState == 4 && this.status >= 200 && this.status < 400)

@@ -725,20 +725,16 @@ const OrderedListView = Backbone.OrderedListView = Backbone.Overview.extend({
       this.items.sort();
 
       const list_el = this.el.querySelector(this.listSelector);
-
-      if (list_el)  // BAO
-      {
-          const div = document.createElement('div');
-          list_el.parentNode.replaceChild(div, list_el);
-          this.items.forEach(item => {
-                let view = this.get(item.get(this.subviewIndex));
-                if (!view) {
-                   view = this.createItemView(item)
-                }
-                list_el.insertAdjacentElement('beforeend', view.el);
-          });
-          div.parentNode.replaceChild(list_el, div);
-      }
+      const div = document.createElement('div');
+      list_el.parentNode.replaceChild(div, list_el);
+      this.items.forEach(item => {
+            let view = this.get(item.get(this.subviewIndex));
+            if (!view) {
+               view = this.createItemView(item)
+            }
+            list_el.insertAdjacentElement('beforeend', view.el);
+      });
+      div.parentNode.replaceChild(list_el, div);
    }
 });
 
@@ -6096,6 +6092,8 @@ Promise$2.polyfill();
 return Promise$2;
 
 })));
+
+
 
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js"), __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
@@ -36668,7 +36666,6 @@ exports.default = vnode;
 },{}]},{},[2])(2)
 });
 
-
 /***/ }),
 
 /***/ "./node_modules/strophe.js/src/bosh.js":
@@ -37516,7 +37513,7 @@ Strophe.Bosh.prototype = {
      */
     _reqToData: function (req) {
         try {
-            return req.getResponse ? req.getResponse() : req; // BAO
+            return req.getResponse();
         } catch (e) {
             if (e.message !== "parsererror") { throw e; }
             this._conn.disconnect("strophe-parsererror");
@@ -39611,12 +39608,6 @@ Strophe.Connection.prototype = {
         return;
     },
 
-    injectMessage: function injectMessage(data) // BAO
-    {
-        const elem = new DOMParser().parseFromString('<wrapper>' + data + '</wrapper>', "text/xml").documentElement;
-        this._dataRecv(elem, data);
-    },
-
     /** Function: send
      *  Send a stanza.
      *
@@ -39631,20 +39622,6 @@ Strophe.Connection.prototype = {
      */
     send: function (elem) {
         if (elem === null) { return ; }
-
-        // BAO - Interceptor for messages sennt to user@pade.domain to be handled by gateway plugin
-
-        if (elem.nodeTree && typeof elem.nodeTree.getAttribute === "function")
-        {
-            const target = elem.nodeTree.getAttribute("to");
-
-            if (target && target.indexOf("pade." + this.domain) > -1)
-            {
-                if (typeof this.injectedMessage === "function") this.injectedMessage(elem.nodeTree);
-                return;
-            }
-        }
-
         if (typeof(elem.sort) === "function") {
             for (let i=0; i < elem.length; i++) {
                 this._queueData(elem[i]);
@@ -47401,13 +47378,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_0__["default"].plugins
       input = input.trim();
       const element = document.createElement("li");
       element.setAttribute("aria-selected", "false");
-
-      const img = document.createElement("img");      // BAO
-      img.setAttribute("src", createAvatar(text));
-      img.setAttribute("width", "22");
-      img.setAttribute("class", "roster-avatar avatar");
-      element.appendChild(img);
-
       const regex = new RegExp("(" + input + ")", "ig");
       const parts = input ? text.split(regex) : [text];
       parts.forEach(txt => {
@@ -48307,23 +48277,15 @@ const AvatarMixin = {
       return;
     }
 
-    if (this.model.vcard) {     // BAO createAvatar
+    if (this.model.vcard) {
       const data = {
         'classes': avatar_el.getAttribute('class'),
         'width': avatar_el.getAttribute('width'),
         'height': avatar_el.getAttribute('height')
       };
-      const image_type = this.model.vcard.get('image_type'),
-            image = this.model.vcard.get('image'), display_name = this.model.vcard.attributes.fullname || this.model.vcard.get('jid');
-
-      if (image && image_type)
-      {
-        data['image'] = "data:" + image_type + ";base64," + image;
-        setAvatar(display_name, data['image']);
-      }
-      else {
-        data['image'] = createAvatar(display_name);
-      }
+      const image_type = this.model.vcard.get('image_type');
+      const image = this.model.vcard.get('image');
+      data['image'] = "data:" + image_type + ";base64," + image;
       avatar_el.outerHTML = templates_avatar_svg__WEBPACK_IMPORTED_MODULE_4___default()(data);
     }
   }
@@ -48867,12 +48829,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
-        'click .chat-msg__action-delete': 'onMessageDeleteButtonClicked',       // BAO
-        'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',         // BAO
-        'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',     // BAO
-        'click .chat-msg__action-pin': 'onMessagePinButtonClicked',             // BAO
-        'click .chat-msg__action-like': 'onMessageLikeButtonClicked',           // BAO
-        'click .chat-msg__action-dislike': 'onMessageDislikeButtonClicked',     // BAO
         'click .chatbox-navback': 'showControlBox',
         'click .close-chatbox-button': 'close',
         'click .new-msgs-indicator': 'viewUnreadMessages',
@@ -48948,13 +48904,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
          * @example _converse.api.listen.on('renderToolbar', view => { ... });
          */
 
-        // BAO
-        var that = this;
-
-        setTimeout(function()
-        {
-            _converse.api.trigger('renderToolbar', that);
-        });
+        _converse.api.trigger('renderToolbar', this);
 
         return this;
       },
@@ -48964,7 +48914,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
         form_container.innerHTML = templates_chatbox_message_form_html__WEBPACK_IMPORTED_MODULE_11___default()(Object.assign(this.model.toJSON(), {
           'message_limit': _converse.message_limit,
           'hint_value': _.get(this.el.querySelector('.spoiler-hint'), 'value'),
-          'label_message': this.model.get('composing_spoiler') ? __('Hidden message') : __('Type message, drag and drop or paste picture here'), // BAO
+          'label_message': this.model.get('composing_spoiler') ? __('Hidden message') : __('Message'),
           'label_send': __('Send'),
           'label_spoiler_hint': __('Optional hint'),
           'message_value': _.get(this.el.querySelector('.chat-textarea'), 'value'),
@@ -49459,14 +49409,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
         }
       },
 
-      modifyChatBody(text) {    // BAO
-          return text;
-      },
-
       async onFormSubmitted(ev) {
         ev.preventDefault();
         const textarea = this.el.querySelector('.chat-textarea');
-        const message_text = this.modifyChatBody(textarea.value.trim());    // BAO
+        const message_text = textarea.value.trim();
 
         if (_converse.message_limit && message_text.length > _converse.message_limit || !message_text.replace(/\s/g, '').length) {
           return;
@@ -49507,12 +49453,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
            * @type { _converse.Message }
            * @example _converse.api.listen.on('messageSend', message => { ... });
            */
-          //_converse.api.trigger('messageSend', message);
-
-            _converse.api.trigger('messageSend', {  // BAO
-              'message': message,
-              'chatbox': this.model
-            });
+          _converse.api.trigger('messageSend', message);
         }
 
         textarea.removeAttribute('disabled');
@@ -49590,10 +49531,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
             const textarea = this.el.querySelector('.chat-textarea');
 
             if (!textarea.value || _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].hasClass('correcting', textarea)) {
-              if (getSetting("UseUpDownCursorKeys", false)) return this.editEarlierMessage();   // BAO
+              return this.editEarlierMessage();
             }
           } else if (ev.keyCode === _converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length && _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].hasClass('correcting', this.el.querySelector('.chat-textarea'))) {
-            if (getSetting("UseUpDownCursorKeys", false)) return this.editLaterMessage(); // BAO
+            return this.editLaterMessage();
           }
         }
 
@@ -49624,162 +49565,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
         }
 
         this.insertIntoTextArea('', true, false);
-      },
-
-      onMessageReplyButtonClicked(ev) { // BAO
-        ev.preventDefault();
-
-        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].ancestor(ev.target, '.chat-msg');
-        const msgId = message_el.getAttribute('data-msgid');
-        const message = this.model.messages.findWhere({'msgid': msgId});
-        const type = message.get('type');
-        const prefix = (type == "groupchat") ? message.get('nick') + ": " : "";
-
-        let replyMessage = window.getSelection().toString();
-
-        if (!replyMessage || replyMessage == "")
-        {
-            const text = message.get('message');
-            let pos = text.indexOf("\n");
-            replyMessage = pos == -1 ? text : text.substring(0, pos);
-        }
-
-        this.insertIntoTextArea('>' + prefix + replyMessage + "\n\n", false, false);
-        __origins['>' + prefix + replyMessage] = msgId;
-      },
-
-      onMessageForwardButtonClicked(ev) { // BAO
-        ev.preventDefault();
-
-        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].ancestor(ev.target, '.chat-msg');
-        const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
-
-        if (chrome.storage)
-        {
-            chrome.storage.local.get("pade.notepad", function(obj) {
-                console.debug("get pade.notepad", obj);
-
-                if (!obj["pade.notepad"]) obj["pade.notepad"] = "";
-
-                obj["pade.notepad"] = obj["pade.notepad"] + "\n\n" + message;
-
-                chrome.storage.local.set(obj, function() {
-                  console.debug('set pade.notepad', obj);
-                });
-            });
-        }
-      },
-
-      onMessageLikeButtonClicked(ev) { // BAO
-        ev.preventDefault();
-
-        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].ancestor(ev.target, '.chat-msg');
-        const msgId = message_el.getAttribute('data-msgid');
-        const message = this.model.messages.findWhere({'msgid': msgId});
-        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
-        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
-
-        let postfix = "";
-
-        if (message)
-        {
-            const type = message.get('type');
-            let text = message.get('message');
-            let pos = text.indexOf("\n");
-            text = pos == -1 ? text : text.substring(0, pos);
-            postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
-
-            console.debug('onMessageLikeButtonClicked', msgId, from, type);
-
-            if (msgId && msgId.trim() != "")
-            {
-                _converse.connection.send($msg({type: type, 'to': from})
-                    .c("body").t(":thumbsup:" + postfix).up()
-                    .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
-            }
-        }
-      },
-
-      onMessageDislikeButtonClicked(ev) { // BAO
-        ev.preventDefault();
-
-        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].ancestor(ev.target, '.chat-msg');
-        const msgId = message_el.getAttribute('data-msgid');
-        const message = this.model.messages.findWhere({'msgid': msgId});
-        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
-        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
-
-        let postfix = "";
-
-        if (message)
-        {
-            const type = message.get('type');
-            let text = message.get('message');
-            let pos = text.indexOf("\n");
-            text = pos == -1 ? text : text.substring(0, pos);
-            postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
-
-            console.debug('onMessageDislikeButtonClicked', msgId, from);
-
-            if (msgId && msgId.trim() != "")
-            {
-                _converse.connection.send($msg({type: type, 'to': from})
-                    .c("body").t(":thumbsdown:" + postfix).up()
-                    .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
-            }
-        }
-      },
-
-      onMessagePinButtonClicked(ev) { // BAO
-        ev.preventDefault();
-
-        const message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].ancestor(ev.target, '.chat-msg');
-        const msg = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
-        const message = msg.get('message');
-        const type = msg.get('type');
-        const prefix = (type == "groupchat") ? msg.get('nick') + ": " : "";
-
-        let pos = message.indexOf("\n");
-
-        const pinnedMessage = prefix + (pos == -1 ? message : message.substring(0, pos));
-        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
-        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
-        const msgId = message_el.getAttribute('data-msgid');
-
-        if (chrome.storage)
-        {
-            let pinned = {};
-
-            chrome.storage.local.get('pinned', function(data) {
-                if (data && data.pinned) pinned = data.pinned;
-                pinned[from + "-" + msgId] = {from: from, msgId: msgId, message: pinnedMessage, nick: nick};
-
-                chrome.storage.local.set({pinned: pinned}, function() {
-                  console.debug('chrome.storage is set for pinned', pinned);
-                });
-            });
-        }
-      },
-
-      onMessageDeleteButtonClicked(ev) {    // BAO
-        ev.preventDefault();
-        const idx = this.model.messages.findLastIndex('correcting'),
-              currently_correcting = idx >= 0 ? this.model.messages.at(idx) : null,
-              message_el = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].ancestor(ev.target, '.chat-msg'),
-              message = this.model.messages.findWhere({
-          'msgid': message_el.getAttribute('data-msgid')
-        });
-
-        if (currently_correcting !== message) {
-          if (!_.isNil(currently_correcting)) {
-            currently_correcting.save('correcting', false);
-          }
-
-          message.save('correcting', true);
-          this.model.sendMessage("** deleted **");
-        } else {
-          message.save('correcting', false);
-        }
       },
 
       onMessageEditButtonClicked(ev) {
@@ -52097,12 +51882,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
         text = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_11__["default"].geoUriToHttp(text, _converse.geouri_replacement);
         text = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_11__["default"].addMentionsMarkup(text, this.model.get('references'), this.model.collection.chatbox);
         text = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_11__["default"].addHyperlinks(text);
-
-        if (getSetting("useMarkdown", true))   // BAO
-        {
-            text = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_11__["default"].addMarkdown(text);
-        }
-
         text = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_11__["default"].renderNewLines(text);
         text = _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_11__["default"].addEmoji(_converse, text);
         /**
@@ -53874,19 +53653,12 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
       events: {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
-        'click .chat-msg__action-delete': 'onMessageDeleteButtonClicked',       // BAO
-        'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',         // BAO
-        'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',     // BAO
-        'click .chat-msg__action-pin': 'onMessagePinButtonClicked',             // BAO
-        'click .chat-msg__action-like': 'onMessageLikeButtonClicked',           // BAO
-        'click .chat-msg__action-dislike': 'onMessageDislikeButtonClicked',     // BAO
         'click .chatbox-navback': 'showControlBox',
         'click .close-chatbox-button': 'close',
         'click .configure-chatroom-button': 'getAndRenderConfigurationForm',
         'click .hide-occupants': 'hideOccupants',
         'click .new-msgs-indicator': 'viewUnreadMessages',
         'click .occupant-nick': 'onOccupantClicked',
-        'click .occupant-avatar': 'onOccupantAvatarClicked',                    // BAO
         'click .send-button': 'onFormSubmitted',
         'click .show-room-details-modal': 'showRoomDetailsModal',
         'click .toggle-call': 'toggleCall',
@@ -54228,18 +54000,15 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
       updateOccupantsToggle() {
         const icon_el = this.el.querySelector('.toggle-occupants');
         const chat_area = this.el.querySelector('.chat-area');
-        const occupants_area = this.el.querySelector('.occupants.col-md-3.col-4');  // BAO
 
         if (this.model.get('hidden_occupants')) {
           u.removeClass('fa-angle-double-right', icon_el);
           u.addClass('fa-angle-double-left', icon_el);
           u.addClass('full', chat_area);
-          u.addClass('hiddenx', occupants_area);    // BAO
         } else {
           u.addClass('fa-angle-double-right', icon_el);
           u.removeClass('fa-angle-double-left', icon_el);
           u.removeClass('full', chat_area);
-          u.removeClass('hiddenx', occupants_area); // BAO
         }
       },
 
@@ -54280,14 +54049,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
         this.insertIntoTextArea(ev.target.textContent);
       },
 
-      // BAO
-      onOccupantAvatarClicked(ev) {
-        /* When an occupant avatar is clicked, open private chatbox
-         */
-            const jid = ev.target.getAttribute('data-room-jid');
-            if (Strophe.getNodeFromJid(jid) && jid && _converse.bare_jid != jid) _converse.api.chats.open(jid);
-      },
-
       verifyRoles(roles, occupant) {
         let show_error = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -54304,8 +54065,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
             'jid': _converse.bare_jid
           });
         }
-
-        if (!occupant) return false;    // BAO
 
         const role = occupant.get('role');
 
@@ -54336,8 +54095,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
             'jid': _converse.bare_jid
           });
         }
-
-        if (!occupant) return false;    // BAO
 
         const a = occupant.get('affiliation');
 
@@ -55285,26 +55042,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
       },
 
       toHTML() {
-        const display_name = this.model.get('nick') || this.model.get('jid');   // BAO
-        let image = createAvatar(display_name);
-        const rosterJid = this.model.get('jid');
-
-        if (rosterJid)
-        {
-            const item = _converse.roster.get(rosterJid);
-
-            if (item)
-            {
-                image = "data:" + item.vcard.attributes.image_type + ";base64," + item.vcard.attributes.image;
-                setAvatar(display_name, image);
-            }
-        }
         const show = this.model.get('show');
         return templates_occupant_html__WEBPACK_IMPORTED_MODULE_25___default()(Object.assign({
           '_': _,
           'jid': '',
           'show': show,
-          'image': image,                                   // BAO
           'hint_show': _converse.PRETTY_CHAT_STATUS[show],
           'hint_occupant': __('Click to mention %1$s in your message.', this.model.get('nick')),
           'desc_moderator': __('This user is a moderator.'),
@@ -55410,8 +55152,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
 
       setOccupantsHeight() {
         const el = this.el.querySelector('.chatroom-features');
-        const oList = this.el.querySelector('.occupant-list'); // BAO
-        if (oList) this.el.querySelector('.occupant-list').style.cssText = "height: calc(100% - ".concat(el.offsetHeight, "px - 5em);");
+        this.el.querySelector('.occupant-list').style.cssText = "height: calc(100% - ".concat(el.offsetHeight, "px - 5em);");
       },
 
       promptForInvite(suggestion) {
@@ -57628,7 +57369,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
     } = _converse;
 
     _converse.api.settings.update({
-      'show_client_info': false // BAO
+      'show_client_info': true
     });
 
     _converse.ProfileModal = _converse.BootstrapModal.extend({
@@ -57791,10 +57532,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           '__': __,
           'modal_title': __('About'),
           'version_name': _converse.VERSION_NAME,
-          //'first_subtitle': __('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
-          //'second_subtitle': __('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
-          'first_subtitle': getSetting("enableTransferWise", false) ? "<img height='16' src='plugins/css/images/transferwise.svg' />" : "",
-          'second_subtitle': "", //__('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
+          'first_subtitle': __('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
+          'second_subtitle': __('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
         }));
       }
 
@@ -57805,8 +57544,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         "click a.show-profile": "showProfileModal",
         "click a.change-status": "showStatusChangeModal",
         "click .show-client-info": "showClientInfoModal",
-        "click .show-preferences": "showPreferences",                       // BAO
-        "click .show-active-conversations": "showActiveConversations",      // BAO
         "click .logout": "logOut"
       },
 
@@ -57825,8 +57562,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
           '_converse': _converse,
           'title_change_settings': __('Change settings'),
           'title_change_status': __('Click to change your chat status'),
-          'title_preferences': __('Click to open Preferences/Options window'),            // BAO
-          'title_conversations': __('Click to toggle conversations view'),                // BAO
           'title_log_out': __('Log out'),
           'info_details': __('Show details about this chat client'),
           'title_your_profile': __('Your profile')
@@ -57855,19 +57590,6 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins
         }
 
         this.status_modal.show(ev);
-      },
-
-      showActiveConversations(ev) { // BAO
-        handleActiveConversations();
-      },
-
-      showPreferences(ev) { // BAO
-
-        if (chrome.extension)
-        {
-            var url = chrome.extension.getURL("options/index.html");
-            chrome.extension.getBackgroundPage().openWebAppsWindow(url, null, 1300, 950);
-        }
       },
 
       showClientInfoModal(ev) {
@@ -58958,7 +58680,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_2__["default"].plugins
             'jid': room.get('jid')
           }));
 
-          return bookmark ? bookmark.get('name') : room.get('name');    // BAO
+          return bookmark.get('name');
         } else {
           return room.get('name');
         }
@@ -59599,8 +59321,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_7__["default"].plugins
       },
 
       shouldBeVisible() {
-        //return _converse.roster && _converse.roster.length >= 5 || this.isActive();
-        return _converse.roster && getSetting("converseRosterFilter") && _converse.roster.length >= 5 || this.isActive();
+        return _converse.roster && _converse.roster.length >= 5 || this.isActive();
       },
 
       showOrHide() {
@@ -59762,23 +59483,11 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_7__["default"].plugins
           status_icon = 'fa fa-minus-circle chat-status chat-status--busy';
         }
 
-        // BAO
-        const display_name = item.getDisplayName() || item.vcard.get('jid');
-        let dataUri = "data:" + item.vcard.attributes.image_type + ";base64," + item.vcard.attributes.image;
-
-        if (!item.vcard.attributes.image ||_converse.DEFAULT_IMAGE == item.vcard.attributes.image)
-        {
-            dataUri = createAvatar(display_name);
-        }
-        else {
-            setAvatar(display_name, dataUri);
-        }
-
+        const display_name = item.getDisplayName();
         this.el.innerHTML = templates_roster_item_html__WEBPACK_IMPORTED_MODULE_14___default()(Object.assign(item.toJSON(), {
           'display_name': display_name,
           'desc_status': STATUSES[show],
           'status_icon': status_icon,
-          'dataUri': dataUri,   // BAO
           'desc_chat': __('Click to chat with %1$s (JID: %2$s)', display_name, item.get('jid')),
           'desc_remove': __('Click to remove %1$s as a contact', display_name),
           'allow_contact_removal': _converse.allow_contact_removal,
@@ -62162,19 +61871,6 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-cha
           }
         }
 
-        if (message.get('thread'))       // BAO
-        {
-            stanza.c("thread").t(message.get('thread')).root();
-        }
-
-        if (message.get('msg_attach_to'))       // BAO
-        {
-            stanza.c("attach-to", {
-                'xmlns': "urn:xmpp:message-attaching:1",
-                'id': message.get('msg_attach_to')
-            }).root();
-        }
-
         (message.get('references') || []).forEach(reference => {
           const attrs = {
             'xmlns': Strophe.NS.REFERENCE,
@@ -62215,19 +61911,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-cha
 
       getOutgoingMessageAttributes(text, spoiler_hint) {
         const is_spoiler = this.get('composing_spoiler');
+
         const origin_id = _converse.connection.getUniqueId();
-        let attach_to = undefined;                          // BAO
-
-        if (text)
-        {
-            const key = text.split("\n")[0];
-
-            if (__origins[key])
-            {
-                attach_to = __origins[key];
-                delete __origins[key];
-            }
-        }
 
         return {
           'id': origin_id,
@@ -62243,9 +61928,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-cha
           'message': text ? u.httpToGeoUri(u.shortnameToUnicode(text), _converse) : undefined,
           'is_spoiler': is_spoiler,
           'spoiler_hint': is_spoiler ? spoiler_hint : undefined,
-          'type': this.get('message_type'), // BAO
-          'thread': this.get('thread'),
-          'msg_attach_to': attach_to
+          'type': this.get('message_type')
         };
       },
 
@@ -62486,15 +62169,6 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-cha
           if (attrs.from === _converse.bare_jid) {
             attrs.sender = 'me';
             attrs.fullname = _converse.xmppstatus.get('fullname');
-
-            // BAO
-            // handle unthreaded messages
-
-            if (getSetting("showUnThreaded", false))
-            {
-                const subject = this.get('subject');
-                if (!attrs.thread && !attrs.subject && subject) attrs.thread = subject.text;    // use trending topic/subject for unthreaded messages
-            }
           } else {
             attrs.sender = 'them';
             attrs.fullname = this.get('fullname');
@@ -62502,15 +62176,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-cha
         }
 
         sizzle("x[xmlns=\"".concat(Strophe.NS.OUTOFBAND, "\"]"), stanza).forEach(xform => {
-          var oobUrl = xform.querySelector('url');
-          var oobDesc = xform.querySelector('desc');
-
-          if (oobUrl) attrs['oob_url'] = oobUrl.textContent;
-          if (oobDesc) attrs['oob_desc'] = oobDesc.textContent;    // BAO
-        });
-
-        _.each(sizzle(`attach-to[xmlns="urn:xmpp:message-attaching:1"]`, stanza), attach => {   // BAO
-              attrs['msg_attach_to'] = attach.getAttribute('id');
+          attrs['oob_url'] = xform.querySelector('url').textContent;
+          attrs['oob_desc'] = xform.querySelector('url').textContent;
         });
 
         if (spoiler) {
@@ -63939,10 +63606,7 @@ _converse.initialize = async function (settings, callback) {
   // Module-level functions
   // ----------------------
 
-  //this.generateResource = () => "/converse.js-".concat(Math.floor(Math.random() * 139749528).toString());
-  // BAO
-  this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${_converse.VERSION_NAME}-${BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS}-${Math.floor(Math.random() * 139749528).toString()}`;
-
+  this.generateResource = () => "/converse.js-".concat(Math.floor(Math.random() * 139749528).toString());
   /**
    * Send out a Client State Indication (XEP-0352)
    * @private
@@ -67063,7 +66727,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
 
           const chatbox = _.get(this, 'collection.chatbox');
 
-          if (chatbox) chatbox.occupants.off('add', this.onOccupantAdded, this);    // BAO
+          chatbox.occupants.off('add', this.onOccupantAdded, this);
         }
       },
 
@@ -67571,18 +67235,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
         [text, references] = this.parseTextForReferences(text);
 
         const origin_id = _converse.connection.getUniqueId();
-        let attach_to = undefined;                          // BAO
 
-        if (text)
-        {
-            const key = text.split("\n")[0];
-
-            if (__origins[key])
-            {
-                attach_to = __origins[key];
-                delete __origins[key];
-            }
-        }
         return {
           'id': origin_id,
           'msgid': origin_id,
@@ -67596,9 +67249,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
           'references': references,
           'sender': 'me',
           'spoiler_hint': is_spoiler ? spoiler_hint : undefined,
-          'type': 'groupchat', // BAO
-          'thread': this.get('thread'),
-          'msg_attach_to': attach_to
+          'type': 'groupchat'
         };
       },
 
@@ -67950,8 +67601,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
           }
 
           if (!_.isEmpty(changes)) {
-              const occupant = this.getOwnOccupant(); // BAO
-              if (occupant) occupant.save(changes);
+            this.getOwnOccupant().save(changes);
           }
         }
       },
@@ -68349,8 +67999,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
        * @method _converse.ChatRoom#subjectChangeHandled
        * @param { object } attrs - The message attributes
        */
-      subjectChangeHandled(attrs, forwarded) {                                  // BAO
-        if (attrs.subject && !attrs.thread && !attrs.message&& !forwarded) {    // BAO
+      subjectChangeHandled(attrs) {
+        if (attrs.subject && !attrs.thread && !attrs.message) {
           // https://xmpp.org/extensions/xep-0045.html#subject-mod
           // -----------------------------------------------------
           // The subject is changed by sending a message of type "groupchat" to the <room@service>,
@@ -68541,18 +68191,9 @@ _converse_core__WEBPACK_IMPORTED_MODULE_4__["default"].plugins.add('converse-muc
 
         const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
 
-        // BAO
-        if (attrs.nick && !this.subjectChangeHandled(attrs, forwarded) && !this.ignorableCSN(attrs) && (attrs['chat_state'] || !_utils_form__WEBPACK_IMPORTED_MODULE_5__["default"].isEmptyMessage(attrs))) {
+        if (attrs.nick && !this.subjectChangeHandled(attrs) && !this.ignorableCSN(attrs) && (attrs['chat_state'] || !_utils_form__WEBPACK_IMPORTED_MODULE_5__["default"].isEmptyMessage(attrs))) {
           const msg = this.correctMessage(attrs) || this.messages.create(attrs);
           this.incrementUnreadMsgCounter(msg);
-
-          // BAO
-
-          if (forwarded && msg && msg.get('sender') === 'me') {
-            msg.save({
-              'received': converse.env.dayjs().format()
-            });
-          }
         }
 
         _converse.api.trigger('message', {
@@ -69736,7 +69377,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
 
     _converse.api.promises.add(['cachedRoster', 'roster', 'rosterContactsFetched', 'rosterGroupsFetched', 'rosterInitialized']);
 
-    _converse.HEADER_CURRENT_CONTACTS = __('My Contacts');  // BAO
+    _converse.HEADER_CURRENT_CONTACTS = __('My contacts');
     _converse.HEADER_PENDING_CONTACTS = __('Pending contacts');
     _converse.HEADER_REQUESTING_CONTACTS = __('Contact requests');
     _converse.HEADER_UNGROUPED = __('Ungrouped');
@@ -70314,8 +69955,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
         } catch (e) {
           _converse.log(e, Strophe.LogLevel.ERROR);
 
-          // BAO
-          // alert(__('Sorry, there was an error while trying to add %1$s as a contact.', name || jid));
+          alert(__('Sorry, there was an error while trying to add %1$s as a contact.', name || jid));
           return e;
         }
 
@@ -71604,8 +71244,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins.add('converse-vca
             const jid = model.get('jid');
 
             if (!jid) {
-              //throw new Error("No JID to get vcard for!");
-              return Promise.resolve({});   // BAO
+              throw new Error("No JID to get vcard for!");
             }
 
             return getVCard(_converse, jid);
@@ -94166,7 +93805,7 @@ function convert(unicode) {
 _core__WEBPACK_IMPORTED_MODULE_2__["default"].isSingleEmoji = function (str) {
   str = str.trim();
 
-  if (!str || str.length > 3 && (!str.startsWith(':') || !str.endsWith(':'))) { // BAO
+  if (!str || str.length > 2 && !str.startsWith(':')) {
     return;
   }
 
@@ -94202,34 +93841,6 @@ _core__WEBPACK_IMPORTED_MODULE_2__["default"].shortnameToUnicode = function (str
     return m2 + convert(unicode);
   });
   return str;
-};
-
-  // BAO - do markdown to HTML
-
-_core__WEBPACK_IMPORTED_MODULE_2__["default"].addMarkdown = function (text)
-{
-        var renderer = new marked.Renderer();
-        markedForms(renderer);
-        var markedText = marked(text.replace(/&gt;+/g, '>'), {renderer: renderer});
-        var checkText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
-
-        //console.debug("addMarkdown", markedText, checkText, text);
-
-        if (markedText.indexOf(checkText) > -1 || markedText.indexOf(text) > -1)
-        {
-            markedText = text;    // dummy paragraph, use original text
-        }
-
-        // BAO do candy-chat color
-        markedText = markedText.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
-
-        // BAO do hashtags
-        markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span data-hashtag='$2' title='hashtag' class='badge badge-hash-tag'>$2</span>");
-
-        // BAO do mentions
-        markedText = markedText.replace(/(^|\s)@([a-z\d-]+)/ig, "$1<span data-mention='$2' title='mention' class='mention mention--self badge badge-info'>$2</span>");
-
-        return markedText;
 };
 
 _core__WEBPACK_IMPORTED_MODULE_2__["default"].addEmoji = function (_converse, text) {
@@ -94706,8 +94317,8 @@ __e(o.jid) +
 '">\n    <a class="list-item-link open-room w-100" data-room-jid="' +
 __e(o.jid) +
 '" title="' +
-__e(o.open_title) + // BAO
-'" href="#"><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="22" width="22">' +
+__e(o.open_title) +
+'" href="#">' +
 __e(o.name) +
 '</a>\n    <a class="list-item-action remove-bookmark fa fa-bookmark align-self-center ';
  if (o.bookmarked) { ;
@@ -95452,23 +95063,8 @@ __p += ' title="' +
 __e(o.jid) +
 '" ';
  } ;
- __p += ' ><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="36" width="36">\n        '; // BAO <begin>
-  if (o.name && o.name !== o.Strophe.getNodeFromJid(o.jid)) { ;
- __p += '\n            ' +
- __e( o.name ) +
- '\n        ';
-  } else if (o._converse.locked_muc_domain === 'hidden') { ;
- __p += '\n            ' +
- __e( o.Strophe.getNodeFromJid(o.jid) ) +
- '\n        ';
-  } else { ;
- __p += '\n            ' +
- __e( o.Strophe.getNodeFromJid(o.jid) ) +
- '@' +
- __e( o.Strophe.getDomainFromJid(o.jid) ) +
- '\n        ';
- } ;                                                                                                            // BAO <end>
-__p += '\n        ' +
+__p += ' >\n        ' +
+__e( o.title ) +
 '\n    </div>\n    <!-- Sanitized in converse-muc-views. We want to render links. -->\n    <p class="chatroom-description">' +
 ((__t = (o.description)) == null ? '' : __t) +
 '</p>\n</div>\n<div class="chatbox-buttons row no-gutters">\n    ';
@@ -95619,8 +95215,8 @@ var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/client_info_modal.html -->\n<!-- Change status Modal -->\n<div class="modal" id="modal-status-change" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="changeStatusModalLabel">' +
 __e(o.modal_title) +
 '</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
-__e(o.label_close) + // BAO
-'">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body">\n                <div class="container brand-heading-container">\n                    <h6 class="brand-heading"><i class="icon-conversejs"></i>' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h6>\n                    <p class="brand-subtitle">' +
+__e(o.label_close) +
+'">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body">\n                <div class="container brand-heading-container">\n                    <h6 class="brand-heading">Converse</h6>\n                    <p class="brand-subtitle">' +
 __e(o.version_name) +
 '</p>\n                    <p class="brand-subtitle">' +
 ((__t = (o.first_subtitle)) == null ? '' : __t) +
@@ -95846,7 +95442,7 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/file_progress.html -->\n<div id="msg-' + __e(o.msgid) + '" class="message chat-msg" data-isodate="' + // BAO
+__p += '<!-- src/templates/file_progress.html -->\n<div class="message chat-msg" data-isodate="' +
 __e(o.time) +
 '" data-msgid="' +
 __e(o.msgid) +
@@ -96236,10 +95832,9 @@ return __p
 var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./node_modules/lodash/escape.js")};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-// BAO
-__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div class="row">\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading"><img src="../image.png"/>&nbsp;' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h1>\n        <p class="brand-subtitle">' +
+__p += '<!-- src/templates/inverse_brand_heading.html -->\n<div>\n    <div class="container brand-heading-container">\n        <h1 class="brand-heading brand-heading--inverse">\n            <svg class="converse-svg-logo"\n                xmlns:svg="http://www.w3.org/2000/svg"\n                xmlns="http://www.w3.org/2000/svg"\n                xmlns:xlink="http://www.w3.org/1999/xlink"\n                viewBox="0 0 364 364">\n                <title>Converse</title>\n                <g class="cls-1" id="g904">\n                    <g data-name="Layer 2">\n                        <g data-name="Layer 7">\n                            <path\n                                class="cls-3"\n                                d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" />\n                            <path\n                                class="cls-4"\n                                d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" />\n                        </g>\n                    </g>\n                </g>\n            </svg>\n            <span class="brand-name">\n                <span class="brand-name__text">converse<span class="subdued">.js</span></span>\n                <p class="byline">messaging freedom</p>\n            </span>\n        </h1>\n        <p class="brand-subtitle">' +
 __e(o.version_name) +
-'</p>\n</div>\n</div>\n';
+'</p>\n        <p class="brand-subtitle"><a target="_blank" rel="nofollow" href="https://conversejs.org">Open Source</a> XMPP chat client brought to you by <a target="_blank" rel="nofollow" href="https://opkode.com">Opkode</a> </p>\n        <p class="brand-subtitle"><a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">Translate</a> it into your own language</p>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -96364,7 +95959,7 @@ var _ = {escape:__webpack_require__(/*! ./node_modules/lodash/escape.js */ "./no
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/message.html -->\n<div id="msg-' + __e(o.msgid) + '" class="message chat-msg ' + // BAO
+__p += '<!-- src/templates/message.html -->\n<div class="message chat-msg ' +
 __e(o.type);
  if (o.is_me_message) { ;
 __p += ' chat-msg--action ';
@@ -96718,10 +96313,7 @@ __e( o.jid ) +
 __e( o.hint_occupant ) +
 '"\n    ';
  } ;
-// BAO
-//__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n            <div class="occupant-status occupant-' +
-__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n<img data-room-jid="' + o.jid + '" class="occupant-avatar room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
-
+__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n            <div class="occupant-status occupant-' +
 __e(o.show) +
 ' circle" title="' +
 __e(o.hint_show) +
@@ -96923,13 +96515,8 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/profile_view.html -->\n<div class="userinfo controlbox-padded">\n<div class="controlbox-section profile d-flex">\n    <a class="show-profile" href="#">\n        <canvas class="avatar align-self-center" height="40" width="40"></canvas>\n    </a>\n    <span class="username w-100 align-self-center">' +
-__e(o.fullname) + '</span>\n    ' + // BAO <begins>
-'<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="' +
-__e(o.title_conversations) +
-'"></a>\n    ' +
-'<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="' +
-__e(o.title_preferences) +
-'"></a>\n    ';                                                                              // BAO <ends>
+__e(o.fullname) +
+'</span>\n    ';
  if (o._converse.show_client_info) { ;
 __p += '\n        <a class="controlbox-heading__btn show-client-info fa fa-info-circle align-self-center" title="' +
 __e(o.info_details) +
@@ -97022,7 +96609,7 @@ __e(o.default_domain) +
 '\n            </div>\n            ';
  } else { ;
 __p += '\n                <input class="form-control" autofocus="autofocus" required="required" type="text" name="domain" placeholder="' +
-__e(o.domain_placeholder) + '" value="' + __e(o.domain_placeholder) + // BAO
+__e(o.domain_placeholder) +
 '"/>\n                <p class="form-text text-muted">' +
 __e(o.help_providers) +
 ' <a href="' +
@@ -97346,8 +96933,8 @@ __e( o.num_unread ) +
 __p += '\n<a class="list-item-link open-room available-room w-100"\n    data-room-jid="' +
 __e(o.jid) +
 '"\n    title="' +
-__e(o.open_title) + // BAO
-'" href="#"><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="22" width="22">' +
+__e(o.open_title) +
+'" href="#">' +
 __e(o.name || o.jid) +
 '</a>\n\n';
  if (o.allow_bookmarks) { ;
@@ -97553,8 +97140,8 @@ __p += '<!-- src/templates/roster_item.html -->\n<a class="list-item-link cbox-l
 __p += ' unread-msgs ';
  } ;
 __p += '"\n   title="' +
-__e(o.desc_chat) +  // BAO
-'" href="#">\n<img width="22" height="22" src="' + o.dataUri + '" class="roster-avatar avatar" />    <span class="' +
+__e(o.desc_chat) +
+'" href="#">\n    <span class="' +
 __e(o.status_icon) +
 '" title="' +
 __e(o.desc_status) +

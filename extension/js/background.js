@@ -908,6 +908,7 @@ function handleContact(contact)
         {
             urlMenu = {parentId: "pade_h5p", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleH5pClick};
             if (!pade.activeH5p) pade.activeH5p = contact.url;
+            pade.collabDocs[contact.url] = contact.name;
             chrome.contextMenus.create(urlMenu);
 
         } else {

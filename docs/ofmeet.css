@@ -58,7 +58,7 @@
     box-sizing: border-box; }
     .lwc-chat-button .unreadMessageIndicator .heading {
       padding: 0;
-      color: white;
+      color: white;      
       margin: 0;
       font-weight: 500;
       font-size: 10px;
