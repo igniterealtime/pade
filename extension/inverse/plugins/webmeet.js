@@ -27,7 +27,7 @@
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
-     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null;
+     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null;
 
      // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -137,6 +137,49 @@
                     }
                     document.execCommand("cut");
 
+                }
+            });
+
+            QRCodeDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                  var title = this.model.get("title");
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">' + title + '</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body"></div>' +
+                         '<div class="modal-status">Please scan the QR code with your IRMA app</div>' +
+                         '<div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button></div>' +
+                         '</div> </div> </div>';
+                },
+                afterRender() {
+                    var that = this;
+                    var qrcode = this.model.get("qrcode");
+
+                    this.el.addEventListener('shown.bs.modal', function()
+                    {
+                        if (qrcode)
+                        {
+                            that.el.querySelector('.modal-body').appendChild(qrcode);
+                        }
+
+                    }, false);
+                },
+                events: {
+                    "click .btn-danger": "clearQRCode",
+                },
+
+                clearQRCode() {
+                    var callback = this.model.get("callback");
+                    if (callback) callback();
+                },
+                startSession() {
+                    this.el.querySelector('.modal-status').innerHTML = "Please follow the instructions in your IRMA app";
+                },
+                endSession() {
+                   this.modal.hide();
                 }
             });
 
@@ -273,7 +316,7 @@
                 var message = data.stanza;
                 var body = message.querySelector('body');
                 var history = message.querySelector('forwarded');
-
+/*
                 if (getSetting("converseTimeAgo", false) && !history && body)
                 {
                     setTimeout(function()
@@ -283,6 +326,7 @@
                         timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
                     }, 30000);
                 }
+*/
             });
 
             _converse.api.listen.on('chatRoomOpened', function (view)
@@ -328,6 +372,18 @@
 
                     if (bgWindow)
                     {
+                        if (getSetting("verifyContact", false) && view.model.get('type') === "chatbox" && view.model.get("jid") != "rss@pade." + _converse.connection.domain)
+                        {
+                            html = '<a class="plugin-irma fa" title="Click to verify identity by IRMA"><img src="/irma/irma.png" style="height:20px;margin-bottom:-5px;"/></a>';
+                            addToolbarItem(view, id, "webmeet-irma-" + id, html);
+
+                            html = '<a class="plugin-uport fa" title="Click to verify identity by uPort"><img src="/uport/uport.png" style="height:20px;margin-bottom:-5px;"/></a>';
+                            addToolbarItem(view, id, "webmeet-uport-" + id, html);
+
+                            html = '<a class="plugin-eid fa" title="Click to verify identity by E-ID"><img src="/e-id/e-id.png" style="height:20px;margin-bottom:-5px;"/></a>';
+                            addToolbarItem(view, id, "webmeet-eid-" + id, html);
+                        }
+
                         if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
                         {
                             html = '<a class="fa fa-wrench" title="Open Groupchat Moderator Tools GUI"></a>';
@@ -394,6 +450,7 @@
 
                     html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
                     addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
+
 
                     // file upload by drag & drop
 
@@ -550,11 +607,27 @@
 
                     }, false);
 
+                    var irma = document.getElementById("webmeet-irma-" + id);
+
+                    if (irma)
+                    {
+                        irma.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            verifyIrma(view);
+
+                        }, false);
+                    }
                 });
             });
 
             _converse.api.listen.on('connected', function()
             {
+                if (getSetting("verifyContact", false))
+                {
+                    setupIrma();
+                }
+
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
@@ -782,15 +855,15 @@
 
                     if (getSetting("converseTimeAgo", false) && !doneIt)
                     {
-                        doneIt = true;
+                        doneIt = true; // make sure we get called only once
 
-                        setTimeout(function()
+                        setInterval(function()
                         {
                             console.debug("timeago render");
                             timeago.cancel();
                             var locale = navigator.language.replace('-', '_');
                             timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
-                        }, 30000);
+                        }, 60000);
                     }
 
                     var result = this.__super__.renderToolbar.apply(this, arguments);
@@ -849,6 +922,7 @@
             }
         }
     });
+
 
     var openTasks = function(view)
     {
@@ -1256,6 +1330,120 @@
         .c("TITLE").t(user.title).up()
 */
         return iq;
+    }
+
+    var verifyIrma = function(view)
+    {
+        const sprequest = {
+            "data": "foobar",
+            "validity": 60,
+            "request": {
+                "content": [
+                    {
+                        "label": "username",
+                        "attributes": ["pbdf.pbdf.mijnirma.email"]
+                    },
+                    {
+                        "label": "email",
+                        "attributes": ["pbdf.pbdf.email.email"]
+                    },
+                    {
+                        "label": "phone number",
+                        "attributes": ["pbdf.pbdf.mobilenumber.mobilenumber"]
+                    }
+                ]
+            }
+        };
+
+        const jwt = IRMA.createUnsignedVerificationJWT(sprequest);
+        //const jid = view.model.get("jid");
+        const jid = Strophe.getBareJidFromJid(_converse.jid);
+        const permission = chrome.i18n.getMessage("uport_permission");
+        const url =  "https://" + getSetting("server") + "/rest/api/restapi/v1/ask/irma/reveal/" + jid;
+        const options = {method: "POST", headers: {"authorization": permission, "accept": "application/json"}, "body": jwt};
+
+        console.debug("fetch irma/reveal", url, options);
+
+        fetch(url, options).then(function(response){ return response.text()}).then(function(data)
+        {
+            console.debug("fetch irma/reveal", data);
+
+            if (data == '"TIMEOUT"' || data == '"ERROR"' || data == '"CANCELLED"')
+            {
+                console.error('irma/reveal', data);
+                alert("IRMA verification  of " + jid + " failed");
+            }
+            else {
+                console.log("Authentication successful token:", data);
+                setVerifiedAttributes(data, view.model.get("jid"));
+            }
+
+        }).catch(function (err) {
+            console.error('irma/reveal', err);
+        });
+    }
+
+    var setupIrma = function()
+    {
+        var qrcodeDialog = null;
+
+        var success_fun = function(data)
+        {
+            var json = jwt_decode(data);
+            console.log("Authentication successful token:", data, json);
+        }
+        var cancel_fun = function() {
+            console.error("IRMA Authentication cancelled!");
+        }
+        var error_fun = function() {
+            console.error("Authentication failed!");
+        }
+
+        IRMA.init("https://demo.irmacard.org/tomcat/irma_api_server/api/v2/");
+
+        _converse.connection.addHandler(function(message)
+        {
+            console.debug('irma handler', message);
+
+            var cancelIrma = function()
+            {
+                console.debug('irma cancelled');
+            }
+
+            $(message).find('irma').each(function ()
+            {
+                const action = $(this).attr('action');
+
+                if (action == "reveal")
+                {
+                    console.debug("irma/reveal", $(this).text());
+
+                    const json = JSON.parse($(this).text());
+                    qrcodeDialog = IRMA.processInitialServerMessage(json, success_fun, cancel_fun, error_fun, QRCodeDialog);
+                }
+                else
+
+                if (action == "status")
+                {
+                    const status = $(this).text()
+                    console.debug("irma/status", status);
+                }
+                else
+
+                if (action == "done")
+                {
+                    const jwt = $(this).text()
+                    const json = jwt_decode(jwt);
+                    console.debug("irma/done", json);
+
+                    if (qrcodeDialog) qrcodeDialog.modal.hide();
+                }
+
+            });
+
+            return true;
+
+        }, "http://igniterealtime.org/xmlns/xmpp/irma", 'message');
     }
 
     var toggleScreenCast = function(view)

@@ -113,6 +113,7 @@ var apiServer;
 var apiServerNew;
 var action;
 var actionPath;
+var qrcodeDialog;
 
 var statusWebsocket;
 
@@ -243,6 +244,7 @@ function userCancelled() {
 }
 
 function sendSessionToPopup() {
+
     $("#irma-qrcode").empty().append(kjua({
         text: JSON.stringify(sessionPackage),
         size: 230,
@@ -250,6 +252,7 @@ function sendSessionToPopup() {
     }));
     $("#irma-spinner").hide();
     $(".irma-option-container").show();
+
 }
 
 function showMessageOnPopup(id) {
@@ -362,6 +365,7 @@ function setAndCheckCallbacks(success_cb, cancel_cb, failure_cb) {
 
 function showPopup() {
     if (ua === UserAgent.Desktop) {
+
         // Popup code
         log(Loglevel.Info, "Trying to open popup");
         var serverPage;
@@ -463,11 +467,48 @@ function handleInitialServerMessage(xhr, scounter) {
     startSession();
 }
 
+function processInitialServerMessage(sessionData, success_cb, cancel_cb, failure_cb, QRCodeDialog)
+{
+    action = Action.Verifying;
+    actionPath = apiServer + (apiServerNew ? "session" : "verification/");
+
+    setAndCheckCallbacks(success_cb, cancel_cb, failure_cb);
+    clearState();
+    qrcodeDialog = new QRCodeDialog({'model': new converse.env.Backbone.Model({title: 'IRMA Verification', callback: userCancelled}) });
+
+
+    if (apiServerNew) {
+        sessionId = sessionData.token;
+        sessionData = sessionData.sessionPtr;
+    } else {
+        sessionId = sessionData.u;
+    }
+
+    if (typeof sessionId === "undefined") {
+        failure(ErrorCodes.ProtocolError.Sessiondata, "Field 'u' or 'v' missing in initial server message");
+        return;
+    }
+
+    log(Loglevel.Info, "Setting sessionPackage");
+    sessionPackage = sessionData;
+
+    if (!apiServerNew) {
+        sessionPackage.u = actionPath + sessionId;
+    }
+    log(Loglevel.Info, "sessionPackage", sessionPackage);
+
+    qrcodeDialog.model.set("qrcode", kjua({text: JSON.stringify(sessionPackage), size: 230, crisp: false}));
+    qrcodeDialog.show();
+
+    state = State.SessionStarted;
+    return qrcodeDialog;
+}
+
 function startSession() {
-    setupClientMonitoring();
+    //setupClientMonitoring();
     setupFallbackMonitoring();
     setupTimeoutMonitoring();
-    connectClientToken();
+    //connectClientToken();
 
     sendSessionToPopup();
     state = State.SessionStarted;
@@ -630,6 +671,7 @@ function handleStatusMessageSessionStarted(msg) {
                 log(Loglevel.Info, "Client device has connected with the server");
                 state = State.ClientConnected;
                 showMessageOnPopup("Messages.FollowInstructions");
+                if (qrcodeDialog) qrcodeDialog.startSession();
             }
             break;
         default:
@@ -645,7 +687,7 @@ function handleStatusMessageClientConnected(msg) {
 
             state = State.Done;
             closePopup();
-            closeWebsocket();
+            //closeWebsocket();
 
             if (action === Action.Verifying) finishVerification();else if (action === Action.Issuing) finishIssuance();else if (action === Action.Signing) finishSigning();
             break;
@@ -679,9 +721,12 @@ function finishSigning() {
 }
 
 function closePopup() {
-    if (ua !== UserAgent.Android) {
-        log(Loglevel.Info, "Closing popup");
-        $("#irma-server-modal").modal("hide");
+    if (qrcodeDialog) qrcodeDialog.endSession();
+    else {
+        if (ua !== UserAgent.Android) {
+            log(Loglevel.Info, "Closing popup");
+            $("#irma-server-modal").modal("hide");
+        }
     }
 }
 
@@ -709,7 +754,7 @@ function timeoutSession() {
     log(Loglevel.Info, "Session timeout");
     state = State.Timeout;
 
-    closeWebsocket();
+    //closeWebsocket();
     closePopup();
     cancelTimers();
     cancelCallback(ErrorCodes.Timeout, "Session timeout, please try again");
@@ -823,6 +868,7 @@ function checkInit() {
 }
 
 exports.init = init;
+exports.kjua = kjua;
 exports.setLang = setLang;
 exports.sign = sign;
 exports.verify = verify;
@@ -836,6 +882,7 @@ exports.createUnsignedIssuanceJWT = createUnsignedIssuanceJWT;
 exports.createUnsignedVerificationJWT = createUnsignedVerificationJWT;
 exports.createUnsignedSignatureJWT = createUnsignedSignatureJWT;
 exports.ErrorCodes = ErrorCodes;
+exports.processInitialServerMessage = processInitialServerMessage;
 
 },{"./languages/en.js":2,"./languages/nl.js":3,"bootstrap":4,"jwt-decode":18,"kjua":21}],2:[function(require,module,exports){
 "use strict";
@@ -3324,7 +3371,7 @@ module.exports = function (token) {
   if (!token) {
     throw new Error('Invalid token specified');
   }
-  
+
   return json_parse(base64_url_decode(token.split('.')[1]));
 };
 

@@ -1,9 +1,14 @@
 /* pade plugins for converse */
 
-.pade-preview-image {
+#conversejs .pade-preview-image {
     max-width: -webkit-fill-available;
 }
 
+#conversejs .badge-verified {
+  color: orange;
+  margin-left: 5px;
+}
+  
 #conversejs table {
     color: #333;
     border-collapse:

@@ -1406,7 +1406,8 @@ function doDefaults(background)
 
     // converse
     setDefaultSetting("enableInverse", true);
-    setDefaultSetting("clearCacheOnConnect", true);
+    // TODO - fix this
+    //setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);
@@ -1430,13 +1431,15 @@ function doDefaults(background)
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
-    setDefaultSetting("enableRssFeeds", true);
+    // most people dont want this
+    //setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 10);
     setDefaultSetting("beeFeedCheck", 10);
     setDefaultSetting("beeKeeperPageSize", 25);
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("moderatorTools", true);
-    setDefaultSetting("converseTimeAgo", true);
+    // CPU intensive
+    //setDefaultSetting("converseTimeAgo", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com");

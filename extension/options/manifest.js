@@ -1094,9 +1094,16 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "UseUpDownCursorKeys",
+            "name": "useUpDownCursorKeys",
             "type": "checkbox",
             "label": i18n.get("Use UP & DOWN cursor keys to edit messages")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "enableMessageRetraction",
+            "type": "checkbox",
+            "label": i18n.get("Enable message retraction action")
         },
         {
             "tab": i18n.get("Converse"),
@@ -1182,6 +1189,13 @@ this.manifest = {
             "name": "broadcastThreading",
             "type": "checkbox",
             "label": i18n.get("Broadcast threading to groupchat")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
+            "name": "verifyContact",
+            "type": "checkbox",
+            "label": i18n.get("Verify Contact Identity")
         },
         {
             "tab": i18n.get("Converse"),

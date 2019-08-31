@@ -12937,7 +12937,7 @@ body.converse-fullscreen {
 
 #conversejs.converse-embedded .badge-room-color,
 #conversejs .badge-room-color {
-  background-color: var(--chatroom-head-color); }
+  background-color: red; /*var(--chatroom-head-color); BAO */ }
 
 #conversejs.converse-embedded .add-chatroom input[type="submit"],
 #conversejs.converse-embedded .add-chatroom input[type="button"],

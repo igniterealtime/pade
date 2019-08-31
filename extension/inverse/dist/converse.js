@@ -49590,10 +49590,10 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
             const textarea = this.el.querySelector('.chat-textarea');
 
             if (!textarea.value || _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].hasClass('correcting', textarea)) {
-              if (getSetting("UseUpDownCursorKeys", false)) return this.editEarlierMessage();   // BAO
+              if (getSetting("useUpDownCursorKeys", false)) return this.editEarlierMessage();   // BAO
             }
           } else if (ev.keyCode === _converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length && _converse_headless_utils_emoji__WEBPACK_IMPORTED_MODULE_23__["default"].hasClass('correcting', this.el.querySelector('.chat-textarea'))) {
-            if (getSetting("UseUpDownCursorKeys", false)) return this.editLaterMessage(); // BAO
+            if (getSetting("useUpDownCursorKeys", false)) return this.editLaterMessage(); // BAO
           }
         }
 
@@ -49776,7 +49776,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_8__["default"].plugins
           }
 
           message.save('correcting', true);
-          this.model.sendMessage("** deleted **");
+          this.model.sendMessage("** retracted **");
         } else {
           message.save('correcting', false);
         }
@@ -52135,7 +52135,9 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
           'time': time.toISOString(),
           'extra_classes': this.getExtraMessageClasses(),
           'label_show': __('Show more'),
-          'username': this.model.getDisplayName()
+          'username': this.model.getDisplayName(),
+          'verified': isJidVerified(this.model.get('from')),             // BAO
+          'verified_label': getVerifiedAttributes(this.model.get('from'))
         })));
         const url = this.model.get('oob_url');
 
@@ -52240,8 +52242,8 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins
           if (this.model.occupant) {
             extra_classes += " ".concat(this.model.occupant.get('role') || '', " ").concat(this.model.occupant.get('affiliation') || '');
           }
-
-          if (this.model.get('sender') === 'them' && this.model.collection.chatbox.isUserMentioned(this.model)) {
+          // BAO
+          if (this.model.get('sender') === 'them' && typeof this.model.collection.chatbox.isUserMentioned === 'function' && this.model.collection.chatbox.isUserMentioned(this.model)) {
             // Add special class to mark groupchat messages
             // in which we are mentioned.
             extra_classes += ' mentioned';
@@ -55314,7 +55316,9 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
           'label_visitor': __('Visitor'),
           'label_owner': __('Owner'),
           'label_member': __('Member'),
-          'label_admin': __('Admin')
+          'label_admin': __('Admin'),
+          'verified': isJidVerified(this.model.get('jid')),            // BAO
+          'verified_label': getVerifiedAttributes(this.model.get('jid'))
         }, this.model.toJSON()));
       },
 
@@ -96408,7 +96412,8 @@ o.roles.forEach(function (role) { ;
 __p += ' <span class="badge badge-secondary">' +
 __e(role) +
 '</span> ';
- }); ;
+ });
+__p += '\n                    <span title="' + o.verified_label + '" class="' + getVerifiedClass(o.verified, o.from) + '"></span>\n'; // BAO
 __p += '\n                <time timestamp="' +
 __e(o.isodate) +
 '" class="chat-msg__time">' +
@@ -96757,6 +96762,7 @@ __p += '\n                    <span class="badge badge-secondary">' +
 __e(o.label_visitor) +
 '</span>\n                ';
  } ;
+__p += '\n                    <span title="' + o.verified_label + '" class="' + getVerifiedClass(o.verified, o.jid) + '"></span>\n'; // BAO
 __p += '\n            </span>\n        </div>\n    </div>\n</li>\n';
 return __p
 };

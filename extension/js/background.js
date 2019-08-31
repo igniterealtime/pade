@@ -3311,6 +3311,7 @@ function updateVCardAvatar(jid, avatar)
 
 function createAvatar(nickname, width, height, font)
 {
+    if (!nickname) nickname = "Anonymous";
     nickname = nickname.toLowerCase();
 
     if (avatars[nickname])

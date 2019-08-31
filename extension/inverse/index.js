@@ -1,5 +1,5 @@
 var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-var __origins = {};
+var __origins = {}, __irmaVerifications = {};
 
 window.addEventListener("unload", function()
 {
@@ -741,4 +741,45 @@ function addToolbarItem(view, id, label, html)
         }
         placeHolder.insertAdjacentElement('afterEnd', __newElement('li', label, html));
     }
+}
+
+function isJidVerified(jid)
+{
+    return !!__irmaVerifications[jid];
+}
+
+function getVerifiedAttributes(jid)
+{
+    let attrs = "IRMA Verified Attributes:\n";
+
+    if (__irmaVerifications[jid])
+    {
+        attrs = attrs + "Email: " + __irmaVerifications[jid].attributes["pbdf.pbdf.email.email"] + "\n" + "Phone: " + __irmaVerifications[jid].attributes["pbdf.pbdf.mobilenumber.mobilenumber"]
+    }
+    return attrs;
+}
+
+function setVerifiedAttributes(data, target)
+{
+    var token = jwt_decode(data);
+    var id = target.replace('@', '_');
+
+    __irmaVerifications[target] = token;
+
+    var items = document.querySelectorAll('.badge-' + id);
+
+    for (var i=0; i<items.length; i++)
+    {
+        items[i].title = getVerifiedAttributes(target);
+        items[i].classList.add('fa-certificate');
+    }
+}
+
+function getVerifiedClass(verified, jid)
+{
+    if (!jid) return '';
+    const id = jid.replace("@", "_");
+    let className = 'fas badge-verified badge-' + id;
+    if (verified) className = className + ' fa-certificate';
+    return className;
 }
