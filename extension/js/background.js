@@ -4257,13 +4257,10 @@ function searchConversations(keyword, callback)
 
 function pdfConversations(keyword, callback)
 {
-    var query = keyword && keyword != "" ? "?keywords=" + keyword : "";
     var url = "https://" + getSetting("server") + "/dashboard/pdf?keywords=" + keyword;
-    //var url = "https://" + pade.server + "/rest/api/restapi/v1/chat/" + pade.username + "/pdf" + query;
     var options = {method: "GET", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
 
     console.debug("pdfConversations", url, options);
-    var conversations = [];
 
     fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
     {

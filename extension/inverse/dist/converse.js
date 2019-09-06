@@ -54286,8 +54286,7 @@ _converse_headless_converse_core__WEBPACK_IMPORTED_MODULE_6__["default"].plugins
       onOccupantAvatarClicked(ev) {
         /* When an occupant avatar is clicked, open private chatbox
          */
-            const jid = ev.target.getAttribute('data-room-jid');
-            if (Strophe.getNodeFromJid(jid) && jid && _converse.bare_jid != jid) _converse.api.chats.open(jid);
+            occupantAvatarClicked(ev, this); // BAO
       },
 
       verifyRoles(roles, occupant) {
@@ -66338,7 +66337,8 @@ _converse_core__WEBPACK_IMPORTED_MODULE_3__["default"].plugins.add('converse-mam
 
     _converse.onMAMError = function (iq) {
       if (iq.querySelectorAll('feature-not-implemented').length) {
-        _converse.log("Message Archive Management (XEP-0313) not supported by this server", Strophe.LogLevel.WARN);
+        // BAO
+        //_converse.log("Message Archive Management (XEP-0313) not supported by this server", Strophe.LogLevel.WARN);
       } else {
         _converse.log("An error occured while trying to set archiving preferences.", Strophe.LogLevel.ERROR);
 
@@ -71426,7 +71426,7 @@ _converse_core__WEBPACK_IMPORTED_MODULE_1__["default"].plugins.add('converse-vca
       },
 
       getDisplayName() {
-        return this.get('nickname') || this.get('fullname') || this.get('jid');
+        return this.get('fullname') || this.get('nickname') || this.get('jid'); // BAO
       }
 
     });
@@ -96719,18 +96719,18 @@ __p += '\n    ';
  if (!o._.includes(["visitor", "participant", "moderator"], o.role)) { ;
 __p += '\n       title="' +
 __e( o.jid ) +
-' ' +
-__e( o.hint_occupant ) +
+//' ' +
+//__e( o.hint_occupant ) +  // BAO
 '"\n    ';
  } ;
 // BAO
 //__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n            <div class="occupant-status occupant-' +
-__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n<img data-room-jid="' + o.jid + '" class="occupant-avatar room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
+__p += '>\n    <div class="row no-gutters">\n        <div title="' + (o.jid ? 'Click to verify or start private chat with ' + o.jid : '') + '" class="col-auto">\n<img data-room-nick="' + o.nick + '" data-room-jid="' + o.jid + '" class="occupant-avatar room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
 
 __e(o.show) +
 ' circle" title="' +
 __e(o.hint_show) +
-'"></div>\n        </div>\n        <div class="col occupant-nick-badge">\n            <span class="occupant-nick">' +
+'"></div>\n        </div>\n        <div title="' + o.hint_occupant + '" class="col occupant-nick-badge">\n            <span class="occupant-nick">' +
 __e(o.nick || o.jid) +
 '</span>\n            <span class="occupant-badges">\n                ';
  if (o.affiliation === "owner") { ;

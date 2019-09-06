@@ -27,7 +27,7 @@
 
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
-     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null;
+     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null, PDFDialog = null, pdfDialog = null;
 
      // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -183,6 +183,45 @@
                 }
             });
 
+            PDFDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">Save a PDF of Conversation</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body">' +
+                         '  <label for="pdf-start" class="col-form-label">Start:</label>' +
+                         '  <input id="pdf-start" type="text" class="form-control" name="pdf-start"/>' +
+                         '  <label for="pdf-end" class="col-form-label">End:</label>' +
+                         '  <input id="pdf-end" type="text" class="form-control" name="pdf-end"/>' +
+                         '</div>' +
+                         '<div class="modal-footer"> <button title="Save PDF" type="button" class="btn btn-success btn-save" data-dismiss="modal">Save</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>' +
+                         '</div> </div> </div>';
+                },
+                afterRender() {
+                    var that = this;
+
+                    this.el.addEventListener('shown.bs.modal', function()
+                    {
+                        flatpickr('#pdf-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(dayjs().startOf('day'))});
+                        flatpickr('#pdf-end', {dateFormat: 'Z', enableTime: true, defaultDate: new Date()});
+
+                    }, false);
+                },
+                events: {
+                    "click .btn-save": "savePDF",
+                },
+
+                savePDF() {
+                    var view = this.model.get("view");
+                    const start = this.el.querySelector("#pdf-start").value;
+                    const end = this.el.querySelector("#pdf-end").value;
+                    saveToPDF(view, start, end);
+                }
+            });
+
             GeoLocationDialog = _converse.BootstrapModal.extend({
                 initialize() {
                     _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
@@ -316,17 +355,6 @@
                 var message = data.stanza;
                 var body = message.querySelector('body');
                 var history = message.querySelector('forwarded');
-/*
-                if (getSetting("converseTimeAgo", false) && !history && body)
-                {
-                    setTimeout(function()
-                    {
-                        timeago.cancel();
-                        var locale = navigator.language.replace('-', '_');
-                        timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
-                    }, 30000);
-                }
-*/
             });
 
             _converse.api.listen.on('chatRoomOpened', function (view)
@@ -372,16 +400,15 @@
 
                     if (bgWindow)
                     {
-                        if (getSetting("verifyContact", false) && view.model.get('type') === "chatbox" && view.model.get("jid") != "rss@pade." + _converse.connection.domain)
+                        if (!isJidVerified(jid) && getSetting("verifyContact", false) && view.model.get('type') === "chatbox" && view.model.get("jid") != "rss@pade." + _converse.connection.domain)
                         {
-                            html = '<a class="plugin-irma fa" title="Click to verify identity by IRMA"><img src="/irma/irma.png" style="height:20px;margin-bottom:-5px;"/></a>';
+                            html = '<a class="plugin-irma fa fa-certificate" title="Click to verify identity by IRMA"></a>';
                             addToolbarItem(view, id, "webmeet-irma-" + id, html);
 
+                            /*
                             html = '<a class="plugin-uport fa" title="Click to verify identity by uPort"><img src="/uport/uport.png" style="height:20px;margin-bottom:-5px;"/></a>';
                             addToolbarItem(view, id, "webmeet-uport-" + id, html);
-
-                            html = '<a class="plugin-eid fa" title="Click to verify identity by E-ID"><img src="/e-id/e-id.png" style="height:20px;margin-bottom:-5px;"/></a>';
-                            addToolbarItem(view, id, "webmeet-eid-" + id, html);
+                            */
                         }
 
                         if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
@@ -402,10 +429,27 @@
                             addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
                         }
 
-                        if (bgWindow.pade.activeH5p && bgWindow.pade.chatAPIAvailable)
+                        if (bgWindow.pade.chatAPIAvailable)
                         {
-                            var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                            addToolbarItem(view, id, "h5p-" + id, html);
+                            const domain = Strophe.getDomainFromJid(jid);
+
+                            if (domain == 'conference.' + _converse.connection.domain || domain == _converse.connection.domain)
+                            {
+                                html = '<a class="far fa-file-pdf" title="Save conversation to PDF"></a>';
+                                addToolbarItem(view, id, "webmeet-savepdf-" + id, html);
+                            }
+
+                            if (bgWindow.pade.activeH5p)
+                            {
+                                var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
+                                addToolbarItem(view, id, "h5p-" + id, html);
+                            }
+
+                            if (getSetting("enableBlast", false))   // check for chat api plugin
+                            {
+                                html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
+                                addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+                            }
                         }
 
                         if (bgWindow.pade.activeUrl && getSetting("enableCollaboration", false))
@@ -414,11 +458,6 @@
                             addToolbarItem(view, id, "oob-" + id, html);
                         }
 
-                        if (getSetting("enableBlast", false) && bgWindow.pade.chatAPIAvailable)   // check for chat api plugin
-                        {
-                            html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
-                            addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
-                        }
 
                         if (getSetting("webinarMode", false) && bgWindow.pade.ofmeetUrl)
                         {
@@ -614,8 +653,21 @@
                         irma.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
-                            verifyIrma(view);
+                            const jid = view.model.get("jid");
+                            verifyIrma(jid, view);
 
+                        }, false);
+                    }
+
+                    var savePDF = document.getElementById("webmeet-savepdf-" + id);
+
+                    if (savePDF)
+                    {
+                        savePDF.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            pdfDialog = new PDFDialog({'model': new converse.env.Backbone.Model({view: view}) });
+                            pdfDialog.show();
                         }, false);
                     }
                 });
@@ -1025,7 +1077,7 @@
             var pretty_time = dayjs_time.format(_converse.time_format);
 
             var timeEle = chat.el.querySelector('.chat-msg__time');
-            var timeAgo = timeago.format(chat.model.get('time')); //dayjs_time.fromNow(true);
+            var timeAgo = timeago.format(chat.model.get('time'));
 
             if (timeEle && timeEle.innerHTML)
             {
@@ -1332,56 +1384,6 @@
         return iq;
     }
 
-    var verifyIrma = function(view)
-    {
-        const sprequest = {
-            "data": "foobar",
-            "validity": 60,
-            "request": {
-                "content": [
-                    {
-                        "label": "username",
-                        "attributes": ["pbdf.pbdf.mijnirma.email"]
-                    },
-                    {
-                        "label": "email",
-                        "attributes": ["pbdf.pbdf.email.email"]
-                    },
-                    {
-                        "label": "phone number",
-                        "attributes": ["pbdf.pbdf.mobilenumber.mobilenumber"]
-                    }
-                ]
-            }
-        };
-
-        const jwt = IRMA.createUnsignedVerificationJWT(sprequest);
-        //const jid = view.model.get("jid");
-        const jid = Strophe.getBareJidFromJid(_converse.jid);
-        const permission = chrome.i18n.getMessage("uport_permission");
-        const url =  "https://" + getSetting("server") + "/rest/api/restapi/v1/ask/irma/reveal/" + jid;
-        const options = {method: "POST", headers: {"authorization": permission, "accept": "application/json"}, "body": jwt};
-
-        console.debug("fetch irma/reveal", url, options);
-
-        fetch(url, options).then(function(response){ return response.text()}).then(function(data)
-        {
-            console.debug("fetch irma/reveal", data);
-
-            if (data == '"TIMEOUT"' || data == '"ERROR"' || data == '"CANCELLED"')
-            {
-                console.error('irma/reveal', data);
-                alert("IRMA verification  of " + jid + " failed");
-            }
-            else {
-                console.log("Authentication successful token:", data);
-                setVerifiedAttributes(data, view.model.get("jid"));
-            }
-
-        }).catch(function (err) {
-            console.error('irma/reveal', err);
-        });
-    }
 
     var setupIrma = function()
     {
@@ -1821,6 +1823,43 @@
     {
         const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
         callback(result.length > 0);
+    }
+
+    var saveToPDF = function(view, start, end)
+    {
+        if (!start) start = dayjs().startOf('day').toISOString();
+        if (!end) end = dayjs().toISOString();
+
+        const type = view.model.get('type');
+        const jid = view.model.get('jid');
+
+        let query = "?start=" + start + "&end=" + end;
+
+        if (type === "chatbox")
+        {
+            query = query + "&to=" + jid;
+        }
+        else {
+            query = query + "&service=conference&room=" + Strophe.getNodeFromJid(jid);
+        }
+
+        const url = "https://" + getSetting("server") + "/dashboard/pdf" + query;
+        const options = {method: "GET", headers: {"authorization": "Basic " + btoa(bgWindow.pade.username + ":" + bgWindow.pade.password), "accept": "application/json"}};
+
+        console.debug("saveToPDF", url, options);
+
+        fetch(url, options).then(function(response){ return response.blob()}).then(function(blob)
+        {
+            console.debug("saveToPDF", blob);
+
+            chrome.downloads.download({url: URL.createObjectURL(blob), filename: "save-to-pdf" + Math.random().toString(36).substr(2,9) + ".pdf"}, function(id)
+            {
+                console.debug("PDF downloaded", id);
+            });
+
+        }).catch(function (err) {
+            console.error('saveToPDF error', err);
+        });
     }
 
 }));

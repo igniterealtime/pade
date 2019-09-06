@@ -1415,7 +1415,6 @@ function doDefaults(background)
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
-    setDefaultSetting("hideOfflineUsers", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");

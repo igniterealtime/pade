@@ -8,7 +8,7 @@ this.manifest = {
             "name": "server",
             "type": "text",
             "label": i18n.get("server"),
-            "text": "server_name:port or ip_address:port"
+            "text": "example.com:7443"
         },
         {
             "tab": i18n.get("Connection"),
@@ -16,7 +16,7 @@ this.manifest = {
             "name": "domain",
             "type": "text",
             "label": i18n.get("domain"),
-            "text": "domain name"
+            "text": "example.com"
         },
         {
             "tab": i18n.get("Connection"),

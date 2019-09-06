@@ -13,19 +13,20 @@ window.addEventListener("load", function()
 
     if (server)
     {
+        document.getElementById("loader").style.display = "inline";
+
         var password = background.getSetting("password", null);
         var permission = i18n.get("uport_permission");
         var avatar = null;
 
         uport = new window.uportconnect('pade', {network: "mainnet"});
+        console.log("requestDisclosure", uport);
 
         uport.onResponse('disclosureReq').then(res =>
         {
             const did = res.payload.did
             const json = res.payload
             console.log("Credentials", json);
-
-            document.getElementById("loader").style.display = "inline";
 
             window.localStorage["store.settings.email"] =       JSON.stringify(json.email);
             window.localStorage["store.settings.phone"] =       JSON.stringify(json.phone);
