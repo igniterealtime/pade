@@ -1,8 +1,9 @@
 branding/home.zip
 branding/work.zip
+branding/ignite.zip
 branding/home/
 branding/work/
-branding/ihive/
+branding/ignite/
 
 # Ignore MacOSX files
 .DS_Store
