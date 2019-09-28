@@ -1,5 +1,34 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.4.0</b> -- <i>September 27, 2019</i></p>
+<ul>
+    <li>Upgraded to Converse 5.0.2</li>
+    <li><a href="https://github.com/igniterealtime/openfire-monitoring-plugin/issues/56">Workaround for missing private chat history. Upgrade openfire monitory plugin 1.8.2</a></li>    
+    <li><a href="https://github.com/igniterealtime/Pade/issues/203">Fixed #203: Offline chat messages at startup always opens a new instance of Pade</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/202">Fixed #202: Reset to factory defaults should prompt to keep a copy of the current settings</a></li>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/201">Fixed #201: PWA mode on mobile phone is broken because of issue in Converse 5.0.x</a></li>
+</ul>
+
+<p><b>1.3.3</b> -- <i>September 12, 2019</i></p>
+<ul>
+    <li>Added support for e-residency smartid client certificates</li>
+    <li>Fixed emoji display issue</li>
+</ul>
+
+<p><b>1.3.2</b> -- <i>September 6, 2019</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/Pade/issues/195">Fixed #195: Prompt to keep copy of messages when leaving a room or chat</a></li>
+    <li>Fixed opening chat called undefined from occupants list</li>
+    <li>Fixed self nickname error in auto-join MUCs</li>
+    <li>Added support for user verification using IRMA</li>
+</ul>
+
+<p><b>1.3.1</b> -- <i>August 18, 2019</i></p>
+<ul>
+    <li>Fixed duplicate image pasting</li>
+    <li>Restore back screencast feature</li>
+</ul>
+
 <p><b>1.3.0</b> -- <i>August 17, 2019</i></p>
 <ul>
     <li>PWA mode now uses browser extension language local files</li>

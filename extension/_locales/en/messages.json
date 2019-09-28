@@ -66,6 +66,11 @@
         "description": "Title for factory reset confirmation"
     },
     
+    "keepConfirm": {
+        "message": "Your current settings will be kept. OK?",
+        "description": "Title for keeping settings confirmation with factory reset"
+    },
+    
     "markdownConfirm": {
         "message": "This text will be pasted into Converse. Are you sure?",
         "description": "Title for markdown text injection"

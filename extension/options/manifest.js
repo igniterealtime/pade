@@ -124,6 +124,13 @@ this.manifest = {
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
+            "name": "useSmartIdCardCert",
+            "type": "checkbox",
+            "label": i18n.get("Use E-Residency Smart ID Client Certificate <b>(requires chat api plugin)</b>")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
             "name": "useTotp",
             "type": "checkbox",
             "label": i18n.get("Time based One-Time Password - Use OfChat and FreeOTP or Google Authernticator App")
@@ -408,7 +415,7 @@ this.manifest = {
             "group": i18n.get("Fastpath (Workgroups)"),
             "name": "wgEnabled",
             "type": "checkbox",
-            "label": i18n.get("Enable Workgroups (Fastpath)")
+            "label": i18n.get("Enable Workgroups (Fastpath) <b>(This will take effect on next login)</b>")
         },
         {
             "tab": i18n.get("General"),

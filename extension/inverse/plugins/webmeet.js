@@ -162,7 +162,7 @@
                     {
                         if (qrcode)
                         {
-                            that.el.querySelector('.modal-body').appendChild(qrcode);
+                            that.el.querySelector('.modal-body').innerHTML = '<img src="' + qrcode + '" />';
                         }
 
                     }, false);
@@ -173,7 +173,8 @@
 
                 clearQRCode() {
                     var callback = this.model.get("callback");
-                    if (callback) callback();
+                    var token = this.model.get("token");
+                    if (callback && token) callback(token);
                 },
                 startSession() {
                     this.el.querySelector('.modal-status').innerHTML = "Please follow the instructions in your IRMA app";
@@ -654,6 +655,8 @@
                         {
                             evt.stopPropagation();
                             const jid = view.model.get("jid");
+                            // For testing, use self
+                            // const jid = Strophe.getBareJidFromJid(_converse.connection.jid);
                             verifyIrma(jid, view);
 
                         }, false);
@@ -1389,28 +1392,22 @@
     {
         var qrcodeDialog = null;
 
-        var success_fun = function(data)
+        var userCancelled = function(token)
         {
-            var json = jwt_decode(data);
-            console.log("Authentication successful token:", data, json);
-        }
-        var cancel_fun = function() {
-            console.error("IRMA Authentication cancelled!");
-        }
-        var error_fun = function() {
-            console.error("Authentication failed!");
-        }
+            const url = "https://" + getSetting("server") + "/irmaproxy/session/" + token;
 
-        IRMA.init("https://demo.irmacard.org/tomcat/irma_api_server/api/v2/");
+            fetch(url, {method: "DELETE"}).then(function(response){ return response.text()}).then(function(response)
+            {
+                console.log('userCancelled ok', response);
+
+            }).catch(function (err) {
+                console.error('userCancelled error', err);
+            });
+        }
 
         _converse.connection.addHandler(function(message)
         {
             console.debug('irma handler', message);
-
-            var cancelIrma = function()
-            {
-                console.debug('irma cancelled');
-            }
 
             $(message).find('irma').each(function ()
             {
@@ -1420,8 +1417,15 @@
                 {
                     console.debug("irma/reveal", $(this).text());
 
-                    const json = JSON.parse($(this).text());
-                    qrcodeDialog = IRMA.processInitialServerMessage(json, success_fun, cancel_fun, error_fun, QRCodeDialog);
+                    const pkg = JSON.parse($(this).text());
+
+                    irma.handleSession(pkg.sessionPtr, {server: "https://" + getSetting("server") + "/irmaproxy", token: pkg.token, method: 'url'}).then(result =>
+                    {
+                        console.debug("irma/result", result);
+
+                        qrcodeDialog = new QRCodeDialog({'model': new converse.env.Backbone.Model({title: 'IRMA Verification', callback: userCancelled, qrcode: result, token: pkg.token}) });
+                        qrcodeDialog.show();
+                    });
                 }
                 else
 
@@ -1434,10 +1438,7 @@
 
                 if (action == "done")
                 {
-                    const jwt = $(this).text()
-                    const json = jwt_decode(jwt);
-                    console.debug("irma/done", json);
-
+                    console.debug("irma/done");
                     if (qrcodeDialog) qrcodeDialog.modal.hide();
                 }
 

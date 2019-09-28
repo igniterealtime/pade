@@ -1,4 +1,5 @@
 var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
+var __jid = bgWindow.pade.username + "@" + bgWindow.pade.domain;
 var __origins = {}, __irmaVerifications = {};
 
 window.addEventListener("unload", function()
@@ -462,6 +463,7 @@ function doConverse(server, username, password, anonUser)
           show_send_button: getSetting("showSendButton", false),
           sounds_path: chrome.runtime.getURL('inverse/sounds/'),
           theme: 'concord',
+          singleton: (autoJoinRooms && autoJoinRooms.length == 1),
           view_mode: viewMode,
           visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableSip", false), 'clear': true },
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
@@ -745,9 +747,7 @@ function addToolbarItem(view, id, label, html)
 
 function isJidVerified(jid)
 {
-    if (jid == converse.env.Strophe.getBareJidFromJid(_converse.jid)) return false;
-    console.debug("isJidVerified", jid);
-
+    if (jid == __jid) return false;
     const verified = !!__irmaVerifications[jid];
     return verified;
 }
@@ -793,30 +793,24 @@ function verifyIrma(jid, view, nickname)
 {
     if (!getSetting("verifyContact", false)) return;
 
-    const sprequest = {
-        "data": "foobar",
-        "validity": 60,
-        "request": {
-            "content": [
-                {
-                    "label": "email",
-                    "attributes": ["pbdf.pbdf.email.email"]
-                },
-                {
-                    "label": "phone number",
-                    "attributes": ["pbdf.pbdf.mobilenumber.mobilenumber"]
-                }
-            ]
-        }
+    const request = {
+      '@context': 'https://irma.app/ld/request/disclosure/v2',
+      'disclose': [
+        [
+          ["pbdf.pbdf.email.email"]
+        ],
+        [
+          ["pbdf.pbdf.mobilenumber.mobilenumber"]
+        ]
+      ]
     };
 
     let target = jid;
     if (nickname) target = nickname + " (" + jid + ")";;
 
-    const jwt = IRMA.createUnsignedVerificationJWT(sprequest);
     const permission = chrome.i18n.getMessage("uport_permission");
     const url =  "https://" + getSetting("server") + "/rest/api/restapi/v1/ask/irma/reveal/" + jid;
-    const options = {method: "POST", headers: {"authorization": permission, "accept": "application/json"}, "body": jwt};
+    const options = {method: "POST", headers: {"authorization": permission, "accept": "application/json"}, "body": JSON.stringify(request)};
 
     console.debug("fetch irma/reveal", url, options);
     if (view) view.showHelpMessages([target + " is being verified"]);
@@ -825,19 +819,20 @@ function verifyIrma(jid, view, nickname)
     {
         console.debug("fetch irma/reveal", data);
 
-        if (data == '"TIMEOUT"' || data == '"ERROR"' || data == '"CANCELLED"' || data == '"PENDING"')
+        if (data.indexOf("TIMEOUT") > -1 || data.indexOf("ERROR") > -1 || data.indexOf("CANCELLED") > -1 || data.indexOf("PENDING") > -1)
         {
             console.error('irma/reveal', data);
             if (view) view.showHelpMessages([target + " cannot or does not want to be verified"]);
         }
         else {
-            console.log("Authentication successful token:", data);
-            setVerifiedAttributes(data, jid, view, nickname);
+            console.debug("Authentication successful token:", data);
+            setVerifiedAttributes(JSON.parse(data), jid, view, nickname);
+
             if (view) view.showHelpMessages([target + " is verified"]);
 
             if (__irmaVerifications[jid])
             {
-                if (view) view.showHelpMessages(["Email: " + __irmaVerifications[jid].attributes["pbdf.pbdf.email.email"] + " " + "Phone: " + __irmaVerifications[jid].attributes["pbdf.pbdf.mobilenumber.mobilenumber"]]);
+                if (view) view.showHelpMessages(["Email: " + __irmaVerifications[jid].attributes["pbdf.pbdf.email.email"], "Phone: " + __irmaVerifications[jid].attributes["pbdf.pbdf.mobilenumber.mobilenumber"]]);
             }
         }
 
@@ -846,12 +841,19 @@ function verifyIrma(jid, view, nickname)
     });
 }
 
-function setVerifiedAttributes(data, target, view, nickname)
+function setVerifiedAttributes(result, target, view, nickname)
 {
-    var token = jwt_decode(data);
     var id = target.replace('@', '_');
 
+    var token = {
+        attributes: {
+            "pbdf.pbdf.email.email": result.disclosed[0][0].rawvalue,
+            "pbdf.pbdf.mobilenumber.mobilenumber": result.disclosed[1][0].rawvalue
+        }
+    }
+
     __irmaVerifications[target] = token;
+
     if (nickname && view) __irmaVerifications[view.model.get("jid") + '/' + nickname] = token;
 
     var items = document.querySelectorAll('.badge-' + id);
@@ -869,3 +871,20 @@ function setVerifiedAttributes(data, target, view, nickname)
     }
 }
 
+function loadJS(name)
+{
+    var s1 = document.createElement('script');
+    s1.src = name;
+    s1.async = false;
+    document.body.appendChild(s1);
+}
+
+function loadCSS(name)
+{
+    var head  = document.getElementsByTagName('head')[0];
+    var link  = document.createElement('link');
+    link.rel  = 'stylesheet';
+    link.type = 'text/css';
+    link.href = name;
+    head.appendChild(link);
+}

@@ -692,11 +692,11 @@ window.addEvent("domready", function () {
                 location.reload()
             });
 
-            if (getSetting("useSmartIdCard", false) && !getSetting("password", null)) startSmartIdLogin(function(code)
+            if (getSetting("useSmartIdCard", false) && !getSetting("password", null)) startSmartIdLogin(function(url)
             {
-                console.debug("Smart-ID CODE", code);
+                console.debug("Smart-ID URL", url);
 
-                fetch("https://" + getSetting("server", location.host) + "/apps/smartidcard?code=" + code, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
+                fetch(url, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
                 {
                     console.debug("Smart-ID DATA", json);
 
@@ -720,6 +720,7 @@ window.addEvent("domready", function () {
 
                 }).catch(function (err) {
                     console.error("Smart-ID DATA", err);
+                    settings.manifest.status.element.innerHTML = '<b style="color:red">Smart-ID Error ' + err + '</b>';
                 });
             });
         }
@@ -832,10 +833,39 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.factoryReset) settings.manifest.factoryReset.addEvent("action", function ()
         {
+            let keepSettings = false;
+            let savedSettings = JSON.parse(JSON.stringify(branding));
+
             if (confirm(chrome.i18n.getMessage("resetConfirm")))
             {
+                if (confirm(chrome.i18n.getMessage("keepConfirm"))) // save settings
+                {
+                    keepSettings = true;
+
+                    for (var i = 0; i < localStorage.length; i++)
+                    {
+                        if (localStorage.key(i).startsWith("store.settings.") && localStorage.key(i).indexOf("password") == -1)
+                        {
+                            const key = localStorage.key(i).substring(15);
+                            if (!savedSettings[key]) savedSettings[key] = {disable: false};
+                            savedSettings[key].value = localStorage.getItem(localStorage.key(i));
+                        }
+                    }
+                }
+
                 localStorage.clear();
                 chrome.storage.local.clear();
+
+                if (keepSettings)   // restore settings
+                {
+                    const keys = Object.getOwnPropertyNames(savedSettings);
+
+                    for (var i=0; i<keys.length; i++)
+                    {
+                        window.localStorage["store.settings." + keys[i]] = savedSettings[keys[i]].value;
+                    }
+                }
+
                 background.reloadApp();
             }
         });
@@ -995,6 +1025,7 @@ window.addEvent("domready", function () {
 
                 }).catch(function (err) {
                     console.error('connection error', err);
+                    settings.manifest.status.element.innerHTML = '<b style="color:red">Client Cert Error ' + err + '</b>';
                 });
 
             }
@@ -1316,7 +1347,7 @@ window.addEvent("domready", function () {
 
                             }).catch(function (err) {
                                 console.error('access denied error', err);
-                                settings.manifest.status.element.innerHTML = 'Error ' + err;
+                                settings.manifest.status.element.innerHTML = '<b style="color:red">Basic Auth Error ' + err + '</b>';
                             });
 
                         }
@@ -1809,34 +1840,40 @@ function avatarError(error)
 
 function startSmartIdLogin(callback)
 {
-    var buttonUrl = "https://id.smartid.ee/oauth/authorize?client_id=s5D6gnTwOqmFISb7KY5maMe2XgEcKNOa&redirect_uri=https://igniterealtime.github.io/Pade/index.html&response_type=code";
-    var idTab = null;
-
-    var gup = function (url, name)
+    if (getSetting("useSmartIdCardCert", false))
     {
-        name = name.replace(/[[]/, "\[").replace(/[]]/, "\]");
-        var regexS = "[\?&]" + name + "=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(url);
-
-        if (results == null) return ""; else return results[1];
+        callback("https://" + getSetting("server", location.host) + "/apps/smartidcardcert");
+        console.log("startSmartIdLogin via certicate");
     }
+    else {
+        var buttonUrl = "https://id.smartid.ee/oauth/authorize?client_id=s5D6gnTwOqmFISb7KY5maMe2XgEcKNOa&redirect_uri=https://igniterealtime.github.io/Pade/index.html&response_type=code";
+        var idTab = null;
 
-    chrome.tabs.create({url: buttonUrl, active: true}, function(tab)
-    {
-        console.log("startSmartIdLogin tab", tab);
-        idTab = tab;
-
-        chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab2)
+        var gup = function (url, name)
         {
-            if (tabId == idTab.id && changeInfo.url && changeInfo.url.startsWith("https://igniterealtime.github.io/Pade/index.html"))
-            {
-                var code = gup(changeInfo.url, 'code');
-                if (idTab) chrome.tabs.remove(idTab.id);
-                callback(code);
+            name = name.replace(/[[]/, "\[").replace(/[]]/, "\]");
+            var regexS = "[\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(url);
 
-                console.log("startSmartIdLogin code", code);
-            }
-        })
-    });
+            if (results == null) return ""; else return results[1];
+        }
+
+        chrome.tabs.create({url: buttonUrl, active: true}, function(tab)
+        {
+            console.log("startSmartIdLogin tab", tab);
+            idTab = tab;
+
+            chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab2)
+            {
+                if (tabId == idTab.id && changeInfo.url && changeInfo.url.startsWith("https://igniterealtime.github.io/Pade/index.html"))
+                {
+                    var code = gup(changeInfo.url, 'code');
+                    if (idTab) chrome.tabs.remove(idTab.id);
+                    callback("https://" + getSetting("server", location.host) + "/apps/smartidcard?code=" + code);
+                    console.log("startSmartIdLogin via smartid.ee", code);
+                }
+            })
+        });
+    }
 }

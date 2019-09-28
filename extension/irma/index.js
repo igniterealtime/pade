@@ -14,38 +14,34 @@ window.addEventListener("load", function()
         var permission = i18n.get("uport_permission");
         var avatar = {};
 
-        var sprequest = {
-            "data": "foobar",
-            "validity": 60,
-            "request": {
-                "content": [
-                    {
-                        "label": "username",
-                        "attributes": ["pbdf.pbdf.mijnirma.email"]
-                    },
-                    {
-                        "label": "email",
-                        "attributes": ["pbdf.pbdf.email.email"]
-                    },
-                    {
-                        "label": "phone number",
-                        "attributes": ["pbdf.pbdf.mobilenumber.mobilenumber"]
-                    }
-                ]
-            }
+        const request = {
+          '@context': 'https://irma.app/ld/request/disclosure/v2',
+          'disclose': [
+            [
+              ["pbdf.pbdf.mijnirma.email"]
+            ],
+            [
+              ["pbdf.pbdf.email.email"]
+            ],
+            [
+              ["pbdf.pbdf.mobilenumber.mobilenumber"]
+            ]
+          ]
         };
 
+        const irmaServer = "https://" + server + "/irmaproxy";
 
-        var success_fun = function(data) {
+        irma.startSession(irmaServer, request).then((pkg) => irma.handleSession(pkg.sessionPtr, {server: irmaServer, token: pkg.token, method: 'popup', language: 'en'})).then(result =>
+        {
+            console.log('Done', result)
+
             document.getElementById("loader").style.display = "inline";
+            console.log("Authentication successful token:", result);
 
-            var json = jwt_decode(data);
-            console.log("Authentication successful token:", data, json);
-
-            const did = json.attributes["pbdf.pbdf.mijnirma.email"];
-            const email = json.attributes["pbdf.pbdf.email.email"];
+            const did = result.disclosed[0][0].rawvalue;
+            const email = result.disclosed[1][0].rawvalue;;
             const name = email.split("@")[0];
-            const phone = json.attributes["pbdf.pbdf.mobilenumber.mobilenumber"];
+            const phone = result.disclosed[2][0].rawvalue;
             const country = "Unknown";
 
             window.localStorage["store.settings.email"] =       JSON.stringify(email);
@@ -56,7 +52,7 @@ window.addEventListener("load", function()
             document.getElementById("irma_status").innerHTML = "Please wait, registering..";
 
             var url = "https://" + server + "/rest/api/restapi/v1/ask/uport/register";
-            var options = {method: "POST", headers: {"authorization": permission}, body: JSON.stringify({name: name, email: email, phone: phone, country: country, address: did, publicKey: json.exp, password: password, account: {}})};
+            var options = {method: "POST", headers: {"authorization": permission}, body: JSON.stringify({name: name, email: email, phone: phone, country: country, address: did, publicKey: did, password: password, account: {}})};
 
             console.log("irma rest", url, options);
 
@@ -84,20 +80,12 @@ window.addEventListener("load", function()
                 console.error('Credentials error', err);
                 document.getElementById("irma_status").innerHTML = "IRMA user registration failure";
             });
-        }
-        var cancel_fun = function() {
-            console.error("IRMA Authentication cancelled!");
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("irma_status").innerHTML = "IRMA user cancelled";
-        }
-        var error_fun = function() {
-            console.log("Authentication failed!");
+
+        }).catch(function(err) {
+            console.error("Authentication failed!", err);
             document.getElementById("loader").style.display = "none";
             document.getElementById("irma_status").innerHTML = "IRMA authentication failed";
-        }
-
-        IRMA.init("https://demo.irmacard.org/tomcat/irma_api_server/api/v2/");
-        IRMA.verify(IRMA.createUnsignedVerificationJWT(sprequest), success_fun, cancel_fun, error_fun);
+        });
 
     } else {
        document.getElementById("loader").style.display = "none";

@@ -1541,19 +1541,21 @@ function closeChatWindow()
 
 function openChatWindow(url, update, state)
 {
-    var data = {url: chrome.runtime.getURL(url), type: "popup", focused: true};
-    var width = 1300;
-
-    if (url.indexOf("#") > -1) width = 761;    // width of mobile view_mode
-
-    if (state == "minimized" && getSetting("openWinMinimized", false))
-    {
-        delete data.focused;
-        data.state = state;
-    }
-
     if (!pade.chatWindow || update)
     {
+        if (!update) pade.chatWindow = {id: 0} // dummy entry;
+
+        var data = {url: chrome.runtime.getURL(url), type: "popup", focused: true};
+        var width = 1300;
+
+        if (url.indexOf("#") > -1) width = 761;    // width of mobile view_mode
+
+        if (state == "minimized" && getSetting("openWinMinimized", false))
+        {
+            delete data.focused;
+            data.state = state;
+        }
+
         if (update && pade.chatWindow != null) chrome.windows.remove(pade.chatWindow.id);
 
         chrome.windows.create(data, function (win)
@@ -2140,7 +2142,14 @@ function addHandlers()
             {
                 doNotification(body, offerer, offerer, function()
                 {
-                    openChatWindow("inverse/index.html#converse/chat?jid=" + offerer, true);
+                    if (!pade.chatWindow)
+                    {
+                        openChatWindow("inverse/index.html#converse/chat?jid=" + offerer, true);
+                    }
+
+                    else {
+                        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(offerer);
+                    }
                 });
             }
         });

@@ -333,69 +333,73 @@
                 var initPade = function initPade()
                 {
                     var myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
-                    var stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });
 
-                    console.debug("initPade", myNick);
-
-                    var bookmarkRoom = function bookmarkRoom(json)
+                    if (!_converse.singleton)
                     {
-                        var room = _converse.chatboxes.get(json.jid);
+                        var stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });
 
-                        if (!room)
+                        console.debug("initPade", myNick);
+
+                        var bookmarkRoom = function bookmarkRoom(json)
                         {
-                            _converse.bookmarks.create({
-                                'jid': json.jid,
-                                'name': json.name,
-                                'autojoin': json.autojoin,
-                                'nick': myNick
-                            });
+                            var room = _converse.chatboxes.get(json.jid);
 
-                            room = _converse.chatboxes.get(json.jid);
-                            if (room) room.save('bookmarked', true);
+                            if (!room)
+                            {
+                                _converse.bookmarks.create({
+                                    'jid': json.jid,
+                                    'name': json.name,
+                                    'autojoin': json.autojoin,
+                                    'nick': myNick
+                                });
+
+                                room = _converse.chatboxes.get(json.jid);
+                                if (room) room.save('bookmarked', true);
+                            }
+                            return room;
                         }
-                        return room;
-                    }
 
-                    if (getSetting("enableBookmarks", true))
-                    {
-                        _converse.connection.sendIQ(stanza, function(iq) {
-
-                            $(iq).find('conference').each(function()
-                            {
-                                var jid = $(this).attr("jid");
-                                var name = $(this).attr("name");
-                                if (!name) name = Strophe.getNodeFromJid(jid);
-                                var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
-                                var json = {name: name, jid: jid, autojoin: autojoin};
-
-                                console.debug('pade BookmarksReceived', json);
-                                if (_converse.bookmarks) bookmarkRoom(json);
-
-                            });
-
-                        }, function(error){
-                            console.error("bookmarks error", error);
-                        });
-
-                        if (bgWindow && bgWindow.pade.activeWorkgroup)
+                        if (getSetting("enableBookmarks", true))
                         {
-                            stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
+                            _converse.connection.sendIQ(stanza, function(iq) {
 
-                            _converse.connection.sendIQ(stanza, function(iq)
-                            {
-                                $(iq).find('workgroup').each(function()
+                                $(iq).find('conference').each(function()
                                 {
-                                    var name = Strophe.getNodeFromJid($(this).attr('jid'));
-                                    var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
-                                    var json = {name: name, jid: jid, autojoin: true};
+                                    var jid = $(this).attr("jid");
+                                    var name = $(this).attr("name");
+                                    if (!name) name = Strophe.getNodeFromJid(jid);
+                                    var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
+                                    var json = {name: name, jid: jid, autojoin: autojoin};
 
-                                    console.debug('pade workgroup recieved', json);
+                                    console.debug('pade BookmarksReceived', json);
                                     if (_converse.bookmarks) bookmarkRoom(json);
+
                                 });
 
                             }, function(error){
-                                console.error("workgroups error", error);
+                                console.error("bookmarks error", error);
                             });
+
+                            if (bgWindow && bgWindow.pade.activeWorkgroup)
+                            {
+                                stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
+
+                                _converse.connection.sendIQ(stanza, function(iq)
+                                {
+                                    $(iq).find('workgroup').each(function()
+                                    {
+                                        var name = Strophe.getNodeFromJid($(this).attr('jid'));
+                                        var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
+                                        var json = {name: name, jid: jid, autojoin: true};
+
+                                        console.debug('pade workgroup recieved', json);
+                                        if (_converse.bookmarks) bookmarkRoom(json);
+                                    });
+
+                                }, function(error){
+                                    console.error("workgroups error", error);
+                                });
+                            }
                         }
                     }
 
@@ -621,6 +625,13 @@
 
             ChatRoomView: {
 
+                afterShown: function() {
+
+                    const ret = this.__super__.afterShown.apply(this, arguments);
+                    hackPwaMode(this);
+                    return ret;
+                },
+
                 setChatRoomSubject: function() {
 
                     const retValue = this.__super__.setChatRoomSubject.apply(this, arguments);
@@ -686,7 +697,10 @@
 
                     if (openBadge) openBadge.setAttribute("data-badge", "0");
 
-                    return this.__super__.afterShown.apply(this, arguments);
+                    const ret = this.__super__.afterShown.apply(this, arguments);
+                    hackPwaMode(this);
+                    return ret;
+
                 },
 
                 modifyChatBody: function(text) {
@@ -946,6 +960,21 @@
                     console.debug("initialise message thread", box, topic);
                 }
             });
+        }
+    }
+
+
+    var hackPwaMode = function(view)
+    {
+        const controlBox = _converse.root.querySelector('#controlbox');
+        const navBack = view.el.querySelector('#conversejs .chatbox-navback');
+
+        if (!view.model.get('hidden') && navBack)
+        {
+            if (window.outerWidth < 670)
+            {
+                controlBox.style.display = "none";
+            }
         }
     }
 }));

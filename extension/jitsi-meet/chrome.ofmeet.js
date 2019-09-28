@@ -1086,6 +1086,10 @@ var ofmeet = (function(of)
 
 function ofmeetEtherpadClicked()
 {
+    // TODO Collaboration disabled in generic version
+    // Only implement in custom builds
+
+    /*
     console.debug("ofmeet.etherpadClicked", OFMEET_CONFIG.bgWin.pade.activeUrl);
 
     if (OFMEET_CONFIG.bgWin.pade.activeUrl)
@@ -1125,4 +1129,5 @@ function ofmeetEtherpadClicked()
             document.getElementById("largeVideoContainer").innerHTML = OFMEET_CONFIG.iframe(url);
         }
     }
+    */
 }
