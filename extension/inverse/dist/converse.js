@@ -36,14 +36,14 @@
 /******/    // undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/    // Promise = chunk loading, 0 = chunk loaded
 /******/    var installedChunks = {
-/******/        161: 0
+/******/        162: 0
 /******/    };
 /******/
 /******/
 /******/
 /******/    // script path function
 /******/    function jsonpScriptSrc(chunkId) {
-/******/        return __webpack_require__.p + "" + ({"0":"locales/dayjs/af","1":"locales/dayjs/ar","2":"locales/dayjs/ar-dz","3":"locales/dayjs/ar-kw","4":"locales/dayjs/ar-ly","5":"locales/dayjs/ar-ma","6":"locales/dayjs/ar-sa","7":"locales/dayjs/ar-tn","8":"locales/dayjs/az","9":"locales/dayjs/be","10":"locales/dayjs/bg","11":"locales/dayjs/bm","12":"locales/dayjs/bn","13":"locales/dayjs/bo","14":"locales/dayjs/br","15":"locales/dayjs/bs","16":"locales/dayjs/ca","17":"locales/dayjs/cs","18":"locales/dayjs/cv","19":"locales/dayjs/cy","20":"locales/dayjs/da","21":"locales/dayjs/de","22":"locales/dayjs/de-at","23":"locales/dayjs/de-ch","24":"locales/dayjs/dv","25":"locales/dayjs/el","26":"locales/dayjs/en","27":"locales/dayjs/en-SG","28":"locales/dayjs/en-au","29":"locales/dayjs/en-ca","30":"locales/dayjs/en-gb","31":"locales/dayjs/en-ie","32":"locales/dayjs/en-il","33":"locales/dayjs/en-nz","34":"locales/dayjs/eo","35":"locales/dayjs/es","36":"locales/dayjs/es-do","37":"locales/dayjs/es-us","38":"locales/dayjs/et","39":"locales/dayjs/eu","40":"locales/dayjs/fa","41":"locales/dayjs/fi","42":"locales/dayjs/fo","43":"locales/dayjs/fr","44":"locales/dayjs/fr-ca","45":"locales/dayjs/fr-ch","46":"locales/dayjs/fy","47":"locales/dayjs/ga","48":"locales/dayjs/gd","49":"locales/dayjs/gl","50":"locales/dayjs/gom-latn","51":"locales/dayjs/gu","52":"locales/dayjs/he","53":"locales/dayjs/hi","54":"locales/dayjs/hr","55":"locales/dayjs/hu","56":"locales/dayjs/hy-am","57":"locales/dayjs/id","58":"locales/dayjs/is","59":"locales/dayjs/it","60":"locales/dayjs/it-ch","61":"locales/dayjs/ja","62":"locales/dayjs/jv","63":"locales/dayjs/ka","64":"locales/dayjs/kk","65":"locales/dayjs/km","66":"locales/dayjs/kn","67":"locales/dayjs/ko","68":"locales/dayjs/ku","69":"locales/dayjs/ky","70":"locales/dayjs/lb","71":"locales/dayjs/lo","72":"locales/dayjs/lt","73":"locales/dayjs/lv","74":"locales/dayjs/me","75":"locales/dayjs/mi","76":"locales/dayjs/mk","77":"locales/dayjs/ml","78":"locales/dayjs/mn","79":"locales/dayjs/mr","80":"locales/dayjs/ms","81":"locales/dayjs/ms-my","82":"locales/dayjs/mt","83":"locales/dayjs/my","84":"locales/dayjs/nb","85":"locales/dayjs/ne","86":"locales/dayjs/nl","87":"locales/dayjs/nl-be","88":"locales/dayjs/nn","89":"locales/dayjs/oc-lnc","90":"locales/dayjs/pa-in","91":"locales/dayjs/pl","92":"locales/dayjs/pt","93":"locales/dayjs/pt-br","94":"locales/dayjs/ro","95":"locales/dayjs/ru","96":"locales/dayjs/sd","97":"locales/dayjs/se","98":"locales/dayjs/si","99":"locales/dayjs/sk","100":"locales/dayjs/sl","101":"locales/dayjs/sq","102":"locales/dayjs/sr","103":"locales/dayjs/sr-cyrl","104":"locales/dayjs/ss","105":"locales/dayjs/sv","106":"locales/dayjs/sw","107":"locales/dayjs/ta","108":"locales/dayjs/te","109":"locales/dayjs/tet","110":"locales/dayjs/tg","111":"locales/dayjs/th","112":"locales/dayjs/tl-ph","113":"locales/dayjs/tlh","114":"locales/dayjs/tr","115":"locales/dayjs/tzl","116":"locales/dayjs/tzm","117":"locales/dayjs/tzm-latn","118":"locales/dayjs/ug-cn","119":"locales/dayjs/uk","120":"locales/dayjs/ur","121":"locales/dayjs/uz","122":"locales/dayjs/uz-latn","123":"locales/dayjs/vi","124":"locales/dayjs/x-pseudo","125":"locales/dayjs/yo","126":"locales/dayjs/zh-cn","127":"locales/dayjs/zh-hk","128":"locales/dayjs/zh-tw","129":"emojis","130":"locales/af-LC_MESSAGES-converse-po","131":"locales/ar-LC_MESSAGES-converse-po","132":"locales/bg-LC_MESSAGES-converse-po","133":"locales/ca-LC_MESSAGES-converse-po","134":"locales/cs-LC_MESSAGES-converse-po","135":"locales/de-LC_MESSAGES-converse-po","136":"locales/eo-LC_MESSAGES-converse-po","137":"locales/es-LC_MESSAGES-converse-po","138":"locales/eu-LC_MESSAGES-converse-po","139":"locales/fr-LC_MESSAGES-converse-po","140":"locales/gl-LC_MESSAGES-converse-po","141":"locales/he-LC_MESSAGES-converse-po","142":"locales/hi-LC_MESSAGES-converse-po","143":"locales/hu-LC_MESSAGES-converse-po","144":"locales/id-LC_MESSAGES-converse-po","145":"locales/it-LC_MESSAGES-converse-po","146":"locales/ja-LC_MESSAGES-converse-po","147":"locales/lt-LC_MESSAGES-converse-po","148":"locales/nb-LC_MESSAGES-converse-po","149":"locales/nl-LC_MESSAGES-converse-po","150":"locales/nl_BE-LC_MESSAGES-converse-po","151":"locales/oc-LC_MESSAGES-converse-po","152":"locales/pl-LC_MESSAGES-converse-po","153":"locales/pt-LC_MESSAGES-converse-po","154":"locales/pt_BR-LC_MESSAGES-converse-po","155":"locales/ro-LC_MESSAGES-converse-po","156":"locales/ru-LC_MESSAGES-converse-po","157":"locales/tr-LC_MESSAGES-converse-po","158":"locales/uk-LC_MESSAGES-converse-po","159":"locales/zh_CN-LC_MESSAGES-converse-po","160":"locales/zh_TW-LC_MESSAGES-converse-po"}[chunkId]||chunkId) + ".js"
+/******/        return __webpack_require__.p + "" + ({"0":"locales/dayjs/af","1":"locales/dayjs/ar","2":"locales/dayjs/ar-dz","3":"locales/dayjs/ar-kw","4":"locales/dayjs/ar-ly","5":"locales/dayjs/ar-ma","6":"locales/dayjs/ar-sa","7":"locales/dayjs/ar-tn","8":"locales/dayjs/az","9":"locales/dayjs/be","10":"locales/dayjs/bg","11":"locales/dayjs/bm","12":"locales/dayjs/bn","13":"locales/dayjs/bo","14":"locales/dayjs/br","15":"locales/dayjs/bs","16":"locales/dayjs/ca","17":"locales/dayjs/cs","18":"locales/dayjs/cv","19":"locales/dayjs/cy","20":"locales/dayjs/da","21":"locales/dayjs/de","22":"locales/dayjs/de-at","23":"locales/dayjs/de-ch","24":"locales/dayjs/dv","25":"locales/dayjs/el","26":"locales/dayjs/en","27":"locales/dayjs/en-SG","28":"locales/dayjs/en-au","29":"locales/dayjs/en-ca","30":"locales/dayjs/en-gb","31":"locales/dayjs/en-ie","32":"locales/dayjs/en-il","33":"locales/dayjs/en-nz","34":"locales/dayjs/eo","35":"locales/dayjs/es","36":"locales/dayjs/es-do","37":"locales/dayjs/es-us","38":"locales/dayjs/et","39":"locales/dayjs/eu","40":"locales/dayjs/fa","41":"locales/dayjs/fi","42":"locales/dayjs/fo","43":"locales/dayjs/fr","44":"locales/dayjs/fr-ca","45":"locales/dayjs/fr-ch","46":"locales/dayjs/fy","47":"locales/dayjs/ga","48":"locales/dayjs/gd","49":"locales/dayjs/gl","50":"locales/dayjs/gom-latn","51":"locales/dayjs/gu","52":"locales/dayjs/he","53":"locales/dayjs/hi","54":"locales/dayjs/hr","55":"locales/dayjs/hu","56":"locales/dayjs/hy-am","57":"locales/dayjs/id","58":"locales/dayjs/is","59":"locales/dayjs/it","60":"locales/dayjs/it-ch","61":"locales/dayjs/ja","62":"locales/dayjs/jv","63":"locales/dayjs/ka","64":"locales/dayjs/kk","65":"locales/dayjs/km","66":"locales/dayjs/kn","67":"locales/dayjs/ko","68":"locales/dayjs/ku","69":"locales/dayjs/ky","70":"locales/dayjs/lb","71":"locales/dayjs/lo","72":"locales/dayjs/lt","73":"locales/dayjs/lv","74":"locales/dayjs/me","75":"locales/dayjs/mi","76":"locales/dayjs/mk","77":"locales/dayjs/ml","78":"locales/dayjs/mn","79":"locales/dayjs/mr","80":"locales/dayjs/ms","81":"locales/dayjs/ms-my","82":"locales/dayjs/mt","83":"locales/dayjs/my","84":"locales/dayjs/nb","85":"locales/dayjs/ne","86":"locales/dayjs/nl","87":"locales/dayjs/nl-be","88":"locales/dayjs/nn","89":"locales/dayjs/oc-lnc","90":"locales/dayjs/pa-in","91":"locales/dayjs/pl","92":"locales/dayjs/pt","93":"locales/dayjs/pt-br","94":"locales/dayjs/ro","95":"locales/dayjs/ru","96":"locales/dayjs/sd","97":"locales/dayjs/se","98":"locales/dayjs/si","99":"locales/dayjs/sk","100":"locales/dayjs/sl","101":"locales/dayjs/sq","102":"locales/dayjs/sr","103":"locales/dayjs/sr-cyrl","104":"locales/dayjs/ss","105":"locales/dayjs/sv","106":"locales/dayjs/sw","107":"locales/dayjs/ta","108":"locales/dayjs/te","109":"locales/dayjs/tet","110":"locales/dayjs/tg","111":"locales/dayjs/th","112":"locales/dayjs/tl-ph","113":"locales/dayjs/tlh","114":"locales/dayjs/tr","115":"locales/dayjs/tzl","116":"locales/dayjs/tzm","117":"locales/dayjs/tzm-latn","118":"locales/dayjs/ug-cn","119":"locales/dayjs/uk","120":"locales/dayjs/ur","121":"locales/dayjs/uz","122":"locales/dayjs/uz-latn","123":"locales/dayjs/vi","124":"locales/dayjs/x-pseudo","125":"locales/dayjs/yo","126":"locales/dayjs/zh-cn","127":"locales/dayjs/zh-hk","128":"locales/dayjs/zh-tw","129":"emojis","130":"locales/af-LC_MESSAGES-converse-po","131":"locales/ar-LC_MESSAGES-converse-po","132":"locales/bg-LC_MESSAGES-converse-po","133":"locales/ca-LC_MESSAGES-converse-po","134":"locales/cs-LC_MESSAGES-converse-po","135":"locales/de-LC_MESSAGES-converse-po","136":"locales/eo-LC_MESSAGES-converse-po","137":"locales/es-LC_MESSAGES-converse-po","138":"locales/eu-LC_MESSAGES-converse-po","139":"locales/fr-LC_MESSAGES-converse-po","140":"locales/gl-LC_MESSAGES-converse-po","141":"locales/he-LC_MESSAGES-converse-po","142":"locales/hi-LC_MESSAGES-converse-po","143":"locales/hu-LC_MESSAGES-converse-po","144":"locales/id-LC_MESSAGES-converse-po","145":"locales/it-LC_MESSAGES-converse-po","146":"locales/ja-LC_MESSAGES-converse-po","147":"locales/lt-LC_MESSAGES-converse-po","148":"locales/nb-LC_MESSAGES-converse-po","149":"locales/nl-LC_MESSAGES-converse-po","150":"locales/nl_BE-LC_MESSAGES-converse-po","151":"locales/oc-LC_MESSAGES-converse-po","152":"locales/pl-LC_MESSAGES-converse-po","153":"locales/pt-LC_MESSAGES-converse-po","154":"locales/pt_BR-LC_MESSAGES-converse-po","155":"locales/ro-LC_MESSAGES-converse-po","156":"locales/ru-LC_MESSAGES-converse-po","157":"locales/tr-LC_MESSAGES-converse-po","158":"locales/uk-LC_MESSAGES-converse-po","159":"locales/vi-LC_MESSAGES-converse-po","160":"locales/zh_CN-LC_MESSAGES-converse-po","161":"locales/zh_TW-LC_MESSAGES-converse-po"}[chunkId]||chunkId) + ".js"
 /******/    }
 /******/
 /******/    // The require function
@@ -196,14 +196,14 @@
 /******/
 /******/
 /******/    // Load entry module and return exports
-/******/    return __webpack_require__(__webpack_require__.s = 464);
+/******/    return __webpack_require__(__webpack_require__.s = 329);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escapeHtmlChar = __webpack_require__(448),
+var escapeHtmlChar = __webpack_require__(449),
     toString = __webpack_require__(108);
 
 /** Used to match HTML entities and HTML characters. */
@@ -275,7 +275,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.14';
+  var VERSION = '4.17.15';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -17380,7 +17380,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
  */
 (function (root, factory) {
   if (true) {
-    module.exports = factory(__webpack_require__(11), __webpack_require__(27));
+    module.exports = factory(__webpack_require__(9), __webpack_require__(27));
   } else {}
 }(this, function(Backbone, _) {
 // A simple module to replace `Backbone.sync` with *browser storage*-based
@@ -19937,23 +19937,23 @@ __e(o.data_name) +
 __e(o.data_value) +
 '"';
  } ;
-__p += '>\r\n';
+__p += '>\n';
  if (o.render_message) {
     // XXX: Should only ever be rendered if the message text has been sanitized already
 ;
-__p += '\r\n    ' +
+__p += '\n    ' +
 ((__t = (o.message)) == null ? '' : __t) +
-'\r\n';
+'\n';
  } else { ;
-__p += '\r\n    ' +
+__p += '\n    ' +
 __e(o.message) +
-'\r\n';
+'\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.retry) { ;
-__p += '\r\n    <a class="retry">Retry</a>\r\n';
+__p += '\n    <a class="retry">Retry</a>\n';
  } ;
-__p += '\r\n</div>\r\n';
+__p += '\n</div>\n';
 return __p
 };
 
@@ -22352,60 +22352,14 @@ module.exports = isArray;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
-module.exports = function(o) {
-var __t, __p = '';
-__p += '<!-- src/templates/spinner.html -->\n<span class="spinner fa fa-spinner centered"/>\r\n';
-return __p
-};
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return value != null && (type == 'object' || type == 'function');
-}
-
-module.exports = isObject;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Backbone.js 1.4.0
 
 //     (c) 2010-2019 Jeremy Ashkenas and DocumentCloud
 //     Backbone may be freely distributed under the MIT license.
 //     For all details and documentation:
 //     http://backbonejs.org
+
+/* global global */
 
 (function(factory) {
 
@@ -22416,7 +22370,7 @@ module.exports = isObject;
 
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27), __webpack_require__(329), exports], __WEBPACK_AMD_DEFINE_RESULT__ = (function(_, $, exports) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27), __webpack_require__(330), exports], __WEBPACK_AMD_DEFINE_RESULT__ = (function(_, $, exports) {
       // Export global even in AMD case in case this script is loaded with
       // others that may still expect a global Backbone.
       root.Backbone = factory(root, exports, _, $);
@@ -24491,6 +24445,54 @@ module.exports = isObject;
 });
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(18)))
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(0)};
+module.exports = function(o) {
+var __t, __p = '';
+__p += '<!-- src/templates/spinner.html -->\n<span class="spinner fa fa-spinner centered"/>\n';
+return __p
+};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return value != null && (type == 'object' || type == 'function');
+}
+
+module.exports = isObject;
+
 
 /***/ }),
 /* 12 */
@@ -27718,8 +27720,8 @@ exports["filterCSS"] = (filterCSS);
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30),
-    getRawTag = __webpack_require__(335),
-    objectToString = __webpack_require__(336);
+    getRawTag = __webpack_require__(336),
+    objectToString = __webpack_require__(337);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -27751,8 +27753,8 @@ module.exports = baseGetTag;
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(353),
-    getValue = __webpack_require__(356);
+var baseIsNative = __webpack_require__(354),
+    getValue = __webpack_require__(357);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -28033,14 +28035,14 @@ module.exports = toKey;
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(337);
+module.exports = __webpack_require__(338);
 
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(351);
+module.exports = __webpack_require__(352);
 
 
 /***/ }),
@@ -28175,7 +28177,7 @@ module.exports = eq;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseCreate = __webpack_require__(51),
-    isObject = __webpack_require__(10);
+    isObject = __webpack_require__(11);
 
 /**
  * Creates a function that produces an instance of `Ctor` regardless of
@@ -28252,11 +28254,11 @@ module.exports = replaceHolders;
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var listCacheClear = __webpack_require__(388),
-    listCacheDelete = __webpack_require__(389),
-    listCacheGet = __webpack_require__(390),
-    listCacheHas = __webpack_require__(391),
-    listCacheSet = __webpack_require__(392);
+var listCacheClear = __webpack_require__(389),
+    listCacheDelete = __webpack_require__(390),
+    listCacheGet = __webpack_require__(391),
+    listCacheHas = __webpack_require__(392),
+    listCacheSet = __webpack_require__(393);
 
 /**
  * Creates an list cache object.
@@ -28329,7 +28331,7 @@ module.exports = nativeCreate;
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isKeyable = __webpack_require__(406);
+var isKeyable = __webpack_require__(407);
 
 /**
  * Gets the data for `map`.
@@ -28355,7 +28357,7 @@ module.exports = getMapData;
 
 var isArray = __webpack_require__(8),
     isKey = __webpack_require__(58),
-    stringToPath = __webpack_require__(429),
+    stringToPath = __webpack_require__(430),
     toString = __webpack_require__(108);
 
 /**
@@ -28389,7 +28391,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 //     https://github.com/akre54/Backbone.NativeView
 
 (function (factory) {
-  if (true) { !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27), __webpack_require__(11)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  if (true) { !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(27), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
                 __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
                 (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
                 __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -28565,7 +28567,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         for (var i = 0, len = this._domEvents.length; i < len; i++) {
           var item = this._domEvents[i];
           elementRemoveEventListener.call(item.el, item.eventName, item.handler, false);
-        };
+        }
         this._domEvents.length = 0;
       }
       return this;
@@ -29011,7 +29013,7 @@ if (typeof Blob === 'function' && (typeof FormData === 'undefined' || !FormData.
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
-    isObject = __webpack_require__(10);
+    isObject = __webpack_require__(11);
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -29061,171 +29063,180 @@ module.exports = isFunction;
  *
  * @copyright 2019 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 4.1.2
+ * @version 4.2.1
  */
 (function (global) {
-    var b = /^(b|B)$/,
-        symbol = {
-        iec: {
-            bits: ["b", "Kib", "Mib", "Gib", "Tib", "Pib", "Eib", "Zib", "Yib"],
-            bytes: ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
-        },
-        jedec: {
-            bits: ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"],
-            bytes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
-        }
+  var b = /^(b|B)$/,
+      symbol = {
+    iec: {
+      bits: ["b", "Kib", "Mib", "Gib", "Tib", "Pib", "Eib", "Zib", "Yib"],
+      bytes: ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
     },
-        fullform = {
-        iec: ["", "kibi", "mebi", "gibi", "tebi", "pebi", "exbi", "zebi", "yobi"],
-        jedec: ["", "kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta"]
-    };
+    jedec: {
+      bits: ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"],
+      bytes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    }
+  },
+      fullform = {
+    iec: ["", "kibi", "mebi", "gibi", "tebi", "pebi", "exbi", "zebi", "yobi"],
+    jedec: ["", "kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta"]
+  };
+  /**
+   * filesize
+   *
+   * @method filesize
+   * @param  {Mixed}   arg        String, Int or Float to transform
+   * @param  {Object}  descriptor [Optional] Flags
+   * @return {String}             Readable file size String
+   */
 
-    /**
-  * filesize
-  *
-  * @method filesize
-  * @param  {Mixed}   arg        String, Int or Float to transform
-  * @param  {Object}  descriptor [Optional] Flags
-  * @return {String}             Readable file size String
-  */
-    function filesize(arg) {
-        var descriptor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  function filesize(arg) {
+    var descriptor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var result = [],
+        val = 0,
+        e = void 0,
+        base = void 0,
+        bits = void 0,
+        ceil = void 0,
+        full = void 0,
+        fullforms = void 0,
+        locale = void 0,
+        localeOptions = void 0,
+        neg = void 0,
+        num = void 0,
+        output = void 0,
+        round = void 0,
+        unix = void 0,
+        separator = void 0,
+        spacer = void 0,
+        standard = void 0,
+        symbols = void 0;
 
-        var result = [],
-            val = 0,
-            e = void 0,
-            base = void 0,
-            bits = void 0,
-            ceil = void 0,
-            full = void 0,
-            fullforms = void 0,
-            locale = void 0,
-            neg = void 0,
-            num = void 0,
-            output = void 0,
-            round = void 0,
-            unix = void 0,
-            separator = void 0,
-            spacer = void 0,
-            standard = void 0,
-            symbols = void 0;
-
-        if (isNaN(arg)) {
-            throw new TypeError("Invalid number");
-        }
-
-        bits = descriptor.bits === true;
-        unix = descriptor.unix === true;
-        base = descriptor.base || 2;
-        round = descriptor.round !== void 0 ? descriptor.round : unix ? 1 : 2;
-        locale = descriptor.locale !== void 0 ? descriptor.locale : "";
-        separator = descriptor.separator !== void 0 ? descriptor.separator : "";
-        spacer = descriptor.spacer !== void 0 ? descriptor.spacer : unix ? "" : " ";
-        symbols = descriptor.symbols || {};
-        standard = base === 2 ? descriptor.standard || "jedec" : "jedec";
-        output = descriptor.output || "string";
-        full = descriptor.fullform === true;
-        fullforms = descriptor.fullforms instanceof Array ? descriptor.fullforms : [];
-        e = descriptor.exponent !== void 0 ? descriptor.exponent : -1;
-        num = Number(arg);
-        neg = num < 0;
-        ceil = base > 2 ? 1000 : 1024;
-
-        // Flipping a negative number to determine the size
-        if (neg) {
-            num = -num;
-        }
-
-        // Determining the exponent
-        if (e === -1 || isNaN(e)) {
-            e = Math.floor(Math.log(num) / Math.log(ceil));
-
-            if (e < 0) {
-                e = 0;
-            }
-        }
-
-        // Exceeding supported length, time to reduce & multiply
-        if (e > 8) {
-            e = 8;
-        }
-
-        if (output === "exponent") {
-            return e;
-        }
-
-        // Zero is now a special case because bytes divide by 1
-        if (num === 0) {
-            result[0] = 0;
-            result[1] = unix ? "" : symbol[standard][bits ? "bits" : "bytes"][e];
-        } else {
-            val = num / (base === 2 ? Math.pow(2, e * 10) : Math.pow(1000, e));
-
-            if (bits) {
-                val = val * 8;
-
-                if (val >= ceil && e < 8) {
-                    val = val / ceil;
-                    e++;
-                }
-            }
-
-            result[0] = Number(val.toFixed(e > 0 ? round : 0));
-            result[1] = base === 10 && e === 1 ? bits ? "kb" : "kB" : symbol[standard][bits ? "bits" : "bytes"][e];
-
-            if (unix) {
-                result[1] = standard === "jedec" ? result[1].charAt(0) : e > 0 ? result[1].replace(/B$/, "") : result[1];
-
-                if (b.test(result[1])) {
-                    result[0] = Math.floor(result[0]);
-                    result[1] = "";
-                }
-            }
-        }
-
-        // Decorating a 'diff'
-        if (neg) {
-            result[0] = -result[0];
-        }
-
-        // Applying custom symbol
-        result[1] = symbols[result[1]] || result[1];
-
-        if (locale === true) {
-            result[0] = result[0].toLocaleString();
-        } else if (locale.length > 0) {
-            result[0] = result[0].toLocaleString(locale);
-        } else if (separator.length > 0) {
-            result[0] = result[0].toString().replace(".", separator);
-        }
-
-        // Returning Array, Object, or String (default)
-        if (output === "array") {
-            return result;
-        }
-
-        if (full) {
-            result[1] = fullforms[e] ? fullforms[e] : fullform[standard][e] + (bits ? "bit" : "byte") + (result[0] === 1 ? "" : "s");
-        }
-
-        if (output === "object") {
-            return { value: result[0], symbol: result[1] };
-        }
-
-        return result.join(spacer);
+    if (isNaN(arg)) {
+      throw new TypeError("Invalid number");
     }
 
-    // Partial application for functional programming
-    filesize.partial = function (opt) {
-        return function (arg) {
-            return filesize(arg, opt);
-        };
-    };
+    bits = descriptor.bits === true;
+    unix = descriptor.unix === true;
+    base = descriptor.base || 2;
+    round = descriptor.round !== void 0 ? descriptor.round : unix ? 1 : 2;
+    locale = descriptor.locale !== void 0 ? descriptor.locale : "";
+    localeOptions = descriptor.localeOptions || {};
+    separator = descriptor.separator !== void 0 ? descriptor.separator : "";
+    spacer = descriptor.spacer !== void 0 ? descriptor.spacer : unix ? "" : " ";
+    symbols = descriptor.symbols || {};
+    standard = base === 2 ? descriptor.standard || "jedec" : "jedec";
+    output = descriptor.output || "string";
+    full = descriptor.fullform === true;
+    fullforms = descriptor.fullforms instanceof Array ? descriptor.fullforms : [];
+    e = descriptor.exponent !== void 0 ? descriptor.exponent : -1;
+    num = Number(arg);
+    neg = num < 0;
+    ceil = base > 2 ? 1000 : 1024; // Flipping a negative number to determine the size
 
-    // CommonJS, AMD, script tag
-    if (true) {
-        module.exports = filesize;
-    } else {}
+    if (neg) {
+      num = -num;
+    } // Determining the exponent
+
+
+    if (e === -1 || isNaN(e)) {
+      e = Math.floor(Math.log(num) / Math.log(ceil));
+
+      if (e < 0) {
+        e = 0;
+      }
+    } // Exceeding supported length, time to reduce & multiply
+
+
+    if (e > 8) {
+      e = 8;
+    }
+
+    if (output === "exponent") {
+      return e;
+    } // Zero is now a special case because bytes divide by 1
+
+
+    if (num === 0) {
+      result[0] = 0;
+      result[1] = unix ? "" : symbol[standard][bits ? "bits" : "bytes"][e];
+    } else {
+      val = num / (base === 2 ? Math.pow(2, e * 10) : Math.pow(1000, e));
+
+      if (bits) {
+        val = val * 8;
+
+        if (val >= ceil && e < 8) {
+          val = val / ceil;
+          e++;
+        }
+      }
+
+      result[0] = Number(val.toFixed(e > 0 ? round : 0));
+
+      if (result[0] === ceil && e < 8 && descriptor.exponent === void 0) {
+        result[0] = 1;
+        e++;
+      }
+
+      result[1] = base === 10 && e === 1 ? bits ? "kb" : "kB" : symbol[standard][bits ? "bits" : "bytes"][e];
+
+      if (unix) {
+        result[1] = standard === "jedec" ? result[1].charAt(0) : e > 0 ? result[1].replace(/B$/, "") : result[1];
+
+        if (b.test(result[1])) {
+          result[0] = Math.floor(result[0]);
+          result[1] = "";
+        }
+      }
+    } // Decorating a 'diff'
+
+
+    if (neg) {
+      result[0] = -result[0];
+    } // Applying custom symbol
+
+
+    result[1] = symbols[result[1]] || result[1];
+
+    if (locale === true) {
+      result[0] = result[0].toLocaleString();
+    } else if (locale.length > 0) {
+      result[0] = result[0].toLocaleString(locale, localeOptions);
+    } else if (separator.length > 0) {
+      result[0] = result[0].toString().replace(".", separator);
+    } // Returning Array, Object, or String (default)
+
+
+    if (output === "array") {
+      return result;
+    }
+
+    if (full) {
+      result[1] = fullforms[e] ? fullforms[e] : fullform[standard][e] + (bits ? "bit" : "byte") + (result[0] === 1 ? "" : "s");
+    }
+
+    if (output === "object") {
+      return {
+        value: result[0],
+        symbol: result[1]
+      };
+    }
+
+    return result.join(spacer);
+  } // Partial application for functional programming
+
+
+  filesize.partial = function (opt) {
+    return function (arg) {
+      return filesize(arg, opt);
+    };
+  }; // CommonJS, AMD, script tag
+
+
+  if (true) {
+    module.exports = filesize;
+  } else {}
 })(typeof window !== "undefined" ? window : global);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(18)))
@@ -29238,49 +29249,49 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_input.html -->\n<div class="form-group">\r\n    ';
+__p += '<!-- src/templates/form_input.html -->\n<div class="form-group">\n    ';
  if (o.type !== 'hidden') { ;
-__p += '\r\n        <label for="' +
+__p += '\n        <label for="' +
 __e(o.id) +
 '">' +
 __e(o.label) +
-'</label>\r\n    ';
+'</label>\n    ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (o.type === 'password' && o.fixed_username) { ;
-__p += '\r\n        <!-- This is a hack to prevent Chrome from auto-filling the username in\r\n            any of the other input fields in the MUC configuration form. -->\r\n        <input class="hidden-username" type="text" autocomplete="username" value="' +
+__p += '\n        <!-- This is a hack to prevent Chrome from auto-filling the username in\n            any of the other input fields in the MUC configuration form. -->\n        <input class="hidden-username" type="text" autocomplete="username" value="' +
 __e(o.fixed_username) +
-'"></input>\r\n    ';
+'"></input>\n    ';
  } ;
-__p += '\r\n    <input \r\n        class="form-control" name="' +
+__p += '\n    <input \n        class="form-control" name="' +
 __e(o.name) +
 '" type="' +
 __e(o.type) +
 '" id="' +
 __e(o.id) +
-'"\r\n        ';
+'"\n        ';
  if (o.autocomplete) { ;
 __p += ' autocomplete="' +
 __e(o.autocomplete) +
 '" ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.placeholder) { ;
 __p += ' placeholder="' +
 __e(o.placeholder) +
 '" ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.value) { ;
 __p += ' value="' +
 __e(o.value) +
 '" ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.required) { ;
 __p += ' required="required" ';
  } ;
-__p += ' />\r\n</div>\r\n';
+__p += ' />\n</div>\n';
 return __p
 };
 
@@ -29292,31 +29303,31 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_username.html -->\n<div class="form-group">\r\n    ';
+__p += '<!-- src/templates/form_username.html -->\n<div class="form-group">\n    ';
  if (o.label) { ;
-__p += '\r\n    <label>\r\n        ' +
+__p += '\n    <label>\n        ' +
 __e(o.label) +
-'\r\n    </label>\r\n    ';
+'\n    </label>\n    ';
  } ;
-__p += '\r\n    <div class="input-group">\r\n        <div class="input-group-prepend">\r\n            <input name="' +
+__p += '\n    <div class="input-group">\n        <div class="input-group-prepend">\n            <input name="' +
 __e(o.name) +
 '" type="' +
 __e(o.type) +
-'"\r\n                ';
+'"\n                ';
  if (o.value) { ;
 __p += ' value="' +
 __e(o.value) +
 '" ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.required) { ;
 __p += ' required="required" ';
  } ;
-__p += ' />\r\n            <div class="input-group-text col" title="' +
+__p += ' />\n            <div class="input-group-text col" title="' +
 __e(o.domain) +
 '">' +
 __e(o.domain) +
-'</div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'</div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -29328,11 +29339,11 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatbox.html -->\n<div class="flyout box-flyout">\r\n    <div class="chat-body">\r\n        <div class="chat-content ';
+__p += '<!-- src/templates/chatbox.html -->\n<div class="flyout box-flyout">\n    <div class="chat-body">\n        <div class="chat-content ';
  if (o.show_send_button) { ;
 __p += 'chat-content-sendbutton';
  } ;
-__p += '" aria-live="polite"></div>\r\n        <div class="bottom-panel"></div>\r\n    </div>\r\n</div>\r\n';
+__p += '" aria-live="polite"></div>\n        <div class="bottom-panel"></div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -30365,7 +30376,7 @@ return parser;
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toFinite = __webpack_require__(333);
+var toFinite = __webpack_require__(334);
 
 /**
  * Converts `value` to an integer.
@@ -30502,7 +30513,7 @@ module.exports = arrayMap;
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(10);
+var isObject = __webpack_require__(11);
 
 /** Built-in value references. */
 var objectCreate = Object.create;
@@ -30620,11 +30631,11 @@ module.exports = Map;
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mapCacheClear = __webpack_require__(398),
-    mapCacheDelete = __webpack_require__(405),
-    mapCacheGet = __webpack_require__(407),
-    mapCacheHas = __webpack_require__(408),
-    mapCacheSet = __webpack_require__(409);
+var mapCacheClear = __webpack_require__(399),
+    mapCacheDelete = __webpack_require__(406),
+    mapCacheGet = __webpack_require__(408),
+    mapCacheHas = __webpack_require__(409),
+    mapCacheSet = __webpack_require__(410);
 
 /**
  * Creates a map cache object to store key-value pairs.
@@ -30723,7 +30734,7 @@ module.exports = isKey;
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseValues = __webpack_require__(367),
+var baseValues = __webpack_require__(368),
     keys = __webpack_require__(20);
 
 /**
@@ -30769,21 +30780,21 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/headless/templates/field.html -->\n<field var="' +
 __e(o.name) +
-'">\r\n';
+'">\n';
  if (o.value.constructor === Array) { ;
-__p += '\r\n    ';
+__p += '\n    ';
  o.value.forEach(function (arrayValue) { ;
 __p += '<value>' +
 __e(arrayValue) +
 '</value>';
  }); ;
-__p += '\r\n';
+__p += '\n';
  } else { ;
-__p += '\r\n    <value>' +
+__p += '\n    <value>' +
 __e(o.value) +
-'</value>\r\n';
+'</value>\n';
  } ;
-__p += '</field>\r\n';
+__p += '</field>\n';
 return __p
 };
 
@@ -30792,7 +30803,7 @@ return __p
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(80),
-    createWrap = __webpack_require__(368),
+    createWrap = __webpack_require__(369),
     getHolder = __webpack_require__(54),
     replaceHolders = __webpack_require__(33);
 
@@ -30850,7 +30861,7 @@ module.exports = partial;
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/chatboxes.html -->\n<div class="converse-chatboxes row no-gutters"></div>\r\n<div id="converse-modals" class="modals"></div>\r\n';
+__p += '<!-- src/templates/chatboxes.html -->\n<div class="converse-chatboxes row no-gutters"></div>\n<div id="converse-modals" class="modals"></div>\n';
 return __p
 };
 
@@ -30865,7 +30876,7 @@ __p += '<!-- src/templates/image.html -->\n<a href="' +
 __e(o.url) +
 '" target="_blank" rel="noopener"><img class="chat-image img-thumbnail" src="' +
 __e(o.url) +
-'"/></a>\r\n';
+'"/></a>\n';
 return __p
 };
 
@@ -30878,7 +30889,7 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatbox_minimize.html -->\n<a class="chatbox-btn toggle-chatbox-button fa fa-minus" title="' +
 __e(o.info_minimize) +
-'"></a>\r\n';
+'"></a>\n';
 return __p
 };
 
@@ -30890,15 +30901,15 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_invite.html -->\n<div class="suggestion-box room-invite">\r\n    <form>\r\n        ';
+__p += '<!-- src/templates/chatroom_invite.html -->\n<div class="suggestion-box room-invite">\n    <form>\n        ';
  if (o.error_message) { ;
 __p += ' <div class="error error-feedback">' +
 __e(o.error_message) +
 '</div> ';
  } ;
-__p += '\r\n        <div class="form-group">\r\n            <input class="form-control invited-contact suggestion-box__input"\r\n                   placeholder="' +
+__p += '\n        <div class="form-group">\n            <input class="form-control invited-contact suggestion-box__input"\n                   placeholder="' +
 __e(o.label_invitation) +
-'"\r\n                   type="text"/>\r\n            <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\r\n        </div>\r\n    </form>\r\n    <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>\r\n</div>\r\n';
+'"\n                   type="text"/>\n            <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\n        </div>\n    </form>\n    <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>\n</div>\n';
 return __p
 };
 
@@ -30911,7 +30922,7 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/rooms_results.html -->\n<li class="list-group-item active">' +
 __e( o.feedback_text ) +
-'</li>\r\n';
+'</li>\n';
 return __p
 };
 
@@ -30958,7 +30969,7 @@ module.exports = arrayEach;
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(342),
+var baseTimes = __webpack_require__(343),
     isArguments = __webpack_require__(70),
     isArray = __webpack_require__(8),
     isBuffer = __webpack_require__(71),
@@ -31013,7 +31024,7 @@ module.exports = arrayLikeKeys;
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(343),
+var baseIsArguments = __webpack_require__(344),
     isObjectLike = __webpack_require__(13);
 
 /** Used for built-in method references. */
@@ -31056,7 +31067,7 @@ module.exports = isArguments;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(7),
-    stubFalse = __webpack_require__(344);
+    stubFalse = __webpack_require__(345);
 
 /** Detect free variable `exports`. */
 var freeExports =  true && exports && !exports.nodeType && exports;
@@ -31100,9 +31111,9 @@ module.exports = isBuffer;
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(345),
-    baseUnary = __webpack_require__(346),
-    nodeUtil = __webpack_require__(347);
+var baseIsTypedArray = __webpack_require__(346),
+    baseUnary = __webpack_require__(347),
+    nodeUtil = __webpack_require__(348);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -31134,7 +31145,7 @@ module.exports = isTypedArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isPrototype = __webpack_require__(74),
-    nativeKeys = __webpack_require__(348);
+    nativeKeys = __webpack_require__(349);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -31329,7 +31340,7 @@ module.exports = toSource;
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(23),
-    overRest = __webpack_require__(358),
+    overRest = __webpack_require__(359),
     setToString = __webpack_require__(81);
 
 /**
@@ -31351,7 +31362,7 @@ module.exports = baseRest;
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetToString = __webpack_require__(359),
+var baseSetToString = __webpack_require__(360),
     shortOut = __webpack_require__(82);
 
 /**
@@ -31415,7 +31426,7 @@ module.exports = shortOut;
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayLikeKeys = __webpack_require__(69),
-    baseKeysIn = __webpack_require__(362),
+    baseKeysIn = __webpack_require__(363),
     isArrayLike = __webpack_require__(19);
 
 /**
@@ -31452,9 +31463,9 @@ module.exports = keysIn;
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(364),
-    baseIsNaN = __webpack_require__(365),
-    strictIndexOf = __webpack_require__(366);
+var baseFindIndex = __webpack_require__(365),
+    baseIsNaN = __webpack_require__(366),
+    strictIndexOf = __webpack_require__(367);
 
 /**
  * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
@@ -31564,11 +31575,11 @@ module.exports = WeakMap;
 
 var composeArgs = __webpack_require__(90),
     composeArgsRight = __webpack_require__(91),
-    countHolders = __webpack_require__(371),
+    countHolders = __webpack_require__(372),
     createCtor = __webpack_require__(32),
     createRecurry = __webpack_require__(92),
     getHolder = __webpack_require__(54),
-    reorder = __webpack_require__(382),
+    reorder = __webpack_require__(383),
     replaceHolders = __webpack_require__(33),
     root = __webpack_require__(7);
 
@@ -31752,7 +31763,7 @@ module.exports = composeArgsRight;
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isLaziable = __webpack_require__(372),
+var isLaziable = __webpack_require__(373),
     setData = __webpack_require__(96),
     setWrapToString = __webpack_require__(97);
 
@@ -31815,7 +31826,7 @@ module.exports = createRecurry;
 /***/ (function(module, exports, __webpack_require__) {
 
 var metaMap = __webpack_require__(87),
-    noop = __webpack_require__(373);
+    noop = __webpack_require__(374);
 
 /**
  * Gets metadata for `func`.
@@ -31915,10 +31926,10 @@ module.exports = setData;
 /* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getWrapDetails = __webpack_require__(378),
-    insertWrapDetails = __webpack_require__(379),
+var getWrapDetails = __webpack_require__(379),
+    insertWrapDetails = __webpack_require__(380),
     setToString = __webpack_require__(81),
-    updateWrapDetails = __webpack_require__(380);
+    updateWrapDetails = __webpack_require__(381);
 
 /**
  * Sets the `toString` method of `wrapper` to mimic the source of `reference`
@@ -31943,11 +31954,11 @@ module.exports = setWrapToString;
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(34),
-    stackClear = __webpack_require__(393),
-    stackDelete = __webpack_require__(394),
-    stackGet = __webpack_require__(395),
-    stackHas = __webpack_require__(396),
-    stackSet = __webpack_require__(397);
+    stackClear = __webpack_require__(394),
+    stackDelete = __webpack_require__(395),
+    stackGet = __webpack_require__(396),
+    stackHas = __webpack_require__(397),
+    stackSet = __webpack_require__(398);
 
 /**
  * Creates a stack cache object to store key-value pairs.
@@ -31975,7 +31986,7 @@ module.exports = Stack;
 /* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqualDeep = __webpack_require__(410),
+var baseIsEqualDeep = __webpack_require__(411),
     isObjectLike = __webpack_require__(13);
 
 /**
@@ -32009,9 +32020,9 @@ module.exports = baseIsEqual;
 /* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(411),
-    arraySome = __webpack_require__(414),
-    cacheHas = __webpack_require__(415);
+var SetCache = __webpack_require__(412),
+    arraySome = __webpack_require__(415),
+    cacheHas = __webpack_require__(416);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -32150,7 +32161,7 @@ module.exports = arrayPush;
 /* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(422),
+var arrayFilter = __webpack_require__(423),
     stubArray = __webpack_require__(104);
 
 /** Used for built-in method references. */
@@ -32215,10 +32226,10 @@ module.exports = stubArray;
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DataView = __webpack_require__(423),
+var DataView = __webpack_require__(424),
     Map = __webpack_require__(55),
-    Promise = __webpack_require__(424),
-    Set = __webpack_require__(425),
+    Promise = __webpack_require__(425),
+    Set = __webpack_require__(426),
     WeakMap = __webpack_require__(88),
     baseGetTag = __webpack_require__(15),
     toSource = __webpack_require__(79);
@@ -32279,7 +32290,7 @@ module.exports = getTag;
 /* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(10);
+var isObject = __webpack_require__(11);
 
 /**
  * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
@@ -32326,7 +32337,7 @@ module.exports = matchesStrictComparable;
 /* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseToString = __webpack_require__(432);
+var baseToString = __webpack_require__(433);
 
 /**
  * Converts `value` to a string. An empty string is returned for `null`
@@ -33362,15 +33373,15 @@ backbone.nativeview = __webpack_require__(39);
 (function (root, factory) {
     if (true) {
         !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-            __webpack_require__(450),
             __webpack_require__(451),
             __webpack_require__(452),
             __webpack_require__(453),
             __webpack_require__(454),
             __webpack_require__(455),
             __webpack_require__(456),
+            __webpack_require__(457),
             __webpack_require__(27),
-            __webpack_require__(11)
+            __webpack_require__(9)
         ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
                 __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
                 (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
@@ -33478,7 +33489,7 @@ backbone.nativeview = __webpack_require__(39);
 /* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSlice = __webpack_require__(332),
+var baseSlice = __webpack_require__(333),
     toInteger = __webpack_require__(47);
 
 /**
@@ -33589,9 +33600,9 @@ module.exports = isNil;
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(50),
-    baseIteratee = __webpack_require__(385),
-    basePickBy = __webpack_require__(438),
-    getAllKeysIn = __webpack_require__(440);
+    baseIteratee = __webpack_require__(386),
+    basePickBy = __webpack_require__(439),
+    getAllKeysIn = __webpack_require__(441);
 
 /**
  * Creates an object composed of the `object` properties `predicate` returns
@@ -33635,7 +33646,7 @@ var baseKeys = __webpack_require__(73),
     getTag = __webpack_require__(105),
     isArrayLike = __webpack_require__(19),
     isString = __webpack_require__(85),
-    stringSize = __webpack_require__(443);
+    stringSize = __webpack_require__(444);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -33686,21 +33697,21 @@ module.exports = size;
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/headless/templates/vcard.html -->\n<vCard xmlns="vcard-temp">\r\n    <FN>' +
+__p += '<!-- src/headless/templates/vcard.html -->\n<vCard xmlns="vcard-temp">\n    <FN>' +
 __e(o.fn) +
-'</FN>\r\n    <NICKNAME>' +
+'</FN>\n    <NICKNAME>' +
 __e(o.nickname) +
-'</NICKNAME>\r\n    <URL>' +
+'</NICKNAME>\n    <URL>' +
 __e(o.url) +
-'</URL>\r\n    <ROLE>' +
+'</URL>\n    <ROLE>' +
 __e(o.role) +
-'</ROLE>\r\n    <EMAIL><INTERNET/><PREF/><USERID>' +
+'</ROLE>\n    <EMAIL><INTERNET/><PREF/><USERID>' +
 __e(o.email) +
-'</USERID></EMAIL>\r\n    <PHOTO>\r\n      <TYPE>' +
+'</USERID></EMAIL>\n    <PHOTO>\n      <TYPE>' +
 __e(o.image_type) +
-'</TYPE>\r\n      <BINVAL>' +
+'</TYPE>\n      <BINVAL>' +
 __e(o.image) +
-'</BINVAL>\r\n    </PHOTO>\r\n</vCard>\r\n';
+'</BINVAL>\n    </PHOTO>\n</vCard>\n';
 return __p
 };
 
@@ -33718,23 +33729,23 @@ __p += ' hidden ';
  } ;
 __p += '" data-room-jid="' +
 __e(o.jid) +
-'">\r\n    <a class="list-item-link open-room w-100" data-room-jid="' +
+'">\n    <a class="list-item-link open-room w-100" data-room-jid="' +
 __e(o.jid) +
 '" title="' +
 __e(o.open_title) + // BAO
 '" href="#"><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="22" width="22">' +
 __e(o.name) +
-'</a>\r\n    <a class="list-item-action remove-bookmark fa fa-bookmark align-self-center ';
+'</a>\n    <a class="list-item-action remove-bookmark fa fa-bookmark align-self-center ';
  if (o.bookmarked) { ;
 __p += ' button-on ';
  } ;
-__p += '"\r\n        data-room-jid="' +
+__p += '"\n        data-room-jid="' +
 __e(o.jid) +
 '" data-bookmark-name="' +
 __e(o.name) +
-'"\r\n        title="' +
+'"\n        title="' +
 __e(o.info_remove_bookmark) +
-'" href="#"></a>\r\n</div>\r\n';
+'" href="#"></a>\n</div>\n';
 return __p
 };
 
@@ -33748,19 +33759,19 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/bookmarks_list.html -->\n<a href="#" class="list-toggle bookmarks-toggle controlbox-padded" title="' +
 __e(o.desc_bookmarks) +
-'">\r\n    <span class="fa ';
+'">\n    <span class="fa ';
  if (o.toggle_state === o._converse.OPENED) { ;
 __p += ' fa-caret-down ';
  } else { ;
 __p += ' fa-caret-right ';
  } ;
-__p += '">\r\n    </span> ' +
+__p += '">\n    </span> ' +
 __e(o.label_bookmarks) +
-'</a>\r\n<div class="items-list bookmarks rooms-list ';
+'</a>\n<div class="items-list bookmarks rooms-list ';
  if (o.toggle_state !== o._converse.OPENED) { ;
 __p += ' hidden ';
  } ;
-__p += '"></div>\r\n';
+__p += '"></div>\n';
 return __p
 };
 
@@ -33771,23 +33782,23 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/chatroom_bookmark_form.html -->\n<div class="chatroom-form-container muc-bookmark-form">\r\n    <form class="converse-form chatroom-form">\r\n        <legend>' +
+__p += '<!-- src/templates/chatroom_bookmark_form.html -->\n<div class="chatroom-form-container muc-bookmark-form">\n    <form class="converse-form chatroom-form">\n        <legend>' +
 __e(o.heading) +
-'</legend>\r\n        <fieldset class="form-group">\r\n            <label for="converse_muc_bookmark_name">' +
+'</legend>\n        <fieldset class="form-group">\n            <label for="converse_muc_bookmark_name">' +
 __e(o.label_name) +
-'</label>\r\n            <input class="form-control" type="text" value="' +
+'</label>\n            <input class="form-control" type="text" value="' +
 __e(o.name) +
-'" name="name" required="required" id="converse_muc_bookmark_name"/>\r\n        </fieldset>\r\n        <fieldset class="form-group">\r\n            <label for="converse_muc_bookmark_nick">' +
+'" name="name" required="required" id="converse_muc_bookmark_name"/>\n        </fieldset>\n        <fieldset class="form-group">\n            <label for="converse_muc_bookmark_nick">' +
 __e(o.label_nick) +
-'</label>\r\n            <input class="form-control" type="text" name="nick" value="' +
+'</label>\n            <input class="form-control" type="text" name="nick" value="' +
 __e(o.default_nick) +
-'" id="converse_muc_bookmark_nick"/>\r\n        </fieldset>\r\n        <fieldset class="form-group form-check">\r\n            <input class="form-check-input" id="converse_muc_bookmark_autojoin" type="checkbox" name="autojoin"/>\r\n            <label class="form-check-label" for="converse_muc_bookmark_autojoin">' +
+'" id="converse_muc_bookmark_nick"/>\n        </fieldset>\n        <fieldset class="form-group form-check">\n            <input class="form-check-input" id="converse_muc_bookmark_autojoin" type="checkbox" name="autojoin"/>\n            <label class="form-check-label" for="converse_muc_bookmark_autojoin">' +
 __e(o.label_autojoin) +
-'</label>\r\n        </fieldset>\r\n        <fieldset class="form-group">\r\n            <input class="btn btn-primary" type="submit" value="' +
+'</label>\n        </fieldset>\n        <fieldset class="form-group">\n            <input class="btn btn-primary" type="submit" value="' +
 __e(o.label_submit) +
-'"/>\r\n            <input class="btn btn-secondary button-cancel" type="button" value="' +
+'"/>\n            <input class="btn btn-secondary button-cancel" type="button" value="' +
 __e(o.label_cancel) +
-'"/>\r\n        </fieldset>\r\n    </form>\r\n</div>\r\n';
+'"/>\n        </fieldset>\n    </form>\n</div>\n';
 return __p
 };
 
@@ -33799,13 +33810,13 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_bookmark_toggle.html -->\n<a class="chatbox-btn toggle-bookmark fa fa-bookmark\r\n   ';
+__p += '<!-- src/templates/chatroom_bookmark_toggle.html -->\n<a class="chatbox-btn toggle-bookmark fa fa-bookmark\n   ';
  if (o.bookmarked) {;
 __p += ' button-on ';
  } ;
 __p += '" title="' +
 __e(o.info_toggle_bookmark) +
-'"></a>\r\n';
+'"></a>\n';
 return __p
 };
 
@@ -33822,13 +33833,13 @@ __e(o.classes) +
 __e(o.width) +
 '" height="' +
 __e(o.height) +
-'">\r\n    <image width="' +
+'">\n    <image width="' +
 __e(o.width) +
 '" height="' +
 __e(o.height) +
 '" preserveAspectRatio="xMidYMid meet" xlink:href="' +
 __e(o.image) +
-'"/>\r\n</svg>\r\n';
+'"/>\n</svg>\n';
 return __p
 };
 
@@ -33839,7 +33850,7 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/background_logo.html -->\n<div class="inner-content converse-brand row">\r\n    <div class="converse-brand__padding"></div>\r\n    <div class="converse-brand__heading">\r\n        <svg height="200px"\r\n            xmlns="http://www.w3.org/2000/svg"\r\n            xmlns:xlink="http://www.w3.org/1999/xlink"\r\n            viewBox="0 0 364 364"\r\n            version="1.1">\r\n            <title>Logo Converse</title>\r\n            <defs>\r\n                <linearGradient id="gradient" x1="92.14" y1="27.64" x2="267.65" y2="331.62" gradientUnits="userSpaceOnUse">\r\n                    <stop offset="0" stop-color="#fff1d1"/>\r\n                    <stop offset="0.05" stop-color="#fae8c1"/>\r\n                    <stop offset="0.15" stop-color="#f0d5a1"/>\r\n                    <stop offset="0.27" stop-color="#e7c687"/>\r\n                    <stop offset="0.4" stop-color="#e1bb72"/>\r\n                    <stop offset="0.54" stop-color="#dcb264"/>\r\n                    <stop offset="0.71" stop-color="#daad5c"/>\r\n                    <stop offset="1" stop-color="#d9ac59"/>\r\n                </linearGradient>\r\n                <filter id="shadow">\r\n                    <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur1"/>\r\n                    <feOffset in="blur1" dx="3" dy="3" result="blur2"/>\r\n                    <feColorMatrix in="blur2" type="matrix" result="blur3"\r\n                        values="1 0 0 0 0.1\r\n                                0 1 0 0 0.1\r\n                                0 0 1 0 0.1\r\n                                0 0 0 1 0"/>\r\n                    <feMerge>\r\n                        <feMergeNode in="blur3"/>\r\n                        <feMergeNode in="SourceGraphic"/>\r\n                    </feMerge>\r\n                </filter>\r\n            </defs>\r\n            <g filter="url(#shadow)">\r\n                <path d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" fill="#d9ac59"/>\r\n                <path d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" fill="url(#gradient)"/>\r\n            </g>\r\n        </svg>\r\n        <span class="converse-brand__text">\r\n            <span>converse<span class="subdued">.js</span></span>\r\n            <p class="byline">messaging freedom</p>\r\n        </span>\r\n    </div>\r\n</div>\r\n';
+__p += '<!-- src/templates/background_logo.html -->\n<div class="inner-content converse-brand row">\n    <div class="converse-brand__padding"></div>\n    <div class="converse-brand__heading">\n        <svg height="200px"\n            xmlns="http://www.w3.org/2000/svg"\n            xmlns:xlink="http://www.w3.org/1999/xlink"\n            viewBox="0 0 364 364"\n            version="1.1">\n            <title>Logo Converse</title>\n            <defs>\n                <linearGradient id="gradient" x1="92.14" y1="27.64" x2="267.65" y2="331.62" gradientUnits="userSpaceOnUse">\n                    <stop offset="0" stop-color="#fff1d1"/>\n                    <stop offset="0.05" stop-color="#fae8c1"/>\n                    <stop offset="0.15" stop-color="#f0d5a1"/>\n                    <stop offset="0.27" stop-color="#e7c687"/>\n                    <stop offset="0.4" stop-color="#e1bb72"/>\n                    <stop offset="0.54" stop-color="#dcb264"/>\n                    <stop offset="0.71" stop-color="#daad5c"/>\n                    <stop offset="1" stop-color="#d9ac59"/>\n                </linearGradient>\n                <filter id="shadow">\n                    <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur1"/>\n                    <feOffset in="blur1" dx="3" dy="3" result="blur2"/>\n                    <feColorMatrix in="blur2" type="matrix" result="blur3"\n                        values="1 0 0 0 0.1\n                                0 1 0 0 0.1\n                                0 0 1 0 0.1\n                                0 0 0 1 0"/>\n                    <feMerge>\n                        <feMergeNode in="blur3"/>\n                        <feMergeNode in="SourceGraphic"/>\n                    </feMerge>\n                </filter>\n            </defs>\n            <g filter="url(#shadow)">\n                <path d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" fill="#d9ac59"/>\n                <path d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" fill="url(#gradient)"/>\n            </g>\n        </svg>\n        <span class="converse-brand__text">\n            <span>converse<span class="subdued">.js</span></span>\n            <p class="byline">messaging freedom</p>\n        </span>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -33852,11 +33863,11 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/audio.html -->\n<audio controls src="' +
 __e(o.url) +
-'"></audio>\r\n<a target="_blank" rel="noopener" href="' +
+'"></audio>\n<a target="_blank" rel="noopener" href="' +
 __e(o.url) +
 '">' +
 __e(o.label_download) +
-'</a>\r\n';
+'</a>\n';
 return __p
 };
 
@@ -33871,7 +33882,7 @@ __p += '<!-- src/templates/file.html -->\n<a target="_blank" rel="noopener" href
 __e(o.url) +
 '">' +
 __e(o.label_download) +
-'</a>\r\n';
+'</a>\n';
 return __p
 };
 
@@ -33885,21 +33896,21 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/form_captcha.html -->\n';
  if (o.label) { ;
-__p += '\r\n<label>\r\n    ' +
+__p += '\n<label>\n    ' +
 __e(o.label) +
-'\r\n</label>\r\n';
+'\n</label>\n';
  } ;
-__p += '\r\n<img src="data:' +
+__p += '\n<img src="data:' +
 __e(o.type) +
 ';base64,' +
 __e(o.data) +
-'">\r\n<input name="' +
+'">\n<input name="' +
 __e(o.name) +
 '" type="text" ';
  if (o.required) { ;
 __p += ' required="required" ';
  } ;
-__p += ' />\r\n\r\n\r\n';
+__p += ' />\n\n\n';
 return __p
 };
 
@@ -33911,7 +33922,7 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_checkbox.html -->\n<div class="form-group">\r\n    <input id="' +
+__p += '<!-- src/templates/form_checkbox.html -->\n<div class="form-group">\n    <input id="' +
 __e(o.id) +
 '" name="' +
 __e(o.name) +
@@ -33921,11 +33932,11 @@ __e(o.checked) +
  if (o.required) { ;
 __p += ' required ';
  } ;
-__p += ' />\r\n    <label class="form-check-label" for="' +
+__p += ' />\n    <label class="form-check-label" for="' +
 __e(o.id) +
 '">' +
 __e(o.label) +
-'</label>\r\n</div>\r\n';
+'</label>\n</div>\n';
 return __p
 };
 
@@ -33937,11 +33948,11 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_select.html -->\n<div class="form-group">\r\n    <label for="' +
+__p += '<!-- src/templates/form_select.html -->\n<div class="form-group">\n    <label for="' +
 __e(o.id) +
 '">' +
 __e(o.label) +
-'</label>\r\n    <select class="form-control" id="' +
+'</label>\n    <select class="form-control" id="' +
 __e(o.id) +
 '" name="' +
 __e(o.name) +
@@ -33951,7 +33962,7 @@ __p += ' multiple="multiple" ';
  } ;
 __p += '>' +
 ((__t = (o.options)) == null ? '' : __t) +
-'</select>\r\n</div>\r\n';
+'</select>\n</div>\n';
 return __p
 };
 
@@ -33964,11 +33975,11 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/form_textarea.html -->\n<label class="label-ta">' +
 __e(o.label) +
-'</label>\r\n<textarea name="' +
+'</label>\n<textarea name="' +
 __e(o.name) +
 '">' +
 __e(o.value) +
-'</textarea>\r\n';
+'</textarea>\n';
 return __p
 };
 
@@ -33979,13 +33990,13 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/form_url.html -->\n<label>\r\n    ' +
+__p += '<!-- src/templates/form_url.html -->\n<label>\n    ' +
 __e(o.label) +
-'\r\n    <a class="form-url" target="_blank" rel="noopener" href="' +
+'\n    <a class="form-url" target="_blank" rel="noopener" href="' +
 __e(o.value) +
 '">' +
 __e(o.value) +
-'</a>\r\n</label>\r\n';
+'</a>\n</label>\n';
 return __p
 };
 
@@ -34005,7 +34016,7 @@ __p += ' selected="selected" ';
  } ;
 __p += ' >' +
 __e(o.label) +
-'</option>\r\n';
+'</option>\n';
 return __p
 };
 
@@ -34018,11 +34029,11 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/video.html -->\n<video controls src="' +
 __e(o.url) +
-'" style="max-height: 50vh"></video>\r\n<a target="_blank" rel="noopener" href="' +
+'" style="max-height: 50vh"></video>\n<a target="_blank" rel="noopener" href="' +
 __e(o.url) +
 '">' +
 __e(o.label_download) +
-'</a>\r\n';
+'</a>\n';
 return __p
 };
 
@@ -34033,13 +34044,13 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/csn.html -->\n<div class="message chat-info chat-state-notification"\r\n     data-isodate="' +
+__p += '<!-- src/templates/csn.html -->\n<div class="message chat-info chat-state-notification"\n     data-isodate="' +
 __e(o.isodate) +
-'"\r\n     data-csn="' +
+'"\n     data-csn="' +
 __e(o.from) +
 '">' +
 __e(o.message) +
-'</div>\r\n';
+'</div>\n';
 return __p
 };
 
@@ -34054,15 +34065,15 @@ __p += '<!-- src/templates/file_progress.html -->\n<div id="msg-' + __e(o.msgid)
 __e(o.time) +
 '" data-msgid="' +
 __e(o.msgid) +
-'">\r\n    <canvas class="avatar chat-msg__avatar" height="36" width="36"></canvas>\r\n    <div class="chat-msg__content">\r\n        <span class="chat-msg__text">' +
+'">\n    <canvas class="avatar chat-msg__avatar" height="36" width="36"></canvas>\n    <div class="chat-msg__content">\n        <span class="chat-msg__text">' +
 __e(o.__('Uploading file:')) +
 ' <strong>' +
 __e(o.filename) +
 '</strong>, ' +
 __e(o.filesize) +
-'</span>\r\n        <progress value="' +
+'</span>\n        <progress value="' +
 __e(o.progress) +
-'"/>\r\n    </div>\r\n</div>\r\n';
+'"/>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34081,7 +34092,7 @@ __p += ' chat-msg--action ';
  } ;
 __p +=
 __e(o.extra_classes) +
-'"\r\n        data-isodate="' +
+'"\n        data-isodate="' +
 __e(o.time) +
 '" data-msgid="' +
 __e(o.msgid) +
@@ -34089,15 +34100,15 @@ __e(o.msgid) +
 __e(o.from) +
 '" data-encrypted="' +
 __e(o.is_encrypted) +
-'">\r\n    ';
+'">\n    ';
  if (o.type !== 'headline' && !o.is_me_message) { ;
-__p += '\r\n    <canvas class="avatar chat-msg__avatar" height="36" width="36"></canvas>\r\n    ';
+__p += '\n    <canvas class="avatar chat-msg__avatar" height="36" width="36"></canvas>\n    ';
  } ;
-__p += '\r\n    <div class="chat-msg__content chat-msg__content--' +
+__p += '\n    <div class="chat-msg__content chat-msg__content--' +
 __e(o.sender) +
 ' ' +
 __e(o.is_me_message ? 'chat-msg__content--action' : '') +
-'">\r\n        <span class="chat-msg__heading">\r\n            ';
+'">\n        <span class="chat-msg__heading">\n            ';
  if (o.is_me_message) { ;
 __p += '<time timestamp="' +
 __e(o.isodate) +
@@ -34105,76 +34116,75 @@ __e(o.isodate) +
 __e(o.pretty_time) +
 '</time>';
  } ;
-__p += '\r\n            <span class="chat-msg__author">';
+__p += '\n            <span class="chat-msg__author">';
  if (o.is_me_message) { ;
 __p += '**';
  }; ;
 __p +=
 __e(o.username) +
-'</span>\r\n            ';
+'</span>\n            ';
  if (!o.is_me_message) { ;
-__p += '\r\n                ';
+__p += '\n                ';
 o.roles.forEach(function (role) { ;
 __p += ' <span class="badge badge-secondary">' +
 __e(role) +
 '</span> ';
  }); ;
-__p += '\n                    <span title="' + o.verified_label + '" class="' + getVerifiedClass(o.verified, o.from) + '"></span>\n'; // BAO
-__p += '\r\n                <time timestamp="' +
+__p += '\n                <time timestamp="' +
 __e(o.isodate) +
 '" class="chat-msg__time">' +
 __e(o.pretty_time) +
-'</time>\r\n            ';
+'</time>\n            ';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.is_encrypted) { ;
 __p += '<span class="fa fa-lock"></span>';
  } ;
-__p += '\r\n        </span>\r\n        <div class="chat-msg__body chat-msg__body--' +
+__p += '\n        </span>\n        <div class="chat-msg__body chat-msg__body--' +
 __e(o.type) +
 ' ' +
 __e(o.received ? 'chat-msg__body--received' : '' ) +
 ' ' +
 __e(o.is_delayed ? 'chat-msg__body--delayed' : '' ) +
-'">\r\n            <div class="chat-msg__message">\r\n                ';
+'">\n            <div class="chat-msg__message">\n                ';
  if (o.is_spoiler) { ;
-__p += '\r\n                    <div class="chat-msg__spoiler-hint">\r\n                        <span class="spoiler-hint">' +
+__p += '\n                    <div class="chat-msg__spoiler-hint">\n                        <span class="spoiler-hint">' +
 __e(o.spoiler_hint) +
-'</span>\r\n                        <a class="badge badge-info spoiler-toggle" data-toggle-state="closed" href="#"><i class="fa fa-eye"></i>' +
+'</span>\n                        <a class="badge badge-info spoiler-toggle" data-toggle-state="closed" href="#"><i class="fa fa-eye"></i>' +
 __e(o.label_show) +
-'</a>\r\n                    </div>\r\n                ';
+'</a>\n                    </div>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.subject) { ;
-__p += '\r\n                    <div class="chat-msg__subject">' +
+__p += '\n                    <div class="chat-msg__subject">' +
 __e( o.subject ) +
-'</div>\r\n                ';
+'</div>\n                ';
  } ;
-__p += '\r\n                <div class="chat-msg__text\r\n                    ';
+__p += '\n                <div class="chat-msg__text\n                    ';
  if (o.is_single_emoji) { ;
 __p += ' chat-msg__text--larger';
  } ;
-__p += '\r\n                    ';
+__p += '\n                    ';
  if (o.is_spoiler) { ;
 __p += ' spoiler collapsed';
  } ;
-__p += '"><!-- message gets added here via renderMessage --></div>\r\n                <div class="chat-msg__media"></div>\r\n            </div>\r\n            ';
+__p += '"><!-- message gets added here via renderMessage --></div>\n                <div class="chat-msg__media"></div>\n            </div>\n            ';
  if (o.received && !o.is_me_message && !o.is_groupchat_message) { ;
 __p += ' <span class="fa fa-check chat-msg__receipt"></span> ';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.edited) { ;
 __p += ' <i title="' +
 __e(o.__('This message has been edited')) +
 '" class="fa fa-edit chat-msg__edit-modal"></i> ';
  } ;
-__p += '\r\n            ';
- if (o.type !== 'headline' && o.sender === 'me') { ;
-__p += '\r\n                <div class="chat-msg__actions">\r\n                    <button class="chat-msg__action chat-msg__action-edit fa fa-pencil-alt" title="' +
+__p += '\n            ';
+ if (o.editable) { ;
+__p += '\n                <div class="chat-msg__actions">\n                    <button class="chat-msg__action chat-msg__action-edit fa fa-pencil-alt" title="' +
 __e(o.__('Edit this message')) +
-'"></button>\r\n                </div>\r\n            ';
+'"></button>\n                </div>\n            ';
  } ;
-__p += '\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+__p += '\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34186,11 +34196,11 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/message_versions_modal.html -->\n<div class="modal" id="message-versions-modal" tabindex="-1" role="dialog" aria-labelledby="message-versions-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h4 class="modal-title" id="message-versions-modal-label">' +
+__p += '<!-- src/templates/message_versions_modal.html -->\n<div class="modal" id="message-versions-modal" tabindex="-1" role="dialog" aria-labelledby="message-versions-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h4 class="modal-title" id="message-versions-modal-label">' +
 __e(o.__('Message versions')) +
-'</h4>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
+'</h4>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
 __e(o.label_close) +
-'"><span aria-hidden="true">×</span></button>\r\n            </div>\r\n            <div class="modal-body">\r\n                <h4>Older versions</h4>\r\n                ';
+'"><span aria-hidden="true">×</span></button>\n            </div>\n            <div class="modal-body">\n                <h4>Older versions</h4>\n                ';
 Object.keys(o.older_versions).forEach(function (k) { ;
 __p += ' <p class="older-msg"><time>' +
 __e(o.dayjs(k).format('MMM D, YYYY, HH:mm:ss')) +
@@ -34198,11 +34208,11 @@ __e(o.dayjs(k).format('MMM D, YYYY, HH:mm:ss')) +
 __e(o.older_versions[k]) +
 '</p> ';
  }); ;
-__p += '\r\n                <hr/>\r\n                <h4>Current version</h4>\r\n                <p>' +
+__p += '\n                <hr/>\n                <h4>Current version</h4>\n                <p>' +
 __e(o.message) +
-'</p>\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-secondary" data-dismiss="modal">' +
+'</p>\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-secondary" data-dismiss="modal">' +
 __e(o.__('Close')) +
-'</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'</button>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34217,7 +34227,7 @@ __p += '<!-- src/templates/alert.html -->\n<div class="alert ' +
 __e(o.type) +
 '" role="alert"><p>' +
 __e(o.message) +
-'</p></div>\r\n';
+'</p></div>\n';
 return __p
 };
 
@@ -34229,17 +34239,17 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/alert_modal.html -->\n<div class="modal" tabindex="-1" role="dialog">\r\n  <div class="modal-dialog" role="document">\r\n    <div class="modal-content">\r\n      <div class="modal-header ' +
+__p += '<!-- src/templates/alert_modal.html -->\n<div class="modal" tabindex="-1" role="dialog">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header ' +
 __e(o.type) +
-'">\r\n        <h5 class="modal-title">' +
+'">\n        <h5 class="modal-title">' +
 __e(o.title) +
-'</h5>\r\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close">\r\n          <span aria-hidden="true">×</span>\r\n        </button>\r\n      </div>\r\n      <div class="modal-body">';
+'</h5>\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n          <span aria-hidden="true">×</span>\n        </button>\n      </div>\n      <div class="modal-body">';
 o.messages.forEach(function (message) { ;
-__p += '\r\n          <p>' +
+__p += '\n          <p>' +
 __e(message) +
-'</p>\r\n      ';
+'</p>\n      ';
  }) ;
-__p += '\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n';
+__p += '\n      </div>\n    </div>\n  </div>\n</div>\n';
 return __p
 };
 
@@ -34251,31 +34261,31 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatbox_head.html -->\n<div class="chat-head chat-head-chatbox row no-gutters">\r\n    <div class="chatbox-navback"><i class="fa fa-arrow-left"></i></div>\r\n    <div class="chatbox-title">\r\n        <div class="row no-gutters">\r\n            ';
+__p += '<!-- src/templates/chatbox_head.html -->\n<div class="chat-head chat-head-chatbox row no-gutters">\n    <div class="chatbox-navback"><i class="fa fa-arrow-left"></i></div>\n    <div class="chatbox-title">\n        <div class="row no-gutters">\n            ';
  if (o.type !== o._converse.HEADLINES_TYPE) { ;
-__p += '\r\n                <canvas class="avatar" height="36" width="36"></canvas>\r\n            ';
+__p += '\n                <canvas class="avatar" height="36" width="36"></canvas>\n            ';
  } ;
-__p += '\r\n            <div class="col chat-title" title="' +
+__p += '\n            <div class="col chat-title" title="' +
 __e(o.jid) +
-'">\r\n                ';
+'">\n                ';
  if (o.url) { ;
-__p += '\r\n                    <a href="' +
+__p += '\n                    <a href="' +
 __e(o.url) +
-'" target="_blank" rel="noopener" class="user">\r\n                ';
+'" target="_blank" rel="noopener" class="user">\n                ';
  } ;
-__p += '\r\n                        ' +
+__p += '\n                        ' +
 __e( o.display_name ) +
-'\r\n                ';
+'\n                ';
  if (o.url) { ;
-__p += '\r\n                    </a>\r\n                ';
+__p += '\n                    </a>\n                ';
  } ;
-__p += '\r\n                <p class="user-custom-message">' +
+__p += '\n                <p class="user-custom-message">' +
 __e( o.status ) +
-'</p>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class="chatbox-buttons row no-gutters">\r\n        <a class="chatbox-btn close-chatbox-button fa fa-times" title="' +
+'</p>\n            </div>\n        </div>\n    </div>\n    <div class="chatbox-buttons row no-gutters">\n        <a class="chatbox-btn close-chatbox-button fa fa-times" title="' +
 __e(o.info_close) +
-'"></a>\r\n        <a class="chatbox-btn show-user-details-modal fa fa-id-card" title="' +
+'"></a>\n        <a class="chatbox-btn show-user-details-modal fa fa-id-card" title="' +
 __e(o.info_details) +
-'"></a>\r\n    </div>\r\n</div>\r\n';
+'"></a>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34287,39 +34297,39 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatbox_message_form.html -->\n<div class="message-form-container">\r\n<div class="new-msgs-indicator hidden">▼ ' +
+__p += '<!-- src/templates/chatbox_message_form.html -->\n<div class="message-form-container">\n<div class="new-msgs-indicator hidden">▼ ' +
 __e( o.unread_msgs ) +
-' ▼</div>\r\n<form class="sendXMPPMessage">\r\n    ';
+' ▼</div>\n<form class="sendXMPPMessage">\n    ';
  if (o.show_toolbar) { ;
-__p += '\r\n        <ul class="chat-toolbar no-text-select"></ul>\r\n    ';
+__p += '\n        <ul class="chat-toolbar no-text-select"></ul>\n    ';
  } ;
-__p += '\r\n    <input type="text" placeholder="' +
+__p += '\n    <input type="text" placeholder="' +
 ((__t = (o.label_spoiler_hint)) == null ? '' : __t) +
 '" value="' +
 ((__t = ( o.hint_value )) == null ? '' : __t) +
-'"\r\n           class="';
+'"\n           class="';
  if (!o.composing_spoiler) { ;
 __p += ' hidden ';
  } ;
-__p += ' spoiler-hint"/>\r\n\r\n    <div class="suggestion-box">\r\n        <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>\r\n        <textarea\r\n            type="text"\r\n            class="chat-textarea suggestion-box__input\r\n                ';
+__p += ' spoiler-hint"/>\n\n    <div class="suggestion-box">\n        <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>\n        <textarea\n            type="text"\n            class="chat-textarea suggestion-box__input\n                ';
  if (o.show_send_button) { ;
 __p += ' chat-textarea-send-button ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.composing_spoiler) { ;
 __p += ' spoiler ';
  } ;
-__p += '"\r\n            placeholder="' +
+__p += '"\n            placeholder="' +
 __e(o.label_message) +
 '">' +
 ((__t = ( o.message_value )) == null ? '' : __t) +
-'</textarea>\r\n        <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\r\n\r\n        ';
+'</textarea>\n        <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\n\n        ';
  if (o.show_send_button) { ;
-__p += '\r\n            <button type="submit" class="pure-button send-button">' +
+__p += '\n            <button type="submit" class="pure-button send-button">' +
 __e( o.label_send ) +
-'</button>\r\n        ';
+'</button>\n        ';
  } ;
-__p += '\r\n    </div>\r\n</form>\r\n</div>\r\n';
+__p += '\n    </div>\n</form>\n</div>\n';
 return __p
 };
 
@@ -34334,7 +34344,7 @@ __p += '<!-- src/templates/error_message.html -->\n<div class="message chat-info
 __e(o.isodate) +
 '">' +
 __e(o.message) +
-'</div>\r\n';
+'</div>\n';
 return __p
 };
 
@@ -34356,7 +34366,7 @@ __p += '" data-isodate="' +
 __e(o.isodate) +
 '">' +
 ((__t = (o.message)) == null ? '' : __t) +
-'</div>\r\n';
+'</div>\n';
 return __p
 };
 
@@ -34369,11 +34379,11 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/new_day.html -->\n<div class="message date-separator" data-isodate="' +
 __e(o.isodate) +
-'">\r\n    <hr class="separator"/>\r\n    <time class="separator-text" datetime="' +
+'">\n    <hr class="separator"/>\n    <time class="separator-text" datetime="' +
 __e(o.isodate) +
 '"><span>' +
 __e(o.datestring) +
-'</span></time>\r\n</div>\r\n';
+'</span></time>\n</div>\n';
 return __p
 };
 
@@ -34393,9 +34403,9 @@ __p += ' ';
  if (!o.composing_spoiler)  { ;
 __p += ' fa-eye ';
  } ;
-__p += '"\r\n    title="' +
+__p += '"\n    title="' +
 ((__t = ( o.label_toggle_spoiler )) == null ? '' : __t) +
-'">\r\n</li>\r\n';
+'">\n</li>\n';
 return __p
 };
 
@@ -34406,13 +34416,13 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/status_message.html -->\n<div class="message chat-info chat-status"\r\n     data-isodate="' +
+__p += '<!-- src/templates/status_message.html -->\n<div class="message chat-info chat-status"\n     data-isodate="' +
 __e(o.isodate) +
-'"\r\n     data-status="' +
+'"\n     data-status="' +
 __e(o.from) +
 '">' +
 __e(o.message) +
-'</div>\r\n';
+'</div>\n';
 return __p
 };
 
@@ -34426,31 +34436,31 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/toolbar.html -->\n';
  if (o.show_call_button)  { ;
-__p += '\r\n<li class="toggle-call fa fa-phone" title="' +
+__p += '\n<li class="toggle-call fa fa-phone" title="' +
 __e(o.label_start_call) +
-'"></li>\r\n';
+'"></li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.show_occupants_toggle)  { ;
-__p += '\r\n<li class="toggle-occupants float-right fa ';
+__p += '\n<li class="toggle-occupants float-right fa ';
  if (o.hidden_occupants)  { ;
 __p += ' fa-angle-double-left ';
  } else { ;
 __p += ' fa-angle-double-right ';
  } ;
-__p += '"\r\n    title="' +
+__p += '"\n    title="' +
 __e(o.label_hide_occupants) +
-'"></li>\r\n';
+'"></li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.message_limit)  { ;
-__p += '\r\n<li class="message-limit font-weight-bold float-right" title="' +
+__p += '\n<li class="message-limit font-weight-bold float-right" title="' +
 __e(o.label_message_limit) +
 '">' +
 __e(o.message_limit) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
 return __p
 };
 
@@ -34461,9 +34471,9 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/toolbar_fileupload.html -->\n<li class="upload-file">\r\n    <a class="fa fa-paperclip" title="' +
+__p += '<!-- src/templates/toolbar_fileupload.html -->\n<li class="upload-file">\n    <a class="fa fa-paperclip" title="' +
 __e(o.tooltip_upload_file) +
-'"></a>\r\n    <input type="file" class="fileupload" multiple="" style="display:none"/>\r\n</li> \r\n';
+'"></a>\n    <input type="file" class="fileupload" multiple="" style="display:none"/>\n</li> \n';
 return __p
 };
 
@@ -34475,133 +34485,133 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/user_details_modal.html -->\n<div class="modal" id="user-details-modal" tabindex="-1" role="dialog" aria-labelledby="user-details-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="user-details-modal-label">' +
+__p += '<!-- src/templates/user_details_modal.html -->\n<div class="modal" id="user-details-modal" tabindex="-1" role="dialog" aria-labelledby="user-details-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="user-details-modal-label">' +
 __e(o.display_name) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
 __e(o.__('Close')) +
-'"><span aria-hidden="true">×</span></button>\r\n            </div>\r\n            <div class="modal-body">\r\n                ';
+'"><span aria-hidden="true">×</span></button>\n            </div>\n            <div class="modal-body">\n                ';
  if (o.image) { ;
-__p += '\r\n                <img alt="' +
+__p += '\n                <img alt="' +
 __e(o.__('The User\'s Profile Image')) +
-'"\r\n                    class="img-thumbnail avatar align-self-center mb-3"\r\n                    height="100" width="100" src="data:' +
+'"\n                    class="img-thumbnail avatar align-self-center mb-3"\n                    height="100" width="100" src="data:' +
 __e(o.image_type) +
 ';base64,' +
 __e(o.image) +
-'"/>\r\n                ';
+'"/>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.fullname) { ;
-__p += '\r\n                <p><label>' +
+__p += '\n                <p><label>' +
 __e(o.__('Full Name:')) +
 '</label> ' +
 __e(o.fullname) +
-'</p>\r\n                ';
+'</p>\n                ';
  } ;
-__p += '\r\n                <p><label>' +
+__p += '\n                <p><label>' +
 __e(o.__('XMPP Address:')) +
 '</label> <a href="xmpp:' +
 __e(o.jid) +
 '">' +
 __e(o.jid) +
-'</a></p>\r\n                ';
+'</a></p>\n                ';
  if (o.nickname) { ;
-__p += '\r\n                <p><label>' +
+__p += '\n                <p><label>' +
 __e(o.__('Nickname:')) +
 '</label> ' +
 __e(o.nickname) +
-'</p>\r\n                ';
+'</p>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.url) { ;
-__p += '\r\n                <p><label>' +
+__p += '\n                <p><label>' +
 __e(o.__('URL:')) +
 '</label> <a target="_blank" rel="noopener" href="' +
 __e(o.url) +
 '">' +
 __e(o.url) +
-'</a></p>\r\n                ';
+'</a></p>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.email) { ;
-__p += '\r\n                <p><label>' +
+__p += '\n                <p><label>' +
 __e(o.__('Email:')) +
 '</label> <a href="mailto:' +
 __e(o.email) +
 '">' +
 __e(o.email) +
-'</a></p>\r\n                ';
+'</a></p>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.role) { ;
-__p += '\r\n                <p><label>' +
+__p += '\n                <p><label>' +
 __e(o.__('Role:')) +
 '</label> ' +
 __e(o.role) +
-'</p>\r\n                ';
+'</p>\n                ';
  } ;
-__p += '\r\n\r\n                ';
+__p += '\n\n                ';
  if (o._converse.pluggable.plugins['converse-omemo'].enabled(o._converse)) { ;
-__p += '\r\n                    <hr/>\r\n                    <ul class="list-group fingerprints">\r\n                        <li class="list-group-item active">' +
+__p += '\n                    <hr/>\n                    <ul class="list-group fingerprints">\n                        <li class="list-group-item active">' +
 __e(o.__('OMEMO Fingerprints')) +
-'</li>\r\n                        ';
+'</li>\n                        ';
  if (!o.view.devicelist.devices) { ;
-__p += '\r\n                            <li class="list-group-item"><span class="spinner fa fa-spinner centered"/></li>\r\n                        ';
+__p += '\n                            <li class="list-group-item"><span class="spinner fa fa-spinner centered"/></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.view.devicelist.devices) { ;
-__p += '\r\n                            ';
+__p += '\n                            ';
  o.view.devicelist.devices.each(function (device) { ;
-__p += '\r\n                                ';
+__p += '\n                                ';
  if (device.get('bundle') && device.get('bundle').fingerprint) { ;
-__p += '\r\n                                <li class="list-group-item">\r\n                                    <form class="fingerprint-trust">\r\n                                    <div class="btn-group btn-group-toggle">\r\n                                        <label class="btn btn--small ';
+__p += '\n                                <li class="list-group-item">\n                                    <form class="fingerprint-trust">\n                                    <div class="btn-group btn-group-toggle">\n                                        <label class="btn btn--small ';
  if (device.get('trusted') !== -1) { ;
 __p += ' btn-primary active ';
  } else { ;
 __p += '  btn-secondary ';
  } ;
-__p += '">\r\n                                            <input type="radio" name="' +
+__p += '">\n                                            <input type="radio" name="' +
 __e(device.get('id')) +
-'" value="1"\r\n                                                ';
+'" value="1"\n                                                ';
  if (device.get('trusted') !== -1) { ;
 __p += ' checked="checked" ';
  } ;
 __p += '/>' +
 __e(o.__('Trusted')) +
-'\r\n                                        </label>\r\n                                        <label class="btn btn--small ';
+'\n                                        </label>\n                                        <label class="btn btn--small ';
  if (device.get('trusted') === -1) { ;
 __p += ' btn-primary active ';
  } else { ;
 __p += ' btn-secondary ';
  } ;
-__p += '">\r\n                                            <input type="radio" name="' +
+__p += '">\n                                            <input type="radio" name="' +
 __e(device.get('id')) +
-'" value="-1"\r\n                                                ';
+'" value="-1"\n                                                ';
  if (device.get('trusted') === -1) { ;
 __p += ' checked="checked" ';
  } ;
 __p += '/>' +
 __e(o.__('Untrusted')) +
-'\r\n                                        </label>\r\n                                    </div>\r\n                                    <span class="fingerprint">' +
+'\n                                        </label>\n                                    </div>\n                                    <span class="fingerprint">' +
 __e(o.utils.formatFingerprint(device.get('bundle').fingerprint)) +
-'</span>\r\n                                    </form>\r\n                                </li>\r\n                                ';
+'</span>\n                                    </form>\n                                </li>\n                                ';
  } ;
-__p += '\r\n                            ';
+__p += '\n                            ';
  }); ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  } ;
-__p += '\r\n                    </ul>\r\n                ';
+__p += '\n                    </ul>\n                ';
  } ;
-__p += '\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-warning" data-dismiss="modal">' +
+__p += '\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-warning" data-dismiss="modal">' +
 __e(o.__('Close')) +
-'</button>\r\n                <button type="button" class="btn btn-info refresh-contact"><i class="fa fa-refresh"> </i>' +
+'</button>\n                <button type="button" class="btn btn-info refresh-contact"><i class="fa fa-refresh"> </i>' +
 __e(o.__('Refresh')) +
-'</button>\r\n                ';
+'</button>\n                ';
  if (o.allow_contact_removal && o.is_roster_contact) { ;
-__p += '\r\n                    <button type="button" class="btn btn-danger remove-contact"><i class="far fa-trash-alt"> </i>' +
+__p += '\n                    <button type="button" class="btn btn-danger remove-contact"><i class="far fa-trash-alt"> </i>' +
 __e(o.__('Remove as contact')) +
-'</button>\r\n                ';
+'</button>\n                ';
  } ;
-__p += '\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+__p += '\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34612,7 +34622,7 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/converse_brand_heading.html -->\n<span class="brand-heading-container">\r\n    <a class="brand-heading" href="https://conversejs.org" target="_blank" rel="noopener">\r\n        <svg class="converse-svg-logo"\r\n            xmlns:svg="http://www.w3.org/2000/svg"\r\n            xmlns="http://www.w3.org/2000/svg"\r\n            xmlns:xlink="http://www.w3.org/1999/xlink"\r\n            viewBox="0 0 364 364">\r\n            <title>Converse</title>\r\n            <g class="cls-1" id="g904">\r\n                <g data-name="Layer 2">\r\n                    <g data-name="Layer 7">\r\n                        <path\r\n                            class="cls-3"\r\n                            d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" />\r\n                        <path\r\n                            class="cls-4"\r\n                            d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" />\r\n                    </g>\r\n                </g>\r\n            </g>\r\n        </svg>\r\n        <span class="brand-name">\r\n            <span class="brand-name__text">converse<span class="subdued">.js</span></span>\r\n        </span>\r\n    </a>\r\n</span>\r\n';
+__p += '<!-- src/templates/converse_brand_heading.html -->\n<span class="brand-heading-container">\n    <a class="brand-heading" href="https://conversejs.org" target="_blank" rel="noopener">\n        <svg class="converse-svg-logo"\n            xmlns:svg="http://www.w3.org/2000/svg"\n            xmlns="http://www.w3.org/2000/svg"\n            xmlns:xlink="http://www.w3.org/1999/xlink"\n            viewBox="0 0 364 364">\n            <title>Converse</title>\n            <g class="cls-1" id="g904">\n                <g data-name="Layer 2">\n                    <g data-name="Layer 7">\n                        <path\n                            class="cls-3"\n                            d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" />\n                        <path\n                            class="cls-4"\n                            d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" />\n                    </g>\n                </g>\n            </g>\n        </svg>\n        <span class="brand-name">\n            <span class="brand-name__text">converse<span class="subdued">.js</span></span>\n        </span>\n    </a>\n</span>\n';
 return __p
 };
 
@@ -34624,11 +34634,11 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/controlbox.html -->\n<div class="flyout box-flyout">\r\n    <div class="chat-head controlbox-head">\r\n        ';
+__p += '<!-- src/templates/controlbox.html -->\n<div class="flyout box-flyout">\n    <div class="chat-head controlbox-head">\n        ';
  if (!o.sticky_controlbox) { ;
-__p += '\r\n            <a class="chatbox-btn close-chatbox-button fa fa-times"></a>\r\n        ';
+__p += '\n            <a class="chatbox-btn close-chatbox-button fa fa-times"></a>\n        ';
  } ;
-__p += '\r\n    </div>\r\n    <div class="controlbox-panes"></div>\r\n</div>\r\n';
+__p += '\n    </div>\n    <div class="controlbox-panes"></div>\n</div>\n';
 return __p
 };
 
@@ -34641,7 +34651,7 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/controlbox_toggle.html -->\n<span class="toggle-feedback">' +
 __e(o.label_toggle) +
-'</span>\r\n';
+'</span>\n';
 return __p
 };
 
@@ -34653,67 +34663,67 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/login_panel.html -->\n<div id="converse-login-panel" class="controlbox-pane fade-in row no-gutters">\r\n    <form id="converse-login" class="converse-form" method="post">\r\n        <div class="conn-feedback fade-in ';
+__p += '<!-- src/templates/login_panel.html -->\n<div id="converse-login-panel" class="controlbox-pane fade-in row no-gutters">\n    <form id="converse-login" class="converse-form" method="post">\n        <div class="conn-feedback fade-in ';
  if (!o.conn_feedback_subject) { ;
 __p += ' hidden ';
  } ;
 __p += ' ' +
 __e(o.conn_feedback_class) +
-'">\r\n            <p class="feedback-subject">' +
+'">\n            <p class="feedback-subject">' +
 __e( o.conn_feedback_subject ) +
-'</p>\r\n            <p class="feedback-message ';
+'</p>\n            <p class="feedback-message ';
  if (!o.conn_feedback_message) { ;
 __p += ' hidden ';
  } ;
 __p += '">' +
 __e(o.conn_feedback_message) +
-'</p>\r\n        </div>\r\n        ';
+'</p>\n        </div>\n        ';
  if (o._converse.CONNECTION_STATUS[o.connection_status] === 'CONNECTING') { ;
-__p += '\r\n            <span class="spinner fa fa-spinner centered"/>\r\n        ';
+__p += '\n            <span class="spinner fa fa-spinner centered"/>\n        ';
  } else { ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.authentication == o.LOGIN || o.authentication == o.EXTERNAL) { ;
-__p += '\r\n                <div class="form-group">\r\n                    <label for="converse-login-jid">' +
+__p += '\n                <div class="form-group">\n                    <label for="converse-login-jid">' +
 __e(o.__("XMPP Address:")) +
-'</label>\r\n                    <input id="converse-login-jid" class="form-control" autofocus required="required" type="text" name="jid" placeholder="' +
+'</label>\n                    <input id="converse-login-jid" class="form-control" autofocus required="required" type="text" name="jid" placeholder="' +
 __e(o.placeholder_username) +
-'"/>\r\n                </div>\r\n                ';
+'"/>\n                </div>\n                ';
  if (o.authentication !== o.EXTERNAL) { ;
-__p += '\r\n                <div class="form-group">\r\n                    <label for="converse-login-password">' +
+__p += '\n                <div class="form-group">\n                    <label for="converse-login-password">' +
 __e(o.__("Password:")) +
-'</label>\r\n                    <input id="converse-login-password" class="form-control" required="required" type="password" name="password" placeholder="' +
+'</label>\n                    <input id="converse-login-password" class="form-control" required="required" type="password" name="password" placeholder="' +
 __e(o.__('password')) +
-'"/>\r\n                </div>\r\n                ';
+'"/>\n                </div>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.show_trust_checkbox) { ;
-__p += '\r\n                    <div class="form-group form-check login-trusted">\r\n                        <input id="converse-login-trusted" type="checkbox" class="form-check-input" name="trusted" ';
+__p += '\n                    <div class="form-group form-check login-trusted">\n                        <input id="converse-login-trusted" type="checkbox" class="form-check-input" name="trusted" ';
  if (o._converse.config.get('trusted')) { ;
 __p += ' checked="checked" ';
  } ;
-__p += '/>\r\n                        <label for="converse-login-trusted" class="form-check-label login-trusted__desc">' +
+__p += '/>\n                        <label for="converse-login-trusted" class="form-check-label login-trusted__desc">' +
 __e(o.__('This is a trusted device')) +
-'</label>\r\n                        <i class="fa fa-info-circle" data-toggle="popover"\r\n                           data-title="Trusted device?"\r\n                           data-content="' +
+'</label>\n                        <i class="fa fa-info-circle" data-toggle="popover"\n                           data-title="Trusted device?"\n                           data-content="' +
 __e(o.__('To improve performance, we cache your data in this browser. Uncheck this box if this is a public computer or if you want your data to be deleted when you log out. It\'s important that you explicitly log out, otherwise not all cached data might be deleted. Please note, when using an untrusted device, OMEMO encryption is NOT available.')) +
-'"></i>\r\n                    </div>\r\n                ';
+'"></i>\n                    </div>\n                ';
  } ;
-__p += '\r\n\r\n                <fieldset class="buttons">\r\n                    <input class="btn btn-primary" type="submit" value="' +
+__p += '\n\n                <fieldset class="buttons">\n                    <input class="btn btn-primary" type="submit" value="' +
 __e(o.__('Log in')) +
-'"/>\r\n                </fieldset>\r\n            ';
+'"/>\n                </fieldset>\n            ';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.authentication == o.ANONYMOUS) { ;
-__p += '\r\n                <input class="btn btn-primary login-anon" type="submit" value="' +
+__p += '\n                <input class="btn btn-primary login-anon" type="submit" value="' +
 __e(o.__('Click here to log in anonymously')) +
-'"/>\r\n            ';
+'"/>\n            ';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.authentication == o.PREBIND) { ;
-__p += '\r\n                <p>Disconnected.</p>\r\n            ';
+__p += '\n                <p>Disconnected.</p>\n            ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  } ;
-__p += '\r\n    </form>\r\n</div>\r\n';
+__p += '\n    </form>\n</div>\n';
 return __p
 };
 
@@ -34724,7 +34734,7 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/dragresize.html -->\n<div class="dragresize dragresize-top"></div>\r\n<div class="dragresize dragresize-topleft"></div>\r\n<div class="dragresize dragresize-left"></div>\r\n';
+__p += '<!-- src/templates/dragresize.html -->\n<div class="dragresize dragresize-top"></div>\n<div class="dragresize dragresize-topleft"></div>\n<div class="dragresize dragresize-left"></div>\n';
 return __p
 };
 
@@ -34735,9 +34745,9 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/emoji_button.html -->\n<li class="toggle-toolbar-menu toggle-smiley dropup">\r\n    <a class="toggle-smiley far fa-smile" title="' +
+__p += '<!-- src/templates/emoji_button.html -->\n<li class="toggle-toolbar-menu toggle-smiley dropup">\n    <a class="toggle-smiley far fa-smile" title="' +
 __e(o.tooltip_insert_smiley) +
-'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>\r\n    <div class="emoji-picker dropdown-menu toolbar-menu"></div>\r\n</li>\r\n';
+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>\n    <div class="emoji-picker dropdown-menu toolbar-menu"></div>\n</li>\n';
 return __p
 };
 
@@ -34749,13 +34759,13 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/emojis.html -->\n<div class="emoji-picker__container">\r\n    <div class="emoji-picker__header">\r\n        <input class="form-control emoji-search" name="emoji-search" placeholder="' +
+__p += '<!-- src/templates/emojis.html -->\n<div class="emoji-picker__container">\n    <div class="emoji-picker__header">\n        <input class="form-control emoji-search" name="emoji-search" placeholder="' +
 __e(o.__('Search')) +
-'"/>\r\n        ';
+'"/>\n        ';
  if (!o.query) { ;
-__p += '\r\n        <ul>\r\n            ';
+__p += '\n        <ul>\n            ';
  Object.keys(o.emoji_categories).forEach(function (category) { ;
-__p += '\r\n            <li data-category="' +
+__p += '\n            <li data-category="' +
 __e(category) +
 '" class="emoji-category ' +
 __e(o.current_category) +
@@ -34767,83 +34777,83 @@ __p += ' picked ';
  } ;
 __p += '" title="' +
 __e(o._converse.emoji_category_labels[category]) +
-'">\r\n                    <a class="pick-category" href="#emoji-picker-' +
+'">\n                    <a class="pick-category" href="#emoji-picker-' +
 __e(category) +
 '" data-category="' +
 __e(category) +
 '"> ' +
 ((__t = ( o.transformCategory(o.emoji_categories[category]) )) == null ? '' : __t) +
-' </a>\r\n                </li>\r\n            ';
+' </a>\n                </li>\n            ';
  }); ;
-__p += '\r\n        </ul>\r\n        ';
+__p += '\n        </ul>\n        ';
  } ;
-__p += '\r\n    </div>\r\n    <div class="emoji-picker__lists">\r\n        ';
+__p += '\n    </div>\n    <div class="emoji-picker__lists">\n        ';
  if (o.query) { ;
-__p += '\r\n            <a id="emoji-picker-search-results" class="emoji-category__heading">' +
+__p += '\n            <a id="emoji-picker-search-results" class="emoji-category__heading">' +
 __e(o.__('Search results')) +
-'</a>\r\n            <ul class="emoji-picker">\r\n                ';
+'</a>\n            <ul class="emoji-picker">\n                ';
  o.search_results.forEach(function (emoji) { ;
-__p += '\r\n                <li class="emoji insert-emoji ';
+__p += '\n                <li class="emoji insert-emoji ';
  if (o.shouldBeHidden(emoji.sn)) { ;
 __p += ' hidden ';
  }; ;
-__p += '"\r\n                    data-emoji="' +
+__p += '"\n                    data-emoji="' +
 __e(emoji.sn) +
 '" title="' +
 __e(emoji.sn) +
-'">\r\n                        <a href="#" data-emoji="' +
+'">\n                        <a href="#" data-emoji="' +
 __e(emoji.sn) +
 '"> ' +
 ((__t = ( o.transform(emoji.sn) )) == null ? '' : __t) +
-'  </a>\r\n                </li>\r\n                ';
+'  </a>\n                </li>\n                ';
  }); ;
-__p += '\r\n            </ul>\r\n        ';
+__p += '\n            </ul>\n        ';
  } else { ;
-__p += '\r\n            ';
+__p += '\n            ';
  Object.keys(o.emoji_categories).forEach(function (category) { ;
-__p += '\r\n                <a id="emoji-picker-' +
+__p += '\n                <a id="emoji-picker-' +
 __e(category) +
 '" class="emoji-category__heading" data-category="' +
 __e(category) +
 '">' +
 __e(o._converse.emoji_category_labels[category]) +
-'</a>\r\n                <ul class="emoji-picker" data-category="' +
+'</a>\n                <ul class="emoji-picker" data-category="' +
 __e(category) +
-'">\r\n                    ';
+'">\n                    ';
  Object.values(o.emojis_by_category[category]).forEach(function (emoji) { ;
-__p += '\r\n                    <li class="emoji insert-emoji ';
+__p += '\n                    <li class="emoji insert-emoji ';
  if (o.shouldBeHidden(emoji.sn)) { ;
 __p += ' hidden ';
  }; ;
-__p += '"\r\n                        data-emoji="' +
+__p += '"\n                        data-emoji="' +
 __e(emoji.sn) +
 '" title="' +
 __e(emoji.sn) +
-'">\r\n                            <a href="#" data-emoji="' +
+'">\n                            <a href="#" data-emoji="' +
 __e(emoji.sn) +
 '"> ' +
 ((__t = ( o.transform(emoji.sn) )) == null ? '' : __t) +
-'  </a>\r\n                    </li>\r\n                    ';
+'  </a>\n                    </li>\n                    ';
  }); ;
-__p += '\r\n                </ul>\r\n            ';
+__p += '\n                </ul>\n            ';
  }); ;
-__p += '\r\n        ';
+__p += '\n        ';
  } ;
-__p += '\r\n    </div>\r\n    <div class="emoji-skintone-picker">\r\n        <label>Skin tone</label>\r\n        <ul>\r\n            ';
+__p += '\n    </div>\n    <div class="emoji-skintone-picker">\n        <label>Skin tone</label>\n        <ul>\n            ';
  o.skintones.forEach(function (skintone) { ;
-__p += '\r\n                <li data-skintone="' +
+__p += '\n                <li data-skintone="' +
 __e(skintone) +
 '" class="emoji-skintone ';
  if (o.current_skintone === skintone) { ;
 __p += ' picked ';
  } ;
-__p += '">\r\n                    <a class="pick-skintone" href="#" data-skintone="' +
+__p += '">\n                    <a class="pick-skintone" href="#" data-skintone="' +
 __e(skintone) +
 '"> ' +
 ((__t = ( o.transform(':'+skintone+':') )) == null ? '' : __t) +
-' </a>\r\n                </li>\r\n            ';
+' </a>\n                </li>\n            ';
  }); ;
-__p += '\r\n        </ul>\r\n    </div>\r\n</div>\r\n';
+__p += '\n        </ul>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34869,7 +34879,7 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/chats_panel.html -->\n<a id="toggle-minimized-chats" href="#" class="row no-gutters"></a>\r\n<div class="flyout minimized-chats-flyout row no-gutters"></div>\r\n';
+__p += '<!-- src/templates/chats_panel.html -->\n<a id="toggle-minimized-chats" href="#" class="row no-gutters"></a>\n<div class="flyout minimized-chats-flyout row no-gutters"></div>\n';
 return __p
 };
 
@@ -34885,13 +34895,13 @@ __p += '<!-- src/templates/toggle_chats.html -->\n' +
 __e(o.num_minimized) +
 ' ' +
 __e(o.Minimized) +
-'\r\n<span class="unread-message-count ';
+'\n<span class="unread-message-count ';
  if (!o.num_unread) { ;
 __p += ' unread-message-count-hidden ';
  } ;
 __p += '" href="#">' +
 __e(o.num_unread) +
-'</span>\r\n';
+'</span>\n';
 return __p
 };
 
@@ -34905,17 +34915,17 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/trimmed_chat.html -->\n<div class="chat-head-' +
 __e(o.type) +
-' chat-head row no-gutters">\r\n    <a class="restore-chat w-100 align-self-center" title="' +
+' chat-head row no-gutters">\n    <a class="restore-chat w-100 align-self-center" title="' +
 __e(o.tooltip) +
-'">\r\n        ';
+'">\n        ';
  if (o.num_unread) { ;
-__p += '\r\n            <span class="message-count badge badge-light">' +
+__p += '\n            <span class="message-count badge badge-light">' +
 __e(o.num_unread) +
-'</span>\r\n        ';
+'</span>\n        ';
  } ;
-__p += '\r\n        ' +
+__p += '\n        ' +
 __e(o.title) +
-'\r\n    </a>\r\n    <a class="chatbox-btn close-chatbox-button fa fa-times"></a>\r\n</div>\r\n';
+'\n    </a>\n    <a class="chatbox-btn close-chatbox-button fa fa-times"></a>\n</div>\n';
 return __p
 };
 
@@ -34927,25 +34937,25 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/add_chatroom_modal.html -->\n<div class="modal" id="add-chatroom-modal" tabindex="-1" role="dialog" aria-labelledby="add-chatroom-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title"\r\n                    id="add-chatroom-modal-label">' +
+__p += '<!-- src/templates/add_chatroom_modal.html -->\n<div class="modal" id="add-chatroom-modal" tabindex="-1" role="dialog" aria-labelledby="add-chatroom-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title"\n                    id="add-chatroom-modal-label">' +
 __e(o.__('Enter a new Groupchat')) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\r\n                    <span aria-hidden="true">×</span>\r\n                </button>\r\n            </div>\r\n            <div class="modal-body">\r\n                <form class="converse-form add-chatroom">\r\n                    <div class="form-group">\r\n                        <label for="chatroom">' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body">\n                <form class="converse-form add-chatroom">\n                    <div class="form-group">\n                        <label for="chatroom">' +
 __e(o.label_room_address) +
-':</label>\r\n                        <input type="text" required="required" name="chatroom" class="form-control" placeholder="' +
+':</label>\n                        <input type="text" required="required" name="chatroom" class="form-control" placeholder="' +
 __e(o.chatroom_placeholder) +
-'"/>\r\n                    </div>\r\n                    ';
+'"/>\n                    </div>\n                    ';
  if (!o._converse.locked_muc_nickname) { ;
-__p += '\r\n                    <div class="form-group" >\r\n                        <label for="nickname">' +
+__p += '\n                    <div class="form-group" >\n                        <label for="nickname">' +
 __e(o.__('Nickname')) +
-':</label>\r\n                        <input type="text" pattern=".*\\S+.*" title="' +
+':</label>\n                        <input type="text" pattern=".*\\S+.*" title="' +
 __e(o.__('This field is required')) +
 '" required="required" name="nickname" value="' +
 __e(o.nick) +
-'" class="form-control"/>\r\n                    </div>\r\n                    ';
+'" class="form-control"/>\n                    </div>\n                    ';
  } ;
-__p += '\r\n                    <input type="submit" class="btn btn-primary" name="join" value="' +
+__p += '\n                    <input type="submit" class="btn btn-primary" name="join" value="' +
 __e(o.__('Join')) +
-'"/>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'"/>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34957,11 +34967,11 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatarea.html -->\n<div class="chat-area col">\r\n    <div class="chat-content ';
+__p += '<!-- src/templates/chatarea.html -->\n<div class="chat-area col">\n    <div class="chat-content ';
  if (o.show_send_button) { ;
 __p += 'chat-content-sendbutton';
  } ;
-__p += '" aria-live="polite"></div>\r\n    <div class="bottom-panel"/>\r\n</div>\r\n';
+__p += '" aria-live="polite"></div>\n    <div class="bottom-panel"/>\n</div>\n';
 return __p
 };
 
@@ -34972,7 +34982,7 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '';
-__p += '<!-- src/templates/chatroom.html -->\n<div class="flyout box-flyout">\r\n    <div class="chat-head chat-head-chatroom row no-gutters"></div>\r\n    <div class="chat-body chatroom-body row no-gutters">\r\n        <div class="disconnect-container hidden"></div>\r\n    </div>\r\n</div>\r\n';
+__p += '<!-- src/templates/chatroom.html -->\n<div class="flyout box-flyout">\n    <div class="chat-head chat-head-chatroom row no-gutters"></div>\n    <div class="chat-body chatroom-body row no-gutters">\n        <div class="disconnect-container hidden"></div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -34985,7 +34995,7 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatroom_bottom_panel.html -->\n<div class="muc-bottom-panel">' +
 __e(o.__("You're not allowed to send messages in this room")) +
-'</div>\r\n';
+'</div>\n';
 return __p
 };
 
@@ -34997,19 +35007,19 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_destroyed.html -->\n<div class="alert alert-danger">\r\n    <h3 class="alert-heading disconnect-msg">' +
+__p += '<!-- src/templates/chatroom_destroyed.html -->\n<div class="alert alert-danger">\n    <h3 class="alert-heading disconnect-msg">' +
 __e(o.__('This groupchat no longer exists')) +
-'</h3>\r\n\r\n    <p class="destroyed-reason">' +
+'</h3>\n\n    <p class="destroyed-reason">' +
 __e(o.reason) +
-'</p>\r\n\r\n    ';
+'</p>\n\n    ';
  if (o.jid) { ;
-__p += '\r\n    <p class="moved-label">\r\n        ' +
+__p += '\n    <p class="moved-label">\n        ' +
 __e(o.__('The conversation has moved. Click below to enter.') ) +
-'\r\n    </p>\r\n    <p class="moved-link"><a class="switch-chat" href="#">' +
+'\n    </p>\n    <p class="moved-link"><a class="switch-chat" href="#">' +
 __e(o.jid) +
-'</a></p>\r\n    ';
+'</a></p>\n    ';
  } ;
-__p += '\r\n</div>\r\n';
+__p += '\n</div>\n';
 return __p
 };
 
@@ -35021,147 +35031,147 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_details_modal.html -->\n<div class="modal" id="room-details-modal" tabindex="-1" role="dialog" aria-labelledby="room-details-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="room-details-modal-label">' +
+__p += '<!-- src/templates/chatroom_details_modal.html -->\n<div class="modal" id="room-details-modal" tabindex="-1" role="dialog" aria-labelledby="room-details-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="room-details-modal-label">' +
 __e(o.display_name) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
 __e(o.label_close) +
-'"><span aria-hidden="true">×</span></button>\r\n            </div>\r\n            <div class="modal-body">\r\n                <div class="room-info">\r\n                    <p class="room-info"><strong>' +
+'"><span aria-hidden="true">×</span></button>\n            </div>\n            <div class="modal-body">\n                <div class="room-info">\n                    <p class="room-info"><strong>' +
 __e(o.__('Name')) +
 '</strong>: ' +
 __e(o.name) +
-'</p>\r\n                    <p class="room-info"><strong>' +
+'</p>\n                    <p class="room-info"><strong>' +
 __e(o.__('Groupchat address (JID)')) +
 '</strong>: ' +
 __e(o.jid) +
-'</p>\r\n                    <p class="room-info"><strong>' +
+'</p>\n                    <p class="room-info"><strong>' +
 __e(o.__('Description')) +
 '</strong>: ' +
 __e(o.description) +
-'</p>\r\n                    ';
+'</p>\n                    ';
  if (o.subject) { ;
-__p += '\r\n                    <p class="room-info"><strong>' +
+__p += '\n                    <p class="room-info"><strong>' +
 __e(o.__('Topic')) +
 '</strong>: ' +
 ((__t = (o.topic)) == null ? '' : __t) +
-'</p> <!-- Sanitized in converse-muc-views. We want to render links. -->\r\n                        <p class="room-info"><strong>' +
+'</p> <!-- Sanitized in converse-muc-views. We want to render links. -->\n                        <p class="room-info"><strong>' +
 __e(o.__('Topic author')) +
 '</strong>: ' +
 __e(o._.get(o.subject, 'author')) +
-'</p>\r\n                    ';
+'</p>\n                    ';
  } ;
-__p += '\r\n                    <p class="room-info"><strong>' +
+__p += '\n                    <p class="room-info"><strong>' +
 __e(o.__('Online users')) +
 '</strong>: ' +
 __e(o.num_occupants) +
-'</p>\r\n                    <p class="room-info"><strong>' +
+'</p>\n                    <p class="room-info"><strong>' +
 __e(o.__('Features')) +
-'</strong>:\r\n                        <div class="chatroom-features">\r\n                        <ul class="features-list">\r\n                        ';
+'</strong>:\n                        <div class="chatroom-features">\n                        <ul class="features-list">\n                        ';
  if (o.features.passwordprotected) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-lock"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-lock"></span>' +
 __e( o.__('Password protected') ) +
 ' - <em>' +
 __e( o.__('This groupchat requires a password before entry') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.unsecured) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-unlock"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-unlock"></span>' +
 __e( o.__('No password required') ) +
 ' - <em>' +
 __e( o.__('This groupchat does not require a password upon entry') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.hidden) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-eye-slash"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-eye-slash"></span>' +
 __e( o.__('Hidden') ) +
 ' - <em>' +
 __e( o.__('This groupchat is not publicly searchable') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.public_room) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-eye"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-eye"></span>' +
 __e( o.__('Public') ) +
 ' - <em>' +
 __e( o.__('This groupchat is publicly searchable') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.membersonly) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-address-book"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-address-book"></span>' +
 __e( o.__('Members only') ) +
 ' - <em>' +
 __e( o.__('This groupchat is restricted to members only') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.open) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-globe"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-globe"></span>' +
 __e( o.__('Open') ) +
 ' - <em>' +
 __e( o.__('Anyone can join this groupchat') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.persistent) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-save"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-save"></span>' +
 __e( o.__('Persistent') ) +
 ' - <em>' +
 __e( o.__('This groupchat persists even if it\'s unoccupied') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.temporary) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-snowflake-o"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-snowflake-o"></span>' +
 __e( o.__('Temporary') ) +
 ' - <em>' +
 __e( o.__('This groupchat will disappear once the last person leaves') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.nonanonymous) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-id-card"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-id-card"></span>' +
 __e( o.__('Not anonymous') ) +
 ' - <em>' +
 __e( o.__('All other groupchat participants can see your XMPP address') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.semianonymous) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-user-secret"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-user-secret"></span>' +
 __e( o.__('Semi-anonymous') ) +
 ' - <em>' +
 __e( o.__('Only moderators can see your XMPP address') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.moderated) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-gavel"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-gavel"></span>' +
 __e( o.__('Moderated') ) +
 ' - <em>' +
 __e( o.__('Participants entering this groupchat need to request permission to write') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.unmoderated) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-info-circle"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-info-circle"></span>' +
 __e( o.__('Not moderated') ) +
 ' - <em>' +
 __e( o.__('Participants entering this groupchat can write right away') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        ';
+__p += '\n                        ';
  if (o.features.mam_enabled) { ;
-__p += '\r\n                        <li class="feature" ><span class="fa fa-database"></span>' +
+__p += '\n                        <li class="feature" ><span class="fa fa-database"></span>' +
 __e( o.__('Message archiving') ) +
 ' - <em>' +
 __e( o.__('Messages are archived on the server') ) +
-'</em></li>\r\n                        ';
+'</em></li>\n                        ';
  } ;
-__p += '\r\n                        </ul>\r\n                        </div>\r\n                    </p>\r\n                </div>\r\n            </div>\r\n            <div class="modal-footer">\r\n                <button type="button" class="btn btn-warning" data-dismiss="modal">' +
+__p += '\n                        </ul>\n                        </div>\n                    </p>\n                </div>\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-warning" data-dismiss="modal">' +
 __e(o.__('Close')) +
-'</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'</button>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -35173,15 +35183,15 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_disconnect.html -->\n<div class="alert alert-danger">\r\n    <h3 class="alert-heading disconnect-msg">' +
+__p += '<!-- src/templates/chatroom_disconnect.html -->\n<div class="alert alert-danger">\n    <h3 class="alert-heading disconnect-msg">' +
 __e(o.disconnect_messages[0]) +
-'</h3>\r\n\r\n    ';
+'</h3>\n\n    ';
  o._.forEach(o.disconnect_messages.slice(1), function (msg) { ;
-__p += '\r\n        <p class="disconnect-msg">' +
+__p += '\n        <p class="disconnect-msg">' +
 __e(msg) +
-'</p>\r\n    ';
+'</p>\n    ';
  }); ;
-__p += '\r\n</div>\r\n';
+__p += '\n</div>\n';
 return __p
 };
 
@@ -35195,111 +35205,111 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/chatroom_features.html -->\n<p class="occupants-heading">' +
 __e(o.__('Features')) +
-'</p>\r\n<ul class="features-list">\r\n';
+'</p>\n<ul class="features-list">\n';
  if (o.passwordprotected) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat requires a password before entry') ) +
 '"><span class="fa fa-lock"></span>' +
 __e( o.__('Password protected') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.unsecured) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat does not require a password upon entry') ) +
 '"><span class="fa fa-unlock"></span>' +
 __e( o.__('No password') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.hidden) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat is not publicly searchable') ) +
 '"><span class="fa fa-eye-slash"></span>' +
 __e( o.__('Hidden') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.public_room) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat is publicly searchable') ) +
 '"><span class="fa fa-eye"></span>' +
 __e( o.__('Public') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.membersonly) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('this groupchat is restricted to members only') ) +
 '"><span class="fa fa-address-book"></span>' +
 __e( o.__('Members only') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.open) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('Anyone can join this groupchat') ) +
 '"><span class="fa fa-globe"></span>' +
 __e( o.__('Open') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.persistent) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat persists even if it\'s unoccupied') ) +
 '"><span class="fa fa-save"></span>' +
 __e( o.__('Persistent') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.temporary) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('This groupchat will disappear once the last person leaves') ) +
 '"><span class="fa fa-snowflake"></span>' +
 __e( o.__('Temporary') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.nonanonymous) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('All other groupchat participants can see your XMPP address') ) +
 '"><span class="fa fa-id-card"></span>' +
 __e( o.__('Not anonymous') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.semianonymous) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('Only moderators can see your XMPP address') ) +
 '"><span class="fa fa-user-secret"></span>' +
 __e( o.__('Semi-anonymous') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.moderated) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('Participants entering this groupchat need to request permission to write') ) +
 '"><span class="fa fa-gavel"></span>' +
 __e( o.__('Moderated') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.unmoderated) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('Participants entering this groupchat can write right away') ) +
 '"><span class="fa fa-info-circle"></span>' +
 __e( o.__('Not moderated') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
  if (o.mam_enabled) { ;
-__p += '\r\n<li class="feature" title="' +
+__p += '\n<li class="feature" title="' +
 __e( o.__('Messages are archived on the server') ) +
 '"><span class="fa fa-database"></span>' +
 __e( o.__('Message archiving') ) +
-'</li>\r\n';
+'</li>\n';
  } ;
-__p += '\r\n</ul>\r\n';
+__p += '\n</ul>\n';
 return __p
 };
 
@@ -35311,25 +35321,25 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_form.html -->\n<div class="chatroom-form-container muc-config-form">\r\n    <form class="converse-form chatroom-form" autocomplete="off">\r\n        <fieldset class="form-group">\r\n            <legend>' +
+__p += '<!-- src/templates/chatroom_form.html -->\n<div class="chatroom-form-container muc-config-form">\n    <form class="converse-form chatroom-form" autocomplete="off">\n        <fieldset class="form-group">\n            <legend>' +
 __e(o.title) +
-'</legend>\r\n            ';
+'</legend>\n            ';
  if (o.title !== o.instructions) { ;
-__p += '\r\n                <p class="form-help">' +
+__p += '\n                <p class="form-help">' +
 __e(o.instructions) +
-'</p>\r\n            ';
+'</p>\n            ';
  } ;
-__p += '\r\n            <!-- Fields are generated internally, with xForm2webForm -->\r\n            ';
+__p += '\n            <!-- Fields are generated internally, with xForm2webForm -->\n            ';
  o.fields.forEach(function (field) { ;
 __p += ' ' +
 ((__t = ( field )) == null ? '' : __t) +
 ' ';
  }) ;
-__p += '\r\n        </fieldset>\r\n        <fieldset>\r\n            <input type="submit" class="btn btn-primary" value="' +
+__p += '\n        </fieldset>\n        <fieldset>\n            <input type="submit" class="btn btn-primary" value="' +
 __e(o.__('Save')) +
-'"/>\r\n            <input type="button" class="btn btn-secondary .button-cancel" value="' +
+'"/>\n            <input type="button" class="btn btn-secondary .button-cancel" value="' +
 __e(o.__('Cancel')) +
-'"/>\r\n        </fieldset>\r\n    </form>\r\n</div>\r\n';
+'"/>\n        </fieldset>\n    </form>\n</div>\n';
 return __p
 };
 
@@ -35341,7 +35351,7 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatroom_head.html -->\n<div class="chatbox-navback"><i class="fa fa-arrow-left"></i></div>\r\n<div class="chatbox-title">\r\n    <div class="chat-title" ';
+__p += '<!-- src/templates/chatroom_head.html -->\n<div class="chatbox-navback"><i class="fa fa-arrow-left"></i></div>\n<div class="chatbox-title">\n    <div class="chat-title" ';
  if (o._converse.locked_muc_domain !== 'hidden') { ;
 __p += ' title="' +
 __e(o.jid) +
@@ -35364,23 +35374,23 @@ __e(o.jid) +
  '\n        ';
  } ;
 __p += '\n        ' +   // BAO ends
-'\r\n    </div>\r\n    <!-- Sanitized in converse-muc-views. We want to render links. -->\r\n    <p class="chatroom-description">' +
+'\n    </div>\n    <!-- Sanitized in converse-muc-views. We want to render links. -->\n    <p class="chatroom-description">' +
 ((__t = (o.description)) == null ? '' : __t) +
-'</p>\r\n</div>\r\n<div class="chatbox-buttons row no-gutters">\r\n    ';
+'</p>\n</div>\n<div class="chatbox-buttons row no-gutters">\n    ';
  if (!o._converse.singleton) { ;
-__p += '\r\n        <a class="chatbox-btn close-chatbox-button fa fa-sign-out-alt" title="' +
+__p += '\n        <a class="chatbox-btn close-chatbox-button fa fa-sign-out-alt" title="' +
 __e(o.info_close) +
-'"></a>\r\n    ';
+'"></a>\n    ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (o.isOwner) { ;
-__p += '\r\n        <a class="chatbox-btn configure-chatroom-button fa fa-wrench" title="' +
+__p += '\n        <a class="chatbox-btn configure-chatroom-button fa fa-wrench" title="' +
 __e(o.info_configure) +
-' "></a>\r\n    ';
+' "></a>\n    ';
  } ;
-__p += '\r\n    <a class="chatbox-btn show-room-details-modal fa fa-info-circle" title="' +
+__p += '\n    <a class="chatbox-btn show-room-details-modal fa fa-info-circle" title="' +
 __e(o.info_details) +
-'"></a>\r\n</div>\r\n';
+'"></a>\n</div>\n';
 return __p
 };
 
@@ -35391,19 +35401,19 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/chatroom_nickname_form.html -->\n<div class="chatroom-form-container muc-nickname-form">\r\n    <form class="converse-form chatroom-form converse-centered-form">\r\n        <fieldset class="form-group">\r\n            <label>' +
+__p += '<!-- src/templates/chatroom_nickname_form.html -->\n<div class="chatroom-form-container muc-nickname-form">\n    <form class="converse-form chatroom-form converse-centered-form">\n        <fieldset class="form-group">\n            <label>' +
 __e(o.heading) +
-'</label>\r\n            <p class="validation-message">' +
+'</label>\n            <p class="validation-message">' +
 __e(o.validation_message) +
-'</p>\r\n            <input type="text" required="required" name="nick" value="' +
+'</p>\n            <input type="text" required="required" name="nick" value="' +
 __e(o.nickname) +
-'"\r\n                   class="form-control ' +
+'"\n                   class="form-control ' +
 ((__t = (o.error_class)) == null ? '' : __t) +
 '" placeholder="' +
 __e(o.label_nickname) +
-'"/>\r\n        </fieldset>\r\n        <fieldset class="form-group">\r\n            <input type="submit" class="btn btn-primary" name="join" value="' +
+'"/>\n        </fieldset>\n        <fieldset class="form-group">\n            <input type="submit" class="btn btn-primary" name="join" value="' +
 __e(o.label_join) +
-'"/>\r\n        </fieldset>\r\n    </form>\r\n</div>\r\n';
+'"/>\n        </fieldset>\n    </form>\n</div>\n';
 return __p
 };
 
@@ -35414,19 +35424,19 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/chatroom_password_form.html -->\n<div class="chatroom-form-container muc-password-form">\r\n    <form class="converse-form chatroom-form converse-centered-form">\r\n        <fieldset class="form-group">\r\n            <label>' +
+__p += '<!-- src/templates/chatroom_password_form.html -->\n<div class="chatroom-form-container muc-password-form">\n    <form class="converse-form chatroom-form converse-centered-form">\n        <fieldset class="form-group">\n            <label>' +
 __e(o.heading) +
-'</label>\r\n            <p class="validation-message">' +
+'</label>\n            <p class="validation-message">' +
 __e(o.validation_message) +
-'</p>\r\n            <input class="hidden-username" type="text" autocomplete="username" value="' +
+'</p>\n            <input class="hidden-username" type="text" autocomplete="username" value="' +
 __e(o.jid) +
-'"></input>\r\n            <input type="password" name="password" required="required"\r\n                   class="form-control ' +
+'"></input>\n            <input type="password" name="password" required="required"\n                   class="form-control ' +
 ((__t = (o.error_class)) == null ? '' : __t) +
 '" placeholder="' +
 __e(o.label_password) +
-'"/>\r\n        </fieldset>\r\n        <fieldset class="form-group">\r\n            <input class="btn btn-primary" type="submit" value="' +
+'"/>\n        </fieldset>\n        <fieldset class="form-group">\n            <input class="btn btn-primary" type="submit" value="' +
 __e(o.label_submit) +
-'"/>\r\n        </fieldset>\r\n    </form>\r\n</div>\r\n';
+'"/>\n        </fieldset>\n    </form>\n</div>\n';
 return __p
 };
 
@@ -35437,9 +35447,9 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/chatroom_sidebar.html -->\n<!-- <div class="occupants"> -->\r\n<div class="occupants-header">\r\n    <i class="hide-occupants fa fa-times"></i>\r\n    <p class="occupants-heading">' +
+__p += '<!-- src/templates/chatroom_sidebar.html -->\n<!-- <div class="occupants"> -->\n<div class="occupants-header">\n    <i class="hide-occupants fa fa-times"></i>\n    <p class="occupants-heading">' +
 __e(o.label_occupants) +
-'</p>\r\n</div>\r\n<ul class="occupant-list"></ul>\r\n<div class="chatroom-features"></div>\r\n<!-- </div> -->\r\n';
+'</p>\n</div>\n<ul class="occupant-list"></ul>\n<div class="chatroom-features"></div>\n<!-- </div> -->\n';
 return __p
 };
 
@@ -35451,21 +35461,21 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/list_chatrooms_modal.html -->\n<div class="modal" id="list-chatrooms-modal" tabindex="-1" role="dialog" aria-labelledby="list-chatrooms-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title"\r\n                    id="list-chatrooms-modal-label">' +
+__p += '<!-- src/templates/list_chatrooms_modal.html -->\n<div class="modal" id="list-chatrooms-modal" tabindex="-1" role="dialog" aria-labelledby="list-chatrooms-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title"\n                    id="list-chatrooms-modal-label">' +
 __e(o.heading_list_chatrooms) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\r\n                    <span aria-hidden="true">×</span>\r\n                </button>\r\n            </div>\r\n            <div class="modal-body d-flex flex-column">\r\n                ';
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body d-flex flex-column">\n                ';
  if (o.show_form) { ;
-__p += '\r\n                <form class="converse-form list-chatrooms">\r\n                    <div class="form-group">\r\n                        <label for="chatroom">' +
+__p += '\n                <form class="converse-form list-chatrooms">\n                    <div class="form-group">\n                        <label for="chatroom">' +
 __e(o.label_server_address) +
-':</label>\r\n                        <input type="text" value="' +
+':</label>\n                        <input type="text" value="' +
 __e(o.muc_domain) +
 '" required="required" name="server" class="form-control" placeholder="' +
 __e(o.server_placeholder) +
-'"/>\r\n                    </div>\r\n                    <input type="submit" class="btn btn-primary" name="list" value="' +
+'"/>\n                    </div>\n                    <input type="submit" class="btn btn-primary" name="list" value="' +
 __e(o.label_query) +
-'"/>\r\n                </form>\r\n                ';
+'"/>\n                </form>\n                ';
  } ;
-__p += '\r\n                <ul class="available-chatrooms list-group"></ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+__p += '\n                <ul class="available-chatrooms list-group"></ul>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -35477,89 +35487,89 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/moderator_tools_modal.html -->\n<div class="modal" id="converse-modtools-modal" tabindex="-1" role="dialog" aria-labelledby="converse-modtools-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="converse-modtools-modal-label">' +
+__p += '<!-- src/templates/moderator_tools_modal.html -->\n<div class="modal" id="converse-modtools-modal" tabindex="-1" role="dialog" aria-labelledby="converse-modtools-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="converse-modtools-modal-label">' +
 __e(o.__('Moderator Tools')) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\r\n                    <span aria-hidden="true">×</span>\r\n                </button>\r\n            </div>\r\n            <div class="modal-body d-flex flex-column">\r\n                <ul class="nav nav-pills justify-content-center">\r\n                    <li role="presentation" class="nav-item">\r\n                        <a class="nav-link active" id="roles-tab" href="#roles-tabpanel" aria-controls="roles-tabpanel" role="tab" data-toggle="tab">Roles</a>\r\n                    </li>\r\n                    <li role="presentation" class="nav-item">\r\n                        <a class="nav-link" id="affiliations-tab" href="#affiliations-tabpanel" aria-controls="affiliations-tabpanel" role="tab" data-toggle="tab">Affiliations</a>\r\n                    </li>\r\n                </ul>\r\n\r\n                <div class="tab-content">\r\n                    <div class="tab-pane tab-pane--columns active" id="roles-tabpanel" role="tabpanel" aria-labelledby="roles-tab">\r\n                        <form class="converse-form query-role">\r\n                            <p class="helptext pb-3">\r\n' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body d-flex flex-column">\n                <ul class="nav nav-pills justify-content-center">\n                    <li role="presentation" class="nav-item">\n                        <a class="nav-link active" id="roles-tab" href="#roles-tabpanel" aria-controls="roles-tabpanel" role="tab" data-toggle="tab">Roles</a>\n                    </li>\n                    <li role="presentation" class="nav-item">\n                        <a class="nav-link" id="affiliations-tab" href="#affiliations-tabpanel" aria-controls="affiliations-tabpanel" role="tab" data-toggle="tab">Affiliations</a>\n                    </li>\n                </ul>\n\n                <div class="tab-content">\n                    <div class="tab-pane tab-pane--columns active" id="roles-tabpanel" role="tabpanel" aria-labelledby="roles-tab">\n                        <form class="converse-form query-role">\n                            <p class="helptext pb-3">\n' +
 __e(o.__("Roles are assigned to users to grant or deny them certain abilities in a multi-user chat. They're assigned either explicitly or implicitly as part of an affiliation. A role that's not due to an affiliation, is only valid for the duration of the user's session.")) +
-'\r\n                            </p>\r\n                            <div class="form-group">\r\n                                <label for="role">\r\n                                    <strong>' +
+'\n                            </p>\n                            <div class="form-group">\n                                <label for="role">\n                                    <strong>' +
 __e(o.__('Role')) +
-':</strong>\r\n                                </label>\r\n                                <div class="row">\r\n                                    <div class="col">\r\n                                        <select class="custom-select select-role" name="role">\r\n                                            ';
+':</strong>\n                                </label>\n                                <div class="row">\n                                    <div class="col">\n                                        <select class="custom-select select-role" name="role">\n                                            ';
  o.roles.forEach(function (role) { ;
-__p += '\r\n                                                <option value="' +
+__p += '\n                                                <option value="' +
 __e(role) +
 '" ';
  if (role === o.role)  { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                                                    ';
+__p += '\n                                                    ';
  if (role === 'moderator')  { ;
-__p += '\r\n                                                    title="' +
+__p += '\n                                                    title="' +
 __e(o.__("Moderators are privileged users who can change the roles of other users (except those with admin or owner affiliations.")) +
-'"\r\n                                                    ';
+'"\n                                                    ';
  } ;
-__p += '\r\n                                                    ';
+__p += '\n                                                    ';
  if (role === 'participant')  { ;
-__p += '\r\n                                                    title="' +
+__p += '\n                                                    title="' +
 __e(o.__("The default role, implies that you can read and write messages.")) +
-'"\r\n                                                    ';
+'"\n                                                    ';
  } ;
-__p += '\r\n                                                    ';
+__p += '\n                                                    ';
  if (role === 'visitor')  { ;
-__p += '\r\n                                                    title="' +
+__p += '\n                                                    title="' +
 __e(o.__("Visitors aren't allowed to write messages in a moderated multi-user chat.")) +
-'"\r\n                                                    ';
+'"\n                                                    ';
  } ;
 __p += '>' +
 __e(role) +
-'</option>\r\n                                            ';
+'</option>\n                                            ';
  }); ;
-__p += '\r\n                                        </select>\r\n                                    </div>\r\n                                    <div class="col">\r\n                                        <input type="submit" class="btn btn-primary" name="users_with_role" value="' +
+__p += '\n                                        </select>\n                                    </div>\n                                    <div class="col">\n                                        <input type="submit" class="btn btn-primary" name="users_with_role" value="' +
 __e(o.__('Show users')) +
-'"/>\r\n                                    </div>\r\n                                </div>\r\n                                <div class="row">\r\n                                    <div class="col pt-2">\r\n                                        ';
+'"/>\n                                    </div>\n                                </div>\n                                <div class="row">\n                                    <div class="col pt-2">\n                                        ';
  if (o.role === 'moderator')  { ;
-__p += '\r\n                                        <p class="helptext pb-3">' +
+__p += '\n                                        <p class="helptext pb-3">' +
 __e(o.__("Moderators are privileged users who can change the roles of other users (except those with admin or owner affiliations.")) +
-'</p>\r\n                                        ';
+'</p>\n                                        ';
  } ;
-__p += '\r\n                                        ';
+__p += '\n                                        ';
  if (o.role === 'participant')  { ;
-__p += '\r\n                                        <p class="helptext pb-3">' +
+__p += '\n                                        <p class="helptext pb-3">' +
 __e(o.__("The default role, implies that you can read and write messages.")) +
-'</p>\r\n                                        ';
+'</p>\n                                        ';
  } ;
-__p += '\r\n                                        ';
+__p += '\n                                        ';
  if (o.role === 'visitor')  { ;
-__p += '\r\n                                        <p class="helptext pb-3">' +
+__p += '\n                                        <p class="helptext pb-3">' +
 __e(o.__("Visitors aren't allowed to write messages in a moderated multi-user chat.")) +
-'</p>\r\n                                        ';
+'</p>\n                                        ';
  } ;
-__p += '\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </form>\r\n                        <div class="scrollable-container">\r\n                        <ul class="list-group list-group--users">\r\n                            ';
+__p += '\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                        <div class="scrollable-container">\n                        <ul class="list-group list-group--users">\n                            ';
  if (o.loading_users_with_role)  { ;
-__p += '\r\n                                <li class="list-group-item"> <span class="spinner fa fa-spinner centered"/> </li>\r\n                            ';
+__p += '\n                                <li class="list-group-item"> <span class="spinner fa fa-spinner centered"/> </li>\n                            ';
  } ;
-__p += '\r\n                            ';
+__p += '\n                            ';
  if (o.users_with_role && o.users_with_role.length === 0) { ;
-__p += '\r\n                                <li class="list-group-item">' +
+__p += '\n                                <li class="list-group-item">' +
 __e(o.__('No users with that role found.')) +
-'</li>\r\n                            ';
+'</li>\n                            ';
  } ;
-__p += '\r\n                            ';
+__p += '\n                            ';
  (o.users_with_role || []).forEach(function (item) { ;
-__p += '\r\n                                <li class="list-group-item">\r\n                                    <ul class="list-group">\r\n                                        <li class="list-group-item active">\r\n                                            <div><strong>JID:</strong> ' +
+__p += '\n                                <li class="list-group-item">\n                                    <ul class="list-group">\n                                        <li class="list-group-item active">\n                                            <div><strong>JID:</strong> ' +
 __e(item.jid) +
-'</div>\r\n                                        </li>\r\n                                        <li class="list-group-item">\r\n                                            <div><strong>Nickname:</strong> ' +
+'</div>\n                                        </li>\n                                        <li class="list-group-item">\n                                            <div><strong>Nickname:</strong> ' +
 __e(item.nick) +
-'</div>\r\n                                        </li>\r\n                                        <li class="list-group-item">\r\n                                            <div><strong>Role:</strong> ' +
+'</div>\n                                        </li>\n                                        <li class="list-group-item">\n                                            <div><strong>Role:</strong> ' +
 __e(item.role) +
-'<a href="#" data-form="role-form" class="toggle-form right fa fa-wrench"></a></div>\r\n                                            <form class="role-form hidden">\r\n                                                <div class="form-group">\r\n                                                    <input type="hidden" name="jid" value="' +
+'<a href="#" data-form="role-form" class="toggle-form right fa fa-wrench"></a></div>\n                                            <form class="role-form hidden">\n                                                <div class="form-group">\n                                                    <input type="hidden" name="jid" value="' +
 __e(item.jid) +
-'"/>\r\n                                                    <input type="hidden" name="nick" value="' +
+'"/>\n                                                    <input type="hidden" name="nick" value="' +
 __e(item.nick) +
-'"/>\r\n                                                    <div class="row">\r\n                                                        <div class="col">\r\n                                                            <label><strong>' +
+'"/>\n                                                    <div class="row">\n                                                        <div class="col">\n                                                            <label><strong>' +
 __e(o.__('New Role')) +
-':</strong></label>\r\n                                                            <select class="custom-select select-role" name="role">\r\n                                                                ';
+':</strong></label>\n                                                            <select class="custom-select select-role" name="role">\n                                                                ';
  o.allowed_roles.forEach(function (role) { ;
-__p += '\r\n                                                                    <option value="' +
+__p += '\n                                                                    <option value="' +
 __e(role) +
 '" ';
  if (role === item.role)  { ;
@@ -35567,99 +35577,99 @@ __p += ' selected="selected" ';
  } ;
 __p += '>' +
 __e(role) +
-'</option>\r\n                                                                ';
+'</option>\n                                                                ';
  }); ;
-__p += '\r\n                                                            </select>\r\n                                                        </div>\r\n                                                        <div class="col">\r\n                                                            <label><strong>' +
+__p += '\n                                                            </select>\n                                                        </div>\n                                                        <div class="col">\n                                                            <label><strong>' +
 __e(o.__('Reason')) +
-':</strong></label>\r\n                                                            <input class="form-control" type="text" name="reason"/>\r\n                                                        </div>\r\n                                                    </div>\r\n                                                </div>\r\n                                                <div class="form-group">\r\n                                                    <input type="submit" class="btn btn-primary" value="' +
+':</strong></label>\n                                                            <input class="form-control" type="text" name="reason"/>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class="form-group">\n                                                    <input type="submit" class="btn btn-primary" value="' +
 __e(o.__('Change role')) +
-'"/>\r\n                                                </div>\r\n                                            </form>\r\n                                        </li>\r\n                                    </ul>\r\n                                </li>\r\n                            ';
+'"/>\n                                                </div>\n                                            </form>\n                                        </li>\n                                    </ul>\n                                </li>\n                            ';
  }); ;
-__p += '\r\n                        </ul>\r\n                        </div>\r\n                    </div>\r\n\r\n\r\n                    <div class="tab-pane tab-pane--columns" id="affiliations-tabpanel" role="tabpanel" aria-labelledby="affiliations-tab">\r\n                        <form class="converse-form query-affiliation">\r\n                            <p class="helptext pb-3">\r\n' +
+__p += '\n                        </ul>\n                        </div>\n                    </div>\n\n\n                    <div class="tab-pane tab-pane--columns" id="affiliations-tabpanel" role="tabpanel" aria-labelledby="affiliations-tab">\n                        <form class="converse-form query-affiliation">\n                            <p class="helptext pb-3">\n' +
 __e(o.__("An affiliation is a long-lived entitlement which typically implies a certain role and which grants privileges and responsibilities. For example admins and owners automatically have the moderator role.")) +
-'\r\n                            </p>\r\n                            <div class="form-group">\r\n                                <label for="affiliation">\r\n                                    <strong>' +
+'\n                            </p>\n                            <div class="form-group">\n                                <label for="affiliation">\n                                    <strong>' +
 __e(o.__('Affiliation')) +
-':</strong>\r\n                                </label>\r\n                                <div class="row">\r\n                                    <div class="col">\r\n                                        <select class="custom-select select-affiliation" name="affiliation">\r\n                                            ';
+':</strong>\n                                </label>\n                                <div class="row">\n                                    <div class="col">\n                                        <select class="custom-select select-affiliation" name="affiliation">\n                                            ';
  o.affiliations.forEach(function (aff) { ;
-__p += '\r\n                                                <option value="' +
+__p += '\n                                                <option value="' +
 __e(aff) +
 '" ';
  if (aff === o.affiliation)  { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                                                    ';
+__p += '\n                                                    ';
  if (aff === 'owner')  { ;
-__p += '\r\n                                                    title="' +
+__p += '\n                                                    title="' +
 __e(o.__("Owner is the highest affiliation. Owners can modify roles and affiliations of all other users.")) +
-'"\r\n                                                    ';
+'"\n                                                    ';
  } ;
-__p += '\r\n                                                    ';
+__p += '\n                                                    ';
  if (aff === 'admin')  { ;
-__p += '\r\n                                                    title="' +
+__p += '\n                                                    title="' +
 __e(o.__("Admin is the 2nd highest affiliation. Admins can modify roles and affiliations of all other users except owners.")) +
-'"\r\n                                                    ';
+'"\n                                                    ';
  } ;
-__p += '\r\n                                                    ';
+__p += '\n                                                    ';
  if (aff === 'outcast')  { ;
-__p += '\r\n                                                    title="' +
+__p += '\n                                                    title="' +
 __e(o.__("To ban a user, you give them the affiliation of \"outcast\".")) +
-'"\r\n                                                    ';
+'"\n                                                    ';
  } ;
 __p += '>' +
 __e(aff) +
-'</option>\r\n                                            ';
+'</option>\n                                            ';
  }); ;
-__p += '\r\n                                        </select>\r\n                                    </div>\r\n                                    <div class="col">\r\n                                        <input type="submit" class="btn btn-primary" name="users_with_affiliation" value="' +
+__p += '\n                                        </select>\n                                    </div>\n                                    <div class="col">\n                                        <input type="submit" class="btn btn-primary" name="users_with_affiliation" value="' +
 __e(o.__('Show users')) +
-'"/>\r\n                                    </div>\r\n                                </div>\r\n                                <div class="row">\r\n                                    <div class="col pt-2">\r\n                                        ';
+'"/>\n                                    </div>\n                                </div>\n                                <div class="row">\n                                    <div class="col pt-2">\n                                        ';
  if (o.affiliation === 'owner')  { ;
-__p += '\r\n                                        <p class="helptext pb-3">' +
+__p += '\n                                        <p class="helptext pb-3">' +
 __e(o.__("Owner is the highest affiliation. Owners can modify roles and affiliations of all other users.")) +
-'</p>\r\n                                        ';
+'</p>\n                                        ';
  } ;
-__p += '\r\n                                        ';
+__p += '\n                                        ';
  if (o.affiliation === 'admin')  { ;
-__p += '\r\n                                        <p class="helptext pb-3">' +
+__p += '\n                                        <p class="helptext pb-3">' +
 __e(o.__("Admin is the 2nd highest affiliation. Admins can modify roles and affiliations of all other users except owners.")) +
-'</p>\r\n                                        ';
+'</p>\n                                        ';
  } ;
-__p += '\r\n                                        ';
+__p += '\n                                        ';
  if (o.affiliation === 'outcast')  { ;
-__p += '\r\n                                        <p class="helptext pb-3">' +
+__p += '\n                                        <p class="helptext pb-3">' +
 __e(o.__("To ban a user, you give them the affiliation of \"outcast\".")) +
-'</p>\r\n                                        ';
+'</p>\n                                        ';
  } ;
-__p += '\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </form>\r\n                        <div class="scrollable-container">\r\n                        <ul class="list-group list-group--users">\r\n                            ';
+__p += '\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                        <div class="scrollable-container">\n                        <ul class="list-group list-group--users">\n                            ';
  if (o.loading_users_with_affiliation)  { ;
-__p += '\r\n                                <li class="list-group-item"> <span class="spinner fa fa-spinner centered"/> </li>\r\n                            ';
+__p += '\n                                <li class="list-group-item"> <span class="spinner fa fa-spinner centered"/> </li>\n                            ';
  } else { ;
-__p += '\r\n                                ';
+__p += '\n                                ';
  if (o.users_with_affiliation && o.users_with_affiliation.length === 0) { ;
-__p += '\r\n                                    <li class="list-group-item">' +
+__p += '\n                                    <li class="list-group-item">' +
 __e(o.__('No users with that affiliation found.')) +
-'</li>\r\n                                ';
+'</li>\n                                ';
  } else if (o.users_with_affiliation instanceof Error) { ;
-__p += '\r\n                                    <li class="list-group-item">' +
+__p += '\n                                    <li class="list-group-item">' +
 __e(o.users_with_affiliation.message) +
-'</li>\r\n                                ';
+'</li>\n                                ';
  } else { ;
-__p += '\r\n                                    ';
+__p += '\n                                    ';
  (o.users_with_affiliation || []).forEach(function (item) { ;
-__p += '\r\n                                        <li class="list-group-item">\r\n                                            <ul class="list-group">\r\n                                                <li class="list-group-item active">\r\n                                                    <div><strong>JID:</strong> ' +
+__p += '\n                                        <li class="list-group-item">\n                                            <ul class="list-group">\n                                                <li class="list-group-item active">\n                                                    <div><strong>JID:</strong> ' +
 __e(item.jid) +
-'</div>\r\n                                                </li>\r\n                                                <li class="list-group-item">\r\n                                                    <div><strong>Nickname:</strong> ' +
+'</div>\n                                                </li>\n                                                <li class="list-group-item">\n                                                    <div><strong>Nickname:</strong> ' +
 __e(item.nick) +
-'</div>\r\n                                                </li>\r\n                                                <li class="list-group-item">\r\n                                                    <div><strong>Affiliation:</strong> ' +
+'</div>\n                                                </li>\n                                                <li class="list-group-item">\n                                                    <div><strong>Affiliation:</strong> ' +
 __e(item.affiliation) +
-' <a href="#" data-form="affiliation-form" class="toggle-form right fa fa-wrench"></a></div>\r\n                                                    <form class="affiliation-form hidden">\r\n                                                        <div class="form-group">\r\n                                                            <input type="hidden" name="jid" value="' +
+' <a href="#" data-form="affiliation-form" class="toggle-form right fa fa-wrench"></a></div>\n                                                    <form class="affiliation-form hidden">\n                                                        <div class="form-group">\n                                                            <input type="hidden" name="jid" value="' +
 __e(item.jid) +
-'"/>\r\n                                                            <input type="hidden" name="nick" value="' +
+'"/>\n                                                            <input type="hidden" name="nick" value="' +
 __e(item.nick) +
-'"/>\r\n                                                            <div class="row">\r\n                                                                <div class="col">\r\n                                                                    <label><strong>' +
+'"/>\n                                                            <div class="row">\n                                                                <div class="col">\n                                                                    <label><strong>' +
 __e(o.__('New affiliation')) +
-':</strong></label>\r\n                                                                    <select class="custom-select select-affiliation" name="affiliation">\r\n                                                                        ';
+':</strong></label>\n                                                                    <select class="custom-select select-affiliation" name="affiliation">\n                                                                        ';
  o.allowed_affiliations.forEach(function (aff) { ;
-__p += '\r\n                                                                            <option value="' +
+__p += '\n                                                                            <option value="' +
 __e(aff) +
 '" ';
  if (aff === item.affiliation)  { ;
@@ -35667,19 +35677,19 @@ __p += ' selected="selected" ';
  } ;
 __p += '>' +
 __e(aff) +
-'</option>\r\n                                                                        ';
+'</option>\n                                                                        ';
  }); ;
-__p += '\r\n                                                                    </select>\r\n                                                                </div>\r\n                                                                <div class="col">\r\n                                                                    <label><strong>' +
+__p += '\n                                                                    </select>\n                                                                </div>\n                                                                <div class="col">\n                                                                    <label><strong>' +
 __e(o.__('Reason')) +
-':</strong></label>\r\n                                                                    <input class="form-control" type="text" name="reason"/>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                        <div class="form-group">\r\n                                                            <input type="submit" class="btn btn-primary" name="change" value="' +
+':</strong></label>\n                                                                    <input class="form-control" type="text" name="reason"/>\n                                                                </div>\n                                                            </div>\n                                                        </div>\n                                                        <div class="form-group">\n                                                            <input type="submit" class="btn btn-primary" name="change" value="' +
 __e(o.__('Change affiliation')) +
-'"/>\r\n                                                        </div>\r\n                                                    </form>\r\n                                                </li>\r\n                                            </ul>\r\n                                        </li>\r\n                                    ';
+'"/>\n                                                        </div>\n                                                    </form>\n                                                </li>\n                                            </ul>\n                                        </li>\n                                    ';
  }); ;
-__p += '\r\n                                ';
+__p += '\n                                ';
  } ;
-__p += '\r\n                            ';
+__p += '\n                            ';
  } ;
-__p += '\r\n                        </ul>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+__p += '\n                        </ul>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -35693,39 +35703,39 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/occupant.html -->\n<li class="occupant" id="' +
 __e( o.id ) +
-'"\r\n    ';
+'"\n    ';
  if (o.role === "moderator") { ;
-__p += '\r\n       title="' +
+__p += '\n       title="' +
 __e( o.jid ) +
 ' ' +
 __e( o.desc_moderator ) +
 ' ' +
 __e( o.hint_occupant ) +
-'"\r\n    ';
+'"\n    ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (o.role === "participant") { ;
-__p += '\r\n       title="' +
+__p += '\n       title="' +
 __e( o.jid ) +
 ' ' +
 __e( o.desc_participant ) +
 ' ' +
 __e( o.hint_occupant ) +
-'"\r\n    ';
+'"\n    ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (o.role === "visitor") { ;
-__p += '\r\n       title="' +
+__p += '\n       title="' +
 __e( o.jid ) +
 ' ' +
 __e( o.desc_visitor ) +
 ' ' +
 __e( o.hint_occupant ) +
-'"\r\n    ';
+'"\n    ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (!o._.includes(["visitor", "participant", "moderator"], o.role)) { ;
-__p += '\r\n       title="' +
+__p += '\n       title="' +
 __e( o.jid ) +
 // BAO
 //' ' +
@@ -35733,46 +35743,45 @@ __e( o.jid ) +
 '"\r\n    ';
  } ;
 // BAO
-//__p += '>\r\n    <div class="row no-gutters">\r\n        <div class="col-auto">\r\n            <div class="occupant-status occupant-' +
+//__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n            <div class="occupant-status occupant-' +
 __p += '>\n    <div class="row no-gutters">\n        <div title="' + (o.jid ? 'Click to verify or start private chat with ' + o.jid : '') + '" class="col-auto">\n<img data-room-nick="' + o.nick + '" data-room-jid="' + o.jid + '" class="occupant-avatar room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
 
 __e(o.show) +
 ' circle" title="' +
 __e(o.hint_show) +
-'"></div>\r\n        </div>\r\n        <div class="col occupant-nick-badge">\r\n            <span class="occupant-nick">' +
+'"></div>\n        </div>\n        <div class="col occupant-nick-badge">\n            <span class="occupant-nick">' +
 __e(o.nick || o.jid) +
-'</span>\r\n            <span class="occupant-badges">\r\n                ';
+'</span>\n            <span class="occupant-badges">\n                ';
  if (o.affiliation === "owner") { ;
-__p += '\r\n                    <span class="badge badge-groupchat">' +
+__p += '\n                    <span class="badge badge-groupchat">' +
 __e(o.label_owner) +
-'</span>\r\n                ';
+'</span>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.affiliation === "admin") { ;
-__p += '\r\n                    <span class="badge badge-info">' +
+__p += '\n                    <span class="badge badge-info">' +
 __e(o.label_admin) +
-'</span>\r\n                ';
+'</span>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.affiliation === "member") { ;
-__p += '\r\n                    <span class="badge badge-info">' +
+__p += '\n                    <span class="badge badge-info">' +
 __e(o.label_member) +
-'</span>\r\n                ';
+'</span>\n                ';
  } ;
-__p += '\r\n\r\n                ';
+__p += '\n\n                ';
  if (o.role === "moderator") { ;
-__p += '\r\n                    <span class="badge badge-info">' +
+__p += '\n                    <span class="badge badge-info">' +
 __e(o.label_moderator) +
-'</span>\r\n                ';
+'</span>\n                ';
  } ;
-__p += '\r\n                ';
+__p += '\n                ';
  if (o.role === "visitor") { ;
-__p += '\r\n                    <span class="badge badge-secondary">' +
+__p += '\n                    <span class="badge badge-secondary">' +
 __e(o.label_visitor) +
-'</span>\r\n                ';
+'</span>\n                ';
  } ;
-__p += '\n                    <span title="' + o.verified_label + '" class="' + getVerifiedClass(o.verified, o.jid) + '"></span>\n'; // BAO
-__p += '\r\n            </span>\r\n        </div>\r\n    </div>\r\n</li>\r\n';
+__p += '\n            </span>\n        </div>\n    </div>\n</li>\n';
 return __p
 };
 
@@ -35784,87 +35793,87 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/room_description.html -->\n<!-- FIXME: check markup in mockup -->\r\n<div class="room-info">\r\n<p class="room-info"><strong>' +
+__p += '<!-- src/templates/room_description.html -->\n<!-- FIXME: check markup in mockup -->\n<div class="room-info">\n<p class="room-info"><strong>' +
 __e(o.label_jid) +
 '</strong> ' +
 __e(o.jid) +
-'</p>\r\n<p class="room-info"><strong>' +
+'</p>\n<p class="room-info"><strong>' +
 __e(o.label_desc) +
 '</strong> ' +
 __e(o.desc) +
-'</p>\r\n<p class="room-info"><strong>' +
+'</p>\n<p class="room-info"><strong>' +
 __e(o.label_occ) +
 '</strong> ' +
 __e(o.occ) +
-'</p>\r\n<p class="room-info"><strong>' +
+'</p>\n<p class="room-info"><strong>' +
 __e(o.label_features) +
-'</strong>\r\n    <ul>\r\n        ';
+'</strong>\n    <ul>\n        ';
  if (o.passwordprotected) { ;
-__p += '\r\n        <li class="room-info locked">' +
+__p += '\n        <li class="room-info locked">' +
 __e(o.label_requires_auth) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.hidden) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_hidden) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.membersonly) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_requires_invite) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.moderated) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_moderated) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.nonanonymous) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_non_anon) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.open) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_open_room) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.persistent) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_permanent_room) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.publicroom) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_public) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.semianonymous) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_semi_anon) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.temporary) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_temp_room) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.unmoderated) { ;
-__p += '\r\n        <li class="room-info">' +
+__p += '\n        <li class="room-info">' +
 __e(o.label_unmoderated) +
-'</li>\r\n        ';
+'</li>\n        ';
  } ;
-__p += '\r\n    </ul>\r\n</p>\r\n</div>\r\n';
+__p += '\n    </ul>\n</p>\n</div>\n';
 return __p
 };
 
@@ -35875,19 +35884,19 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/room_item.html -->\n<li class="room-item list-group-item">\r\n  <div class="available-chatroom d-flex flex-row">\r\n    <a class="open-room available-room w-100"\r\n       data-room-jid="' +
+__p += '<!-- src/templates/room_item.html -->\n<li class="room-item list-group-item">\n  <div class="available-chatroom d-flex flex-row">\n    <a class="open-room available-room w-100"\n       data-room-jid="' +
 __e(o.jid) +
-'"\r\n       data-room-name="' +
+'"\n       data-room-name="' +
 __e(o.name) +
-'"\r\n       title="' +
+'"\n       title="' +
 __e(o.open_title) +
-'"\r\n       href="#">' +
+'"\n       href="#">' +
 __e(o.name) +
-'</a>\r\n    <a class="right room-info icon-room-info"\r\n       data-room-jid="' +
+'</a>\n    <a class="right room-info icon-room-info"\n       data-room-jid="' +
 __e(o.jid) +
-'"\r\n       title="' +
+'"\n       title="' +
 __e(o.info_title) +
-'" href="#"></a>\r\n  </div>\r\n</li>\r\n';
+'" href="#"></a>\n  </div>\n</li>\n';
 return __p
 };
 
@@ -35898,13 +35907,13 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/room_panel.html -->\n<!-- <div id="chatrooms"> -->\r\n<div class="d-flex controlbox-padded">\r\n    <span class="w-100 controlbox-heading controlbox-heading--groupchats">' +
+__p += '<!-- src/templates/room_panel.html -->\n<!-- <div id="chatrooms"> -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading controlbox-heading--groupchats">' +
 __e(o.heading_chatrooms) +
-'</span>\r\n    <a class="controlbox-heading__btn show-list-muc-modal fa fa-list-ul" title="' +
+'</span>\n    <a class="controlbox-heading__btn show-list-muc-modal fa fa-list-ul" title="' +
 __e(o.title_list_rooms) +
-'" data-toggle="modal" data-target="#list-chatrooms-modal"></a>\r\n    <a class="controlbox-heading__btn show-add-muc-modal fa fa-plus" title="' +
+'" data-toggle="modal" data-target="#list-chatrooms-modal"></a>\n    <a class="controlbox-heading__btn show-add-muc-modal fa fa-plus" title="' +
 __e(o.title_new_room) +
-'" data-toggle="modal" data-target="#add-chatrooms-modal"></a>\r\n</div>\r\n<div class="list-container open-rooms-list rooms-list-container"></div>\r\n<div class="list-container bookmarks-list rooms-list-container"></div>\r\n<!-- </div> -->\r\n';
+'" data-toggle="modal" data-target="#add-chatrooms-modal"></a>\n</div>\n<div class="list-container open-rooms-list rooms-list-container"></div>\n<div class="list-container bookmarks-list rooms-list-container"></div>\n<!-- </div> -->\n';
 return __p
 };
 
@@ -35916,45 +35925,45 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chat_status_modal.html -->\n<!-- Change status Modal -->\r\n<div class="modal" id="modal-status-change" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="changeStatusModalLabel">' +
+__p += '<!-- src/templates/chat_status_modal.html -->\n<!-- Change status Modal -->\n<div class="modal" id="modal-status-change" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="changeStatusModalLabel">' +
 __e(o.modal_title) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
 __e(o.label_close) +
-'">\r\n                    <span aria-hidden="true">×</span>\r\n                </button>\r\n            </div>\r\n            <div class="modal-body">\r\n                <form class="converse-form set-xmpp-status" id="set-xmpp-status">\r\n                    <div class="form-group">\r\n                        <div class="custom-control custom-radio">\r\n                            <input ';
+'">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body">\n                <form class="converse-form set-xmpp-status" id="set-xmpp-status">\n                    <div class="form-group">\n                        <div class="custom-control custom-radio">\n                            <input ';
  if (o.status === 'online') { ;
 __p += ' checked="checked" ';
  } ;
-__p += '\r\n                                   type="radio" id="radio-online" value="online" name="chat_status" class="custom-control-input"/>\r\n                            <label class="custom-control-label" for="radio-online">\r\n                                <span class="fa fa-circle chat-status chat-status--online"></span>' +
+__p += '\n                                   type="radio" id="radio-online" value="online" name="chat_status" class="custom-control-input"/>\n                            <label class="custom-control-label" for="radio-online">\n                                <span class="fa fa-circle chat-status chat-status--online"></span>' +
 __e(o.label_online) +
-'</label>\r\n                        </div>\r\n                        <div class="custom-control custom-radio">\r\n                            <input ';
+'</label>\n                        </div>\n                        <div class="custom-control custom-radio">\n                            <input ';
  if (o.status === 'busy') { ;
 __p += ' checked="checked" ';
  } ;
-__p += '\r\n                                   type="radio" id="radio-busy" value="dnd" name="chat_status" class="custom-control-input"/>\r\n                            <label class="custom-control-label" for="radio-busy">\r\n                                <span class="fa fa-minus-circle  chat-status chat-status--busy"></span>' +
+__p += '\n                                   type="radio" id="radio-busy" value="dnd" name="chat_status" class="custom-control-input"/>\n                            <label class="custom-control-label" for="radio-busy">\n                                <span class="fa fa-minus-circle  chat-status chat-status--busy"></span>' +
 __e(o.label_busy) +
-'</label>\r\n                        </div>\r\n                        <div class="custom-control custom-radio">\r\n                            <input ';
+'</label>\n                        </div>\n                        <div class="custom-control custom-radio">\n                            <input ';
  if (o.status === 'away') { ;
 __p += ' checked="checked" ';
  } ;
-__p += '\r\n                                   type="radio" id="radio-away" value="away" name="chat_status" class="custom-control-input"/>\r\n                            <label class="custom-control-label" for="radio-away">\r\n                                <span class="fa fa-circle chat-status chat-status--away"></span>' +
+__p += '\n                                   type="radio" id="radio-away" value="away" name="chat_status" class="custom-control-input"/>\n                            <label class="custom-control-label" for="radio-away">\n                                <span class="fa fa-circle chat-status chat-status--away"></span>' +
 __e(o.label_away) +
-'</label>\r\n                        </div>\r\n                        <div class="custom-control custom-radio">\r\n                            <input ';
+'</label>\n                        </div>\n                        <div class="custom-control custom-radio">\n                            <input ';
  if (o.status === 'xa') { ;
 __p += ' checked="checked" ';
  } ;
-__p += '\r\n                                   type="radio" id="radio-xa" value="xa" name="chat_status" class="custom-control-input"/>\r\n                            <label class="custom-control-label" for="radio-xa">\r\n                                <span class="far fa-circle chat-status chat-status--xa"></span>' +
+__p += '\n                                   type="radio" id="radio-xa" value="xa" name="chat_status" class="custom-control-input"/>\n                            <label class="custom-control-label" for="radio-xa">\n                                <span class="far fa-circle chat-status chat-status--xa"></span>' +
 __e(o.label_xa) +
-'</label>\r\n                        </div>\r\n                    </div>\r\n                    <div class="form-group">\r\n                        <div class="btn-group w-100">\r\n                            <input name="status_message" type="text" class="form-control" \r\n                                value="' +
+'</label>\n                        </div>\n                    </div>\n                    <div class="form-group">\n                        <div class="btn-group w-100">\n                            <input name="status_message" type="text" class="form-control" \n                                value="' +
 __e(o.status_message) +
 '" placeholder="' +
 __e(o.placeholder_status_message) +
-'"/>\r\n                            <span class="clear-input fa fa-times ';
+'"/>\n                            <span class="clear-input fa fa-times ';
  if (!o.status_message) { ;
 __p += ' hidden ';
  } ;
-__p += '"></span>\r\n                        </div>\r\n                    </div>\r\n                    <button type="submit" class="btn btn-primary">' +
+__p += '"></span>\n                        </div>\n                    </div>\n                    <button type="submit" class="btn btn-primary">' +
 __e(o.label_save) +
-'</button>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'</button>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -35965,17 +35974,17 @@ return __p
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/client_info_modal.html -->\n<!-- Change status Modal -->\r\n<div class="modal" id="modal-status-change" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="changeStatusModalLabel">' +
+__p += '<!-- src/templates/client_info_modal.html -->\n<!-- Change status Modal -->\n<div class="modal" id="modal-status-change" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="changeStatusModalLabel">' +
 __e(o.modal_title) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
 __e(o.label_close) + // BAO
 '">\n                    <span aria-hidden="true">×</span>\n                </button>\n            </div>\n            <div class="modal-body">\n                <div class="container brand-heading-container">\n                    <h6 class="brand-heading"><i class="icon-conversejs"></i>' + chrome.i18n.getMessage('browserAction_title') + ' Converse</h6>\n                    <p class="brand-subtitle">' +
 __e(o.version_name) +
-'</p>\r\n                    <p class="brand-subtitle">' +
+'</p>\n                    <p class="brand-subtitle">' +
 ((__t = (o.first_subtitle)) == null ? '' : __t) +
-'</p>\r\n                    <p class="brand-subtitle">' +
+'</p>\n                    <p class="brand-subtitle">' +
 ((__t = (o.second_subtitle)) == null ? '' : __t) +
-'</p>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'</p>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -35987,107 +35996,107 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/profile_modal.html -->\n<div class="modal" id="user-profile-modal" tabindex="-1" role="dialog" aria-labelledby="user-profile-modal-label" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="user-profile-modal-label">' +
+__p += '<!-- src/templates/profile_modal.html -->\n<div class="modal" id="user-profile-modal" tabindex="-1" role="dialog" aria-labelledby="user-profile-modal-label" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="user-profile-modal-label">' +
 __e(o.heading_profile) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="' +
 __e(o.label_close) +
-'"><span aria-hidden="true">×</span></button>\r\n            </div>\r\n            <div class="modal-body">\r\n                ';
+'"><span aria-hidden="true">×</span></button>\n            </div>\n            <div class="modal-body">\n                ';
  if (o._converse.pluggable.plugins['converse-omemo'].enabled(o._converse)) { ;
-__p += '\r\n                <ul class="nav nav-pills justify-content-center">\r\n                    <li role="presentation" class="nav-item">\r\n                        <a class="nav-link active" id="profile-tab" href="#profile-tabpanel" aria-controls="profile-tabpanel" role="tab" data-toggle="tab">Profile</a>\r\n                    </li>\r\n                    <li role="presentation" class="nav-item">\r\n                        <a class="nav-link" id="omemo-tab" href="#omemo-tabpanel" aria-controls="omemo-tabpanel" role="tab" data-toggle="tab">OMEMO</a>\r\n                    </li>\r\n                </ul>\r\n                ';
+__p += '\n                <ul class="nav nav-pills justify-content-center">\n                    <li role="presentation" class="nav-item">\n                        <a class="nav-link active" id="profile-tab" href="#profile-tabpanel" aria-controls="profile-tabpanel" role="tab" data-toggle="tab">Profile</a>\n                    </li>\n                    <li role="presentation" class="nav-item">\n                        <a class="nav-link" id="omemo-tab" href="#omemo-tabpanel" aria-controls="omemo-tabpanel" role="tab" data-toggle="tab">OMEMO</a>\n                    </li>\n                </ul>\n                ';
  } ;
-__p += '\r\n                <div class="tab-content">\r\n                    <div class="tab-pane active" id="profile-tabpanel" role="tabpanel" aria-labelledby="profile-tab">\r\n                        <form class="converse-form converse-form--modal profile-form" action="#">\r\n                            <div class="row">\r\n                                <div class="col-auto">\r\n                                    <a class="change-avatar" href="#">\r\n                                        ';
+__p += '\n                <div class="tab-content">\n                    <div class="tab-pane active" id="profile-tabpanel" role="tabpanel" aria-labelledby="profile-tab">\n                        <form class="converse-form converse-form--modal profile-form" action="#">\n                            <div class="row">\n                                <div class="col-auto">\n                                    <a class="change-avatar" href="#">\n                                        ';
  if (o.image) { ;
-__p += '\r\n                                            <img alt="' +
+__p += '\n                                            <img alt="' +
 __e(o.alt_avatar) +
 '" class="img-thumbnail avatar align-self-center" height="100px" width="100px" src="data:' +
 __e(o.image_type) +
 ';base64,' +
 __e(o.image) +
-'"/>\r\n                                        ';
+'"/>\n                                        ';
  } ;
-__p += '\r\n                                        ';
+__p += '\n                                        ';
  if (!o.image) { ;
-__p += '\r\n                                            <canvas class="avatar" height="100px" width="100px"></canvas>\r\n                                        ';
+__p += '\n                                            <canvas class="avatar" height="100px" width="100px"></canvas>\n                                        ';
  } ;
-__p += '\r\n                                    </a>\r\n                                    <input class="hidden" name="image" type="file"/>\r\n                                </div>\r\n                                <div class="col">\r\n                                    <div class="form-group">\r\n                                        <label class="col-form-label">' +
+__p += '\n                                    </a>\n                                    <input class="hidden" name="image" type="file"/>\n                                </div>\n                                <div class="col">\n                                    <div class="form-group">\n                                        <label class="col-form-label">' +
 __e(o.label_jid) +
-':</label>\r\n                                        <div>' +
+':</label>\n                                        <div>' +
 __e(o.jid) +
-'</div>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                            <div class="form-group">\r\n                                <label for="vcard-fullname" class="col-form-label">' +
+'</div>\n                                    </div>\n                                </div>\n                            </div>\n                            <div class="form-group">\n                                <label for="vcard-fullname" class="col-form-label">' +
 __e(o.label_fullname) +
-':</label>\r\n                                <input id="vcard-fullname" type="text" class="form-control" name="fn" value="' +
+':</label>\n                                <input id="vcard-fullname" type="text" class="form-control" name="fn" value="' +
 __e(o.fullname) +
-'"/>\r\n                            </div>\r\n                            <div class="form-group">\r\n                                <label for="vcard-nickname" class="col-form-label">' +
+'"/>\n                            </div>\n                            <div class="form-group">\n                                <label for="vcard-nickname" class="col-form-label">' +
 __e(o.label_nickname) +
-':</label>\r\n                                <input id="vcard-nickname" type="text" class="form-control" name="nickname" value="' +
+':</label>\n                                <input id="vcard-nickname" type="text" class="form-control" name="nickname" value="' +
 __e(o.nickname) +
-'"/>\r\n                            </div>\r\n                            <div class="form-group">\r\n                                <label for="vcard-url" class="col-form-label">' +
+'"/>\n                            </div>\n                            <div class="form-group">\n                                <label for="vcard-url" class="col-form-label">' +
 __e(o.label_url) +
-':</label>\r\n                                <input id="vcard-url" type="url" class="form-control" name="url" value="' +
+':</label>\n                                <input id="vcard-url" type="url" class="form-control" name="url" value="' +
 __e(o.url) +
-'"/>\r\n                            </div>\r\n                            <div class="form-group">\r\n                                <label for="vcard-email" class="col-form-label">' +
+'"/>\n                            </div>\n                            <div class="form-group">\n                                <label for="vcard-email" class="col-form-label">' +
 __e(o.label_email) +
-':</label>\r\n                                <input id="vcard-email" type="email" class="form-control" name="email" value="' +
+':</label>\n                                <input id="vcard-email" type="email" class="form-control" name="email" value="' +
 __e(o.email) +
-'"/>\r\n                            </div>\r\n                            <div class="form-group">\r\n                                <label for="vcard-role" class="col-form-label">' +
+'"/>\n                            </div>\n                            <div class="form-group">\n                                <label for="vcard-role" class="col-form-label">' +
 __e(o.label_role) +
-':</label>\r\n                                <input id="vcard-role" type="text" class="form-control" name="role" value="' +
+':</label>\n                                <input id="vcard-role" type="text" class="form-control" name="role" value="' +
 __e(o.role) +
-'" aria-describedby="vcard-role-help"/>\r\n                                <small id="vcard-role-help" class="form-text text-muted">' +
+'" aria-describedby="vcard-role-help"/>\n                                <small id="vcard-role-help" class="form-text text-muted">' +
 __e(o.label_role_help) +
-'</small>\r\n                            </div>\r\n                            <hr/>\r\n                            <div class="form-group">\r\n                                <button type="submit" class="save-form btn btn-primary">' +
+'</small>\n                            </div>\n                            <hr/>\n                            <div class="form-group">\n                                <button type="submit" class="save-form btn btn-primary">' +
 __e(o.__('Save and close')) +
-'</button>\r\n                            </div>\r\n                        </form>\r\n                    </div>\r\n                    ';
+'</button>\n                            </div>\n                        </form>\n                    </div>\n                    ';
  if (o._converse.pluggable.plugins['converse-omemo'].enabled(o._converse)) { ;
-__p += '\r\n                        <div class="tab-pane" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">\r\n                            <form class="converse-form fingerprint-removal">\r\n                                <ul class="list-group fingerprints">\r\n                                    <li class="list-group-item active">' +
+__p += '\n                        <div class="tab-pane" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">\n                            <form class="converse-form fingerprint-removal">\n                                <ul class="list-group fingerprints">\n                                    <li class="list-group-item active">' +
 __e(o.__("This device's OMEMO fingerprint")) +
-'</li>\r\n                                    <li class="list-group-item">\r\n                                    ';
+'</li>\n                                    <li class="list-group-item">\n                                    ';
  if (o.view.current_device && o.view.current_device.get('bundle') && o.view.current_device.get('bundle').fingerprint) { ;
-__p += '\r\n                                        <span class="fingerprint">' +
+__p += '\n                                        <span class="fingerprint">' +
 __e(o.utils.formatFingerprint(o.view.current_device.get('bundle').fingerprint)) +
-'</span>\r\n                                    ';
+'</span>\n                                    ';
  } else {;
-__p += '\r\n                                        <span class="spinner fa fa-spinner centered"/>\r\n                                    ';
+__p += '\n                                        <span class="spinner fa fa-spinner centered"/>\n                                    ';
  } ;
-__p += '\r\n                                    </li>\r\n                                </ul>\r\n                                <div class="form-group">\r\n                                    <button type="button" class="generate-bundle btn btn-danger">' +
+__p += '\n                                    </li>\n                                </ul>\n                                <div class="form-group">\n                                    <button type="button" class="generate-bundle btn btn-danger">' +
 __e(o.__('Generate new keys and fingerprint')) +
-'</button>\r\n                                </div>\r\n\r\n                                ';
+'</button>\n                                </div>\n\n                                ';
  if (o.view.other_devices.length) { ;
-__p += '\r\n                                    <ul class="list-group fingerprints">\r\n                                        <li class="list-group-item nopadding active">\r\n                                            <label>\r\n                                            <input type="checkbox" class="select-all" title="' +
+__p += '\n                                    <ul class="list-group fingerprints">\n                                        <li class="list-group-item nopadding active">\n                                            <label>\n                                            <input type="checkbox" class="select-all" title="' +
 __e(o.__('Select all')) +
-'"\r\n                                                   aria-label="' +
+'"\n                                                   aria-label="' +
 __e(o.__('Checkbox to select fingerprints of all other OMEMO devices')) +
-'"/>\r\n                                            ' +
+'"/>\n                                            ' +
 __e(o.__('Other OMEMO-enabled devices')) +
-'\r\n                                            </label>\r\n                                        </li>\r\n                                        ';
+'\n                                            </label>\n                                        </li>\n                                        ';
  o._.forEach(o.view.other_devices, function (device) { ;
-__p += '\r\n                                            ';
+__p += '\n                                            ';
  if (device.get('bundle') && device.get('bundle').fingerprint) { ;
-__p += '\r\n                                            <li class="fingerprint-removal-item list-group-item nopadding">\r\n                                                <label>\r\n                                                <input type="checkbox" value="' +
+__p += '\n                                            <li class="fingerprint-removal-item list-group-item nopadding">\n                                                <label>\n                                                <input type="checkbox" value="' +
 __e(device.get('id')) +
-'"\r\n                                                       aria-label="' +
+'"\n                                                       aria-label="' +
 __e(o.__('Checkbox for selecting the following fingerprint')) +
-'"/>\r\n                                                <span class="fingerprint">' +
+'"/>\n                                                <span class="fingerprint">' +
 __e(o.utils.formatFingerprint(device.get('bundle').fingerprint)) +
-'</span>\r\n                                                </label>\r\n                                            </li>\r\n                                            ';
+'</span>\n                                                </label>\n                                            </li>\n                                            ';
  } else {;
-__p += '\r\n                                            <li class="fingerprint-removal-item list-group-item nopadding">\r\n                                                <label>\r\n                                                <input type="checkbox" value="' +
+__p += '\n                                            <li class="fingerprint-removal-item list-group-item nopadding">\n                                                <label>\n                                                <input type="checkbox" value="' +
 __e(device.get('id')) +
-'"\r\n                                                       aria-label="' +
+'"\n                                                       aria-label="' +
 __e(o.__('Checkbox for selecting the following fingerprint')) +
-'"/>\r\n                                                <span>' +
+'"/>\n                                                <span>' +
 __e(o.__('Device without a fingerprint')) +
-'</span>\r\n                                                </label>\r\n                                            </li>\r\n                                            ';
+'</span>\n                                                </label>\n                                            </li>\n                                            ';
  } ;
-__p += '\r\n                                        ';
+__p += '\n                                        ';
  }); ;
-__p += '\r\n                                    </ul>\r\n                                    <div class="form-group">\r\n                                        <button type="submit" class="save-form btn btn-primary">' +
+__p += '\n                                    </ul>\n                                    <div class="form-group">\n                                        <button type="submit" class="save-form btn btn-primary">' +
 __e(o.__('Remove checked devices and close')) +
-'</button>\r\n                                    </div>\r\n                                ';
+'</button>\n                                    </div>\n                                ';
  } ;
-__p += '\r\n                            </form>\r\n                        </div>\r\n                    ';
+__p += '\n                            </form>\n                        </div>\n                    ';
  } ;
-__p += '\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+__p += '\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -36099,7 +36108,7 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/profile_view.html -->\n<div class="userinfo controlbox-padded">\r\n<div class="controlbox-section profile d-flex">\r\n    <a class="show-profile" href="#">\r\n        <canvas class="avatar align-self-center" height="40" width="40"></canvas>\r\n    </a>\r\n    <span class="username w-100 align-self-center">' +
+__p += '<!-- src/templates/profile_view.html -->\n<div class="userinfo controlbox-padded">\n<div class="controlbox-section profile d-flex">\n    <a class="show-profile" href="#">\n        <canvas class="avatar align-self-center" height="40" width="40"></canvas>\n    </a>\n    <span class="username w-100 align-self-center">' +
 __e(o.fullname) + '</span>\n    ' + // BAO <begins>
 '<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="' +
 __e(o.title_conversations) +
@@ -36109,45 +36118,45 @@ __e(o.title_preferences) +
 '"></a>\n    ';                                                                              // BAO <ends>
 
  if (o._converse.show_client_info) { ;
-__p += '\r\n        <a class="controlbox-heading__btn show-client-info fa fa-info-circle align-self-center" title="' +
+__p += '\n        <a class="controlbox-heading__btn show-client-info fa fa-info-circle align-self-center" title="' +
 __e(o.info_details) +
-'"></a>\r\n    ';
+'"></a>\n    ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (o._converse.allow_logout) { ;
-__p += '\r\n        <a class="controlbox-heading__btn logout fa fa-sign-out-alt align-self-center" title="' +
+__p += '\n        <a class="controlbox-heading__btn logout fa fa-sign-out-alt align-self-center" title="' +
 __e(o.title_log_out) +
-'"></a>\r\n    ';
+'"></a>\n    ';
  } ;
-__p += '\r\n</div>\r\n<div class="d-flex xmpp-status">\r\n    <span class="' +
+__p += '\n</div>\n<div class="d-flex xmpp-status">\n    <span class="' +
 __e(o.chat_status) +
 ' w-100 align-self-center" data-value="' +
 __e(o.chat_status) +
-'">\r\n        <span class="\r\n            ';
+'">\n        <span class="\n            ';
  if (o.chat_status === 'online') { ;
 __p += ' fa fa-circle chat-status chat-status--online';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.chat_status === 'dnd') { ;
 __p += ' fa fa-minus-circle chat-status chat-status--busy ';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.chat_status === 'away') { ;
 __p += ' fa fa-circle chat-status chat-status--away';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.chat_status === 'xa') { ;
 __p += ' far fa-circle chat-status chat-status--xa ';
  } ;
-__p += '\r\n            ';
+__p += '\n            ';
  if (o.chat_status === 'offline') { ;
 __p += ' fa fa-circle chat-status chat-status--offline';
  } ;
 __p += '"></span> ' +
 __e(o.status_message) +
-'</span>\r\n    <a class="controlbox-heading__btn change-status fa fa-pencil-alt" title="' +
+'</span>\n    <a class="controlbox-heading__btn change-status fa fa-pencil-alt" title="' +
 __e(o.title_change_status) +
-'" data-toggle="modal" data-target="#changeStatusModal"></a>\r\n</div>\r\n</div>\r\n';
+'" data-toggle="modal" data-target="#changeStatusModal"></a>\n</div>\n</div>\n';
 return __p
 };
 
@@ -36159,19 +36168,19 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/toolbar_omemo.html -->\n<li class="toggle-omemo fa \r\n        ';
+__p += '<!-- src/templates/toolbar_omemo.html -->\n<li class="toggle-omemo fa \n        ';
  if (!o.omemo_supported) { ;
 __p += ' disabled ';
  } ;
-__p += '\r\n        ';
+__p += '\n        ';
  if (o.omemo_active) { ;
 __p += ' fa-lock ';
  } else { ;
 __p += ' fa-unlock ';
  } ;
-__p += '"\r\n    title="' +
+__p += '"\n    title="' +
 __e(o.__('Messages are being sent in plaintext')) +
-'"></li>\r\n';
+'"></li>\n';
 return __p
 };
 
@@ -36183,15 +36192,15 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/register_link.html -->\n<fieldset class="switch-form">\r\n    ';
+__p += '<!-- src/templates/register_link.html -->\n<fieldset class="switch-form">\n    ';
  if (!o._converse.auto_login && o._converse.CONNECTION_STATUS[o.connection_status] !== 'CONNECTING') { ;
-__p += '\r\n        <p>' +
+__p += '\n        <p>' +
 __e( o.__("Don't have a chat account?") ) +
-'</p>\r\n        <p><a class="register-account toggle-register-login" href="#converse/register">' +
+'</p>\n        <p><a class="register-account toggle-register-login" href="#converse/register">' +
 __e(o.__("Create an account")) +
-'</a></p>\r\n    ';
+'</a></p>\n    ';
  } ;
-__p += '\r\n</fieldset>\r\n';
+__p += '\n</fieldset>\n';
 return __p
 };
 
@@ -36203,33 +36212,33 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/register_panel.html -->\n<div>\r\n    <form id="converse-register" class="converse-form">\r\n        <legend class="col-form-label">' +
+__p += '<!-- src/templates/register_panel.html -->\n<div>\n    <form id="converse-register" class="converse-form">\n        <legend class="col-form-label">' +
 __e(o.__("Create your account")) +
-'</legend>\r\n\r\n        <div class="form-group">\r\n            <label>' +
+'</legend>\n\n        <div class="form-group">\n            <label>' +
 __e(o.__("Please enter the XMPP provider to register with:")) +
-'</label>\r\n            <div class="form-errors hidden"></div>\r\n\r\n            ';
+'</label>\n            <div class="form-errors hidden"></div>\n\n            ';
  if (o.default_domain) { ;
-__p += '\r\n                ' +
+__p += '\n                ' +
 __e(o.default_domain) +
-'\r\n            </div>\r\n            ';
+'\n            </div>\n            ';
  } else { ;
-__p += '\r\n                <input class="form-control" autofocus="autofocus" required="required" type="text" name="domain" placeholder="' +
+__p += '\n                <input class="form-control" autofocus="autofocus" required="required" type="text" name="domain" placeholder="' +
 __e(o.domain_placeholder) + '" value="' + __e(o.domain_placeholder) + // BAO
-'"/>\r\n                <p class="form-text text-muted">' +
+'"/>\n                <p class="form-text text-muted">' +
 __e(o.help_providers) +
 ' <a href="' +
 __e(o.href_providers) +
 '" class="url" target="_blank" rel="noopener">' +
 __e(o.help_providers_link) +
-'</a>.</p>\r\n            </div>\r\n            <fieldset class="buttons">\r\n                <input class="btn btn-primary" type="submit" value="' +
+'</a>.</p>\n            </div>\n            <fieldset class="buttons">\n                <input class="btn btn-primary" type="submit" value="' +
 __e(o.label_register) +
-'"/>\r\n                <div class="switch-form">\r\n                    <p>' +
+'"/>\n                <div class="switch-form">\n                    <p>' +
 __e( o.__("Already have a chat account?") ) +
-'</p>\r\n                    <p><a class="login-here toggle-register-login" href="#converse/login">' +
+'</p>\n                    <p><a class="login-here toggle-register-login" href="#converse/login">' +
 __e(o.__("Log in here")) +
-'</a></p>\r\n                </div>\r\n            </fieldset>\r\n            ';
+'</a></p>\n                </div>\n            </fieldset>\n            ';
  } ;
-__p += '\r\n        <!--</div>-->\r\n    </form>\r\n</div>\r\n';
+__p += '\n        <!--</div>-->\n    </form>\n</div>\n';
 return __p
 };
 
@@ -36245,23 +36254,23 @@ __p += '<!-- src/templates/registration_form.html -->\n<legend class="col-form-l
 __e(o.__("Account Registration:")) +
 ' ' +
 __e(o.domain) +
-'</legend>\r\n<p class="title">' +
+'</legend>\n<p class="title">' +
 __e(o.title) +
-'</p>\r\n<p class="form-help instructions">' +
+'</p>\n<p class="form-help instructions">' +
 __e(o.instructions) +
-'</p>\r\n<div class="form-errors hidden"></div>\r\n\r\n<fieldset class="buttons">\r\n    <input type="submit" class="btn btn-primary" value="' +
+'</p>\n<div class="form-errors hidden"></div>\n\n<fieldset class="buttons">\n    <input type="submit" class="btn btn-primary" value="' +
 __e(o.__('Register')) +
-'"/>\r\n    ';
+'"/>\n    ';
  if (!o.registration_domain) { ;
-__p += '\r\n        <input type="button" class="btn btn-secondary button-cancel" value="' +
+__p += '\n        <input type="button" class="btn btn-secondary button-cancel" value="' +
 __e(o.__('Choose a different provider')) +
-'"/>\r\n    ';
+'"/>\n    ';
  } ;
-__p += '\r\n    <div class="switch-form">\r\n        <p>' +
+__p += '\n    <div class="switch-form">\n        <p>' +
 __e( o.__("Already have a chat account?") ) +
-'</p>\r\n        <p><a class="login-here toggle-register-login" href="#converse/login">' +
+'</p>\n        <p><a class="login-here toggle-register-login" href="#converse/login">' +
 __e(o.__("Log in here")) +
-'</a></p>\r\n    </div>\r\n</fieldset>\r\n';
+'</a></p>\n    </div>\n</fieldset>\n';
 return __p
 };
 
@@ -36273,15 +36282,15 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/registration_request.html -->\n<span class="spinner login-submit fa fa-spinner"></span>\r\n<p class="info">' +
+__p += '<!-- src/templates/registration_request.html -->\n<span class="spinner login-submit fa fa-spinner"></span>\n<p class="info">' +
 __e(o.__("Hold tight, we're fetching the registration form…")) +
-'</p>\r\n';
+'</p>\n';
  if (o.cancel) { ;
-__p += '\r\n    <button class="btn btn-secondary button-cancel hor_centered">' +
+__p += '\n    <button class="btn btn-secondary button-cancel hor_centered">' +
 __e(o.__('Cancel')) +
-'</button>\r\n';
+'</button>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
 return __p
 };
 
@@ -36295,15 +36304,15 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/rooms_list.html -->\n<a href="#" class="list-toggle open-rooms-toggle controlbox-padded" title="' +
 __e(o.desc_rooms) +
-'">\r\n    <span class="fa ';
+'">\n    <span class="fa ';
  if (o.toggle_state === o._converse.OPENED) { ;
 __p += ' fa-caret-down ';
  } else { ;
 __p += ' fa-caret-right ';
  } ;
-__p += '">\r\n    </span> ' +
+__p += '">\n    </span> ' +
 __e(o.label_rooms) +
-'</a>\r\n<div class="items-list rooms-list open-rooms-list"></div>\r\n';
+'</a>\n<div class="items-list rooms-list open-rooms-list"></div>\n';
 return __p
 };
 
@@ -36315,41 +36324,41 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/rooms_list_item.html -->\n<div class="list-item controlbox-padded available-chatroom d-flex flex-row\r\n    ';
+__p += '<!-- src/templates/rooms_list_item.html -->\n<div class="list-item controlbox-padded available-chatroom d-flex flex-row\n    ';
  if (o.currently_open) { ;
 __p += ' open ';
  } ;
-__p += '\r\n    ';
+__p += '\n    ';
  if (o.num_unread_general) { ;
 __p += ' unread-msgs ';
  } ;
-__p += '"\r\n    data-room-jid="' +
+__p += '"\n    data-room-jid="' +
 __e(o.jid) +
-'">\r\n\r\n';
+'">\n\n';
  if (o.num_unread) { ;
-__p += '\r\n    <span class="list-item-badge badge badge-room-color msgs-indicator">' +
+__p += '\n    <span class="list-item-badge badge badge-room-color msgs-indicator">' +
 __e( o.num_unread ) +
-'</span>\r\n';
+'</span>\n';
  } ;
-__p += '\r\n<a class="list-item-link open-room available-room w-100"\r\n    data-room-jid="' +
+__p += '\n<a class="list-item-link open-room available-room w-100"\n    data-room-jid="' +
 __e(o.jid) +
-'"\r\n    title="' +
+'"\n    title="' +
 __e(o.open_title) + // BAO
 '" href="#"><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="22" width="22">' +
 __e(o.name || o.jid) +
-'</a>\r\n\r\n';
+'</a>\n\n';
  if (o.allow_bookmarks) { ;
-__p += '\r\n<a class="list-item-action fa ';
+__p += '\n<a class="list-item-action fa ';
  if (o.bookmarked) { ;
 __p += ' fa-bookmark remove-bookmark button-on ';
  } else { ;
 __p += ' add-bookmark fa-bookmark ';
  } ;
-__p += '"\r\n   data-room-jid="' +
+__p += '"\n   data-room-jid="' +
 __e(o.jid) +
 '" data-bookmark-name="' +
 __e(o.name) +
-'"\r\n   title="';
+'"\n   title="';
  if (o.bookmarked) { ;
 __p += ' ' +
 __e(o.info_remove_bookmark) +
@@ -36359,19 +36368,19 @@ __p += ' ' +
 __e(o.info_add_bookmark) +
 ' ';
  } ;
-__p += '"\r\n   href="#"></a>\r\n';
+__p += '"\n   href="#"></a>\n';
  } ;
-__p += '\r\n\r\n<a class="list-item-action room-info fa fa-info-circle" data-room-jid="' +
+__p += '\n\n<a class="list-item-action room-info fa fa-info-circle" data-room-jid="' +
 __e(o.jid) +
-'"\r\n   title="' +
+'"\n   title="' +
 __e(o.info_title) +
-'" href="#"></a>\r\n\r\n<a class="list-item-action fa fa-sign-out-alt close-room"\r\n   data-room-jid="' +
+'" href="#"></a>\n\n<a class="list-item-action fa fa-sign-out-alt close-room"\n   data-room-jid="' +
 __e(o.jid) +
-'"\r\n   data-room-name="' +
+'"\n   data-room-name="' +
 __e(o.name || o.jid) +
-'"\r\n   title="' +
+'"\n   title="' +
 __e(o.info_leave_room) +
-'" href="#"></a>\r\n\r\n</div>\r\n';
+'" href="#"></a>\n\n</div>\n';
 return __p
 };
 
@@ -36383,29 +36392,29 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/add_contact_modal.html -->\n<!-- Add contact Modal -->\r\n<div class="modal" id="add-contact-modal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel" aria-hidden="true">\r\n    <div class="modal-dialog" role="document">\r\n        <div class="modal-content">\r\n            <div class="modal-header">\r\n                <h5 class="modal-title" id="addContactModalLabel">' +
+__p += '<!-- src/templates/add_contact_modal.html -->\n<!-- Add contact Modal -->\n<div class="modal" id="add-contact-modal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="addContactModalLabel">' +
 __e(o.heading_new_contact) +
-'</h5>\r\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>\r\n            </div>\r\n            <form class="converse-form add-xmpp-contact">\r\n                <div class="modal-body">\r\n                    <div class="form-group add-xmpp-contact__jid">\r\n                        <label class="clearfix" for="jid">' +
+'</h5>\n                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>\n            </div>\n            <form class="converse-form add-xmpp-contact">\n                <div class="modal-body">\n                    <div class="form-group add-xmpp-contact__jid">\n                        <label class="clearfix" for="jid">' +
 __e(o.label_xmpp_address) +
-':</label>\r\n                        <div class="suggestion-box suggestion-box__jid">\r\n                            <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>\r\n                            <input type="text" name="jid"\r\n                                   ';
+':</label>\n                        <div class="suggestion-box suggestion-box__jid">\n                            <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>\n                            <input type="text" name="jid"\n                                   ';
  if (!o._converse.xhr_user_search_url) { ;
 __p += ' required="required" ';
  } ;
-__p += '\r\n                                   value="' +
+__p += '\n                                   value="' +
 __e(o.jid) +
-'"\r\n                                   class="form-control suggestion-box__input"\r\n                                   placeholder="' +
+'"\n                                   class="form-control suggestion-box__input"\n                                   placeholder="' +
 __e(o.contact_placeholder) +
-'"/>\r\n                            <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\r\n                        </div>\r\n                    </div>\r\n                    <div class="form-group add-xmpp-contact__name">\r\n                        <label class="clearfix" for="name">' +
+'"/>\n                            <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\n                        </div>\n                    </div>\n                    <div class="form-group add-xmpp-contact__name">\n                        <label class="clearfix" for="name">' +
 __e(o.label_nickname) +
-':</label>\r\n                        <div class="suggestion-box suggestion-box__name">\r\n                            <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>\r\n                            <input type="text" name="name" value="' +
+':</label>\n                        <div class="suggestion-box suggestion-box__name">\n                            <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>\n                            <input type="text" name="name" value="' +
 __e(o.nickname) +
-'"\r\n                                   class="form-control suggestion-box__input"\r\n                                   placeholder="' +
+'"\n                                   class="form-control suggestion-box__input"\n                                   placeholder="' +
 __e(o.nickname_placeholder) +
-'"/>\r\n                            <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\r\n                        </div>\r\n                    </div>\r\n                    <div class="form-group">\r\n                        <div class="invalid-feedback">' +
+'"/>\n                            <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>\n                        </div>\n                    </div>\n                    <div class="form-group">\n                        <div class="invalid-feedback">' +
 __e(o.error_message) +
-'</div>\r\n                    </div>\r\n                    <button type="submit" class="btn btn-primary">' +
+'</div>\n                    </div>\n                    <button type="submit" class="btn btn-primary">' +
 __e(o.label_add) +
-'</button>\r\n                </div>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>\r\n';
+'</button>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
 
@@ -36419,19 +36428,19 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/group_header.html -->\n<a href="#" class="list-toggle group-toggle controlbox-padded" title="' +
 __e(o.desc_group_toggle) +
-'">\r\n    <span class="fa ';
+'">\n    <span class="fa ';
  if (o.toggle_state === o._converse.OPENED) { ;
 __p += ' fa-caret-down ';
  } else { ;
 __p += ' fa-caret-right ';
  } ;
-__p += '">\r\n    </span> ' +
+__p += '">\n    </span> ' +
 __e(o.label_group) +
-'</a>\r\n<ul class="items-list roster-group-contacts ';
+'</a>\n<ul class="items-list roster-group-contacts ';
  if (o.toggle_state === o._converse.CLOSED) { ;
 __p += ' collapsed ';
  } ;
-__p += '"></ul>\r\n';
+__p += '"></ul>\n';
 return __p
 };
 
@@ -36445,19 +36454,19 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/pending_contact.html -->\n';
  if (o.allow_chat_pending_contacts)  { ;
-__p += '\r\n<a class="list-item-link open-chat w-100" href="#">\r\n';
+__p += '\n<a class="list-item-link open-chat w-100" href="#">\n';
  } ;
-__p += '\r\n<span class="pending-contact-name" title="JID: ' +
+__p += '\n<span class="pending-contact-name" title="JID: ' +
 __e(o.jid) +
 '">' +
 __e(o.display_name) +
-'</span> \r\n';
+'</span> \n';
  if (o.allow_chat_pending_contacts)  { ;
 __p += '</a>';
  } ;
-__p += '\r\n<a class="list-item-action remove-xmpp-contact far fa-trash-alt" title="' +
+__p += '\n<a class="list-item-action remove-xmpp-contact far fa-trash-alt" title="' +
 __e(o.desc_remove) +
-'" href="#"></a>\r\n';
+'" href="#"></a>\n';
 return __p
 };
 
@@ -36471,25 +36480,25 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/requesting_contact.html -->\n';
  if (o.allow_chat_pending_contacts)  { ;
-__p += '\r\n<a class="open-chat w-100"href="#">\r\n';
+__p += '\n<a class="open-chat w-100"href="#">\n';
  } ;
-__p += '\r\n<span class="req-contact-name w-100" title="JID: ' +
+__p += '\n<span class="req-contact-name w-100" title="JID: ' +
 __e(o.jid) +
 '">' +
 __e(o.display_name) +
-'</span>\r\n';
+'</span>\n';
  if (o.allow_chat_pending_contacts)  { ;
-__p += '\r\n</a>\r\n';
+__p += '\n</a>\n';
  } ;
-__p += '\r\n<a class="accept-xmpp-request list-item-action list-item-action--visible fa fa-check"\r\n   aria-label="' +
+__p += '\n<a class="accept-xmpp-request list-item-action list-item-action--visible fa fa-check"\n   aria-label="' +
 __e(o.desc_accept) +
 '" title="' +
 __e(o.desc_accept) +
-'" href="#"></a>\r\n<a class="decline-xmpp-request list-item-action list-item-action--visible  fa fa-times"\r\n   aria-label="' +
+'" href="#"></a>\n<a class="decline-xmpp-request list-item-action list-item-action--visible  fa fa-times"\n   aria-label="' +
 __e(o.desc_decline) +
 '" title="' +
 __e(o.desc_decline) +
-'" href="#"></a>\r\n';
+'" href="#"></a>\n';
 return __p
 };
 
@@ -36501,17 +36510,17 @@ var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/roster.html -->\n<div class="d-flex controlbox-padded">\r\n    <span class="w-100 controlbox-heading controlbox-heading--contacts">' +
+__p += '<!-- src/templates/roster.html -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading controlbox-heading--contacts">' +
 __e(o.heading_contacts) +
-'</span>\r\n    <a class="controlbox-heading__btn sync-contacts fa fa-sync" title="' +
+'</span>\n    <a class="controlbox-heading__btn sync-contacts fa fa-sync" title="' +
 __e(o.title_sync_contacts) +
-'"></a>\r\n    ';
+'"></a>\n    ';
  if (o.allow_contact_requests) { ;
-__p += '\r\n        <a class="controlbox-heading__btn add-contact fa fa-user-plus"\r\n           title="' +
+__p += '\n        <a class="controlbox-heading__btn add-contact fa fa-user-plus"\n           title="' +
 __e(o.title_add_contact) +
-'"\r\n           data-toggle="modal"\r\n           data-target="#add-contact-modal"></a>\r\n    ';
+'"\n           data-toggle="modal"\n           data-target="#add-contact-modal"></a>\n    ';
  } ;
-__p += '\r\n</div>\r\n\r\n<form class="roster-filter-form"></form>\r\n\r\n<div class="list-container roster-contacts"></div>\r\n';
+__p += '\n</div>\n\n<form class="roster-filter-form"></form>\n\n<div class="list-container roster-contacts"></div>\n';
 return __p
 };
 
@@ -36527,89 +36536,89 @@ __p += '<!-- src/templates/roster_filter.html -->\n<form class="controlbox-padde
  if (!o.visible) { ;
 __p += ' hidden ';
  } ;
-__p += '">\r\n    <div class="form-inline flex-nowrap">\r\n        <div class="filter-by d-flex flex-nowrap">\r\n            <span class="fa fa-user ';
+__p += '">\n    <div class="form-inline flex-nowrap">\n        <div class="filter-by d-flex flex-nowrap">\n            <span class="fa fa-user ';
  if (o.filter_type === 'contacts') { ;
 __p += ' selected ';
  } ;
 __p += '" data-type="contacts" title="' +
 __e(o.title_contact_filter) +
-'"></span>\r\n            <span class="fa fa-users ';
+'"></span>\n            <span class="fa fa-users ';
  if (o.filter_type === 'groups') { ;
 __p += ' selected ';
  } ;
 __p += '" data-type="groups" title="' +
 __e(o.title_group_filter) +
-'"></span>\r\n            <span class="fa fa-circle ';
+'"></span>\n            <span class="fa fa-circle ';
  if (o.filter_type === 'state') { ;
 __p += ' selected ';
  } ;
 __p += '" data-type="state" title="' +
 __e(o.title_status_filter) +
-'"></span>\r\n        </div>\r\n\r\n        <div class="btn-group">\r\n            <input ';
+'"></span>\n        </div>\n\n        <div class="btn-group">\n            <input ';
  if (o.filter_text) { ;
 __p += ' value="' +
 __e(o.filter_text) +
 '" ';
  } ;
-__p += '\r\n                class="roster-filter form-control ';
+__p += '\n                class="roster-filter form-control ';
  if (o.filter_type === 'state') { ;
 __p += ' hidden ';
  } ;
-__p += '"\r\n                placeholder="' +
+__p += '"\n                placeholder="' +
 __e(o.placeholder) +
-'"/>\r\n            <span class="clear-input fa fa-times ';
+'"/>\n            <span class="clear-input fa fa-times ';
  if (!o.filter_text || o.filter_type === 'state') { ;
 __p += ' hidden ';
  } ;
-__p += '"></span>\r\n        </div>\r\n\r\n        <select class="form-control state-type ';
+__p += '"></span>\n        </div>\n\n        <select class="form-control state-type ';
  if (o.filter_type !== 'state') { ;
 __p += ' hidden ';
  } ;
-__p += '">\r\n            <option value="">' +
+__p += '">\n            <option value="">' +
 __e(o.label_any) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'unread_messages') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="unread_messages">' +
+__p += '\n                value="unread_messages">' +
 __e(o.label_unread_messages) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'online') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="online">' +
+__p += '\n                value="online">' +
 __e(o.label_online) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'chat') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="chat">' +
+__p += '\n                value="chat">' +
 __e(o.label_chatty) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'dnd') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="dnd">' +
+__p += '\n                value="dnd">' +
 __e(o.label_busy) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'away') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="away">' +
+__p += '\n                value="away">' +
 __e(o.label_away) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'xa') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="xa">' +
+__p += '\n                value="xa">' +
 __e(o.label_xa) +
-'</option>\r\n            <option ';
+'</option>\n            <option ';
  if (o.chat_state === 'offline') { ;
 __p += ' selected="selected" ';
  } ;
-__p += '\r\n                value="offline">' +
+__p += '\n                value="offline">' +
 __e(o.label_offline) +
-'</option>\r\n        </select>\r\n    </div>\r\n</form>\r\n';
+'</option>\n        </select>\n    </div>\n</form>\n';
 return __p
 };
 
@@ -36625,31 +36634,31 @@ __p += '<!-- src/templates/roster_item.html -->\n<a class="list-item-link cbox-l
  if (o.num_unread) { ;
 __p += ' unread-msgs ';
  } ;
-__p += '"\r\n   title="' +
+__p += '"\n   title="' +
 __e(o.desc_chat) +  // BAO
 '" href="#">\n<img width="22" height="22" src="' + o.dataUri + '" class="roster-avatar avatar" />    <span class="' +
 __e(o.status_icon) +
 '" title="' +
 __e(o.desc_status) +
-'"></span>\r\n    ';
+'"></span>\n    ';
  if (o.num_unread) { ;
-__p += '\r\n    <span class="msgs-indicator">' +
+__p += '\n    <span class="msgs-indicator">' +
 __e( o.num_unread ) +
-'</span>\r\n    ';
+'</span>\n    ';
  } ;
-__p += '\r\n    <span class="contact-name ';
+__p += '\n    <span class="contact-name ';
  if (o.num_unread) { ;
 __p += ' unread-msgs ';
  } ;
 __p += '">' +
 __e(o.display_name) +
-'</span></a>\r\n';
+'</span></a>\n';
  if (o.allow_contact_removal) { ;
-__p += '\r\n<a class="list-item-action remove-xmpp-contact far fa-trash-alt" title="' +
+__p += '\n<a class="list-item-action remove-xmpp-contact far fa-trash-alt" title="' +
 __e(o.desc_remove) +
-'" href="#"></a>\r\n';
+'" href="#"></a>\n';
  } ;
-__p += '\r\n';
+__p += '\n';
 return __p
 };
 
@@ -36784,6 +36793,83 @@ return __p
 /* 327 */,
 /* 328 */,
 /* 329 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// Converse.js
+// https://conversejs.org
+//
+// Copyright (c) 2013-2019, the Converse.js developers
+// Licensed under the Mozilla Public License (MPLv2)
+//
+// Webpack entry file
+//
+// The purpose of this file is to provide an initial temporary public API
+// (window.converse) for **before** the rest of converse.js is loaded so
+// that we can set the __webpack_public_path__ global variable.
+//
+// Once the rest converse.js has been loaded, window.converse will be replaced
+// with the full-fledged public API.
+const plugins = {};
+const converse = {
+  plugins: {
+    add(name, plugin) {
+      if (plugins[name] !== undefined) {
+        throw new TypeError("Error: plugin with name \"".concat(name, "\" has already been ") + 'registered!');
+      }
+
+      plugins[name] = plugin;
+    }
+
+  },
+
+  initialize() {
+    let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    converse.load(settings).initialize(settings);
+  },
+
+  /**
+   * Public API method which explicitly loads Converse and allows you the
+   * possibility to pass in configuration settings which need to be defined
+   * before loading. Currently this is only the [assets_path](https://conversejs.org/docs/html/configuration.html#assets_path)
+   * setting.
+   *
+   * If not called explicitly, this method will be called implicitly once
+   * {@link converse.initialize} is called.
+   *
+   * In most cases, you probably don't need to explicitly call this method,
+   * however, until converse.js has been loaded you won't have access to the
+   * utility methods and globals exposed via {@link converse.env}. So if you
+   * need to access `converse.env` outside of any plugins and before
+   * `converse.initialize` has been called, then you need to call
+   * `converse.load` first.
+   *
+   * @memberOf converse
+   * @method load
+   * @param {object} settings A map of configuration-settings that are needed at load time.
+   * @example
+   * converse.load({assets_path: '/path/to/assets/'});
+   */
+  load() {
+    let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    if (settings.assets_path) {
+      __webpack_require__.p = settings.assets_path; // eslint-disable-line no-undef
+    }
+
+    __webpack_require__(465);
+
+    Object.keys(plugins).forEach(name => converse.plugins.add(name, plugins[name]));
+    return converse;
+  }
+
+};
+window.converse = converse;
+/* harmony default export */ __webpack_exports__["default"] = (converse);
+
+/***/ }),
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
@@ -36792,133 +36878,137 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
     "./af/LC_MESSAGES/converse.po": [
-        465,
+        466,
         130
     ],
     "./ar/LC_MESSAGES/converse.po": [
-        466,
+        467,
         131
     ],
     "./bg/LC_MESSAGES/converse.po": [
-        467,
+        468,
         132
     ],
     "./ca/LC_MESSAGES/converse.po": [
-        468,
+        469,
         133
     ],
     "./cs/LC_MESSAGES/converse.po": [
-        469,
+        470,
         134
     ],
     "./de/LC_MESSAGES/converse.po": [
-        470,
+        471,
         135
     ],
     "./eo/LC_MESSAGES/converse.po": [
-        471,
+        472,
         136
     ],
     "./es/LC_MESSAGES/converse.po": [
-        472,
+        473,
         137
     ],
     "./eu/LC_MESSAGES/converse.po": [
-        473,
+        474,
         138
     ],
     "./fr/LC_MESSAGES/converse.po": [
-        474,
+        475,
         139
     ],
     "./gl/LC_MESSAGES/converse.po": [
-        475,
+        476,
         140
     ],
     "./he/LC_MESSAGES/converse.po": [
-        476,
+        477,
         141
     ],
     "./hi/LC_MESSAGES/converse.po": [
-        477,
+        478,
         142
     ],
     "./hu/LC_MESSAGES/converse.po": [
-        478,
+        479,
         143
     ],
     "./id/LC_MESSAGES/converse.po": [
-        479,
+        480,
         144
     ],
     "./it/LC_MESSAGES/converse.po": [
-        480,
+        481,
         145
     ],
     "./ja/LC_MESSAGES/converse.po": [
-        481,
+        482,
         146
     ],
     "./lt/LC_MESSAGES/converse.po": [
-        482,
+        483,
         147
     ],
     "./nb/LC_MESSAGES/converse.po": [
-        483,
+        484,
         148
     ],
     "./nl/LC_MESSAGES/converse.po": [
-        484,
+        485,
         149
     ],
     "./nl_BE/LC_MESSAGES/converse.po": [
-        485,
+        486,
         150
     ],
     "./oc/LC_MESSAGES/converse.po": [
-        486,
+        487,
         151
     ],
     "./pl/LC_MESSAGES/converse.po": [
-        487,
+        488,
         152
     ],
     "./pt/LC_MESSAGES/converse.po": [
-        488,
+        489,
         153
     ],
     "./pt_BR/LC_MESSAGES/converse.po": [
-        489,
+        490,
         154
     ],
     "./ro/LC_MESSAGES/converse.po": [
-        490,
+        491,
         155
     ],
     "./ru/LC_MESSAGES/converse.po": [
-        491,
+        492,
         156
     ],
     "./tr/LC_MESSAGES/converse.po": [
-        492,
+        493,
         157
     ],
     "./uk/LC_MESSAGES/converse.po": [
-        493,
+        494,
         158
     ],
-    "./zh_CN/LC_MESSAGES/converse.po": [
-        494,
+    "./vi/LC_MESSAGES/converse.po": [
+        495,
         159
     ],
-    "./zh_TW/LC_MESSAGES/converse.po": [
-        495,
+    "./zh_CN/LC_MESSAGES/converse.po": [
+        496,
         160
+    ],
+    "./zh_TW/LC_MESSAGES/converse.po": [
+        497,
+        161
     ]
 };
 function webpackAsyncContext(req) {
@@ -36938,11 +37028,11 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
     return Object.keys(map);
 };
-webpackAsyncContext.id = 330;
+webpackAsyncContext.id = 331;
 module.exports = webpackAsyncContext;
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -37996,11 +38086,11 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
     return Object.keys(map);
 };
-webpackAsyncContext.id = 331;
+webpackAsyncContext.id = 332;
 module.exports = webpackAsyncContext;
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports) {
 
 /**
@@ -38037,10 +38127,10 @@ module.exports = baseSlice;
 
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toNumber = __webpack_require__(334);
+var toNumber = __webpack_require__(335);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0,
@@ -38085,10 +38175,10 @@ module.exports = toFinite;
 
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(10),
+var isObject = __webpack_require__(11),
     isSymbol = __webpack_require__(29);
 
 /** Used as references for various `Number` constants. */
@@ -38157,7 +38247,7 @@ module.exports = toNumber;
 
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30);
@@ -38209,7 +38299,7 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -38237,12 +38327,12 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayEach = __webpack_require__(68),
-    baseEach = __webpack_require__(338),
-    castFunction = __webpack_require__(350),
+    baseEach = __webpack_require__(339),
+    castFunction = __webpack_require__(351),
     isArray = __webpack_require__(8);
 
 /**
@@ -38284,11 +38374,11 @@ module.exports = forEach;
 
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseForOwn = __webpack_require__(339),
-    createBaseEach = __webpack_require__(349);
+var baseForOwn = __webpack_require__(340),
+    createBaseEach = __webpack_require__(350);
 
 /**
  * The base implementation of `_.forEach` without support for iteratee shorthands.
@@ -38304,10 +38394,10 @@ module.exports = baseEach;
 
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFor = __webpack_require__(340),
+var baseFor = __webpack_require__(341),
     keys = __webpack_require__(20);
 
 /**
@@ -38326,10 +38416,10 @@ module.exports = baseForOwn;
 
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var createBaseFor = __webpack_require__(341);
+var createBaseFor = __webpack_require__(342);
 
 /**
  * The base implementation of `baseForOwn` which iterates over `object`
@@ -38348,7 +38438,7 @@ module.exports = baseFor;
 
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports) {
 
 /**
@@ -38379,7 +38469,7 @@ module.exports = createBaseFor;
 
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports) {
 
 /**
@@ -38405,7 +38495,7 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
@@ -38429,7 +38519,7 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports) {
 
 /**
@@ -38453,7 +38543,7 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
@@ -38519,7 +38609,7 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports) {
 
 /**
@@ -38539,7 +38629,7 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(67);
@@ -38576,7 +38666,7 @@ module.exports = nodeUtil;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28)(module)))
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var overArg = __webpack_require__(75);
@@ -38588,7 +38678,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLike = __webpack_require__(19);
@@ -38626,7 +38716,7 @@ module.exports = createBaseEach;
 
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(23);
@@ -38646,11 +38736,11 @@ module.exports = castFunction;
 
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var copyObject = __webpack_require__(352),
-    createAssigner = __webpack_require__(357),
+var copyObject = __webpack_require__(353),
+    createAssigner = __webpack_require__(358),
     keysIn = __webpack_require__(83);
 
 /**
@@ -38692,7 +38782,7 @@ module.exports = assignIn;
 
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assignValue = __webpack_require__(76),
@@ -38738,12 +38828,12 @@ module.exports = copyObject;
 
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(41),
-    isMasked = __webpack_require__(354),
-    isObject = __webpack_require__(10),
+    isMasked = __webpack_require__(355),
+    isObject = __webpack_require__(11),
     toSource = __webpack_require__(79);
 
 /**
@@ -38791,10 +38881,10 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(355);
+var coreJsData = __webpack_require__(356);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -38817,7 +38907,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -38829,7 +38919,7 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports) {
 
 /**
@@ -38848,11 +38938,11 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(80),
-    isIterateeCall = __webpack_require__(361);
+    isIterateeCall = __webpack_require__(362);
 
 /**
  * Creates a function like `_.assign`.
@@ -38891,7 +38981,7 @@ module.exports = createAssigner;
 
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(49);
@@ -38933,10 +39023,10 @@ module.exports = overRest;
 
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constant = __webpack_require__(360),
+var constant = __webpack_require__(361),
     defineProperty = __webpack_require__(78),
     identity = __webpack_require__(23);
 
@@ -38961,7 +39051,7 @@ module.exports = baseSetToString;
 
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports) {
 
 /**
@@ -38993,13 +39083,13 @@ module.exports = constant;
 
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(31),
     isArrayLike = __webpack_require__(19),
     isIndex = __webpack_require__(22),
-    isObject = __webpack_require__(10);
+    isObject = __webpack_require__(11);
 
 /**
  * Checks if the given arguments are from an iteratee call.
@@ -39029,12 +39119,12 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(10),
+var isObject = __webpack_require__(11),
     isPrototype = __webpack_require__(74),
-    nativeKeysIn = __webpack_require__(363);
+    nativeKeysIn = __webpack_require__(364);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -39068,7 +39158,7 @@ module.exports = baseKeysIn;
 
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports) {
 
 /**
@@ -39094,7 +39184,7 @@ module.exports = nativeKeysIn;
 
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports) {
 
 /**
@@ -39124,7 +39214,7 @@ module.exports = baseFindIndex;
 
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports) {
 
 /**
@@ -39142,7 +39232,7 @@ module.exports = baseIsNaN;
 
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports) {
 
 /**
@@ -39171,7 +39261,7 @@ module.exports = strictIndexOf;
 
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(50);
@@ -39196,16 +39286,16 @@ module.exports = baseValues;
 
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSetData = __webpack_require__(86),
-    createBind = __webpack_require__(369),
-    createCurry = __webpack_require__(370),
+    createBind = __webpack_require__(370),
+    createCurry = __webpack_require__(371),
     createHybrid = __webpack_require__(89),
-    createPartial = __webpack_require__(383),
+    createPartial = __webpack_require__(384),
     getData = __webpack_require__(93),
-    mergeData = __webpack_require__(384),
+    mergeData = __webpack_require__(385),
     setData = __webpack_require__(96),
     setWrapToString = __webpack_require__(97),
     toInteger = __webpack_require__(47);
@@ -39308,7 +39398,7 @@ module.exports = createWrap;
 
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var createCtor = __webpack_require__(32),
@@ -39342,7 +39432,7 @@ module.exports = createBind;
 
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(49),
@@ -39394,7 +39484,7 @@ module.exports = createCurry;
 
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports) {
 
 /**
@@ -39421,13 +39511,13 @@ module.exports = countHolders;
 
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var LazyWrapper = __webpack_require__(52),
     getData = __webpack_require__(93),
-    getFuncName = __webpack_require__(374),
-    lodash = __webpack_require__(376);
+    getFuncName = __webpack_require__(375),
+    lodash = __webpack_require__(377);
 
 /**
  * Checks if `func` has a lazy counterpart.
@@ -39455,7 +39545,7 @@ module.exports = isLaziable;
 
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports) {
 
 /**
@@ -39478,10 +39568,10 @@ module.exports = noop;
 
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var realNames = __webpack_require__(375);
+var realNames = __webpack_require__(376);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -39515,7 +39605,7 @@ module.exports = getFuncName;
 
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports) {
 
 /** Used to lookup unminified function names. */
@@ -39525,7 +39615,7 @@ module.exports = realNames;
 
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var LazyWrapper = __webpack_require__(52),
@@ -39533,7 +39623,7 @@ var LazyWrapper = __webpack_require__(52),
     baseLodash = __webpack_require__(53),
     isArray = __webpack_require__(8),
     isObjectLike = __webpack_require__(13),
-    wrapperClone = __webpack_require__(377);
+    wrapperClone = __webpack_require__(378);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -39678,7 +39768,7 @@ module.exports = lodash;
 
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var LazyWrapper = __webpack_require__(52),
@@ -39707,7 +39797,7 @@ module.exports = wrapperClone;
 
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports) {
 
 /** Used to match wrap detail comments. */
@@ -39730,7 +39820,7 @@ module.exports = getWrapDetails;
 
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports) {
 
 /** Used to match wrap detail comments. */
@@ -39759,11 +39849,11 @@ module.exports = insertWrapDetails;
 
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayEach = __webpack_require__(68),
-    arrayIncludes = __webpack_require__(381);
+    arrayIncludes = __webpack_require__(382);
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG = 1,
@@ -39811,7 +39901,7 @@ module.exports = updateWrapDetails;
 
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIndexOf = __webpack_require__(84);
@@ -39834,7 +39924,7 @@ module.exports = arrayIncludes;
 
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyArray = __webpack_require__(95),
@@ -39869,7 +39959,7 @@ module.exports = reorder;
 
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(49),
@@ -39918,7 +40008,7 @@ module.exports = createPartial;
 
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var composeArgs = __webpack_require__(90),
@@ -40014,14 +40104,14 @@ module.exports = mergeData;
 
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMatches = __webpack_require__(386),
-    baseMatchesProperty = __webpack_require__(427),
+var baseMatches = __webpack_require__(387),
+    baseMatchesProperty = __webpack_require__(428),
     identity = __webpack_require__(23),
     isArray = __webpack_require__(8),
-    property = __webpack_require__(436);
+    property = __webpack_require__(437);
 
 /**
  * The base implementation of `_.iteratee`.
@@ -40051,11 +40141,11 @@ module.exports = baseIteratee;
 
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsMatch = __webpack_require__(387),
-    getMatchData = __webpack_require__(426),
+var baseIsMatch = __webpack_require__(388),
+    getMatchData = __webpack_require__(427),
     matchesStrictComparable = __webpack_require__(107);
 
 /**
@@ -40079,7 +40169,7 @@ module.exports = baseMatches;
 
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Stack = __webpack_require__(98),
@@ -40147,7 +40237,7 @@ module.exports = baseIsMatch;
 
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports) {
 
 /**
@@ -40166,7 +40256,7 @@ module.exports = listCacheClear;
 
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40207,7 +40297,7 @@ module.exports = listCacheDelete;
 
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40232,7 +40322,7 @@ module.exports = listCacheGet;
 
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40254,7 +40344,7 @@ module.exports = listCacheHas;
 
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40286,7 +40376,7 @@ module.exports = listCacheSet;
 
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(34);
@@ -40307,7 +40397,7 @@ module.exports = stackClear;
 
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports) {
 
 /**
@@ -40331,7 +40421,7 @@ module.exports = stackDelete;
 
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports) {
 
 /**
@@ -40351,7 +40441,7 @@ module.exports = stackGet;
 
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports) {
 
 /**
@@ -40371,7 +40461,7 @@ module.exports = stackHas;
 
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(34),
@@ -40411,10 +40501,10 @@ module.exports = stackSet;
 
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Hash = __webpack_require__(399),
+var Hash = __webpack_require__(400),
     ListCache = __webpack_require__(34),
     Map = __webpack_require__(55);
 
@@ -40438,14 +40528,14 @@ module.exports = mapCacheClear;
 
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hashClear = __webpack_require__(400),
-    hashDelete = __webpack_require__(401),
-    hashGet = __webpack_require__(402),
-    hashHas = __webpack_require__(403),
-    hashSet = __webpack_require__(404);
+var hashClear = __webpack_require__(401),
+    hashDelete = __webpack_require__(402),
+    hashGet = __webpack_require__(403),
+    hashHas = __webpack_require__(404),
+    hashSet = __webpack_require__(405);
 
 /**
  * Creates a hash object.
@@ -40476,7 +40566,7 @@ module.exports = Hash;
 
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40497,7 +40587,7 @@ module.exports = hashClear;
 
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports) {
 
 /**
@@ -40520,7 +40610,7 @@ module.exports = hashDelete;
 
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40556,7 +40646,7 @@ module.exports = hashGet;
 
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40585,7 +40675,7 @@ module.exports = hashHas;
 
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40614,7 +40704,7 @@ module.exports = hashSet;
 
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40638,7 +40728,7 @@ module.exports = mapCacheDelete;
 
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports) {
 
 /**
@@ -40659,7 +40749,7 @@ module.exports = isKeyable;
 
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40681,7 +40771,7 @@ module.exports = mapCacheGet;
 
 
 /***/ }),
-/* 408 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40703,7 +40793,7 @@ module.exports = mapCacheHas;
 
 
 /***/ }),
-/* 409 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40731,13 +40821,13 @@ module.exports = mapCacheSet;
 
 
 /***/ }),
-/* 410 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Stack = __webpack_require__(98),
     equalArrays = __webpack_require__(100),
-    equalByTag = __webpack_require__(416),
-    equalObjects = __webpack_require__(420),
+    equalByTag = __webpack_require__(417),
+    equalObjects = __webpack_require__(421),
     getTag = __webpack_require__(105),
     isArray = __webpack_require__(8),
     isBuffer = __webpack_require__(71),
@@ -40820,12 +40910,12 @@ module.exports = baseIsEqualDeep;
 
 
 /***/ }),
-/* 411 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MapCache = __webpack_require__(56),
-    setCacheAdd = __webpack_require__(412),
-    setCacheHas = __webpack_require__(413);
+    setCacheAdd = __webpack_require__(413),
+    setCacheHas = __webpack_require__(414);
 
 /**
  *
@@ -40853,7 +40943,7 @@ module.exports = SetCache;
 
 
 /***/ }),
-/* 412 */
+/* 413 */
 /***/ (function(module, exports) {
 
 /** Used to stand-in for `undefined` hash values. */
@@ -40878,7 +40968,7 @@ module.exports = setCacheAdd;
 
 
 /***/ }),
-/* 413 */
+/* 414 */
 /***/ (function(module, exports) {
 
 /**
@@ -40898,7 +40988,7 @@ module.exports = setCacheHas;
 
 
 /***/ }),
-/* 414 */
+/* 415 */
 /***/ (function(module, exports) {
 
 /**
@@ -40927,7 +41017,7 @@ module.exports = arraySome;
 
 
 /***/ }),
-/* 415 */
+/* 416 */
 /***/ (function(module, exports) {
 
 /**
@@ -40946,15 +41036,15 @@ module.exports = cacheHas;
 
 
 /***/ }),
-/* 416 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30),
-    Uint8Array = __webpack_require__(417),
+    Uint8Array = __webpack_require__(418),
     eq = __webpack_require__(31),
     equalArrays = __webpack_require__(100),
-    mapToArray = __webpack_require__(418),
-    setToArray = __webpack_require__(419);
+    mapToArray = __webpack_require__(419),
+    setToArray = __webpack_require__(420);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -41064,7 +41154,7 @@ module.exports = equalByTag;
 
 
 /***/ }),
-/* 417 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -41076,7 +41166,7 @@ module.exports = Uint8Array;
 
 
 /***/ }),
-/* 418 */
+/* 419 */
 /***/ (function(module, exports) {
 
 /**
@@ -41100,7 +41190,7 @@ module.exports = mapToArray;
 
 
 /***/ }),
-/* 419 */
+/* 420 */
 /***/ (function(module, exports) {
 
 /**
@@ -41124,10 +41214,10 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 420 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getAllKeys = __webpack_require__(421);
+var getAllKeys = __webpack_require__(422);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -41219,7 +41309,7 @@ module.exports = equalObjects;
 
 
 /***/ }),
-/* 421 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetAllKeys = __webpack_require__(101),
@@ -41241,7 +41331,7 @@ module.exports = getAllKeys;
 
 
 /***/ }),
-/* 422 */
+/* 423 */
 /***/ (function(module, exports) {
 
 /**
@@ -41272,7 +41362,7 @@ module.exports = arrayFilter;
 
 
 /***/ }),
-/* 423 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -41285,7 +41375,7 @@ module.exports = DataView;
 
 
 /***/ }),
-/* 424 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -41298,7 +41388,7 @@ module.exports = Promise;
 
 
 /***/ }),
-/* 425 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -41311,7 +41401,7 @@ module.exports = Set;
 
 
 /***/ }),
-/* 426 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isStrictComparable = __webpack_require__(106),
@@ -41341,12 +41431,12 @@ module.exports = getMatchData;
 
 
 /***/ }),
-/* 427 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqual = __webpack_require__(99),
-    get = __webpack_require__(428),
-    hasIn = __webpack_require__(433),
+    get = __webpack_require__(429),
+    hasIn = __webpack_require__(434),
     isKey = __webpack_require__(58),
     isStrictComparable = __webpack_require__(106),
     matchesStrictComparable = __webpack_require__(107),
@@ -41380,7 +41470,7 @@ module.exports = baseMatchesProperty;
 
 
 /***/ }),
-/* 428 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(57);
@@ -41419,10 +41509,10 @@ module.exports = get;
 
 
 /***/ }),
-/* 429 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoizeCapped = __webpack_require__(430);
+var memoizeCapped = __webpack_require__(431);
 
 /** Used to match property names within property paths. */
 var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
@@ -41452,10 +41542,10 @@ module.exports = stringToPath;
 
 
 /***/ }),
-/* 430 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoize = __webpack_require__(431);
+var memoize = __webpack_require__(432);
 
 /** Used as the maximum memoize cache size. */
 var MAX_MEMOIZE_SIZE = 500;
@@ -41484,7 +41574,7 @@ module.exports = memoizeCapped;
 
 
 /***/ }),
-/* 431 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MapCache = __webpack_require__(56);
@@ -41563,7 +41653,7 @@ module.exports = memoize;
 
 
 /***/ }),
-/* 432 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30),
@@ -41606,11 +41696,11 @@ module.exports = baseToString;
 
 
 /***/ }),
-/* 433 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseHasIn = __webpack_require__(434),
-    hasPath = __webpack_require__(435);
+var baseHasIn = __webpack_require__(435),
+    hasPath = __webpack_require__(436);
 
 /**
  * Checks if `path` is a direct or inherited property of `object`.
@@ -41646,7 +41736,7 @@ module.exports = hasIn;
 
 
 /***/ }),
-/* 434 */
+/* 435 */
 /***/ (function(module, exports) {
 
 /**
@@ -41665,7 +41755,7 @@ module.exports = baseHasIn;
 
 
 /***/ }),
-/* 435 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(38),
@@ -41710,11 +41800,11 @@ module.exports = hasPath;
 
 
 /***/ }),
-/* 436 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseProperty = __webpack_require__(109),
-    basePropertyDeep = __webpack_require__(437),
+    basePropertyDeep = __webpack_require__(438),
     isKey = __webpack_require__(58),
     toKey = __webpack_require__(24);
 
@@ -41748,7 +41838,7 @@ module.exports = property;
 
 
 /***/ }),
-/* 437 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(57);
@@ -41770,11 +41860,11 @@ module.exports = basePropertyDeep;
 
 
 /***/ }),
-/* 438 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(57),
-    baseSet = __webpack_require__(439),
+    baseSet = __webpack_require__(440),
     castPath = __webpack_require__(38);
 
 /**
@@ -41806,13 +41896,13 @@ module.exports = basePickBy;
 
 
 /***/ }),
-/* 439 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assignValue = __webpack_require__(76),
     castPath = __webpack_require__(38),
     isIndex = __webpack_require__(22),
-    isObject = __webpack_require__(10),
+    isObject = __webpack_require__(11),
     toKey = __webpack_require__(24);
 
 /**
@@ -41859,11 +41949,11 @@ module.exports = baseSet;
 
 
 /***/ }),
-/* 440 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetAllKeys = __webpack_require__(101),
-    getSymbolsIn = __webpack_require__(441),
+    getSymbolsIn = __webpack_require__(442),
     keysIn = __webpack_require__(83);
 
 /**
@@ -41882,11 +41972,11 @@ module.exports = getAllKeysIn;
 
 
 /***/ }),
-/* 441 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayPush = __webpack_require__(102),
-    getPrototype = __webpack_require__(442),
+    getPrototype = __webpack_require__(443),
     getSymbols = __webpack_require__(103),
     stubArray = __webpack_require__(104);
 
@@ -41913,7 +42003,7 @@ module.exports = getSymbolsIn;
 
 
 /***/ }),
-/* 442 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var overArg = __webpack_require__(75);
@@ -41925,12 +42015,12 @@ module.exports = getPrototype;
 
 
 /***/ }),
-/* 443 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var asciiSize = __webpack_require__(444),
-    hasUnicode = __webpack_require__(445),
-    unicodeSize = __webpack_require__(446);
+var asciiSize = __webpack_require__(445),
+    hasUnicode = __webpack_require__(446),
+    unicodeSize = __webpack_require__(447);
 
 /**
  * Gets the number of symbols in `string`.
@@ -41949,7 +42039,7 @@ module.exports = stringSize;
 
 
 /***/ }),
-/* 444 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseProperty = __webpack_require__(109);
@@ -41967,7 +42057,7 @@ module.exports = asciiSize;
 
 
 /***/ }),
-/* 445 */
+/* 446 */
 /***/ (function(module, exports) {
 
 /** Used to compose unicode character classes. */
@@ -41999,7 +42089,7 @@ module.exports = hasUnicode;
 
 
 /***/ }),
-/* 446 */
+/* 447 */
 /***/ (function(module, exports) {
 
 /** Used to compose unicode character classes. */
@@ -42049,7 +42139,7 @@ module.exports = unicodeSize;
 
 
 /***/ }),
-/* 447 */
+/* 448 */
 /***/ (function(module, exports) {
 
 function CustomEvent(event, params) {
@@ -42119,10 +42209,10 @@ if (!String.prototype.trim) {
 }
 
 /***/ }),
-/* 448 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePropertyOf = __webpack_require__(449);
+var basePropertyOf = __webpack_require__(450);
 
 /** Used to map characters to HTML entities. */
 var htmlEscapes = {
@@ -42146,7 +42236,7 @@ module.exports = escapeHtmlChar;
 
 
 /***/ }),
-/* 449 */
+/* 450 */
 /***/ (function(module, exports) {
 
 /**
@@ -42166,7 +42256,7 @@ module.exports = basePropertyOf;
 
 
 /***/ }),
-/* 450 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -42677,7 +42767,7 @@ exports.default = vnode;
 
 
 /***/ }),
-/* 451 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -42753,7 +42843,7 @@ exports.default = exports.attributesModule;
 
 
 /***/ }),
-/* 452 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -42787,7 +42877,7 @@ exports.default = exports.classModule;
 
 
 /***/ }),
-/* 453 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -42834,7 +42924,7 @@ exports.default = exports.datasetModule;
 
 
 /***/ }),
-/* 454 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -42869,7 +42959,7 @@ exports.default = exports.propsModule;
 
 
 /***/ }),
-/* 455 */
+/* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -42964,7 +43054,7 @@ exports.default = exports.styleModule;
 
 
 /***/ }),
-/* 456 */
+/* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;(function(f){if(true){module.exports=f()}else { var g; }})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -43095,36 +43185,21 @@ exports.default = vnode;
 
 
 /***/ }),
-/* 457 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(0)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/status_option.html -->\n<li>\r\n    <a href="#" class="' +
-__e( o.value ) +
-'" data-value="' +
-__e( o.value ) +
-'">\r\n        <span class="icon-' +
-__e( o.value ) +
-'"></span>\r\n        ' +
-__e( o.text ) +
-'\r\n    </a>\r\n</li>\r\n';
-return __p
-};
-
-/***/ }),
 /* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _ = {escape:__webpack_require__(0)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/search_contact.html -->\n<li>\r\n    <form class="search-xmpp-contact">\r\n        <input type="text"\r\n            name="identifier"\r\n            class="username"\r\n            placeholder="' +
-__e(o.label_contact_name) +
-'"/>\r\n        <button type="submit">' +
-__e(o.label_search) +
-'</button>\r\n    </form>\r\n</li>\r\n';
+__p += '<!-- src/templates/status_option.html -->\n<li>\n    <a href="#" class="' +
+__e( o.value ) +
+'" data-value="' +
+__e( o.value ) +
+'">\n        <span class="icon-' +
+__e( o.value ) +
+'"></span>\n        ' +
+__e( o.text ) +
+'\n    </a>\n</li>\n';
 return __p
 };
 
@@ -43132,8 +43207,23 @@ return __p
 /* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var _ = {escape:__webpack_require__(0)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape;
+__p += '<!-- src/templates/search_contact.html -->\n<li>\n    <form class="search-xmpp-contact">\n        <input type="text"\n            name="identifier"\n            class="username"\n            placeholder="' +
+__e(o.label_contact_name) +
+'"/>\n        <button type="submit">' +
+__e(o.label_search) +
+'</button>\n    </form>\n</li>\n';
+return __p
+};
 
-var content = __webpack_require__(460);
+/***/ }),
+/* 460 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(461);
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -43147,23 +43237,23 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(462)(content, options);
+var update = __webpack_require__(463)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
 if(false) {}
 
 /***/ }),
-/* 460 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(461)(true);
+exports = module.exports = __webpack_require__(462)(true);
 // Module
 exports.push([module.i, "", "",{"version":3,"sources":[],"names":[],"mappings":"","file":"converse.scss"}]);
 
 
 /***/ }),
-/* 461 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43259,7 +43349,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 462 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43328,7 +43418,7 @@ var singleton = null;
 var singletonCounter = 0;
 var stylesInsertedAtTop = [];
 
-var fixUrls = __webpack_require__(463);
+var fixUrls = __webpack_require__(464);
 
 module.exports = function(list, options) {
     if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -43663,7 +43753,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 463 */
+/* 464 */
 /***/ (function(module, exports) {
 
 
@@ -43758,7 +43848,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 464 */
+/* 465 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47856,923 +47946,6 @@ Strophe.SASLXOAuth2.prototype.onChallenge = function (connection) {
     'str_sha1':        SHA1.str_sha1
 });
 
-// CONCATENATED MODULE: ./node_modules/strophe.js/src/bosh.js
-/*
-    This program is distributed under the terms of the MIT license.
-    Please see the LICENSE file for details.
-
-    Copyright 2006-2008, OGG, LLC
-*/
-
-/* global window, setTimeout, clearTimeout, XMLHttpRequest, ActiveXObject */
-
-
-
-const bosh_Strophe = core.Strophe;
-const bosh_$build = core.$build;
-
-
-/** PrivateClass: Strophe.Request
- *  _Private_ helper class that provides a cross implementation abstraction
- *  for a BOSH related XMLHttpRequest.
- *
- *  The Strophe.Request class is used internally to encapsulate BOSH request
- *  information.  It is not meant to be used from user's code.
- */
-
-/** PrivateConstructor: Strophe.Request
- *  Create and initialize a new Strophe.Request object.
- *
- *  Parameters:
- *    (XMLElement) elem - The XML data to be sent in the request.
- *    (Function) func - The function that will be called when the
- *      XMLHttpRequest readyState changes.
- *    (Integer) rid - The BOSH rid attribute associated with this request.
- *    (Integer) sends - The number of times this same request has been sent.
- */
-bosh_Strophe.Request = function (elem, func, rid, sends) {
-    this.id = ++bosh_Strophe._requestId;
-    this.xmlData = elem;
-    this.data = bosh_Strophe.serialize(elem);
-    // save original function in case we need to make a new request
-    // from this one.
-    this.origFunc = func;
-    this.func = func;
-    this.rid = rid;
-    this.date = NaN;
-    this.sends = sends || 0;
-    this.abort = false;
-    this.dead = null;
-
-    this.age = function () {
-        if (!this.date) { return 0; }
-        const now = new Date();
-        return (now - this.date) / 1000;
-    };
-    this.timeDead = function () {
-        if (!this.dead) { return 0; }
-        const now = new Date();
-        return (now - this.dead) / 1000;
-    };
-    this.xhr = this._newXHR();
-};
-
-bosh_Strophe.Request.prototype = {
-    /** PrivateFunction: getResponse
-     *  Get a response from the underlying XMLHttpRequest.
-     *
-     *  This function attempts to get a response from the request and checks
-     *  for errors.
-     *
-     *  Throws:
-     *    "parsererror" - A parser error occured.
-     *    "bad-format" - The entity has sent XML that cannot be processed.
-     *
-     *  Returns:
-     *    The DOM element tree of the response.
-     */
-    getResponse: function () {
-        let node = null;
-        if (this.xhr.responseXML && this.xhr.responseXML.documentElement) {
-            node = this.xhr.responseXML.documentElement;
-            if (node.tagName === "parsererror") {
-                bosh_Strophe.error("invalid response received");
-                bosh_Strophe.error("responseText: " + this.xhr.responseText);
-                bosh_Strophe.error("responseXML: " +
-                              bosh_Strophe.serialize(this.xhr.responseXML));
-                throw new Error("parsererror");
-            }
-        } else if (this.xhr.responseText) {
-            // In React Native, we may get responseText but no responseXML.  We can try to parse it manually.
-            bosh_Strophe.debug("Got responseText but no responseXML; attempting to parse it with DOMParser...");
-            node = new DOMParser().parseFromString(this.xhr.responseText, 'application/xml').documentElement;
-            if (!node) {
-                throw new Error('Parsing produced null node');
-            } else if (node.querySelector('parsererror')) {
-                bosh_Strophe.error("invalid response received: " + node.querySelector('parsererror').textContent);
-                bosh_Strophe.error("responseText: " + this.xhr.responseText);
-                const error = new Error();
-                error.name = bosh_Strophe.ErrorCondition.BAD_FORMAT;
-                throw error;
-            }
-        }
-        return node;
-    },
-
-    /** PrivateFunction: _newXHR
-     *  _Private_ helper function to create XMLHttpRequests.
-     *
-     *  This function creates XMLHttpRequests across all implementations.
-     *
-     *  Returns:
-     *    A new XMLHttpRequest.
-     */
-    _newXHR: function () {
-        let xhr = null;
-        if (window.XMLHttpRequest) {
-            xhr = new XMLHttpRequest();
-            if (xhr.overrideMimeType) {
-                xhr.overrideMimeType("text/xml; charset=utf-8");
-            }
-        } else if (window.ActiveXObject) {
-            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        // use Function.bind() to prepend ourselves as an argument
-        xhr.onreadystatechange = this.func.bind(null, this);
-        return xhr;
-    }
-};
-
-/** Class: Strophe.Bosh
- *  _Private_ helper class that handles BOSH Connections
- *
- *  The Strophe.Bosh class is used internally by Strophe.Connection
- *  to encapsulate BOSH sessions. It is not meant to be used from user's code.
- */
-
-/** File: bosh.js
- *  A JavaScript library to enable BOSH in Strophejs.
- *
- *  this library uses Bidirectional-streams Over Synchronous HTTP (BOSH)
- *  to emulate a persistent, stateful, two-way connection to an XMPP server.
- *  More information on BOSH can be found in XEP 124.
- */
-
-/** PrivateConstructor: Strophe.Bosh
- *  Create and initialize a Strophe.Bosh object.
- *
- *  Parameters:
- *    (Strophe.Connection) connection - The Strophe.Connection that will use BOSH.
- *
- *  Returns:
- *    A new Strophe.Bosh object.
- */
-bosh_Strophe.Bosh = function(connection) {
-    this._conn = connection;
-    /* request id for body tags */
-    this.rid = Math.floor(Math.random() * 4294967295);
-    /* The current session ID. */
-    this.sid = null;
-
-    // default BOSH values
-    this.hold = 1;
-    this.wait = 60;
-    this.window = 5;
-    this.errors = 0;
-    this.inactivity = null;
-
-    this.lastResponseHeaders = null;
-    this._requests = [];
-};
-
-bosh_Strophe.Bosh.prototype = {
-    /** Variable: strip
-     *
-     *  BOSH-Connections will have all stanzas wrapped in a <body> tag when
-     *  passed to <Strophe.Connection.xmlInput> or <Strophe.Connection.xmlOutput>.
-     *  To strip this tag, User code can set <Strophe.Bosh.strip> to "body":
-     *
-     *  > Strophe.Bosh.prototype.strip = "body";
-     *
-     *  This will enable stripping of the body tag in both
-     *  <Strophe.Connection.xmlInput> and <Strophe.Connection.xmlOutput>.
-     */
-    strip: null,
-
-    /** PrivateFunction: _buildBody
-     *  _Private_ helper function to generate the <body/> wrapper for BOSH.
-     *
-     *  Returns:
-     *    A Strophe.Builder with a <body/> element.
-     */
-    _buildBody: function () {
-        const bodyWrap = bosh_$build('body', {
-            'rid': this.rid++,
-            'xmlns': bosh_Strophe.NS.HTTPBIND
-        });
-        if (this.sid !== null) {
-            bodyWrap.attrs({'sid': this.sid});
-        }
-        if (this._conn.options.keepalive && this._conn._sessionCachingSupported()) {
-            this._cacheSession();
-        }
-        return bodyWrap;
-    },
-
-    /** PrivateFunction: _reset
-     *  Reset the connection.
-     *
-     *  This function is called by the reset function of the Strophe Connection
-     */
-    _reset: function () {
-        this.rid = Math.floor(Math.random() * 4294967295);
-        this.sid = null;
-        this.errors = 0;
-        if (this._conn._sessionCachingSupported()) {
-            window.sessionStorage.removeItem('strophe-bosh-session');
-        }
-
-        this._conn.nextValidRid(this.rid);
-    },
-
-    /** PrivateFunction: _connect
-     *  _Private_ function that initializes the BOSH connection.
-     *
-     *  Creates and sends the Request that initializes the BOSH connection.
-     */
-    _connect: function (wait, hold, route) {
-        this.wait = wait || this.wait;
-        this.hold = hold || this.hold;
-        this.errors = 0;
-
-        const body = this._buildBody().attrs({
-            "to": this._conn.domain,
-            "xml:lang": "en",
-            "wait": this.wait,
-            "hold": this.hold,
-            "content": "text/xml; charset=utf-8",
-            "ver": "1.6",
-            "xmpp:version": "1.0",
-            "xmlns:xmpp": bosh_Strophe.NS.BOSH
-        });
-        if (route){
-            body.attrs({'route': route});
-        }
-
-        const _connect_cb = this._conn._connect_cb;
-        this._requests.push(
-            new bosh_Strophe.Request(
-                body.tree(),
-                this._onRequestStateChange.bind(this, _connect_cb.bind(this._conn)),
-                body.tree().getAttribute("rid")
-            )
-        );
-        this._throttledRequestHandler();
-    },
-
-    /** PrivateFunction: _attach
-     *  Attach to an already created and authenticated BOSH session.
-     *
-     *  This function is provided to allow Strophe to attach to BOSH
-     *  sessions which have been created externally, perhaps by a Web
-     *  application.  This is often used to support auto-login type features
-     *  without putting user credentials into the page.
-     *
-     *  Parameters:
-     *    (String) jid - The full JID that is bound by the session.
-     *    (String) sid - The SID of the BOSH session.
-     *    (String) rid - The current RID of the BOSH session.  This RID
-     *      will be used by the next request.
-     *    (Function) callback The connect callback function.
-     *    (Integer) wait - The optional HTTPBIND wait value.  This is the
-     *      time the server will wait before returning an empty result for
-     *      a request.  The default setting of 60 seconds is recommended.
-     *      Other settings will require tweaks to the Strophe.TIMEOUT value.
-     *    (Integer) hold - The optional HTTPBIND hold value.  This is the
-     *      number of connections the server will hold at one time.  This
-     *      should almost always be set to 1 (the default).
-     *    (Integer) wind - The optional HTTBIND window value.  This is the
-     *      allowed range of request ids that are valid.  The default is 5.
-     */
-    _attach: function (jid, sid, rid, callback, wait, hold, wind) {
-        this._conn.jid = jid;
-        this.sid = sid;
-        this.rid = rid;
-
-        this._conn.connect_callback = callback;
-        this._conn.domain = bosh_Strophe.getDomainFromJid(this._conn.jid);
-        this._conn.authenticated = true;
-        this._conn.connected = true;
-
-        this.wait = wait || this.wait;
-        this.hold = hold || this.hold;
-        this.window = wind || this.window;
-
-        this._conn._changeConnectStatus(bosh_Strophe.Status.ATTACHED, null);
-    },
-
-    /** PrivateFunction: _restore
-     *  Attempt to restore a cached BOSH session
-     *
-     *  Parameters:
-     *    (String) jid - The full JID that is bound by the session.
-     *      This parameter is optional but recommended, specifically in cases
-     *      where prebinded BOSH sessions are used where it's important to know
-     *      that the right session is being restored.
-     *    (Function) callback The connect callback function.
-     *    (Integer) wait - The optional HTTPBIND wait value.  This is the
-     *      time the server will wait before returning an empty result for
-     *      a request.  The default setting of 60 seconds is recommended.
-     *      Other settings will require tweaks to the Strophe.TIMEOUT value.
-     *    (Integer) hold - The optional HTTPBIND hold value.  This is the
-     *      number of connections the server will hold at one time.  This
-     *      should almost always be set to 1 (the default).
-     *    (Integer) wind - The optional HTTBIND window value.  This is the
-     *      allowed range of request ids that are valid.  The default is 5.
-     */
-    _restore: function (jid, callback, wait, hold, wind) {
-        const session = JSON.parse(window.sessionStorage.getItem('strophe-bosh-session'));
-        if (typeof session !== "undefined" &&
-                   session !== null &&
-                   session.rid &&
-                   session.sid &&
-                   session.jid &&
-                   (    typeof jid === "undefined" ||
-                        jid === null ||
-                        bosh_Strophe.getBareJidFromJid(session.jid) === bosh_Strophe.getBareJidFromJid(jid) ||
-                        // If authcid is null, then it's an anonymous login, so
-                        // we compare only the domains:
-                        ((bosh_Strophe.getNodeFromJid(jid) === null) && (bosh_Strophe.getDomainFromJid(session.jid) === jid))
-                    )
-        ) {
-            this._conn.restored = true;
-            this._attach(session.jid, session.sid, session.rid, callback, wait, hold, wind);
-        } else {
-            const error = new Error("_restore: no restoreable session.");
-            error.name = "StropheSessionError";
-            throw error;
-        }
-    },
-
-    /** PrivateFunction: _cacheSession
-     *  _Private_ handler for the beforeunload event.
-     *
-     *  This handler is used to process the Bosh-part of the initial request.
-     *  Parameters:
-     *    (Strophe.Request) bodyWrap - The received stanza.
-     */
-    _cacheSession: function () {
-        if (this._conn.authenticated) {
-            if (this._conn.jid && this.rid && this.sid) {
-                window.sessionStorage.setItem('strophe-bosh-session', JSON.stringify({
-                    'jid': this._conn.jid,
-                    'rid': this.rid,
-                    'sid': this.sid
-                }));
-            }
-        } else {
-            window.sessionStorage.removeItem('strophe-bosh-session');
-        }
-    },
-
-    /** PrivateFunction: _connect_cb
-     *  _Private_ handler for initial connection request.
-     *
-     *  This handler is used to process the Bosh-part of the initial request.
-     *  Parameters:
-     *    (Strophe.Request) bodyWrap - The received stanza.
-     */
-    _connect_cb: function (bodyWrap) {
-        const typ = bodyWrap.getAttribute("type");
-        if (typ !== null && typ === "terminate") {
-            // an error occurred
-            let cond = bodyWrap.getAttribute("condition");
-            bosh_Strophe.error("BOSH-Connection failed: " + cond);
-            const conflict = bodyWrap.getElementsByTagName("conflict");
-            if (cond !== null) {
-                if (cond === "remote-stream-error" && conflict.length > 0) {
-                    cond = "conflict";
-                }
-                this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, cond);
-            } else {
-                this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, "unknown");
-            }
-            this._conn._doDisconnect(cond);
-            return bosh_Strophe.Status.CONNFAIL;
-        }
-
-        // check to make sure we don't overwrite these if _connect_cb is
-        // called multiple times in the case of missing stream:features
-        if (!this.sid) {
-            this.sid = bodyWrap.getAttribute("sid");
-        }
-        const wind = bodyWrap.getAttribute('requests');
-        if (wind) { this.window = parseInt(wind, 10); }
-        const hold = bodyWrap.getAttribute('hold');
-        if (hold) { this.hold = parseInt(hold, 10); }
-        const wait = bodyWrap.getAttribute('wait');
-        if (wait) { this.wait = parseInt(wait, 10); }
-        const inactivity = bodyWrap.getAttribute('inactivity');
-        if (inactivity) { this.inactivity = parseInt(inactivity, 10); }
-    },
-
-    /** PrivateFunction: _disconnect
-     *  _Private_ part of Connection.disconnect for Bosh
-     *
-     *  Parameters:
-     *    (Request) pres - This stanza will be sent before disconnecting.
-     */
-    _disconnect: function (pres) {
-        this._sendTerminate(pres);
-    },
-
-    /** PrivateFunction: _doDisconnect
-     *  _Private_ function to disconnect.
-     *
-     *  Resets the SID and RID.
-     */
-    _doDisconnect: function () {
-        this.sid = null;
-        this.rid = Math.floor(Math.random() * 4294967295);
-        if (this._conn._sessionCachingSupported()) {
-            window.sessionStorage.removeItem('strophe-bosh-session');
-        }
-
-        this._conn.nextValidRid(this.rid);
-    },
-
-    /** PrivateFunction: _emptyQueue
-     * _Private_ function to check if the Request queue is empty.
-     *
-     *  Returns:
-     *    True, if there are no Requests queued, False otherwise.
-     */
-    _emptyQueue: function () {
-        return this._requests.length === 0;
-    },
-
-    /** PrivateFunction: _callProtocolErrorHandlers
-     *  _Private_ function to call error handlers registered for HTTP errors.
-     *
-     *  Parameters:
-     *    (Strophe.Request) req - The request that is changing readyState.
-     */
-    _callProtocolErrorHandlers: function (req) {
-        const reqStatus = this._getRequestStatus(req);
-        const err_callback = this._conn.protocolErrorHandlers.HTTP[reqStatus];
-        if (err_callback) {
-            err_callback.call(this, reqStatus);
-        }
-    },
-
-    /** PrivateFunction: _hitError
-     *  _Private_ function to handle the error count.
-     *
-     *  Requests are resent automatically until their error count reaches
-     *  5.  Each time an error is encountered, this function is called to
-     *  increment the count and disconnect if the count is too high.
-     *
-     *  Parameters:
-     *    (Integer) reqStatus - The request status.
-     */
-    _hitError: function (reqStatus) {
-        this.errors++;
-        bosh_Strophe.warn("request errored, status: " + reqStatus +
-                     ", number of errors: " + this.errors);
-        if (this.errors > 4) {
-            this._conn._onDisconnectTimeout();
-        }
-    },
-
-    /** PrivateFunction: _no_auth_received
-     *
-     * Called on stream start/restart when no stream:features
-     * has been received and sends a blank poll request.
-     */
-    _no_auth_received: function (callback) {
-        bosh_Strophe.warn("Server did not yet offer a supported authentication "+
-                     "mechanism. Sending a blank poll request.");
-        if (callback) {
-            callback = callback.bind(this._conn);
-        } else {
-            callback = this._conn._connect_cb.bind(this._conn);
-        }
-        const body = this._buildBody();
-        this._requests.push(
-            new bosh_Strophe.Request(
-                body.tree(),
-                this._onRequestStateChange.bind(this, callback),
-                body.tree().getAttribute("rid")
-            )
-        );
-        this._throttledRequestHandler();
-    },
-
-    /** PrivateFunction: _onDisconnectTimeout
-     *  _Private_ timeout handler for handling non-graceful disconnection.
-     *
-     *  Cancels all remaining Requests and clears the queue.
-     */
-    _onDisconnectTimeout: function () {
-        this._abortAllRequests();
-    },
-
-    /** PrivateFunction: _abortAllRequests
-     *  _Private_ helper function that makes sure all pending requests are aborted.
-     */
-    _abortAllRequests: function _abortAllRequests() {
-        while (this._requests.length > 0) {
-            const req = this._requests.pop();
-            req.abort = true;
-            req.xhr.abort();
-            req.xhr.onreadystatechange = function () {};
-        }
-    },
-
-    /** PrivateFunction: _onIdle
-     *  _Private_ handler called by Strophe.Connection._onIdle
-     *
-     *  Sends all queued Requests or polls with empty Request if there are none.
-     */
-    _onIdle: function () {
-        const data = this._conn._data;
-        // if no requests are in progress, poll
-        if (this._conn.authenticated && this._requests.length === 0 &&
-            data.length === 0 && !this._conn.disconnecting) {
-            bosh_Strophe.debug("no requests during idle cycle, sending blank request");
-            data.push(null);
-        }
-
-        if (this._conn.paused) {
-            return;
-        }
-
-        if (this._requests.length < 2 && data.length > 0) {
-            const body = this._buildBody();
-            for (let i=0; i<data.length; i++) {
-                if (data[i] !== null) {
-                    if (data[i] === "restart") {
-                        body.attrs({
-                            "to": this._conn.domain,
-                            "xml:lang": "en",
-                            "xmpp:restart": "true",
-                            "xmlns:xmpp": bosh_Strophe.NS.BOSH
-                        });
-                    } else {
-                        body.cnode(data[i]).up();
-                    }
-                }
-            }
-            delete this._conn._data;
-            this._conn._data = [];
-            this._requests.push(
-                new bosh_Strophe.Request(
-                    body.tree(),
-                    this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)),
-                    body.tree().getAttribute("rid")
-                )
-            );
-            this._throttledRequestHandler();
-        }
-
-        if (this._requests.length > 0) {
-            const time_elapsed = this._requests[0].age();
-            if (this._requests[0].dead !== null) {
-                if (this._requests[0].timeDead() >
-                    Math.floor(bosh_Strophe.SECONDARY_TIMEOUT * this.wait)) {
-                    this._throttledRequestHandler();
-                }
-            }
-            if (time_elapsed > Math.floor(bosh_Strophe.TIMEOUT * this.wait)) {
-                bosh_Strophe.warn("Request " +
-                             this._requests[0].id +
-                             " timed out, over " + Math.floor(bosh_Strophe.TIMEOUT * this.wait) +
-                             " seconds since last activity");
-                this._throttledRequestHandler();
-            }
-        }
-    },
-
-    /** PrivateFunction: _getRequestStatus
-     *
-     *  Returns the HTTP status code from a Strophe.Request
-     *
-     *  Parameters:
-     *    (Strophe.Request) req - The Strophe.Request instance.
-     *    (Integer) def - The default value that should be returned if no
-     *          status value was found.
-     */
-    _getRequestStatus: function (req, def) {
-        let reqStatus;
-        if (req.xhr.readyState === 4) {
-            try {
-                reqStatus = req.xhr.status;
-            } catch (e) {
-                // ignore errors from undefined status attribute. Works
-                // around a browser bug
-                bosh_Strophe.error(
-                    "Caught an error while retrieving a request's status, " +
-                    "reqStatus: " + reqStatus);
-            }
-        }
-        if (typeof(reqStatus) === "undefined") {
-            reqStatus = typeof def === 'number' ? def : 0;
-        }
-        return reqStatus;
-    },
-
-    /** PrivateFunction: _onRequestStateChange
-     *  _Private_ handler for Strophe.Request state changes.
-     *
-     *  This function is called when the XMLHttpRequest readyState changes.
-     *  It contains a lot of error handling logic for the many ways that
-     *  requests can fail, and calls the request callback when requests
-     *  succeed.
-     *
-     *  Parameters:
-     *    (Function) func - The handler for the request.
-     *    (Strophe.Request) req - The request that is changing readyState.
-     */
-    _onRequestStateChange: function (func, req) {
-        bosh_Strophe.debug("request id "+req.id+"."+req.sends+
-                      " state changed to "+req.xhr.readyState);
-        if (req.abort) {
-            req.abort = false;
-            return;
-        }
-        if (req.xhr.readyState !== 4) {
-            // The request is not yet complete
-            return;
-        }
-        const reqStatus = this._getRequestStatus(req);
-        this.lastResponseHeaders = req.xhr.getAllResponseHeaders();
-        if (this.disconnecting && reqStatus >= 400) {
-            this._hitError(reqStatus);
-            this._callProtocolErrorHandlers(req);
-            return;
-        }
-
-        const valid_request = reqStatus > 0 && reqStatus < 500;
-        const too_many_retries = req.sends > this._conn.maxRetries;
-        if (valid_request || too_many_retries) {
-            // remove from internal queue
-            this._removeRequest(req);
-            bosh_Strophe.debug("request id "+req.id+" should now be removed");
-        }
-
-        if (reqStatus === 200) {
-            // request succeeded
-            const reqIs0 = (this._requests[0] === req);
-            const reqIs1 = (this._requests[1] === req);
-            // if request 1 finished, or request 0 finished and request
-            // 1 is over Strophe.SECONDARY_TIMEOUT seconds old, we need to
-            // restart the other - both will be in the first spot, as the
-            // completed request has been removed from the queue already
-            if (reqIs1 ||
-                (reqIs0 && this._requests.length > 0 &&
-                    this._requests[0].age() > Math.floor(bosh_Strophe.SECONDARY_TIMEOUT * this.wait))) {
-                this._restartRequest(0);
-            }
-            this._conn.nextValidRid(Number(req.rid) + 1);
-            bosh_Strophe.debug("request id "+req.id+"."+req.sends+" got 200");
-            func(req); // call handler
-            this.errors = 0;
-        } else if (reqStatus === 0 ||
-                   (reqStatus >= 400 && reqStatus < 600) ||
-                   reqStatus >= 12000) {
-            // request failed
-            bosh_Strophe.error("request id "+req.id+"."+req.sends+" error "+reqStatus+" happened");
-            this._hitError(reqStatus);
-            this._callProtocolErrorHandlers(req);
-            if (reqStatus >= 400 && reqStatus < 500) {
-                this._conn._changeConnectStatus(bosh_Strophe.Status.DISCONNECTING, null);
-                this._conn._doDisconnect();
-            }
-        } else {
-            bosh_Strophe.error("request id "+req.id+"."+req.sends+" error "+reqStatus+" happened");
-        }
-
-        if (!valid_request && !too_many_retries) {
-            this._throttledRequestHandler();
-        } else if (too_many_retries && !this._conn.connected) {
-            this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, "giving-up");
-        }
-    },
-
-    /** PrivateFunction: _processRequest
-     *  _Private_ function to process a request in the queue.
-     *
-     *  This function takes requests off the queue and sends them and
-     *  restarts dead requests.
-     *
-     *  Parameters:
-     *    (Integer) i - The index of the request in the queue.
-     */
-    _processRequest: function (i) {
-        let req = this._requests[i];
-        const reqStatus = this._getRequestStatus(req, -1);
-
-        // make sure we limit the number of retries
-        if (req.sends > this._conn.maxRetries) {
-            this._conn._onDisconnectTimeout();
-            return;
-        }
-        const time_elapsed = req.age();
-        const primary_timeout = (!isNaN(time_elapsed) && time_elapsed > Math.floor(bosh_Strophe.TIMEOUT * this.wait));
-        const secondary_timeout = (req.dead !== null && req.timeDead() > Math.floor(bosh_Strophe.SECONDARY_TIMEOUT * this.wait));
-        const server_error = (req.xhr.readyState === 4 && (reqStatus < 1 || reqStatus >= 500));
-
-        if (primary_timeout || secondary_timeout || server_error) {
-            if (secondary_timeout) {
-                bosh_Strophe.error(`Request ${this._requests[i].id} timed out (secondary), restarting`);
-            }
-            req.abort = true;
-            req.xhr.abort();
-            // setting to null fails on IE6, so set to empty function
-            req.xhr.onreadystatechange = function () {};
-            this._requests[i] = new bosh_Strophe.Request(req.xmlData, req.origFunc, req.rid, req.sends);
-            req = this._requests[i];
-        }
-
-        if (req.xhr.readyState === 0) {
-            bosh_Strophe.debug("request id "+req.id+"."+req.sends+" posting");
-
-            try {
-                const content_type = this._conn.options.contentType || "text/xml; charset=utf-8";
-                req.xhr.open("POST", this._conn.service, this._conn.options.sync ? false : true);
-                if (typeof req.xhr.setRequestHeader !== 'undefined') {
-                    // IE9 doesn't have setRequestHeader
-                    req.xhr.setRequestHeader("Content-Type", content_type);
-                }
-                if (this._conn.options.withCredentials) {
-                    req.xhr.withCredentials = true;
-                }
-            } catch (e2) {
-                bosh_Strophe.error("XHR open failed: " + e2.toString());
-                if (!this._conn.connected) {
-                    this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, "bad-service");
-                }
-                this._conn.disconnect();
-                return;
-            }
-
-            // Fires the XHR request -- may be invoked immediately
-            // or on a gradually expanding retry window for reconnects
-            const sendFunc = () => {
-                req.date = new Date();
-                if (this._conn.options.customHeaders){
-                    const headers = this._conn.options.customHeaders;
-                    for (const header in headers) {
-                        if (Object.prototype.hasOwnProperty.call(headers, header)) {
-                            req.xhr.setRequestHeader(header, headers[header]);
-                        }
-                    }
-                }
-                req.xhr.send(req.data);
-            };
-
-            // Implement progressive backoff for reconnects --
-            // First retry (send === 1) should also be instantaneous
-            if (req.sends > 1) {
-                // Using a cube of the retry number creates a nicely
-                // expanding retry window
-                const backoff = Math.min(Math.floor(bosh_Strophe.TIMEOUT * this.wait),
-                                       Math.pow(req.sends, 3)) * 1000;
-                setTimeout(function() {
-                    // XXX: setTimeout should be called only with function expressions (23974bc1)
-                    sendFunc();
-                }, backoff);
-            } else {
-                sendFunc();
-            }
-
-            req.sends++;
-
-            if (this._conn.xmlOutput !== bosh_Strophe.Connection.prototype.xmlOutput) {
-                if (req.xmlData.nodeName === this.strip && req.xmlData.childNodes.length) {
-                    this._conn.xmlOutput(req.xmlData.childNodes[0]);
-                } else {
-                    this._conn.xmlOutput(req.xmlData);
-                }
-            }
-            if (this._conn.rawOutput !== bosh_Strophe.Connection.prototype.rawOutput) {
-                this._conn.rawOutput(req.data);
-            }
-        } else {
-            bosh_Strophe.debug("_processRequest: " +
-                          (i === 0 ? "first" : "second") +
-                          " request has readyState of " +
-                          req.xhr.readyState);
-        }
-    },
-
-    /** PrivateFunction: _removeRequest
-     *  _Private_ function to remove a request from the queue.
-     *
-     *  Parameters:
-     *    (Strophe.Request) req - The request to remove.
-     */
-    _removeRequest: function (req) {
-        bosh_Strophe.debug("removing request");
-        for (let i=this._requests.length - 1; i>=0; i--) {
-            if (req === this._requests[i]) {
-                this._requests.splice(i, 1);
-            }
-        }
-        // IE6 fails on setting to null, so set to empty function
-        req.xhr.onreadystatechange = function () {};
-        this._throttledRequestHandler();
-    },
-
-    /** PrivateFunction: _restartRequest
-     *  _Private_ function to restart a request that is presumed dead.
-     *
-     *  Parameters:
-     *    (Integer) i - The index of the request in the queue.
-     */
-    _restartRequest: function (i) {
-        const req = this._requests[i];
-        if (req.dead === null) {
-            req.dead = new Date();
-        }
-        this._processRequest(i);
-    },
-
-    /** PrivateFunction: _reqToData
-     * _Private_ function to get a stanza out of a request.
-     *
-     * Tries to extract a stanza out of a Request Object.
-     * When this fails the current connection will be disconnected.
-     *
-     *  Parameters:
-     *    (Object) req - The Request.
-     *
-     *  Returns:
-     *    The stanza that was passed.
-     */
-    _reqToData: function (req) {
-        try {
-            return req.getResponse ? req.getResponse() : req; // BAO
-        } catch (e) {
-            if (e.message !== "parsererror") { throw e; }
-            this._conn.disconnect("strophe-parsererror");
-        }
-    },
-
-    /** PrivateFunction: _sendTerminate
-     *  _Private_ function to send initial disconnect sequence.
-     *
-     *  This is the first step in a graceful disconnect.  It sends
-     *  the BOSH server a terminate body and includes an unavailable
-     *  presence if authentication has completed.
-     */
-    _sendTerminate: function (pres) {
-        bosh_Strophe.debug("_sendTerminate was called");
-        const body = this._buildBody().attrs({type: "terminate"});
-        if (pres) {
-            body.cnode(pres.tree());
-        }
-        const req = new bosh_Strophe.Request(
-            body.tree(),
-            this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)),
-            body.tree().getAttribute("rid")
-        );
-        this._requests.push(req);
-        this._throttledRequestHandler();
-    },
-
-    /** PrivateFunction: _send
-     *  _Private_ part of the Connection.send function for BOSH
-     *
-     * Just triggers the RequestHandler to send the messages that are in the queue
-     */
-    _send: function () {
-        clearTimeout(this._conn._idleTimeout);
-        this._throttledRequestHandler();
-        this._conn._idleTimeout = setTimeout(() => this._conn._onIdle(), 100);
-    },
-
-    /** PrivateFunction: _sendRestart
-     *
-     *  Send an xmpp:restart stanza.
-     */
-    _sendRestart: function () {
-        this._throttledRequestHandler();
-        clearTimeout(this._conn._idleTimeout);
-    },
-
-    /** PrivateFunction: _throttledRequestHandler
-     *  _Private_ function to throttle requests to the connection window.
-     *
-     *  This function makes sure we don't send requests so fast that the
-     *  request ids overflow the connection window in the case that one
-     *  request died.
-     */
-    _throttledRequestHandler: function () {
-        if (!this._requests) {
-            bosh_Strophe.debug("_throttledRequestHandler called with " +
-                          "undefined requests");
-        } else {
-            bosh_Strophe.debug("_throttledRequestHandler called with " +
-                          this._requests.length + " requests");
-        }
-
-        if (!this._requests || this._requests.length === 0) {
-            return;
-        }
-
-        if (this._requests.length > 0) {
-            this._processRequest(0);
-        }
-
-        if (this._requests.length > 1 &&
-            Math.abs(this._requests[0].rid -
-                     this._requests[1].rid) < this.window) {
-            this._processRequest(1);
-        }
-    }
-};
-
 // CONCATENATED MODULE: ./node_modules/strophe.js/src/websocket.js
 /*
     This program is distributed under the terms of the MIT license.
@@ -49325,7 +48498,7 @@ websocket_Strophe.Websocket.prototype = {
 };
 
 // EXTERNAL MODULE: ./node_modules/backbone/backbone.js
-var backbone = __webpack_require__(11);
+var backbone = __webpack_require__(9);
 var backbone_default = /*#__PURE__*/__webpack_require__.n(backbone);
 
 // EXTERNAL MODULE: ./src/headless/lodash.noconflict.js
@@ -49461,8 +48634,8 @@ let jed_instance;
 
     const {
       default: data
-    } = await __webpack_require__(330)("./".concat(locale, "/LC_MESSAGES/converse.po"));
-    await __webpack_require__(331)("./".concat(locale.toLowerCase().replace('_', '-')));
+    } = await __webpack_require__(331)("./".concat(locale, "/LC_MESSAGES/converse.po"));
+    await __webpack_require__(332)("./".concat(locale.toLowerCase().replace('_', '-')));
     dayjs_min_default.a.locale(getLocale(_converse.locale, l => dayjs_min_default.a.locale(l)));
     jed_instance = new jed_default.a(data);
   }
@@ -49792,7 +48965,7 @@ function enable (object, name, attrname) {
 });
 
 // EXTERNAL MODULE: ./src/headless/polyfill.js
-var polyfill = __webpack_require__(447);
+var polyfill = __webpack_require__(448);
 
 // EXTERNAL MODULE: ./node_modules/sizzle/dist/sizzle.js
 var sizzle = __webpack_require__(4);
@@ -49846,6 +49019,15 @@ u.toStanza = function (string) {
   }
 
   return node.firstElementChild;
+};
+
+u.isMAMMessage = function (stanza) {
+  return sizzle_default()("message > result[xmlns=\"".concat(core_Strophe.NS.MAM, "\"]"), stanza).length > 0;
+};
+
+u.isCarbonMessage = function (stanza) {
+  const xmlns = core_Strophe.NS.CARBONS;
+  return sizzle_default()("message > received[xmlns=\"".concat(xmlns, "\"]"), stanza).length > 0 || sizzle_default()("message > sent[xmlns=\"".concat(xmlns, "\"]"), stanza).length > 0;
 };
 
 u.getLongestSubstring = function (string, candidates) {
@@ -49927,6 +49109,19 @@ u.isOnlyChatStateNotification = function (msg) {
   }
 
   return msg['chat_state'] && u.isEmptyMessage(msg);
+};
+
+u.isOnlyMessageDeliveryReceipt = function (msg) {
+  if (msg instanceof Element) {
+    // See XEP-0184 Message Delivery Receipts
+    return msg.querySelector('body') === null && msg.querySelector('received') !== null;
+  }
+
+  if (msg instanceof backbone_default.a.Model) {
+    msg = msg.attributes;
+  }
+
+  return msg['received'] && u.isEmptyMessage(msg);
 };
 
 u.isHeadlineMessage = function (_converse, message) {
@@ -50461,7 +49656,6 @@ u.waitUntil = function (func) {
 
 
 
-
 const converse_core_Strophe = core.Strophe;
 const converse_core_$build = core.$build;
 const converse_core_$iq = core.$iq;
@@ -50526,11 +49720,11 @@ const converse_core_converse = {
   'templates': {},
   'promises': {}
 };
-converse_core_converse.VERSION_NAME = "v5.0.2";
+converse_core_converse.VERSION_NAME = "v5.0.4";
 Object.assign(converse_core_converse, Backbone.Events);
 converse_core_converse.Collection = Backbone.Collection.extend({
-  clearSession() {
-    Array.from(this.models).forEach(m => m.destroy());
+  clearSession(options) {
+    Array.from(this.models).forEach(m => m.destroy(options));
 
     this.browserStorage._clear();
 
@@ -50655,7 +49849,7 @@ converse_core_converse.default_settings = {
   // Seconds after which an idle presence is sent
   jid: undefined,
   keepalive: true,
-  locales: ['af', 'ar', 'bg', 'ca', 'cs', 'de', 'eo', 'es', 'eu', 'en', 'fr', 'gl', 'he', 'hi', 'hu', 'id', 'it', 'ja', 'nb', 'nl', 'oc', 'pl', 'pt', 'pt_BR', 'ro', 'ru', 'tr', 'uk', 'zh_CN', 'zh_TW'],
+  locales: ['af', 'ar', 'bg', 'ca', 'cs', 'de', 'eo', 'es', 'eu', 'en', 'fr', 'gl', 'he', 'hi', 'hu', 'id', 'it', 'ja', 'nb', 'nl', 'oc', 'pl', 'pt', 'pt_BR', 'ro', 'ru', 'tr', 'uk', 'vi', 'zh_CN', 'zh_TW'],
   message_carbons: true,
   nickname: undefined,
   password: undefined,
@@ -52465,7 +51659,7 @@ converse_core_converse.api = {
  * @namespace converse
  */
 
-const headless_converse_core_converse = {
+Object.assign(window.converse, {
   /**
    * Public API method which initializes Converse.
    * This method must always be called when using Converse.
@@ -52559,8 +51753,7 @@ const headless_converse_core_converse = {
     'sizzle': sizzle_default.a,
     'utils': utils_core
   }
-};
-window.converse = headless_converse_core_converse;
+});
 /**
  * Once Converse.js has loaded, it'll dispatch a custom event with the name `converse-loaded`.
  * You can listen for this event in order to be informed as soon as converse.js has been
@@ -52570,7 +51763,7 @@ window.converse = headless_converse_core_converse;
  */
 
 window.dispatchEvent(new CustomEvent('converse-loaded'));
-/* harmony default export */ var converse_core = (headless_converse_core_converse);
+/* harmony default export */ var converse_core = (converse);
 // CONCATENATED MODULE: ./src/headless/converse-disco.js
 // Converse.js
 // https://conversejs.org
@@ -52831,8 +52024,6 @@ converse_core.plugins.add('converse-disco', {
       // See https://xmpp.org/registrar/disco-categories.html
       _converse.api.disco.own.identities.add('client', 'web', 'Converse');
 
-      _converse.api.disco.own.features.add(converse_disco_Strophe.NS.BOSH);
-
       _converse.api.disco.own.features.add(converse_disco_Strophe.NS.CHATSTATES);
 
       _converse.api.disco.own.features.add(converse_disco_Strophe.NS.DISCO_INFO);
@@ -52935,12 +52126,9 @@ converse_core.plugins.add('converse-disco', {
         iqresult.c('identity', attrs).up();
       });
 
-      if (typeof plugin._features === 'function')   // BAO
-      {
-          plugin._features(feature => iqresult.c('feature', {
-            'var': feature
-          }).up());
-      }
+      plugin._features.forEach(feature => iqresult.c('feature', {
+        'var': feature
+      }).up());
 
       _converse.api.send(iqresult.tree());
 
@@ -53471,7 +52659,7 @@ converse_core.plugins.add('converse-disco', {
 });
 // CONCATENATED MODULE: ./node_modules/twemoji/dist/twemoji.esm.js
 /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
-var twemoji=function(){"use strict";var twemoji={base:"https://twemoji.maxcdn.com/v/12.1.2/",ext:".png",size:"72x72",className:"emoji",convert:{fromCodePoint:fromCodePoint,toCodePoint:toCodePoint},onerror:function onerror(){if(this.parentNode){this.parentNode.replaceChild(createText(this.alt,false),this)}},parse:parse,replace:replace,test:test},escaper={"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"},re=/(?:\ud83d\udc68\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c\udffb|\ud83d\udc68\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc]|\ud83d\udc68\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd]|\ud83d\udc68\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c\udffb|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffc]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffd]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c\udffb|\ud83e\uddd1\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb\udffc]|\ud83e\uddd1\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udffd]|\ud83e\uddd1\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\u200d\ud83e\udd1d\u200d\ud83e\uddd1|\ud83d\udc6b\ud83c[\udffb-\udfff]|\ud83d\udc6c\ud83c[\udffb-\udfff]|\ud83d\udc6d\ud83c[\udffb-\udfff]|\ud83d[\udc6b-\udc6d])|(?:\ud83d[\udc68\udc69])(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddaf-\uddb3\uddbc\uddbd])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddcd-\uddcf\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc15\u200d\ud83e\uddba|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f)|[#*0-9]\ufe0f?\u20e3|(?:[©®\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26a7\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd0f\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\uddb5\uddb6\uddb8\uddb9\uddbb\uddcd-\uddcf\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a-\udc6d\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\uded5\udeeb\udeec\udef4-\udefa\udfe0-\udfeb]|\ud83e[\udd0d\udd0e\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd3f-\udd45\udd47-\udd71\udd73-\udd76\udd7a-\udda2\udda5-\uddaa\uddae-\uddb4\uddb7\uddba\uddbc-\uddca\uddd0\uddde-\uddff\ude70-\ude73\ude78-\ude7a\ude80-\ude82\ude90-\ude95]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/g,UFE0Fg=/\uFE0F/g,U200D=String.fromCharCode(8205),rescaper=/[&<>'"]/g,shouldntBeParsed=/^(?:iframe|noframes|noscript|script|select|style|textarea)$/,fromCharCode=String.fromCharCode;return twemoji;function createText(text,clean){return document.createTextNode(clean?text.replace(UFE0Fg,""):text)}function escapeHTML(s){return s.replace(rescaper,replacer)}function defaultImageSrcGenerator(icon,options){return"".concat(options.base,options.size,"/",icon,options.ext)}function grabAllTextNodes(node,allText){var childNodes=node.childNodes,length=childNodes.length,subnode,nodeType;while(length--){subnode=childNodes[length];nodeType=subnode.nodeType;if(nodeType===3){allText.push(subnode)}else if(nodeType===1&&!("ownerSVGElement"in subnode)&&!shouldntBeParsed.test(subnode.nodeName.toLowerCase())){grabAllTextNodes(subnode,allText)}}return allText}function grabTheRightIcon(rawText){return toCodePoint(rawText.indexOf(U200D)<0?rawText.replace(UFE0Fg,""):rawText)}function parseNode(node,options){var allText=grabAllTextNodes(node,[]),length=allText.length,attrib,attrname,modified,fragment,subnode,text,match,i,index,img,rawText,iconId,src;while(length--){modified=false;fragment=document.createDocumentFragment();subnode=allText[length];text=subnode.nodeValue;i=0;while(match=re.exec(text)){index=match.index;if(index!==i){fragment.appendChild(createText(text.slice(i,index),true))}rawText=match[0];iconId=grabTheRightIcon(rawText);i=index+rawText.length;src=options.callback(iconId,options);if(iconId&&src){img=new Image;img.onerror=options.onerror;img.setAttribute("draggable","false");attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&!img.hasAttribute(attrname)){img.setAttribute(attrname,attrib[attrname])}}img.className=options.className;img.alt=rawText;img.src=src;modified=true;fragment.appendChild(img)}if(!img)fragment.appendChild(createText(rawText,false));img=null}if(modified){if(i<text.length){fragment.appendChild(createText(text.slice(i),true))}subnode.parentNode.replaceChild(fragment,subnode)}}return node}function parseString(str,options){return replace(str,function(rawText){var ret=rawText,iconId=grabTheRightIcon(rawText),src=options.callback(iconId,options),attrib,attrname;if(iconId&&src){ret="<img ".concat('class="',options.className,'" ','draggable="false" ','alt="',rawText,'"',' src="',src,'"');attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&ret.indexOf(" "+attrname+"=")===-1){ret=ret.concat(" ",attrname,'="',escapeHTML(attrib[attrname]),'"')}}ret=ret.concat("/>")}return ret})}function replacer(m){return escaper[m]}function returnNull(){return null}function toSizeSquaredAsset(value){return typeof value==="number"?value+"x"+value:value}function fromCodePoint(codepoint){var code=typeof codepoint==="string"?parseInt(codepoint,16):codepoint;if(code<65536){return fromCharCode(code)}code-=65536;return fromCharCode(55296+(code>>10),56320+(code&1023))}function parse(what,how){if(!how||typeof how==="function"){how={callback:how}}return(typeof what==="string"?parseString:parseNode)(what,{callback:how.callback||defaultImageSrcGenerator,attributes:typeof how.attributes==="function"?how.attributes:returnNull,base:typeof how.base==="string"?how.base:twemoji.base,ext:how.ext||twemoji.ext,size:how.folder||toSizeSquaredAsset(how.size||twemoji.size),className:how.className||twemoji.className,onerror:how.onerror||twemoji.onerror})}function replace(text,callback){return String(text).replace(re,callback)}function test(text){re.lastIndex=0;var result=re.test(text);re.lastIndex=0;return result}function toCodePoint(unicodeSurrogates,sep){var r=[],c=0,p=0,i=0;while(i<unicodeSurrogates.length){c=unicodeSurrogates.charCodeAt(i++);if(p){r.push((65536+(p-55296<<10)+(c-56320)).toString(16));p=0}else if(55296<=c&&c<=56319){p=c}else{r.push(c.toString(16))}}return r.join(sep||"-")}}();
+var twemoji=function(){"use strict";var twemoji={base:"https://twemoji.maxcdn.com/v/12.1.3/",ext:".png",size:"72x72",className:"emoji",convert:{fromCodePoint:fromCodePoint,toCodePoint:toCodePoint},onerror:function onerror(){if(this.parentNode){this.parentNode.replaceChild(createText(this.alt,false),this)}},parse:parse,replace:replace,test:test},escaper={"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"},re=/(?:\ud83d\udc68\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c\udffb|\ud83d\udc68\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc]|\ud83d\udc68\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd]|\ud83d\udc68\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c\udffb|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffc]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffd]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c\udffb|\ud83e\uddd1\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb\udffc]|\ud83e\uddd1\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udffd]|\ud83e\uddd1\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\u200d\ud83e\udd1d\u200d\ud83e\uddd1|\ud83d\udc6b\ud83c[\udffb-\udfff]|\ud83d\udc6c\ud83c[\udffb-\udfff]|\ud83d\udc6d\ud83c[\udffb-\udfff]|\ud83d[\udc6b-\udc6d])|(?:\ud83d[\udc68\udc69])(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddaf-\uddb3\uddbc\uddbd])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddcd-\uddcf\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc15\u200d\ud83e\uddba|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f)|[#*0-9]\ufe0f?\u20e3|(?:[©®\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26a7\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd0f\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\uddb5\uddb6\uddb8\uddb9\uddbb\uddcd-\uddcf\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a-\udc6d\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\uded5\udeeb\udeec\udef4-\udefa\udfe0-\udfeb]|\ud83e[\udd0d\udd0e\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd3f-\udd45\udd47-\udd71\udd73-\udd76\udd7a-\udda2\udda5-\uddaa\uddae-\uddb4\uddb7\uddba\uddbc-\uddca\uddd0\uddde-\uddff\ude70-\ude73\ude78-\ude7a\ude80-\ude82\ude90-\ude95]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/g,UFE0Fg=/\uFE0F/g,U200D=String.fromCharCode(8205),rescaper=/[&<>'"]/g,shouldntBeParsed=/^(?:iframe|noframes|noscript|script|select|style|textarea)$/,fromCharCode=String.fromCharCode;return twemoji;function createText(text,clean){return document.createTextNode(clean?text.replace(UFE0Fg,""):text)}function escapeHTML(s){return s.replace(rescaper,replacer)}function defaultImageSrcGenerator(icon,options){return"".concat(options.base,options.size,"/",icon,options.ext)}function grabAllTextNodes(node,allText){var childNodes=node.childNodes,length=childNodes.length,subnode,nodeType;while(length--){subnode=childNodes[length];nodeType=subnode.nodeType;if(nodeType===3){allText.push(subnode)}else if(nodeType===1&&!("ownerSVGElement"in subnode)&&!shouldntBeParsed.test(subnode.nodeName.toLowerCase())){grabAllTextNodes(subnode,allText)}}return allText}function grabTheRightIcon(rawText){return toCodePoint(rawText.indexOf(U200D)<0?rawText.replace(UFE0Fg,""):rawText)}function parseNode(node,options){var allText=grabAllTextNodes(node,[]),length=allText.length,attrib,attrname,modified,fragment,subnode,text,match,i,index,img,rawText,iconId,src;while(length--){modified=false;fragment=document.createDocumentFragment();subnode=allText[length];text=subnode.nodeValue;i=0;while(match=re.exec(text)){index=match.index;if(index!==i){fragment.appendChild(createText(text.slice(i,index),true))}rawText=match[0];iconId=grabTheRightIcon(rawText);i=index+rawText.length;src=options.callback(iconId,options);if(iconId&&src){img=new Image;img.onerror=options.onerror;img.setAttribute("draggable","false");attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&!img.hasAttribute(attrname)){img.setAttribute(attrname,attrib[attrname])}}img.className=options.className;img.alt=rawText;img.src=src;modified=true;fragment.appendChild(img)}if(!img)fragment.appendChild(createText(rawText,false));img=null}if(modified){if(i<text.length){fragment.appendChild(createText(text.slice(i),true))}subnode.parentNode.replaceChild(fragment,subnode)}}return node}function parseString(str,options){return replace(str,function(rawText){var ret=rawText,iconId=grabTheRightIcon(rawText),src=options.callback(iconId,options),attrib,attrname;if(iconId&&src){ret="<img ".concat('class="',options.className,'" ','draggable="false" ','alt="',rawText,'"',' src="',src,'"');attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&ret.indexOf(" "+attrname+"=")===-1){ret=ret.concat(" ",attrname,'="',escapeHTML(attrib[attrname]),'"')}}ret=ret.concat("/>")}return ret})}function replacer(m){return escaper[m]}function returnNull(){return null}function toSizeSquaredAsset(value){return typeof value==="number"?value+"x"+value:value}function fromCodePoint(codepoint){var code=typeof codepoint==="string"?parseInt(codepoint,16):codepoint;if(code<65536){return fromCharCode(code)}code-=65536;return fromCharCode(55296+(code>>10),56320+(code&1023))}function parse(what,how){if(!how||typeof how==="function"){how={callback:how}}return(typeof what==="string"?parseString:parseNode)(what,{callback:how.callback||defaultImageSrcGenerator,attributes:typeof how.attributes==="function"?how.attributes:returnNull,base:typeof how.base==="string"?how.base:twemoji.base,ext:how.ext||twemoji.ext,size:how.folder||toSizeSquaredAsset(how.size||twemoji.size),className:how.className||twemoji.className,onerror:how.onerror||twemoji.onerror})}function replace(text,callback){return String(text).replace(re,callback)}function test(text){re.lastIndex=0;var result=re.test(text);re.lastIndex=0;return result}function toCodePoint(unicodeSurrogates,sep){var r=[],c=0,p=0,i=0;while(i<unicodeSurrogates.length){c=unicodeSurrogates.charCodeAt(i++);if(p){r.push((65536+(p-55296<<10)+(c-56320)).toString(16));p=0}else if(55296<=c&&c<=56319){p=c}else{r.push(c.toString(16))}}return r.join(sep||"-")}}();
 /* harmony default export */ var twemoji_esm = (twemoji);
 // CONCATENATED MODULE: ./src/headless/converse-emoji.js
 // Converse.js
@@ -53848,7 +53036,7 @@ converse_core.plugins.add('converse-emoji', {
 
     const {
       default: json
-    } = await __webpack_require__.e(/* import() | emojis */ 129).then(__webpack_require__.t.bind(null, 496, 3));
+    } = await __webpack_require__.e(/* import() | emojis */ 129).then(__webpack_require__.t.bind(null, 498, 3));
     _converse.emojis.json = json;
     _converse.emojis.categories = Object.keys(_converse.emojis.json);
     _converse.emojis_map = _converse.emojis.categories.reduce((result, cat) => Object.assign(result, _converse.emojis.json[cat]), {});
@@ -54325,7 +53513,7 @@ converse_core.plugins.add('converse-muc', {
         const chatbox = converse_muc_.get(this, 'collection.chatbox');
 
         if (!chatbox) {
-          return _converse.log("Could not get collection.chatbox for message: ".concat(this.get('id')), converse_muc_Strophe.LogLevel.ERROR);
+          return _converse.log("Could not get collection.chatbox for message: ".concat(JSON.stringify(this.toJSON())), converse_muc_Strophe.LogLevel.ERROR);
         }
 
         this.listenTo(chatbox.occupants, 'add', this.onOccupantAdded);
@@ -54339,7 +53527,7 @@ converse_core.plugins.add('converse-muc', {
           const chatbox = converse_muc_.get(this, 'collection.chatbox');
 
           if (!chatbox) {
-            return _converse.log("Could not get collection.chatbox for message: ".concat(this.get('id')), converse_muc_Strophe.LogLevel.ERROR);
+            return _converse.log("Could not get collection.chatbox for message: ".concat(JSON.stringify(this.toJSON())), converse_muc_Strophe.LogLevel.ERROR);
           }
 
           this.stopListening(chatbox.occupants, 'add', this.onOccupantAdded);
@@ -54354,7 +53542,7 @@ converse_core.plugins.add('converse-muc', {
         const chatbox = converse_muc_.get(this, 'collection.chatbox');
 
         if (!chatbox) {
-          return _converse.log("Could not get collection.chatbox for message: ".concat(this.get('id')), converse_muc_Strophe.LogLevel.ERROR);
+          return _converse.log("Could not get collection.chatbox for message: ".concat(JSON.stringify(this.toJSON())), converse_muc_Strophe.LogLevel.ERROR);
         }
 
         const nick = converse_muc_Strophe.getResourceFromJid(this.get('from'));
@@ -54471,6 +53659,7 @@ converse_core.plugins.add('converse-muc', {
           'name': '',
           'num_unread': 0,
           'roomconfig': {},
+          'time_sent': new Date(0).toISOString(),
           'time_opened': this.get('time_opened') || new Date().getTime(),
           'type': _converse.CHATROOMS_TYPE
         };
@@ -55237,8 +54426,8 @@ converse_core.plugins.add('converse-muc', {
           }
 
           if (!converse_muc_.isEmpty(changes)) {
-              const occupant = this.getOwnOccupant(); // BAO
-              if (occupant) occupant.save(changes);
+            const occupant = this.getOwnOccupant(); // BAO
+            if (occupant) occupant.save(changes);
           }
         }
       },
@@ -55800,23 +54989,32 @@ converse_core.plugins.add('converse-muc', {
        */
       async onMessage(stanza) {
         const original_stanza = stanza;
-        const is_carbon = converse_muc_sizzle("received[xmlns=\"".concat(converse_muc_Strophe.NS.CARBONS, "\"]"), original_stanza).length > 0;
+        const bare_forward = converse_muc_sizzle("message > forwarded[xmlns=\"".concat(converse_muc_Strophe.NS.FORWARD, "\"]"), stanza).length;
+
+        if (bare_forward) {
+          return _converse.log('onMessage: Ignoring unencapsulated forwarded groupchat message', converse_muc_Strophe.LogLevel.WARN);
+        }
+
+        const is_carbon = utils_form.isCarbonMessage(stanza);
 
         if (is_carbon) {
           // XEP-280: groupchat messages SHOULD NOT be carbon copied, so we're discarding it.
-          _converse.log('onMessage: Ignoring XEP-0280 "groupchat" message carbon, ' + 'according to the XEP groupchat messages SHOULD NOT be carbon copied', converse_muc_Strophe.LogLevel.ERROR);
+          return _converse.log('onMessage: Ignoring XEP-0280 "groupchat" message carbon, ' + 'according to the XEP groupchat messages SHOULD NOT be carbon copied', converse_muc_Strophe.LogLevel.WARN);
+        }
 
-          return;
+        const is_mam = utils_form.isMAMMessage(stanza);
+
+        if (is_mam) {
+          if (original_stanza.getAttribute('from') === this.get('jid')) {
+            const selector = "[xmlns=\"".concat(converse_muc_Strophe.NS.MAM, "\"] > forwarded[xmlns=\"").concat(converse_muc_Strophe.NS.FORWARD, "\"] > message");
+            stanza = converse_muc_sizzle(selector, stanza).pop();
+          } else {
+            return _converse.log("onMessage: Ignoring alleged MAM groupchat message from ".concat(stanza.getAttribute('from')), converse_muc_Strophe.LogLevel.WARN);
+          }
         }
 
         this.createInfoMessages(stanza);
         this.fetchFeaturesIfConfigurationChanged(stanza);
-        const forwarded = converse_muc_sizzle("forwarded[xmlns=\"".concat(converse_muc_Strophe.NS.FORWARD, "\"]"), stanza).pop();
-
-        if (forwarded) {
-          stanza = forwarded.querySelector('message');
-        }
-
         const message = await this.getDuplicateMessage(original_stanza);
 
         if (message) {
@@ -55830,6 +55028,9 @@ converse_core.plugins.add('converse-muc', {
         }
 
         const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
+        this.setEditable(attrs, attrs.time);
+
+        const forwarded = converse_muc_sizzle("forwarded[xmlns=\"".concat(converse_muc_Strophe.NS.FORWARD, "\"]"), stanza).pop();
 
         // BAO
         if (attrs.nick && !this.subjectChangeHandled(attrs, forwarded) && !this.ignorableCSN(attrs) && (attrs['chat_state'] || !utils_form.isEmptyMessage(attrs))) {
@@ -56998,7 +56199,9 @@ converse_core.plugins.add('converse-bookmarks', {
 
     _converse.api.listen.on('clearSession', () => {
       if (_converse.bookmarks !== undefined) {
-        _converse.bookmarks.clearSession();
+        _converse.bookmarks.clearSession({
+          'silent': true
+        });
 
         window.sessionStorage.removeItem(_converse.bookmarks.fetched_flag);
       }
@@ -57020,6 +56223,923 @@ converse_core.plugins.add('converse-bookmarks', {
   }
 
 });
+// CONCATENATED MODULE: ./node_modules/strophe.js/src/bosh.js
+/*
+    This program is distributed under the terms of the MIT license.
+    Please see the LICENSE file for details.
+
+    Copyright 2006-2008, OGG, LLC
+*/
+
+/* global window, setTimeout, clearTimeout, XMLHttpRequest, ActiveXObject */
+
+
+
+const bosh_Strophe = core.Strophe;
+const bosh_$build = core.$build;
+
+
+/** PrivateClass: Strophe.Request
+ *  _Private_ helper class that provides a cross implementation abstraction
+ *  for a BOSH related XMLHttpRequest.
+ *
+ *  The Strophe.Request class is used internally to encapsulate BOSH request
+ *  information.  It is not meant to be used from user's code.
+ */
+
+/** PrivateConstructor: Strophe.Request
+ *  Create and initialize a new Strophe.Request object.
+ *
+ *  Parameters:
+ *    (XMLElement) elem - The XML data to be sent in the request.
+ *    (Function) func - The function that will be called when the
+ *      XMLHttpRequest readyState changes.
+ *    (Integer) rid - The BOSH rid attribute associated with this request.
+ *    (Integer) sends - The number of times this same request has been sent.
+ */
+bosh_Strophe.Request = function (elem, func, rid, sends) {
+    this.id = ++bosh_Strophe._requestId;
+    this.xmlData = elem;
+    this.data = bosh_Strophe.serialize(elem);
+    // save original function in case we need to make a new request
+    // from this one.
+    this.origFunc = func;
+    this.func = func;
+    this.rid = rid;
+    this.date = NaN;
+    this.sends = sends || 0;
+    this.abort = false;
+    this.dead = null;
+
+    this.age = function () {
+        if (!this.date) { return 0; }
+        const now = new Date();
+        return (now - this.date) / 1000;
+    };
+    this.timeDead = function () {
+        if (!this.dead) { return 0; }
+        const now = new Date();
+        return (now - this.dead) / 1000;
+    };
+    this.xhr = this._newXHR();
+};
+
+bosh_Strophe.Request.prototype = {
+    /** PrivateFunction: getResponse
+     *  Get a response from the underlying XMLHttpRequest.
+     *
+     *  This function attempts to get a response from the request and checks
+     *  for errors.
+     *
+     *  Throws:
+     *    "parsererror" - A parser error occured.
+     *    "bad-format" - The entity has sent XML that cannot be processed.
+     *
+     *  Returns:
+     *    The DOM element tree of the response.
+     */
+    getResponse: function () {
+        let node = null;
+        if (this.xhr.responseXML && this.xhr.responseXML.documentElement) {
+            node = this.xhr.responseXML.documentElement;
+            if (node.tagName === "parsererror") {
+                bosh_Strophe.error("invalid response received");
+                bosh_Strophe.error("responseText: " + this.xhr.responseText);
+                bosh_Strophe.error("responseXML: " +
+                              bosh_Strophe.serialize(this.xhr.responseXML));
+                throw new Error("parsererror");
+            }
+        } else if (this.xhr.responseText) {
+            // In React Native, we may get responseText but no responseXML.  We can try to parse it manually.
+            bosh_Strophe.debug("Got responseText but no responseXML; attempting to parse it with DOMParser...");
+            node = new DOMParser().parseFromString(this.xhr.responseText, 'application/xml').documentElement;
+            if (!node) {
+                throw new Error('Parsing produced null node');
+            } else if (node.querySelector('parsererror')) {
+                bosh_Strophe.error("invalid response received: " + node.querySelector('parsererror').textContent);
+                bosh_Strophe.error("responseText: " + this.xhr.responseText);
+                const error = new Error();
+                error.name = bosh_Strophe.ErrorCondition.BAD_FORMAT;
+                throw error;
+            }
+        }
+        return node;
+    },
+
+    /** PrivateFunction: _newXHR
+     *  _Private_ helper function to create XMLHttpRequests.
+     *
+     *  This function creates XMLHttpRequests across all implementations.
+     *
+     *  Returns:
+     *    A new XMLHttpRequest.
+     */
+    _newXHR: function () {
+        let xhr = null;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+            if (xhr.overrideMimeType) {
+                xhr.overrideMimeType("text/xml; charset=utf-8");
+            }
+        } else if (window.ActiveXObject) {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        // use Function.bind() to prepend ourselves as an argument
+        xhr.onreadystatechange = this.func.bind(null, this);
+        return xhr;
+    }
+};
+
+/** Class: Strophe.Bosh
+ *  _Private_ helper class that handles BOSH Connections
+ *
+ *  The Strophe.Bosh class is used internally by Strophe.Connection
+ *  to encapsulate BOSH sessions. It is not meant to be used from user's code.
+ */
+
+/** File: bosh.js
+ *  A JavaScript library to enable BOSH in Strophejs.
+ *
+ *  this library uses Bidirectional-streams Over Synchronous HTTP (BOSH)
+ *  to emulate a persistent, stateful, two-way connection to an XMPP server.
+ *  More information on BOSH can be found in XEP 124.
+ */
+
+/** PrivateConstructor: Strophe.Bosh
+ *  Create and initialize a Strophe.Bosh object.
+ *
+ *  Parameters:
+ *    (Strophe.Connection) connection - The Strophe.Connection that will use BOSH.
+ *
+ *  Returns:
+ *    A new Strophe.Bosh object.
+ */
+bosh_Strophe.Bosh = function(connection) {
+    this._conn = connection;
+    /* request id for body tags */
+    this.rid = Math.floor(Math.random() * 4294967295);
+    /* The current session ID. */
+    this.sid = null;
+
+    // default BOSH values
+    this.hold = 1;
+    this.wait = 60;
+    this.window = 5;
+    this.errors = 0;
+    this.inactivity = null;
+
+    this.lastResponseHeaders = null;
+    this._requests = [];
+};
+
+bosh_Strophe.Bosh.prototype = {
+    /** Variable: strip
+     *
+     *  BOSH-Connections will have all stanzas wrapped in a <body> tag when
+     *  passed to <Strophe.Connection.xmlInput> or <Strophe.Connection.xmlOutput>.
+     *  To strip this tag, User code can set <Strophe.Bosh.strip> to "body":
+     *
+     *  > Strophe.Bosh.prototype.strip = "body";
+     *
+     *  This will enable stripping of the body tag in both
+     *  <Strophe.Connection.xmlInput> and <Strophe.Connection.xmlOutput>.
+     */
+    strip: null,
+
+    /** PrivateFunction: _buildBody
+     *  _Private_ helper function to generate the <body/> wrapper for BOSH.
+     *
+     *  Returns:
+     *    A Strophe.Builder with a <body/> element.
+     */
+    _buildBody: function () {
+        const bodyWrap = bosh_$build('body', {
+            'rid': this.rid++,
+            'xmlns': bosh_Strophe.NS.HTTPBIND
+        });
+        if (this.sid !== null) {
+            bodyWrap.attrs({'sid': this.sid});
+        }
+        if (this._conn.options.keepalive && this._conn._sessionCachingSupported()) {
+            this._cacheSession();
+        }
+        return bodyWrap;
+    },
+
+    /** PrivateFunction: _reset
+     *  Reset the connection.
+     *
+     *  This function is called by the reset function of the Strophe Connection
+     */
+    _reset: function () {
+        this.rid = Math.floor(Math.random() * 4294967295);
+        this.sid = null;
+        this.errors = 0;
+        if (this._conn._sessionCachingSupported()) {
+            window.sessionStorage.removeItem('strophe-bosh-session');
+        }
+
+        this._conn.nextValidRid(this.rid);
+    },
+
+    /** PrivateFunction: _connect
+     *  _Private_ function that initializes the BOSH connection.
+     *
+     *  Creates and sends the Request that initializes the BOSH connection.
+     */
+    _connect: function (wait, hold, route) {
+        this.wait = wait || this.wait;
+        this.hold = hold || this.hold;
+        this.errors = 0;
+
+        const body = this._buildBody().attrs({
+            "to": this._conn.domain,
+            "xml:lang": "en",
+            "wait": this.wait,
+            "hold": this.hold,
+            "content": "text/xml; charset=utf-8",
+            "ver": "1.6",
+            "xmpp:version": "1.0",
+            "xmlns:xmpp": bosh_Strophe.NS.BOSH
+        });
+        if (route){
+            body.attrs({'route': route});
+        }
+
+        const _connect_cb = this._conn._connect_cb;
+        this._requests.push(
+            new bosh_Strophe.Request(
+                body.tree(),
+                this._onRequestStateChange.bind(this, _connect_cb.bind(this._conn)),
+                body.tree().getAttribute("rid")
+            )
+        );
+        this._throttledRequestHandler();
+    },
+
+    /** PrivateFunction: _attach
+     *  Attach to an already created and authenticated BOSH session.
+     *
+     *  This function is provided to allow Strophe to attach to BOSH
+     *  sessions which have been created externally, perhaps by a Web
+     *  application.  This is often used to support auto-login type features
+     *  without putting user credentials into the page.
+     *
+     *  Parameters:
+     *    (String) jid - The full JID that is bound by the session.
+     *    (String) sid - The SID of the BOSH session.
+     *    (String) rid - The current RID of the BOSH session.  This RID
+     *      will be used by the next request.
+     *    (Function) callback The connect callback function.
+     *    (Integer) wait - The optional HTTPBIND wait value.  This is the
+     *      time the server will wait before returning an empty result for
+     *      a request.  The default setting of 60 seconds is recommended.
+     *      Other settings will require tweaks to the Strophe.TIMEOUT value.
+     *    (Integer) hold - The optional HTTPBIND hold value.  This is the
+     *      number of connections the server will hold at one time.  This
+     *      should almost always be set to 1 (the default).
+     *    (Integer) wind - The optional HTTBIND window value.  This is the
+     *      allowed range of request ids that are valid.  The default is 5.
+     */
+    _attach: function (jid, sid, rid, callback, wait, hold, wind) {
+        this._conn.jid = jid;
+        this.sid = sid;
+        this.rid = rid;
+
+        this._conn.connect_callback = callback;
+        this._conn.domain = bosh_Strophe.getDomainFromJid(this._conn.jid);
+        this._conn.authenticated = true;
+        this._conn.connected = true;
+
+        this.wait = wait || this.wait;
+        this.hold = hold || this.hold;
+        this.window = wind || this.window;
+
+        this._conn._changeConnectStatus(bosh_Strophe.Status.ATTACHED, null);
+    },
+
+    /** PrivateFunction: _restore
+     *  Attempt to restore a cached BOSH session
+     *
+     *  Parameters:
+     *    (String) jid - The full JID that is bound by the session.
+     *      This parameter is optional but recommended, specifically in cases
+     *      where prebinded BOSH sessions are used where it's important to know
+     *      that the right session is being restored.
+     *    (Function) callback The connect callback function.
+     *    (Integer) wait - The optional HTTPBIND wait value.  This is the
+     *      time the server will wait before returning an empty result for
+     *      a request.  The default setting of 60 seconds is recommended.
+     *      Other settings will require tweaks to the Strophe.TIMEOUT value.
+     *    (Integer) hold - The optional HTTPBIND hold value.  This is the
+     *      number of connections the server will hold at one time.  This
+     *      should almost always be set to 1 (the default).
+     *    (Integer) wind - The optional HTTBIND window value.  This is the
+     *      allowed range of request ids that are valid.  The default is 5.
+     */
+    _restore: function (jid, callback, wait, hold, wind) {
+        const session = JSON.parse(window.sessionStorage.getItem('strophe-bosh-session'));
+        if (typeof session !== "undefined" &&
+                   session !== null &&
+                   session.rid &&
+                   session.sid &&
+                   session.jid &&
+                   (    typeof jid === "undefined" ||
+                        jid === null ||
+                        bosh_Strophe.getBareJidFromJid(session.jid) === bosh_Strophe.getBareJidFromJid(jid) ||
+                        // If authcid is null, then it's an anonymous login, so
+                        // we compare only the domains:
+                        ((bosh_Strophe.getNodeFromJid(jid) === null) && (bosh_Strophe.getDomainFromJid(session.jid) === jid))
+                    )
+        ) {
+            this._conn.restored = true;
+            this._attach(session.jid, session.sid, session.rid, callback, wait, hold, wind);
+        } else {
+            const error = new Error("_restore: no restoreable session.");
+            error.name = "StropheSessionError";
+            throw error;
+        }
+    },
+
+    /** PrivateFunction: _cacheSession
+     *  _Private_ handler for the beforeunload event.
+     *
+     *  This handler is used to process the Bosh-part of the initial request.
+     *  Parameters:
+     *    (Strophe.Request) bodyWrap - The received stanza.
+     */
+    _cacheSession: function () {
+        if (this._conn.authenticated) {
+            if (this._conn.jid && this.rid && this.sid) {
+                window.sessionStorage.setItem('strophe-bosh-session', JSON.stringify({
+                    'jid': this._conn.jid,
+                    'rid': this.rid,
+                    'sid': this.sid
+                }));
+            }
+        } else {
+            window.sessionStorage.removeItem('strophe-bosh-session');
+        }
+    },
+
+    /** PrivateFunction: _connect_cb
+     *  _Private_ handler for initial connection request.
+     *
+     *  This handler is used to process the Bosh-part of the initial request.
+     *  Parameters:
+     *    (Strophe.Request) bodyWrap - The received stanza.
+     */
+    _connect_cb: function (bodyWrap) {
+        const typ = bodyWrap.getAttribute("type");
+        if (typ !== null && typ === "terminate") {
+            // an error occurred
+            let cond = bodyWrap.getAttribute("condition");
+            bosh_Strophe.error("BOSH-Connection failed: " + cond);
+            const conflict = bodyWrap.getElementsByTagName("conflict");
+            if (cond !== null) {
+                if (cond === "remote-stream-error" && conflict.length > 0) {
+                    cond = "conflict";
+                }
+                this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, cond);
+            } else {
+                this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, "unknown");
+            }
+            this._conn._doDisconnect(cond);
+            return bosh_Strophe.Status.CONNFAIL;
+        }
+
+        // check to make sure we don't overwrite these if _connect_cb is
+        // called multiple times in the case of missing stream:features
+        if (!this.sid) {
+            this.sid = bodyWrap.getAttribute("sid");
+        }
+        const wind = bodyWrap.getAttribute('requests');
+        if (wind) { this.window = parseInt(wind, 10); }
+        const hold = bodyWrap.getAttribute('hold');
+        if (hold) { this.hold = parseInt(hold, 10); }
+        const wait = bodyWrap.getAttribute('wait');
+        if (wait) { this.wait = parseInt(wait, 10); }
+        const inactivity = bodyWrap.getAttribute('inactivity');
+        if (inactivity) { this.inactivity = parseInt(inactivity, 10); }
+    },
+
+    /** PrivateFunction: _disconnect
+     *  _Private_ part of Connection.disconnect for Bosh
+     *
+     *  Parameters:
+     *    (Request) pres - This stanza will be sent before disconnecting.
+     */
+    _disconnect: function (pres) {
+        this._sendTerminate(pres);
+    },
+
+    /** PrivateFunction: _doDisconnect
+     *  _Private_ function to disconnect.
+     *
+     *  Resets the SID and RID.
+     */
+    _doDisconnect: function () {
+        this.sid = null;
+        this.rid = Math.floor(Math.random() * 4294967295);
+        if (this._conn._sessionCachingSupported()) {
+            window.sessionStorage.removeItem('strophe-bosh-session');
+        }
+
+        this._conn.nextValidRid(this.rid);
+    },
+
+    /** PrivateFunction: _emptyQueue
+     * _Private_ function to check if the Request queue is empty.
+     *
+     *  Returns:
+     *    True, if there are no Requests queued, False otherwise.
+     */
+    _emptyQueue: function () {
+        return this._requests.length === 0;
+    },
+
+    /** PrivateFunction: _callProtocolErrorHandlers
+     *  _Private_ function to call error handlers registered for HTTP errors.
+     *
+     *  Parameters:
+     *    (Strophe.Request) req - The request that is changing readyState.
+     */
+    _callProtocolErrorHandlers: function (req) {
+        const reqStatus = this._getRequestStatus(req);
+        const err_callback = this._conn.protocolErrorHandlers.HTTP[reqStatus];
+        if (err_callback) {
+            err_callback.call(this, reqStatus);
+        }
+    },
+
+    /** PrivateFunction: _hitError
+     *  _Private_ function to handle the error count.
+     *
+     *  Requests are resent automatically until their error count reaches
+     *  5.  Each time an error is encountered, this function is called to
+     *  increment the count and disconnect if the count is too high.
+     *
+     *  Parameters:
+     *    (Integer) reqStatus - The request status.
+     */
+    _hitError: function (reqStatus) {
+        this.errors++;
+        bosh_Strophe.warn("request errored, status: " + reqStatus +
+                     ", number of errors: " + this.errors);
+        if (this.errors > 4) {
+            this._conn._onDisconnectTimeout();
+        }
+    },
+
+    /** PrivateFunction: _no_auth_received
+     *
+     * Called on stream start/restart when no stream:features
+     * has been received and sends a blank poll request.
+     */
+    _no_auth_received: function (callback) {
+        bosh_Strophe.warn("Server did not yet offer a supported authentication "+
+                     "mechanism. Sending a blank poll request.");
+        if (callback) {
+            callback = callback.bind(this._conn);
+        } else {
+            callback = this._conn._connect_cb.bind(this._conn);
+        }
+        const body = this._buildBody();
+        this._requests.push(
+            new bosh_Strophe.Request(
+                body.tree(),
+                this._onRequestStateChange.bind(this, callback),
+                body.tree().getAttribute("rid")
+            )
+        );
+        this._throttledRequestHandler();
+    },
+
+    /** PrivateFunction: _onDisconnectTimeout
+     *  _Private_ timeout handler for handling non-graceful disconnection.
+     *
+     *  Cancels all remaining Requests and clears the queue.
+     */
+    _onDisconnectTimeout: function () {
+        this._abortAllRequests();
+    },
+
+    /** PrivateFunction: _abortAllRequests
+     *  _Private_ helper function that makes sure all pending requests are aborted.
+     */
+    _abortAllRequests: function _abortAllRequests() {
+        while (this._requests.length > 0) {
+            const req = this._requests.pop();
+            req.abort = true;
+            req.xhr.abort();
+            req.xhr.onreadystatechange = function () {};
+        }
+    },
+
+    /** PrivateFunction: _onIdle
+     *  _Private_ handler called by Strophe.Connection._onIdle
+     *
+     *  Sends all queued Requests or polls with empty Request if there are none.
+     */
+    _onIdle: function () {
+        const data = this._conn._data;
+        // if no requests are in progress, poll
+        if (this._conn.authenticated && this._requests.length === 0 &&
+            data.length === 0 && !this._conn.disconnecting) {
+            bosh_Strophe.debug("no requests during idle cycle, sending blank request");
+            data.push(null);
+        }
+
+        if (this._conn.paused) {
+            return;
+        }
+
+        if (this._requests.length < 2 && data.length > 0) {
+            const body = this._buildBody();
+            for (let i=0; i<data.length; i++) {
+                if (data[i] !== null) {
+                    if (data[i] === "restart") {
+                        body.attrs({
+                            "to": this._conn.domain,
+                            "xml:lang": "en",
+                            "xmpp:restart": "true",
+                            "xmlns:xmpp": bosh_Strophe.NS.BOSH
+                        });
+                    } else {
+                        body.cnode(data[i]).up();
+                    }
+                }
+            }
+            delete this._conn._data;
+            this._conn._data = [];
+            this._requests.push(
+                new bosh_Strophe.Request(
+                    body.tree(),
+                    this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)),
+                    body.tree().getAttribute("rid")
+                )
+            );
+            this._throttledRequestHandler();
+        }
+
+        if (this._requests.length > 0) {
+            const time_elapsed = this._requests[0].age();
+            if (this._requests[0].dead !== null) {
+                if (this._requests[0].timeDead() >
+                    Math.floor(bosh_Strophe.SECONDARY_TIMEOUT * this.wait)) {
+                    this._throttledRequestHandler();
+                }
+            }
+            if (time_elapsed > Math.floor(bosh_Strophe.TIMEOUT * this.wait)) {
+                bosh_Strophe.warn("Request " +
+                             this._requests[0].id +
+                             " timed out, over " + Math.floor(bosh_Strophe.TIMEOUT * this.wait) +
+                             " seconds since last activity");
+                this._throttledRequestHandler();
+            }
+        }
+    },
+
+    /** PrivateFunction: _getRequestStatus
+     *
+     *  Returns the HTTP status code from a Strophe.Request
+     *
+     *  Parameters:
+     *    (Strophe.Request) req - The Strophe.Request instance.
+     *    (Integer) def - The default value that should be returned if no
+     *          status value was found.
+     */
+    _getRequestStatus: function (req, def) {
+        let reqStatus;
+        if (req.xhr.readyState === 4) {
+            try {
+                reqStatus = req.xhr.status;
+            } catch (e) {
+                // ignore errors from undefined status attribute. Works
+                // around a browser bug
+                bosh_Strophe.error(
+                    "Caught an error while retrieving a request's status, " +
+                    "reqStatus: " + reqStatus);
+            }
+        }
+        if (typeof(reqStatus) === "undefined") {
+            reqStatus = typeof def === 'number' ? def : 0;
+        }
+        return reqStatus;
+    },
+
+    /** PrivateFunction: _onRequestStateChange
+     *  _Private_ handler for Strophe.Request state changes.
+     *
+     *  This function is called when the XMLHttpRequest readyState changes.
+     *  It contains a lot of error handling logic for the many ways that
+     *  requests can fail, and calls the request callback when requests
+     *  succeed.
+     *
+     *  Parameters:
+     *    (Function) func - The handler for the request.
+     *    (Strophe.Request) req - The request that is changing readyState.
+     */
+    _onRequestStateChange: function (func, req) {
+        bosh_Strophe.debug("request id "+req.id+"."+req.sends+
+                      " state changed to "+req.xhr.readyState);
+        if (req.abort) {
+            req.abort = false;
+            return;
+        }
+        if (req.xhr.readyState !== 4) {
+            // The request is not yet complete
+            return;
+        }
+        const reqStatus = this._getRequestStatus(req);
+        this.lastResponseHeaders = req.xhr.getAllResponseHeaders();
+        if (this.disconnecting && reqStatus >= 400) {
+            this._hitError(reqStatus);
+            this._callProtocolErrorHandlers(req);
+            return;
+        }
+
+        const valid_request = reqStatus > 0 && reqStatus < 500;
+        const too_many_retries = req.sends > this._conn.maxRetries;
+        if (valid_request || too_many_retries) {
+            // remove from internal queue
+            this._removeRequest(req);
+            bosh_Strophe.debug("request id "+req.id+" should now be removed");
+        }
+
+        if (reqStatus === 200) {
+            // request succeeded
+            const reqIs0 = (this._requests[0] === req);
+            const reqIs1 = (this._requests[1] === req);
+            // if request 1 finished, or request 0 finished and request
+            // 1 is over Strophe.SECONDARY_TIMEOUT seconds old, we need to
+            // restart the other - both will be in the first spot, as the
+            // completed request has been removed from the queue already
+            if (reqIs1 ||
+                (reqIs0 && this._requests.length > 0 &&
+                    this._requests[0].age() > Math.floor(bosh_Strophe.SECONDARY_TIMEOUT * this.wait))) {
+                this._restartRequest(0);
+            }
+            this._conn.nextValidRid(Number(req.rid) + 1);
+            bosh_Strophe.debug("request id "+req.id+"."+req.sends+" got 200");
+            func(req); // call handler
+            this.errors = 0;
+        } else if (reqStatus === 0 ||
+                   (reqStatus >= 400 && reqStatus < 600) ||
+                   reqStatus >= 12000) {
+            // request failed
+            bosh_Strophe.error("request id "+req.id+"."+req.sends+" error "+reqStatus+" happened");
+            this._hitError(reqStatus);
+            this._callProtocolErrorHandlers(req);
+            if (reqStatus >= 400 && reqStatus < 500) {
+                this._conn._changeConnectStatus(bosh_Strophe.Status.DISCONNECTING, null);
+                this._conn._doDisconnect();
+            }
+        } else {
+            bosh_Strophe.error("request id "+req.id+"."+req.sends+" error "+reqStatus+" happened");
+        }
+
+        if (!valid_request && !too_many_retries) {
+            this._throttledRequestHandler();
+        } else if (too_many_retries && !this._conn.connected) {
+            this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, "giving-up");
+        }
+    },
+
+    /** PrivateFunction: _processRequest
+     *  _Private_ function to process a request in the queue.
+     *
+     *  This function takes requests off the queue and sends them and
+     *  restarts dead requests.
+     *
+     *  Parameters:
+     *    (Integer) i - The index of the request in the queue.
+     */
+    _processRequest: function (i) {
+        let req = this._requests[i];
+        const reqStatus = this._getRequestStatus(req, -1);
+
+        // make sure we limit the number of retries
+        if (req.sends > this._conn.maxRetries) {
+            this._conn._onDisconnectTimeout();
+            return;
+        }
+        const time_elapsed = req.age();
+        const primary_timeout = (!isNaN(time_elapsed) && time_elapsed > Math.floor(bosh_Strophe.TIMEOUT * this.wait));
+        const secondary_timeout = (req.dead !== null && req.timeDead() > Math.floor(bosh_Strophe.SECONDARY_TIMEOUT * this.wait));
+        const server_error = (req.xhr.readyState === 4 && (reqStatus < 1 || reqStatus >= 500));
+
+        if (primary_timeout || secondary_timeout || server_error) {
+            if (secondary_timeout) {
+                bosh_Strophe.error(`Request ${this._requests[i].id} timed out (secondary), restarting`);
+            }
+            req.abort = true;
+            req.xhr.abort();
+            // setting to null fails on IE6, so set to empty function
+            req.xhr.onreadystatechange = function () {};
+            this._requests[i] = new bosh_Strophe.Request(req.xmlData, req.origFunc, req.rid, req.sends);
+            req = this._requests[i];
+        }
+
+        if (req.xhr.readyState === 0) {
+            bosh_Strophe.debug("request id "+req.id+"."+req.sends+" posting");
+
+            try {
+                const content_type = this._conn.options.contentType || "text/xml; charset=utf-8";
+                req.xhr.open("POST", this._conn.service, this._conn.options.sync ? false : true);
+                if (typeof req.xhr.setRequestHeader !== 'undefined') {
+                    // IE9 doesn't have setRequestHeader
+                    req.xhr.setRequestHeader("Content-Type", content_type);
+                }
+                if (this._conn.options.withCredentials) {
+                    req.xhr.withCredentials = true;
+                }
+            } catch (e2) {
+                bosh_Strophe.error("XHR open failed: " + e2.toString());
+                if (!this._conn.connected) {
+                    this._conn._changeConnectStatus(bosh_Strophe.Status.CONNFAIL, "bad-service");
+                }
+                this._conn.disconnect();
+                return;
+            }
+
+            // Fires the XHR request -- may be invoked immediately
+            // or on a gradually expanding retry window for reconnects
+            const sendFunc = () => {
+                req.date = new Date();
+                if (this._conn.options.customHeaders){
+                    const headers = this._conn.options.customHeaders;
+                    for (const header in headers) {
+                        if (Object.prototype.hasOwnProperty.call(headers, header)) {
+                            req.xhr.setRequestHeader(header, headers[header]);
+                        }
+                    }
+                }
+                req.xhr.send(req.data);
+            };
+
+            // Implement progressive backoff for reconnects --
+            // First retry (send === 1) should also be instantaneous
+            if (req.sends > 1) {
+                // Using a cube of the retry number creates a nicely
+                // expanding retry window
+                const backoff = Math.min(Math.floor(bosh_Strophe.TIMEOUT * this.wait),
+                                       Math.pow(req.sends, 3)) * 1000;
+                setTimeout(function() {
+                    // XXX: setTimeout should be called only with function expressions (23974bc1)
+                    sendFunc();
+                }, backoff);
+            } else {
+                sendFunc();
+            }
+
+            req.sends++;
+
+            if (this._conn.xmlOutput !== bosh_Strophe.Connection.prototype.xmlOutput) {
+                if (req.xmlData.nodeName === this.strip && req.xmlData.childNodes.length) {
+                    this._conn.xmlOutput(req.xmlData.childNodes[0]);
+                } else {
+                    this._conn.xmlOutput(req.xmlData);
+                }
+            }
+            if (this._conn.rawOutput !== bosh_Strophe.Connection.prototype.rawOutput) {
+                this._conn.rawOutput(req.data);
+            }
+        } else {
+            bosh_Strophe.debug("_processRequest: " +
+                          (i === 0 ? "first" : "second") +
+                          " request has readyState of " +
+                          req.xhr.readyState);
+        }
+    },
+
+    /** PrivateFunction: _removeRequest
+     *  _Private_ function to remove a request from the queue.
+     *
+     *  Parameters:
+     *    (Strophe.Request) req - The request to remove.
+     */
+    _removeRequest: function (req) {
+        bosh_Strophe.debug("removing request");
+        for (let i=this._requests.length - 1; i>=0; i--) {
+            if (req === this._requests[i]) {
+                this._requests.splice(i, 1);
+            }
+        }
+        // IE6 fails on setting to null, so set to empty function
+        req.xhr.onreadystatechange = function () {};
+        this._throttledRequestHandler();
+    },
+
+    /** PrivateFunction: _restartRequest
+     *  _Private_ function to restart a request that is presumed dead.
+     *
+     *  Parameters:
+     *    (Integer) i - The index of the request in the queue.
+     */
+    _restartRequest: function (i) {
+        const req = this._requests[i];
+        if (req.dead === null) {
+            req.dead = new Date();
+        }
+        this._processRequest(i);
+    },
+
+    /** PrivateFunction: _reqToData
+     * _Private_ function to get a stanza out of a request.
+     *
+     * Tries to extract a stanza out of a Request Object.
+     * When this fails the current connection will be disconnected.
+     *
+     *  Parameters:
+     *    (Object) req - The Request.
+     *
+     *  Returns:
+     *    The stanza that was passed.
+     */
+    _reqToData: function (req) {
+        try {
+            return req.getResponse ? req.getResponse() : req; // BAO
+        } catch (e) {
+            if (e.message !== "parsererror") { throw e; }
+            this._conn.disconnect("strophe-parsererror");
+        }
+    },
+
+    /** PrivateFunction: _sendTerminate
+     *  _Private_ function to send initial disconnect sequence.
+     *
+     *  This is the first step in a graceful disconnect.  It sends
+     *  the BOSH server a terminate body and includes an unavailable
+     *  presence if authentication has completed.
+     */
+    _sendTerminate: function (pres) {
+        bosh_Strophe.debug("_sendTerminate was called");
+        const body = this._buildBody().attrs({type: "terminate"});
+        if (pres) {
+            body.cnode(pres.tree());
+        }
+        const req = new bosh_Strophe.Request(
+            body.tree(),
+            this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)),
+            body.tree().getAttribute("rid")
+        );
+        this._requests.push(req);
+        this._throttledRequestHandler();
+    },
+
+    /** PrivateFunction: _send
+     *  _Private_ part of the Connection.send function for BOSH
+     *
+     * Just triggers the RequestHandler to send the messages that are in the queue
+     */
+    _send: function () {
+        clearTimeout(this._conn._idleTimeout);
+        this._throttledRequestHandler();
+        this._conn._idleTimeout = setTimeout(() => this._conn._onIdle(), 100);
+    },
+
+    /** PrivateFunction: _sendRestart
+     *
+     *  Send an xmpp:restart stanza.
+     */
+    _sendRestart: function () {
+        this._throttledRequestHandler();
+        clearTimeout(this._conn._idleTimeout);
+    },
+
+    /** PrivateFunction: _throttledRequestHandler
+     *  _Private_ function to throttle requests to the connection window.
+     *
+     *  This function makes sure we don't send requests so fast that the
+     *  request ids overflow the connection window in the case that one
+     *  request died.
+     */
+    _throttledRequestHandler: function () {
+        if (!this._requests) {
+            bosh_Strophe.debug("_throttledRequestHandler called with " +
+                          "undefined requests");
+        } else {
+            bosh_Strophe.debug("_throttledRequestHandler called with " +
+                          this._requests.length + " requests");
+        }
+
+        if (!this._requests || this._requests.length === 0) {
+            return;
+        }
+
+        if (this._requests.length > 0) {
+            this._processRequest(0);
+        }
+
+        if (this._requests.length > 1 &&
+            Math.abs(this._requests[0].rid -
+                     this._requests[1].rid) < this.window) {
+            this._processRequest(1);
+        }
+    }
+};
+
 // CONCATENATED MODULE: ./src/headless/converse-bosh.js
 // Converse.js
 // http://conversejs.org
@@ -57032,6 +57152,7 @@ converse_core.plugins.add('converse-bookmarks', {
  * @description
  * Converse.js plugin which add support for XEP-0206: XMPP Over BOSH
  */
+
 
 
 const {
@@ -57160,6 +57281,8 @@ converse_core.plugins.add('converse-bosh', {
         });
       }
     });
+
+    _converse.api.listen.on('addClientFeatures', () => _converse.api.disco.own.features.add(converse_bosh_Strophe.NS.BOSH));
     /************************ END Event Handlers ************************/
 
     /************************ BEGIN API ************************/
@@ -57264,6 +57387,9 @@ converse_core.plugins.add('converse-caps', {
     }
   }
 });
+// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
+var lodash = __webpack_require__(2);
+
 // EXTERNAL MODULE: ./node_modules/filesize/lib/filesize.js
 var filesize = __webpack_require__(42);
 var filesize_default = /*#__PURE__*/__webpack_require__.n(filesize);
@@ -57278,6 +57404,7 @@ var filesize_default = /*#__PURE__*/__webpack_require__.n(filesize);
 /**
  * @module converse-chatboxes
  */
+
 
 
 
@@ -57318,6 +57445,7 @@ converse_core.plugins.add('converse-chatboxes', {
       'auto_join_private_chats': [],
       'clear_messages_on_reconnection': false,
       'filter_by_resource': false,
+      'allow_message_corrections': 'all',
       'send_chat_state_notifications': true
     });
 
@@ -57568,10 +57696,11 @@ converse_core.plugins.add('converse-chatboxes', {
         return {
           'bookmarked': false,
           'chat_state': undefined,
-          'hidden': converse_chatboxes_.includes(['mobile', 'fullscreen'], _converse.view_mode),
+          'hidden': ['mobile', 'fullscreen'].includes(_converse.view_mode),
           'message_type': 'chat',
           'nickname': undefined,
           'num_unread': 0,
+          'time_sent': new Date(0).toISOString(),
           'time_opened': this.get('time_opened') || new Date().getTime(),
           'type': _converse.PRIVATE_CHAT_TYPE,
           'url': ''
@@ -57658,8 +57787,14 @@ converse_core.plugins.add('converse-chatboxes', {
         const resolve = this.messages.fetched.resolve;
         this.messages.fetch({
           'add': true,
-          'success': converse_chatboxes_.flow(this.afterMessagesFetched.bind(this), resolve),
-          'error': converse_chatboxes_.flow(this.afterMessagesFetched.bind(this), resolve)
+          'success': () => {
+            this.afterMessagesFetched();
+            resolve();
+          },
+          'error': () => {
+            this.afterMessagesFetched();
+            resolve();
+          }
         });
         return this.messages.fetched;
       },
@@ -57714,11 +57849,11 @@ converse_core.plugins.add('converse-chatboxes', {
           return 'Ignored ChatBox without JID';
         }
 
-        const room_jids = _converse.auto_join_rooms.map(s => converse_chatboxes_.isObject(s) ? s.jid : s);
+        const room_jids = _converse.auto_join_rooms.map(s => Object(lodash["isObject"])(s) ? s.jid : s);
 
         const auto_join = _converse.auto_join_private_chats.concat(room_jids);
 
-        if (_converse.singleton && !converse_chatboxes_.includes(auto_join, attrs.jid) && !_converse.auto_join_on_invite) {
+        if (_converse.singleton && !auto_join.includes(attrs.jid) && !_converse.auto_join_on_invite) {
           const msg = "".concat(attrs.jid, " is not allowed because singleton is true and it's not being auto_joined");
 
           _converse.log(msg, converse_chatboxes_Strophe.LogLevel.WARN);
@@ -57870,11 +58005,14 @@ converse_core.plugins.add('converse-chatboxes', {
        *     {@link _converse.ChatBox.getMessageAttributesFromStanza}
        */
       correctMessage(attrs) {
-        if (!attrs.replaced_id || !attrs.from) {    // BAO
+        if (!attrs.replaced_id || !attrs.from) {
           return;
         }
 
-        const message = this.messages.findWhere({'msgid': attrs.replaced_id, 'from': attrs.from}); // BAO
+        const message = this.messages.findWhere({
+          'msgid': attrs.replaced_id,
+          'from': attrs.from
+        });
 
         if (!message) {
           return;
@@ -58149,6 +58287,7 @@ converse_core.plugins.add('converse-chatboxes', {
 
       getOutgoingMessageAttributes(text, spoiler_hint) {
         const is_spoiler = this.get('composing_spoiler');
+
         const origin_id = _converse.connection.getUniqueId();
 
         let attach_to = undefined;                          // BAO
@@ -58185,6 +58324,45 @@ converse_core.plugins.add('converse-chatboxes', {
       },
 
       /**
+       * Responsible for setting the editable attribute of messages.
+       * If _converse.allow_message_corrections is "last", then only the last
+       * message sent from me will be editable. If set to "all" all messages
+       * will be editable. Otherwise no messages will be editable.
+       * @method _converse.ChatBox#setEditable
+       * @memberOf _converse.ChatBox
+       * @param { Object } attrs An object containing message attributes.
+       * @param { String } send_time - time when the message was sent
+       */
+      setEditable(attrs, send_time, stanza) {
+        if (stanza && converse_chatboxes_u.isHeadlineMessage(_converse, stanza)) {
+          return;
+        }
+
+        if (converse_chatboxes_u.isEmptyMessage(attrs) || attrs.sender !== 'me') {
+          return;
+        }
+
+        if (_converse.allow_message_corrections === 'all') {
+          attrs.editable = true;
+        } else if (_converse.allow_message_corrections === 'last' && send_time > this.get('time_sent')) {
+          this.set({
+            'time_sent': send_time
+          });
+          const msg = this.messages.findWhere({
+            'editable': true
+          });
+
+          if (msg) {
+            msg.save({
+              'editable': false
+            });
+          }
+
+          attrs.editable = true;
+        }
+      },
+
+      /**
        * Responsible for sending off a text message inside an ongoing chat conversation.
        * @method _converse.ChatBox#sendMessage
        * @memberOf _converse.ChatBox
@@ -58213,6 +58391,7 @@ converse_core.plugins.add('converse-chatboxes', {
             'received': undefined
           });
         } else {
+          this.setEditable(attrs, new Date().toISOString());
           message = this.messages.create(attrs);
         }
 
@@ -58268,8 +58447,8 @@ converse_core.plugins.add('converse-chatboxes', {
             'type': "hidden"
           }
         }).pop(),
-              max_file_size = window.parseInt(converse_chatboxes_.get(data, 'attributes.max-file-size.value')),
-              slot_request_url = converse_chatboxes_.get(item, 'id');
+              max_file_size = window.parseInt(Object(lodash["get"])(data, 'attributes.max-file-size.value')),
+              slot_request_url = Object(lodash["get"])(item, 'id');
 
         if (!slot_request_url) {
           this.messages.create({
@@ -58303,8 +58482,7 @@ converse_core.plugins.add('converse-chatboxes', {
       },
 
       getReferencesFromStanza(stanza) {
-        const text = converse_chatboxes_.propertyOf(stanza.querySelector('body'))('textContent');
-
+        const text = Object(lodash["propertyOf"])(stanza.querySelector('body'))('textContent');
         return converse_chatboxes_sizzle("reference[xmlns=\"".concat(converse_chatboxes_Strophe.NS.REFERENCE, "\"]"), stanza).map(ref => {
           const begin = ref.getAttribute('begin'),
                 end = ref.getAttribute('end');
@@ -58355,7 +58533,7 @@ converse_core.plugins.add('converse-chatboxes', {
 
       getErrorMessage(stanza) {
         const error = stanza.querySelector('error');
-        return converse_chatboxes_.propertyOf(error.querySelector('text'))('textContent') || __('Sorry, an error occurred:') + ' ' + error.innerHTML;
+        return Object(lodash["propertyOf"])(error.querySelector('text'))('textContent') || __('Sorry, an error occurred:') + ' ' + error.innerHTML;
       },
 
       /**
@@ -58394,21 +58572,20 @@ converse_core.plugins.add('converse-chatboxes', {
 
         const chat_state = stanza.getElementsByTagName(_converse.COMPOSING).length && _converse.COMPOSING || stanza.getElementsByTagName(_converse.PAUSED).length && _converse.PAUSED || stanza.getElementsByTagName(_converse.INACTIVE).length && _converse.INACTIVE || stanza.getElementsByTagName(_converse.ACTIVE).length && _converse.ACTIVE || stanza.getElementsByTagName(_converse.GONE).length && _converse.GONE;
 
-        const is_single_emoji = text ? await converse_chatboxes_u.isSingleEmoji(text) : false;
         const replaced_id = this.getReplaceId(stanza);
         const msgid = replaced_id || stanza.getAttribute('id') || original_stanza.getAttribute('id');
         const attrs = Object.assign({
           'chat_state': chat_state,
           'is_archived': this.isArchived(original_stanza),
           'is_delayed': !!delay,
+          'is_single_emoji': text ? await converse_chatboxes_u.isSingleEmoji(text) : false,
           'is_spoiler': !!spoiler,
-          'is_single_emoji': is_single_emoji,
           'message': text,
           'msgid': msgid,
-          'replaced_id': replaced_id,          // BAO
+          'replaced_id': replaced_id,
           'references': this.getReferencesFromStanza(stanza),
-          'subject': converse_chatboxes_.propertyOf(stanza.querySelector('subject'))('textContent'),
-          'thread': converse_chatboxes_.propertyOf(stanza.querySelector('thread'))('textContent'),
+          'subject': Object(lodash["propertyOf"])(stanza.querySelector('subject'))('textContent'),
+          'thread': Object(lodash["propertyOf"])(stanza.querySelector('thread'))('textContent'),
           'time': delay ? dayjs(delay.getAttribute('stamp')).toISOString() : new Date().toISOString(),
           'type': stanza.getAttribute('type')
         }, this.getStanzaIDs(original_stanza));
@@ -58433,7 +58610,6 @@ converse_core.plugins.add('converse-chatboxes', {
                 const subject = this.get('subject');
                 if (!attrs.thread && !attrs.subject && subject) attrs.thread = subject.text;    // use trending topic/subject for unthreaded messages
             }
-
           } else {
             attrs.sender = 'them';
             attrs.fullname = this.get('fullname');
@@ -58615,47 +58791,84 @@ converse_core.plugins.add('converse-chatboxes', {
       },
 
       /**
+       * Reject an incoming message by replying with an error message of type "cancel".
+       * @private
+       * @method _converse.ChatBox#rejectMessage
+       * @param { XMLElement } stanza - The incoming message stanza
+       * @param { XMLElement } text - Text explaining why the message was rejected
+       */
+      rejectMessage(stanza, text) {
+        _converse.api.send(converse_chatboxes_$msg({
+          'to': stanza.getAttribute('from'),
+          'type': 'error',
+          'id': stanza.getAttribute('id')
+        }).c('error', {
+          'type': 'cancel'
+        }).c('not-allowed', {
+          xmlns: "urn:ietf:params:xml:ns:xmpp-stanzas"
+        }).up().c('text', {
+          xmlns: "urn:ietf:params:xml:ns:xmpp-stanzas"
+        }).t(text));
+
+        _converse.log("Rejecting message stanza with the following reason: ".concat(text), converse_chatboxes_Strophe.LogLevel.WARN);
+
+        _converse.log(stanza, converse_chatboxes_Strophe.LogLevel.WARN);
+      },
+
+      /**
        * Handler method for all incoming single-user chat "message" stanzas.
        * @private
        * @method _converse.ChatBox#onMessage
        * @param { XMLElement } stanza - The incoming message stanza
        */
       async onMessage(stanza) {
+        const original_stanza = stanza;
         let to_jid = stanza.getAttribute('to');
         const to_resource = converse_chatboxes_Strophe.getResourceFromJid(to_jid);
 
         if (_converse.filter_by_resource && to_resource && to_resource !== _converse.resource) {
-          _converse.log("onMessage: Ignoring incoming message intended for a different resource: ".concat(to_jid), converse_chatboxes_Strophe.LogLevel.INFO);
-
-          return true;
+          return _converse.log("onMessage: Ignoring incoming message intended for a different resource: ".concat(to_jid), converse_chatboxes_Strophe.LogLevel.INFO);
         } else if (converse_chatboxes_utils.isHeadlineMessage(_converse, stanza)) {
-          // XXX: Ideally we wouldn't have to check for headline
-          // messages, but Prosody sends headline messages with the
+          // XXX: Prosody sends headline messages with the
           // wrong type ('chat'), so we need to filter them out here.
-          _converse.log("onMessage: Ignoring incoming headline message from JID: ".concat(stanza.getAttribute('from')), converse_chatboxes_Strophe.LogLevel.INFO);
-
-          return true;
+          return _converse.log("onMessage: Ignoring incoming headline message from JID: ".concat(stanza.getAttribute('from')), converse_chatboxes_Strophe.LogLevel.INFO);
         }
 
-        let is_carbon = false;
-        const forwarded = stanza.querySelector('forwarded');
-        const original_stanza = stanza;
+        const bare_forward = converse_chatboxes_sizzle("message > forwarded[xmlns=\"".concat(converse_chatboxes_Strophe.NS.FORWARD, "\"]"), stanza).length;
 
-        if (forwarded !== null) {
-          const xmlns = converse_chatboxes_Strophe.NS.CARBONS;
-          is_carbon = converse_chatboxes_sizzle("received[xmlns=\"".concat(xmlns, "\"]"), original_stanza).length > 0;
+        if (bare_forward) {
+          return this.rejectMessage(stanza, 'Forwarded messages not part of an encapsulating protocol are not supported');
+        }
 
-          if (is_carbon && original_stanza.getAttribute('from') !== _converse.bare_jid) {
-            // Prevent message forging via carbons
-            // https://xmpp.org/extensions/xep-0280.html#security
-            return true;
+        let from_jid = stanza.getAttribute('from') || _converse.bare_jid;
+
+        const is_carbon = converse_chatboxes_u.isCarbonMessage(stanza);
+
+        if (is_carbon) {
+          if (from_jid === _converse.bare_jid) {
+            const selector = "[xmlns=\"".concat(converse_chatboxes_Strophe.NS.CARBONS, "\"] > forwarded[xmlns=\"").concat(converse_chatboxes_Strophe.NS.FORWARD, "\"] > message");
+            stanza = converse_chatboxes_sizzle(selector, stanza).pop();
+            to_jid = stanza.getAttribute('to');
+            from_jid = stanza.getAttribute('from');
+          } else {
+            // Prevent message forging via carbons: https://xmpp.org/extensions/xep-0280.html#security
+            return this.rejectMessage(stanza, 'Rejecting carbon from invalid JID');
           }
-
-          stanza = forwarded.querySelector('message');
-          to_jid = stanza.getAttribute('to');
         }
 
-        const from_jid = stanza.getAttribute('from');
+        const is_mam = converse_chatboxes_u.isMAMMessage(stanza);
+
+        if (is_mam) {
+          if (from_jid === _converse.bare_jid) {
+            const selector = "[xmlns=\"".concat(converse_chatboxes_Strophe.NS.MAM, "\"] > forwarded[xmlns=\"").concat(converse_chatboxes_Strophe.NS.FORWARD, "\"] > message");
+            stanza = converse_chatboxes_sizzle(selector, stanza).pop();
+            to_jid = stanza.getAttribute('to');
+            from_jid = stanza.getAttribute('from');
+          } else {
+            return _converse.log("onMessage: Ignoring alleged MAM message from ".concat(stanza.getAttribute('from')), converse_chatboxes_Strophe.LogLevel.WARN);
+          }
+        }
+
         const from_bare_jid = converse_chatboxes_Strophe.getBareJidFromJid(from_jid);
         const is_me = from_bare_jid === _converse.bare_jid;
 
@@ -58673,15 +58886,12 @@ converse_core.plugins.add('converse-chatboxes', {
 
 
         const has_body = converse_chatboxes_sizzle("body, encrypted[xmlns=\"".concat(converse_chatboxes_Strophe.NS.OMEMO, "\"]"), stanza).length > 0;
-
-        const roster_nick = converse_chatboxes_.get(contact, 'attributes.nickname');
-
+        const roster_nick = Object(lodash["get"])(contact, 'attributes.nickname');
         const chatbox = this.getChatBox(contact_jid, {
           'nickname': roster_nick
         }, has_body);
 
         if (chatbox) {
-          const is_mam = converse_chatboxes_sizzle("message > result[xmlns=\"".concat(converse_chatboxes_Strophe.NS.MAM, "\"]"), original_stanza).length > 0;
           const message = await chatbox.getDuplicateMessage(stanza);
 
           if (message) {
@@ -58690,6 +58900,7 @@ converse_core.plugins.add('converse-chatboxes', {
 
           if (!message && !chatbox.handleReceipt(stanza, from_jid, is_carbon, is_me, is_mam) && !chatbox.handleChatMarker(stanza, from_jid, is_carbon, is_roster_contact, is_mam)) {
             const attrs = await chatbox.getMessageAttributesFromStanza(stanza, original_stanza);
+            chatbox.setEditable(attrs, attrs.time, stanza);
 
             if (attrs['chat_state'] || !converse_chatboxes_u.isEmptyMessage(attrs)) {
               const msg = chatbox.correctMessage(attrs) || chatbox.messages.create(attrs);
@@ -58727,7 +58938,7 @@ converse_core.plugins.add('converse-chatboxes', {
         let attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         let create = arguments.length > 2 ? arguments[2] : undefined;
 
-        if (converse_chatboxes_.isObject(jid)) {
+        if (Object(lodash["isObject"])(jid)) {
           create = attrs;
           attrs = jid;
           jid = attrs.jid;
@@ -58772,7 +58983,7 @@ converse_core.plugins.add('converse-chatboxes', {
           return;
         }
 
-        if (converse_chatboxes_.isString(jid)) {
+        if (Object(lodash["isString"])(jid)) {
           _converse.api.chats.open(jid);
         } else {
           _converse.log('Invalid jid criteria specified for "auto_join_private_chats"', converse_chatboxes_Strophe.LogLevel.ERROR);
@@ -58815,6 +59026,14 @@ converse_core.plugins.add('converse-chatboxes', {
       _converse.api.trigger('chatBoxesInitialized');
     });
 
+    _converse.api.listen.on('clearSession', () => {
+      if (_converse.shouldClearCache()) {
+        _converse.chatboxes.filter(c => c.messages && c.messages.clearSession({
+          'silent': true
+        }));
+      }
+    });
+
     _converse.api.listen.on('presencesInitialized', reconnecting => _converse.chatboxes.onConnected(reconnecting));
 
     _converse.api.listen.on('reconnected', () => _converse.chatboxes.forEach(m => m.onReconnection()));
@@ -58837,10 +59056,10 @@ converse_core.plugins.add('converse-chatboxes', {
          * @param {object} [attrs] An object containing configuration attributes.
          */
         async create(jids, attrs) {
-          if (converse_chatboxes_.isString(jids)) {
-            if (attrs && !converse_chatboxes_.get(attrs, 'fullname')) {
+          if (Object(lodash["isString"])(jids)) {
+            if (attrs && !Object(lodash["get"])(attrs, 'fullname')) {
               const contact = await _converse.api.contacts.get(jids);
-              attrs.fullname = converse_chatboxes_.get(contact, 'attributes.fullname');
+              attrs.fullname = Object(lodash["get"])(contact, 'attributes.fullname');
             }
 
             const chatbox = _converse.chatboxes.getChatBox(jids, attrs, true);
@@ -58857,7 +59076,7 @@ converse_core.plugins.add('converse-chatboxes', {
           if (Array.isArray(jids)) {
             return Promise.all(jids.forEach(async jid => {
               const contact = await _converse.api.contacts.get(jids);
-              attrs.fullname = converse_chatboxes_.get(contact, 'attributes.fullname');
+              attrs.fullname = Object(lodash["get"])(contact, 'attributes.fullname');
               return _converse.chatboxes.getChatBox(jid, attrs, true).maybeShow();
             }));
           }
@@ -58911,7 +59130,7 @@ converse_core.plugins.add('converse-chatboxes', {
         async open(jids, attrs, force) {
           await Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched')]);
 
-          if (converse_chatboxes_.isString(jids)) {
+          if (Object(lodash["isString"])(jids)) {
             const chat = await _converse.api.chats.create(jids, attrs);
 
             if (chat) {
@@ -58963,7 +59182,7 @@ converse_core.plugins.add('converse-chatboxes', {
             });
 
             return result;
-          } else if (converse_chatboxes_.isString(jids)) {
+          } else if (Object(lodash["isString"])(jids)) {
             return _converse.chatboxes.getChatBox(jids);
           }
 
@@ -59071,9 +59290,6 @@ converse_core.plugins.add('converse-rsm', {
   }
 
 });
-// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
-var lodash = __webpack_require__(2);
-
 // CONCATENATED MODULE: ./src/headless/converse-mam.js
 // Converse.js (A browser based XMPP chat client)
 // https://conversejs.org
@@ -59223,15 +59439,14 @@ converse_core.plugins.add('converse-mam', {
           'with': this.get('jid')
         }, options);
         const result = await _converse.api.archive.query(query);
-        // BAO
-        //result.messages.forEach(message_handler);
+        /* eslint-disable no-await-in-loop */
 
         for (const message of result.messages) {
-            try {
-                await message_handler(message);
-            } catch (e) {
-                _converse.log(e, Strophe.LogLevel.ERROR);
-            }
+          try {
+            await message_handler(message);
+          } catch (e) {
+            _converse.log(e, converse_mam_Strophe.LogLevel.ERROR);
+          }
         }
 
         if (result.error) {
@@ -59290,11 +59505,14 @@ converse_core.plugins.add('converse-mam', {
     });
 
     _converse.onMAMError = function (iq) {
-      if (typeof iq.querySelectorAll == "function" && iq.querySelectorAll('feature-not-implemented').length) {
-        // BAO
-        //_converse.log("Message Archive Management (XEP-0313) not supported by this server", converse_mam_Strophe.LogLevel.WARN);
+      // BAO
+      if (!iq || typeof iq.querySelectorAll != "function") return;
+
+      if (iq.querySelectorAll('feature-not-implemented').length) {
+        _converse.log("Message Archive Management (XEP-0313) not supported by this server", converse_mam_Strophe.LogLevel.WARN);
       } else {
         _converse.log("An error occured while trying to set archiving preferences.", converse_mam_Strophe.LogLevel.ERROR);
+
         _converse.log(iq);
       }
     };
@@ -60659,6 +60877,8 @@ converse_core.plugins.add('converse-roster', {
           // attribute (i.e., implicitly from the bare JID of the user's
           // account) or it has a 'from' attribute whose value matches the
           // user's bare JID <user@domainpart>.
+          _converse.log("Ignoring roster illegitimate roster push message from ".concat(iq.getAttribute('from')), converse_roster_Strophe.LogLevel.WARN);
+
           return;
         }
 
@@ -61245,6 +61465,10 @@ converse_core.plugins.add('converse-smacks', {
     });
 
     function isStreamManagementSupported() {
+      if (_converse.api.connection.isType('bosh') && !_converse.isTestEnv()) {
+        return false;
+      }
+
       return _converse.api.disco.stream.getFeature('sm', converse_smacks_Strophe.NS.SM);
     }
 
@@ -61317,7 +61541,7 @@ converse_core.plugins.add('converse-smacks', {
     }
 
     function resetSessionData() {
-      _converse.session.save({
+      _converse.session && _converse.session.save({
         'smacks_enabled': false,
         'num_stanzas_handled': 0,
         'num_stanzas_handled_by_server': 0,
@@ -61456,7 +61680,7 @@ converse_core.plugins.add('converse-smacks', {
 
       _converse.connection.addHandler(handleAck, converse_smacks_Strophe.NS.SM, 'a');
 
-      if ((_converse.api.connection.isType('websocket') || _converse.isTestEnv()) && _converse.session.get('smacks_stream_id')) {
+      if (_converse.session.get('smacks_stream_id')) {
         await sendResumeStanza();
       } else {
         resetSessionData();
@@ -61936,7 +62160,16 @@ converse_core.plugins.add("converse-autocomplete", {
       const element = document.createElement("li");
       element.setAttribute("aria-selected", "false");
 
-      const img = document.createElement("img");      // BAO
+      // BAO
+      const img = document.createElement("img");
+      let dataUri = createAvatar(text);
+
+      if (_converse.vcards)
+      {
+        const vcard = _converse.vcards.findWhere({'nickname': text});
+        if (vcard) dataUri = "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
+      }
+
       img.setAttribute("src", createAvatar(text));
       img.setAttribute("width", "22");
       img.setAttribute("class", "roster-avatar avatar");
@@ -62999,6 +63232,7 @@ const AvatarMixin = {
       };
       const image_type = this.model.vcard.get('image_type');
       const image = this.model.vcard.get('image');
+
       const display_name = this.model.vcard.attributes.fullname || this.model.vcard.get('jid'); // BAO
 
       if (image && image_type)  // BAO
@@ -63898,7 +64132,7 @@ var message_versions_modal = __webpack_require__(139);
 var message_versions_modal_default = /*#__PURE__*/__webpack_require__.n(message_versions_modal);
 
 // EXTERNAL MODULE: ./src/templates/spinner.html
-var templates_spinner = __webpack_require__(9);
+var templates_spinner = __webpack_require__(10);
 var spinner_default = /*#__PURE__*/__webpack_require__.n(templates_spinner);
 
 // EXTERNAL MODULE: ./node_modules/xss/dist/xss.js
@@ -64074,7 +64308,7 @@ converse_core.plugins.add('converse-message-view', {
 
         const isValidChange = prop => Object.prototype.hasOwnProperty.call(this.model.changed, prop);
 
-        if (['correcting', 'message', 'type', 'upload', 'received'].filter(isValidChange).length) {
+        if (['correcting', 'message', 'type', 'upload', 'received', 'editable'].filter(isValidChange).length) {
           await this.debouncedRender();
         }
 
@@ -64154,6 +64388,7 @@ converse_core.plugins.add('converse-message-view', {
         {
             text = converse_message_view_u.addMarkdown(text);
         }
+
         text = converse_message_view_u.renderNewLines(text);
         text = converse_message_view_u.addEmoji(text);
         /**
@@ -64186,9 +64421,7 @@ converse_core.plugins.add('converse-message-view', {
           'time': time.toISOString(),
           'extra_classes': this.getExtraMessageClasses(),
           'label_show': __('Show more'),
-          'username': this.model.getDisplayName(),
-          'verified': isJidVerified(this.model.get('from')),             // BAO
-          'verified_label': getVerifiedAttributes(this.model.get('from'))
+          'username': this.model.getDisplayName()
         })));
         const url = this.model.get('oob_url');
 
@@ -64293,8 +64526,8 @@ converse_core.plugins.add('converse-message-view', {
           if (this.model.occupant) {
             extra_classes += " ".concat(this.model.occupant.get('role') || '', " ").concat(this.model.occupant.get('affiliation') || '');
           }
-          // BAO
-          if (this.model.get('sender') === 'them' && typeof this.model.collection.chatbox.isUserMentioned === 'function' && this.model.collection.chatbox.isUserMentioned(this.model)) {
+
+          if (this.model.get('sender') === 'them' && this.model.collection.chatbox.isUserMentioned(this.model)) {
             // Add special class to mark groupchat messages
             // in which we are mentioned.
             extra_classes += ' mentioned';
@@ -64867,17 +65100,9 @@ converse_core.plugins.add('converse-chatview', {
           'show_toolbar': _converse.show_toolbar,
           'unread_msgs': __('You have unread messages')
         }));
-        const textarea_el = this.el.querySelector('.chat-textarea');
-        textarea_el.addEventListener('focus', () => this.emitFocused());
-        textarea_el.addEventListener('blur', () => {
-          /**
-           * Triggered when the focus has been removed from a particular chat.
-           * @event _converse#chatBoxBlurred
-           * @type { _converse.ChatBoxView | _converse.ChatRoomView }
-           * @example _converse.api.listen.on('chatBoxBlurred', view => { ... });
-           */
-          _converse.api.trigger('chatBoxBlurred', this);
-        });
+        const textarea = this.el.querySelector('.chat-textarea');
+        textarea.addEventListener('focus', ev => this.emitFocused(ev));
+        textarea.addEventListener('blur', ev => this.emitBlurred(ev));
         this.renderToolbar();
       },
 
@@ -64890,7 +65115,7 @@ converse_core.plugins.add('converse-chatview', {
             view.show();
             this.hide();
 
-            _converse.root.querySelector('#controlbox').style.display = ""; // BAO
+            //_converse.root.querySelector('#controlbox').style.display = ""; // BAO
         }
       },
 
@@ -64944,13 +65169,9 @@ converse_core.plugins.add('converse-chatview', {
        * @method _converse.ChatBoxView#addSpoilerButton
        */
       async addSpoilerButton(options) {
-        __('1111');
-
         if (!options.show_spoiler_button || this.model.get('type') === _converse.CHATROOMS_TYPE) {
           return;
         }
-
-        __('2222');
 
         const contact_jid = this.model.get('jid');
 
@@ -64958,20 +65179,13 @@ converse_core.plugins.add('converse-chatview', {
           return;
         }
 
-        __('3333');
-
         const results = await Promise.all(this.model.presence.resources.map(r => _converse.api.disco.supports(converse_chatview_Strophe.NS.SPOILER, "".concat(contact_jid, "/").concat(r.get('name')))));
-
-        __('4444');
-
         const all_resources_support_spolers = results.reduce((acc, val) => acc && val, true);
 
         if (all_resources_support_spolers) {
           const html = spoiler_button_default()(this.model.toJSON());
           this.el.querySelector('.chat-toolbar').insertAdjacentHTML('afterBegin', html);
         }
-
-        __('hello world');
       },
 
       insertHeading() {
@@ -65228,7 +65442,7 @@ converse_core.plugins.add('converse-chatview', {
                 return;
               }
 
-              previous_msg_el.insertAdjacentElement('afterend', view.el);
+              previous_msg_el.insertAdjacentElement('afterend', view.el); // BAO
               this.markFollowups(view.el);
           }
         }
@@ -65256,6 +65470,12 @@ converse_core.plugins.add('converse-chatview', {
               previous_el = el.previousElementSibling,
               date = converse_chatview_dayjs(el.getAttribute('data-isodate')),
               next_el = el.nextElementSibling;
+
+        // BAO
+
+        if (!previous_el) {
+          return;
+        }
 
         if (!converse_chatview_u.hasClass('chat-msg--action', el) && !converse_chatview_u.hasClass('chat-msg--action', previous_el) && previous_el.getAttribute('data-from') === from && date.isBefore(converse_chatview_dayjs(previous_el.getAttribute('data-isodate')).add(10, 'minutes')) && el.getAttribute('data-encrypted') === previous_el.getAttribute('data-encrypted')) {
           converse_chatview_u.addClass('chat-msg--followup', el);
@@ -65348,6 +65568,10 @@ converse_core.plugins.add('converse-chatview', {
         });
       },
 
+      modifyChatBody(text) {    // BAO
+          return text;
+      },
+
       parseMessageForCommands(text) {
         const match = text.replace(/^\s*/, "").match(/^\/(.*)\s*$/);
 
@@ -65361,10 +65585,6 @@ converse_core.plugins.add('converse-chatview', {
             return true;
           }
         }
-      },
-
-      modifyChatBody(text) {    // BAO
-          return text;
       },
 
       async onFormSubmitted(ev) {
@@ -65411,8 +65631,6 @@ converse_core.plugins.add('converse-chatview', {
            * @type { _converse.Message }
            * @example _converse.api.listen.on('messageSend', message => { ... });
            */
-            //_converse.api.trigger('messageSend', message);
-
             _converse.api.trigger('messageSend', {  // BAO
               'message': message,
               'chatbox': this.model
@@ -65491,9 +65709,10 @@ converse_core.plugins.add('converse-chatview', {
 
             if (!textarea.value || converse_chatview_u.hasClass('correcting', textarea)) {
               if (getSetting("useUpDownCursorKeys", false)) return this.editEarlierMessage(); // BAO
+
             }
           } else if (ev.keyCode === _converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length && converse_chatview_u.hasClass('correcting', this.el.querySelector('.chat-textarea'))) {
-              if (getSetting("useUpDownCursorKeys", false)) return this.editLaterMessage(); // BAO
+            if (getSetting("useUpDownCursorKeys", false)) return this.editLaterMessage(); // BAO
           }
         }
 
@@ -65752,7 +65971,7 @@ converse_core.plugins.add('converse-chatview', {
             idx -= 1;
             const candidate = this.model.messages.at(idx);
 
-            if (candidate.get('sender') === 'me' && candidate.get('message')) {
+            if (candidate.get('editable')) {
               message = candidate;
               break;
             }
@@ -65937,14 +66156,30 @@ converse_core.plugins.add('converse-chatview', {
         return this;
       },
 
-      emitFocused() {
+      emitBlurred(ev) {
+        if (this.el.contains(document.activeElement)) {
+          // Something else in this chatbox is still focused
+          return;
+        }
+        /**
+         * Triggered when the focus has been removed from a particular chat.
+         * @event _converse#chatBoxBlurred
+         * @type { _converse.ChatBoxView | _converse.ChatRoomView }
+         * @example _converse.api.listen.on('chatBoxBlurred', (view, event) => { ... });
+         */
+
+
+        _converse.api.trigger('chatBoxBlurred', this, ev);
+      },
+
+      emitFocused(ev) {
         /**
          * Triggered when the focus has been moved to a particular chat.
          * @event _converse#chatBoxFocused
          * @type { _converse.ChatBoxView | _converse.ChatRoomView }
-         * @example _converse.api.listen.on('chatBoxFocused', view => { ... });
+         * @example _converse.api.listen.on('chatBoxFocused', (view, event) => { ... });
          */
-        _converse.api.trigger('chatBoxFocused', this);
+        _converse.api.trigger('chatBoxFocused', this, ev);
       },
 
       focus() {
@@ -65952,7 +66187,6 @@ converse_core.plugins.add('converse-chatview', {
 
         if (textarea_el && document.activeElement !== textarea_el) {
           textarea_el.focus();
-          this.emitFocused();
         }
 
         return this;
@@ -66192,11 +66426,11 @@ var login_panel_default = /*#__PURE__*/__webpack_require__.n(login_panel);
 
 
 
+
 const CHATBOX_TYPE = 'chatbox';
 const {
   Strophe: converse_controlbox_Strophe,
   Backbone: converse_controlbox_Backbone,
-  _: converse_controlbox_,
   dayjs: converse_controlbox_dayjs
 } = converse_core.env;
 const converse_controlbox_u = converse_core.env.utils;
@@ -66586,7 +66820,7 @@ converse_core.plugins.add('converse-controlbox', {
 
         let feedback_class, pretty_status;
 
-        if (converse_controlbox_.includes(REPORTABLE_STATUSES, connection_status)) {
+        if (REPORTABLE_STATUSES.includes(connection_status)) {
           pretty_status = PRETTY_CONNECTION_STATUS[connection_status];
           feedback_class = CONNECTION_STATUS_CSS_CLASS[pretty_status];
         }
@@ -66610,7 +66844,7 @@ converse_core.plugins.add('converse-controlbox', {
       },
 
       initPopovers() {
-        converse_controlbox_.forEach(this.el.querySelectorAll('[data-title]'), el => {
+        Array.from(this.el.querySelectorAll('[data-title]')).forEach(el => {
           const popover = new bootstrap_native_default.a.Popover(el, {
             'trigger': _converse.view_mode === 'mobile' && 'click' || 'hover',
             'dismissible': _converse.view_mode === 'mobile' && true || false,
@@ -66671,7 +66905,7 @@ converse_core.plugins.add('converse-controlbox', {
           }
 
           jid = converse_controlbox_Strophe.escapeNode(jid) + last_part;
-        } else if (_converse.default_domain && !converse_controlbox_.includes(jid, '@')) {
+        } else if (_converse.default_domain && !jid.includes('@')) {
           jid = jid + '@' + _converse.default_domain;
         }
 
@@ -66679,7 +66913,7 @@ converse_core.plugins.add('converse-controlbox', {
       },
 
       connect(jid, password) {
-        if (converse_controlbox_.includes(["converse/login", "converse/register"], converse_controlbox_Backbone.history.getFragment())) {
+        if (["converse/login", "converse/register"].includes(converse_controlbox_Backbone.history.getFragment())) {
           _converse.router.navigate('', {
             'replace': true
           });
@@ -66720,7 +66954,7 @@ converse_core.plugins.add('converse-controlbox', {
       initialize() {
         _converse.chatboxviews.insertRowColumn(this.render().el);
 
-        _converse.api.waitUntil('initialized').then(this.render.bind(this)).catch(converse_controlbox_.partial(_converse.log, converse_controlbox_, converse_controlbox_Strophe.LogLevel.FATAL));
+        _converse.api.waitUntil('initialized').then(this.render.bind(this)).catch(e => _converse.log(e, converse_controlbox_Strophe.LogLevel.FATAL));
       },
 
       render() {
@@ -66799,8 +67033,7 @@ converse_core.plugins.add('converse-controlbox', {
     });
 
     _converse.api.listen.on('clearSession', () => {
-      const chatboxviews = converse_controlbox_.get(_converse, 'chatboxviews', null);
-
+      const chatboxviews = Object(lodash["get"])(_converse, 'chatboxviews', null);
       const view = chatboxviews && chatboxviews.get('controlbox');
 
       if (view) {
@@ -66808,14 +67041,14 @@ converse_core.plugins.add('converse-controlbox', {
           'connected': false
         });
 
-        if (converse_controlbox_.get(view, 'controlbox_pane')) {
+        if (Object(lodash["get"])(view, 'controlbox_pane')) {
           view.controlbox_pane.remove();
           delete view.controlbox_pane;
         }
       }
     });
 
-    Promise.all([_converse.api.waitUntil('connectionInitialized'), _converse.api.waitUntil('chatBoxViewsInitialized')]).then(addControlBox).catch(converse_controlbox_.partial(_converse.log, converse_controlbox_, converse_controlbox_Strophe.LogLevel.FATAL));
+    Promise.all([_converse.api.waitUntil('connectionInitialized'), _converse.api.waitUntil('chatBoxViewsInitialized')]).then(addControlBox).catch(e => _converse.log(e, converse_controlbox_Strophe.LogLevel.FATAL));
 
     _converse.api.listen.on('chatBoxesFetched', () => {
       const controlbox = _converse.chatboxes.get('controlbox') || addControlBox();
@@ -67501,6 +67734,9 @@ converse.plugins.add('converse-emoji-views', {
 
       afterRender() {
         this.initIntersectionObserver();
+        const textarea = this.el.querySelector('.emoji-search');
+        textarea.addEventListener('focus', ev => this.chatview.emitFocused(ev));
+        textarea.addEventListener('blur', ev => this.chatview.emitBlurred(ev));
       },
 
       filter(value, set_property) {
@@ -68990,6 +69226,7 @@ converse_core.plugins.add('converse-muc-views', {
       'muc_show_join_leave': true,
       'muc_show_join_leave_status': true,
       'muc_mention_autocomplete_min_chars': 0,
+      'muc_mention_autocomplete_filter': 'contains', // BAO
       'roomconfig_whitelist': [],
       'visible_toolbar_buttons': {
         'toggle_occupants': true
@@ -69689,7 +69926,7 @@ converse_core.plugins.add('converse-muc-views', {
           'min_chars': _converse.muc_mention_autocomplete_min_chars,
           'match_current_word': true,
           'list': () => this.getAutoCompleteList(),
-          'filter': _converse.FILTER_STARTSWITH,
+          'filter': _converse.muc_mention_autocomplete_filter == 'starts_with' ? _converse.FILTER_STARTSWITH : _converse.FILTER_CONTAINS, // BAO
           'ac_triggers': ["Tab", "@"],
           'include_triggers': []
         });
@@ -70987,9 +71224,7 @@ converse_core.plugins.add('converse-muc-views', {
           'label_visitor': __('Visitor'),
           'label_owner': __('Owner'),
           'label_member': __('Member'),
-          'label_admin': __('Admin'),
-          'verified': isJidVerified(this.model.get('jid')),            // BAO
-          'verified_label': getVerifiedAttributes(this.model.get('jid'))
+          'label_admin': __('Admin')
         }, this.model.toJSON()));
       },
 
@@ -71451,7 +71686,7 @@ converse_core.plugins.add('converse-notification', {
 
       const is_me = converse_notification_Strophe.getBareJidFromJid(message.getAttribute('from')) === _converse.bare_jid;
 
-      return !converse_notification_u.isOnlyChatStateNotification(message) && !is_me && (_converse.show_desktop_notifications === 'all' || _converse.isMessageToHiddenChat(message));
+      return !converse_notification_u.isOnlyChatStateNotification(message) && !converse_notification_u.isOnlyMessageDeliveryReceipt(message) && !is_me && (_converse.show_desktop_notifications === 'all' || _converse.isMessageToHiddenChat(message));
     };
 
     _converse.playSoundNotification = function () {
@@ -71690,7 +71925,7 @@ var profile_view = __webpack_require__(185);
 var profile_view_default = /*#__PURE__*/__webpack_require__.n(profile_view);
 
 // EXTERNAL MODULE: ./src/templates/status_option.html
-var status_option = __webpack_require__(457);
+var status_option = __webpack_require__(458);
 
 // CONCATENATED MODULE: ./src/converse-profile.js
 // Converse.js (A browser based XMPP chat client)
@@ -71901,9 +72136,6 @@ converse_core.plugins.add('converse-profile', {
           'modal_title': __('About'),
           'version_name': _converse.VERSION_NAME,
           // BAO
-          //'first_subtitle': __('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
-          //'second_subtitle': __('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
-
           'first_subtitle': getSetting("enableTransferWise", false) ? "<img height='16' src='plugins/css/images/transferwise.svg' />" : "",
           'second_subtitle': "", //__('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
         }));
@@ -74864,7 +75096,7 @@ var roster_item = __webpack_require__(199);
 var roster_item_default = /*#__PURE__*/__webpack_require__.n(roster_item);
 
 // EXTERNAL MODULE: ./src/templates/search_contact.html
-var search_contact = __webpack_require__(458);
+var search_contact = __webpack_require__(459);
 
 // CONCATENATED MODULE: ./src/converse-rosterview.js
 // Converse.js
@@ -75195,7 +75427,6 @@ converse_core.plugins.add('converse-rosterview', {
 
       shouldBeVisible() {
         // BAO
-        //return _converse.roster && _converse.roster.length >= 5 || this.isActive();
         return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
       },
 
@@ -75359,8 +75590,6 @@ converse_core.plugins.add('converse-rosterview', {
         }
 
         // BAO
-        //const display_name = item.getDisplayName();
-
         const display_name = item.getDisplayName() || item.vcard.get('jid');
         let dataUri = "data:" + item.vcard.attributes.image_type + ";base64," + item.vcard.attributes.image;
 
@@ -75766,7 +75995,10 @@ converse_core.plugins.add('converse-rosterview', {
         // Create a model on which we can store filter properties
         const model = new _converse.RosterFilter();
         model.id = "_converse.rosterfilter".concat(_converse.bare_jid);
-        model.browserStorage = new backbone_browserStorage_default.a.local(this.filter.id);
+
+        const storage = _converse.config.get('storage');
+
+        model.browserStorage = new backbone_browserStorage_default.a[storage](this.filter.id);
         this.filter_view = new _converse.RosterFilterView({
           'model': model
         });
@@ -76124,9 +76356,16 @@ converse_core.plugins.add('converse-uniview', {
 
 });
 // EXTERNAL MODULE: ./sass/converse.scss
-var sass_converse = __webpack_require__(459);
+var sass_converse = __webpack_require__(460);
 
 // CONCATENATED MODULE: ./src/converse.js
+// Converse.js (A browser based XMPP chat client)
+// https://conversejs.org
+//
+// Copyright (c) 2019, The Converse developers
+// Licensed under the Mozilla Public License (MPLv2)
+//
+
 /* START: Removable components
  * --------------------
  * Any of the following components may be removed if they're not needed.

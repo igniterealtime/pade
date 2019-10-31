@@ -4213,7 +4213,7 @@ function setupWorkgroup()
 
     pade.connection.sendIQ(stanza, function(iq)
     {
-        if (getSetting("wgNotifications", false))
+        if (getSetting("wgStatusAlerts", false))
         {
             var list = [];
 

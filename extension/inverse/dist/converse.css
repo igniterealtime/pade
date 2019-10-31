@@ -5,6 +5,7 @@
  * Copyright (c) 2013-2018, JC Brand <jc@opkode.com>
  * Licensed under the Mozilla Public License
  */
+
 #conversejs :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -74,7 +75,7 @@
 }
 
 #conversejs [tabindex="-1"]:focus {
-    outline: 0 !important
+    outline: 0!important
 }
 
 #conversejs hr {
@@ -372,7 +373,7 @@
 }
 
 #conversejs [hidden] {
-    display: none !important
+    display: none!important
 }
 
 #conversejs .h1,
@@ -852,177 +853,137 @@
         flex-grow: 1;
         max-width: 100%
     }
-
     #conversejs .col-sm-auto {
         flex: 0 0 auto;
         width: auto;
         max-width: 100%
     }
-
     #conversejs .col-sm-1 {
         flex: 0 0 8.33333%;
         max-width: 8.33333%
     }
-
     #conversejs .col-sm-2 {
         flex: 0 0 16.66667%;
         max-width: 16.66667%
     }
-
     #conversejs .col-sm-3 {
         flex: 0 0 25%;
         max-width: 25%
     }
-
     #conversejs .col-sm-4 {
         flex: 0 0 33.33333%;
         max-width: 33.33333%
     }
-
     #conversejs .col-sm-5 {
         flex: 0 0 41.66667%;
         max-width: 41.66667%
     }
-
     #conversejs .col-sm-6 {
         flex: 0 0 50%;
         max-width: 50%
     }
-
     #conversejs .col-sm-7 {
         flex: 0 0 58.33333%;
         max-width: 58.33333%
     }
-
     #conversejs .col-sm-8 {
         flex: 0 0 66.66667%;
         max-width: 66.66667%
     }
-
     #conversejs .col-sm-9 {
         flex: 0 0 75%;
         max-width: 75%
     }
-
     #conversejs .col-sm-10 {
         flex: 0 0 83.33333%;
         max-width: 83.33333%
     }
-
     #conversejs .col-sm-11 {
         flex: 0 0 91.66667%;
         max-width: 91.66667%
     }
-
     #conversejs .col-sm-12 {
         flex: 0 0 100%;
         max-width: 100%
     }
-
     #conversejs .order-sm-first {
         order: -1
     }
-
     #conversejs .order-sm-last {
         order: 13
     }
-
     #conversejs .order-sm-0 {
         order: 0
     }
-
     #conversejs .order-sm-1 {
         order: 1
     }
-
     #conversejs .order-sm-2 {
         order: 2
     }
-
     #conversejs .order-sm-3 {
         order: 3
     }
-
     #conversejs .order-sm-4 {
         order: 4
     }
-
     #conversejs .order-sm-5 {
         order: 5
     }
-
     #conversejs .order-sm-6 {
         order: 6
     }
-
     #conversejs .order-sm-7 {
         order: 7
     }
-
     #conversejs .order-sm-8 {
         order: 8
     }
-
     #conversejs .order-sm-9 {
         order: 9
     }
-
     #conversejs .order-sm-10 {
         order: 10
     }
-
     #conversejs .order-sm-11 {
         order: 11
     }
-
     #conversejs .order-sm-12 {
         order: 12
     }
-
     #conversejs .offset-sm-0 {
         margin-left: 0
     }
-
     #conversejs .offset-sm-1 {
         margin-left: 8.33333%
     }
-
     #conversejs .offset-sm-2 {
         margin-left: 16.66667%
     }
-
     #conversejs .offset-sm-3 {
         margin-left: 25%
     }
-
     #conversejs .offset-sm-4 {
         margin-left: 33.33333%
     }
-
     #conversejs .offset-sm-5 {
         margin-left: 41.66667%
     }
-
     #conversejs .offset-sm-6 {
         margin-left: 50%
     }
-
     #conversejs .offset-sm-7 {
         margin-left: 58.33333%
     }
-
     #conversejs .offset-sm-8 {
         margin-left: 66.66667%
     }
-
     #conversejs .offset-sm-9 {
         margin-left: 75%
     }
-
     #conversejs .offset-sm-10 {
         margin-left: 83.33333%
     }
-
     #conversejs .offset-sm-11 {
         margin-left: 91.66667%
     }
@@ -1034,177 +995,137 @@
         flex-grow: 1;
         max-width: 100%
     }
-
     #conversejs .col-md-auto {
         flex: 0 0 auto;
         width: auto;
         max-width: 100%
     }
-
     #conversejs .col-md-1 {
         flex: 0 0 8.33333%;
         max-width: 8.33333%
     }
-
     #conversejs .col-md-2 {
         flex: 0 0 16.66667%;
         max-width: 16.66667%
     }
-
     #conversejs .col-md-3 {
         flex: 0 0 25%;
         max-width: 25%
     }
-
     #conversejs .col-md-4 {
         flex: 0 0 33.33333%;
         max-width: 33.33333%
     }
-
     #conversejs .col-md-5 {
         flex: 0 0 41.66667%;
         max-width: 41.66667%
     }
-
     #conversejs .col-md-6 {
         flex: 0 0 50%;
         max-width: 50%
     }
-
     #conversejs .col-md-7 {
         flex: 0 0 58.33333%;
         max-width: 58.33333%
     }
-
     #conversejs .col-md-8 {
         flex: 0 0 66.66667%;
         max-width: 66.66667%
     }
-
     #conversejs .col-md-9 {
         flex: 0 0 75%;
         max-width: 75%
     }
-
     #conversejs .col-md-10 {
         flex: 0 0 83.33333%;
         max-width: 83.33333%
     }
-
     #conversejs .col-md-11 {
         flex: 0 0 91.66667%;
         max-width: 91.66667%
     }
-
     #conversejs .col-md-12 {
         flex: 0 0 100%;
         max-width: 100%
     }
-
     #conversejs .order-md-first {
         order: -1
     }
-
     #conversejs .order-md-last {
         order: 13
     }
-
     #conversejs .order-md-0 {
         order: 0
     }
-
     #conversejs .order-md-1 {
         order: 1
     }
-
     #conversejs .order-md-2 {
         order: 2
     }
-
     #conversejs .order-md-3 {
         order: 3
     }
-
     #conversejs .order-md-4 {
         order: 4
     }
-
     #conversejs .order-md-5 {
         order: 5
     }
-
     #conversejs .order-md-6 {
         order: 6
     }
-
     #conversejs .order-md-7 {
         order: 7
     }
-
     #conversejs .order-md-8 {
         order: 8
     }
-
     #conversejs .order-md-9 {
         order: 9
     }
-
     #conversejs .order-md-10 {
         order: 10
     }
-
     #conversejs .order-md-11 {
         order: 11
     }
-
     #conversejs .order-md-12 {
         order: 12
     }
-
     #conversejs .offset-md-0 {
         margin-left: 0
     }
-
     #conversejs .offset-md-1 {
         margin-left: 8.33333%
     }
-
     #conversejs .offset-md-2 {
         margin-left: 16.66667%
     }
-
     #conversejs .offset-md-3 {
         margin-left: 25%
     }
-
     #conversejs .offset-md-4 {
         margin-left: 33.33333%
     }
-
     #conversejs .offset-md-5 {
         margin-left: 41.66667%
     }
-
     #conversejs .offset-md-6 {
         margin-left: 50%
     }
-
     #conversejs .offset-md-7 {
         margin-left: 58.33333%
     }
-
     #conversejs .offset-md-8 {
         margin-left: 66.66667%
     }
-
     #conversejs .offset-md-9 {
         margin-left: 75%
     }
-
     #conversejs .offset-md-10 {
         margin-left: 83.33333%
     }
-
     #conversejs .offset-md-11 {
         margin-left: 91.66667%
     }
@@ -1216,177 +1137,137 @@
         flex-grow: 1;
         max-width: 100%
     }
-
     #conversejs .col-lg-auto {
         flex: 0 0 auto;
         width: auto;
         max-width: 100%
     }
-
     #conversejs .col-lg-1 {
         flex: 0 0 8.33333%;
         max-width: 8.33333%
     }
-
     #conversejs .col-lg-2 {
         flex: 0 0 16.66667%;
         max-width: 16.66667%
     }
-
     #conversejs .col-lg-3 {
         flex: 0 0 25%;
         max-width: 25%
     }
-
     #conversejs .col-lg-4 {
         flex: 0 0 33.33333%;
         max-width: 33.33333%
     }
-
     #conversejs .col-lg-5 {
         flex: 0 0 41.66667%;
         max-width: 41.66667%
     }
-
     #conversejs .col-lg-6 {
         flex: 0 0 50%;
         max-width: 50%
     }
-
     #conversejs .col-lg-7 {
         flex: 0 0 58.33333%;
         max-width: 58.33333%
     }
-
     #conversejs .col-lg-8 {
         flex: 0 0 66.66667%;
         max-width: 66.66667%
     }
-
     #conversejs .col-lg-9 {
         flex: 0 0 75%;
         max-width: 75%
     }
-
     #conversejs .col-lg-10 {
         flex: 0 0 83.33333%;
         max-width: 83.33333%
     }
-
     #conversejs .col-lg-11 {
         flex: 0 0 91.66667%;
         max-width: 91.66667%
     }
-
     #conversejs .col-lg-12 {
         flex: 0 0 100%;
         max-width: 100%
     }
-
     #conversejs .order-lg-first {
         order: -1
     }
-
     #conversejs .order-lg-last {
         order: 13
     }
-
     #conversejs .order-lg-0 {
         order: 0
     }
-
     #conversejs .order-lg-1 {
         order: 1
     }
-
     #conversejs .order-lg-2 {
         order: 2
     }
-
     #conversejs .order-lg-3 {
         order: 3
     }
-
     #conversejs .order-lg-4 {
         order: 4
     }
-
     #conversejs .order-lg-5 {
         order: 5
     }
-
     #conversejs .order-lg-6 {
         order: 6
     }
-
     #conversejs .order-lg-7 {
         order: 7
     }
-
     #conversejs .order-lg-8 {
         order: 8
     }
-
     #conversejs .order-lg-9 {
         order: 9
     }
-
     #conversejs .order-lg-10 {
         order: 10
     }
-
     #conversejs .order-lg-11 {
         order: 11
     }
-
     #conversejs .order-lg-12 {
         order: 12
     }
-
     #conversejs .offset-lg-0 {
         margin-left: 0
     }
-
     #conversejs .offset-lg-1 {
         margin-left: 8.33333%
     }
-
     #conversejs .offset-lg-2 {
         margin-left: 16.66667%
     }
-
     #conversejs .offset-lg-3 {
         margin-left: 25%
     }
-
     #conversejs .offset-lg-4 {
         margin-left: 33.33333%
     }
-
     #conversejs .offset-lg-5 {
         margin-left: 41.66667%
     }
-
     #conversejs .offset-lg-6 {
         margin-left: 50%
     }
-
     #conversejs .offset-lg-7 {
         margin-left: 58.33333%
     }
-
     #conversejs .offset-lg-8 {
         margin-left: 66.66667%
     }
-
     #conversejs .offset-lg-9 {
         margin-left: 75%
     }
-
     #conversejs .offset-lg-10 {
         margin-left: 83.33333%
     }
-
     #conversejs .offset-lg-11 {
         margin-left: 91.66667%
     }
@@ -1398,177 +1279,137 @@
         flex-grow: 1;
         max-width: 100%
     }
-
     #conversejs .col-xl-auto {
         flex: 0 0 auto;
         width: auto;
         max-width: 100%
     }
-
     #conversejs .col-xl-1 {
         flex: 0 0 8.33333%;
         max-width: 8.33333%
     }
-
     #conversejs .col-xl-2 {
         flex: 0 0 16.66667%;
         max-width: 16.66667%
     }
-
     #conversejs .col-xl-3 {
         flex: 0 0 25%;
         max-width: 25%
     }
-
     #conversejs .col-xl-4 {
         flex: 0 0 33.33333%;
         max-width: 33.33333%
     }
-
     #conversejs .col-xl-5 {
         flex: 0 0 41.66667%;
         max-width: 41.66667%
     }
-
     #conversejs .col-xl-6 {
         flex: 0 0 50%;
         max-width: 50%
     }
-
     #conversejs .col-xl-7 {
         flex: 0 0 58.33333%;
         max-width: 58.33333%
     }
-
     #conversejs .col-xl-8 {
         flex: 0 0 66.66667%;
         max-width: 66.66667%
     }
-
     #conversejs .col-xl-9 {
         flex: 0 0 75%;
         max-width: 75%
     }
-
     #conversejs .col-xl-10 {
         flex: 0 0 83.33333%;
         max-width: 83.33333%
     }
-
     #conversejs .col-xl-11 {
         flex: 0 0 91.66667%;
         max-width: 91.66667%
     }
-
     #conversejs .col-xl-12 {
         flex: 0 0 100%;
         max-width: 100%
     }
-
     #conversejs .order-xl-first {
         order: -1
     }
-
     #conversejs .order-xl-last {
         order: 13
     }
-
     #conversejs .order-xl-0 {
         order: 0
     }
-
     #conversejs .order-xl-1 {
         order: 1
     }
-
     #conversejs .order-xl-2 {
         order: 2
     }
-
     #conversejs .order-xl-3 {
         order: 3
     }
-
     #conversejs .order-xl-4 {
         order: 4
     }
-
     #conversejs .order-xl-5 {
         order: 5
     }
-
     #conversejs .order-xl-6 {
         order: 6
     }
-
     #conversejs .order-xl-7 {
         order: 7
     }
-
     #conversejs .order-xl-8 {
         order: 8
     }
-
     #conversejs .order-xl-9 {
         order: 9
     }
-
     #conversejs .order-xl-10 {
         order: 10
     }
-
     #conversejs .order-xl-11 {
         order: 11
     }
-
     #conversejs .order-xl-12 {
         order: 12
     }
-
     #conversejs .offset-xl-0 {
         margin-left: 0
     }
-
     #conversejs .offset-xl-1 {
         margin-left: 8.33333%
     }
-
     #conversejs .offset-xl-2 {
         margin-left: 16.66667%
     }
-
     #conversejs .offset-xl-3 {
         margin-left: 25%
     }
-
     #conversejs .offset-xl-4 {
         margin-left: 33.33333%
     }
-
     #conversejs .offset-xl-5 {
         margin-left: 41.66667%
     }
-
     #conversejs .offset-xl-6 {
         margin-left: 50%
     }
-
     #conversejs .offset-xl-7 {
         margin-left: 58.33333%
     }
-
     #conversejs .offset-xl-8 {
         margin-left: 66.66667%
     }
-
     #conversejs .offset-xl-9 {
         margin-left: 75%
     }
-
     #conversejs .offset-xl-10 {
         margin-left: 83.33333%
     }
-
     #conversejs .offset-xl-11 {
         margin-left: 91.66667%
     }
@@ -2074,7 +1915,6 @@
         justify-content: center;
         margin-bottom: 0
     }
-
     #conversejs .form-inline .form-group {
         display: flex;
         flex: 0 0 auto;
@@ -2082,22 +1922,18 @@
         align-items: center;
         margin-bottom: 0
     }
-
     #conversejs .form-inline .form-control {
         display: inline-block;
         width: auto;
         vertical-align: middle
     }
-
     #conversejs .form-inline .form-control-plaintext {
         display: inline-block
     }
-
     #conversejs .form-inline .custom-select,
     #conversejs .form-inline .input-group {
         width: auto
     }
-
     #conversejs .form-inline .form-check {
         display: flex;
         align-items: center;
@@ -2105,7 +1941,6 @@
         width: auto;
         padding-left: 0
     }
-
     #conversejs .form-inline .form-check-input {
         position: relative;
         flex-shrink: 0;
@@ -2113,12 +1948,10 @@
         margin-right: .25rem;
         margin-left: 0
     }
-
     #conversejs .form-inline .custom-control {
         align-items: center;
         justify-content: center
     }
-
     #conversejs .form-inline .custom-control-label {
         margin-bottom: 0
     }
@@ -2908,7 +2741,6 @@
         right: auto;
         left: 0
     }
-
     #conversejs .dropdown-menu-sm-right {
         right: 0;
         left: auto
@@ -2920,7 +2752,6 @@
         right: auto;
         left: 0
     }
-
     #conversejs .dropdown-menu-md-right {
         right: 0;
         left: auto
@@ -2932,7 +2763,6 @@
         right: auto;
         left: 0
     }
-
     #conversejs .dropdown-menu-lg-right {
         right: 0;
         left: auto
@@ -2944,7 +2774,6 @@
         right: auto;
         left: 0
     }
-
     #conversejs .dropdown-menu-xl-right {
         right: 0;
         left: auto
@@ -3856,7 +3685,6 @@
 }
 
 @media (prefers-reduced-motion:reduce) {
-
     #conversejs .custom-control-label::before,
     #conversejs .custom-file-label,
     #conversejs .custom-select {
@@ -4042,7 +3870,6 @@
 }
 
 @media (max-width:575.98px) {
-
     #conversejs .navbar-expand-sm>.container,
     #conversejs .navbar-expand-sm>.container-fluid {
         padding-right: 0;
@@ -4055,37 +3882,30 @@
         flex-flow: row nowrap;
         justify-content: flex-start
     }
-
     #conversejs .navbar-expand-sm .navbar-nav {
         flex-direction: row
     }
-
     #conversejs .navbar-expand-sm .navbar-nav .dropdown-menu {
         position: absolute
     }
-
     #conversejs .navbar-expand-sm .navbar-nav .nav-link {
         padding-right: .5rem;
         padding-left: .5rem
     }
-
     #conversejs .navbar-expand-sm>.container,
     #conversejs .navbar-expand-sm>.container-fluid {
         flex-wrap: nowrap
     }
-
     #conversejs .navbar-expand-sm .navbar-collapse {
-        display: flex !important;
+        display: flex!important;
         flex-basis: auto
     }
-
     #conversejs .navbar-expand-sm .navbar-toggler {
         display: none
     }
 }
 
 @media (max-width:767.98px) {
-
     #conversejs .navbar-expand-md>.container,
     #conversejs .navbar-expand-md>.container-fluid {
         padding-right: 0;
@@ -4098,37 +3918,30 @@
         flex-flow: row nowrap;
         justify-content: flex-start
     }
-
     #conversejs .navbar-expand-md .navbar-nav {
         flex-direction: row
     }
-
     #conversejs .navbar-expand-md .navbar-nav .dropdown-menu {
         position: absolute
     }
-
     #conversejs .navbar-expand-md .navbar-nav .nav-link {
         padding-right: .5rem;
         padding-left: .5rem
     }
-
     #conversejs .navbar-expand-md>.container,
     #conversejs .navbar-expand-md>.container-fluid {
         flex-wrap: nowrap
     }
-
     #conversejs .navbar-expand-md .navbar-collapse {
-        display: flex !important;
+        display: flex!important;
         flex-basis: auto
     }
-
     #conversejs .navbar-expand-md .navbar-toggler {
         display: none
     }
 }
 
 @media (max-width:991.98px) {
-
     #conversejs .navbar-expand-lg>.container,
     #conversejs .navbar-expand-lg>.container-fluid {
         padding-right: 0;
@@ -4141,37 +3954,30 @@
         flex-flow: row nowrap;
         justify-content: flex-start
     }
-
     #conversejs .navbar-expand-lg .navbar-nav {
         flex-direction: row
     }
-
     #conversejs .navbar-expand-lg .navbar-nav .dropdown-menu {
         position: absolute
     }
-
     #conversejs .navbar-expand-lg .navbar-nav .nav-link {
         padding-right: .5rem;
         padding-left: .5rem
     }
-
     #conversejs .navbar-expand-lg>.container,
     #conversejs .navbar-expand-lg>.container-fluid {
         flex-wrap: nowrap
     }
-
     #conversejs .navbar-expand-lg .navbar-collapse {
-        display: flex !important;
+        display: flex!important;
         flex-basis: auto
     }
-
     #conversejs .navbar-expand-lg .navbar-toggler {
         display: none
     }
 }
 
 @media (max-width:1199.98px) {
-
     #conversejs .navbar-expand-xl>.container,
     #conversejs .navbar-expand-xl>.container-fluid {
         padding-right: 0;
@@ -4184,30 +3990,24 @@
         flex-flow: row nowrap;
         justify-content: flex-start
     }
-
     #conversejs .navbar-expand-xl .navbar-nav {
         flex-direction: row
     }
-
     #conversejs .navbar-expand-xl .navbar-nav .dropdown-menu {
         position: absolute
     }
-
     #conversejs .navbar-expand-xl .navbar-nav .nav-link {
         padding-right: .5rem;
         padding-left: .5rem
     }
-
     #conversejs .navbar-expand-xl>.container,
     #conversejs .navbar-expand-xl>.container-fluid {
         flex-wrap: nowrap
     }
-
     #conversejs .navbar-expand-xl .navbar-collapse {
-        display: flex !important;
+        display: flex!important;
         flex-basis: auto
     }
-
     #conversejs .navbar-expand-xl .navbar-toggler {
         display: none
     }
@@ -4243,7 +4043,7 @@
 }
 
 #conversejs .navbar-expand .navbar-collapse {
-    display: flex !important;
+    display: flex!important;
     flex-basis: auto
 }
 
@@ -4484,7 +4284,6 @@
         margin-right: -15px;
         margin-left: -15px
     }
-
     #conversejs .card-deck .card {
         display: flex;
         flex: 1 0 0%;
@@ -4508,42 +4307,34 @@
     #conversejs .card-group {
         flex-flow: row wrap
     }
-
     #conversejs .card-group>.card {
         flex: 1 0 0%;
         margin-bottom: 0
     }
-
     #conversejs .card-group>.card+.card {
         margin-left: 0;
         border-left: 0
     }
-
     #conversejs .card-group>.card:not(:last-child) {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0
     }
-
     #conversejs .card-group>.card:not(:last-child) .card-header,
     #conversejs .card-group>.card:not(:last-child) .card-img-top {
         border-top-right-radius: 0
     }
-
     #conversejs .card-group>.card:not(:last-child) .card-footer,
     #conversejs .card-group>.card:not(:last-child) .card-img-bottom {
         border-bottom-right-radius: 0
     }
-
     #conversejs .card-group>.card:not(:first-child) {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0
     }
-
     #conversejs .card-group>.card:not(:first-child) .card-header,
     #conversejs .card-group>.card:not(:first-child) .card-img-top {
         border-top-left-radius: 0
     }
-
     #conversejs .card-group>.card:not(:first-child) .card-footer,
     #conversejs .card-group>.card:not(:first-child) .card-img-bottom {
         border-bottom-left-radius: 0
@@ -4563,7 +4354,6 @@
         orphans: 1;
         widows: 1
     }
-
     #conversejs .card-columns .card {
         display: inline-block;
         width: 100%
@@ -5041,18 +4831,15 @@ a#conversejs .badge-dark:focus {
     #conversejs .list-group-horizontal-sm {
         flex-direction: row
     }
-
     #conversejs .list-group-horizontal-sm .list-group-item {
         margin-right: -1px;
         margin-bottom: 0
     }
-
     #conversejs .list-group-horizontal-sm .list-group-item:first-child {
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
         border-top-right-radius: 0
     }
-
     #conversejs .list-group-horizontal-sm .list-group-item:last-child {
         margin-right: 0;
         border-top-right-radius: .25rem;
@@ -5065,18 +4852,15 @@ a#conversejs .badge-dark:focus {
     #conversejs .list-group-horizontal-md {
         flex-direction: row
     }
-
     #conversejs .list-group-horizontal-md .list-group-item {
         margin-right: -1px;
         margin-bottom: 0
     }
-
     #conversejs .list-group-horizontal-md .list-group-item:first-child {
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
         border-top-right-radius: 0
     }
-
     #conversejs .list-group-horizontal-md .list-group-item:last-child {
         margin-right: 0;
         border-top-right-radius: .25rem;
@@ -5089,18 +4873,15 @@ a#conversejs .badge-dark:focus {
     #conversejs .list-group-horizontal-lg {
         flex-direction: row
     }
-
     #conversejs .list-group-horizontal-lg .list-group-item {
         margin-right: -1px;
         margin-bottom: 0
     }
-
     #conversejs .list-group-horizontal-lg .list-group-item:first-child {
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
         border-top-right-radius: 0
     }
-
     #conversejs .list-group-horizontal-lg .list-group-item:last-child {
         margin-right: 0;
         border-top-right-radius: .25rem;
@@ -5113,18 +4894,15 @@ a#conversejs .badge-dark:focus {
     #conversejs .list-group-horizontal-xl {
         flex-direction: row
     }
-
     #conversejs .list-group-horizontal-xl .list-group-item {
         margin-right: -1px;
         margin-bottom: 0
     }
-
     #conversejs .list-group-horizontal-xl .list-group-item:first-child {
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
         border-top-right-radius: 0
     }
-
     #conversejs .list-group-horizontal-xl .list-group-item:last-child {
         margin-right: 0;
         border-top-right-radius: .25rem;
@@ -5497,30 +5275,24 @@ a#conversejs .badge-dark:focus {
         max-width: 500px;
         margin: 1.75rem auto
     }
-
     #conversejs .modal-dialog-scrollable {
         max-height: calc(100% - 3.5rem)
     }
-
     #conversejs .modal-dialog-scrollable .modal-content {
         max-height: calc(100vh - 3.5rem)
     }
-
     #conversejs .modal-dialog-centered {
         min-height: calc(100% - 3.5rem)
     }
-
     #conversejs .modal-dialog-centered::before {
         height: calc(100vh - 3.5rem)
     }
-
     #conversejs .modal-sm {
         max-width: 300px
     }
 }
 
 @media (min-width:992px) {
-
     #conversejs .modal-lg,
     #conversejs .modal-xl {
         max-width: 800px
@@ -5836,243 +5608,243 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .align-baseline {
-    vertical-align: baseline !important
+    vertical-align: baseline!important
 }
 
 #conversejs .align-top {
-    vertical-align: top !important
+    vertical-align: top!important
 }
 
 #conversejs .align-middle {
-    vertical-align: middle !important
+    vertical-align: middle!important
 }
 
 #conversejs .align-bottom {
-    vertical-align: bottom !important
+    vertical-align: bottom!important
 }
 
 #conversejs .align-text-bottom {
-    vertical-align: text-bottom !important
+    vertical-align: text-bottom!important
 }
 
 #conversejs .align-text-top {
-    vertical-align: text-top !important
+    vertical-align: text-top!important
 }
 
 #conversejs .bg-primary {
-    background-color: #007bff !important
+    background-color: #007bff!important
 }
 
 #conversejs a.bg-primary:focus,
 #conversejs a.bg-primary:hover,
 #conversejs button.bg-primary:focus,
 #conversejs button.bg-primary:hover {
-    background-color: #0062cc !important
+    background-color: #0062cc!important
 }
 
 #conversejs .bg-secondary {
-    background-color: #6c757d !important
+    background-color: #6c757d!important
 }
 
 #conversejs a.bg-secondary:focus,
 #conversejs a.bg-secondary:hover,
 #conversejs button.bg-secondary:focus,
 #conversejs button.bg-secondary:hover {
-    background-color: #545b62 !important
+    background-color: #545b62!important
 }
 
 #conversejs .bg-success {
-    background-color: #28a745 !important
+    background-color: #28a745!important
 }
 
 #conversejs a.bg-success:focus,
 #conversejs a.bg-success:hover,
 #conversejs button.bg-success:focus,
 #conversejs button.bg-success:hover {
-    background-color: #1e7e34 !important
+    background-color: #1e7e34!important
 }
 
 #conversejs .bg-info {
-    background-color: #17a2b8 !important
+    background-color: #17a2b8!important
 }
 
 #conversejs a.bg-info:focus,
 #conversejs a.bg-info:hover,
 #conversejs button.bg-info:focus,
 #conversejs button.bg-info:hover {
-    background-color: #117a8b !important
+    background-color: #117a8b!important
 }
 
 #conversejs .bg-warning {
-    background-color: #ffc107 !important
+    background-color: #ffc107!important
 }
 
 #conversejs a.bg-warning:focus,
 #conversejs a.bg-warning:hover,
 #conversejs button.bg-warning:focus,
 #conversejs button.bg-warning:hover {
-    background-color: #d39e00 !important
+    background-color: #d39e00!important
 }
 
 #conversejs .bg-danger {
-    background-color: #dc3545 !important
+    background-color: #dc3545!important
 }
 
 #conversejs a.bg-danger:focus,
 #conversejs a.bg-danger:hover,
 #conversejs button.bg-danger:focus,
 #conversejs button.bg-danger:hover {
-    background-color: #bd2130 !important
+    background-color: #bd2130!important
 }
 
 #conversejs .bg-light {
-    background-color: #f8f9fa !important
+    background-color: #f8f9fa!important
 }
 
 #conversejs a.bg-light:focus,
 #conversejs a.bg-light:hover,
 #conversejs button.bg-light:focus,
 #conversejs button.bg-light:hover {
-    background-color: #dae0e5 !important
+    background-color: #dae0e5!important
 }
 
 #conversejs .bg-dark {
-    background-color: #343a40 !important
+    background-color: #343a40!important
 }
 
 #conversejs a.bg-dark:focus,
 #conversejs a.bg-dark:hover,
 #conversejs button.bg-dark:focus,
 #conversejs button.bg-dark:hover {
-    background-color: #1d2124 !important
+    background-color: #1d2124!important
 }
 
 #conversejs .bg-white {
-    background-color: #fff !important
+    background-color: #fff!important
 }
 
 #conversejs .bg-transparent {
-    background-color: transparent !important
+    background-color: transparent!important
 }
 
 #conversejs .border {
-    border: 1px solid #dee2e6 !important
+    border: 1px solid #dee2e6!important
 }
 
 #conversejs .border-top {
-    border-top: 1px solid #dee2e6 !important
+    border-top: 1px solid #dee2e6!important
 }
 
 #conversejs .border-right {
-    border-right: 1px solid #dee2e6 !important
+    border-right: 1px solid #dee2e6!important
 }
 
 #conversejs .border-bottom {
-    border-bottom: 1px solid #dee2e6 !important
+    border-bottom: 1px solid #dee2e6!important
 }
 
 #conversejs .border-left {
-    border-left: 1px solid #dee2e6 !important
+    border-left: 1px solid #dee2e6!important
 }
 
 #conversejs .border-0 {
-    border: 0 !important
+    border: 0!important
 }
 
 #conversejs .border-top-0 {
-    border-top: 0 !important
+    border-top: 0!important
 }
 
 #conversejs .border-right-0 {
-    border-right: 0 !important
+    border-right: 0!important
 }
 
 #conversejs .border-bottom-0 {
-    border-bottom: 0 !important
+    border-bottom: 0!important
 }
 
 #conversejs .border-left-0 {
-    border-left: 0 !important
+    border-left: 0!important
 }
 
 #conversejs .border-primary {
-    border-color: #007bff !important
+    border-color: #007bff!important
 }
 
 #conversejs .border-secondary {
-    border-color: #6c757d !important
+    border-color: #6c757d!important
 }
 
 #conversejs .border-success {
-    border-color: #28a745 !important
+    border-color: #28a745!important
 }
 
 #conversejs .border-info {
-    border-color: #17a2b8 !important
+    border-color: #17a2b8!important
 }
 
 #conversejs .border-warning {
-    border-color: #ffc107 !important
+    border-color: #ffc107!important
 }
 
 #conversejs .border-danger {
-    border-color: #dc3545 !important
+    border-color: #dc3545!important
 }
 
 #conversejs .border-light {
-    border-color: #f8f9fa !important
+    border-color: #f8f9fa!important
 }
 
 #conversejs .border-dark {
-    border-color: #343a40 !important
+    border-color: #343a40!important
 }
 
 #conversejs .border-white {
-    border-color: #fff !important
+    border-color: #fff!important
 }
 
 #conversejs .rounded-sm {
-    border-radius: .2rem !important
+    border-radius: .2rem!important
 }
 
 #conversejs .rounded {
-    border-radius: .25rem !important
+    border-radius: .25rem!important
 }
 
 #conversejs .rounded-top {
-    border-top-left-radius: .25rem !important;
-    border-top-right-radius: .25rem !important
+    border-top-left-radius: .25rem!important;
+    border-top-right-radius: .25rem!important
 }
 
 #conversejs .rounded-right {
-    border-top-right-radius: .25rem !important;
-    border-bottom-right-radius: .25rem !important
+    border-top-right-radius: .25rem!important;
+    border-bottom-right-radius: .25rem!important
 }
 
 #conversejs .rounded-bottom {
-    border-bottom-right-radius: .25rem !important;
-    border-bottom-left-radius: .25rem !important
+    border-bottom-right-radius: .25rem!important;
+    border-bottom-left-radius: .25rem!important
 }
 
 #conversejs .rounded-left {
-    border-top-left-radius: .25rem !important;
-    border-bottom-left-radius: .25rem !important
+    border-top-left-radius: .25rem!important;
+    border-bottom-left-radius: .25rem!important
 }
 
 #conversejs .rounded-lg {
-    border-radius: .3rem !important
+    border-radius: .3rem!important
 }
 
 #conversejs .rounded-circle {
-    border-radius: 50% !important
+    border-radius: 50%!important
 }
 
 #conversejs .rounded-pill {
-    border-radius: 50rem !important
+    border-radius: 50rem!important
 }
 
 #conversejs .rounded-0 {
-    border-radius: 0 !important
+    border-radius: 0!important
 }
 
 #conversejs .clearfix::after {
@@ -6082,228 +5854,188 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .d-none {
-    display: none !important
+    display: none!important
 }
 
 #conversejs .d-inline {
-    display: inline !important
+    display: inline!important
 }
 
 #conversejs .d-inline-block {
-    display: inline-block !important
+    display: inline-block!important
 }
 
 #conversejs .d-block {
-    display: block !important
+    display: block!important
 }
 
 #conversejs .d-table {
-    display: table !important
+    display: table!important
 }
 
 #conversejs .d-table-row {
-    display: table-row !important
+    display: table-row!important
 }
 
 #conversejs .d-table-cell {
-    display: table-cell !important
+    display: table-cell!important
 }
 
 #conversejs .d-flex {
-    display: flex !important
+    display: flex!important
 }
 
 #conversejs .d-inline-flex {
-    display: inline-flex !important
+    display: inline-flex!important
 }
 
 @media (min-width:576px) {
     #conversejs .d-sm-none {
-        display: none !important
+        display: none!important
     }
-
     #conversejs .d-sm-inline {
-        display: inline !important
+        display: inline!important
     }
-
     #conversejs .d-sm-inline-block {
-        display: inline-block !important
+        display: inline-block!important
     }
-
     #conversejs .d-sm-block {
-        display: block !important
+        display: block!important
     }
-
     #conversejs .d-sm-table {
-        display: table !important
+        display: table!important
     }
-
     #conversejs .d-sm-table-row {
-        display: table-row !important
+        display: table-row!important
     }
-
     #conversejs .d-sm-table-cell {
-        display: table-cell !important
+        display: table-cell!important
     }
-
     #conversejs .d-sm-flex {
-        display: flex !important
+        display: flex!important
     }
-
     #conversejs .d-sm-inline-flex {
-        display: inline-flex !important
+        display: inline-flex!important
     }
 }
 
 @media (min-width:768px) {
     #conversejs .d-md-none {
-        display: none !important
+        display: none!important
     }
-
     #conversejs .d-md-inline {
-        display: inline !important
+        display: inline!important
     }
-
     #conversejs .d-md-inline-block {
-        display: inline-block !important
+        display: inline-block!important
     }
-
     #conversejs .d-md-block {
-        display: block !important
+        display: block!important
     }
-
     #conversejs .d-md-table {
-        display: table !important
+        display: table!important
     }
-
     #conversejs .d-md-table-row {
-        display: table-row !important
+        display: table-row!important
     }
-
     #conversejs .d-md-table-cell {
-        display: table-cell !important
+        display: table-cell!important
     }
-
     #conversejs .d-md-flex {
-        display: flex !important
+        display: flex!important
     }
-
     #conversejs .d-md-inline-flex {
-        display: inline-flex !important
+        display: inline-flex!important
     }
 }
 
 @media (min-width:992px) {
     #conversejs .d-lg-none {
-        display: none !important
+        display: none!important
     }
-
     #conversejs .d-lg-inline {
-        display: inline !important
+        display: inline!important
     }
-
     #conversejs .d-lg-inline-block {
-        display: inline-block !important
+        display: inline-block!important
     }
-
     #conversejs .d-lg-block {
-        display: block !important
+        display: block!important
     }
-
     #conversejs .d-lg-table {
-        display: table !important
+        display: table!important
     }
-
     #conversejs .d-lg-table-row {
-        display: table-row !important
+        display: table-row!important
     }
-
     #conversejs .d-lg-table-cell {
-        display: table-cell !important
+        display: table-cell!important
     }
-
     #conversejs .d-lg-flex {
-        display: flex !important
+        display: flex!important
     }
-
     #conversejs .d-lg-inline-flex {
-        display: inline-flex !important
+        display: inline-flex!important
     }
 }
 
 @media (min-width:1200px) {
     #conversejs .d-xl-none {
-        display: none !important
+        display: none!important
     }
-
     #conversejs .d-xl-inline {
-        display: inline !important
+        display: inline!important
     }
-
     #conversejs .d-xl-inline-block {
-        display: inline-block !important
+        display: inline-block!important
     }
-
     #conversejs .d-xl-block {
-        display: block !important
+        display: block!important
     }
-
     #conversejs .d-xl-table {
-        display: table !important
+        display: table!important
     }
-
     #conversejs .d-xl-table-row {
-        display: table-row !important
+        display: table-row!important
     }
-
     #conversejs .d-xl-table-cell {
-        display: table-cell !important
+        display: table-cell!important
     }
-
     #conversejs .d-xl-flex {
-        display: flex !important
+        display: flex!important
     }
-
     #conversejs .d-xl-inline-flex {
-        display: inline-flex !important
+        display: inline-flex!important
     }
 }
 
 @media print {
     #conversejs .d-print-none {
-        display: none !important
+        display: none!important
     }
-
     #conversejs .d-print-inline {
-        display: inline !important
+        display: inline!important
     }
-
     #conversejs .d-print-inline-block {
-        display: inline-block !important
+        display: inline-block!important
     }
-
     #conversejs .d-print-block {
-        display: block !important
+        display: block!important
     }
-
     #conversejs .d-print-table {
-        display: table !important
+        display: table!important
     }
-
     #conversejs .d-print-table-row {
-        display: table-row !important
+        display: table-row!important
     }
-
     #conversejs .d-print-table-cell {
-        display: table-cell !important
+        display: table-cell!important
     }
-
     #conversejs .d-print-flex {
-        display: flex !important
+        display: flex!important
     }
-
     #conversejs .d-print-inline-flex {
-        display: inline-flex !important
+        display: inline-flex!important
     }
 }
 
@@ -6351,788 +6083,648 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .flex-row {
-    flex-direction: row !important
+    flex-direction: row!important
 }
 
 #conversejs .flex-column {
-    flex-direction: column !important
+    flex-direction: column!important
 }
 
 #conversejs .flex-row-reverse {
-    flex-direction: row-reverse !important
+    flex-direction: row-reverse!important
 }
 
 #conversejs .flex-column-reverse {
-    flex-direction: column-reverse !important
+    flex-direction: column-reverse!important
 }
 
 #conversejs .flex-wrap {
-    flex-wrap: wrap !important
+    flex-wrap: wrap!important
 }
 
 #conversejs .flex-nowrap {
-    flex-wrap: nowrap !important
+    flex-wrap: nowrap!important
 }
 
 #conversejs .flex-wrap-reverse {
-    flex-wrap: wrap-reverse !important
+    flex-wrap: wrap-reverse!important
 }
 
 #conversejs .flex-fill {
-    flex: 1 1 auto !important
+    flex: 1 1 auto!important
 }
 
 #conversejs .flex-grow-0 {
-    flex-grow: 0 !important
+    flex-grow: 0!important
 }
 
 #conversejs .flex-grow-1 {
-    flex-grow: 1 !important
+    flex-grow: 1!important
 }
 
 #conversejs .flex-shrink-0 {
-    flex-shrink: 0 !important
+    flex-shrink: 0!important
 }
 
 #conversejs .flex-shrink-1 {
-    flex-shrink: 1 !important
+    flex-shrink: 1!important
 }
 
 #conversejs .justify-content-start {
-    justify-content: flex-start !important
+    justify-content: flex-start!important
 }
 
 #conversejs .justify-content-end {
-    justify-content: flex-end !important
+    justify-content: flex-end!important
 }
 
 #conversejs .justify-content-center {
-    justify-content: center !important
+    justify-content: center!important
 }
 
 #conversejs .justify-content-between {
-    justify-content: space-between !important
+    justify-content: space-between!important
 }
 
 #conversejs .justify-content-around {
-    justify-content: space-around !important
+    justify-content: space-around!important
 }
 
 #conversejs .align-items-start {
-    align-items: flex-start !important
+    align-items: flex-start!important
 }
 
 #conversejs .align-items-end {
-    align-items: flex-end !important
+    align-items: flex-end!important
 }
 
 #conversejs .align-items-center {
-    align-items: center !important
+    align-items: center!important
 }
 
 #conversejs .align-items-baseline {
-    align-items: baseline !important
+    align-items: baseline!important
 }
 
 #conversejs .align-items-stretch {
-    align-items: stretch !important
+    align-items: stretch!important
 }
 
 #conversejs .align-content-start {
-    align-content: flex-start !important
+    align-content: flex-start!important
 }
 
 #conversejs .align-content-end {
-    align-content: flex-end !important
+    align-content: flex-end!important
 }
 
 #conversejs .align-content-center {
-    align-content: center !important
+    align-content: center!important
 }
 
 #conversejs .align-content-between {
-    align-content: space-between !important
+    align-content: space-between!important
 }
 
 #conversejs .align-content-around {
-    align-content: space-around !important
+    align-content: space-around!important
 }
 
 #conversejs .align-content-stretch {
-    align-content: stretch !important
+    align-content: stretch!important
 }
 
 #conversejs .align-self-auto {
-    align-self: auto !important
+    align-self: auto!important
 }
 
 #conversejs .align-self-start {
-    align-self: flex-start !important
+    align-self: flex-start!important
 }
 
 #conversejs .align-self-end {
-    align-self: flex-end !important
+    align-self: flex-end!important
 }
 
 #conversejs .align-self-center {
-    align-self: center !important
+    align-self: center!important
 }
 
 #conversejs .align-self-baseline {
-    align-self: baseline !important
+    align-self: baseline!important
 }
 
 #conversejs .align-self-stretch {
-    align-self: stretch !important
+    align-self: stretch!important
 }
 
 @media (min-width:576px) {
     #conversejs .flex-sm-row {
-        flex-direction: row !important
+        flex-direction: row!important
     }
-
     #conversejs .flex-sm-column {
-        flex-direction: column !important
+        flex-direction: column!important
     }
-
     #conversejs .flex-sm-row-reverse {
-        flex-direction: row-reverse !important
+        flex-direction: row-reverse!important
     }
-
     #conversejs .flex-sm-column-reverse {
-        flex-direction: column-reverse !important
+        flex-direction: column-reverse!important
     }
-
     #conversejs .flex-sm-wrap {
-        flex-wrap: wrap !important
+        flex-wrap: wrap!important
     }
-
     #conversejs .flex-sm-nowrap {
-        flex-wrap: nowrap !important
+        flex-wrap: nowrap!important
     }
-
     #conversejs .flex-sm-wrap-reverse {
-        flex-wrap: wrap-reverse !important
+        flex-wrap: wrap-reverse!important
     }
-
     #conversejs .flex-sm-fill {
-        flex: 1 1 auto !important
+        flex: 1 1 auto!important
     }
-
     #conversejs .flex-sm-grow-0 {
-        flex-grow: 0 !important
+        flex-grow: 0!important
     }
-
     #conversejs .flex-sm-grow-1 {
-        flex-grow: 1 !important
+        flex-grow: 1!important
     }
-
     #conversejs .flex-sm-shrink-0 {
-        flex-shrink: 0 !important
+        flex-shrink: 0!important
     }
-
     #conversejs .flex-sm-shrink-1 {
-        flex-shrink: 1 !important
+        flex-shrink: 1!important
     }
-
     #conversejs .justify-content-sm-start {
-        justify-content: flex-start !important
+        justify-content: flex-start!important
     }
-
     #conversejs .justify-content-sm-end {
-        justify-content: flex-end !important
+        justify-content: flex-end!important
     }
-
     #conversejs .justify-content-sm-center {
-        justify-content: center !important
+        justify-content: center!important
     }
-
     #conversejs .justify-content-sm-between {
-        justify-content: space-between !important
+        justify-content: space-between!important
     }
-
     #conversejs .justify-content-sm-around {
-        justify-content: space-around !important
+        justify-content: space-around!important
     }
-
     #conversejs .align-items-sm-start {
-        align-items: flex-start !important
+        align-items: flex-start!important
     }
-
     #conversejs .align-items-sm-end {
-        align-items: flex-end !important
+        align-items: flex-end!important
     }
-
     #conversejs .align-items-sm-center {
-        align-items: center !important
+        align-items: center!important
     }
-
     #conversejs .align-items-sm-baseline {
-        align-items: baseline !important
+        align-items: baseline!important
     }
-
     #conversejs .align-items-sm-stretch {
-        align-items: stretch !important
+        align-items: stretch!important
     }
-
     #conversejs .align-content-sm-start {
-        align-content: flex-start !important
+        align-content: flex-start!important
     }
-
     #conversejs .align-content-sm-end {
-        align-content: flex-end !important
+        align-content: flex-end!important
     }
-
     #conversejs .align-content-sm-center {
-        align-content: center !important
+        align-content: center!important
     }
-
     #conversejs .align-content-sm-between {
-        align-content: space-between !important
+        align-content: space-between!important
     }
-
     #conversejs .align-content-sm-around {
-        align-content: space-around !important
+        align-content: space-around!important
     }
-
     #conversejs .align-content-sm-stretch {
-        align-content: stretch !important
+        align-content: stretch!important
     }
-
     #conversejs .align-self-sm-auto {
-        align-self: auto !important
+        align-self: auto!important
     }
-
     #conversejs .align-self-sm-start {
-        align-self: flex-start !important
+        align-self: flex-start!important
     }
-
     #conversejs .align-self-sm-end {
-        align-self: flex-end !important
+        align-self: flex-end!important
     }
-
     #conversejs .align-self-sm-center {
-        align-self: center !important
+        align-self: center!important
     }
-
     #conversejs .align-self-sm-baseline {
-        align-self: baseline !important
+        align-self: baseline!important
     }
-
     #conversejs .align-self-sm-stretch {
-        align-self: stretch !important
+        align-self: stretch!important
     }
 }
 
 @media (min-width:768px) {
     #conversejs .flex-md-row {
-        flex-direction: row !important
+        flex-direction: row!important
     }
-
     #conversejs .flex-md-column {
-        flex-direction: column !important
+        flex-direction: column!important
     }
-
     #conversejs .flex-md-row-reverse {
-        flex-direction: row-reverse !important
+        flex-direction: row-reverse!important
     }
-
     #conversejs .flex-md-column-reverse {
-        flex-direction: column-reverse !important
+        flex-direction: column-reverse!important
     }
-
     #conversejs .flex-md-wrap {
-        flex-wrap: wrap !important
+        flex-wrap: wrap!important
     }
-
     #conversejs .flex-md-nowrap {
-        flex-wrap: nowrap !important
+        flex-wrap: nowrap!important
     }
-
     #conversejs .flex-md-wrap-reverse {
-        flex-wrap: wrap-reverse !important
+        flex-wrap: wrap-reverse!important
     }
-
     #conversejs .flex-md-fill {
-        flex: 1 1 auto !important
+        flex: 1 1 auto!important
     }
-
     #conversejs .flex-md-grow-0 {
-        flex-grow: 0 !important
+        flex-grow: 0!important
     }
-
     #conversejs .flex-md-grow-1 {
-        flex-grow: 1 !important
+        flex-grow: 1!important
     }
-
     #conversejs .flex-md-shrink-0 {
-        flex-shrink: 0 !important
+        flex-shrink: 0!important
     }
-
     #conversejs .flex-md-shrink-1 {
-        flex-shrink: 1 !important
+        flex-shrink: 1!important
     }
-
     #conversejs .justify-content-md-start {
-        justify-content: flex-start !important
+        justify-content: flex-start!important
     }
-
     #conversejs .justify-content-md-end {
-        justify-content: flex-end !important
+        justify-content: flex-end!important
     }
-
     #conversejs .justify-content-md-center {
-        justify-content: center !important
+        justify-content: center!important
     }
-
     #conversejs .justify-content-md-between {
-        justify-content: space-between !important
+        justify-content: space-between!important
     }
-
     #conversejs .justify-content-md-around {
-        justify-content: space-around !important
+        justify-content: space-around!important
     }
-
     #conversejs .align-items-md-start {
-        align-items: flex-start !important
+        align-items: flex-start!important
     }
-
     #conversejs .align-items-md-end {
-        align-items: flex-end !important
+        align-items: flex-end!important
     }
-
     #conversejs .align-items-md-center {
-        align-items: center !important
+        align-items: center!important
     }
-
     #conversejs .align-items-md-baseline {
-        align-items: baseline !important
+        align-items: baseline!important
     }
-
     #conversejs .align-items-md-stretch {
-        align-items: stretch !important
+        align-items: stretch!important
     }
-
     #conversejs .align-content-md-start {
-        align-content: flex-start !important
+        align-content: flex-start!important
     }
-
     #conversejs .align-content-md-end {
-        align-content: flex-end !important
+        align-content: flex-end!important
     }
-
     #conversejs .align-content-md-center {
-        align-content: center !important
+        align-content: center!important
     }
-
     #conversejs .align-content-md-between {
-        align-content: space-between !important
+        align-content: space-between!important
     }
-
     #conversejs .align-content-md-around {
-        align-content: space-around !important
+        align-content: space-around!important
     }
-
     #conversejs .align-content-md-stretch {
-        align-content: stretch !important
+        align-content: stretch!important
     }
-
     #conversejs .align-self-md-auto {
-        align-self: auto !important
+        align-self: auto!important
     }
-
     #conversejs .align-self-md-start {
-        align-self: flex-start !important
+        align-self: flex-start!important
     }
-
     #conversejs .align-self-md-end {
-        align-self: flex-end !important
+        align-self: flex-end!important
     }
-
     #conversejs .align-self-md-center {
-        align-self: center !important
+        align-self: center!important
     }
-
     #conversejs .align-self-md-baseline {
-        align-self: baseline !important
+        align-self: baseline!important
     }
-
     #conversejs .align-self-md-stretch {
-        align-self: stretch !important
+        align-self: stretch!important
     }
 }
 
 @media (min-width:992px) {
     #conversejs .flex-lg-row {
-        flex-direction: row !important
+        flex-direction: row!important
     }
-
     #conversejs .flex-lg-column {
-        flex-direction: column !important
+        flex-direction: column!important
     }
-
     #conversejs .flex-lg-row-reverse {
-        flex-direction: row-reverse !important
+        flex-direction: row-reverse!important
     }
-
     #conversejs .flex-lg-column-reverse {
-        flex-direction: column-reverse !important
+        flex-direction: column-reverse!important
     }
-
     #conversejs .flex-lg-wrap {
-        flex-wrap: wrap !important
+        flex-wrap: wrap!important
     }
-
     #conversejs .flex-lg-nowrap {
-        flex-wrap: nowrap !important
+        flex-wrap: nowrap!important
     }
-
     #conversejs .flex-lg-wrap-reverse {
-        flex-wrap: wrap-reverse !important
+        flex-wrap: wrap-reverse!important
     }
-
     #conversejs .flex-lg-fill {
-        flex: 1 1 auto !important
+        flex: 1 1 auto!important
     }
-
     #conversejs .flex-lg-grow-0 {
-        flex-grow: 0 !important
+        flex-grow: 0!important
     }
-
     #conversejs .flex-lg-grow-1 {
-        flex-grow: 1 !important
+        flex-grow: 1!important
     }
-
     #conversejs .flex-lg-shrink-0 {
-        flex-shrink: 0 !important
+        flex-shrink: 0!important
     }
-
     #conversejs .flex-lg-shrink-1 {
-        flex-shrink: 1 !important
+        flex-shrink: 1!important
     }
-
     #conversejs .justify-content-lg-start {
-        justify-content: flex-start !important
+        justify-content: flex-start!important
     }
-
     #conversejs .justify-content-lg-end {
-        justify-content: flex-end !important
+        justify-content: flex-end!important
     }
-
     #conversejs .justify-content-lg-center {
-        justify-content: center !important
+        justify-content: center!important
     }
-
     #conversejs .justify-content-lg-between {
-        justify-content: space-between !important
+        justify-content: space-between!important
     }
-
     #conversejs .justify-content-lg-around {
-        justify-content: space-around !important
+        justify-content: space-around!important
     }
-
     #conversejs .align-items-lg-start {
-        align-items: flex-start !important
+        align-items: flex-start!important
     }
-
     #conversejs .align-items-lg-end {
-        align-items: flex-end !important
+        align-items: flex-end!important
     }
-
     #conversejs .align-items-lg-center {
-        align-items: center !important
+        align-items: center!important
     }
-
     #conversejs .align-items-lg-baseline {
-        align-items: baseline !important
+        align-items: baseline!important
     }
-
     #conversejs .align-items-lg-stretch {
-        align-items: stretch !important
+        align-items: stretch!important
     }
-
     #conversejs .align-content-lg-start {
-        align-content: flex-start !important
+        align-content: flex-start!important
     }
-
     #conversejs .align-content-lg-end {
-        align-content: flex-end !important
+        align-content: flex-end!important
     }
-
     #conversejs .align-content-lg-center {
-        align-content: center !important
+        align-content: center!important
     }
-
     #conversejs .align-content-lg-between {
-        align-content: space-between !important
+        align-content: space-between!important
     }
-
     #conversejs .align-content-lg-around {
-        align-content: space-around !important
+        align-content: space-around!important
     }
-
     #conversejs .align-content-lg-stretch {
-        align-content: stretch !important
+        align-content: stretch!important
     }
-
     #conversejs .align-self-lg-auto {
-        align-self: auto !important
+        align-self: auto!important
     }
-
     #conversejs .align-self-lg-start {
-        align-self: flex-start !important
+        align-self: flex-start!important
     }
-
     #conversejs .align-self-lg-end {
-        align-self: flex-end !important
+        align-self: flex-end!important
     }
-
     #conversejs .align-self-lg-center {
-        align-self: center !important
+        align-self: center!important
     }
-
     #conversejs .align-self-lg-baseline {
-        align-self: baseline !important
+        align-self: baseline!important
     }
-
     #conversejs .align-self-lg-stretch {
-        align-self: stretch !important
+        align-self: stretch!important
     }
 }
 
 @media (min-width:1200px) {
     #conversejs .flex-xl-row {
-        flex-direction: row !important
+        flex-direction: row!important
     }
-
     #conversejs .flex-xl-column {
-        flex-direction: column !important
+        flex-direction: column!important
     }
-
     #conversejs .flex-xl-row-reverse {
-        flex-direction: row-reverse !important
+        flex-direction: row-reverse!important
     }
-
     #conversejs .flex-xl-column-reverse {
-        flex-direction: column-reverse !important
+        flex-direction: column-reverse!important
     }
-
     #conversejs .flex-xl-wrap {
-        flex-wrap: wrap !important
+        flex-wrap: wrap!important
     }
-
     #conversejs .flex-xl-nowrap {
-        flex-wrap: nowrap !important
+        flex-wrap: nowrap!important
     }
-
     #conversejs .flex-xl-wrap-reverse {
-        flex-wrap: wrap-reverse !important
+        flex-wrap: wrap-reverse!important
     }
-
     #conversejs .flex-xl-fill {
-        flex: 1 1 auto !important
+        flex: 1 1 auto!important
     }
-
     #conversejs .flex-xl-grow-0 {
-        flex-grow: 0 !important
+        flex-grow: 0!important
     }
-
     #conversejs .flex-xl-grow-1 {
-        flex-grow: 1 !important
+        flex-grow: 1!important
     }
-
     #conversejs .flex-xl-shrink-0 {
-        flex-shrink: 0 !important
+        flex-shrink: 0!important
     }
-
     #conversejs .flex-xl-shrink-1 {
-        flex-shrink: 1 !important
+        flex-shrink: 1!important
     }
-
     #conversejs .justify-content-xl-start {
-        justify-content: flex-start !important
+        justify-content: flex-start!important
     }
-
     #conversejs .justify-content-xl-end {
-        justify-content: flex-end !important
+        justify-content: flex-end!important
     }
-
     #conversejs .justify-content-xl-center {
-        justify-content: center !important
+        justify-content: center!important
     }
-
     #conversejs .justify-content-xl-between {
-        justify-content: space-between !important
+        justify-content: space-between!important
     }
-
     #conversejs .justify-content-xl-around {
-        justify-content: space-around !important
+        justify-content: space-around!important
     }
-
     #conversejs .align-items-xl-start {
-        align-items: flex-start !important
+        align-items: flex-start!important
     }
-
     #conversejs .align-items-xl-end {
-        align-items: flex-end !important
+        align-items: flex-end!important
     }
-
     #conversejs .align-items-xl-center {
-        align-items: center !important
+        align-items: center!important
     }
-
     #conversejs .align-items-xl-baseline {
-        align-items: baseline !important
+        align-items: baseline!important
     }
-
     #conversejs .align-items-xl-stretch {
-        align-items: stretch !important
+        align-items: stretch!important
     }
-
     #conversejs .align-content-xl-start {
-        align-content: flex-start !important
+        align-content: flex-start!important
     }
-
     #conversejs .align-content-xl-end {
-        align-content: flex-end !important
+        align-content: flex-end!important
     }
-
     #conversejs .align-content-xl-center {
-        align-content: center !important
+        align-content: center!important
     }
-
     #conversejs .align-content-xl-between {
-        align-content: space-between !important
+        align-content: space-between!important
     }
-
     #conversejs .align-content-xl-around {
-        align-content: space-around !important
+        align-content: space-around!important
     }
-
     #conversejs .align-content-xl-stretch {
-        align-content: stretch !important
+        align-content: stretch!important
     }
-
     #conversejs .align-self-xl-auto {
-        align-self: auto !important
+        align-self: auto!important
     }
-
     #conversejs .align-self-xl-start {
-        align-self: flex-start !important
+        align-self: flex-start!important
     }
-
     #conversejs .align-self-xl-end {
-        align-self: flex-end !important
+        align-self: flex-end!important
     }
-
     #conversejs .align-self-xl-center {
-        align-self: center !important
+        align-self: center!important
     }
-
     #conversejs .align-self-xl-baseline {
-        align-self: baseline !important
+        align-self: baseline!important
     }
-
     #conversejs .align-self-xl-stretch {
-        align-self: stretch !important
+        align-self: stretch!important
     }
 }
 
 #conversejs .float-left {
-    float: left !important
+    float: left!important
 }
 
 #conversejs .float-right {
-    float: right !important
+    float: right!important
 }
 
 #conversejs .float-none {
-    float: none !important
+    float: none!important
 }
 
 @media (min-width:576px) {
     #conversejs .float-sm-left {
-        float: left !important
+        float: left!important
     }
-
     #conversejs .float-sm-right {
-        float: right !important
+        float: right!important
     }
-
     #conversejs .float-sm-none {
-        float: none !important
+        float: none!important
     }
 }
 
 @media (min-width:768px) {
     #conversejs .float-md-left {
-        float: left !important
+        float: left!important
     }
-
     #conversejs .float-md-right {
-        float: right !important
+        float: right!important
     }
-
     #conversejs .float-md-none {
-        float: none !important
+        float: none!important
     }
 }
 
 @media (min-width:992px) {
     #conversejs .float-lg-left {
-        float: left !important
+        float: left!important
     }
-
     #conversejs .float-lg-right {
-        float: right !important
+        float: right!important
     }
-
     #conversejs .float-lg-none {
-        float: none !important
+        float: none!important
     }
 }
 
 @media (min-width:1200px) {
     #conversejs .float-xl-left {
-        float: left !important
+        float: left!important
     }
-
     #conversejs .float-xl-right {
-        float: right !important
+        float: right!important
     }
-
     #conversejs .float-xl-none {
-        float: none !important
+        float: none!important
     }
 }
 
 #conversejs .overflow-auto {
-    overflow: auto !important
+    overflow: auto!important
 }
 
 #conversejs .overflow-hidden {
-    overflow: hidden !important
+    overflow: hidden!important
 }
 
 #conversejs .position-static {
-    position: static !important
+    position: static!important
 }
 
 #conversejs .position-relative {
-    position: relative !important
+    position: relative!important
 }
 
 #conversejs .position-absolute {
-    position: absolute !important
+    position: absolute!important
 }
 
 #conversejs .position-fixed {
-    position: fixed !important
+    position: fixed!important
 }
 
 #conversejs .position-sticky {
-    position: -webkit-sticky !important;
-    position: sticky !important
+    position: -webkit-sticky!important;
+    position: sticky!important
 }
 
 #conversejs .fixed-top {
@@ -7182,83 +6774,83 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .shadow-sm {
-    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075)!important
 }
 
 #conversejs .shadow {
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15)!important
 }
 
 #conversejs .shadow-lg {
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175)!important
 }
 
 #conversejs .shadow-none {
-    box-shadow: none !important
+    box-shadow: none!important
 }
 
 #conversejs .w-25 {
-    width: 25% !important
+    width: 25%!important
 }
 
 #conversejs .w-50 {
-    width: 50% !important
+    width: 50%!important
 }
 
 #conversejs .w-75 {
-    width: 75% !important
+    width: 75%!important
 }
 
 #conversejs .w-100 {
-    width: 100% !important
+    width: 100%!important
 }
 
 #conversejs .w-auto {
-    width: auto !important
+    width: auto!important
 }
 
 #conversejs .h-25 {
-    height: 25% !important
+    height: 25%!important
 }
 
 #conversejs .h-50 {
-    height: 50% !important
+    height: 50%!important
 }
 
 #conversejs .h-75 {
-    height: 75% !important
+    height: 75%!important
 }
 
 #conversejs .h-100 {
-    height: 100% !important
+    height: 100%!important
 }
 
 #conversejs .h-auto {
-    height: auto !important
+    height: auto!important
 }
 
 #conversejs .mw-100 {
-    max-width: 100% !important
+    max-width: 100%!important
 }
 
 #conversejs .mh-100 {
-    max-height: 100% !important
+    max-height: 100%!important
 }
 
 #conversejs .min-vw-100 {
-    min-width: 100vw !important
+    min-width: 100vw!important
 }
 
 #conversejs .min-vh-100 {
-    min-height: 100vh !important
+    min-height: 100vh!important
 }
 
 #conversejs .vw-100 {
-    width: 100vw !important
+    width: 100vw!important
 }
 
 #conversejs .vh-100 {
-    height: 100vh !important
+    height: 100vh!important
 }
 
 #conversejs .stretched-link::after {
@@ -7274,2187 +6866,1831 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .m-0 {
-    margin: 0 !important
+    margin: 0!important
 }
 
 #conversejs .mt-0,
 #conversejs .my-0 {
-    margin-top: 0 !important
+    margin-top: 0!important
 }
 
 #conversejs .mr-0,
 #conversejs .mx-0 {
-    margin-right: 0 !important
+    margin-right: 0!important
 }
 
 #conversejs .mb-0,
 #conversejs .my-0 {
-    margin-bottom: 0 !important
+    margin-bottom: 0!important
 }
 
 #conversejs .ml-0,
 #conversejs .mx-0 {
-    margin-left: 0 !important
+    margin-left: 0!important
 }
 
 #conversejs .m-1 {
-    margin: .25rem !important
+    margin: .25rem!important
 }
 
 #conversejs .mt-1,
 #conversejs .my-1 {
-    margin-top: .25rem !important
+    margin-top: .25rem!important
 }
 
 #conversejs .mr-1,
 #conversejs .mx-1 {
-    margin-right: .25rem !important
+    margin-right: .25rem!important
 }
 
 #conversejs .mb-1,
 #conversejs .my-1 {
-    margin-bottom: .25rem !important
+    margin-bottom: .25rem!important
 }
 
 #conversejs .ml-1,
 #conversejs .mx-1 {
-    margin-left: .25rem !important
+    margin-left: .25rem!important
 }
 
 #conversejs .m-2 {
-    margin: .5rem !important
+    margin: .5rem!important
 }
 
 #conversejs .mt-2,
 #conversejs .my-2 {
-    margin-top: .5rem !important
+    margin-top: .5rem!important
 }
 
 #conversejs .mr-2,
 #conversejs .mx-2 {
-    margin-right: .5rem !important
+    margin-right: .5rem!important
 }
 
 #conversejs .mb-2,
 #conversejs .my-2 {
-    margin-bottom: .5rem !important
+    margin-bottom: .5rem!important
 }
 
 #conversejs .ml-2,
 #conversejs .mx-2 {
-    margin-left: .5rem !important
+    margin-left: .5rem!important
 }
 
 #conversejs .m-3 {
-    margin: 1rem !important
+    margin: 1rem!important
 }
 
 #conversejs .mt-3,
 #conversejs .my-3 {
-    margin-top: 1rem !important
+    margin-top: 1rem!important
 }
 
 #conversejs .mr-3,
 #conversejs .mx-3 {
-    margin-right: 1rem !important
+    margin-right: 1rem!important
 }
 
 #conversejs .mb-3,
 #conversejs .my-3 {
-    margin-bottom: 1rem !important
+    margin-bottom: 1rem!important
 }
 
 #conversejs .ml-3,
 #conversejs .mx-3 {
-    margin-left: 1rem !important
+    margin-left: 1rem!important
 }
 
 #conversejs .m-4 {
-    margin: 1.5rem !important
+    margin: 1.5rem!important
 }
 
 #conversejs .mt-4,
 #conversejs .my-4 {
-    margin-top: 1.5rem !important
+    margin-top: 1.5rem!important
 }
 
 #conversejs .mr-4,
 #conversejs .mx-4 {
-    margin-right: 1.5rem !important
+    margin-right: 1.5rem!important
 }
 
 #conversejs .mb-4,
 #conversejs .my-4 {
-    margin-bottom: 1.5rem !important
+    margin-bottom: 1.5rem!important
 }
 
 #conversejs .ml-4,
 #conversejs .mx-4 {
-    margin-left: 1.5rem !important
+    margin-left: 1.5rem!important
 }
 
 #conversejs .m-5 {
-    margin: 3rem !important
+    margin: 3rem!important
 }
 
 #conversejs .mt-5,
 #conversejs .my-5 {
-    margin-top: 3rem !important
+    margin-top: 3rem!important
 }
 
 #conversejs .mr-5,
 #conversejs .mx-5 {
-    margin-right: 3rem !important
+    margin-right: 3rem!important
 }
 
 #conversejs .mb-5,
 #conversejs .my-5 {
-    margin-bottom: 3rem !important
+    margin-bottom: 3rem!important
 }
 
 #conversejs .ml-5,
 #conversejs .mx-5 {
-    margin-left: 3rem !important
+    margin-left: 3rem!important
 }
 
 #conversejs .p-0 {
-    padding: 0 !important
+    padding: 0!important
 }
 
 #conversejs .pt-0,
 #conversejs .py-0 {
-    padding-top: 0 !important
+    padding-top: 0!important
 }
 
 #conversejs .pr-0,
 #conversejs .px-0 {
-    padding-right: 0 !important
+    padding-right: 0!important
 }
 
 #conversejs .pb-0,
 #conversejs .py-0 {
-    padding-bottom: 0 !important
+    padding-bottom: 0!important
 }
 
 #conversejs .pl-0,
 #conversejs .px-0 {
-    padding-left: 0 !important
+    padding-left: 0!important
 }
 
 #conversejs .p-1 {
-    padding: .25rem !important
+    padding: .25rem!important
 }
 
 #conversejs .pt-1,
 #conversejs .py-1 {
-    padding-top: .25rem !important
+    padding-top: .25rem!important
 }
 
 #conversejs .pr-1,
 #conversejs .px-1 {
-    padding-right: .25rem !important
+    padding-right: .25rem!important
 }
 
 #conversejs .pb-1,
 #conversejs .py-1 {
-    padding-bottom: .25rem !important
+    padding-bottom: .25rem!important
 }
 
 #conversejs .pl-1,
 #conversejs .px-1 {
-    padding-left: .25rem !important
+    padding-left: .25rem!important
 }
 
 #conversejs .p-2 {
-    padding: .5rem !important
+    padding: .5rem!important
 }
 
 #conversejs .pt-2,
 #conversejs .py-2 {
-    padding-top: .5rem !important
+    padding-top: .5rem!important
 }
 
 #conversejs .pr-2,
 #conversejs .px-2 {
-    padding-right: .5rem !important
+    padding-right: .5rem!important
 }
 
 #conversejs .pb-2,
 #conversejs .py-2 {
-    padding-bottom: .5rem !important
+    padding-bottom: .5rem!important
 }
 
 #conversejs .pl-2,
 #conversejs .px-2 {
-    padding-left: .5rem !important
+    padding-left: .5rem!important
 }
 
 #conversejs .p-3 {
-    padding: 1rem !important
+    padding: 1rem!important
 }
 
 #conversejs .pt-3,
 #conversejs .py-3 {
-    padding-top: 1rem !important
+    padding-top: 1rem!important
 }
 
 #conversejs .pr-3,
 #conversejs .px-3 {
-    padding-right: 1rem !important
+    padding-right: 1rem!important
 }
 
 #conversejs .pb-3,
 #conversejs .py-3 {
-    padding-bottom: 1rem !important
+    padding-bottom: 1rem!important
 }
 
 #conversejs .pl-3,
 #conversejs .px-3 {
-    padding-left: 1rem !important
+    padding-left: 1rem!important
 }
 
 #conversejs .p-4 {
-    padding: 1.5rem !important
+    padding: 1.5rem!important
 }
 
 #conversejs .pt-4,
 #conversejs .py-4 {
-    padding-top: 1.5rem !important
+    padding-top: 1.5rem!important
 }
 
 #conversejs .pr-4,
 #conversejs .px-4 {
-    padding-right: 1.5rem !important
+    padding-right: 1.5rem!important
 }
 
 #conversejs .pb-4,
 #conversejs .py-4 {
-    padding-bottom: 1.5rem !important
+    padding-bottom: 1.5rem!important
 }
 
 #conversejs .pl-4,
 #conversejs .px-4 {
-    padding-left: 1.5rem !important
+    padding-left: 1.5rem!important
 }
 
 #conversejs .p-5 {
-    padding: 3rem !important
+    padding: 3rem!important
 }
 
 #conversejs .pt-5,
 #conversejs .py-5 {
-    padding-top: 3rem !important
+    padding-top: 3rem!important
 }
 
 #conversejs .pr-5,
 #conversejs .px-5 {
-    padding-right: 3rem !important
+    padding-right: 3rem!important
 }
 
 #conversejs .pb-5,
 #conversejs .py-5 {
-    padding-bottom: 3rem !important
+    padding-bottom: 3rem!important
 }
 
 #conversejs .pl-5,
 #conversejs .px-5 {
-    padding-left: 3rem !important
+    padding-left: 3rem!important
 }
 
 #conversejs .m-n1 {
-    margin: -.25rem !important
+    margin: -.25rem!important
 }
 
 #conversejs .mt-n1,
 #conversejs .my-n1 {
-    margin-top: -.25rem !important
+    margin-top: -.25rem!important
 }
 
 #conversejs .mr-n1,
 #conversejs .mx-n1 {
-    margin-right: -.25rem !important
+    margin-right: -.25rem!important
 }
 
 #conversejs .mb-n1,
 #conversejs .my-n1 {
-    margin-bottom: -.25rem !important
+    margin-bottom: -.25rem!important
 }
 
 #conversejs .ml-n1,
 #conversejs .mx-n1 {
-    margin-left: -.25rem !important
+    margin-left: -.25rem!important
 }
 
 #conversejs .m-n2 {
-    margin: -.5rem !important
+    margin: -.5rem!important
 }
 
 #conversejs .mt-n2,
 #conversejs .my-n2 {
-    margin-top: -.5rem !important
+    margin-top: -.5rem!important
 }
 
 #conversejs .mr-n2,
 #conversejs .mx-n2 {
-    margin-right: -.5rem !important
+    margin-right: -.5rem!important
 }
 
 #conversejs .mb-n2,
 #conversejs .my-n2 {
-    margin-bottom: -.5rem !important
+    margin-bottom: -.5rem!important
 }
 
 #conversejs .ml-n2,
 #conversejs .mx-n2 {
-    margin-left: -.5rem !important
+    margin-left: -.5rem!important
 }
 
 #conversejs .m-n3 {
-    margin: -1rem !important
+    margin: -1rem!important
 }
 
 #conversejs .mt-n3,
 #conversejs .my-n3 {
-    margin-top: -1rem !important
+    margin-top: -1rem!important
 }
 
 #conversejs .mr-n3,
 #conversejs .mx-n3 {
-    margin-right: -1rem !important
+    margin-right: -1rem!important
 }
 
 #conversejs .mb-n3,
 #conversejs .my-n3 {
-    margin-bottom: -1rem !important
+    margin-bottom: -1rem!important
 }
 
 #conversejs .ml-n3,
 #conversejs .mx-n3 {
-    margin-left: -1rem !important
+    margin-left: -1rem!important
 }
 
 #conversejs .m-n4 {
-    margin: -1.5rem !important
+    margin: -1.5rem!important
 }
 
 #conversejs .mt-n4,
 #conversejs .my-n4 {
-    margin-top: -1.5rem !important
+    margin-top: -1.5rem!important
 }
 
 #conversejs .mr-n4,
 #conversejs .mx-n4 {
-    margin-right: -1.5rem !important
+    margin-right: -1.5rem!important
 }
 
 #conversejs .mb-n4,
 #conversejs .my-n4 {
-    margin-bottom: -1.5rem !important
+    margin-bottom: -1.5rem!important
 }
 
 #conversejs .ml-n4,
 #conversejs .mx-n4 {
-    margin-left: -1.5rem !important
+    margin-left: -1.5rem!important
 }
 
 #conversejs .m-n5 {
-    margin: -3rem !important
+    margin: -3rem!important
 }
 
 #conversejs .mt-n5,
 #conversejs .my-n5 {
-    margin-top: -3rem !important
+    margin-top: -3rem!important
 }
 
 #conversejs .mr-n5,
 #conversejs .mx-n5 {
-    margin-right: -3rem !important
+    margin-right: -3rem!important
 }
 
 #conversejs .mb-n5,
 #conversejs .my-n5 {
-    margin-bottom: -3rem !important
+    margin-bottom: -3rem!important
 }
 
 #conversejs .ml-n5,
 #conversejs .mx-n5 {
-    margin-left: -3rem !important
+    margin-left: -3rem!important
 }
 
 #conversejs .m-auto {
-    margin: auto !important
+    margin: auto!important
 }
 
 #conversejs .mt-auto,
 #conversejs .my-auto {
-    margin-top: auto !important
+    margin-top: auto!important
 }
 
 #conversejs .mr-auto,
 #conversejs .mx-auto {
-    margin-right: auto !important
+    margin-right: auto!important
 }
 
 #conversejs .mb-auto,
 #conversejs .my-auto {
-    margin-bottom: auto !important
+    margin-bottom: auto!important
 }
 
 #conversejs .ml-auto,
 #conversejs .mx-auto {
-    margin-left: auto !important
+    margin-left: auto!important
 }
 
 @media (min-width:576px) {
     #conversejs .m-sm-0 {
-        margin: 0 !important
+        margin: 0!important
     }
-
     #conversejs .mt-sm-0,
     #conversejs .my-sm-0 {
-        margin-top: 0 !important
+        margin-top: 0!important
     }
-
     #conversejs .mr-sm-0,
     #conversejs .mx-sm-0 {
-        margin-right: 0 !important
+        margin-right: 0!important
     }
-
     #conversejs .mb-sm-0,
     #conversejs .my-sm-0 {
-        margin-bottom: 0 !important
+        margin-bottom: 0!important
     }
-
     #conversejs .ml-sm-0,
     #conversejs .mx-sm-0 {
-        margin-left: 0 !important
+        margin-left: 0!important
     }
-
     #conversejs .m-sm-1 {
-        margin: .25rem !important
+        margin: .25rem!important
     }
-
     #conversejs .mt-sm-1,
     #conversejs .my-sm-1 {
-        margin-top: .25rem !important
+        margin-top: .25rem!important
     }
-
     #conversejs .mr-sm-1,
     #conversejs .mx-sm-1 {
-        margin-right: .25rem !important
+        margin-right: .25rem!important
     }
-
     #conversejs .mb-sm-1,
     #conversejs .my-sm-1 {
-        margin-bottom: .25rem !important
+        margin-bottom: .25rem!important
     }
-
     #conversejs .ml-sm-1,
     #conversejs .mx-sm-1 {
-        margin-left: .25rem !important
+        margin-left: .25rem!important
     }
-
     #conversejs .m-sm-2 {
-        margin: .5rem !important
+        margin: .5rem!important
     }
-
     #conversejs .mt-sm-2,
     #conversejs .my-sm-2 {
-        margin-top: .5rem !important
+        margin-top: .5rem!important
     }
-
     #conversejs .mr-sm-2,
     #conversejs .mx-sm-2 {
-        margin-right: .5rem !important
+        margin-right: .5rem!important
     }
-
     #conversejs .mb-sm-2,
     #conversejs .my-sm-2 {
-        margin-bottom: .5rem !important
+        margin-bottom: .5rem!important
     }
-
     #conversejs .ml-sm-2,
     #conversejs .mx-sm-2 {
-        margin-left: .5rem !important
+        margin-left: .5rem!important
     }
-
     #conversejs .m-sm-3 {
-        margin: 1rem !important
+        margin: 1rem!important
     }
-
     #conversejs .mt-sm-3,
     #conversejs .my-sm-3 {
-        margin-top: 1rem !important
+        margin-top: 1rem!important
     }
-
     #conversejs .mr-sm-3,
     #conversejs .mx-sm-3 {
-        margin-right: 1rem !important
+        margin-right: 1rem!important
     }
-
     #conversejs .mb-sm-3,
     #conversejs .my-sm-3 {
-        margin-bottom: 1rem !important
+        margin-bottom: 1rem!important
     }
-
     #conversejs .ml-sm-3,
     #conversejs .mx-sm-3 {
-        margin-left: 1rem !important
+        margin-left: 1rem!important
     }
-
     #conversejs .m-sm-4 {
-        margin: 1.5rem !important
+        margin: 1.5rem!important
     }
-
     #conversejs .mt-sm-4,
     #conversejs .my-sm-4 {
-        margin-top: 1.5rem !important
+        margin-top: 1.5rem!important
     }
-
     #conversejs .mr-sm-4,
     #conversejs .mx-sm-4 {
-        margin-right: 1.5rem !important
+        margin-right: 1.5rem!important
     }
-
     #conversejs .mb-sm-4,
     #conversejs .my-sm-4 {
-        margin-bottom: 1.5rem !important
+        margin-bottom: 1.5rem!important
     }
-
     #conversejs .ml-sm-4,
     #conversejs .mx-sm-4 {
-        margin-left: 1.5rem !important
+        margin-left: 1.5rem!important
     }
-
     #conversejs .m-sm-5 {
-        margin: 3rem !important
+        margin: 3rem!important
     }
-
     #conversejs .mt-sm-5,
     #conversejs .my-sm-5 {
-        margin-top: 3rem !important
+        margin-top: 3rem!important
     }
-
     #conversejs .mr-sm-5,
     #conversejs .mx-sm-5 {
-        margin-right: 3rem !important
+        margin-right: 3rem!important
     }
-
     #conversejs .mb-sm-5,
     #conversejs .my-sm-5 {
-        margin-bottom: 3rem !important
+        margin-bottom: 3rem!important
     }
-
     #conversejs .ml-sm-5,
     #conversejs .mx-sm-5 {
-        margin-left: 3rem !important
+        margin-left: 3rem!important
     }
-
     #conversejs .p-sm-0 {
-        padding: 0 !important
+        padding: 0!important
     }
-
     #conversejs .pt-sm-0,
     #conversejs .py-sm-0 {
-        padding-top: 0 !important
+        padding-top: 0!important
     }
-
     #conversejs .pr-sm-0,
     #conversejs .px-sm-0 {
-        padding-right: 0 !important
+        padding-right: 0!important
     }
-
     #conversejs .pb-sm-0,
     #conversejs .py-sm-0 {
-        padding-bottom: 0 !important
+        padding-bottom: 0!important
     }
-
     #conversejs .pl-sm-0,
     #conversejs .px-sm-0 {
-        padding-left: 0 !important
+        padding-left: 0!important
     }
-
     #conversejs .p-sm-1 {
-        padding: .25rem !important
+        padding: .25rem!important
     }
-
     #conversejs .pt-sm-1,
     #conversejs .py-sm-1 {
-        padding-top: .25rem !important
+        padding-top: .25rem!important
     }
-
     #conversejs .pr-sm-1,
     #conversejs .px-sm-1 {
-        padding-right: .25rem !important
+        padding-right: .25rem!important
     }
-
     #conversejs .pb-sm-1,
     #conversejs .py-sm-1 {
-        padding-bottom: .25rem !important
+        padding-bottom: .25rem!important
     }
-
     #conversejs .pl-sm-1,
     #conversejs .px-sm-1 {
-        padding-left: .25rem !important
+        padding-left: .25rem!important
     }
-
     #conversejs .p-sm-2 {
-        padding: .5rem !important
+        padding: .5rem!important
     }
-
     #conversejs .pt-sm-2,
     #conversejs .py-sm-2 {
-        padding-top: .5rem !important
+        padding-top: .5rem!important
     }
-
     #conversejs .pr-sm-2,
     #conversejs .px-sm-2 {
-        padding-right: .5rem !important
+        padding-right: .5rem!important
     }
-
     #conversejs .pb-sm-2,
     #conversejs .py-sm-2 {
-        padding-bottom: .5rem !important
+        padding-bottom: .5rem!important
     }
-
     #conversejs .pl-sm-2,
     #conversejs .px-sm-2 {
-        padding-left: .5rem !important
+        padding-left: .5rem!important
     }
-
     #conversejs .p-sm-3 {
-        padding: 1rem !important
+        padding: 1rem!important
     }
-
     #conversejs .pt-sm-3,
     #conversejs .py-sm-3 {
-        padding-top: 1rem !important
+        padding-top: 1rem!important
     }
-
     #conversejs .pr-sm-3,
     #conversejs .px-sm-3 {
-        padding-right: 1rem !important
+        padding-right: 1rem!important
     }
-
     #conversejs .pb-sm-3,
     #conversejs .py-sm-3 {
-        padding-bottom: 1rem !important
+        padding-bottom: 1rem!important
     }
-
     #conversejs .pl-sm-3,
     #conversejs .px-sm-3 {
-        padding-left: 1rem !important
+        padding-left: 1rem!important
     }
-
     #conversejs .p-sm-4 {
-        padding: 1.5rem !important
+        padding: 1.5rem!important
     }
-
     #conversejs .pt-sm-4,
     #conversejs .py-sm-4 {
-        padding-top: 1.5rem !important
+        padding-top: 1.5rem!important
     }
-
     #conversejs .pr-sm-4,
     #conversejs .px-sm-4 {
-        padding-right: 1.5rem !important
+        padding-right: 1.5rem!important
     }
-
     #conversejs .pb-sm-4,
     #conversejs .py-sm-4 {
-        padding-bottom: 1.5rem !important
+        padding-bottom: 1.5rem!important
     }
-
     #conversejs .pl-sm-4,
     #conversejs .px-sm-4 {
-        padding-left: 1.5rem !important
+        padding-left: 1.5rem!important
     }
-
     #conversejs .p-sm-5 {
-        padding: 3rem !important
+        padding: 3rem!important
     }
-
     #conversejs .pt-sm-5,
     #conversejs .py-sm-5 {
-        padding-top: 3rem !important
+        padding-top: 3rem!important
     }
-
     #conversejs .pr-sm-5,
     #conversejs .px-sm-5 {
-        padding-right: 3rem !important
+        padding-right: 3rem!important
     }
-
     #conversejs .pb-sm-5,
     #conversejs .py-sm-5 {
-        padding-bottom: 3rem !important
+        padding-bottom: 3rem!important
     }
-
     #conversejs .pl-sm-5,
     #conversejs .px-sm-5 {
-        padding-left: 3rem !important
+        padding-left: 3rem!important
     }
-
     #conversejs .m-sm-n1 {
-        margin: -.25rem !important
+        margin: -.25rem!important
     }
-
     #conversejs .mt-sm-n1,
     #conversejs .my-sm-n1 {
-        margin-top: -.25rem !important
+        margin-top: -.25rem!important
     }
-
     #conversejs .mr-sm-n1,
     #conversejs .mx-sm-n1 {
-        margin-right: -.25rem !important
+        margin-right: -.25rem!important
     }
-
     #conversejs .mb-sm-n1,
     #conversejs .my-sm-n1 {
-        margin-bottom: -.25rem !important
+        margin-bottom: -.25rem!important
     }
-
     #conversejs .ml-sm-n1,
     #conversejs .mx-sm-n1 {
-        margin-left: -.25rem !important
+        margin-left: -.25rem!important
     }
-
     #conversejs .m-sm-n2 {
-        margin: -.5rem !important
+        margin: -.5rem!important
     }
-
     #conversejs .mt-sm-n2,
     #conversejs .my-sm-n2 {
-        margin-top: -.5rem !important
+        margin-top: -.5rem!important
     }
-
     #conversejs .mr-sm-n2,
     #conversejs .mx-sm-n2 {
-        margin-right: -.5rem !important
+        margin-right: -.5rem!important
     }
-
     #conversejs .mb-sm-n2,
     #conversejs .my-sm-n2 {
-        margin-bottom: -.5rem !important
+        margin-bottom: -.5rem!important
     }
-
     #conversejs .ml-sm-n2,
     #conversejs .mx-sm-n2 {
-        margin-left: -.5rem !important
+        margin-left: -.5rem!important
     }
-
     #conversejs .m-sm-n3 {
-        margin: -1rem !important
+        margin: -1rem!important
     }
-
     #conversejs .mt-sm-n3,
     #conversejs .my-sm-n3 {
-        margin-top: -1rem !important
+        margin-top: -1rem!important
     }
-
     #conversejs .mr-sm-n3,
     #conversejs .mx-sm-n3 {
-        margin-right: -1rem !important
+        margin-right: -1rem!important
     }
-
     #conversejs .mb-sm-n3,
     #conversejs .my-sm-n3 {
-        margin-bottom: -1rem !important
+        margin-bottom: -1rem!important
     }
-
     #conversejs .ml-sm-n3,
     #conversejs .mx-sm-n3 {
-        margin-left: -1rem !important
+        margin-left: -1rem!important
     }
-
     #conversejs .m-sm-n4 {
-        margin: -1.5rem !important
+        margin: -1.5rem!important
     }
-
     #conversejs .mt-sm-n4,
     #conversejs .my-sm-n4 {
-        margin-top: -1.5rem !important
+        margin-top: -1.5rem!important
     }
-
     #conversejs .mr-sm-n4,
     #conversejs .mx-sm-n4 {
-        margin-right: -1.5rem !important
+        margin-right: -1.5rem!important
     }
-
     #conversejs .mb-sm-n4,
     #conversejs .my-sm-n4 {
-        margin-bottom: -1.5rem !important
+        margin-bottom: -1.5rem!important
     }
-
     #conversejs .ml-sm-n4,
     #conversejs .mx-sm-n4 {
-        margin-left: -1.5rem !important
+        margin-left: -1.5rem!important
     }
-
     #conversejs .m-sm-n5 {
-        margin: -3rem !important
+        margin: -3rem!important
     }
-
     #conversejs .mt-sm-n5,
     #conversejs .my-sm-n5 {
-        margin-top: -3rem !important
+        margin-top: -3rem!important
     }
-
     #conversejs .mr-sm-n5,
     #conversejs .mx-sm-n5 {
-        margin-right: -3rem !important
+        margin-right: -3rem!important
     }
-
     #conversejs .mb-sm-n5,
     #conversejs .my-sm-n5 {
-        margin-bottom: -3rem !important
+        margin-bottom: -3rem!important
     }
-
     #conversejs .ml-sm-n5,
     #conversejs .mx-sm-n5 {
-        margin-left: -3rem !important
+        margin-left: -3rem!important
     }
-
     #conversejs .m-sm-auto {
-        margin: auto !important
+        margin: auto!important
     }
-
     #conversejs .mt-sm-auto,
     #conversejs .my-sm-auto {
-        margin-top: auto !important
+        margin-top: auto!important
     }
-
     #conversejs .mr-sm-auto,
     #conversejs .mx-sm-auto {
-        margin-right: auto !important
+        margin-right: auto!important
     }
-
     #conversejs .mb-sm-auto,
     #conversejs .my-sm-auto {
-        margin-bottom: auto !important
+        margin-bottom: auto!important
     }
-
     #conversejs .ml-sm-auto,
     #conversejs .mx-sm-auto {
-        margin-left: auto !important
+        margin-left: auto!important
     }
 }
 
 @media (min-width:768px) {
     #conversejs .m-md-0 {
-        margin: 0 !important
+        margin: 0!important
     }
-
     #conversejs .mt-md-0,
     #conversejs .my-md-0 {
-        margin-top: 0 !important
+        margin-top: 0!important
     }
-
     #conversejs .mr-md-0,
     #conversejs .mx-md-0 {
-        margin-right: 0 !important
+        margin-right: 0!important
     }
-
     #conversejs .mb-md-0,
     #conversejs .my-md-0 {
-        margin-bottom: 0 !important
+        margin-bottom: 0!important
     }
-
     #conversejs .ml-md-0,
     #conversejs .mx-md-0 {
-        margin-left: 0 !important
+        margin-left: 0!important
     }
-
     #conversejs .m-md-1 {
-        margin: .25rem !important
+        margin: .25rem!important
     }
-
     #conversejs .mt-md-1,
     #conversejs .my-md-1 {
-        margin-top: .25rem !important
+        margin-top: .25rem!important
     }
-
     #conversejs .mr-md-1,
     #conversejs .mx-md-1 {
-        margin-right: .25rem !important
+        margin-right: .25rem!important
     }
-
     #conversejs .mb-md-1,
     #conversejs .my-md-1 {
-        margin-bottom: .25rem !important
+        margin-bottom: .25rem!important
     }
-
     #conversejs .ml-md-1,
     #conversejs .mx-md-1 {
-        margin-left: .25rem !important
+        margin-left: .25rem!important
     }
-
     #conversejs .m-md-2 {
-        margin: .5rem !important
+        margin: .5rem!important
     }
-
     #conversejs .mt-md-2,
     #conversejs .my-md-2 {
-        margin-top: .5rem !important
+        margin-top: .5rem!important
     }
-
     #conversejs .mr-md-2,
     #conversejs .mx-md-2 {
-        margin-right: .5rem !important
+        margin-right: .5rem!important
     }
-
     #conversejs .mb-md-2,
     #conversejs .my-md-2 {
-        margin-bottom: .5rem !important
+        margin-bottom: .5rem!important
     }
-
     #conversejs .ml-md-2,
     #conversejs .mx-md-2 {
-        margin-left: .5rem !important
+        margin-left: .5rem!important
     }
-
     #conversejs .m-md-3 {
-        margin: 1rem !important
+        margin: 1rem!important
     }
-
     #conversejs .mt-md-3,
     #conversejs .my-md-3 {
-        margin-top: 1rem !important
+        margin-top: 1rem!important
     }
-
     #conversejs .mr-md-3,
     #conversejs .mx-md-3 {
-        margin-right: 1rem !important
+        margin-right: 1rem!important
     }
-
     #conversejs .mb-md-3,
     #conversejs .my-md-3 {
-        margin-bottom: 1rem !important
+        margin-bottom: 1rem!important
     }
-
     #conversejs .ml-md-3,
     #conversejs .mx-md-3 {
-        margin-left: 1rem !important
+        margin-left: 1rem!important
     }
-
     #conversejs .m-md-4 {
-        margin: 1.5rem !important
+        margin: 1.5rem!important
     }
-
     #conversejs .mt-md-4,
     #conversejs .my-md-4 {
-        margin-top: 1.5rem !important
+        margin-top: 1.5rem!important
     }
-
     #conversejs .mr-md-4,
     #conversejs .mx-md-4 {
-        margin-right: 1.5rem !important
+        margin-right: 1.5rem!important
     }
-
     #conversejs .mb-md-4,
     #conversejs .my-md-4 {
-        margin-bottom: 1.5rem !important
+        margin-bottom: 1.5rem!important
     }
-
     #conversejs .ml-md-4,
     #conversejs .mx-md-4 {
-        margin-left: 1.5rem !important
+        margin-left: 1.5rem!important
     }
-
     #conversejs .m-md-5 {
-        margin: 3rem !important
+        margin: 3rem!important
     }
-
     #conversejs .mt-md-5,
     #conversejs .my-md-5 {
-        margin-top: 3rem !important
+        margin-top: 3rem!important
     }
-
     #conversejs .mr-md-5,
     #conversejs .mx-md-5 {
-        margin-right: 3rem !important
+        margin-right: 3rem!important
     }
-
     #conversejs .mb-md-5,
     #conversejs .my-md-5 {
-        margin-bottom: 3rem !important
+        margin-bottom: 3rem!important
     }
-
     #conversejs .ml-md-5,
     #conversejs .mx-md-5 {
-        margin-left: 3rem !important
+        margin-left: 3rem!important
     }
-
     #conversejs .p-md-0 {
-        padding: 0 !important
+        padding: 0!important
     }
-
     #conversejs .pt-md-0,
     #conversejs .py-md-0 {
-        padding-top: 0 !important
+        padding-top: 0!important
     }
-
     #conversejs .pr-md-0,
     #conversejs .px-md-0 {
-        padding-right: 0 !important
+        padding-right: 0!important
     }
-
     #conversejs .pb-md-0,
     #conversejs .py-md-0 {
-        padding-bottom: 0 !important
+        padding-bottom: 0!important
     }
-
     #conversejs .pl-md-0,
     #conversejs .px-md-0 {
-        padding-left: 0 !important
+        padding-left: 0!important
     }
-
     #conversejs .p-md-1 {
-        padding: .25rem !important
+        padding: .25rem!important
     }
-
     #conversejs .pt-md-1,
     #conversejs .py-md-1 {
-        padding-top: .25rem !important
+        padding-top: .25rem!important
     }
-
     #conversejs .pr-md-1,
     #conversejs .px-md-1 {
-        padding-right: .25rem !important
+        padding-right: .25rem!important
     }
-
     #conversejs .pb-md-1,
     #conversejs .py-md-1 {
-        padding-bottom: .25rem !important
+        padding-bottom: .25rem!important
     }
-
     #conversejs .pl-md-1,
     #conversejs .px-md-1 {
-        padding-left: .25rem !important
+        padding-left: .25rem!important
     }
-
     #conversejs .p-md-2 {
-        padding: .5rem !important
+        padding: .5rem!important
     }
-
     #conversejs .pt-md-2,
     #conversejs .py-md-2 {
-        padding-top: .5rem !important
+        padding-top: .5rem!important
     }
-
     #conversejs .pr-md-2,
     #conversejs .px-md-2 {
-        padding-right: .5rem !important
+        padding-right: .5rem!important
     }
-
     #conversejs .pb-md-2,
     #conversejs .py-md-2 {
-        padding-bottom: .5rem !important
+        padding-bottom: .5rem!important
     }
-
     #conversejs .pl-md-2,
     #conversejs .px-md-2 {
-        padding-left: .5rem !important
+        padding-left: .5rem!important
     }
-
     #conversejs .p-md-3 {
-        padding: 1rem !important
+        padding: 1rem!important
     }
-
     #conversejs .pt-md-3,
     #conversejs .py-md-3 {
-        padding-top: 1rem !important
+        padding-top: 1rem!important
     }
-
     #conversejs .pr-md-3,
     #conversejs .px-md-3 {
-        padding-right: 1rem !important
+        padding-right: 1rem!important
     }
-
     #conversejs .pb-md-3,
     #conversejs .py-md-3 {
-        padding-bottom: 1rem !important
+        padding-bottom: 1rem!important
     }
-
     #conversejs .pl-md-3,
     #conversejs .px-md-3 {
-        padding-left: 1rem !important
+        padding-left: 1rem!important
     }
-
     #conversejs .p-md-4 {
-        padding: 1.5rem !important
+        padding: 1.5rem!important
     }
-
     #conversejs .pt-md-4,
     #conversejs .py-md-4 {
-        padding-top: 1.5rem !important
+        padding-top: 1.5rem!important
     }
-
     #conversejs .pr-md-4,
     #conversejs .px-md-4 {
-        padding-right: 1.5rem !important
+        padding-right: 1.5rem!important
     }
-
     #conversejs .pb-md-4,
     #conversejs .py-md-4 {
-        padding-bottom: 1.5rem !important
+        padding-bottom: 1.5rem!important
     }
-
     #conversejs .pl-md-4,
     #conversejs .px-md-4 {
-        padding-left: 1.5rem !important
+        padding-left: 1.5rem!important
     }
-
     #conversejs .p-md-5 {
-        padding: 3rem !important
+        padding: 3rem!important
     }
-
     #conversejs .pt-md-5,
     #conversejs .py-md-5 {
-        padding-top: 3rem !important
+        padding-top: 3rem!important
     }
-
     #conversejs .pr-md-5,
     #conversejs .px-md-5 {
-        padding-right: 3rem !important
+        padding-right: 3rem!important
     }
-
     #conversejs .pb-md-5,
     #conversejs .py-md-5 {
-        padding-bottom: 3rem !important
+        padding-bottom: 3rem!important
     }
-
     #conversejs .pl-md-5,
     #conversejs .px-md-5 {
-        padding-left: 3rem !important
+        padding-left: 3rem!important
     }
-
     #conversejs .m-md-n1 {
-        margin: -.25rem !important
+        margin: -.25rem!important
     }
-
     #conversejs .mt-md-n1,
     #conversejs .my-md-n1 {
-        margin-top: -.25rem !important
+        margin-top: -.25rem!important
     }
-
     #conversejs .mr-md-n1,
     #conversejs .mx-md-n1 {
-        margin-right: -.25rem !important
+        margin-right: -.25rem!important
     }
-
     #conversejs .mb-md-n1,
     #conversejs .my-md-n1 {
-        margin-bottom: -.25rem !important
+        margin-bottom: -.25rem!important
     }
-
     #conversejs .ml-md-n1,
     #conversejs .mx-md-n1 {
-        margin-left: -.25rem !important
+        margin-left: -.25rem!important
     }
-
     #conversejs .m-md-n2 {
-        margin: -.5rem !important
+        margin: -.5rem!important
     }
-
     #conversejs .mt-md-n2,
     #conversejs .my-md-n2 {
-        margin-top: -.5rem !important
+        margin-top: -.5rem!important
     }
-
     #conversejs .mr-md-n2,
     #conversejs .mx-md-n2 {
-        margin-right: -.5rem !important
+        margin-right: -.5rem!important
     }
-
     #conversejs .mb-md-n2,
     #conversejs .my-md-n2 {
-        margin-bottom: -.5rem !important
+        margin-bottom: -.5rem!important
     }
-
     #conversejs .ml-md-n2,
     #conversejs .mx-md-n2 {
-        margin-left: -.5rem !important
+        margin-left: -.5rem!important
     }
-
     #conversejs .m-md-n3 {
-        margin: -1rem !important
+        margin: -1rem!important
     }
-
     #conversejs .mt-md-n3,
     #conversejs .my-md-n3 {
-        margin-top: -1rem !important
+        margin-top: -1rem!important
     }
-
     #conversejs .mr-md-n3,
     #conversejs .mx-md-n3 {
-        margin-right: -1rem !important
+        margin-right: -1rem!important
     }
-
     #conversejs .mb-md-n3,
     #conversejs .my-md-n3 {
-        margin-bottom: -1rem !important
+        margin-bottom: -1rem!important
     }
-
     #conversejs .ml-md-n3,
     #conversejs .mx-md-n3 {
-        margin-left: -1rem !important
+        margin-left: -1rem!important
     }
-
     #conversejs .m-md-n4 {
-        margin: -1.5rem !important
+        margin: -1.5rem!important
     }
-
     #conversejs .mt-md-n4,
     #conversejs .my-md-n4 {
-        margin-top: -1.5rem !important
+        margin-top: -1.5rem!important
     }
-
     #conversejs .mr-md-n4,
     #conversejs .mx-md-n4 {
-        margin-right: -1.5rem !important
+        margin-right: -1.5rem!important
     }
-
     #conversejs .mb-md-n4,
     #conversejs .my-md-n4 {
-        margin-bottom: -1.5rem !important
+        margin-bottom: -1.5rem!important
     }
-
     #conversejs .ml-md-n4,
     #conversejs .mx-md-n4 {
-        margin-left: -1.5rem !important
+        margin-left: -1.5rem!important
     }
-
     #conversejs .m-md-n5 {
-        margin: -3rem !important
+        margin: -3rem!important
     }
-
     #conversejs .mt-md-n5,
     #conversejs .my-md-n5 {
-        margin-top: -3rem !important
+        margin-top: -3rem!important
     }
-
     #conversejs .mr-md-n5,
     #conversejs .mx-md-n5 {
-        margin-right: -3rem !important
+        margin-right: -3rem!important
     }
-
     #conversejs .mb-md-n5,
     #conversejs .my-md-n5 {
-        margin-bottom: -3rem !important
+        margin-bottom: -3rem!important
     }
-
     #conversejs .ml-md-n5,
     #conversejs .mx-md-n5 {
-        margin-left: -3rem !important
+        margin-left: -3rem!important
     }
-
     #conversejs .m-md-auto {
-        margin: auto !important
+        margin: auto!important
     }
-
     #conversejs .mt-md-auto,
     #conversejs .my-md-auto {
-        margin-top: auto !important
+        margin-top: auto!important
     }
-
     #conversejs .mr-md-auto,
     #conversejs .mx-md-auto {
-        margin-right: auto !important
+        margin-right: auto!important
     }
-
     #conversejs .mb-md-auto,
     #conversejs .my-md-auto {
-        margin-bottom: auto !important
+        margin-bottom: auto!important
     }
-
     #conversejs .ml-md-auto,
     #conversejs .mx-md-auto {
-        margin-left: auto !important
+        margin-left: auto!important
     }
 }
 
 @media (min-width:992px) {
     #conversejs .m-lg-0 {
-        margin: 0 !important
+        margin: 0!important
     }
-
     #conversejs .mt-lg-0,
     #conversejs .my-lg-0 {
-        margin-top: 0 !important
+        margin-top: 0!important
     }
-
     #conversejs .mr-lg-0,
     #conversejs .mx-lg-0 {
-        margin-right: 0 !important
+        margin-right: 0!important
     }
-
     #conversejs .mb-lg-0,
     #conversejs .my-lg-0 {
-        margin-bottom: 0 !important
+        margin-bottom: 0!important
     }
-
     #conversejs .ml-lg-0,
     #conversejs .mx-lg-0 {
-        margin-left: 0 !important
+        margin-left: 0!important
     }
-
     #conversejs .m-lg-1 {
-        margin: .25rem !important
+        margin: .25rem!important
     }
-
     #conversejs .mt-lg-1,
     #conversejs .my-lg-1 {
-        margin-top: .25rem !important
+        margin-top: .25rem!important
     }
-
     #conversejs .mr-lg-1,
     #conversejs .mx-lg-1 {
-        margin-right: .25rem !important
+        margin-right: .25rem!important
     }
-
     #conversejs .mb-lg-1,
     #conversejs .my-lg-1 {
-        margin-bottom: .25rem !important
+        margin-bottom: .25rem!important
     }
-
     #conversejs .ml-lg-1,
     #conversejs .mx-lg-1 {
-        margin-left: .25rem !important
+        margin-left: .25rem!important
     }
-
     #conversejs .m-lg-2 {
-        margin: .5rem !important
+        margin: .5rem!important
     }
-
     #conversejs .mt-lg-2,
     #conversejs .my-lg-2 {
-        margin-top: .5rem !important
+        margin-top: .5rem!important
     }
-
     #conversejs .mr-lg-2,
     #conversejs .mx-lg-2 {
-        margin-right: .5rem !important
+        margin-right: .5rem!important
     }
-
     #conversejs .mb-lg-2,
     #conversejs .my-lg-2 {
-        margin-bottom: .5rem !important
+        margin-bottom: .5rem!important
     }
-
     #conversejs .ml-lg-2,
     #conversejs .mx-lg-2 {
-        margin-left: .5rem !important
+        margin-left: .5rem!important
     }
-
     #conversejs .m-lg-3 {
-        margin: 1rem !important
+        margin: 1rem!important
     }
-
     #conversejs .mt-lg-3,
     #conversejs .my-lg-3 {
-        margin-top: 1rem !important
+        margin-top: 1rem!important
     }
-
     #conversejs .mr-lg-3,
     #conversejs .mx-lg-3 {
-        margin-right: 1rem !important
+        margin-right: 1rem!important
     }
-
     #conversejs .mb-lg-3,
     #conversejs .my-lg-3 {
-        margin-bottom: 1rem !important
+        margin-bottom: 1rem!important
     }
-
     #conversejs .ml-lg-3,
     #conversejs .mx-lg-3 {
-        margin-left: 1rem !important
+        margin-left: 1rem!important
     }
-
     #conversejs .m-lg-4 {
-        margin: 1.5rem !important
+        margin: 1.5rem!important
     }
-
     #conversejs .mt-lg-4,
     #conversejs .my-lg-4 {
-        margin-top: 1.5rem !important
+        margin-top: 1.5rem!important
     }
-
     #conversejs .mr-lg-4,
     #conversejs .mx-lg-4 {
-        margin-right: 1.5rem !important
+        margin-right: 1.5rem!important
     }
-
     #conversejs .mb-lg-4,
     #conversejs .my-lg-4 {
-        margin-bottom: 1.5rem !important
+        margin-bottom: 1.5rem!important
     }
-
     #conversejs .ml-lg-4,
     #conversejs .mx-lg-4 {
-        margin-left: 1.5rem !important
+        margin-left: 1.5rem!important
     }
-
     #conversejs .m-lg-5 {
-        margin: 3rem !important
+        margin: 3rem!important
     }
-
     #conversejs .mt-lg-5,
     #conversejs .my-lg-5 {
-        margin-top: 3rem !important
+        margin-top: 3rem!important
     }
-
     #conversejs .mr-lg-5,
     #conversejs .mx-lg-5 {
-        margin-right: 3rem !important
+        margin-right: 3rem!important
     }
-
     #conversejs .mb-lg-5,
     #conversejs .my-lg-5 {
-        margin-bottom: 3rem !important
+        margin-bottom: 3rem!important
     }
-
     #conversejs .ml-lg-5,
     #conversejs .mx-lg-5 {
-        margin-left: 3rem !important
+        margin-left: 3rem!important
     }
-
     #conversejs .p-lg-0 {
-        padding: 0 !important
+        padding: 0!important
     }
-
     #conversejs .pt-lg-0,
     #conversejs .py-lg-0 {
-        padding-top: 0 !important
+        padding-top: 0!important
     }
-
     #conversejs .pr-lg-0,
     #conversejs .px-lg-0 {
-        padding-right: 0 !important
+        padding-right: 0!important
     }
-
     #conversejs .pb-lg-0,
     #conversejs .py-lg-0 {
-        padding-bottom: 0 !important
+        padding-bottom: 0!important
     }
-
     #conversejs .pl-lg-0,
     #conversejs .px-lg-0 {
-        padding-left: 0 !important
+        padding-left: 0!important
     }
-
     #conversejs .p-lg-1 {
-        padding: .25rem !important
+        padding: .25rem!important
     }
-
     #conversejs .pt-lg-1,
     #conversejs .py-lg-1 {
-        padding-top: .25rem !important
+        padding-top: .25rem!important
     }
-
     #conversejs .pr-lg-1,
     #conversejs .px-lg-1 {
-        padding-right: .25rem !important
+        padding-right: .25rem!important
     }
-
     #conversejs .pb-lg-1,
     #conversejs .py-lg-1 {
-        padding-bottom: .25rem !important
+        padding-bottom: .25rem!important
     }
-
     #conversejs .pl-lg-1,
     #conversejs .px-lg-1 {
-        padding-left: .25rem !important
+        padding-left: .25rem!important
     }
-
     #conversejs .p-lg-2 {
-        padding: .5rem !important
+        padding: .5rem!important
     }
-
     #conversejs .pt-lg-2,
     #conversejs .py-lg-2 {
-        padding-top: .5rem !important
+        padding-top: .5rem!important
     }
-
     #conversejs .pr-lg-2,
     #conversejs .px-lg-2 {
-        padding-right: .5rem !important
+        padding-right: .5rem!important
     }
-
     #conversejs .pb-lg-2,
     #conversejs .py-lg-2 {
-        padding-bottom: .5rem !important
+        padding-bottom: .5rem!important
     }
-
     #conversejs .pl-lg-2,
     #conversejs .px-lg-2 {
-        padding-left: .5rem !important
+        padding-left: .5rem!important
     }
-
     #conversejs .p-lg-3 {
-        padding: 1rem !important
+        padding: 1rem!important
     }
-
     #conversejs .pt-lg-3,
     #conversejs .py-lg-3 {
-        padding-top: 1rem !important
+        padding-top: 1rem!important
     }
-
     #conversejs .pr-lg-3,
     #conversejs .px-lg-3 {
-        padding-right: 1rem !important
+        padding-right: 1rem!important
     }
-
     #conversejs .pb-lg-3,
     #conversejs .py-lg-3 {
-        padding-bottom: 1rem !important
+        padding-bottom: 1rem!important
     }
-
     #conversejs .pl-lg-3,
     #conversejs .px-lg-3 {
-        padding-left: 1rem !important
+        padding-left: 1rem!important
     }
-
     #conversejs .p-lg-4 {
-        padding: 1.5rem !important
+        padding: 1.5rem!important
     }
-
     #conversejs .pt-lg-4,
     #conversejs .py-lg-4 {
-        padding-top: 1.5rem !important
+        padding-top: 1.5rem!important
     }
-
     #conversejs .pr-lg-4,
     #conversejs .px-lg-4 {
-        padding-right: 1.5rem !important
+        padding-right: 1.5rem!important
     }
-
     #conversejs .pb-lg-4,
     #conversejs .py-lg-4 {
-        padding-bottom: 1.5rem !important
+        padding-bottom: 1.5rem!important
     }
-
     #conversejs .pl-lg-4,
     #conversejs .px-lg-4 {
-        padding-left: 1.5rem !important
+        padding-left: 1.5rem!important
     }
-
     #conversejs .p-lg-5 {
-        padding: 3rem !important
+        padding: 3rem!important
     }
-
     #conversejs .pt-lg-5,
     #conversejs .py-lg-5 {
-        padding-top: 3rem !important
+        padding-top: 3rem!important
     }
-
     #conversejs .pr-lg-5,
     #conversejs .px-lg-5 {
-        padding-right: 3rem !important
+        padding-right: 3rem!important
     }
-
     #conversejs .pb-lg-5,
     #conversejs .py-lg-5 {
-        padding-bottom: 3rem !important
+        padding-bottom: 3rem!important
     }
-
     #conversejs .pl-lg-5,
     #conversejs .px-lg-5 {
-        padding-left: 3rem !important
+        padding-left: 3rem!important
     }
-
     #conversejs .m-lg-n1 {
-        margin: -.25rem !important
+        margin: -.25rem!important
     }
-
     #conversejs .mt-lg-n1,
     #conversejs .my-lg-n1 {
-        margin-top: -.25rem !important
+        margin-top: -.25rem!important
     }
-
     #conversejs .mr-lg-n1,
     #conversejs .mx-lg-n1 {
-        margin-right: -.25rem !important
+        margin-right: -.25rem!important
     }
-
     #conversejs .mb-lg-n1,
     #conversejs .my-lg-n1 {
-        margin-bottom: -.25rem !important
+        margin-bottom: -.25rem!important
     }
-
     #conversejs .ml-lg-n1,
     #conversejs .mx-lg-n1 {
-        margin-left: -.25rem !important
+        margin-left: -.25rem!important
     }
-
     #conversejs .m-lg-n2 {
-        margin: -.5rem !important
+        margin: -.5rem!important
     }
-
     #conversejs .mt-lg-n2,
     #conversejs .my-lg-n2 {
-        margin-top: -.5rem !important
+        margin-top: -.5rem!important
     }
-
     #conversejs .mr-lg-n2,
     #conversejs .mx-lg-n2 {
-        margin-right: -.5rem !important
+        margin-right: -.5rem!important
     }
-
     #conversejs .mb-lg-n2,
     #conversejs .my-lg-n2 {
-        margin-bottom: -.5rem !important
+        margin-bottom: -.5rem!important
     }
-
     #conversejs .ml-lg-n2,
     #conversejs .mx-lg-n2 {
-        margin-left: -.5rem !important
+        margin-left: -.5rem!important
     }
-
     #conversejs .m-lg-n3 {
-        margin: -1rem !important
+        margin: -1rem!important
     }
-
     #conversejs .mt-lg-n3,
     #conversejs .my-lg-n3 {
-        margin-top: -1rem !important
+        margin-top: -1rem!important
     }
-
     #conversejs .mr-lg-n3,
     #conversejs .mx-lg-n3 {
-        margin-right: -1rem !important
+        margin-right: -1rem!important
     }
-
     #conversejs .mb-lg-n3,
     #conversejs .my-lg-n3 {
-        margin-bottom: -1rem !important
+        margin-bottom: -1rem!important
     }
-
     #conversejs .ml-lg-n3,
     #conversejs .mx-lg-n3 {
-        margin-left: -1rem !important
+        margin-left: -1rem!important
     }
-
     #conversejs .m-lg-n4 {
-        margin: -1.5rem !important
+        margin: -1.5rem!important
     }
-
     #conversejs .mt-lg-n4,
     #conversejs .my-lg-n4 {
-        margin-top: -1.5rem !important
+        margin-top: -1.5rem!important
     }
-
     #conversejs .mr-lg-n4,
     #conversejs .mx-lg-n4 {
-        margin-right: -1.5rem !important
+        margin-right: -1.5rem!important
     }
-
     #conversejs .mb-lg-n4,
     #conversejs .my-lg-n4 {
-        margin-bottom: -1.5rem !important
+        margin-bottom: -1.5rem!important
     }
-
     #conversejs .ml-lg-n4,
     #conversejs .mx-lg-n4 {
-        margin-left: -1.5rem !important
+        margin-left: -1.5rem!important
     }
-
     #conversejs .m-lg-n5 {
-        margin: -3rem !important
+        margin: -3rem!important
     }
-
     #conversejs .mt-lg-n5,
     #conversejs .my-lg-n5 {
-        margin-top: -3rem !important
+        margin-top: -3rem!important
     }
-
     #conversejs .mr-lg-n5,
     #conversejs .mx-lg-n5 {
-        margin-right: -3rem !important
+        margin-right: -3rem!important
     }
-
     #conversejs .mb-lg-n5,
     #conversejs .my-lg-n5 {
-        margin-bottom: -3rem !important
+        margin-bottom: -3rem!important
     }
-
     #conversejs .ml-lg-n5,
     #conversejs .mx-lg-n5 {
-        margin-left: -3rem !important
+        margin-left: -3rem!important
     }
-
     #conversejs .m-lg-auto {
-        margin: auto !important
+        margin: auto!important
     }
-
     #conversejs .mt-lg-auto,
     #conversejs .my-lg-auto {
-        margin-top: auto !important
+        margin-top: auto!important
     }
-
     #conversejs .mr-lg-auto,
     #conversejs .mx-lg-auto {
-        margin-right: auto !important
+        margin-right: auto!important
     }
-
     #conversejs .mb-lg-auto,
     #conversejs .my-lg-auto {
-        margin-bottom: auto !important
+        margin-bottom: auto!important
     }
-
     #conversejs .ml-lg-auto,
     #conversejs .mx-lg-auto {
-        margin-left: auto !important
+        margin-left: auto!important
     }
 }
 
 @media (min-width:1200px) {
     #conversejs .m-xl-0 {
-        margin: 0 !important
+        margin: 0!important
     }
-
     #conversejs .mt-xl-0,
     #conversejs .my-xl-0 {
-        margin-top: 0 !important
+        margin-top: 0!important
     }
-
     #conversejs .mr-xl-0,
     #conversejs .mx-xl-0 {
-        margin-right: 0 !important
+        margin-right: 0!important
     }
-
     #conversejs .mb-xl-0,
     #conversejs .my-xl-0 {
-        margin-bottom: 0 !important
+        margin-bottom: 0!important
     }
-
     #conversejs .ml-xl-0,
     #conversejs .mx-xl-0 {
-        margin-left: 0 !important
+        margin-left: 0!important
     }
-
     #conversejs .m-xl-1 {
-        margin: .25rem !important
+        margin: .25rem!important
     }
-
     #conversejs .mt-xl-1,
     #conversejs .my-xl-1 {
-        margin-top: .25rem !important
+        margin-top: .25rem!important
     }
-
     #conversejs .mr-xl-1,
     #conversejs .mx-xl-1 {
-        margin-right: .25rem !important
+        margin-right: .25rem!important
     }
-
     #conversejs .mb-xl-1,
     #conversejs .my-xl-1 {
-        margin-bottom: .25rem !important
+        margin-bottom: .25rem!important
     }
-
     #conversejs .ml-xl-1,
     #conversejs .mx-xl-1 {
-        margin-left: .25rem !important
+        margin-left: .25rem!important
     }
-
     #conversejs .m-xl-2 {
-        margin: .5rem !important
+        margin: .5rem!important
     }
-
     #conversejs .mt-xl-2,
     #conversejs .my-xl-2 {
-        margin-top: .5rem !important
+        margin-top: .5rem!important
     }
-
     #conversejs .mr-xl-2,
     #conversejs .mx-xl-2 {
-        margin-right: .5rem !important
+        margin-right: .5rem!important
     }
-
     #conversejs .mb-xl-2,
     #conversejs .my-xl-2 {
-        margin-bottom: .5rem !important
+        margin-bottom: .5rem!important
     }
-
     #conversejs .ml-xl-2,
     #conversejs .mx-xl-2 {
-        margin-left: .5rem !important
+        margin-left: .5rem!important
     }
-
     #conversejs .m-xl-3 {
-        margin: 1rem !important
+        margin: 1rem!important
     }
-
     #conversejs .mt-xl-3,
     #conversejs .my-xl-3 {
-        margin-top: 1rem !important
+        margin-top: 1rem!important
     }
-
     #conversejs .mr-xl-3,
     #conversejs .mx-xl-3 {
-        margin-right: 1rem !important
+        margin-right: 1rem!important
     }
-
     #conversejs .mb-xl-3,
     #conversejs .my-xl-3 {
-        margin-bottom: 1rem !important
+        margin-bottom: 1rem!important
     }
-
     #conversejs .ml-xl-3,
     #conversejs .mx-xl-3 {
-        margin-left: 1rem !important
+        margin-left: 1rem!important
     }
-
     #conversejs .m-xl-4 {
-        margin: 1.5rem !important
+        margin: 1.5rem!important
     }
-
     #conversejs .mt-xl-4,
     #conversejs .my-xl-4 {
-        margin-top: 1.5rem !important
+        margin-top: 1.5rem!important
     }
-
     #conversejs .mr-xl-4,
     #conversejs .mx-xl-4 {
-        margin-right: 1.5rem !important
+        margin-right: 1.5rem!important
     }
-
     #conversejs .mb-xl-4,
     #conversejs .my-xl-4 {
-        margin-bottom: 1.5rem !important
+        margin-bottom: 1.5rem!important
     }
-
     #conversejs .ml-xl-4,
     #conversejs .mx-xl-4 {
-        margin-left: 1.5rem !important
+        margin-left: 1.5rem!important
     }
-
     #conversejs .m-xl-5 {
-        margin: 3rem !important
+        margin: 3rem!important
     }
-
     #conversejs .mt-xl-5,
     #conversejs .my-xl-5 {
-        margin-top: 3rem !important
+        margin-top: 3rem!important
     }
-
     #conversejs .mr-xl-5,
     #conversejs .mx-xl-5 {
-        margin-right: 3rem !important
+        margin-right: 3rem!important
     }
-
     #conversejs .mb-xl-5,
     #conversejs .my-xl-5 {
-        margin-bottom: 3rem !important
+        margin-bottom: 3rem!important
     }
-
     #conversejs .ml-xl-5,
     #conversejs .mx-xl-5 {
-        margin-left: 3rem !important
+        margin-left: 3rem!important
     }
-
     #conversejs .p-xl-0 {
-        padding: 0 !important
+        padding: 0!important
     }
-
     #conversejs .pt-xl-0,
     #conversejs .py-xl-0 {
-        padding-top: 0 !important
+        padding-top: 0!important
     }
-
     #conversejs .pr-xl-0,
     #conversejs .px-xl-0 {
-        padding-right: 0 !important
+        padding-right: 0!important
     }
-
     #conversejs .pb-xl-0,
     #conversejs .py-xl-0 {
-        padding-bottom: 0 !important
+        padding-bottom: 0!important
     }
-
     #conversejs .pl-xl-0,
     #conversejs .px-xl-0 {
-        padding-left: 0 !important
+        padding-left: 0!important
     }
-
     #conversejs .p-xl-1 {
-        padding: .25rem !important
+        padding: .25rem!important
     }
-
     #conversejs .pt-xl-1,
     #conversejs .py-xl-1 {
-        padding-top: .25rem !important
+        padding-top: .25rem!important
     }
-
     #conversejs .pr-xl-1,
     #conversejs .px-xl-1 {
-        padding-right: .25rem !important
+        padding-right: .25rem!important
     }
-
     #conversejs .pb-xl-1,
     #conversejs .py-xl-1 {
-        padding-bottom: .25rem !important
+        padding-bottom: .25rem!important
     }
-
     #conversejs .pl-xl-1,
     #conversejs .px-xl-1 {
-        padding-left: .25rem !important
+        padding-left: .25rem!important
     }
-
     #conversejs .p-xl-2 {
-        padding: .5rem !important
+        padding: .5rem!important
     }
-
     #conversejs .pt-xl-2,
     #conversejs .py-xl-2 {
-        padding-top: .5rem !important
+        padding-top: .5rem!important
     }
-
     #conversejs .pr-xl-2,
     #conversejs .px-xl-2 {
-        padding-right: .5rem !important
+        padding-right: .5rem!important
     }
-
     #conversejs .pb-xl-2,
     #conversejs .py-xl-2 {
-        padding-bottom: .5rem !important
+        padding-bottom: .5rem!important
     }
-
     #conversejs .pl-xl-2,
     #conversejs .px-xl-2 {
-        padding-left: .5rem !important
+        padding-left: .5rem!important
     }
-
     #conversejs .p-xl-3 {
-        padding: 1rem !important
+        padding: 1rem!important
     }
-
     #conversejs .pt-xl-3,
     #conversejs .py-xl-3 {
-        padding-top: 1rem !important
+        padding-top: 1rem!important
     }
-
     #conversejs .pr-xl-3,
     #conversejs .px-xl-3 {
-        padding-right: 1rem !important
+        padding-right: 1rem!important
     }
-
     #conversejs .pb-xl-3,
     #conversejs .py-xl-3 {
-        padding-bottom: 1rem !important
+        padding-bottom: 1rem!important
     }
-
     #conversejs .pl-xl-3,
     #conversejs .px-xl-3 {
-        padding-left: 1rem !important
+        padding-left: 1rem!important
     }
-
     #conversejs .p-xl-4 {
-        padding: 1.5rem !important
+        padding: 1.5rem!important
     }
-
     #conversejs .pt-xl-4,
     #conversejs .py-xl-4 {
-        padding-top: 1.5rem !important
+        padding-top: 1.5rem!important
     }
-
     #conversejs .pr-xl-4,
     #conversejs .px-xl-4 {
-        padding-right: 1.5rem !important
+        padding-right: 1.5rem!important
     }
-
     #conversejs .pb-xl-4,
     #conversejs .py-xl-4 {
-        padding-bottom: 1.5rem !important
+        padding-bottom: 1.5rem!important
     }
-
     #conversejs .pl-xl-4,
     #conversejs .px-xl-4 {
-        padding-left: 1.5rem !important
+        padding-left: 1.5rem!important
     }
-
     #conversejs .p-xl-5 {
-        padding: 3rem !important
+        padding: 3rem!important
     }
-
     #conversejs .pt-xl-5,
     #conversejs .py-xl-5 {
-        padding-top: 3rem !important
+        padding-top: 3rem!important
     }
-
     #conversejs .pr-xl-5,
     #conversejs .px-xl-5 {
-        padding-right: 3rem !important
+        padding-right: 3rem!important
     }
-
     #conversejs .pb-xl-5,
     #conversejs .py-xl-5 {
-        padding-bottom: 3rem !important
+        padding-bottom: 3rem!important
     }
-
     #conversejs .pl-xl-5,
     #conversejs .px-xl-5 {
-        padding-left: 3rem !important
+        padding-left: 3rem!important
     }
-
     #conversejs .m-xl-n1 {
-        margin: -.25rem !important
+        margin: -.25rem!important
     }
-
     #conversejs .mt-xl-n1,
     #conversejs .my-xl-n1 {
-        margin-top: -.25rem !important
+        margin-top: -.25rem!important
     }
-
     #conversejs .mr-xl-n1,
     #conversejs .mx-xl-n1 {
-        margin-right: -.25rem !important
+        margin-right: -.25rem!important
     }
-
     #conversejs .mb-xl-n1,
     #conversejs .my-xl-n1 {
-        margin-bottom: -.25rem !important
+        margin-bottom: -.25rem!important
     }
-
     #conversejs .ml-xl-n1,
     #conversejs .mx-xl-n1 {
-        margin-left: -.25rem !important
+        margin-left: -.25rem!important
     }
-
     #conversejs .m-xl-n2 {
-        margin: -.5rem !important
+        margin: -.5rem!important
     }
-
     #conversejs .mt-xl-n2,
     #conversejs .my-xl-n2 {
-        margin-top: -.5rem !important
+        margin-top: -.5rem!important
     }
-
     #conversejs .mr-xl-n2,
     #conversejs .mx-xl-n2 {
-        margin-right: -.5rem !important
+        margin-right: -.5rem!important
     }
-
     #conversejs .mb-xl-n2,
     #conversejs .my-xl-n2 {
-        margin-bottom: -.5rem !important
+        margin-bottom: -.5rem!important
     }
-
     #conversejs .ml-xl-n2,
     #conversejs .mx-xl-n2 {
-        margin-left: -.5rem !important
+        margin-left: -.5rem!important
     }
-
     #conversejs .m-xl-n3 {
-        margin: -1rem !important
+        margin: -1rem!important
     }
-
     #conversejs .mt-xl-n3,
     #conversejs .my-xl-n3 {
-        margin-top: -1rem !important
+        margin-top: -1rem!important
     }
-
     #conversejs .mr-xl-n3,
     #conversejs .mx-xl-n3 {
-        margin-right: -1rem !important
+        margin-right: -1rem!important
     }
-
     #conversejs .mb-xl-n3,
     #conversejs .my-xl-n3 {
-        margin-bottom: -1rem !important
+        margin-bottom: -1rem!important
     }
-
     #conversejs .ml-xl-n3,
     #conversejs .mx-xl-n3 {
-        margin-left: -1rem !important
+        margin-left: -1rem!important
     }
-
     #conversejs .m-xl-n4 {
-        margin: -1.5rem !important
+        margin: -1.5rem!important
     }
-
     #conversejs .mt-xl-n4,
     #conversejs .my-xl-n4 {
-        margin-top: -1.5rem !important
+        margin-top: -1.5rem!important
     }
-
     #conversejs .mr-xl-n4,
     #conversejs .mx-xl-n4 {
-        margin-right: -1.5rem !important
+        margin-right: -1.5rem!important
     }
-
     #conversejs .mb-xl-n4,
     #conversejs .my-xl-n4 {
-        margin-bottom: -1.5rem !important
+        margin-bottom: -1.5rem!important
     }
-
     #conversejs .ml-xl-n4,
     #conversejs .mx-xl-n4 {
-        margin-left: -1.5rem !important
+        margin-left: -1.5rem!important
     }
-
     #conversejs .m-xl-n5 {
-        margin: -3rem !important
+        margin: -3rem!important
     }
-
     #conversejs .mt-xl-n5,
     #conversejs .my-xl-n5 {
-        margin-top: -3rem !important
+        margin-top: -3rem!important
     }
-
     #conversejs .mr-xl-n5,
     #conversejs .mx-xl-n5 {
-        margin-right: -3rem !important
+        margin-right: -3rem!important
     }
-
     #conversejs .mb-xl-n5,
     #conversejs .my-xl-n5 {
-        margin-bottom: -3rem !important
+        margin-bottom: -3rem!important
     }
-
     #conversejs .ml-xl-n5,
     #conversejs .mx-xl-n5 {
-        margin-left: -3rem !important
+        margin-left: -3rem!important
     }
-
     #conversejs .m-xl-auto {
-        margin: auto !important
+        margin: auto!important
     }
-
     #conversejs .mt-xl-auto,
     #conversejs .my-xl-auto {
-        margin-top: auto !important
+        margin-top: auto!important
     }
-
     #conversejs .mr-xl-auto,
     #conversejs .mx-xl-auto {
-        margin-right: auto !important
+        margin-right: auto!important
     }
-
     #conversejs .mb-xl-auto,
     #conversejs .my-xl-auto {
-        margin-bottom: auto !important
+        margin-bottom: auto!important
     }
-
     #conversejs .ml-xl-auto,
     #conversejs .mx-xl-auto {
-        margin-left: auto !important
+        margin-left: auto!important
     }
 }
 
 #conversejs .text-monospace {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace!important
 }
 
 #conversejs .text-justify {
-    text-align: justify !important
+    text-align: justify!important
 }
 
 #conversejs .text-wrap {
-    white-space: normal !important
+    white-space: normal!important
 }
 
 #conversejs .text-nowrap {
-    white-space: nowrap !important
+    white-space: nowrap!important
 }
 
 #conversejs .text-truncate {
@@ -9464,199 +8700,191 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .text-left {
-    text-align: left !important
+    text-align: left!important
 }
 
 #conversejs .text-right {
-    text-align: right !important
+    text-align: right!important
 }
 
 #conversejs .text-center {
-    text-align: center !important
+    text-align: center!important
 }
 
 @media (min-width:576px) {
     #conversejs .text-sm-left {
-        text-align: left !important
+        text-align: left!important
     }
-
     #conversejs .text-sm-right {
-        text-align: right !important
+        text-align: right!important
     }
-
     #conversejs .text-sm-center {
-        text-align: center !important
+        text-align: center!important
     }
 }
 
 @media (min-width:768px) {
     #conversejs .text-md-left {
-        text-align: left !important
+        text-align: left!important
     }
-
     #conversejs .text-md-right {
-        text-align: right !important
+        text-align: right!important
     }
-
     #conversejs .text-md-center {
-        text-align: center !important
+        text-align: center!important
     }
 }
 
 @media (min-width:992px) {
     #conversejs .text-lg-left {
-        text-align: left !important
+        text-align: left!important
     }
-
     #conversejs .text-lg-right {
-        text-align: right !important
+        text-align: right!important
     }
-
     #conversejs .text-lg-center {
-        text-align: center !important
+        text-align: center!important
     }
 }
 
 @media (min-width:1200px) {
     #conversejs .text-xl-left {
-        text-align: left !important
+        text-align: left!important
     }
-
     #conversejs .text-xl-right {
-        text-align: right !important
+        text-align: right!important
     }
-
     #conversejs .text-xl-center {
-        text-align: center !important
+        text-align: center!important
     }
 }
 
 #conversejs .text-lowercase {
-    text-transform: lowercase !important
+    text-transform: lowercase!important
 }
 
 #conversejs .text-uppercase {
-    text-transform: uppercase !important
+    text-transform: uppercase!important
 }
 
 #conversejs .text-capitalize {
-    text-transform: capitalize !important
+    text-transform: capitalize!important
 }
 
 #conversejs .font-weight-light {
-    font-weight: 300 !important
+    font-weight: 300!important
 }
 
 #conversejs .font-weight-lighter {
-    font-weight: lighter !important
+    font-weight: lighter!important
 }
 
 #conversejs .font-weight-normal {
-    font-weight: 400 !important
+    font-weight: 400!important
 }
 
 #conversejs .font-weight-bold {
-    font-weight: 700 !important
+    font-weight: 700!important
 }
 
 #conversejs .font-weight-bolder {
-    font-weight: bolder !important
+    font-weight: bolder!important
 }
 
 #conversejs .font-italic {
-    font-style: italic !important
+    font-style: italic!important
 }
 
 #conversejs .text-white {
-    color: #fff !important
+    color: #fff!important
 }
 
 #conversejs .text-primary {
-    color: #007bff !important
+    color: #007bff!important
 }
 
 #conversejs a.text-primary:focus,
 #conversejs a.text-primary:hover {
-    color: #0056b3 !important
+    color: #0056b3!important
 }
 
 #conversejs .text-secondary {
-    color: #6c757d !important
+    color: #6c757d!important
 }
 
 #conversejs a.text-secondary:focus,
 #conversejs a.text-secondary:hover {
-    color: #494f54 !important
+    color: #494f54!important
 }
 
 #conversejs .text-success {
-    color: #28a745 !important
+    color: #28a745!important
 }
 
 #conversejs a.text-success:focus,
 #conversejs a.text-success:hover {
-    color: #19692c !important
+    color: #19692c!important
 }
 
 #conversejs .text-info {
-    color: #17a2b8 !important
+    color: #17a2b8!important
 }
 
 #conversejs a.text-info:focus,
 #conversejs a.text-info:hover {
-    color: #0f6674 !important
+    color: #0f6674!important
 }
 
 #conversejs .text-warning {
-    color: #ffc107 !important
+    color: #ffc107!important
 }
 
 #conversejs a.text-warning:focus,
 #conversejs a.text-warning:hover {
-    color: #ba8b00 !important
+    color: #ba8b00!important
 }
 
 #conversejs .text-danger {
-    color: #dc3545 !important
+    color: #dc3545!important
 }
 
 #conversejs a.text-danger:focus,
 #conversejs a.text-danger:hover {
-    color: #a71d2a !important
+    color: #a71d2a!important
 }
 
 #conversejs .text-light {
-    color: #f8f9fa !important
+    color: #f8f9fa!important
 }
 
 #conversejs a.text-light:focus,
 #conversejs a.text-light:hover {
-    color: #cbd3da !important
+    color: #cbd3da!important
 }
 
 #conversejs .text-dark {
-    color: #343a40 !important
+    color: #343a40!important
 }
 
 #conversejs a.text-dark:focus,
 #conversejs a.text-dark:hover {
-    color: #121416 !important
+    color: #121416!important
 }
 
 #conversejs .text-body {
-    color: #212529 !important
+    color: #212529!important
 }
 
 #conversejs .text-muted {
-    color: #6c757d !important
+    color: #6c757d!important
 }
 
 #conversejs .text-black-50 {
-    color: rgba(0, 0, 0, .5) !important
+    color: rgba(0, 0, 0, .5)!important
 }
 
 #conversejs .text-white-50 {
-    color: rgba(255, 255, 255, .5) !important
+    color: rgba(255, 255, 255, .5)!important
 }
 
 #conversejs .text-hide {
@@ -9668,62 +8896,62 @@ a#conversejs .badge-dark:focus {
 }
 
 #conversejs .text-decoration-none {
-    text-decoration: none !important
+    text-decoration: none!important
 }
 
 #conversejs .text-break {
-    word-break: break-word !important;
-    overflow-wrap: break-word !important
+    word-break: break-word!important;
+    overflow-wrap: break-word!important
 }
 
 #conversejs .text-reset {
-    color: inherit !important
+    color: inherit!important
 }
 
 #conversejs .visible {
-    visibility: visible !important
+    visibility: visible!important
 }
 
 #conversejs .invisible {
-    visibility: hidden !important
+    visibility: hidden!important
 }
 
 @font-face {
     font-family: Baumans;
     font-style: normal;
     font-weight: 400;
-    src: local("Baumans Regular"), local("Baumans-Regular"), url(../dist/webfonts/baumans.ttf) format("truetype")
+    src: local("Baumans Regular"), local("Baumans-Regular"), url(webfonts/baumans.ttf) format("truetype")
 }
 
 @font-face {
     font-family: Muli;
     font-style: normal;
     font-weight: 400;
-    src: local("Muli Regular"), local("Muli-Regular"), url(../dist/webfonts/muli.ttf) format("truetype")
+    src: local("Muli Regular"), local("Muli-Regular"), url(webfonts/muli.ttf) format("truetype")
 }
 
 @font-face {
     font-family: ConverseFontAwesomeBrands;
     font-style: normal;
     font-weight: 400;
-    src: url(../dist/webfonts/fa-brands-400.eot);
-    src:url(../dist/webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"),
-    url(../dist/webfonts/fa-brands-400.woff2) format("woff2"),
-    url(../dist/webfonts/fa-brands-400.woff) format("woff"),
-    url(../dist/webfonts/fa-brands-400.ttf) format("truetype"),
-    url("function(o) {\nvar __t, __p = '';\n__p += '<!-- dist/webfonts/fa-brands-400.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-brands-400.svg\";';\nreturn __p\n}#fontawesome") format("svg")
+    src: url(webfonts/fa-brands-400.eot);
+    src:url(webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"),
+    url(webfonts/fa-brands-400.woff2) format("woff2"),
+    url(webfonts/fa-brands-400.woff) format("woff"),
+    url(webfonts/fa-brands-400.ttf) format("truetype"),
+    url("function(o) {\nvar __t, __p = '';\n__p += '<!-- sass/webfonts/fa-brands-400.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-brands-400.svg\";';\nreturn __p\n}#fontawesome") format("svg")
 }
 
 @font-face {
     font-family: ConverseFontAwesomeRegular;
     font-style: normal;
     font-weight: 400;
-    src: url(../dist/webfonts/fa-regular-400.eot);
-    src:url(../dist/webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),
-    url(../dist/webfonts/fa-regular-400.woff2) format("woff2"),
-    url(../dist/webfonts/fa-regular-400.woff) format("woff"),
-    url(../dist/webfonts/fa-regular-400.ttf) format("truetype"),
-    url("function(o) {\nvar __t, __p = '';\n__p += '<!-- dist/webfonts/fa-regular-400.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-regular-400.svg\";';\nreturn __p\n}#fontawesome") format("svg");
+    src: url(webfonts/fa-regular-400.eot);
+    src:url(webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),
+    url(webfonts/fa-regular-400.woff2) format("woff2"),
+    url(webfonts/fa-regular-400.woff) format("woff"),
+    url(webfonts/fa-regular-400.ttf) format("truetype"),
+    url("function(o) {\nvar __t, __p = '';\n__p += '<!-- sass/webfonts/fa-regular-400.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-regular-400.svg\";';\nreturn __p\n}#fontawesome") format("svg");
     font-weight: 400;
     font-style: normal
 }
@@ -9732,12 +8960,12 @@ a#conversejs .badge-dark:focus {
     font-family: ConverseFontAwesomeSolid;
     font-style: normal;
     font-weight: 900;
-    src: url(../dist/webfonts/fa-solid-900.eot);
-    src:url(../dist/webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
-    url("function(o) {\nvar __t, __p = '';\n__p += '<!-- dist/webfonts/fa-solid-900.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-solid-900.svg\";';\nreturn __p\n}#fontawesome") format("svg"),
-    url(../dist/webfonts/fa-solid-900.woff2) format("woff2"),
-    url(../dist/webfonts/fa-solid-900.woff) format("woff"),
-    url(../dist/webfonts/fa-solid-900.ttf) format("truetype")
+    src: url(webfonts/fa-solid-900.eot);
+    src:url(webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
+    url("function(o) {\nvar __t, __p = '';\n__p += '<!-- sass/webfonts/fa-solid-900.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-solid-900.svg\";';\nreturn __p\n}#fontawesome") format("svg"),
+    url(webfonts/fa-solid-900.woff2) format("woff2"),
+    url(webfonts/fa-solid-900.woff) format("woff"),
+    url(webfonts/fa-solid-900.ttf) format("truetype")
 }
 
 .fa,
@@ -9875,7 +9103,6 @@ a#conversejs .badge-dark:focus {
     0% {
         transform: rotate(0)
     }
-
     100% {
         transform: rotate(360deg)
     }
@@ -9885,7 +9112,6 @@ a#conversejs .badge-dark:focus {
     0% {
         transform: rotate(0)
     }
-
     100% {
         transform: rotate(360deg)
     }
@@ -15514,7 +14740,7 @@ a#conversejs .badge-dark:focus {
 
 #conversejs .far,
 .converse-website .far {
-    font-family: ConverseFontAwesomeRegular !important;
+    font-family: ConverseFontAwesomeRegular!important;
     font-weight: 400
 }
 
@@ -15522,7 +14748,7 @@ a#conversejs .badge-dark:focus {
 #conversejs .fas,
 .converse-website .fa,
 .converse-website .fas {
-    font-family: ConverseFontAwesomeSolid !important;
+    font-family: ConverseFontAwesomeSolid!important;
     font-weight: 900
 }
 
@@ -15866,11 +15092,11 @@ body.converse-fullscreen {
 }
 
 #conversejs textarea:disabled {
-    background-color: #eee !important
+    background-color: #eee!important
 }
 
 #conversejs .nopadding {
-    padding: 0 !important
+    padding: 0!important
 }
 
 #conversejs.converse-overlayed>.row {
@@ -16201,7 +15427,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .selected {
-    color: var(--link-color) !important
+    color: var(--link-color)!important
 }
 
 #conversejs .circle {
@@ -16238,19 +15464,15 @@ body.converse-fullscreen {
     0% {
         background-color: #8dd8ae
     }
-
     25% {
         background-color: rgba(141, 216, 174, .75)
     }
-
     50% {
         background-color: rgba(141, 216, 174, .5)
     }
-
     75% {
         background-color: rgba(141, 216, 174, .25)
     }
-
     100% {
         background-color: transparent
     }
@@ -16260,19 +15482,15 @@ body.converse-fullscreen {
     0% {
         background-color: #8dd8ae
     }
-
     25% {
         background-color: rgba(141, 216, 174, .75)
     }
-
     50% {
         background-color: rgba(141, 216, 174, .5)
     }
-
     75% {
         background-color: rgba(141, 216, 174, .25)
     }
-
     100% {
         background-color: transparent
     }
@@ -16282,19 +15500,15 @@ body.converse-fullscreen {
     0% {
         background-color: #ffb5a2
     }
-
     25% {
         background-color: rgba(255, 181, 162, .75)
     }
-
     50% {
         background-color: rgba(255, 181, 162, .5)
     }
-
     75% {
         background-color: rgba(255, 181, 162, .25)
     }
-
     100% {
         background-color: transparent
     }
@@ -16304,19 +15518,15 @@ body.converse-fullscreen {
     0% {
         background-color: #ffb5a2
     }
-
     25% {
         background-color: rgba(255, 181, 162, .75)
     }
-
     50% {
         background-color: rgba(255, 181, 162, .5)
     }
-
     75% {
         background-color: rgba(255, 181, 162, .25)
     }
-
     100% {
         background-color: transparent
     }
@@ -16326,7 +15536,6 @@ body.converse-fullscreen {
     0% {
         opacity: 0
     }
-
     100% {
         opacity: 1
     }
@@ -16336,7 +15545,6 @@ body.converse-fullscreen {
     0% {
         opacity: 0
     }
-
     100% {
         opacity: 1
     }
@@ -16347,7 +15555,6 @@ body.converse-fullscreen {
         opacity: 1;
         visibility: visible
     }
-
     100% {
         opacity: 0;
         visibility: hidden
@@ -16359,7 +15566,6 @@ body.converse-fullscreen {
         opacity: 1;
         visibility: visible
     }
-
     100% {
         opacity: 0;
         visibility: hidden
@@ -16391,8 +15597,8 @@ body.converse-fullscreen {
 }
 
 #conversejs .hidden {
-    opacity: 0 !important;
-    display: none !important
+    opacity: 0!important;
+    display: none!important
 }
 
 #conversejs .fade-out {
@@ -16407,9 +15613,9 @@ body.converse-fullscreen {
 }
 
 #conversejs .collapsed {
-    height: 0 !important;
-    overflow: hidden !important;
-    padding: 0 !important
+    height: 0!important;
+    overflow: hidden!important;
+    padding: 0!important
 }
 
 #conversejs .locked {
@@ -16420,7 +15626,6 @@ body.converse-fullscreen {
     from {
         transform: rotate(0)
     }
-
     to {
         transform: rotate(359deg)
     }
@@ -16430,7 +15635,6 @@ body.converse-fullscreen {
     from {
         transform: rotate(0)
     }
-
     to {
         transform: rotate(359deg)
     }
@@ -16494,7 +15698,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .activated {
-    display: block !important
+    display: block!important
 }
 
 #conversejs .nav-pills .nav-link.active,
@@ -16533,8 +15737,8 @@ body.converse-fullscreen {
 #conversejs .badge-primary.active,
 #conversejs .btn-primary.active,
 #conversejs .button-primary.active {
-    background-color: var(--primary-color-dark) !important;
-    border-color: transparent !important
+    background-color: var(--primary-color-dark)!important;
+    border-color: transparent!important
 }
 
 #conversejs .badge-groupchat {
@@ -16548,8 +15752,8 @@ body.converse-fullscreen {
 }
 
 #conversejs .badge-groupchat.active {
-    background-color: var(--chatroom-badge-hover-color) !important;
-    border-color: transparent !important
+    background-color: var(--chatroom-badge-hover-color)!important;
+    border-color: transparent!important
 }
 
 #conversejs .badge-info,
@@ -16594,7 +15798,7 @@ body.converse-fullscreen {
 #conversejs .btn-danger {
     color: #fff;
     background-color: var(--danger-color);
-    border-color: var(--danger-color) !important
+    border-color: var(--danger-color)!important
 }
 
 #conversejs .btn-danger:hover {
@@ -16606,11 +15810,9 @@ body.converse-fullscreen {
     body .converse-brand {
         font-size: 3.75em
     }
-
     #conversejs:not(.converse-embedded) .chatbox .chat-body {
         border-radius: var(--chatbox-border-radius)
     }
-
     #conversejs:not(.converse-embedded) .flyout {
         border-radius: var(--chatbox-border-radius)
     }
@@ -16626,7 +15828,6 @@ body.converse-fullscreen {
     #conversejs .offset-md-2 {
         margin-left: 16.666667%
     }
-
     #conversejs .offset-md-3 {
         margin-left: 25%
     }
@@ -16636,7 +15837,6 @@ body.converse-fullscreen {
     #conversejs .offset-lg-2 {
         margin-left: 16.666667%
     }
-
     #conversejs .offset-lg-3 {
         margin-left: 25%
     }
@@ -16660,9 +15860,9 @@ body.converse-fullscreen {
 }
 
 #conversejs form .hidden-username {
-    opacity: 0 !important;
-    height: 0 !important;
-    padding: 0 !important
+    opacity: 0!important;
+    height: 0!important;
+    padding: 0!important
 }
 
 #conversejs form .error-feedback {
@@ -16771,7 +15971,7 @@ body.converse-fullscreen {
 }
 
 #conversejs form.converse-form .text-muted {
-    color: var(--subdued-color) !important;
+    color: var(--subdued-color)!important;
     font-size: 85%;
     padding-top: .5em
 }
@@ -17179,7 +16379,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .chatbox .sendXMPPMessage .chat-toolbar .disabled {
-    color: var(--text-color-lighten-15-percent) !important
+    color: var(--text-color-lighten-15-percent)!important
 }
 
 #conversejs .chatbox .sendXMPPMessage .chat-toolbar .unencrypted,
@@ -17294,7 +16494,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-height:450px) {
-
     #conversejs.converse-embedded .chat-head,
     #conversejs.converse-overlayed .chat-head {
         border-top-left-radius: 0;
@@ -17303,7 +16502,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-width:480px) {
-
     #conversejs.converse-embedded .chat-head,
     #conversejs.converse-overlayed .chat-head {
         border-top-left-radius: 0;
@@ -17325,13 +16523,13 @@ body.converse-fullscreen {
 
 #conversejs.converse-embedded .chatbox,
 #conversejs.converse-overlayed .chatbox {
-    min-width: var(--overlayed-chat-width) !important;
+    min-width: var(--overlayed-chat-width)!important;
     width: var(--overlayed-chat-width)
 }
 
 #conversejs.converse-embedded .chatbox .box-flyout,
 #conversejs.converse-overlayed .chatbox .box-flyout {
-    min-width: var(--overlayed-chat-width) !important;
+    min-width: var(--overlayed-chat-width)!important;
     width: var(--overlayed-chat-width)
 }
 
@@ -17365,14 +16563,13 @@ body.converse-fullscreen {
     #conversejs.converse-overlayed>.row {
         flex-direction: column
     }
-
     #conversejs.converse-overlayed>.row.no-gutters {
         margin: -1em
     }
 }
 
 #conversejs.converse-embedded.converse-singleton .flyout {
-    border: none !important
+    border: none!important
 }
 
 #conversejs.converse-embedded.converse-singleton .chat-head {
@@ -17452,7 +16649,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:768px) {
-
     #conversejs.converse-embedded .chatbox,
     #conversejs.converse-fullscreen .chatbox {
         flex: 0 0 66.66667%;
@@ -17461,7 +16657,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:992px) {
-
     #conversejs.converse-embedded .chatbox,
     #conversejs.converse-fullscreen .chatbox {
         flex: 0 0 75%;
@@ -17470,7 +16665,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:1200px) {
-
     #conversejs.converse-embedded .chatbox,
     #conversejs.converse-fullscreen .chatbox {
         flex: 0 0 83.33333%;
@@ -17557,22 +16751,18 @@ body.converse-fullscreen {
     #conversejs:not(.converse-embedded)>.row {
         flex-direction: row-reverse
     }
-
     #conversejs:not(.converse-embedded) #converse-login-panel .converse-form {
         padding: 3em 2em 3em
     }
-
     #conversejs:not(.converse-embedded) .chatbox {
         width: calc(100% - 50px)
     }
-
     #conversejs:not(.converse-embedded) .chatbox .row .box-flyout {
         left: 50px;
         bottom: 0;
         height: 100vh;
         box-shadow: none
     }
-
     #conversejs.converse-fullscreen .chatbox .box-flyout .chatbox-navback,
     #conversejs.converse-mobile .chatbox .box-flyout .chatbox-navback,
     #conversejs.converse-overlayed .chatbox .box-flyout .chatbox-navback {
@@ -17580,20 +16770,17 @@ body.converse-fullscreen {
         flex: 0 0 16.66667%;
         max-width: 16.66667%
     }
-
     #conversejs.converse-fullscreen .chatbox .box-flyout .chatbox-navback .fa-arrow-left:before,
     #conversejs.converse-mobile .chatbox .box-flyout .chatbox-navback .fa-arrow-left:before,
     #conversejs.converse-overlayed .chatbox .box-flyout .chatbox-navback .fa-arrow-left:before {
         color: var(--chatroom-head-description-color);  // BAO 
     }
-
     #conversejs.converse-fullscreen .chatbox .box-flyout .chatbox-title,
     #conversejs.converse-mobile .chatbox .box-flyout .chatbox-title,
     #conversejs.converse-overlayed .chatbox .box-flyout .chatbox-title {
         flex: 0 0 58.33333%;
         max-width: 58.33333%
     }
-
     #conversejs.converse-fullscreen .chatbox .box-flyout .chatbox-buttons,
     #conversejs.converse-mobile .chatbox .box-flyout .chatbox-buttons,
     #conversejs.converse-overlayed .chatbox .box-flyout .chatbox-buttons {
@@ -17684,12 +16871,12 @@ body.converse-fullscreen {
 
 #conversejs #controlbox .open-rooms-toggle,
 #conversejs #controlbox .open-rooms-toggle .fa {
-    color: var(--chatroom-head-color) !important
+    color: var(--chatroom-head-color)!important
 }
 
 #conversejs #controlbox .open-rooms-toggle .fa:hover,
 #conversejs #controlbox .open-rooms-toggle:hover {
-    color: var(--chatroom-head-color-dark) !important
+    color: var(--chatroom-head-color-dark)!important
 }
 
 #conversejs #controlbox .box-flyout {
@@ -18023,12 +17210,12 @@ body.converse-fullscreen {
 }
 
 #conversejs.converse-overlayed #controlbox {
-    min-width: var(--controlbox-width) !important;
+    min-width: var(--controlbox-width)!important;
     width: var(--controlbox-width)
 }
 
 #conversejs.converse-overlayed #controlbox .box-flyout {
-    min-width: var(--controlbox-width) !important;
+    min-width: var(--controlbox-width)!important;
     width: var(--controlbox-width)
 }
 
@@ -18097,7 +17284,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:768px) {
-
     #conversejs.converse-embedded #controlbox,
     #conversejs.converse-fullscreen #controlbox,
     #conversejs.converse-mobile #controlbox {
@@ -18107,7 +17293,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:992px) {
-
     #conversejs.converse-embedded #controlbox,
     #conversejs.converse-fullscreen #controlbox,
     #conversejs.converse-mobile #controlbox {
@@ -18117,7 +17302,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:1200px) {
-
     #conversejs.converse-embedded #controlbox,
     #conversejs.converse-fullscreen #controlbox,
     #conversejs.converse-mobile #controlbox {
@@ -18189,7 +17373,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-width:480px) {
-
     #conversejs.converse-embedded #controlbox .brand-heading-container .brand-heading,
     #conversejs.converse-fullscreen #controlbox .brand-heading-container .brand-heading,
     #conversejs.converse-mobile #controlbox .brand-heading-container .brand-heading {
@@ -18251,7 +17434,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:576px) {
-
     #conversejs.converse-embedded #controlbox #converse-login,
     #conversejs.converse-embedded #controlbox #converse-register,
     #conversejs.converse-fullscreen #controlbox #converse-login,
@@ -18265,7 +17447,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:768px) {
-
     #conversejs.converse-embedded #controlbox #converse-login,
     #conversejs.converse-embedded #controlbox #converse-register,
     #conversejs.converse-fullscreen #controlbox #converse-login,
@@ -18279,7 +17460,6 @@ body.converse-fullscreen {
 }
 
 @media (min-width:992px) {
-
     #conversejs.converse-embedded #controlbox #converse-login,
     #conversejs.converse-embedded #controlbox #converse-register,
     #conversejs.converse-fullscreen #controlbox #converse-login,
@@ -18329,43 +17509,35 @@ body.converse-fullscreen {
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right)
     }
-
     #conversejs .converse-chatboxes {
-        margin: 0 !important;
-        flex-direction: row !important;
+        margin: 0!important;
+        flex-direction: row!important;
         justify-content: space-between
     }
-
     #conversejs .converse-chatboxes .converse-chatroom {
         font-size: 14px
     }
-
     #conversejs .converse-chatboxes .chatbox .box-flyout {
         margin-left: 10px; /* BAO */
         left: 0;
         bottom: 0;
         border-radius: 0;
-        width: 100vw !important;
-        height: 100vh !important
+        width: 100vw!important;
+        height: 100vh!important
     }
-
     #conversejs .converse-chatboxes #controlbox {
-        width: 100vw !important
+        width: 100vw!important
     }
-
     #conversejs .converse-chatboxes #controlbox .box-flyout {
-        width: 100vw !important;
-        height: 100vh !important
+        width: 100vw!important;
+        height: 100vh!important
     }
-
     #conversejs .converse-chatboxes #controlbox .sidebar {
         display: block
     }
-
     #conversejs .converse-chatboxes.sidebar-open .chatbox:not(#controlbox) {
         display: none
     }
-
     #conversejs .converse-chatboxes.sidebar-open #controlbox .controlbox-pane {
         display: block
     }
@@ -18520,12 +17692,12 @@ body.converse-fullscreen {
 
 #conversejs #converse-roster .roster-contacts .roster-group .group-toggle,
 #conversejs #converse-roster .roster-contacts .roster-group .group-toggle .fa {
-    color: var(--chat-head-color-dark) !important
+    color: var(--chat-head-color-dark)!important
 }
 
 #conversejs #converse-roster .roster-contacts .roster-group .group-toggle .fa:hover,
 #conversejs #converse-roster .roster-contacts .roster-group .group-toggle:hover {
-    color: var(--chat-head-color-darker) !important
+    color: var(--chat-head-color-darker)!important
 }
 
 #conversejs #converse-roster .roster-contacts .roster-group li.requesting-xmpp-contact a {
@@ -18695,7 +17867,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .items-list .list-item .list-item-action--visible {
-    opacity: 1 !important
+    opacity: 1!important
 }
 
 #conversejs .items-list .list-item.open {
@@ -18703,7 +17875,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .items-list .list-item.open:hover {
-    background-color: var(--list-item-open-hover-color) !important
+    background-color: var(--list-item-open-hover-color)!important
 }
 
 #conversejs .items-list .list-item.open a {
@@ -18857,7 +18029,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-height:450px) {
-
     #conversejs .chatroom,
     #conversejs.converse-embedded .chatroom {
         width: var(--mobile-chat-width)
@@ -18865,7 +18036,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-width:480px) {
-
     #conversejs .chatroom,
     #conversejs.converse-embedded .chatroom {
         width: var(--mobile-chat-width)
@@ -18880,7 +18050,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-height:450px) {
-
     #conversejs .chatroom .box-flyout,
     #conversejs.converse-embedded .chatroom .box-flyout {
         height: var(--mobile-chat-height);
@@ -18890,7 +18059,6 @@ body.converse-fullscreen {
 }
 
 @media screen and (max-width:480px) {
-
     #conversejs .chatroom .box-flyout,
     #conversejs.converse-embedded .chatroom .box-flyout {
         height: var(--mobile-chat-height);
@@ -19226,16 +18394,16 @@ body.converse-fullscreen {
 }
 
 #conversejs.converse-overlayed .chatbox.chatroom {
-    min-width: var(--chatroom-width) !important;
+    min-width: var(--chatroom-width)!important;
     width: var(--chatroom-width)
 }
 
 #conversejs.converse-overlayed .chatbox.chatroom .chatroom-features {
-    display: none !important
+    display: none!important
 }
 
 #conversejs.converse-overlayed .chatbox.chatroom .box-flyout {
-    min-width: var(--chatroom-width) !important;
+    min-width: var(--chatroom-width)!important;
     width: var(--chatroom-width)
 }
 
@@ -19293,19 +18461,16 @@ body.converse-fullscreen {
 
 @media (max-width:767.98px) {
     #conversejs:not(.converse-embedded) .chatroom {
-        width: 100vw !important
+        width: 100vw!important
     }
-
     #conversejs:not(.converse-embedded) .chatroom .box-flyout .chatbox-navback {
         flex: 0 0 16.66667%;
         max-width: 16.66667%
     }
-
     #conversejs:not(.converse-embedded) .chatroom .box-flyout .chatbox-title {
         flex: 0 0 58.33333%;
         max-width: 58.33333%
     }
-
     #conversejs:not(.converse-embedded) .chatroom .box-flyout .chatbox-buttons {
         flex: 0 0 25%;
         max-width: 25%
@@ -19683,7 +18848,7 @@ body.converse-fullscreen {
     padding: 0;
     border: none;
     opacity: 0;
-    display: none; /* BAO */     
+    display: none; /* BAO */      
     background: 0 0;
     cursor: pointer
 }
@@ -19770,7 +18935,7 @@ body.converse-fullscreen {
 
 #conversejs .message.chat-msg .chat-msg__receipt {
     margin-right: .5em;
-    font-size: 8px; /* BAO */     
+    font-size: 8px; /* BAO */         
     color: var(--message-receipt-color)
 }
 
@@ -19884,12 +19049,12 @@ body.converse-fullscreen {
 
 #conversejs #controlbox .bookmarks-toggle,
 #conversejs #controlbox .bookmarks-toggle .fa {
-    color: var(--chatroom-head-color) !important
+    color: var(--chatroom-head-color)!important
 }
 
 #conversejs #controlbox .bookmarks-toggle .fa:hover,
 #conversejs #controlbox .bookmarks-toggle:hover {
-    color: var(--chatroom-head-color-dark) !important
+    color: var(--chatroom-head-color-dark)!important
 }
 
 #conversejs.fullscreen #controlbox #chatrooms .bookmarks-list dl.rooms-list.bookmarks dd.available-chatroom a.open-room {
@@ -20004,7 +19169,6 @@ body.converse-fullscreen {
         transition: .3s cubic-bezier(.4, .2, .5, 1.4);
         transform-origin: 1.43em -.43em
     }
-
     #conversejs .suggestion-box>ul:empty,
     #conversejs .suggestion-box>ul[hidden] {
         opacity: 0;

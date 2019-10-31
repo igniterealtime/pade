@@ -6,8 +6,7 @@
     }
 }(this, function (converse) {
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-    var Strophe = converse.env.Strophe;
-    var $iq = converse.env.$iq;
+    var Strophe, $iq;
     var DirectoryDialog = null;
     var directoryDialog = null;
 
@@ -16,6 +15,9 @@
 
         'initialize': function () {
             _converse = this._converse;
+
+            Strophe = converse.env.Strophe;
+            $iq = converse.env.$iq;
 
             DirectoryDialog = _converse.BootstrapModal.extend({
                 initialize() {

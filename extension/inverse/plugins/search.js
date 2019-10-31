@@ -8,14 +8,16 @@
     var SearchDialog = null;
     var searchDialog = null;
 
-    var Strophe = converse.env.Strophe;
-    var dayjs = converse.env.dayjs;
+    var Strophe, dayjs
 
     converse.plugins.add("search", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
+
+            Strophe = converse.env.Strophe;
+            dayjs = converse.env.dayjs;
 
             SearchDialog = _converse.BootstrapModal.extend({
                 initialize() {

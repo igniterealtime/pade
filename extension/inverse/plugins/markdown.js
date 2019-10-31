@@ -7,9 +7,7 @@
 }(this, function (converse) {
     var ready = false;
     var handlers = {};
-    var Strophe = converse.env.Strophe;
-    var $iq = converse.env.$iq;
-    var $msg = converse.env.$msg;
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
 
     converse.plugins.add("markdown", {
@@ -17,6 +15,16 @@
 
         'initialize': function () {
             _converse = this._converse;
+
+            Strophe = converse.env.Strophe;
+            $iq = converse.env.$iq;
+            $msg = converse.env.$msg;
+            $pres = converse.env.$pres;
+            $build = converse.env.$build;
+            b64_sha1 = converse.env.b64_sha1;
+            _ = converse.env._;
+            Backbone = converse.env.Backbone;
+            dayjs = converse.env.dayjs;
 
             chrome.runtime.onMessage.addListener(function(message)
             {

@@ -426,6 +426,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("General"),
+            "group": i18n.get("Fastpath (Workgroups)"),
+            "name": "wgStatusAlerts",
+            "type": "checkbox",
+            "label": i18n.get("Enable Workgroup status alerts")
+        },
+        {
+            "tab": i18n.get("General"),
             "group": i18n.get("Auto Presence"),
             "name": "enablePresenceTracking",
             "type": "checkbox",
@@ -1178,6 +1185,17 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "converseAutoCompleteFilter",
+            "type": "popupButton",
+            "label": i18n.get("AutoComplete Filter"),
+            "options": [
+                {"text": "Start With", "value": "starts_with"},
+                {"text": "Contains", "value": "contains"}
+            ]
+        },
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("Message Threading"),
             "name": "enableThreading",
             "type": "checkbox",
@@ -1196,13 +1214,6 @@ this.manifest = {
             "name": "broadcastThreading",
             "type": "checkbox",
             "label": i18n.get("Broadcast threading to groupchat")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Private Chat"),
-            "name": "verifyContact",
-            "type": "checkbox",
-            "label": i18n.get("Verify Contact Identity")
         },
         {
             "tab": i18n.get("Converse"),

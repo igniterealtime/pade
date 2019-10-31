@@ -1468,6 +1468,7 @@ function doDefaults(background)
     setDefaultSetting("beeKeeperPageSize", 25);
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("moderatorTools", true);
+    setDefaultSetting("converseAutoCompleteFilter", "contains");
     // CPU intensive
     //setDefaultSetting("converseTimeAgo", true);
 

@@ -1,9 +1,13 @@
 branding/home.zip
 branding/work.zip
 branding/ignite.zip
+branding/bloqzone.zip
 branding/home/
 branding/work/
 branding/ignite/
+branding/bloqzone/
+branding/templates/bloqzone/
+branding/*.cmd
 
 # Ignore MacOSX files
 .DS_Store

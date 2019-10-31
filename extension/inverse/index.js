@@ -448,6 +448,7 @@ function doConverse(server, username, password, anonUser)
           muc_nickname_from_jid: getSetting("autoCreateNickname", false),
           muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
           muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", true),
+          muc_mention_autocomplete_filter: getSetting("converseAutoCompleteFilter", "starts_with"),
           nickname: getSetting("autoCreateNickname", false) ? username : displayname,
           notification_icon: '../image.png',
           notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
@@ -745,33 +746,6 @@ function addToolbarItem(view, id, label, html)
     }
 }
 
-function isJidVerified(jid)
-{
-    if (jid == __jid) return false;
-    const verified = !!__irmaVerifications[jid];
-    return verified;
-}
-
-function getVerifiedAttributes(jid)
-{
-    let attrs = "IRMA Verified Attributes:\n";
-
-    if (__irmaVerifications[jid])
-    {
-        attrs = attrs + "Email: " + __irmaVerifications[jid].attributes["pbdf.pbdf.email.email"] + "\n" + "Phone: " + __irmaVerifications[jid].attributes["pbdf.pbdf.mobilenumber.mobilenumber"]
-    }
-    return attrs;
-}
-
-function getVerifiedClass(verified, jid)
-{
-    if (!jid) return '';
-    const id = jid.replace("@", "_");
-    let className = 'fas badge-verified badge-' + id;
-    if (verified) className = className + ' fa-certificate';
-    return className;
-}
-
 function occupantAvatarClicked(ev, view)
 {
     const jid = ev.target.getAttribute('data-room-jid');
@@ -779,95 +753,7 @@ function occupantAvatarClicked(ev, view)
 
     if (jid && converse.env.Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
     {
-        if (getSetting("verifyContact", false))
-        {
-            verifyIrma(jid, view, nick)
-        }
-        else {
-            _converse.api.chats.open(jid);
-        }
-    }
-}
-
-function verifyIrma(jid, view, nickname)
-{
-    if (!getSetting("verifyContact", false)) return;
-
-    const request = {
-      '@context': 'https://irma.app/ld/request/disclosure/v2',
-      'disclose': [
-        [
-          ["pbdf.pbdf.email.email"]
-        ],
-        [
-          ["pbdf.pbdf.mobilenumber.mobilenumber"]
-        ]
-      ]
-    };
-
-    let target = jid;
-    if (nickname) target = nickname + " (" + jid + ")";;
-
-    const permission = chrome.i18n.getMessage("uport_permission");
-    const url =  "https://" + getSetting("server") + "/rest/api/restapi/v1/ask/irma/reveal/" + jid;
-    const options = {method: "POST", headers: {"authorization": permission, "accept": "application/json"}, "body": JSON.stringify(request)};
-
-    console.debug("fetch irma/reveal", url, options);
-    if (view) view.showHelpMessages([target + " is being verified"]);
-
-    fetch(url, options).then(function(response){ return response.text()}).then(function(data)
-    {
-        console.debug("fetch irma/reveal", data);
-
-        if (data.indexOf("TIMEOUT") > -1 || data.indexOf("ERROR") > -1 || data.indexOf("CANCELLED") > -1 || data.indexOf("PENDING") > -1)
-        {
-            console.error('irma/reveal', data);
-            if (view) view.showHelpMessages([target + " cannot or does not want to be verified"]);
-        }
-        else {
-            console.debug("Authentication successful token:", data);
-            setVerifiedAttributes(JSON.parse(data), jid, view, nickname);
-
-            if (view) view.showHelpMessages([target + " is verified"]);
-
-            if (__irmaVerifications[jid])
-            {
-                if (view) view.showHelpMessages(["Email: " + __irmaVerifications[jid].attributes["pbdf.pbdf.email.email"], "Phone: " + __irmaVerifications[jid].attributes["pbdf.pbdf.mobilenumber.mobilenumber"]]);
-            }
-        }
-
-    }).catch(function (err) {
-        console.error('irma/reveal', err);
-    });
-}
-
-function setVerifiedAttributes(result, target, view, nickname)
-{
-    var id = target.replace('@', '_');
-
-    var token = {
-        attributes: {
-            "pbdf.pbdf.email.email": result.disclosed[0][0].rawvalue,
-            "pbdf.pbdf.mobilenumber.mobilenumber": result.disclosed[1][0].rawvalue
-        }
-    }
-
-    __irmaVerifications[target] = token;
-
-    if (nickname && view) __irmaVerifications[view.model.get("jid") + '/' + nickname] = token;
-
-    var items = document.querySelectorAll('.badge-' + id);
-
-    for (var i=0; i<items.length; i++)
-    {
-        items[i].title = getVerifiedAttributes(target);
-        items[i].classList.add('fa-certificate');
-    }
-
-    if (view)
-    {
-        var irmaDiv = document.getElementById("webmeet-irma-" + view.model.get("box_id"));
-        if (irmaDiv) irmaDiv.style.display = 'none';
+        _converse.api.chats.open(jid);
     }
 }
 

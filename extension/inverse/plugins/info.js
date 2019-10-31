@@ -8,16 +8,25 @@
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var _converse = null;
     var infoDialog = null;
-    var Strophe = converse.env.Strophe;
-    var $iq = converse.env.$iq;
-    var dayjs = converse.env.dayjs;
     var panelHTML = {};
+
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
 
     converse.plugins.add("info", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
+
+            Strophe = converse.env.Strophe;
+            $iq = converse.env.$iq;
+            $msg = converse.env.$msg;
+            $pres = converse.env.$pres;
+            $build = converse.env.$build;
+            b64_sha1 = converse.env.b64_sha1;
+            _ = converse.env._;
+            Backbone = converse.env.Backbone;
+            dayjs = converse.env.dayjs;
 
             PreviewDialog = _converse.BootstrapModal.extend({
                 initialize() {

@@ -14,47 +14,33 @@
 
     // Commonly used utilities and variables can be found under the "env"
     // namespace of the "converse" global.
-    var Strophe = converse.env.Strophe,
-        $iq = converse.env.$iq,
-        $msg = converse.env.$msg,
-        $pres = converse.env.$pres,
-        $build = converse.env.$build,
-        b64_sha1 = converse.env.b64_sha1,
-        _ = converse.env._,
-        Backbone = converse.env.Backbone,
-        dayjs = converse.env.dayjs,
-        doneIt = false;
 
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
+
+     var doneIt = false;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
      var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null, PDFDialog = null, pdfDialog = null;
 
      // The following line registers your plugin.
     converse.plugins.add("webmeet", {
-
-        /* Optional dependencies are other plugins which might be
-           * overridden or relied upon, and therefore need to be loaded before
-           * this plugin. They are called "optional" because they might not be
-           * available, in which case any overrides applicable to them will be
-           * ignored.
-           *
-           * NB: These plugins need to have already been loaded via require.js.
-           *
-           * It's possible to make optional dependencies non-optional.
-           * If the setting "strict_plugin_dependencies" is set to true,
-           * an error will be raised if the plugin is not found.
-           */
         'dependencies': [],
 
-        /* Converse.js's plugin mechanism will call the initialize
-         * method on any plugin (if it exists) as soon as the plugin has
-         * been loaded.
-         */
         'initialize': function () {
             /* Inside this method, you have access to the private
              * `_converse` object.
              */
             _converse = this._converse;
+
+            Strophe = converse.env.Strophe;
+            $iq = converse.env.$iq;
+            $msg = converse.env.$msg;
+            $pres = converse.env.$pres;
+            $build = converse.env.$build;
+            b64_sha1 = converse.env.b64_sha1;
+            _ = converse.env._;
+            Backbone = converse.env.Backbone;
+            dayjs = converse.env.dayjs;
 
             if (bgWindow)
             {
@@ -383,6 +369,23 @@
             {
                 console.debug('webmeet - renderToolbar', view.model);
 
+                // TODO - remove when code is merged into converse
+                //
+                document.addEventListener("keydown", function(event)
+                {
+                    const input = String.fromCharCode(event.keyCode);
+                    const textEl = view.el.querySelector('.chat-textarea');
+                    const isFocused = (document.activeElement === textEl);
+                    const dialog = document.body.querySelector('.modal.show');
+                    const isForm = view.el.querySelector('.form-control.invited-contact') === document.activeElement;
+
+                    if (/[a-zA-Z0-9-_ ]/.test(input) && !isFocused && !view.model.get('hidden') && !dialog && !isForm)
+                    {
+                        textEl.focus();
+                    }
+                });
+
+
                 var id = view.model.get("box_id");
                 var jid = view.model.get("jid");
                 var type = view.model.get("type");
@@ -401,17 +404,6 @@
 
                     if (bgWindow)
                     {
-                        if (!isJidVerified(jid) && getSetting("verifyContact", false) && view.model.get('type') === "chatbox" && view.model.get("jid") != "rss@pade." + _converse.connection.domain)
-                        {
-                            html = '<a class="plugin-irma fa fa-certificate" title="Click to verify identity by IRMA"></a>';
-                            addToolbarItem(view, id, "webmeet-irma-" + id, html);
-
-                            /*
-                            html = '<a class="plugin-uport fa" title="Click to verify identity by uPort"><img src="/uport/uport.png" style="height:20px;margin-bottom:-5px;"/></a>';
-                            addToolbarItem(view, id, "webmeet-uport-" + id, html);
-                            */
-                        }
-
                         if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
                         {
                             html = '<a class="fa fa-wrench" title="Open Groupchat Moderator Tools GUI"></a>';
@@ -647,21 +639,6 @@
 
                     }, false);
 
-                    var irma = document.getElementById("webmeet-irma-" + id);
-
-                    if (irma)
-                    {
-                        irma.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-                            const jid = view.model.get("jid");
-                            // For testing, use self
-                            // const jid = Strophe.getBareJidFromJid(_converse.connection.jid);
-                            verifyIrma(jid, view);
-
-                        }, false);
-                    }
-
                     var savePDF = document.getElementById("webmeet-savepdf-" + id);
 
                     if (savePDF)
@@ -678,11 +655,6 @@
 
             _converse.api.listen.on('connected', function()
             {
-                if (getSetting("verifyContact", false))
-                {
-                    setupIrma();
-                }
-
                 var uPort = _converse.api.settings.get("uport_data");
                 var username = Strophe.getNodeFromJid(_converse.connection.jid);
 
@@ -772,7 +744,7 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
+                    console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model.vcard.attributes.fullname, this.model);
                     // intercepting email IM
 
                     if (this.model.vcard)
@@ -897,6 +869,13 @@
                         renderTimeAgoChatMessage(this);
                     }
                 }
+            },
+
+            RosterFilterView: {
+
+              shouldBeVisible() {
+                return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
+              }
             },
 
             ChatBoxView: {
@@ -1089,20 +1068,17 @@
         }
     }
 
-    var setupContentHandler = function(chat, avRoom, content, callback, chatId, title)
+    async function setupContentHandler(chat, avRoom, content, callback, chatId, title)
     {
-        var dayjs_time = dayjs(chat.model.get('time'));
-        var pretty_time = dayjs_time.format(_converse.time_format);
-        var time = dayjs_time.format();
+        console.log("setupContentHandler", chat.el);
 
-        var msg_content = document.createElement("div");
-        msg_content.setAttribute("class", "message chat-msg groupchat");
-        msg_content.setAttribute("data-isodate", time);
+        await chat.__super__.renderChatMessage.apply(chat, arguments);
 
-        if (chat.model.vcard)
+        const msg_content = chat.el.querySelector('.chat-msg__text');
+
+        if (msg_content)
         {
-            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text">' + content + '</span> <div class="chat-msg-media"></div> </div>';
-            chat.replaceElement(msg_content);
+            msg_content.innerHTML = content;
         }
 
         if (avRoom && callback && chatId)
@@ -1385,68 +1361,6 @@
         .c("TITLE").t(user.title).up()
 */
         return iq;
-    }
-
-
-    var setupIrma = function()
-    {
-        var qrcodeDialog = null;
-
-        var userCancelled = function(token)
-        {
-            const url = "https://" + getSetting("server") + "/irmaproxy/session/" + token;
-
-            fetch(url, {method: "DELETE"}).then(function(response){ return response.text()}).then(function(response)
-            {
-                console.log('userCancelled ok', response);
-
-            }).catch(function (err) {
-                console.error('userCancelled error', err);
-            });
-        }
-
-        _converse.connection.addHandler(function(message)
-        {
-            console.debug('irma handler', message);
-
-            $(message).find('irma').each(function ()
-            {
-                const action = $(this).attr('action');
-
-                if (action == "reveal")
-                {
-                    console.debug("irma/reveal", $(this).text());
-
-                    const pkg = JSON.parse($(this).text());
-
-                    irma.handleSession(pkg.sessionPtr, {server: "https://" + getSetting("server") + "/irmaproxy", token: pkg.token, method: 'url'}).then(result =>
-                    {
-                        console.debug("irma/result", result);
-
-                        qrcodeDialog = new QRCodeDialog({'model': new converse.env.Backbone.Model({title: 'IRMA Verification', callback: userCancelled, qrcode: result, token: pkg.token}) });
-                        qrcodeDialog.show();
-                    });
-                }
-                else
-
-                if (action == "status")
-                {
-                    const status = $(this).text()
-                    console.debug("irma/status", status);
-                }
-                else
-
-                if (action == "done")
-                {
-                    console.debug("irma/done");
-                    if (qrcodeDialog) qrcodeDialog.modal.hide();
-                }
-
-            });
-
-            return true;
-
-        }, "http://igniterealtime.org/xmlns/xmpp/irma", 'message');
     }
 
     var toggleScreenCast = function(view)

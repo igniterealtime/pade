@@ -6,15 +6,16 @@
     }
 }(this, function (converse) {
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-    var Strophe = converse.env.Strophe;
-    var dayjs = converse.env.dayjs;
     var rssInterval, htmlTemp = {};
+    var Strophe, dayjs
 
     converse.plugins.add("gateway", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
+            Strophe = converse.env.Strophe;
+            dayjs = converse.env.dayjs;
 
             _converse.api.listen.on('chatRoomOpened', function (view)
             {

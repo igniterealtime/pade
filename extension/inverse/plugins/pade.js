@@ -14,15 +14,7 @@
 
     // Commonly used utilities and variables can be found under the "env"
     // namespace of the "converse" global.
-    var Strophe = converse.env.Strophe,
-        $iq = converse.env.$iq,
-        $msg = converse.env.$msg,
-        $pres = converse.env.$pres,
-        $build = converse.env.$build,
-        b64_sha1 = converse.env.b64_sha1,
-        _ = converse.env._,
-        dayjs = converse.env.dayjs;
-
+     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
      var _converse = null;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var notified = false;
@@ -38,6 +30,16 @@
             _converse = this._converse;
             window._inverse = _converse;
             window.inverse = converse;
+
+            Strophe = converse.env.Strophe;
+            $iq = converse.env.$iq;
+            $msg = converse.env.$msg;
+            $pres = converse.env.$pres;
+            $build = converse.env.$build;
+            b64_sha1 = converse.env.b64_sha1;
+            _ = converse.env._;
+            Backbone = converse.env.Backbone;
+            dayjs = converse.env.dayjs;
 
             if (bgWindow && bgWindow.pade.chatWindow)
             {
@@ -446,7 +448,7 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    console.debug("renderChatMessage", this.model);
+                    //console.debug("renderChatMessage", this.model);
 
                     const body = this.model.get('message');
 
@@ -628,7 +630,7 @@
                 afterShown: function() {
 
                     const ret = this.__super__.afterShown.apply(this, arguments);
-                    hackPwaMode(this);
+                    //hackPwaMode(this);
                     return ret;
                 },
 
@@ -698,7 +700,7 @@
                     if (openBadge) openBadge.setAttribute("data-badge", "0");
 
                     const ret = this.__super__.afterShown.apply(this, arguments);
-                    hackPwaMode(this);
+                    //hackPwaMode(this);
                     return ret;
 
                 },
