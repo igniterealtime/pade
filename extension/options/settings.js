@@ -1437,8 +1437,8 @@ function doDefaults(background)
 
     // converse
     setDefaultSetting("enableInverse", true);
-    // TODO - fix this
-    //setDefaultSetting("clearCacheOnConnect", true);
+
+    setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);

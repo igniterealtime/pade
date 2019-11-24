@@ -362,7 +362,7 @@
             _converse.api.listen.on('chatBoxOpened', function (view)
             {
                 const jid = view.model.get("jid");
-                console.log("chatBoxOpened", jid);
+                console.debug("chatBoxOpened", jid);
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
@@ -735,7 +735,7 @@
 
             });
 
-            console.log("webmeet plugin is ready");
+            console.debug("webmeet plugin is ready");
         },
 
         overrides: {
@@ -1070,7 +1070,7 @@
 
     async function setupContentHandler(chat, avRoom, content, callback, chatId, title)
     {
-        console.log("setupContentHandler", chat.el);
+        console.debug("setupContentHandler", chat.el);
 
         await chat.__super__.renderChatMessage.apply(chat, arguments);
 
@@ -1516,7 +1516,7 @@
 
             chrome.storage.local.remove(tronId, function(obj)
             {
-                console.log("translation removed ok", obj);
+                console.debug("translation removed ok", obj);
 
                 view.showHelpMessages(["Translation disabled"]);
                 view.viewUnreadMessages();
@@ -1560,7 +1560,7 @@
 
             chrome.storage.local.set(data, function(obj)
             {
-                console.log("translation saved ok", obj);
+                console.debug("translation saved ok", obj);
 
                 view.showHelpMessages(["Translation enabled for " + args[0] + " to " + args[1]]);
                 view.viewUnreadMessages();
@@ -1689,7 +1689,7 @@
             {
                 fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + match[2], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
                 {
-                    console.log('wikipedia ok', json);
+                    console.debug('wikipedia ok', json);
 
                     const type = view.model.get("type") == "chatbox" ? "chat" : "groupchat";
 

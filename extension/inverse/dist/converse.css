@@ -1,11 +1,3 @@
-/*!
- * Converse.js (Web-based XMPP instant messaging client)
- * https://conversejs.org
- *
- * Copyright (c) 2013-2018, JC Brand <jc@opkode.com>
- * Licensed under the Mozilla Public License
- */
-
 #conversejs :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -8920,25 +8912,25 @@ a#conversejs .badge-dark:focus {
     font-family: Baumans;
     font-style: normal;
     font-weight: 400;
-    src: local("Baumans Regular"), local("Baumans-Regular"), url(webfonts/baumans.ttf) format("truetype")
+    src: local("Baumans Regular"), local("Baumans-Regular"), url(./webfonts/baumans.ttf) format("truetype")
 }
 
 @font-face {
     font-family: Muli;
     font-style: normal;
     font-weight: 400;
-    src: local("Muli Regular"), local("Muli-Regular"), url(webfonts/muli.ttf) format("truetype")
+    src: local("Muli Regular"), local("Muli-Regular"), url(./webfonts/muli.ttf) format("truetype")
 }
 
 @font-face {
     font-family: ConverseFontAwesomeBrands;
     font-style: normal;
     font-weight: 400;
-    src: url(webfonts/fa-brands-400.eot);
-    src:url(webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"),
-    url(webfonts/fa-brands-400.woff2) format("woff2"),
-    url(webfonts/fa-brands-400.woff) format("woff"),
-    url(webfonts/fa-brands-400.ttf) format("truetype"),
+    src: url(./webfonts/fa-brands-400.eot);
+    src:url(./webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"),
+    url(./webfonts/fa-brands-400.woff2) format("woff2"),
+    url(./webfonts/fa-brands-400.woff) format("woff"),
+    url(./webfonts/fa-brands-400.ttf) format("truetype"),
     url("function(o) {\nvar __t, __p = '';\n__p += '<!-- sass/webfonts/fa-brands-400.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-brands-400.svg\";';\nreturn __p\n}#fontawesome") format("svg")
 }
 
@@ -8946,11 +8938,11 @@ a#conversejs .badge-dark:focus {
     font-family: ConverseFontAwesomeRegular;
     font-style: normal;
     font-weight: 400;
-    src: url(webfonts/fa-regular-400.eot);
-    src:url(webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),
-    url(webfonts/fa-regular-400.woff2) format("woff2"),
-    url(webfonts/fa-regular-400.woff) format("woff"),
-    url(webfonts/fa-regular-400.ttf) format("truetype"),
+    src: url(./webfonts/fa-regular-400.eot);
+    src:url(./webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),
+    url(./webfonts/fa-regular-400.woff2) format("woff2"),
+    url(./webfonts/fa-regular-400.woff) format("woff"),
+    url(./webfonts/fa-regular-400.ttf) format("truetype"),
     url("function(o) {\nvar __t, __p = '';\n__p += '<!-- sass/webfonts/fa-regular-400.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-regular-400.svg\";';\nreturn __p\n}#fontawesome") format("svg");
     font-weight: 400;
     font-style: normal
@@ -8960,12 +8952,12 @@ a#conversejs .badge-dark:focus {
     font-family: ConverseFontAwesomeSolid;
     font-style: normal;
     font-weight: 900;
-    src: url(webfonts/fa-solid-900.eot);
-    src:url(webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
+    src: url(./webfonts/fa-solid-900.eot);
+    src:url(./webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
     url("function(o) {\nvar __t, __p = '';\n__p += '<!-- sass/webfonts/fa-solid-900.svg -->\nmodule.exports = __webpack_public_path__ + \"webfonts/fa-solid-900.svg\";';\nreturn __p\n}#fontawesome") format("svg"),
-    url(webfonts/fa-solid-900.woff2) format("woff2"),
-    url(webfonts/fa-solid-900.woff) format("woff"),
-    url(webfonts/fa-solid-900.ttf) format("truetype")
+    url(./webfonts/fa-solid-900.woff2) format("woff2"),
+    url(./webfonts/fa-solid-900.woff) format("woff"),
+    url(./webfonts/fa-solid-900.ttf) format("truetype")
 }
 
 .fa,
@@ -14821,6 +14813,7 @@ a#conversejs .badge-dark:focus {
     --chat-head-color-lighten-50-percent: #e7f7ee;
     --chat-head-text-color: white;
     --chat-correcting-color: var(--chat-head-color-lighten-50-percent);
+    --chat-content-background-color: white;
     --chat-topic-display: block;
     --chat-info-display: block;
     --highlight-color: #DCF9F6;
@@ -16168,7 +16161,7 @@ body.converse-fullscreen {
     justify-content: space-between;
     background-color: var(--chat-head-color);
     box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, .4);
-    z-index: 1;
+    z-index: 2;
     overflow-y: hidden;
     width: 100%
 }
@@ -16262,7 +16255,7 @@ body.converse-fullscreen {
     color: var(--text-color);
     overflow-y: auto;
     border: 0;
-    background-color: #fff;
+    background-color: var(--chat-content-background-color);
     line-height: 1.3em
 }
 
@@ -16568,44 +16561,6 @@ body.converse-fullscreen {
     }
 }
 
-#conversejs.converse-embedded.converse-singleton .flyout {
-    border: none!important
-}
-
-#conversejs.converse-embedded.converse-singleton .chat-head {
-    height: var(--fullpage-chat-head-height);
-    padding: .5em
-}
-
-#conversejs.converse-embedded.converse-singleton .chatbox {
-    margin: 0;
-    position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px
-}
-
-@media (min-width:768px) {
-    #conversejs.converse-embedded.converse-singleton .chatbox {
-        flex: 0 0 100%;
-        max-width: 100%
-    }
-}
-
-@media (min-width:992px) {
-    #conversejs.converse-embedded.converse-singleton .chatbox {
-        flex: 0 0 100%;
-        max-width: 100%
-    }
-}
-
-@media (min-width:1200px) {
-    #conversejs.converse-embedded.converse-singleton .chatbox {
-        flex: 0 0 100%;
-        max-width: 100%
-    }
-}
-
 #conversejs.converse-embedded .flyout,
 #conversejs.converse-fullscreen .flyout {
     border-radius: 0;
@@ -16648,6 +16603,12 @@ body.converse-fullscreen {
     padding-left: 15px
 }
 
+#conversejs.converse-embedded .chatbox .box-flyout,
+#conversejs.converse-fullscreen .chatbox .box-flyout {
+    box-shadow: none;
+    overflow: hidden
+}
+
 @media (min-width:768px) {
     #conversejs.converse-embedded .chatbox,
     #conversejs.converse-fullscreen .chatbox {
@@ -16672,10 +16633,48 @@ body.converse-fullscreen {
     }
 }
 
-#conversejs.converse-embedded .chatbox .box-flyout,
-#conversejs.converse-fullscreen .chatbox .box-flyout {
-    box-shadow: none;
-    overflow: hidden
+#conversejs.converse-embedded.converse-singleton .flyout,
+#conversejs.converse-fullscreen.converse-singleton .flyout {
+    border: none!important
+}
+
+#conversejs.converse-embedded.converse-singleton .chat-head,
+#conversejs.converse-fullscreen.converse-singleton .chat-head {
+    height: var(--fullpage-chat-head-height);
+    padding: .5em
+}
+
+#conversejs.converse-embedded.converse-singleton .chatbox,
+#conversejs.converse-fullscreen.converse-singleton .chatbox {
+    margin: 0;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px
+}
+
+@media (min-width:768px) {
+    #conversejs.converse-embedded.converse-singleton .chatbox,
+    #conversejs.converse-fullscreen.converse-singleton .chatbox {
+        flex: 0 0 100%;
+        max-width: 100%
+    }
+}
+
+@media (min-width:992px) {
+    #conversejs.converse-embedded.converse-singleton .chatbox,
+    #conversejs.converse-fullscreen.converse-singleton .chatbox {
+        flex: 0 0 100%;
+        max-width: 100%
+    }
+}
+
+@media (min-width:1200px) {
+    #conversejs.converse-embedded.converse-singleton .chatbox,
+    #conversejs.converse-fullscreen.converse-singleton .chatbox {
+        flex: 0 0 100%;
+        max-width: 100%
+    }
 }
 
 #conversejs.converse-embedded .converse-chatboxes {
@@ -17120,9 +17119,9 @@ body.converse-fullscreen {
 }
 
 #conversejs #controlbox .controlbox-panes {
+    background-color: var(--controlbox-pane-background-color);
     height: 100%;
-    overflow-y: auto;
-    background-color: var(--controlbox-pane-background-color)
+    overflow-y: auto
 }
 
 #conversejs #controlbox .controlbox-subtitle {
@@ -17530,7 +17529,8 @@ body.converse-fullscreen {
     }
     #conversejs .converse-chatboxes #controlbox .box-flyout {
         width: 100vw!important;
-        height: 100vh!important
+        height: 100vh!important;
+        margin-right: -15px
     }
     #conversejs .converse-chatboxes #controlbox .sidebar {
         display: block
@@ -18848,7 +18848,7 @@ body.converse-fullscreen {
     padding: 0;
     border: none;
     opacity: 0;
-    display: none; /* BAO */      
+    display: none; /* BAO */        
     background: 0 0;
     cursor: pointer
 }
@@ -18935,7 +18935,7 @@ body.converse-fullscreen {
 
 #conversejs .message.chat-msg .chat-msg__receipt {
     margin-right: .5em;
-    font-size: 8px; /* BAO */         
+    font-size: 8px; /* BAO */          
     color: var(--message-receipt-color)
 }
 
@@ -18986,7 +18986,8 @@ body.converse-fullscreen {
     overflow-y: hidden;
     text-overflow: ellipsis;
     display: block;
-    height: 45px
+    height: 45px;
+    width: 9em
 }
 
 #conversejs.converse-overlayed #minimized-chats a.restore-chat {
@@ -19020,7 +19021,8 @@ body.converse-fullscreen {
     height: 35px;
     margin-bottom: .2em;
     box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, .4);
-    width: 100%
+    width: 100%;
+    max-width: 9em
 }
 
 #conversejs.converse-overlayed #minimized-chats .minimized-chats-flyout.minimized {
@@ -19293,7 +19295,8 @@ body.converse-fullscreen {
     display: flex;
     flex-direction: column;
     padding-top: .5em;
-    background-color: var(--chat-head-color)
+    background-color: var(--chat-head-color);
+    height: 6.5em
 }
 
 #conversejs .chatbox .toggle-smiley .emoji-picker.toolbar-menu .emoji-picker__header .emoji-search {

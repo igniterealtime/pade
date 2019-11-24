@@ -203,8 +203,17 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (_) {
+  return _.noConflict();
+}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var escapeHtmlChar = __webpack_require__(449),
-    toString = __webpack_require__(108);
+    toString = __webpack_require__(107);
 
 /** Used to match HTML entities and HTML characters. */
 var reUnescapedHtml = /[&<>"']/g,
@@ -247,15 +256,6 @@ function escape(string) {
 
 module.exports = escape;
 
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (_) {
-  return _.noConflict();
-}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
 /* 2 */
@@ -19921,7 +19921,7 @@ if ( true ) {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -19978,10 +19978,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   // https://github.com/umdjs/umd/blob/master/returnExports.js
   if ( true && module.exports) {
     // Node
-    module.exports = factory(__webpack_require__(110), __webpack_require__(111), __webpack_require__(112));
+    module.exports = factory(__webpack_require__(109), __webpack_require__(110), __webpack_require__(111));
   } else if (true) {
     // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(110), __webpack_require__(111), __webpack_require__(112)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(109), __webpack_require__(110), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
                 __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
                 (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
                 __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -22305,7 +22305,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(67);
+var freeGlobal = __webpack_require__(66);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -22358,8 +22358,6 @@ module.exports = isArray;
 //     Backbone may be freely distributed under the MIT license.
 //     For all details and documentation:
 //     http://backbonejs.org
-
-/* global global */
 
 (function(factory) {
 
@@ -24450,7 +24448,7 @@ module.exports = isArray;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/spinner.html -->\n<span class="spinner fa fa-spinner centered"/>\n';
@@ -24496,6 +24494,41 @@ module.exports = isObject;
 
 /***/ }),
 /* 12 */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+module.exports = isObjectLike;
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Native Javascript for Bootstrap 4 v2.0.26 | © dnp_theme | MIT-License
@@ -26060,41 +26093,6 @@ module.exports = isObject;
 }));
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(18)))
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-module.exports = isObjectLike;
-
 
 /***/ }),
 /* 14 */
@@ -27720,8 +27718,8 @@ exports["filterCSS"] = (filterCSS);
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30),
-    getRawTag = __webpack_require__(336),
-    objectToString = __webpack_require__(337);
+    getRawTag = __webpack_require__(337),
+    objectToString = __webpack_require__(338);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -27753,8 +27751,8 @@ module.exports = baseGetTag;
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(354),
-    getValue = __webpack_require__(357);
+var baseIsNative = __webpack_require__(355),
+    getValue = __webpack_require__(358);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -27848,8 +27846,8 @@ module.exports = isArrayLike;
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(69),
-    baseKeys = __webpack_require__(73),
+var arrayLikeKeys = __webpack_require__(68),
+    baseKeys = __webpack_require__(72),
     isArrayLike = __webpack_require__(19);
 
 /**
@@ -27891,9 +27889,9 @@ module.exports = keys;
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(84),
+var baseIndexOf = __webpack_require__(83),
     isArrayLike = __webpack_require__(19),
-    isString = __webpack_require__(85),
+    isString = __webpack_require__(84),
     toInteger = __webpack_require__(47),
     values = __webpack_require__(59);
 
@@ -28035,14 +28033,14 @@ module.exports = toKey;
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(338);
+module.exports = __webpack_require__(339);
 
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(352);
+module.exports = __webpack_require__(353);
 
 
 /***/ }),
@@ -28087,7 +28085,7 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
-    isObjectLike = __webpack_require__(13);
+    isObjectLike = __webpack_require__(12);
 
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
@@ -28254,11 +28252,11 @@ module.exports = replaceHolders;
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var listCacheClear = __webpack_require__(389),
-    listCacheDelete = __webpack_require__(390),
-    listCacheGet = __webpack_require__(391),
-    listCacheHas = __webpack_require__(392),
-    listCacheSet = __webpack_require__(393);
+var listCacheClear = __webpack_require__(390),
+    listCacheDelete = __webpack_require__(391),
+    listCacheGet = __webpack_require__(392),
+    listCacheHas = __webpack_require__(393),
+    listCacheSet = __webpack_require__(394);
 
 /**
  * Creates an list cache object.
@@ -28331,7 +28329,7 @@ module.exports = nativeCreate;
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isKeyable = __webpack_require__(407);
+var isKeyable = __webpack_require__(408);
 
 /**
  * Gets the data for `map`.
@@ -28357,8 +28355,8 @@ module.exports = getMapData;
 
 var isArray = __webpack_require__(8),
     isKey = __webpack_require__(58),
-    stringToPath = __webpack_require__(430),
-    toString = __webpack_require__(108);
+    stringToPath = __webpack_require__(431),
+    toString = __webpack_require__(107);
 
 /**
  * Casts `value` to a path array if it's not one.
@@ -28567,7 +28565,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         for (var i = 0, len = this._domEvents.length; i < len; i++) {
           var item = this._domEvents[i];
           elementRemoveEventListener.call(item.el, item.eventName, item.handler, false);
-        }
+        };
         this._domEvents.length = 0;
       }
       return this;
@@ -29245,7 +29243,7 @@ module.exports = isFunction;
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -29299,7 +29297,7 @@ return __p
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -29335,7 +29333,7 @@ return __p
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -30376,7 +30374,7 @@ return parser;
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toFinite = __webpack_require__(334);
+var toFinite = __webpack_require__(335);
 
 /**
  * Converts `value` to an integer.
@@ -30631,11 +30629,11 @@ module.exports = Map;
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mapCacheClear = __webpack_require__(399),
-    mapCacheDelete = __webpack_require__(406),
-    mapCacheGet = __webpack_require__(408),
-    mapCacheHas = __webpack_require__(409),
-    mapCacheSet = __webpack_require__(410);
+var mapCacheClear = __webpack_require__(400),
+    mapCacheDelete = __webpack_require__(407),
+    mapCacheGet = __webpack_require__(409),
+    mapCacheHas = __webpack_require__(410),
+    mapCacheSet = __webpack_require__(411);
 
 /**
  * Creates a map cache object to store key-value pairs.
@@ -30734,7 +30732,7 @@ module.exports = isKey;
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseValues = __webpack_require__(368),
+var baseValues = __webpack_require__(369),
     keys = __webpack_require__(20);
 
 /**
@@ -30774,36 +30772,8 @@ module.exports = values;
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/headless/templates/field.html -->\n<field var="' +
-__e(o.name) +
-'">\n';
- if (o.value.constructor === Array) { ;
-__p += '\n    ';
- o.value.forEach(function (arrayValue) { ;
-__p += '<value>' +
-__e(arrayValue) +
-'</value>';
- }); ;
-__p += '\n';
- } else { ;
-__p += '\n    <value>' +
-__e(o.value) +
-'</value>\n';
- } ;
-__p += '</field>\n';
-return __p
-};
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseRest = __webpack_require__(80),
-    createWrap = __webpack_require__(369),
+var baseRest = __webpack_require__(79),
+    createWrap = __webpack_require__(370),
     getHolder = __webpack_require__(54),
     replaceHolders = __webpack_require__(33);
 
@@ -30855,10 +30825,10 @@ module.exports = partial;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/chatboxes.html -->\n<div class="converse-chatboxes row no-gutters"></div>\n<div id="converse-modals" class="modals"></div>\n';
@@ -30866,10 +30836,10 @@ return __p
 };
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/image.html -->\n<a href="' +
@@ -30881,10 +30851,10 @@ return __p
 };
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatbox_minimize.html -->\n<a class="chatbox-btn toggle-chatbox-button fa fa-minus" title="' +
@@ -30894,10 +30864,10 @@ return __p
 };
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -30914,10 +30884,10 @@ return __p
 };
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/rooms_results.html -->\n<li class="list-group-item active">' +
@@ -30927,7 +30897,7 @@ return __p
 };
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -30938,7 +30908,7 @@ module.exports = freeGlobal;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(18)))
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports) {
 
 /**
@@ -30966,15 +30936,15 @@ module.exports = arrayEach;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(343),
-    isArguments = __webpack_require__(70),
+var baseTimes = __webpack_require__(344),
+    isArguments = __webpack_require__(69),
     isArray = __webpack_require__(8),
-    isBuffer = __webpack_require__(71),
+    isBuffer = __webpack_require__(70),
     isIndex = __webpack_require__(22),
-    isTypedArray = __webpack_require__(72);
+    isTypedArray = __webpack_require__(71);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -31021,11 +30991,11 @@ module.exports = arrayLikeKeys;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(344),
-    isObjectLike = __webpack_require__(13);
+var baseIsArguments = __webpack_require__(345),
+    isObjectLike = __webpack_require__(12);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -31063,11 +31033,11 @@ module.exports = isArguments;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(7),
-    stubFalse = __webpack_require__(345);
+    stubFalse = __webpack_require__(346);
 
 /** Detect free variable `exports`. */
 var freeExports =  true && exports && !exports.nodeType && exports;
@@ -31108,12 +31078,12 @@ module.exports = isBuffer;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28)(module)))
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(346),
-    baseUnary = __webpack_require__(347),
-    nodeUtil = __webpack_require__(348);
+var baseIsTypedArray = __webpack_require__(347),
+    baseUnary = __webpack_require__(348),
+    nodeUtil = __webpack_require__(349);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -31141,11 +31111,11 @@ module.exports = isTypedArray;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isPrototype = __webpack_require__(74),
-    nativeKeys = __webpack_require__(349);
+var isPrototype = __webpack_require__(73),
+    nativeKeys = __webpack_require__(350);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -31177,7 +31147,7 @@ module.exports = baseKeys;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -31201,7 +31171,7 @@ module.exports = isPrototype;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports) {
 
 /**
@@ -31222,10 +31192,10 @@ module.exports = overArg;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(77),
+var baseAssignValue = __webpack_require__(76),
     eq = __webpack_require__(31);
 
 /** Used for built-in method references. */
@@ -31256,10 +31226,10 @@ module.exports = assignValue;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineProperty = __webpack_require__(78);
+var defineProperty = __webpack_require__(77);
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -31287,7 +31257,7 @@ module.exports = baseAssignValue;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16);
@@ -31304,7 +31274,7 @@ module.exports = defineProperty;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -31336,12 +31306,12 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(23),
-    overRest = __webpack_require__(359),
-    setToString = __webpack_require__(81);
+    overRest = __webpack_require__(360),
+    setToString = __webpack_require__(80);
 
 /**
  * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -31359,11 +31329,11 @@ module.exports = baseRest;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetToString = __webpack_require__(360),
-    shortOut = __webpack_require__(82);
+var baseSetToString = __webpack_require__(361),
+    shortOut = __webpack_require__(81);
 
 /**
  * Sets the `toString` method of `func` to return `string`.
@@ -31379,7 +31349,7 @@ module.exports = setToString;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports) {
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -31422,11 +31392,11 @@ module.exports = shortOut;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(69),
-    baseKeysIn = __webpack_require__(363),
+var arrayLikeKeys = __webpack_require__(68),
+    baseKeysIn = __webpack_require__(364),
     isArrayLike = __webpack_require__(19);
 
 /**
@@ -31460,12 +31430,12 @@ module.exports = keysIn;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(365),
-    baseIsNaN = __webpack_require__(366),
-    strictIndexOf = __webpack_require__(367);
+var baseFindIndex = __webpack_require__(366),
+    baseIsNaN = __webpack_require__(367),
+    strictIndexOf = __webpack_require__(368);
 
 /**
  * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
@@ -31486,12 +31456,12 @@ module.exports = baseIndexOf;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
     isArray = __webpack_require__(8),
-    isObjectLike = __webpack_require__(13);
+    isObjectLike = __webpack_require__(12);
 
 /** `Object#toString` result references. */
 var stringTag = '[object String]';
@@ -31522,11 +31492,11 @@ module.exports = isString;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(23),
-    metaMap = __webpack_require__(87);
+    metaMap = __webpack_require__(86);
 
 /**
  * The base implementation of `setData` without support for hot loop shorting.
@@ -31545,10 +31515,10 @@ module.exports = baseSetData;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var WeakMap = __webpack_require__(88);
+var WeakMap = __webpack_require__(87);
 
 /** Used to store function metadata. */
 var metaMap = WeakMap && new WeakMap;
@@ -31557,7 +31527,7 @@ module.exports = metaMap;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -31570,16 +31540,16 @@ module.exports = WeakMap;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var composeArgs = __webpack_require__(90),
-    composeArgsRight = __webpack_require__(91),
-    countHolders = __webpack_require__(372),
+var composeArgs = __webpack_require__(89),
+    composeArgsRight = __webpack_require__(90),
+    countHolders = __webpack_require__(373),
     createCtor = __webpack_require__(32),
-    createRecurry = __webpack_require__(92),
+    createRecurry = __webpack_require__(91),
     getHolder = __webpack_require__(54),
-    reorder = __webpack_require__(383),
+    reorder = __webpack_require__(384),
     replaceHolders = __webpack_require__(33),
     root = __webpack_require__(7);
 
@@ -31668,7 +31638,7 @@ module.exports = createHybrid;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports) {
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -31713,7 +31683,7 @@ module.exports = composeArgs;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports) {
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -31760,12 +31730,12 @@ module.exports = composeArgsRight;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isLaziable = __webpack_require__(373),
-    setData = __webpack_require__(96),
-    setWrapToString = __webpack_require__(97);
+var isLaziable = __webpack_require__(374),
+    setData = __webpack_require__(95),
+    setWrapToString = __webpack_require__(96);
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG = 1,
@@ -31822,11 +31792,11 @@ module.exports = createRecurry;
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metaMap = __webpack_require__(87),
-    noop = __webpack_require__(374);
+var metaMap = __webpack_require__(86),
+    noop = __webpack_require__(375);
 
 /**
  * Gets metadata for `func`.
@@ -31843,7 +31813,7 @@ module.exports = getData;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseCreate = __webpack_require__(51),
@@ -31871,7 +31841,7 @@ module.exports = LodashWrapper;
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports) {
 
 /**
@@ -31897,11 +31867,11 @@ module.exports = copyArray;
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetData = __webpack_require__(86),
-    shortOut = __webpack_require__(82);
+var baseSetData = __webpack_require__(85),
+    shortOut = __webpack_require__(81);
 
 /**
  * Sets metadata for `func`.
@@ -31923,13 +31893,13 @@ module.exports = setData;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getWrapDetails = __webpack_require__(379),
-    insertWrapDetails = __webpack_require__(380),
-    setToString = __webpack_require__(81),
-    updateWrapDetails = __webpack_require__(381);
+var getWrapDetails = __webpack_require__(380),
+    insertWrapDetails = __webpack_require__(381),
+    setToString = __webpack_require__(80),
+    updateWrapDetails = __webpack_require__(382);
 
 /**
  * Sets the `toString` method of `wrapper` to mimic the source of `reference`
@@ -31950,15 +31920,15 @@ module.exports = setWrapToString;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(34),
-    stackClear = __webpack_require__(394),
-    stackDelete = __webpack_require__(395),
-    stackGet = __webpack_require__(396),
-    stackHas = __webpack_require__(397),
-    stackSet = __webpack_require__(398);
+    stackClear = __webpack_require__(395),
+    stackDelete = __webpack_require__(396),
+    stackGet = __webpack_require__(397),
+    stackHas = __webpack_require__(398),
+    stackSet = __webpack_require__(399);
 
 /**
  * Creates a stack cache object to store key-value pairs.
@@ -31983,11 +31953,11 @@ module.exports = Stack;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqualDeep = __webpack_require__(411),
-    isObjectLike = __webpack_require__(13);
+var baseIsEqualDeep = __webpack_require__(412),
+    isObjectLike = __webpack_require__(12);
 
 /**
  * The base implementation of `_.isEqual` which supports partial comparisons
@@ -32017,12 +31987,12 @@ module.exports = baseIsEqual;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(412),
-    arraySome = __webpack_require__(415),
-    cacheHas = __webpack_require__(416);
+var SetCache = __webpack_require__(413),
+    arraySome = __webpack_require__(416),
+    cacheHas = __webpack_require__(417);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -32106,10 +32076,10 @@ module.exports = equalArrays;
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(102),
+var arrayPush = __webpack_require__(101),
     isArray = __webpack_require__(8);
 
 /**
@@ -32132,7 +32102,7 @@ module.exports = baseGetAllKeys;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports) {
 
 /**
@@ -32158,11 +32128,11 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(423),
-    stubArray = __webpack_require__(104);
+var arrayFilter = __webpack_require__(424),
+    stubArray = __webpack_require__(103);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -32194,7 +32164,7 @@ module.exports = getSymbols;
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports) {
 
 /**
@@ -32223,16 +32193,16 @@ module.exports = stubArray;
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DataView = __webpack_require__(424),
+var DataView = __webpack_require__(425),
     Map = __webpack_require__(55),
-    Promise = __webpack_require__(425),
-    Set = __webpack_require__(426),
-    WeakMap = __webpack_require__(88),
+    Promise = __webpack_require__(426),
+    Set = __webpack_require__(427),
+    WeakMap = __webpack_require__(87),
     baseGetTag = __webpack_require__(15),
-    toSource = __webpack_require__(79);
+    toSource = __webpack_require__(78);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -32287,7 +32257,7 @@ module.exports = getTag;
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(11);
@@ -32308,7 +32278,7 @@ module.exports = isStrictComparable;
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports) {
 
 /**
@@ -32334,10 +32304,10 @@ module.exports = matchesStrictComparable;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseToString = __webpack_require__(433);
+var baseToString = __webpack_require__(434);
 
 /**
  * Converts `value` to a string. An empty string is returned for `null`
@@ -32368,7 +32338,7 @@ module.exports = toString;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports) {
 
 /**
@@ -32388,7 +32358,7 @@ module.exports = baseProperty;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathias */
@@ -32914,7 +32884,7 @@ module.exports = baseProperty;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28)(module), __webpack_require__(18)))
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -33106,7 +33076,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -33358,7 +33328,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -33479,17 +33449,17 @@ backbone.nativeview = __webpack_require__(39);
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(e,t){ true?module.exports=t():undefined}(this,function(){"use strict";return function(e,t,r){var n=t.prototype,o=n.format;r.en.ordinal=function(e){var t=["th","st","nd","rd"],r=e%100;return"["+e+(t[(r-20)%10]||t[r]||t[0])+"]"},n.format=function(e){var t=this,r=this.$locale(),n=this.$utils(),i=(e||"YYYY-MM-DDTHH:mm:ssZ").replace(/\[([^\]]+)]|Q|wo|gggg|Do|X|x|k{1,2}|S/g,function(e){switch(e){case"Q":return Math.ceil((t.$M+1)/3);case"Do":return r.ordinal(t.$D);case"gggg":return t.weekYear();case"wo":return r.ordinal(t.week(),"W");case"k":case"kk":return n.s(String(0===t.$H?24:t.$H),"k"===e?1:2,"0");case"X":return Math.floor(t.$d.getTime()/1e3);case"x":return t.$d.getTime();default:return e}});return o.bind(this)(i)}}});
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSlice = __webpack_require__(333),
+var baseSlice = __webpack_require__(334),
     toInteger = __webpack_require__(47);
 
 /**
@@ -33530,11 +33500,11 @@ module.exports = drop;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
-    isObjectLike = __webpack_require__(13);
+    isObjectLike = __webpack_require__(12);
 
 /** `Object#toString` result references. */
 var boolTag = '[object Boolean]';
@@ -33565,7 +33535,7 @@ module.exports = isBoolean;
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports) {
 
 /**
@@ -33596,13 +33566,13 @@ module.exports = isNil;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(50),
-    baseIteratee = __webpack_require__(386),
-    basePickBy = __webpack_require__(439),
-    getAllKeysIn = __webpack_require__(441);
+    baseIteratee = __webpack_require__(387),
+    basePickBy = __webpack_require__(440),
+    getAllKeysIn = __webpack_require__(442);
 
 /**
  * Creates an object composed of the `object` properties `predicate` returns
@@ -33639,14 +33609,14 @@ module.exports = pickBy;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseKeys = __webpack_require__(73),
-    getTag = __webpack_require__(105),
+var baseKeys = __webpack_require__(72),
+    getTag = __webpack_require__(104),
     isArrayLike = __webpack_require__(19),
-    isString = __webpack_require__(85),
-    stringSize = __webpack_require__(444);
+    isString = __webpack_require__(84),
+    stringSize = __webpack_require__(445);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -33691,10 +33661,38 @@ module.exports = size;
 
 
 /***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(1)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<!-- src/headless/templates/field.html -->\n<field var="' +
+__e(o.name) +
+'">\n';
+ if (o.value.constructor === Array) { ;
+__p += '\n    ';
+ o.value.forEach(function (arrayValue) { ;
+__p += '<value>' +
+__e(arrayValue) +
+'</value>';
+ }); ;
+__p += '\n';
+ } else { ;
+__p += '\n    <value>' +
+__e(o.value) +
+'</value>\n';
+ } ;
+__p += '</field>\n';
+return __p
+};
+
+/***/ }),
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/headless/templates/vcard.html -->\n<vCard xmlns="vcard-temp">\n    <FN>' +
@@ -33719,7 +33717,7 @@ return __p
 /* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -33753,7 +33751,7 @@ return __p
 /* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -33779,7 +33777,7 @@ return __p
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatroom_bookmark_form.html -->\n<div class="chatroom-form-container muc-bookmark-form">\n    <form class="converse-form chatroom-form">\n        <legend>' +
@@ -33806,7 +33804,7 @@ return __p
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -33824,7 +33822,7 @@ return __p
 /* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/avatar.svg -->\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="' +
@@ -33847,7 +33845,7 @@ return __p
 /* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/background_logo.html -->\n<div class="inner-content converse-brand row">\n    <div class="converse-brand__padding"></div>\n    <div class="converse-brand__heading">\n        <svg height="200px"\n            xmlns="http://www.w3.org/2000/svg"\n            xmlns:xlink="http://www.w3.org/1999/xlink"\n            viewBox="0 0 364 364"\n            version="1.1">\n            <title>Logo Converse</title>\n            <defs>\n                <linearGradient id="gradient" x1="92.14" y1="27.64" x2="267.65" y2="331.62" gradientUnits="userSpaceOnUse">\n                    <stop offset="0" stop-color="#fff1d1"/>\n                    <stop offset="0.05" stop-color="#fae8c1"/>\n                    <stop offset="0.15" stop-color="#f0d5a1"/>\n                    <stop offset="0.27" stop-color="#e7c687"/>\n                    <stop offset="0.4" stop-color="#e1bb72"/>\n                    <stop offset="0.54" stop-color="#dcb264"/>\n                    <stop offset="0.71" stop-color="#daad5c"/>\n                    <stop offset="1" stop-color="#d9ac59"/>\n                </linearGradient>\n                <filter id="shadow">\n                    <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur1"/>\n                    <feOffset in="blur1" dx="3" dy="3" result="blur2"/>\n                    <feColorMatrix in="blur2" type="matrix" result="blur3"\n                        values="1 0 0 0 0.1\n                                0 1 0 0 0.1\n                                0 0 1 0 0.1\n                                0 0 0 1 0"/>\n                    <feMerge>\n                        <feMergeNode in="blur3"/>\n                        <feMergeNode in="SourceGraphic"/>\n                    </feMerge>\n                </filter>\n            </defs>\n            <g filter="url(#shadow)">\n                <path d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" fill="#d9ac59"/>\n                <path d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" fill="url(#gradient)"/>\n            </g>\n        </svg>\n        <span class="converse-brand__text">\n            <span>converse<span class="subdued">.js</span></span>\n            <p class="byline">messaging freedom</p>\n        </span>\n    </div>\n</div>\n';
@@ -33858,7 +33856,7 @@ return __p
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/audio.html -->\n<audio controls src="' +
@@ -33875,7 +33873,7 @@ return __p
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/file.html -->\n<a target="_blank" rel="noopener" href="' +
@@ -33890,7 +33888,7 @@ return __p
 /* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -33918,7 +33916,7 @@ return __p
 /* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -33944,7 +33942,7 @@ return __p
 /* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -33970,7 +33968,7 @@ return __p
 /* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/form_textarea.html -->\n<label class="label-ta">' +
@@ -33987,7 +33985,7 @@ return __p
 /* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/form_url.html -->\n<label>\n    ' +
@@ -34004,7 +34002,7 @@ return __p
 /* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34024,7 +34022,7 @@ return __p
 /* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/video.html -->\n<video controls src="' +
@@ -34041,7 +34039,7 @@ return __p
 /* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/csn.html -->\n<div class="message chat-info chat-state-notification"\n     data-isodate="' +
@@ -34058,7 +34056,7 @@ return __p
 /* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/file_progress.html -->\n<div id="msg-' + __e(o.msgid) + '" class="message chat-msg" data-isodate="' + // BAO
@@ -34081,7 +34079,7 @@ return __p
 /* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34192,7 +34190,7 @@ return __p
 /* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34220,7 +34218,7 @@ return __p
 /* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/alert.html -->\n<div class="alert ' +
@@ -34235,7 +34233,7 @@ return __p
 /* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34257,7 +34255,7 @@ return __p
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34293,7 +34291,7 @@ return __p
 /* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34337,7 +34335,7 @@ return __p
 /* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/error_message.html -->\n<div class="message chat-info chat-error" data-isodate="' +
@@ -34352,7 +34350,7 @@ return __p
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34374,7 +34372,7 @@ return __p
 /* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/new_day.html -->\n<div class="message date-separator" data-isodate="' +
@@ -34391,7 +34389,7 @@ return __p
 /* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34413,7 +34411,7 @@ return __p
 /* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/status_message.html -->\n<div class="message chat-info chat-status"\n     data-isodate="' +
@@ -34430,7 +34428,7 @@ return __p
 /* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34468,7 +34466,7 @@ return __p
 /* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/toolbar_fileupload.html -->\n<li class="upload-file">\n    <a class="fa fa-paperclip" title="' +
@@ -34481,7 +34479,7 @@ return __p
 /* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34619,7 +34617,7 @@ return __p
 /* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/converse_brand_heading.html -->\n<span class="brand-heading-container">\n    <a class="brand-heading" href="https://conversejs.org" target="_blank" rel="noopener">\n        <svg class="converse-svg-logo"\n            xmlns:svg="http://www.w3.org/2000/svg"\n            xmlns="http://www.w3.org/2000/svg"\n            xmlns:xlink="http://www.w3.org/1999/xlink"\n            viewBox="0 0 364 364">\n            <title>Converse</title>\n            <g class="cls-1" id="g904">\n                <g data-name="Layer 2">\n                    <g data-name="Layer 7">\n                        <path\n                            class="cls-3"\n                            d="M221.46,103.71c0,18.83-29.36,18.83-29.12,0C192.1,84.88,221.46,84.88,221.46,103.71Z" />\n                        <path\n                            class="cls-4"\n                            d="M179.9,4.15A175.48,175.48,0,1,0,355.38,179.63,175.48,175.48,0,0,0,179.9,4.15Zm-40.79,264.5c-.23-17.82,27.58-17.82,27.58,0S138.88,286.48,139.11,268.65ZM218.6,168.24A79.65,79.65,0,0,1,205.15,174a12.76,12.76,0,0,0-6.29,4.65L167.54,222a1.36,1.36,0,0,1-2.46-.8v-35.8a2.58,2.58,0,0,0-3.06-2.53c-15.43,3-30.23,7.7-42.73,19.94-38.8,38-29.42,105.69,16.09,133.16a162.25,162.25,0,0,1-91.47-67.27C-3.86,182.26,34.5,47.25,138.37,25.66c46.89-9.75,118.25,5.16,123.73,62.83C265.15,120.64,246.56,152.89,218.6,168.24Z" />\n                    </g>\n                </g>\n            </g>\n        </svg>\n        <span class="brand-name">\n            <span class="brand-name__text">converse<span class="subdued">.js</span></span>\n        </span>\n    </a>\n</span>\n';
@@ -34630,7 +34628,7 @@ return __p
 /* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34646,7 +34644,7 @@ return __p
 /* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/controlbox_toggle.html -->\n<span class="toggle-feedback">' +
@@ -34659,7 +34657,7 @@ return __p
 /* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34731,7 +34729,7 @@ return __p
 /* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/dragresize.html -->\n<div class="dragresize dragresize-top"></div>\n<div class="dragresize dragresize-topleft"></div>\n<div class="dragresize dragresize-left"></div>\n';
@@ -34742,7 +34740,7 @@ return __p
 /* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/emoji_button.html -->\n<li class="toggle-toolbar-menu toggle-smiley dropup">\n    <a class="toggle-smiley far fa-smile" title="' +
@@ -34755,7 +34753,7 @@ return __p
 /* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34861,7 +34859,7 @@ return __p
 /* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 // BAO
@@ -34872,11 +34870,12 @@ __e(o.version_name) +
 return __p
 };
 
+
 /***/ }),
 /* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/chats_panel.html -->\n<a id="toggle-minimized-chats" href="#" class="row no-gutters"></a>\n<div class="flyout minimized-chats-flyout row no-gutters"></div>\n';
@@ -34887,7 +34886,7 @@ return __p
 /* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34909,7 +34908,7 @@ return __p
 /* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34933,7 +34932,7 @@ return __p
 /* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34963,7 +34962,7 @@ return __p
 /* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -34979,7 +34978,7 @@ return __p
 /* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '';
 __p += '<!-- src/templates/chatroom.html -->\n<div class="flyout box-flyout">\n    <div class="chat-head chat-head-chatroom row no-gutters"></div>\n    <div class="chat-body chatroom-body row no-gutters">\n        <div class="disconnect-container hidden"></div>\n    </div>\n</div>\n';
@@ -34990,7 +34989,7 @@ return __p
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatroom_bottom_panel.html -->\n<div class="muc-bottom-panel">' +
@@ -35003,7 +35002,7 @@ return __p
 /* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35027,7 +35026,7 @@ return __p
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35179,7 +35178,7 @@ return __p
 /* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35199,7 +35198,7 @@ return __p
 /* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35317,7 +35316,7 @@ return __p
 /* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35347,7 +35346,7 @@ return __p
 /* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35398,7 +35397,7 @@ return __p
 /* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatroom_nickname_form.html -->\n<div class="chatroom-form-container muc-nickname-form">\n    <form class="converse-form chatroom-form converse-centered-form">\n        <fieldset class="form-group">\n            <label>' +
@@ -35421,7 +35420,7 @@ return __p
 /* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatroom_password_form.html -->\n<div class="chatroom-form-container muc-password-form">\n    <form class="converse-form chatroom-form converse-centered-form">\n        <fieldset class="form-group">\n            <label>' +
@@ -35444,7 +35443,7 @@ return __p
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/chatroom_sidebar.html -->\n<!-- <div class="occupants"> -->\n<div class="occupants-header">\n    <i class="hide-occupants fa fa-times"></i>\n    <p class="occupants-heading">' +
@@ -35457,7 +35456,7 @@ return __p
 /* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35483,7 +35482,7 @@ return __p
 /* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35697,7 +35696,7 @@ return __p
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35742,10 +35741,8 @@ __e( o.jid ) +
 //__e( o.hint_occupant ) +
 '"\r\n    ';
  } ;
-// BAO
-//__p += '>\n    <div class="row no-gutters">\n        <div class="col-auto">\n            <div class="occupant-status occupant-' +
+ // BAO
 __p += '>\n    <div class="row no-gutters">\n        <div title="' + (o.jid ? 'Click to verify or start private chat with ' + o.jid : '') + '" class="col-auto">\n<img data-room-nick="' + o.nick + '" data-room-jid="' + o.jid + '" class="occupant-avatar room-avatar avatar" src="' + o.image + '" height="22" width="22">            <div class="occupant-status occupant-' +
-
 __e(o.show) +
 ' circle" title="' +
 __e(o.hint_show) +
@@ -35789,7 +35786,7 @@ return __p
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35881,7 +35878,7 @@ return __p
 /* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/room_item.html -->\n<li class="room-item list-group-item">\n  <div class="available-chatroom d-flex flex-row">\n    <a class="open-room available-room w-100"\n       data-room-jid="' +
@@ -35904,7 +35901,7 @@ return __p
 /* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/room_panel.html -->\n<!-- <div id="chatrooms"> -->\n<div class="d-flex controlbox-padded">\n    <span class="w-100 controlbox-heading controlbox-heading--groupchats">' +
@@ -35921,7 +35918,7 @@ return __p
 /* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -35971,7 +35968,7 @@ return __p
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape;
 __p += '<!-- src/templates/client_info_modal.html -->\n<!-- Change status Modal -->\n<div class="modal" id="modal-status-change" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel" aria-hidden="true">\n    <div class="modal-dialog" role="document">\n        <div class="modal-content">\n            <div class="modal-header">\n                <h5 class="modal-title" id="changeStatusModalLabel">' +
@@ -35992,7 +35989,7 @@ return __p
 /* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36069,7 +36066,7 @@ __e(o.__('Checkbox to select fingerprints of all other OMEMO devices')) +
 '"/>\n                                            ' +
 __e(o.__('Other OMEMO-enabled devices')) +
 '\n                                            </label>\n                                        </li>\n                                        ';
- o._.forEach(o.view.other_devices, function (device) { ;
+ o.view.other_devices.forEach(function (device) { ;
 __p += '\n                                            ';
  if (device.get('bundle') && device.get('bundle').fingerprint) { ;
 __p += '\n                                            <li class="fingerprint-removal-item list-group-item nopadding">\n                                                <label>\n                                                <input type="checkbox" value="' +
@@ -36104,7 +36101,7 @@ return __p
 /* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36116,6 +36113,7 @@ __e(o.title_conversations) +
 '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="' +
 __e(o.title_preferences) +
 '"></a>\n    ';                                                                              // BAO <ends>
+
 
  if (o._converse.show_client_info) { ;
 __p += '\n        <a class="controlbox-heading__btn show-client-info fa fa-info-circle align-self-center" title="' +
@@ -36164,7 +36162,7 @@ return __p
 /* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36188,7 +36186,7 @@ return __p
 /* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36208,7 +36206,7 @@ return __p
 /* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36246,7 +36244,7 @@ return __p
 /* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36278,7 +36276,7 @@ return __p
 /* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36298,7 +36296,7 @@ return __p
 /* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36320,7 +36318,7 @@ return __p
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36388,7 +36386,7 @@ return __p
 /* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36422,7 +36420,7 @@ return __p
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36448,7 +36446,7 @@ return __p
 /* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36474,7 +36472,7 @@ return __p
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36506,7 +36504,7 @@ return __p
 /* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36528,7 +36526,7 @@ return __p
 /* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36626,7 +36624,7 @@ return __p
 /* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
+var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -36858,7 +36856,7 @@ const converse = {
       __webpack_require__.p = settings.assets_path; // eslint-disable-line no-undef
     }
 
-    __webpack_require__(465);
+    __webpack_require__(463);
 
     Object.keys(plugins).forEach(name => converse.plugins.add(name, plugins[name]));
     return converse;
@@ -36879,135 +36877,205 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 /***/ }),
 /* 331 */
+/***/ (function(module, exports) {
+
+function CustomEvent(event, params) {
+  params = params || {
+    bubbles: false,
+    cancelable: false,
+    detail: undefined
+  };
+  var evt = document.createEvent('CustomEvent');
+  evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+  return evt;
+}
+
+if (typeof window.CustomEvent !== "function") {
+  CustomEvent.prototype = window.Event.prototype;
+  window.CustomEvent = CustomEvent;
+}
+
+if (!String.prototype.includes) {
+  String.prototype.includes = function (search, start) {
+    'use strict';
+
+    if (typeof start !== 'number') {
+      start = 0;
+    }
+
+    if (start + search.length > this.length) {
+      return false;
+    } else {
+      return this.indexOf(search, start) !== -1; // eslint-disable-line lodash/prefer-includes
+    }
+  };
+}
+
+if (!String.prototype.endsWith) {
+  String.prototype.endsWith = function (searchString, position) {
+    var subjectString = this.toString();
+
+    if (position === undefined || position > subjectString.length) {
+      position = subjectString.length;
+    }
+
+    position -= searchString.length;
+    var lastIndex = subjectString.indexOf(searchString, position);
+    return lastIndex !== -1 && lastIndex === position;
+  };
+}
+
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function (searchString, position) {
+    position = position || 0;
+    return this.substr(position, searchString.length) === searchString;
+  };
+}
+
+if (!String.prototype.splitOnce) {
+  String.prototype.splitOnce = function (delimiter) {
+    var components = this.split(delimiter);
+    return [components.shift(), components.join(delimiter)];
+  };
+}
+
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+}
+
+/***/ }),
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
     "./af/LC_MESSAGES/converse.po": [
-        466,
+        464,
         130
     ],
     "./ar/LC_MESSAGES/converse.po": [
-        467,
+        465,
         131
     ],
     "./bg/LC_MESSAGES/converse.po": [
-        468,
+        466,
         132
     ],
     "./ca/LC_MESSAGES/converse.po": [
-        469,
+        467,
         133
     ],
     "./cs/LC_MESSAGES/converse.po": [
-        470,
+        468,
         134
     ],
     "./de/LC_MESSAGES/converse.po": [
-        471,
+        469,
         135
     ],
     "./eo/LC_MESSAGES/converse.po": [
-        472,
+        470,
         136
     ],
     "./es/LC_MESSAGES/converse.po": [
-        473,
+        471,
         137
     ],
     "./eu/LC_MESSAGES/converse.po": [
-        474,
+        472,
         138
     ],
     "./fr/LC_MESSAGES/converse.po": [
-        475,
+        473,
         139
     ],
     "./gl/LC_MESSAGES/converse.po": [
-        476,
+        474,
         140
     ],
     "./he/LC_MESSAGES/converse.po": [
-        477,
+        475,
         141
     ],
     "./hi/LC_MESSAGES/converse.po": [
-        478,
+        476,
         142
     ],
     "./hu/LC_MESSAGES/converse.po": [
-        479,
+        477,
         143
     ],
     "./id/LC_MESSAGES/converse.po": [
-        480,
+        478,
         144
     ],
     "./it/LC_MESSAGES/converse.po": [
-        481,
+        479,
         145
     ],
     "./ja/LC_MESSAGES/converse.po": [
-        482,
+        480,
         146
     ],
     "./lt/LC_MESSAGES/converse.po": [
-        483,
+        481,
         147
     ],
     "./nb/LC_MESSAGES/converse.po": [
-        484,
+        482,
         148
     ],
     "./nl/LC_MESSAGES/converse.po": [
-        485,
+        483,
         149
     ],
     "./nl_BE/LC_MESSAGES/converse.po": [
-        486,
+        484,
         150
     ],
     "./oc/LC_MESSAGES/converse.po": [
-        487,
+        485,
         151
     ],
     "./pl/LC_MESSAGES/converse.po": [
-        488,
+        486,
         152
     ],
     "./pt/LC_MESSAGES/converse.po": [
-        489,
+        487,
         153
     ],
     "./pt_BR/LC_MESSAGES/converse.po": [
-        490,
+        488,
         154
     ],
     "./ro/LC_MESSAGES/converse.po": [
-        491,
+        489,
         155
     ],
     "./ru/LC_MESSAGES/converse.po": [
-        492,
+        490,
         156
     ],
     "./tr/LC_MESSAGES/converse.po": [
-        493,
+        491,
         157
     ],
     "./uk/LC_MESSAGES/converse.po": [
-        494,
+        492,
         158
     ],
     "./vi/LC_MESSAGES/converse.po": [
-        495,
+        493,
         159
     ],
     "./zh_CN/LC_MESSAGES/converse.po": [
-        496,
+        494,
         160
     ],
     "./zh_TW/LC_MESSAGES/converse.po": [
-        497,
+        495,
         161
     ]
 };
@@ -37028,11 +37096,11 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
     return Object.keys(map);
 };
-webpackAsyncContext.id = 331;
+webpackAsyncContext.id = 332;
 module.exports = webpackAsyncContext;
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -38086,11 +38154,11 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
     return Object.keys(map);
 };
-webpackAsyncContext.id = 332;
+webpackAsyncContext.id = 333;
 module.exports = webpackAsyncContext;
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports) {
 
 /**
@@ -38127,10 +38195,10 @@ module.exports = baseSlice;
 
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toNumber = __webpack_require__(335);
+var toNumber = __webpack_require__(336);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0,
@@ -38175,7 +38243,7 @@ module.exports = toFinite;
 
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(11),
@@ -38247,7 +38315,7 @@ module.exports = toNumber;
 
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30);
@@ -38299,7 +38367,7 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -38327,12 +38395,12 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayEach = __webpack_require__(68),
-    baseEach = __webpack_require__(339),
-    castFunction = __webpack_require__(351),
+var arrayEach = __webpack_require__(67),
+    baseEach = __webpack_require__(340),
+    castFunction = __webpack_require__(352),
     isArray = __webpack_require__(8);
 
 /**
@@ -38374,11 +38442,11 @@ module.exports = forEach;
 
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseForOwn = __webpack_require__(340),
-    createBaseEach = __webpack_require__(350);
+var baseForOwn = __webpack_require__(341),
+    createBaseEach = __webpack_require__(351);
 
 /**
  * The base implementation of `_.forEach` without support for iteratee shorthands.
@@ -38394,10 +38462,10 @@ module.exports = baseEach;
 
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFor = __webpack_require__(341),
+var baseFor = __webpack_require__(342),
     keys = __webpack_require__(20);
 
 /**
@@ -38416,10 +38484,10 @@ module.exports = baseForOwn;
 
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var createBaseFor = __webpack_require__(342);
+var createBaseFor = __webpack_require__(343);
 
 /**
  * The base implementation of `baseForOwn` which iterates over `object`
@@ -38438,7 +38506,7 @@ module.exports = baseFor;
 
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports) {
 
 /**
@@ -38469,7 +38537,7 @@ module.exports = createBaseFor;
 
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports) {
 
 /**
@@ -38495,11 +38563,11 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
-    isObjectLike = __webpack_require__(13);
+    isObjectLike = __webpack_require__(12);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
@@ -38519,7 +38587,7 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports) {
 
 /**
@@ -38543,12 +38611,12 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(15),
     isLength = __webpack_require__(48),
-    isObjectLike = __webpack_require__(13);
+    isObjectLike = __webpack_require__(12);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -38609,7 +38677,7 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports) {
 
 /**
@@ -38629,10 +38697,10 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(67);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(66);
 
 /** Detect free variable `exports`. */
 var freeExports =  true && exports && !exports.nodeType && exports;
@@ -38666,10 +38734,10 @@ module.exports = nodeUtil;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28)(module)))
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(75);
+var overArg = __webpack_require__(74);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
@@ -38678,7 +38746,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLike = __webpack_require__(19);
@@ -38716,7 +38784,7 @@ module.exports = createBaseEach;
 
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(23);
@@ -38736,12 +38804,12 @@ module.exports = castFunction;
 
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var copyObject = __webpack_require__(353),
-    createAssigner = __webpack_require__(358),
-    keysIn = __webpack_require__(83);
+var copyObject = __webpack_require__(354),
+    createAssigner = __webpack_require__(359),
+    keysIn = __webpack_require__(82);
 
 /**
  * This method is like `_.assign` except that it iterates over own and
@@ -38782,11 +38850,11 @@ module.exports = assignIn;
 
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(76),
-    baseAssignValue = __webpack_require__(77);
+var assignValue = __webpack_require__(75),
+    baseAssignValue = __webpack_require__(76);
 
 /**
  * Copies properties of `source` to `object`.
@@ -38828,13 +38896,13 @@ module.exports = copyObject;
 
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(41),
-    isMasked = __webpack_require__(355),
+    isMasked = __webpack_require__(356),
     isObject = __webpack_require__(11),
-    toSource = __webpack_require__(79);
+    toSource = __webpack_require__(78);
 
 /**
  * Used to match `RegExp`
@@ -38881,10 +38949,10 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(356);
+var coreJsData = __webpack_require__(357);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -38907,7 +38975,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -38919,7 +38987,7 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports) {
 
 /**
@@ -38938,11 +39006,11 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseRest = __webpack_require__(80),
-    isIterateeCall = __webpack_require__(362);
+var baseRest = __webpack_require__(79),
+    isIterateeCall = __webpack_require__(363);
 
 /**
  * Creates a function like `_.assign`.
@@ -38981,7 +39049,7 @@ module.exports = createAssigner;
 
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(49);
@@ -39023,11 +39091,11 @@ module.exports = overRest;
 
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constant = __webpack_require__(361),
-    defineProperty = __webpack_require__(78),
+var constant = __webpack_require__(362),
+    defineProperty = __webpack_require__(77),
     identity = __webpack_require__(23);
 
 /**
@@ -39051,7 +39119,7 @@ module.exports = baseSetToString;
 
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports) {
 
 /**
@@ -39083,7 +39151,7 @@ module.exports = constant;
 
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(31),
@@ -39119,12 +39187,12 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(11),
-    isPrototype = __webpack_require__(74),
-    nativeKeysIn = __webpack_require__(364);
+    isPrototype = __webpack_require__(73),
+    nativeKeysIn = __webpack_require__(365);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -39158,7 +39226,7 @@ module.exports = baseKeysIn;
 
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports) {
 
 /**
@@ -39184,7 +39252,7 @@ module.exports = nativeKeysIn;
 
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports) {
 
 /**
@@ -39214,7 +39282,7 @@ module.exports = baseFindIndex;
 
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports) {
 
 /**
@@ -39232,7 +39300,7 @@ module.exports = baseIsNaN;
 
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports) {
 
 /**
@@ -39261,7 +39329,7 @@ module.exports = strictIndexOf;
 
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(50);
@@ -39286,18 +39354,18 @@ module.exports = baseValues;
 
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetData = __webpack_require__(86),
-    createBind = __webpack_require__(370),
-    createCurry = __webpack_require__(371),
-    createHybrid = __webpack_require__(89),
-    createPartial = __webpack_require__(384),
-    getData = __webpack_require__(93),
-    mergeData = __webpack_require__(385),
-    setData = __webpack_require__(96),
-    setWrapToString = __webpack_require__(97),
+var baseSetData = __webpack_require__(85),
+    createBind = __webpack_require__(371),
+    createCurry = __webpack_require__(372),
+    createHybrid = __webpack_require__(88),
+    createPartial = __webpack_require__(385),
+    getData = __webpack_require__(92),
+    mergeData = __webpack_require__(386),
+    setData = __webpack_require__(95),
+    setWrapToString = __webpack_require__(96),
     toInteger = __webpack_require__(47);
 
 /** Error message constants. */
@@ -39398,7 +39466,7 @@ module.exports = createWrap;
 
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var createCtor = __webpack_require__(32),
@@ -39432,13 +39500,13 @@ module.exports = createBind;
 
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(49),
     createCtor = __webpack_require__(32),
-    createHybrid = __webpack_require__(89),
-    createRecurry = __webpack_require__(92),
+    createHybrid = __webpack_require__(88),
+    createRecurry = __webpack_require__(91),
     getHolder = __webpack_require__(54),
     replaceHolders = __webpack_require__(33),
     root = __webpack_require__(7);
@@ -39484,7 +39552,7 @@ module.exports = createCurry;
 
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports) {
 
 /**
@@ -39511,13 +39579,13 @@ module.exports = countHolders;
 
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var LazyWrapper = __webpack_require__(52),
-    getData = __webpack_require__(93),
-    getFuncName = __webpack_require__(375),
-    lodash = __webpack_require__(377);
+    getData = __webpack_require__(92),
+    getFuncName = __webpack_require__(376),
+    lodash = __webpack_require__(378);
 
 /**
  * Checks if `func` has a lazy counterpart.
@@ -39545,7 +39613,7 @@ module.exports = isLaziable;
 
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports) {
 
 /**
@@ -39568,10 +39636,10 @@ module.exports = noop;
 
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var realNames = __webpack_require__(376);
+var realNames = __webpack_require__(377);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -39605,7 +39673,7 @@ module.exports = getFuncName;
 
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports) {
 
 /** Used to lookup unminified function names. */
@@ -39615,15 +39683,15 @@ module.exports = realNames;
 
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var LazyWrapper = __webpack_require__(52),
-    LodashWrapper = __webpack_require__(94),
+    LodashWrapper = __webpack_require__(93),
     baseLodash = __webpack_require__(53),
     isArray = __webpack_require__(8),
-    isObjectLike = __webpack_require__(13),
-    wrapperClone = __webpack_require__(378);
+    isObjectLike = __webpack_require__(12),
+    wrapperClone = __webpack_require__(379);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -39768,12 +39836,12 @@ module.exports = lodash;
 
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var LazyWrapper = __webpack_require__(52),
-    LodashWrapper = __webpack_require__(94),
-    copyArray = __webpack_require__(95);
+    LodashWrapper = __webpack_require__(93),
+    copyArray = __webpack_require__(94);
 
 /**
  * Creates a clone of `wrapper`.
@@ -39797,7 +39865,7 @@ module.exports = wrapperClone;
 
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports) {
 
 /** Used to match wrap detail comments. */
@@ -39820,7 +39888,7 @@ module.exports = getWrapDetails;
 
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports) {
 
 /** Used to match wrap detail comments. */
@@ -39849,11 +39917,11 @@ module.exports = insertWrapDetails;
 
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayEach = __webpack_require__(68),
-    arrayIncludes = __webpack_require__(382);
+var arrayEach = __webpack_require__(67),
+    arrayIncludes = __webpack_require__(383);
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG = 1,
@@ -39901,10 +39969,10 @@ module.exports = updateWrapDetails;
 
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(84);
+var baseIndexOf = __webpack_require__(83);
 
 /**
  * A specialized version of `_.includes` for arrays without support for
@@ -39924,10 +39992,10 @@ module.exports = arrayIncludes;
 
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var copyArray = __webpack_require__(95),
+var copyArray = __webpack_require__(94),
     isIndex = __webpack_require__(22);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -39959,7 +40027,7 @@ module.exports = reorder;
 
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(49),
@@ -40008,11 +40076,11 @@ module.exports = createPartial;
 
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var composeArgs = __webpack_require__(90),
-    composeArgsRight = __webpack_require__(91),
+var composeArgs = __webpack_require__(89),
+    composeArgsRight = __webpack_require__(90),
     replaceHolders = __webpack_require__(33);
 
 /** Used as the internal argument placeholder. */
@@ -40104,14 +40172,14 @@ module.exports = mergeData;
 
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMatches = __webpack_require__(387),
-    baseMatchesProperty = __webpack_require__(428),
+var baseMatches = __webpack_require__(388),
+    baseMatchesProperty = __webpack_require__(429),
     identity = __webpack_require__(23),
     isArray = __webpack_require__(8),
-    property = __webpack_require__(437);
+    property = __webpack_require__(438);
 
 /**
  * The base implementation of `_.iteratee`.
@@ -40141,12 +40209,12 @@ module.exports = baseIteratee;
 
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsMatch = __webpack_require__(388),
-    getMatchData = __webpack_require__(427),
-    matchesStrictComparable = __webpack_require__(107);
+var baseIsMatch = __webpack_require__(389),
+    getMatchData = __webpack_require__(428),
+    matchesStrictComparable = __webpack_require__(106);
 
 /**
  * The base implementation of `_.matches` which doesn't clone `source`.
@@ -40169,11 +40237,11 @@ module.exports = baseMatches;
 
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(98),
-    baseIsEqual = __webpack_require__(99);
+var Stack = __webpack_require__(97),
+    baseIsEqual = __webpack_require__(98);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -40237,7 +40305,7 @@ module.exports = baseIsMatch;
 
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports) {
 
 /**
@@ -40256,7 +40324,7 @@ module.exports = listCacheClear;
 
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40297,7 +40365,7 @@ module.exports = listCacheDelete;
 
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40322,7 +40390,7 @@ module.exports = listCacheGet;
 
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40344,7 +40412,7 @@ module.exports = listCacheHas;
 
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(35);
@@ -40376,7 +40444,7 @@ module.exports = listCacheSet;
 
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(34);
@@ -40397,7 +40465,7 @@ module.exports = stackClear;
 
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports) {
 
 /**
@@ -40421,7 +40489,7 @@ module.exports = stackDelete;
 
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports) {
 
 /**
@@ -40441,7 +40509,7 @@ module.exports = stackGet;
 
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports) {
 
 /**
@@ -40461,7 +40529,7 @@ module.exports = stackHas;
 
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(34),
@@ -40501,10 +40569,10 @@ module.exports = stackSet;
 
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Hash = __webpack_require__(400),
+var Hash = __webpack_require__(401),
     ListCache = __webpack_require__(34),
     Map = __webpack_require__(55);
 
@@ -40528,14 +40596,14 @@ module.exports = mapCacheClear;
 
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hashClear = __webpack_require__(401),
-    hashDelete = __webpack_require__(402),
-    hashGet = __webpack_require__(403),
-    hashHas = __webpack_require__(404),
-    hashSet = __webpack_require__(405);
+var hashClear = __webpack_require__(402),
+    hashDelete = __webpack_require__(403),
+    hashGet = __webpack_require__(404),
+    hashHas = __webpack_require__(405),
+    hashSet = __webpack_require__(406);
 
 /**
  * Creates a hash object.
@@ -40566,7 +40634,7 @@ module.exports = Hash;
 
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40587,7 +40655,7 @@ module.exports = hashClear;
 
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports) {
 
 /**
@@ -40610,7 +40678,7 @@ module.exports = hashDelete;
 
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40646,7 +40714,7 @@ module.exports = hashGet;
 
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40675,7 +40743,7 @@ module.exports = hashHas;
 
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(36);
@@ -40704,7 +40772,7 @@ module.exports = hashSet;
 
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40728,7 +40796,7 @@ module.exports = mapCacheDelete;
 
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports) {
 
 /**
@@ -40749,7 +40817,7 @@ module.exports = isKeyable;
 
 
 /***/ }),
-/* 408 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40771,7 +40839,7 @@ module.exports = mapCacheGet;
 
 
 /***/ }),
-/* 409 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40793,7 +40861,7 @@ module.exports = mapCacheHas;
 
 
 /***/ }),
-/* 410 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(37);
@@ -40821,17 +40889,17 @@ module.exports = mapCacheSet;
 
 
 /***/ }),
-/* 411 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(98),
-    equalArrays = __webpack_require__(100),
-    equalByTag = __webpack_require__(417),
-    equalObjects = __webpack_require__(421),
-    getTag = __webpack_require__(105),
+var Stack = __webpack_require__(97),
+    equalArrays = __webpack_require__(99),
+    equalByTag = __webpack_require__(418),
+    equalObjects = __webpack_require__(422),
+    getTag = __webpack_require__(104),
     isArray = __webpack_require__(8),
-    isBuffer = __webpack_require__(71),
-    isTypedArray = __webpack_require__(72);
+    isBuffer = __webpack_require__(70),
+    isTypedArray = __webpack_require__(71);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -40910,12 +40978,12 @@ module.exports = baseIsEqualDeep;
 
 
 /***/ }),
-/* 412 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MapCache = __webpack_require__(56),
-    setCacheAdd = __webpack_require__(413),
-    setCacheHas = __webpack_require__(414);
+    setCacheAdd = __webpack_require__(414),
+    setCacheHas = __webpack_require__(415);
 
 /**
  *
@@ -40943,7 +41011,7 @@ module.exports = SetCache;
 
 
 /***/ }),
-/* 413 */
+/* 414 */
 /***/ (function(module, exports) {
 
 /** Used to stand-in for `undefined` hash values. */
@@ -40968,7 +41036,7 @@ module.exports = setCacheAdd;
 
 
 /***/ }),
-/* 414 */
+/* 415 */
 /***/ (function(module, exports) {
 
 /**
@@ -40988,7 +41056,7 @@ module.exports = setCacheHas;
 
 
 /***/ }),
-/* 415 */
+/* 416 */
 /***/ (function(module, exports) {
 
 /**
@@ -41017,7 +41085,7 @@ module.exports = arraySome;
 
 
 /***/ }),
-/* 416 */
+/* 417 */
 /***/ (function(module, exports) {
 
 /**
@@ -41036,15 +41104,15 @@ module.exports = cacheHas;
 
 
 /***/ }),
-/* 417 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30),
-    Uint8Array = __webpack_require__(418),
+    Uint8Array = __webpack_require__(419),
     eq = __webpack_require__(31),
-    equalArrays = __webpack_require__(100),
-    mapToArray = __webpack_require__(419),
-    setToArray = __webpack_require__(420);
+    equalArrays = __webpack_require__(99),
+    mapToArray = __webpack_require__(420),
+    setToArray = __webpack_require__(421);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -41154,7 +41222,7 @@ module.exports = equalByTag;
 
 
 /***/ }),
-/* 418 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -41166,7 +41234,7 @@ module.exports = Uint8Array;
 
 
 /***/ }),
-/* 419 */
+/* 420 */
 /***/ (function(module, exports) {
 
 /**
@@ -41190,7 +41258,7 @@ module.exports = mapToArray;
 
 
 /***/ }),
-/* 420 */
+/* 421 */
 /***/ (function(module, exports) {
 
 /**
@@ -41214,10 +41282,10 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 421 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getAllKeys = __webpack_require__(422);
+var getAllKeys = __webpack_require__(423);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -41309,11 +41377,11 @@ module.exports = equalObjects;
 
 
 /***/ }),
-/* 422 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(101),
-    getSymbols = __webpack_require__(103),
+var baseGetAllKeys = __webpack_require__(100),
+    getSymbols = __webpack_require__(102),
     keys = __webpack_require__(20);
 
 /**
@@ -41331,7 +41399,7 @@ module.exports = getAllKeys;
 
 
 /***/ }),
-/* 423 */
+/* 424 */
 /***/ (function(module, exports) {
 
 /**
@@ -41362,7 +41430,7 @@ module.exports = arrayFilter;
 
 
 /***/ }),
-/* 424 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -41375,7 +41443,7 @@ module.exports = DataView;
 
 
 /***/ }),
-/* 425 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -41388,7 +41456,7 @@ module.exports = Promise;
 
 
 /***/ }),
-/* 426 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(16),
@@ -41401,10 +41469,10 @@ module.exports = Set;
 
 
 /***/ }),
-/* 427 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isStrictComparable = __webpack_require__(106),
+var isStrictComparable = __webpack_require__(105),
     keys = __webpack_require__(20);
 
 /**
@@ -41431,15 +41499,15 @@ module.exports = getMatchData;
 
 
 /***/ }),
-/* 428 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqual = __webpack_require__(99),
-    get = __webpack_require__(429),
-    hasIn = __webpack_require__(434),
+var baseIsEqual = __webpack_require__(98),
+    get = __webpack_require__(430),
+    hasIn = __webpack_require__(435),
     isKey = __webpack_require__(58),
-    isStrictComparable = __webpack_require__(106),
-    matchesStrictComparable = __webpack_require__(107),
+    isStrictComparable = __webpack_require__(105),
+    matchesStrictComparable = __webpack_require__(106),
     toKey = __webpack_require__(24);
 
 /** Used to compose bitmasks for value comparisons. */
@@ -41470,7 +41538,7 @@ module.exports = baseMatchesProperty;
 
 
 /***/ }),
-/* 429 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(57);
@@ -41509,10 +41577,10 @@ module.exports = get;
 
 
 /***/ }),
-/* 430 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoizeCapped = __webpack_require__(431);
+var memoizeCapped = __webpack_require__(432);
 
 /** Used to match property names within property paths. */
 var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
@@ -41542,10 +41610,10 @@ module.exports = stringToPath;
 
 
 /***/ }),
-/* 431 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoize = __webpack_require__(432);
+var memoize = __webpack_require__(433);
 
 /** Used as the maximum memoize cache size. */
 var MAX_MEMOIZE_SIZE = 500;
@@ -41574,7 +41642,7 @@ module.exports = memoizeCapped;
 
 
 /***/ }),
-/* 432 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MapCache = __webpack_require__(56);
@@ -41653,7 +41721,7 @@ module.exports = memoize;
 
 
 /***/ }),
-/* 433 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(30),
@@ -41696,11 +41764,11 @@ module.exports = baseToString;
 
 
 /***/ }),
-/* 434 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseHasIn = __webpack_require__(435),
-    hasPath = __webpack_require__(436);
+var baseHasIn = __webpack_require__(436),
+    hasPath = __webpack_require__(437);
 
 /**
  * Checks if `path` is a direct or inherited property of `object`.
@@ -41736,7 +41804,7 @@ module.exports = hasIn;
 
 
 /***/ }),
-/* 435 */
+/* 436 */
 /***/ (function(module, exports) {
 
 /**
@@ -41755,11 +41823,11 @@ module.exports = baseHasIn;
 
 
 /***/ }),
-/* 436 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(38),
-    isArguments = __webpack_require__(70),
+    isArguments = __webpack_require__(69),
     isArray = __webpack_require__(8),
     isIndex = __webpack_require__(22),
     isLength = __webpack_require__(48),
@@ -41800,11 +41868,11 @@ module.exports = hasPath;
 
 
 /***/ }),
-/* 437 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseProperty = __webpack_require__(109),
-    basePropertyDeep = __webpack_require__(438),
+var baseProperty = __webpack_require__(108),
+    basePropertyDeep = __webpack_require__(439),
     isKey = __webpack_require__(58),
     toKey = __webpack_require__(24);
 
@@ -41838,7 +41906,7 @@ module.exports = property;
 
 
 /***/ }),
-/* 438 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(57);
@@ -41860,11 +41928,11 @@ module.exports = basePropertyDeep;
 
 
 /***/ }),
-/* 439 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(57),
-    baseSet = __webpack_require__(440),
+    baseSet = __webpack_require__(441),
     castPath = __webpack_require__(38);
 
 /**
@@ -41896,10 +41964,10 @@ module.exports = basePickBy;
 
 
 /***/ }),
-/* 440 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(76),
+var assignValue = __webpack_require__(75),
     castPath = __webpack_require__(38),
     isIndex = __webpack_require__(22),
     isObject = __webpack_require__(11),
@@ -41949,12 +42017,12 @@ module.exports = baseSet;
 
 
 /***/ }),
-/* 441 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(101),
-    getSymbolsIn = __webpack_require__(442),
-    keysIn = __webpack_require__(83);
+var baseGetAllKeys = __webpack_require__(100),
+    getSymbolsIn = __webpack_require__(443),
+    keysIn = __webpack_require__(82);
 
 /**
  * Creates an array of own and inherited enumerable property names and
@@ -41972,13 +42040,13 @@ module.exports = getAllKeysIn;
 
 
 /***/ }),
-/* 442 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(102),
-    getPrototype = __webpack_require__(443),
-    getSymbols = __webpack_require__(103),
-    stubArray = __webpack_require__(104);
+var arrayPush = __webpack_require__(101),
+    getPrototype = __webpack_require__(444),
+    getSymbols = __webpack_require__(102),
+    stubArray = __webpack_require__(103);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeGetSymbols = Object.getOwnPropertySymbols;
@@ -42003,10 +42071,10 @@ module.exports = getSymbolsIn;
 
 
 /***/ }),
-/* 443 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(75);
+var overArg = __webpack_require__(74);
 
 /** Built-in value references. */
 var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -42015,12 +42083,12 @@ module.exports = getPrototype;
 
 
 /***/ }),
-/* 444 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var asciiSize = __webpack_require__(445),
-    hasUnicode = __webpack_require__(446),
-    unicodeSize = __webpack_require__(447);
+var asciiSize = __webpack_require__(446),
+    hasUnicode = __webpack_require__(447),
+    unicodeSize = __webpack_require__(448);
 
 /**
  * Gets the number of symbols in `string`.
@@ -42039,10 +42107,10 @@ module.exports = stringSize;
 
 
 /***/ }),
-/* 445 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseProperty = __webpack_require__(109);
+var baseProperty = __webpack_require__(108);
 
 /**
  * Gets the size of an ASCII `string`.
@@ -42057,7 +42125,7 @@ module.exports = asciiSize;
 
 
 /***/ }),
-/* 446 */
+/* 447 */
 /***/ (function(module, exports) {
 
 /** Used to compose unicode character classes. */
@@ -42089,7 +42157,7 @@ module.exports = hasUnicode;
 
 
 /***/ }),
-/* 447 */
+/* 448 */
 /***/ (function(module, exports) {
 
 /** Used to compose unicode character classes. */
@@ -42137,76 +42205,6 @@ function unicodeSize(string) {
 
 module.exports = unicodeSize;
 
-
-/***/ }),
-/* 448 */
-/***/ (function(module, exports) {
-
-function CustomEvent(event, params) {
-  params = params || {
-    bubbles: false,
-    cancelable: false,
-    detail: undefined
-  };
-  var evt = document.createEvent('CustomEvent');
-  evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-  return evt;
-}
-
-if (typeof window.CustomEvent !== "function") {
-  CustomEvent.prototype = window.Event.prototype;
-  window.CustomEvent = CustomEvent;
-}
-
-if (!String.prototype.includes) {
-  String.prototype.includes = function (search, start) {
-    'use strict';
-
-    if (typeof start !== 'number') {
-      start = 0;
-    }
-
-    if (start + search.length > this.length) {
-      return false;
-    } else {
-      return this.indexOf(search, start) !== -1; // eslint-disable-line lodash/prefer-includes
-    }
-  };
-}
-
-if (!String.prototype.endsWith) {
-  String.prototype.endsWith = function (searchString, position) {
-    var subjectString = this.toString();
-
-    if (position === undefined || position > subjectString.length) {
-      position = subjectString.length;
-    }
-
-    position -= searchString.length;
-    var lastIndex = subjectString.indexOf(searchString, position);
-    return lastIndex !== -1 && lastIndex === position;
-  };
-}
-
-if (!String.prototype.startsWith) {
-  String.prototype.startsWith = function (searchString, position) {
-    position = position || 0;
-    return this.substr(position, searchString.length) === searchString;
-  };
-}
-
-if (!String.prototype.splitOnce) {
-  String.prototype.splitOnce = function (delimiter) {
-    var components = this.split(delimiter);
-    return [components.shift(), components.join(delimiter)];
-  };
-}
-
-if (!String.prototype.trim) {
-  String.prototype.trim = function () {
-    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-  };
-}
 
 /***/ }),
 /* 449 */
@@ -42957,7 +42955,6 @@ exports.default = exports.propsModule;
 },{}]},{},[1])(1)
 });
 
-
 /***/ }),
 /* 456 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -43051,7 +43048,6 @@ exports.default = exports.styleModule;
 
 },{}]},{},[1])(1)
 });
-
 
 /***/ }),
 /* 457 */
@@ -43188,42 +43184,8 @@ exports.default = vnode;
 /* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _ = {escape:__webpack_require__(0)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/status_option.html -->\n<li>\n    <a href="#" class="' +
-__e( o.value ) +
-'" data-value="' +
-__e( o.value ) +
-'">\n        <span class="icon-' +
-__e( o.value ) +
-'"></span>\n        ' +
-__e( o.text ) +
-'\n    </a>\n</li>\n';
-return __p
-};
 
-/***/ }),
-/* 459 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(0)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/search_contact.html -->\n<li>\n    <form class="search-xmpp-contact">\n        <input type="text"\n            name="identifier"\n            class="username"\n            placeholder="' +
-__e(o.label_contact_name) +
-'"/>\n        <button type="submit">' +
-__e(o.label_search) +
-'</button>\n    </form>\n</li>\n';
-return __p
-};
-
-/***/ }),
-/* 460 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(461);
+var content = __webpack_require__(459);
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -43237,23 +43199,23 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(463)(content, options);
+var update = __webpack_require__(461)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
 if(false) {}
 
 /***/ }),
-/* 461 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(462)(true);
+exports = module.exports = __webpack_require__(460)(true);
 // Module
 exports.push([module.i, "", "",{"version":3,"sources":[],"names":[],"mappings":"","file":"converse.scss"}]);
 
 
 /***/ }),
-/* 462 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43349,7 +43311,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 463 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43418,7 +43380,7 @@ var singleton = null;
 var singletonCounter = 0;
 var stylesInsertedAtTop = [];
 
-var fixUrls = __webpack_require__(464);
+var fixUrls = __webpack_require__(462);
 
 module.exports = function(list, options) {
     if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -43753,7 +43715,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 464 */
+/* 462 */
 /***/ (function(module, exports) {
 
 
@@ -43848,7 +43810,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 465 */
+/* 463 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48497,16 +48459,19 @@ websocket_Strophe.Websocket.prototype = {
     }
 };
 
+// EXTERNAL MODULE: ./src/headless/polyfill.js
+var polyfill = __webpack_require__(331);
+
 // EXTERNAL MODULE: ./node_modules/backbone/backbone.js
 var backbone = __webpack_require__(9);
 var backbone_default = /*#__PURE__*/__webpack_require__.n(backbone);
 
 // EXTERNAL MODULE: ./src/headless/lodash.noconflict.js
-var lodash_noconflict = __webpack_require__(1);
+var lodash_noconflict = __webpack_require__(0);
 var lodash_noconflict_default = /*#__PURE__*/__webpack_require__.n(lodash_noconflict);
 
 // EXTERNAL MODULE: ./node_modules/dayjs/plugin/advancedFormat.js
-var advancedFormat = __webpack_require__(114);
+var advancedFormat = __webpack_require__(113);
 var advancedFormat_default = /*#__PURE__*/__webpack_require__.n(advancedFormat);
 
 // EXTERNAL MODULE: ./node_modules/dayjs/dayjs.min.js
@@ -48528,8 +48493,6 @@ var jed_default = /*#__PURE__*/__webpack_require__.n(jed);
 //
 
 
-
-const i18n_Strophe = core.Strophe;
 
 function detectLocale(library_check) {
   /* Determine which locale is supported by the user's system as well
@@ -48634,15 +48597,15 @@ let jed_instance;
 
     const {
       default: data
-    } = await __webpack_require__(331)("./".concat(locale, "/LC_MESSAGES/converse.po"));
-    await __webpack_require__(332)("./".concat(locale.toLowerCase().replace('_', '-')));
+    } = await __webpack_require__(332)("./".concat(locale, "/LC_MESSAGES/converse.po"));
+    await __webpack_require__(333)("./".concat(locale.toLowerCase().replace('_', '-')));
     dayjs_min_default.a.locale(getLocale(_converse.locale, l => dayjs_min_default.a.locale(l)));
     jed_instance = new jed_default.a(data);
   }
 
 });
 // EXTERNAL MODULE: ./node_modules/lodash/drop.js
-var drop = __webpack_require__(115);
+var drop = __webpack_require__(114);
 var drop_default = /*#__PURE__*/__webpack_require__.n(drop);
 
 // EXTERNAL MODULE: ./node_modules/lodash/each.js
@@ -48658,7 +48621,7 @@ var includes = __webpack_require__(21);
 var includes_default = /*#__PURE__*/__webpack_require__.n(includes);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isBoolean.js
-var isBoolean = __webpack_require__(116);
+var isBoolean = __webpack_require__(115);
 var isBoolean_default = /*#__PURE__*/__webpack_require__.n(isBoolean);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isFunction.js
@@ -48666,7 +48629,7 @@ var isFunction = __webpack_require__(41);
 var isFunction_default = /*#__PURE__*/__webpack_require__.n(isFunction);
 
 // EXTERNAL MODULE: ./node_modules/lodash/isNil.js
-var isNil = __webpack_require__(117);
+var isNil = __webpack_require__(116);
 var isNil_default = /*#__PURE__*/__webpack_require__.n(isNil);
 
 // EXTERNAL MODULE: ./node_modules/lodash/keys.js
@@ -48674,15 +48637,15 @@ var keys = __webpack_require__(20);
 var keys_default = /*#__PURE__*/__webpack_require__.n(keys);
 
 // EXTERNAL MODULE: ./node_modules/lodash/partial.js
-var partial = __webpack_require__(61);
+var partial = __webpack_require__(60);
 var partial_default = /*#__PURE__*/__webpack_require__.n(partial);
 
 // EXTERNAL MODULE: ./node_modules/lodash/pickBy.js
-var pickBy = __webpack_require__(118);
+var pickBy = __webpack_require__(117);
 var pickBy_default = /*#__PURE__*/__webpack_require__.n(pickBy);
 
 // EXTERNAL MODULE: ./node_modules/lodash/size.js
-var size = __webpack_require__(119);
+var size = __webpack_require__(118);
 var size_default = /*#__PURE__*/__webpack_require__.n(size);
 
 // EXTERNAL MODULE: ./node_modules/lodash/values.js
@@ -48963,9 +48926,6 @@ function enable (object, name, attrname) {
 /* harmony default export */ var pluggable = ({
     enable
 });
-
-// EXTERNAL MODULE: ./src/headless/polyfill.js
-var polyfill = __webpack_require__(448);
 
 // EXTERNAL MODULE: ./node_modules/sizzle/dist/sizzle.js
 var sizzle = __webpack_require__(4);
@@ -49490,7 +49450,6 @@ u.getSelectValues = function (select) {
 
 u.formatFingerprint = function (fp) {
   fp = fp.replace(/^05/, '');
-  const arr = [];
 
   for (let i = 1; i < 8; i++) {
     const idx = i * 8 + i - 1;
@@ -49720,7 +49679,7 @@ const converse_core_converse = {
   'templates': {},
   'promises': {}
 };
-converse_core_converse.VERSION_NAME = "v5.0.4";
+converse_core_converse.VERSION_NAME = "v5.0.5";
 Object.assign(converse_core_converse, Backbone.Events);
 converse_core_converse.Collection = Backbone.Collection.extend({
   clearSession(options) {
@@ -50514,7 +50473,6 @@ converse_core_converse.initialize = async function (settings, callback) {
   // Module-level functions
   // ----------------------
 
-  //this.generateResource = () => "/converse.js-".concat(Math.floor(Math.random() * 139749528).toString());
  // BAO
     this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${converse_core_converse.VERSION_NAME}-${BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS}-${Math.floor(Math.random() * 139749528).toString()}`;
 
@@ -51636,7 +51594,7 @@ converse_core_converse.api = {
     if (reject) {
       promise = new Promise((resolve, reject) => converse_core_converse.connection.sendIQ(stanza, resolve, reject, timeout));
     } else {
-      promise = new Promise((resolve, reject) => converse_core_converse.connection.sendIQ(stanza, resolve, resolve, timeout));
+      promise = new Promise(resolve => converse_core_converse.connection.sendIQ(stanza, resolve, resolve, timeout));
     }
 
     converse_core_converse.api.trigger('send', stanza);
@@ -51645,6 +51603,7 @@ converse_core_converse.api = {
   }
 
 };
+window.converse = window.converse || {};
 /**
  * ### The Public API
  *
@@ -52659,7 +52618,7 @@ converse_core.plugins.add('converse-disco', {
 });
 // CONCATENATED MODULE: ./node_modules/twemoji/dist/twemoji.esm.js
 /*! Copyright Twitter Inc. and other contributors. Licensed under MIT */
-var twemoji=function(){"use strict";var twemoji={base:"https://twemoji.maxcdn.com/v/12.1.3/",ext:".png",size:"72x72",className:"emoji",convert:{fromCodePoint:fromCodePoint,toCodePoint:toCodePoint},onerror:function onerror(){if(this.parentNode){this.parentNode.replaceChild(createText(this.alt,false),this)}},parse:parse,replace:replace,test:test},escaper={"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"},re=/(?:\ud83d\udc68\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c\udffb|\ud83d\udc68\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc]|\ud83d\udc68\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd]|\ud83d\udc68\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c\udffb|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffc]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffd]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c\udffb|\ud83e\uddd1\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb\udffc]|\ud83e\uddd1\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udffd]|\ud83e\uddd1\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\u200d\ud83e\udd1d\u200d\ud83e\uddd1|\ud83d\udc6b\ud83c[\udffb-\udfff]|\ud83d\udc6c\ud83c[\udffb-\udfff]|\ud83d\udc6d\ud83c[\udffb-\udfff]|\ud83d[\udc6b-\udc6d])|(?:\ud83d[\udc68\udc69])(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddaf-\uddb3\uddbc\uddbd])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddcd-\uddcf\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc15\u200d\ud83e\uddba|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f)|[#*0-9]\ufe0f?\u20e3|(?:[©®\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26a7\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd0f\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\uddb5\uddb6\uddb8\uddb9\uddbb\uddcd-\uddcf\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a-\udc6d\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\uded5\udeeb\udeec\udef4-\udefa\udfe0-\udfeb]|\ud83e[\udd0d\udd0e\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd3f-\udd45\udd47-\udd71\udd73-\udd76\udd7a-\udda2\udda5-\uddaa\uddae-\uddb4\uddb7\uddba\uddbc-\uddca\uddd0\uddde-\uddff\ude70-\ude73\ude78-\ude7a\ude80-\ude82\ude90-\ude95]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/g,UFE0Fg=/\uFE0F/g,U200D=String.fromCharCode(8205),rescaper=/[&<>'"]/g,shouldntBeParsed=/^(?:iframe|noframes|noscript|script|select|style|textarea)$/,fromCharCode=String.fromCharCode;return twemoji;function createText(text,clean){return document.createTextNode(clean?text.replace(UFE0Fg,""):text)}function escapeHTML(s){return s.replace(rescaper,replacer)}function defaultImageSrcGenerator(icon,options){return"".concat(options.base,options.size,"/",icon,options.ext)}function grabAllTextNodes(node,allText){var childNodes=node.childNodes,length=childNodes.length,subnode,nodeType;while(length--){subnode=childNodes[length];nodeType=subnode.nodeType;if(nodeType===3){allText.push(subnode)}else if(nodeType===1&&!("ownerSVGElement"in subnode)&&!shouldntBeParsed.test(subnode.nodeName.toLowerCase())){grabAllTextNodes(subnode,allText)}}return allText}function grabTheRightIcon(rawText){return toCodePoint(rawText.indexOf(U200D)<0?rawText.replace(UFE0Fg,""):rawText)}function parseNode(node,options){var allText=grabAllTextNodes(node,[]),length=allText.length,attrib,attrname,modified,fragment,subnode,text,match,i,index,img,rawText,iconId,src;while(length--){modified=false;fragment=document.createDocumentFragment();subnode=allText[length];text=subnode.nodeValue;i=0;while(match=re.exec(text)){index=match.index;if(index!==i){fragment.appendChild(createText(text.slice(i,index),true))}rawText=match[0];iconId=grabTheRightIcon(rawText);i=index+rawText.length;src=options.callback(iconId,options);if(iconId&&src){img=new Image;img.onerror=options.onerror;img.setAttribute("draggable","false");attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&!img.hasAttribute(attrname)){img.setAttribute(attrname,attrib[attrname])}}img.className=options.className;img.alt=rawText;img.src=src;modified=true;fragment.appendChild(img)}if(!img)fragment.appendChild(createText(rawText,false));img=null}if(modified){if(i<text.length){fragment.appendChild(createText(text.slice(i),true))}subnode.parentNode.replaceChild(fragment,subnode)}}return node}function parseString(str,options){return replace(str,function(rawText){var ret=rawText,iconId=grabTheRightIcon(rawText),src=options.callback(iconId,options),attrib,attrname;if(iconId&&src){ret="<img ".concat('class="',options.className,'" ','draggable="false" ','alt="',rawText,'"',' src="',src,'"');attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&ret.indexOf(" "+attrname+"=")===-1){ret=ret.concat(" ",attrname,'="',escapeHTML(attrib[attrname]),'"')}}ret=ret.concat("/>")}return ret})}function replacer(m){return escaper[m]}function returnNull(){return null}function toSizeSquaredAsset(value){return typeof value==="number"?value+"x"+value:value}function fromCodePoint(codepoint){var code=typeof codepoint==="string"?parseInt(codepoint,16):codepoint;if(code<65536){return fromCharCode(code)}code-=65536;return fromCharCode(55296+(code>>10),56320+(code&1023))}function parse(what,how){if(!how||typeof how==="function"){how={callback:how}}return(typeof what==="string"?parseString:parseNode)(what,{callback:how.callback||defaultImageSrcGenerator,attributes:typeof how.attributes==="function"?how.attributes:returnNull,base:typeof how.base==="string"?how.base:twemoji.base,ext:how.ext||twemoji.ext,size:how.folder||toSizeSquaredAsset(how.size||twemoji.size),className:how.className||twemoji.className,onerror:how.onerror||twemoji.onerror})}function replace(text,callback){return String(text).replace(re,callback)}function test(text){re.lastIndex=0;var result=re.test(text);re.lastIndex=0;return result}function toCodePoint(unicodeSurrogates,sep){var r=[],c=0,p=0,i=0;while(i<unicodeSurrogates.length){c=unicodeSurrogates.charCodeAt(i++);if(p){r.push((65536+(p-55296<<10)+(c-56320)).toString(16));p=0}else if(55296<=c&&c<=56319){p=c}else{r.push(c.toString(16))}}return r.join(sep||"-")}}();
+var twemoji=function(){"use strict";var twemoji={base:"https://twemoji.maxcdn.com/v/12.1.4/",ext:".png",size:"72x72",className:"emoji",convert:{fromCodePoint:fromCodePoint,toCodePoint:toCodePoint},onerror:function onerror(){if(this.parentNode){this.parentNode.replaceChild(createText(this.alt,false),this)}},parse:parse,replace:replace,test:test},escaper={"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"},re=/(?:\ud83d\udc68\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc68\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc68\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc68\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc68\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\u200d\ud83e\udd1d\u200d\ud83e\uddd1|\ud83d\udc6b\ud83c[\udffb-\udfff]|\ud83d\udc6c\ud83c[\udffb-\udfff]|\ud83d\udc6d\ud83c[\udffb-\udfff]|\ud83d[\udc6b-\udc6d])|(?:\ud83d[\udc68\udc69])(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddaf-\uddb3\uddbc\uddbd])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddcd-\uddcf\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc15\u200d\ud83e\uddba|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f)|[#*0-9]\ufe0f?\u20e3|(?:[©®\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26a7\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd0f\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\uddb5\uddb6\uddb8\uddb9\uddbb\uddcd-\uddcf\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\uded5\udeeb\udeec\udef4-\udefa\udfe0-\udfeb]|\ud83e[\udd0d\udd0e\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd3f-\udd45\udd47-\udd71\udd73-\udd76\udd7a-\udda2\udda5-\uddaa\uddae-\uddb4\uddb7\uddba\uddbc-\uddca\uddd0\uddde-\uddff\ude70-\ude73\ude78-\ude7a\ude80-\ude82\ude90-\ude95]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/g,UFE0Fg=/\uFE0F/g,U200D=String.fromCharCode(8205),rescaper=/[&<>'"]/g,shouldntBeParsed=/^(?:iframe|noframes|noscript|script|select|style|textarea)$/,fromCharCode=String.fromCharCode;return twemoji;function createText(text,clean){return document.createTextNode(clean?text.replace(UFE0Fg,""):text)}function escapeHTML(s){return s.replace(rescaper,replacer)}function defaultImageSrcGenerator(icon,options){return"".concat(options.base,options.size,"/",icon,options.ext)}function grabAllTextNodes(node,allText){var childNodes=node.childNodes,length=childNodes.length,subnode,nodeType;while(length--){subnode=childNodes[length];nodeType=subnode.nodeType;if(nodeType===3){allText.push(subnode)}else if(nodeType===1&&!("ownerSVGElement"in subnode)&&!shouldntBeParsed.test(subnode.nodeName.toLowerCase())){grabAllTextNodes(subnode,allText)}}return allText}function grabTheRightIcon(rawText){return toCodePoint(rawText.indexOf(U200D)<0?rawText.replace(UFE0Fg,""):rawText)}function parseNode(node,options){var allText=grabAllTextNodes(node,[]),length=allText.length,attrib,attrname,modified,fragment,subnode,text,match,i,index,img,rawText,iconId,src;while(length--){modified=false;fragment=document.createDocumentFragment();subnode=allText[length];text=subnode.nodeValue;i=0;while(match=re.exec(text)){index=match.index;if(index!==i){fragment.appendChild(createText(text.slice(i,index),true))}rawText=match[0];iconId=grabTheRightIcon(rawText);i=index+rawText.length;src=options.callback(iconId,options);if(iconId&&src){img=new Image;img.onerror=options.onerror;img.setAttribute("draggable","false");attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&!img.hasAttribute(attrname)){img.setAttribute(attrname,attrib[attrname])}}img.className=options.className;img.alt=rawText;img.src=src;modified=true;fragment.appendChild(img)}if(!img)fragment.appendChild(createText(rawText,false));img=null}if(modified){if(i<text.length){fragment.appendChild(createText(text.slice(i),true))}subnode.parentNode.replaceChild(fragment,subnode)}}return node}function parseString(str,options){return replace(str,function(rawText){var ret=rawText,iconId=grabTheRightIcon(rawText),src=options.callback(iconId,options),attrib,attrname;if(iconId&&src){ret="<img ".concat('class="',options.className,'" ','draggable="false" ','alt="',rawText,'"',' src="',src,'"');attrib=options.attributes(rawText,iconId);for(attrname in attrib){if(attrib.hasOwnProperty(attrname)&&attrname.indexOf("on")!==0&&ret.indexOf(" "+attrname+"=")===-1){ret=ret.concat(" ",attrname,'="',escapeHTML(attrib[attrname]),'"')}}ret=ret.concat("/>")}return ret})}function replacer(m){return escaper[m]}function returnNull(){return null}function toSizeSquaredAsset(value){return typeof value==="number"?value+"x"+value:value}function fromCodePoint(codepoint){var code=typeof codepoint==="string"?parseInt(codepoint,16):codepoint;if(code<65536){return fromCharCode(code)}code-=65536;return fromCharCode(55296+(code>>10),56320+(code&1023))}function parse(what,how){if(!how||typeof how==="function"){how={callback:how}}return(typeof what==="string"?parseString:parseNode)(what,{callback:how.callback||defaultImageSrcGenerator,attributes:typeof how.attributes==="function"?how.attributes:returnNull,base:typeof how.base==="string"?how.base:twemoji.base,ext:how.ext||twemoji.ext,size:how.folder||toSizeSquaredAsset(how.size||twemoji.size),className:how.className||twemoji.className,onerror:how.onerror||twemoji.onerror})}function replace(text,callback){return String(text).replace(re,callback)}function test(text){re.lastIndex=0;var result=re.test(text);re.lastIndex=0;return result}function toCodePoint(unicodeSurrogates,sep){var r=[],c=0,p=0,i=0;while(i<unicodeSurrogates.length){c=unicodeSurrogates.charCodeAt(i++);if(p){r.push((65536+(p-55296<<10)+(c-56320)).toString(16));p=0}else if(55296<=c&&c<=56319){p=c}else{r.push(c.toString(16))}}return r.join(sep||"-")}}();
 /* harmony default export */ var twemoji_esm = (twemoji);
 // CONCATENATED MODULE: ./src/headless/converse-emoji.js
 // Converse.js
@@ -52675,8 +52634,7 @@ var twemoji=function(){"use strict";var twemoji={base:"https://twemoji.maxcdn.co
 
 
 const {
-  Backbone: converse_emoji_Backbone,
-  Strophe: converse_emoji_Strophe
+  Backbone: converse_emoji_Backbone
 } = converse_core.env;
 const converse_emoji_u = converse_core.env.utils;
 const ASCII_LIST = {
@@ -52918,7 +52876,7 @@ converse_core.plugins.add('converse-emoji', {
        */
       getEmojiRenderer() {
         const how = {
-          'attributes': (icon, variant) => {
+          'attributes': icon => {
             const codepoint = twemoji_esm.convert.toCodePoint(icon);
             return {
               'title': "".concat(converse_emoji_u.getEmojisByAtrribute('cp')[codepoint]['sn'], " ").concat(icon)
@@ -52992,20 +52950,23 @@ converse_core.plugins.add('converse-emoji', {
 
       /**
        * Determines whether the passed in string is just a single emoji shortname;
-       * @method u.isSingleEmoji
+       * @method u.isOnlyEmojis
        * @param {string} shortname - A string which migh be just an emoji shortname
        * @returns {boolean}
        */
-      isSingleEmoji(shortname) {
-        shortname = shortname.trim();
+      isOnlyEmojis(text) {
+        const words = text.trim().split(/\s+/);
 
-        if (!shortname || shortname.length > 3 && !shortname.startsWith(':')) { // BAO
-          return;
+        if (words.length === 0 || words.length > 3) {
+          return false;
         }
 
-        const result = twemoji_esm.parse(converse_emoji_u.shortnameToUnicode(shortname));
-        const match = result.match(/<img class="emoji" draggable="false" alt=".*?" src=".*?\.png"\/>/);
-        return match && match.length === 1;
+        const rejects = words.filter(text => {
+          const result = twemoji_esm.parse(converse_emoji_u.shortnameToUnicode(text));
+          const match = result.match(/<img class="emoji" draggable="false" alt=".*?" src=".*?\.png"\/>/);
+          return !match || match.length !== 1;
+        });
+        return rejects.length === 0;
       },
 
       /**
@@ -53036,7 +52997,7 @@ converse_core.plugins.add('converse-emoji', {
 
     const {
       default: json
-    } = await __webpack_require__.e(/* import() | emojis */ 129).then(__webpack_require__.t.bind(null, 498, 3));
+    } = await __webpack_require__.e(/* import() | emojis */ 129).then(__webpack_require__.t.bind(null, 496, 3));
     _converse.emojis.json = json;
     _converse.emojis.categories = Object.keys(_converse.emojis.json);
     _converse.emojis_map = _converse.emojis.categories.reduce((result, cat) => Object.assign(result, _converse.emojis.json[cat]), {});
@@ -53083,8 +53044,6 @@ converse_core.plugins.add('converse-emoji', {
 // Copyright (c) 2013-2019, Jan-Carel Brand <jc@opkode.com>
 // Licensed under the Mozilla Public License (MPLv2)
 //
-
-/*global Jed */
 
 
 const {
@@ -53198,7 +53157,7 @@ utils_core.parseMemberListIQ = function parseMemberListIQ(iq) {
   });
 };
 // EXTERNAL MODULE: ./src/headless/templates/field.html
-var templates_field = __webpack_require__(60);
+var templates_field = __webpack_require__(119);
 var field_default = /*#__PURE__*/__webpack_require__.n(templates_field);
 
 // CONCATENATED MODULE: ./src/headless/utils/form.js
@@ -53506,7 +53465,7 @@ converse_core.plugins.add('converse-muc', {
         }
       },
 
-      onOccupantRemoved(occupant) {
+      onOccupantRemoved() {
         this.stopListening(this.occupant);
         delete this.occupant;
 
@@ -53750,8 +53709,6 @@ converse_core.plugins.add('converse-muc', {
       },
 
       initFeatures() {
-        const storage = _converse.config.get('storage');
-
         const id = "converse.muc-features-".concat(_converse.bare_jid, "-").concat(this.get('jid'));
         this.features = new converse_muc_Backbone.Model(converse_muc_.assign({
           id
@@ -54066,7 +54023,7 @@ converse_core.plugins.add('converse-muc', {
           'origin_id': origin_id,
           'from': "".concat(this.get('jid'), "/").concat(this.get('nick')),
           'fullname': this.get('nick'),
-          'is_single_emoji': text ? utils_form.isSingleEmoji(text) : false,
+          'is_single_emoji': text ? utils_form.isOnlyEmojis(text) : false,
           'is_spoiler': is_spoiler,
           'message': text ? utils_form.httpToGeoUri(utils_form.shortnameToUnicode(text), _converse) : undefined,
           'nick': this.get('nick'),
@@ -54583,7 +54540,6 @@ converse_core.plugins.add('converse-muc', {
       async updateMemberLists(members) {
         const all_affiliations = ['member', 'admin', 'owner'];
         const aff_lists = await Promise.all(all_affiliations.map(a => this.getAffiliationList(a)));
-        const known_affiliations = all_affiliations.filter(a => !utils_form.isErrorObject(aff_lists[all_affiliations.indexOf(a)]));
         const old_members = aff_lists.reduce((acc, val) => utils_form.isErrorObject(val) ? acc : [...val, ...acc], []);
         await this.setAffiliations(utils_form.computeAffiliationsDelta(true, false, members, old_members));
 
@@ -54820,7 +54776,7 @@ converse_core.plugins.add('converse-muc', {
        * @param { object } attrs - The message attributes
        */
       subjectChangeHandled(attrs, forwarded) {                                  // BAO
-        if (attrs.subject && !attrs.thread && !attrs.message&& !forwarded) {    // BAO
+        if (attrs.subject && !attrs.thread && !attrs.message && !forwarded) {    // BAO
           // https://xmpp.org/extensions/xep-0045.html#subject-mod
           // -----------------------------------------------------
           // The subject is changed by sending a message of type "groupchat" to the <room@service>,
@@ -55030,9 +54986,9 @@ converse_core.plugins.add('converse-muc', {
         const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
         this.setEditable(attrs, attrs.time);
 
+        // BAO
         const forwarded = converse_muc_sizzle("forwarded[xmlns=\"".concat(converse_muc_Strophe.NS.FORWARD, "\"]"), stanza).pop();
 
-        // BAO
         if (attrs.nick && !this.subjectChangeHandled(attrs, forwarded) && !this.ignorableCSN(attrs) && (attrs['chat_state'] || !utils_form.isEmptyMessage(attrs))) {
           const msg = this.correctMessage(attrs) || this.messages.create(attrs);
           this.incrementUnreadMsgCounter(msg);
@@ -55867,10 +55823,10 @@ converse_core.plugins.add('converse-muc', {
           }
 
           if (converse_muc_.isString(jids)) {
-            return getChatRoom(jids, attrs);
+            return getChatRoom(jids, attrs, create);
           }
 
-          return jids.map(jid => getChatRoom(jid, attrs));
+          return jids.map(jid => getChatRoom(jid, attrs, create));
         }
 
       }
@@ -57157,8 +57113,7 @@ bosh_Strophe.Bosh.prototype = {
 
 const {
   Backbone: converse_bosh_Backbone,
-  Strophe: converse_bosh_Strophe,
-  _: converse_bosh_
+  Strophe: converse_bosh_Strophe
 } = converse_core.env;
 const BOSH_SESSION_ID = 'converse.bosh-session';
 converse_core.plugins.add('converse-bosh', {
@@ -57416,8 +57371,7 @@ const {
   Strophe: converse_chatboxes_Strophe,
   dayjs,
   sizzle: converse_chatboxes_sizzle,
-  utils: converse_chatboxes_utils,
-  _: converse_chatboxes_
+  utils: converse_chatboxes_utils
 } = converse_core.env;
 const converse_chatboxes_u = converse_core.env.utils;
 converse_chatboxes_Strophe.addNamespace('MESSAGE_CORRECT', 'urn:xmpp:message-correct:0');
@@ -57844,7 +57798,7 @@ converse_core.plugins.add('converse-chatboxes', {
         this.announceReconnection();
       },
 
-      validate(attrs, options) {
+      validate(attrs) {
         if (!attrs.jid) {
           return 'Ignored ChatBox without JID';
         }
@@ -57904,6 +57858,7 @@ converse_core.plugins.add('converse-chatboxes', {
       },
 
       getUpdatedMessageAttributes(message, stanza) {
+        // eslint-disable-line no-unused-vars
         // Overridden in converse-muc and converse-mam
         return {};
       },
@@ -58169,7 +58124,7 @@ converse_core.plugins.add('converse-chatboxes', {
         _converse.api.send(receipt_stanza);
       },
 
-      handleReceipt(stanza, from_jid, is_carbon, is_me, is_mam) {
+      handleReceipt(stanza, from_jid, is_carbon, is_me) {
         const requests_receipt = converse_chatboxes_sizzle("request[xmlns=\"".concat(converse_chatboxes_Strophe.NS.RECEIPTS, "\"]"), stanza).pop() !== undefined;
 
         if (requests_receipt && !is_carbon && !is_me) {
@@ -58311,7 +58266,7 @@ converse_core.plugins.add('converse-chatboxes', {
           'origin_id': origin_id,
           'fullname': _converse.xmppstatus.get('fullname'),
           'from': _converse.bare_jid,
-          'is_single_emoji': text ? converse_chatboxes_u.isSingleEmoji(text) : false,
+          'is_single_emoji': text ? converse_chatboxes_u.isOnlyEmojis(text) : false,
           'sender': 'me',
           'time': new Date().toISOString(),
           'message': text ? converse_chatboxes_u.httpToGeoUri(converse_chatboxes_u.shortnameToUnicode(text), _converse) : undefined,
@@ -58343,7 +58298,7 @@ converse_core.plugins.add('converse-chatboxes', {
         }
 
         if (_converse.allow_message_corrections === 'all') {
-          attrs.editable = true;
+          attrs.editable = !(attrs.file || 'oob_url' in attrs);
         } else if (_converse.allow_message_corrections === 'last' && send_time > this.get('time_sent')) {
           this.set({
             'time_sent': send_time
@@ -58358,7 +58313,7 @@ converse_core.plugins.add('converse-chatboxes', {
             });
           }
 
-          attrs.editable = true;
+          attrs.editable = !(attrs.file || 'oob_url' in attrs);
         }
       },
 
@@ -58386,7 +58341,7 @@ converse_core.plugins.add('converse-chatboxes', {
             'message': attrs.message,
             'older_versions': older_versions,
             'references': attrs.references,
-            'is_single_emoji': attrs.message ? converse_chatboxes_u.isSingleEmoji(attrs.message) : false,
+            'is_single_emoji': attrs.message ? converse_chatboxes_u.isOnlyEmojis(attrs.message) : false,
             'origin_id': _converse.connection.getUniqueId(),
             'received': undefined
           });
@@ -58467,11 +58422,13 @@ converse_core.plugins.add('converse-chatboxes', {
               'ephemeral': true
             });
           } else {
-            const message = this.messages.create(Object.assign(this.getOutgoingMessageAttributes(), {
+            const attrs = Object.assign(this.getOutgoingMessageAttributes(), {
               'file': true,
               'progress': 0,
               'slot_request_url': slot_request_url
-            }), {
+            });
+            this.setEditable(attrs, new Date().toISOString());
+            const message = this.messages.create(attrs, {
               'silent': true
             });
             message.file = file;
@@ -58578,7 +58535,7 @@ converse_core.plugins.add('converse-chatboxes', {
           'chat_state': chat_state,
           'is_archived': this.isArchived(original_stanza),
           'is_delayed': !!delay,
-          'is_single_emoji': text ? await converse_chatboxes_u.isSingleEmoji(text) : false,
+          'is_single_emoji': text ? await converse_chatboxes_u.isOnlyEmojis(text) : false,
           'is_spoiler': !!spoiler,
           'message': text,
           'msgid': msgid,
@@ -58610,6 +58567,7 @@ converse_core.plugins.add('converse-chatboxes', {
                 const subject = this.get('subject');
                 if (!attrs.thread && !attrs.subject && subject) attrs.thread = subject.text;    // use trending topic/subject for unthreaded messages
             }
+
           } else {
             attrs.sender = 'them';
             attrs.fullname = this.get('fullname');
@@ -58747,6 +58705,8 @@ converse_core.plugins.add('converse-chatboxes', {
       },
 
       onConnected(reconnecting) {
+        this.registerMessageHandler();
+
         if (reconnecting) {
           return;
         }
@@ -58754,7 +58714,6 @@ converse_core.plugins.add('converse-chatboxes', {
         const storage = _converse.config.get('storage');
 
         this.browserStorage = new backbone_browserStorage_default.a[storage]("converse.chatboxes-".concat(_converse.bare_jid));
-        this.registerMessageHandler();
         this.fetch({
           'add': true,
           'success': c => this.onChatBoxesFetched(c)
@@ -58898,7 +58857,7 @@ converse_core.plugins.add('converse-chatboxes', {
             chatbox.updateMessage(message, original_stanza);
           }
 
-          if (!message && !chatbox.handleReceipt(stanza, from_jid, is_carbon, is_me, is_mam) && !chatbox.handleChatMarker(stanza, from_jid, is_carbon, is_roster_contact, is_mam)) {
+          if (!message && !chatbox.handleReceipt(stanza, from_jid, is_carbon, is_me) && !chatbox.handleChatMarker(stanza, from_jid, is_carbon, is_roster_contact, is_mam)) {
             const attrs = await chatbox.getMessageAttributesFromStanza(stanza, original_stanza);
             chatbox.setEditable(attrs, attrs.time, stanza);
 
@@ -59311,7 +59270,6 @@ converse_core.plugins.add('converse-rsm', {
 const {
   Strophe: converse_mam_Strophe,
   $iq: converse_mam_$iq,
-  $build: converse_mam_$build,
   dayjs: converse_mam_dayjs
 } = converse_core.env;
 const converse_mam_u = converse_core.env.utils; // XEP-0313 Message Archive Management
@@ -59958,8 +59916,7 @@ converse_core.plugins.add('converse-mam', {
 
 const {
   Strophe: converse_ping_Strophe,
-  $iq: converse_ping_$iq,
-  _: converse_ping_
+  $iq: converse_ping_$iq
 } = converse_core.env;
 const converse_ping_u = converse_core.env.utils;
 converse_ping_Strophe.addNamespace('PING', "urn:xmpp:ping");
@@ -60102,13 +60059,7 @@ converse_core.plugins.add('converse-ping', {
 
 const {
   Strophe: converse_pubsub_Strophe,
-  Backbone: converse_pubsub_Backbone,
-  $iq: converse_pubsub_$iq,
-  $build: converse_pubsub_$build,
-  $msg: converse_pubsub_$msg,
-  $pres: converse_pubsub_$pres,
-  dayjs: converse_pubsub_dayjs,
-  _: converse_pubsub_
+  $iq: converse_pubsub_$iq
 } = converse_core.env;
 converse_pubsub_Strophe.addNamespace('PUBSUB_ERROR', converse_pubsub_Strophe.NS.PUBSUB + "#errors");
 converse_core.plugins.add('converse-pubsub', {
@@ -60120,10 +60071,7 @@ converse_core.plugins.add('converse-pubsub', {
      */
     const {
       _converse
-    } = this,
-          {
-      __
-    } = _converse;
+    } = this;
     /************************ BEGIN API ************************/
     // We extend the default converse.js API to add methods specific to MUC groupchats.
 
@@ -61444,9 +61392,7 @@ converse_core.plugins.add('converse-roster', {
  */
 
 const {
-  Strophe: converse_smacks_Strophe,
-  $build: converse_smacks_$build,
-  _: converse_smacks_
+  Strophe: converse_smacks_Strophe
 } = converse_core.env;
 const converse_smacks_u = converse_core.env.utils;
 converse_smacks_Strophe.addNamespace('SM', 'urn:xmpp:sm:3');
@@ -61609,7 +61555,7 @@ converse_core.plugins.add('converse-smacks', {
       stanzas.forEach(s => _converse.api.send(s));
     }
 
-    function onResumedStanza(el, resolve) {
+    function onResumedStanza(el) {
       saveSessionData(el);
       handleAck(el);
       resendUnackedStanzas();
@@ -61624,9 +61570,9 @@ converse_core.plugins.add('converse-smacks', {
     async function sendResumeStanza() {
       const promise = converse_smacks_u.getResolveablePromise();
 
-      _converse.connection._addSysHandler(converse_smacks_.flow(onResumedStanza, promise.resolve), converse_smacks_Strophe.NS.SM, 'resumed');
+      _converse.connection._addSysHandler(el => promise.resolve(onResumedStanza(el)), converse_smacks_Strophe.NS.SM, 'resumed');
 
-      _converse.connection._addSysHandler(converse_smacks_.flow(onFailedStanza, promise.resolve), converse_smacks_Strophe.NS.SM, 'failed');
+      _converse.connection._addSysHandler(el => promise.resolve(onFailedStanza(el)), converse_smacks_Strophe.NS.SM, 'failed');
 
       const previous_id = _converse.session.get('smacks_stream_id');
 
@@ -61649,9 +61595,9 @@ converse_core.plugins.add('converse-smacks', {
       if (await isStreamManagementSupported()) {
         const promise = converse_smacks_u.getResolveablePromise();
 
-        _converse.connection._addSysHandler(converse_smacks_.flow(saveSessionData, promise.resolve), converse_smacks_Strophe.NS.SM, 'enabled');
+        _converse.connection._addSysHandler(el => promise.resolve(saveSessionData(el)), converse_smacks_Strophe.NS.SM, 'enabled');
 
-        _converse.connection._addSysHandler(converse_smacks_.flow(onFailedStanza, promise.resolve), converse_smacks_Strophe.NS.SM, 'failed');
+        _converse.connection._addSysHandler(el => promise.resolve(onFailedStanza(el)), converse_smacks_Strophe.NS.SM, 'failed');
 
         const resume = _converse.api.connection.isType('websocket') || _converse.isTestEnv();
 
@@ -61752,9 +61698,7 @@ const {
   Strophe: converse_vcard_Strophe,
   _: converse_vcard_,
   $iq: converse_vcard_$iq,
-  $build: converse_vcard_$build,
-  dayjs: converse_vcard_dayjs,
-  sizzle: converse_vcard_sizzle
+  dayjs: converse_vcard_dayjs
 } = converse_core.env;
 const converse_vcard_u = converse_core.env.utils;
 converse_core.plugins.add('converse-vcard', {
@@ -61846,7 +61790,6 @@ converse_core.plugins.add('converse-vcard', {
 
       getDisplayName() {
         // BAO
-        //return this.get('nickname') || this.get('fullname') || this.get('jid');
         return this.get('fullname') || this.get('nickname') || this.get('jid');
       }
 
@@ -62042,7 +61985,6 @@ converse_core.plugins.add('converse-vcard', {
             const jid = model.get('jid');
 
             if (!jid) {
-              //throw new Error("No JID to get vcard for!");
               return Promise.resolve({});   // BAO
             }
 
@@ -62346,8 +62288,6 @@ converse_core.plugins.add("converse-autocomplete", {
       }
 
       insertValue(suggestion) {
-        let value;
-
         if (this.match_current_word) {
           converse_autocomplete_u.replaceCurrentWord(this.input, suggestion.value);
         } else {
@@ -62883,7 +62823,7 @@ converse_core.plugins.add('converse-bookmark-views', {
         ev.preventDefault();
         const jid = ev.target.getAttribute('data-room-jid');
 
-        const chatroom = _converse.api.rooms.open(jid, {
+        _converse.api.rooms.open(jid, {
           'bring_to_foreground': true
         });
 
@@ -63115,7 +63055,7 @@ converse_core.plugins.add('converse-bookmark-views', {
         }
       },
 
-      showOrHide(item) {
+      showOrHide() {
         if (_converse.hide_open_bookmarks) {
           const bookmarks = this.model.filter(bookmark => !_converse.chatboxes.get(bookmark.get('jid')));
 
@@ -63189,7 +63129,7 @@ var background_logo = __webpack_require__(126);
 var background_logo_default = /*#__PURE__*/__webpack_require__.n(background_logo);
 
 // EXTERNAL MODULE: ./src/templates/chatboxes.html
-var chatboxes = __webpack_require__(62);
+var chatboxes = __webpack_require__(61);
 var chatboxes_default = /*#__PURE__*/__webpack_require__.n(chatboxes);
 
 // CONCATENATED MODULE: ./src/converse-chatboxviews.js
@@ -63233,6 +63173,7 @@ const AvatarMixin = {
       const image_type = this.model.vcard.get('image_type');
       const image = this.model.vcard.get('image');
 
+      // BAO
       const display_name = this.model.vcard.attributes.fullname || this.model.vcard.get('jid'); // BAO
 
       if (image && image_type)  // BAO
@@ -63274,10 +63215,7 @@ converse_core.plugins.add('converse-chatboxviews', {
      */
     const {
       _converse
-    } = this,
-          {
-      __
-    } = _converse;
+    } = this;
 
     _converse.api.promises.add(['chatBoxViewsInitialized']); // Configuration values for this plugin
     // ====================================
@@ -63443,7 +63381,7 @@ var form_username = __webpack_require__(44);
 var form_username_default = /*#__PURE__*/__webpack_require__.n(form_username);
 
 // EXTERNAL MODULE: ./src/templates/image.html
-var templates_image = __webpack_require__(63);
+var templates_image = __webpack_require__(62);
 var image_default = /*#__PURE__*/__webpack_require__.n(templates_image);
 
 // EXTERNAL MODULE: ./src/templates/select_option.html
@@ -63462,7 +63400,6 @@ var video_default = /*#__PURE__*/__webpack_require__.n(video);
 //
 // Copyright (c) 2013-2019, Jan-Carel Brand <jc@opkode.com>
 // Licensed under the Mozilla Public License (MPLv2)
-
 
 
 
@@ -63642,7 +63579,7 @@ utils_core.renderImageURLs = function (_converse, el) {
   }
 
   const list = el.textContent.match(URL_REGEX) || [];
-  return Promise.all(list.map(url => new Promise((resolve, reject) => {
+  return Promise.all(list.map(url => new Promise(resolve => {
     if (utils_core.isImageURL(url)) {
       return isImage(url).then(img => {
         const i = new Image();
@@ -63771,11 +63708,14 @@ utils_core.ancestor = function (el, selector) {
 
   return parent;
 };
+/**
+ * Return the element's siblings until one matches the selector.
+ * @private
+ * @method u#nextUntil
+ */
+
 
 utils_core.nextUntil = function (el, selector) {
-  let include_self = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-  /* Return the element's siblings until one matches the selector. */
   const matches = [];
   let sibling_el = el.nextElementSibling;
 
@@ -64163,7 +64103,6 @@ var xss_default = /*#__PURE__*/__webpack_require__.n(xss);
 
 
 const {
-  Backbone: converse_message_view_Backbone,
   dayjs: converse_message_view_dayjs
 } = converse_core.env;
 const converse_message_view_u = converse_core.env.utils;
@@ -64546,10 +64485,10 @@ converse_core.plugins.add('converse-message-view', {
 
 });
 // EXTERNAL MODULE: ./node_modules/backbone.vdomview/backbone.vdomview.js
-var backbone_vdomview = __webpack_require__(113);
+var backbone_vdomview = __webpack_require__(112);
 
 // EXTERNAL MODULE: ./node_modules/bootstrap.native/dist/bootstrap-native.js
-var bootstrap_native = __webpack_require__(12);
+var bootstrap_native = __webpack_require__(13);
 var bootstrap_native_default = /*#__PURE__*/__webpack_require__.n(bootstrap_native);
 
 // EXTERNAL MODULE: ./src/templates/alert.html
@@ -64788,10 +64727,8 @@ var user_details_modal_default = /*#__PURE__*/__webpack_require__.n(user_details
 
 
 const {
-  $msg: converse_chatview_$msg,
   Backbone: converse_chatview_Backbone,
   Strophe: converse_chatview_Strophe,
-  _: converse_chatview_,
   sizzle: converse_chatview_sizzle,
   dayjs: converse_chatview_dayjs
 } = converse_core.env;
@@ -64848,7 +64785,7 @@ converse_core.plugins.add('converse-chatview', {
     _converse.ChatBoxHeading = _converse.ViewWithAvatar.extend({
       initialize() {
         this.listenTo(this.model, 'change:status', this.onStatusMessageChanged);
-        this.debouncedRender = converse_chatview_.debounce(this.render, 50);
+        this.debouncedRender = Object(lodash["debounce"])(this.render, 50);
 
         if (this.model.vcard) {
           this.listenTo(this.model.vcard, 'change', this.debouncedRender);
@@ -64863,9 +64800,8 @@ converse_core.plugins.add('converse-chatview', {
       },
 
       render() {
-        const vcard = converse_chatview_.get(this.model, 'vcard'),
+        const vcard = Object(lodash["get"])(this.model, 'vcard'),
               vcard_json = vcard ? vcard.toJSON() : {};
-
         this.el.innerHTML = chatbox_head_default()(Object.assign(vcard_json, this.model.toJSON(), {
           '_converse': _converse,
           'info_close': __('Close this chat box'),
@@ -64917,11 +64853,9 @@ converse_core.plugins.add('converse-chatview', {
       },
 
       toHTML() {
-        const vcard = converse_chatview_.get(this.model, 'vcard'),
+        const vcard = Object(lodash["get"])(this.model, 'vcard'),
               vcard_json = vcard ? vcard.toJSON() : {};
-
         return user_details_modal_default()(Object.assign(this.model.toJSON(), vcard_json, {
-          '_': converse_chatview_,
           '__': __,
           'view': this,
           '_converse': _converse,
@@ -64975,9 +64909,7 @@ converse_core.plugins.add('converse-chatview', {
 
         if (result === true) {
           this.modal.hide();
-          this.model.contact.removeFromRoster(iq => {
-            this.model.contact.destroy();
-          }, err => {
+          this.model.contact.removeFromRoster(() => this.model.contact.destroy(), err => {
             _converse.log(err, converse_chatview_Strophe.LogLevel.ERROR);
 
             _converse.api.alert.show(converse_chatview_Strophe.LogLevel.ERROR, __('Error'), [__('Sorry, there was an error while trying to remove %1$s as a contact.', this.model.contact.getDisplayName())]);
@@ -65049,8 +64981,8 @@ converse_core.plugins.add('converse-chatview', {
       },
 
       initDebounced() {
-        this.scrollDown = converse_chatview_.debounce(this._scrollDown, 100);
-        this.markScrolled = converse_chatview_.debounce(this._markScrolled, 100);
+        this.scrollDown = Object(lodash["debounce"])(this._scrollDown, 100);
+        this.markScrolled = Object(lodash["debounce"])(this._markScrolled, 100);
       },
 
       render() {
@@ -65068,8 +65000,7 @@ converse_core.plugins.add('converse-chatview', {
           return this;
         }
 
-        const options = converse_chatview_.assign(this.model.toJSON(), this.getToolbarOptions());
-
+        const options = Object.assign(this.model.toJSON(), this.getToolbarOptions());
         this.el.querySelector('.chat-toolbar').innerHTML = toolbar_default()(options);
         this.addSpoilerButton(options);
         this.addFileUploadButton();
@@ -65091,11 +65022,11 @@ converse_core.plugins.add('converse-chatview', {
         const form_container = this.el.querySelector('.bottom-panel');
         form_container.innerHTML = chatbox_message_form_default()(Object.assign(this.model.toJSON(), {
           'message_limit': _converse.message_limit,
-          'hint_value': converse_chatview_.get(this.el.querySelector('.spoiler-hint'), 'value'),
+          'hint_value': Object(lodash["get"])(this.el.querySelector('.spoiler-hint'), 'value'),
           'label_message': this.model.get('composing_spoiler') ? __('Hidden message') : __('Type message, drag and drop or paste picture here'), // BAO
           'label_send': __('Send'),
           'label_spoiler_hint': __('Optional hint'),
-          'message_value': converse_chatview_.get(this.el.querySelector('.chat-textarea'), 'value'),
+          'message_value': Object(lodash["get"])(this.el.querySelector('.chat-textarea'), 'value'),
           'show_send_button': _converse.show_send_button,
           'show_toolbar': _converse.show_toolbar,
           'unread_msgs': __('You have unread messages')
@@ -65131,7 +65062,7 @@ converse_core.plugins.add('converse-chatview', {
         this.user_details_modal.show(ev);
       },
 
-      toggleFileUpload(ev) {
+      toggleFileUpload() {
         this.el.querySelector('input.fileupload').click();
       },
 
@@ -65347,8 +65278,8 @@ converse_core.plugins.add('converse-chatview', {
          */
 
 
-        const msg_dates = converse_chatview_.invokeMap(converse_chatview_sizzle('.message:not(.chat-state-notification)', this.content), Element.prototype.getAttribute, 'data-isodate');
-
+        const sel = '.message:not(.chat-state-notification)';
+        const msg_dates = converse_chatview_sizzle(sel, this.content).map(e => e.getAttribute('data-isodate'));
         const cutoff_iso = cutoff.toISOString();
         msg_dates.push(cutoff_iso);
         msg_dates.sort();
@@ -65442,7 +65373,7 @@ converse_core.plugins.add('converse-chatview', {
                 return;
               }
 
-              previous_msg_el.insertAdjacentElement('afterend', view.el); // BAO
+              previous_msg_el.insertAdjacentElement('afterend', view.el);
               this.markFollowups(view.el);
           }
         }
@@ -65709,14 +65640,13 @@ converse_core.plugins.add('converse-chatview', {
 
             if (!textarea.value || converse_chatview_u.hasClass('correcting', textarea)) {
               if (getSetting("useUpDownCursorKeys", false)) return this.editEarlierMessage(); // BAO
-
             }
           } else if (ev.keyCode === _converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length && converse_chatview_u.hasClass('correcting', this.el.querySelector('.chat-textarea'))) {
             if (getSetting("useUpDownCursorKeys", false)) return this.editLaterMessage(); // BAO
           }
         }
 
-        if (converse_chatview_.includes([_converse.keycodes.SHIFT, _converse.keycodes.META, _converse.keycodes.META_RIGHT, _converse.keycodes.ESCAPE, _converse.keycodes.ALT], ev.keyCode)) {
+        if ([_converse.keycodes.SHIFT, _converse.keycodes.META, _converse.keycodes.META_RIGHT, _converse.keycodes.ESCAPE, _converse.keycodes.ALT].includes(ev.keyCode)) {
           return;
         }
 
@@ -65739,8 +65669,8 @@ converse_core.plugins.add('converse-chatview', {
 
       onEscapePressed(ev) {
         ev.preventDefault();
-        const idx = this.model.messages.findLastIndex('correcting'),
-              message = idx >= 0 ? this.model.messages.at(idx) : null;
+        const idx = this.model.messages.findLastIndex('correcting');
+        const message = idx >= 0 ? this.model.messages.at(idx) : null;
 
         if (message) {
           message.save('correcting', false);
@@ -65945,7 +65875,7 @@ converse_core.plugins.add('converse-chatview', {
             idx += 1;
             const candidate = this.model.messages.at(idx);
 
-            if (candidate.get('sender') === 'me' && candidate.get('message')) {
+            if (candidate.get('editable')) {
               message = candidate;
               break;
             }
@@ -65978,7 +65908,7 @@ converse_core.plugins.add('converse-chatview', {
           }
         }
 
-        message = message || converse_chatview_.findLast(this.getOwnMessages(), msg => msg.get('message'));
+        message = message || this.getOwnMessages().reverse().find(m => m.get('editable'));
 
         if (message) {
           this.insertIntoTextArea(message.get('message'), true, true);
@@ -66375,11 +66305,11 @@ converse_core.plugins.add('converse-chatview', {
             return null;
           }
 
-          if (converse_chatview_.isString(jids)) {
+          if (Object(lodash["isString"])(jids)) {
             return _converse.chatboxviews.get(jids);
           }
 
-          return jids.map(jid => _converse.chatboxviews.get(jids));
+          return jids.map(jid => _converse.chatboxviews.get(jid));
         }
 
       }
@@ -66427,7 +66357,6 @@ var login_panel_default = /*#__PURE__*/__webpack_require__.n(login_panel);
 
 
 
-const CHATBOX_TYPE = 'chatbox';
 const {
   Strophe: converse_controlbox_Strophe,
   Backbone: converse_controlbox_Backbone,
@@ -66522,7 +66451,7 @@ converse_core.plugins.add('converse-controlbox', {
 
     },
     ChatBox: {
-      validate(attrs, options) {
+      validate(attrs) {
         const {
           _converse
         } = this.__super__;
@@ -66702,12 +66631,13 @@ converse_core.plugins.add('converse-controlbox', {
         return this;
       },
 
+      /**
+       * Renders the "Contacts" panel of the controlbox.
+       * This will only be called after the user has already been logged in.
+       * @private
+       * @method _converse.ControlBoxView.renderControlBoxPane
+       */
       renderControlBoxPane() {
-        /* Renders the "Contacts" panel of the controlbox.
-         *
-         * This will only be called after the user has already been
-         * logged in.
-         */
         if (this.loginpanel) {
           this.loginpanel.remove();
           delete this.loginpanel;
@@ -66809,7 +66739,7 @@ converse_core.plugins.add('converse-controlbox', {
         'change input': 'validate'
       },
 
-      initialize(cfg) {
+      initialize() {
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(_converse.connfeedback, 'change', this.render);
         this.render();
@@ -66845,7 +66775,7 @@ converse_core.plugins.add('converse-controlbox', {
 
       initPopovers() {
         Array.from(this.el.querySelectorAll('[data-title]')).forEach(el => {
-          const popover = new bootstrap_native_default.a.Popover(el, {
+          new bootstrap_native_default.a.Popover(el, {
             'trigger': _converse.view_mode === 'mobile' && 'click' || 'hover',
             'dismissible': _converse.view_mode === 'mobile' && true || false,
             'container': this.el.parentElement.parentElement.parentElement
@@ -67557,8 +67487,7 @@ var emojis_default = /*#__PURE__*/__webpack_require__.n(emojis);
 
 const {
   Backbone: converse_emoji_views_Backbone,
-  sizzle: converse_emoji_views_sizzle,
-  _: converse_emoji_views_
+  sizzle: converse_emoji_views_sizzle
 } = converse.env;
 const converse_emoji_views_u = converse.env.utils;
 converse.plugins.add('converse-emoji-views', {
@@ -67572,7 +67501,7 @@ converse.plugins.add('converse-emoji-views', {
    *
    * NB: These plugins need to have already been loaded via require.js.
    */
-  dependencies: ["converse-emoji", "converse-chatview"],
+  dependencies: ["converse-emoji", "converse-chatview", "converse-muc-views"],
   overrides: {
     ChatBoxView: {
       events: {
@@ -67668,7 +67597,7 @@ converse.plugins.add('converse-emoji-views', {
         this.emoji_picker_view.chatview = this;
       },
 
-      createEmojiDropdown(ev) {
+      createEmojiDropdown() {
         const dropdown_el = this.el.querySelector('.toggle-smiley.dropup');
         this.emoji_dropdown = new bootstrap_native_default.a.Dropdown(dropdown_el, true);
         this.emoji_dropdown.el = dropdown_el;
@@ -67700,7 +67629,7 @@ converse.plugins.add('converse-emoji-views', {
       events: {
         'click .emoji-picker__header li.emoji-category': 'chooseCategory',
         'click .emoji-skintone-picker li.emoji-skintone': 'chooseSkinTone',
-        'click .toggle-smiley ul.emoji-picker li': 'insertEmoji',
+        'click .insert-emoji': 'insertEmoji',
         'keydown .emoji-search': 'onKeyDown'
       },
 
@@ -67957,11 +67886,6 @@ converse.plugins.add('converse-emoji-views', {
  * A plugin which restricts Converse to only one chat.
  */
 
-const {
-  _: converse_singleton_,
-  Strophe: converse_singleton_Strophe
-} = converse_core.env;
-const converse_singleton_u = converse_core.env.utils;
 converse_core.plugins.add('converse-singleton', {
   enabled(_converse) {
     return _converse.singleton;
@@ -67984,7 +67908,7 @@ converse_core.plugins.add('converse-singleton', {
       _converse
     } = this;
 
-    if (!converse_singleton_.isArray(_converse.auto_join_rooms) && !converse_singleton_.isArray(_converse.auto_join_private_chats)) {
+    if (!Array.isArray(_converse.auto_join_rooms) && !Array.isArray(_converse.auto_join_private_chats)) {
       throw new Error("converse-singleton: auto_join_rooms must be an Array");
     }
 
@@ -68015,10 +67939,6 @@ var inverse_brand_heading_default = /*#__PURE__*/__webpack_require__.n(inverse_b
 
 
 
-const {
-  Strophe: converse_fullscreen_Strophe,
-  _: converse_fullscreen_
-} = converse_core.env;
 converse_core.plugins.add('converse-fullscreen', {
   enabled(_converse) {
     return _converse.isUniView();
@@ -68078,8 +67998,6 @@ converse_core.plugins.add('converse-fullscreen', {
 
 
 const {
-  _: converse_headline_,
-  dayjs: converse_headline_dayjs,
   utils: converse_headline_utils
 } = converse_core.env;
 converse_core.plugins.add('converse-headline', {
@@ -68122,15 +68040,12 @@ converse_core.plugins.add('converse-headline', {
      */
     const {
       _converse
-    } = this,
-          {
-      __
-    } = _converse;
+    } = this;
     _converse.HeadlinesBox = _converse.ChatBox.extend({
       defaults() {
         return {
           'bookmarked': false,
-          'hidden': converse_headline_.includes(['mobile', 'fullscreen'], _converse.view_mode),
+          'hidden': ['mobile', 'fullscreen'].includes(_converse.view_mode),
           'message_type': 'headline',
           'num_unread': 0,
           'time_opened': this.get('time_opened') || new Date().getTime(),
@@ -68192,13 +68107,12 @@ converse_core.plugins.add('converse-headline', {
       if (converse_headline_utils.isHeadlineMessage(_converse, message)) {
         const from_jid = message.getAttribute('from');
 
-        if (converse_headline_.includes(from_jid, '@') && !_converse.roster.get(from_jid) && !_converse.allow_non_roster_messaging) {
+        if (from_jid.includes('@') && !_converse.roster.get(from_jid) && !_converse.allow_non_roster_messaging) {
           return;
         }
 
-        if (converse_headline_.isNull(message.querySelector('body'))) {
-          // Avoid creating a chat box if we have nothing to show
-          // inside it.
+        if (message.querySelector('body') === null) {
+          // Avoid creating a chat box if we have nothing to show inside it.
           return;
         }
 
@@ -68278,11 +68192,7 @@ converse_core.plugins.add('converse-mam-views', {
         return result;
       },
 
-      async onScroll(ev) {
-        const {
-          _converse
-        } = this.__super__;
-
+      async onScroll() {
         if (this.content.scrollTop === 0 && this.model.messages.length) {
           const oldest_message = this.model.getOldestMessage();
 
@@ -68322,7 +68232,7 @@ converse_core.plugins.add('converse-mam-views', {
   }
 });
 // EXTERNAL MODULE: ./src/templates/chatbox_minimize.html
-var chatbox_minimize = __webpack_require__(64);
+var chatbox_minimize = __webpack_require__(63);
 var chatbox_minimize_default = /*#__PURE__*/__webpack_require__.n(chatbox_minimize);
 
 // EXTERNAL MODULE: ./src/templates/chats_panel.html
@@ -68446,13 +68356,13 @@ converse_core.plugins.add('converse-minimize', {
 
       setChatBoxHeight(height) {
         if (!this.model.get('minimized')) {
-          return this.__super__.setChatBoxHeight.apply(this, arguments);
+          return this.__super__.setChatBoxHeight.call(this, height);
         }
       },
 
       setChatBoxWidth(width) {
         if (!this.model.get('minimized')) {
-          return this.__super__.setChatBoxWidth.apply(this, arguments);
+          return this.__super__.setChatBoxWidth.call(this, width);
         }
       }
 
@@ -68466,7 +68376,7 @@ converse_core.plugins.add('converse-minimize', {
           __
         } = _converse;
 
-        const result = this.__super__.render.apply(this, arguments);
+        this.__super__.render.apply(this, arguments);
 
         const new_html = chatbox_minimize_default()({
           'info_minimize': __('Minimize this chat box')
@@ -68640,7 +68550,7 @@ converse_core.plugins.add('converse-minimize', {
        * Minimizes a chat box.
        * @returns {_converse.ChatBoxView|_converse.ChatRoomView}
        */
-      minimize(ev) {
+      minimize() {
         this.model.minimize();
         return this;
       },
@@ -68793,7 +68703,6 @@ converse_core.plugins.add('converse-minimize', {
           'title': this.model.getDisplayName()
         });
         this.el.innerHTML = trimmed_chat_default()(data);
-        this.setElement(this.el.firstElementChild);
         return this.el;
       },
 
@@ -69053,7 +68962,7 @@ var chatroom_head = __webpack_require__(172);
 var chatroom_head_default = /*#__PURE__*/__webpack_require__.n(chatroom_head);
 
 // EXTERNAL MODULE: ./src/templates/chatroom_invite.html
-var chatroom_invite = __webpack_require__(65);
+var chatroom_invite = __webpack_require__(64);
 var chatroom_invite_default = /*#__PURE__*/__webpack_require__.n(chatroom_invite);
 
 // EXTERNAL MODULE: ./src/templates/chatroom_nickname_form.html
@@ -69093,7 +69002,7 @@ var room_panel = __webpack_require__(181);
 var room_panel_default = /*#__PURE__*/__webpack_require__.n(room_panel);
 
 // EXTERNAL MODULE: ./src/templates/rooms_results.html
-var rooms_results = __webpack_require__(66);
+var rooms_results = __webpack_require__(65);
 var rooms_results_default = /*#__PURE__*/__webpack_require__.n(rooms_results);
 
 // CONCATENATED MODULE: ./src/converse-muc-views.js
@@ -69140,21 +69049,17 @@ var rooms_results_default = /*#__PURE__*/__webpack_require__.n(rooms_results);
 
 
 
-
 const {
   Backbone: converse_muc_views_Backbone,
   Strophe: converse_muc_views_Strophe,
-  dayjs: converse_muc_views_dayjs,
   sizzle: converse_muc_views_sizzle,
   _: converse_muc_views_,
   $iq: converse_muc_views_$iq,
-  $msg: converse_muc_views_$msg,
   $pres: converse_muc_views_$pres
 } = converse_core.env;
 const converse_muc_views_u = converse_core.env.utils;
 const ROLES = ['moderator', 'participant', 'visitor'];
 const AFFILIATIONS = ['admin', 'member', 'outcast', 'owner'];
-const AFFILIATION_CHANGE_COMANDS = ['admin', 'ban', 'owner', 'member', 'revoke'];
 const OWNER_COMMANDS = ['owner'];
 const ADMIN_COMMANDS = ['admin', 'ban', 'deop', 'destroy', 'member', 'op', 'revoke'];
 const MODERATOR_COMMANDS = ['kick', 'mute', 'voice', 'modtools'];
@@ -69575,7 +69480,7 @@ converse_core.plugins.add('converse-muc-views', {
         toggleRoomInfo(ev);
       },
 
-      onDomainChange(model) {
+      onDomainChange() {
         if (_converse.auto_list_rooms) {
           this.updateRoomsList();
         }
@@ -69640,7 +69545,7 @@ converse_core.plugins.add('converse-muc-views', {
           xmlns: converse_muc_views_Strophe.NS.DISCO_ITEMS
         });
 
-        _converse.api.sendIQ(iq).then(iq => this.onRoomsFound(iq)).catch(iq => this.informNoRoomsFound());
+        _converse.api.sendIQ(iq).then(iq => this.onRoomsFound(iq)).catch(() => this.informNoRoomsFound());
       },
 
       showRooms(ev) {
@@ -70153,7 +70058,7 @@ converse_core.plugins.add('converse-muc-views', {
         }
       },
 
-      hideOccupants(ev, preserve_state) {
+      hideOccupants(ev) {
         /* Show or hide the right sidebar containing the chat
          * occupants (and the invite widget).
          */
@@ -70213,7 +70118,6 @@ converse_core.plugins.add('converse-muc-views', {
             'jid': _converse.bare_jid
           });
         }
-
         if (!occupant) return false;    // BAO
 
         const role = occupant.get('role');
@@ -70275,7 +70179,7 @@ converse_core.plugins.add('converse-muc-views', {
           args = '@' + args;
         }
 
-        const [text, references] = this.model.parseTextForReferences(args);
+        const [text, references] = this.model.parseTextForReferences(args); // eslint-disable-line no-unused-vars
 
         if (!references.length) {
           this.showErrorMessage(__("Error: couldn't find a groupchat participant based on your arguments"));
@@ -70596,7 +70500,7 @@ converse_core.plugins.add('converse-muc-views', {
         this.renderAfterTransition();
       },
 
-      getAndRenderConfigurationForm(ev) {
+      getAndRenderConfigurationForm() {
         /* Start the process of configuring a groupchat, either by
          * rendering a configuration form, or by auto-configuring
          * based on the "roomconfig" data stored on the
@@ -70747,8 +70651,6 @@ converse_core.plugins.add('converse-muc-views', {
         let el = this.content.lastElementChild;
 
         while (el) {
-          const data = converse_muc_views_.get(el, 'dataset', {});
-
           if (!converse_muc_views_.includes(converse_muc_views_.get(el, 'classList', []), 'chat-info')) {
             return;
           }
@@ -71398,7 +71300,7 @@ converse_core.plugins.add('converse-muc-views', {
           'list': list
         });
         this.invite_auto_complete.on('suggestion-box-selectcomplete', ev => this.promptForInvite(ev));
-        this.invite_auto_complete.on('suggestion-box-open', ev => {
+        this.invite_auto_complete.on('suggestion-box-open', () => {
           this.invite_auto_complete.ul.setAttribute('style', "max-height: calc(".concat(this.el.offsetHeight, "px - 80px);"));
         });
       }
@@ -71592,12 +71494,12 @@ converse_core.plugins.add('converse-muc-views', {
  * @module converse-notification
  */
 
+
 const {
   Strophe: converse_notification_Strophe,
-  _: converse_notification_,
   sizzle: converse_notification_sizzle
-} = converse_core.env,
-      converse_notification_u = converse_core.env.utils;
+} = converse_core.env;
+const converse_notification_u = converse_core.env.utils;
 converse_core.plugins.add('converse-notification', {
   dependencies: ["converse-chatboxes"],
 
@@ -71647,7 +71549,7 @@ converse_core.plugins.add('converse-notification', {
       }
 
       const mentioned = new RegExp("\\b".concat(room.get('nick'), "\\b")).test(body.textContent);
-      notify_all = notify_all === true || Array.isArray(notify_all) && converse_notification_.includes(notify_all, room_jid);
+      notify_all = notify_all === true || Array.isArray(notify_all) && notify_all.includes(room_jid);
 
       if (sender === room.get('nick') || !notify_all && !mentioned) {
         return false;
@@ -71688,13 +71590,14 @@ converse_core.plugins.add('converse-notification', {
 
       return !converse_notification_u.isOnlyChatStateNotification(message) && !converse_notification_u.isOnlyMessageDeliveryReceipt(message) && !is_me && (_converse.show_desktop_notifications === 'all' || _converse.isMessageToHiddenChat(message));
     };
+    /**
+     * Plays a notification sound
+     * @private
+     * @method _converse#playSoundNotification
+     */
+
 
     _converse.playSoundNotification = function () {
-      /* Plays a sound to notify that a new message was recieved.
-       */
-      // XXX Eventually this can be refactored to use Notification's sound
-      // feature, but no browser currently supports it.
-      // https://developer.mozilla.org/en-US/docs/Web/API/notification/sound
       if (_converse.play_sounds && window.Audio !== undefined) {
         const audioOgg = new Audio(_converse.sounds_path + "msg_received.ogg");
         const canPlayOgg = audioOgg.canPlayType('audio/ogg');
@@ -71719,11 +71622,15 @@ converse_core.plugins.add('converse-notification', {
     _converse.areDesktopNotificationsEnabled = function () {
       return _converse.supports_html5_notification && _converse.show_desktop_notifications && Notification.permission === "granted";
     };
+    /**
+     * Shows an HTML5 Notification with the passed in message
+     * @private
+     * @method _converse#showMessageNotification
+     * @param { String } message
+     */
+
 
     _converse.showMessageNotification = function (message) {
-      /* Shows an HTML5 Notification to indicate that a new chat
-       * message was received.
-       */
       if (!_converse.areDesktopNotificationsEnabled()) {
         return;
       }
@@ -71733,12 +71640,12 @@ converse_core.plugins.add('converse-notification', {
             from_jid = converse_notification_Strophe.getBareJidFromJid(full_from_jid);
 
       if (message.getAttribute('type') === 'headline') {
-        if (!converse_notification_.includes(from_jid, '@') || _converse.allow_non_roster_messaging) {
+        if (!from_jid.includes('@') || _converse.allow_non_roster_messaging) {
           title = __("Notification from %1$s", from_jid);
         } else {
           return;
         }
-      } else if (!converse_notification_.includes(from_jid, '@')) {
+      } else if (!from_jid.includes('@')) {
         // workaround for Prosody which doesn't give type "headline"
         title = __("Notification from %1$s", from_jid);
       } else if (message.getAttribute('type') === 'groupchat') {
@@ -71765,7 +71672,7 @@ converse_core.plugins.add('converse-notification', {
       // the message...
 
 
-      const body = converse_notification_sizzle("encrypted[xmlns=\"".concat(converse_notification_Strophe.NS.OMEMO, "\"]"), message).length ? __('OMEMO Message received') : converse_notification_.get(message.querySelector('body'), 'textContent');
+      const body = converse_notification_sizzle("encrypted[xmlns=\"".concat(converse_notification_Strophe.NS.OMEMO, "\"]"), message).length ? __('OMEMO Message received') : Object(lodash["get"])(message.querySelector('body'), 'textContent');
 
       if (!body) {
         return;
@@ -71787,7 +71694,7 @@ converse_core.plugins.add('converse-notification', {
       /* Creates an HTML5 Notification to inform of a change in a
        * contact's chat state.
        */
-      if (converse_notification_.includes(_converse.chatstate_notification_blacklist, contact.jid)) {
+      if (_converse.chatstate_notification_blacklist.includes(contact.jid)) {
         // Don't notify if the user is being ignored.
         return;
       }
@@ -71885,7 +71792,7 @@ converse_core.plugins.add('converse-notification', {
     };
 
     _converse.requestPermission = function () {
-      if (_converse.supports_html5_notification && !converse_notification_.includes(['denied', 'granted'], Notification.permission)) {
+      if (_converse.supports_html5_notification && !['denied', 'granted'].includes(Notification.permission)) {
         // Ask user to enable HTML5 notifications
         Notification.requestPermission();
       }
@@ -71924,9 +71831,6 @@ var profile_modal_default = /*#__PURE__*/__webpack_require__.n(profile_modal);
 var profile_view = __webpack_require__(185);
 var profile_view_default = /*#__PURE__*/__webpack_require__.n(profile_view);
 
-// EXTERNAL MODULE: ./src/templates/status_option.html
-var status_option = __webpack_require__(458);
-
 // CONCATENATED MODULE: ./src/converse-profile.js
 // Converse.js (A browser based XMPP chat client)
 // https://conversejs.org
@@ -71947,13 +71851,8 @@ var status_option = __webpack_require__(458);
 
 
 
-
 const {
   Strophe: converse_profile_Strophe,
-  Backbone: converse_profile_Backbone,
-  utils: converse_profile_utils,
-  _: converse_profile_,
-  dayjs: converse_profile_dayjs,
   sizzle: converse_profile_sizzle
 } = converse_core.env;
 const converse_profile_u = converse_core.env.utils;
@@ -71999,7 +71898,6 @@ converse_core.plugins.add('converse-profile', {
 
       toHTML() {
         return profile_modal_default()(Object.assign(this.model.toJSON(), this.model.vcard.toJSON(), {
-          '_': converse_profile_,
           '__': __,
           '_converse': _converse,
           'alt_avatar': __('Your avatar image'),
@@ -72137,7 +72035,10 @@ converse_core.plugins.add('converse-profile', {
           'version_name': _converse.VERSION_NAME,
           // BAO
           'first_subtitle': getSetting("enableTransferWise", false) ? "<img height='16' src='plugins/css/images/transferwise.svg' />" : "",
-          'second_subtitle': "", //__('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
+          'second_subtitle': ""
+
+          //'first_subtitle': __('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">'),
+          //'second_subtitle': __('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>')
         }));
       }
 
@@ -72284,7 +72185,6 @@ var toolbar_omemo_default = /*#__PURE__*/__webpack_require__.n(toolbar_omemo);
 const {
   Backbone: converse_omemo_Backbone,
   Strophe: converse_omemo_Strophe,
-  dayjs: converse_omemo_dayjs,
   sizzle: converse_omemo_sizzle,
   $build: converse_omemo_$build,
   $iq: converse_omemo_$iq,
@@ -72297,7 +72197,8 @@ converse_omemo_Strophe.addNamespace('OMEMO_VERIFICATION', converse_omemo_Strophe
 converse_omemo_Strophe.addNamespace('OMEMO_WHITELISTED', converse_omemo_Strophe.NS.OMEMO + ".whitelisted");
 converse_omemo_Strophe.addNamespace('OMEMO_BUNDLES', converse_omemo_Strophe.NS.OMEMO + ".bundles");
 const UNDECIDED = 0;
-const TRUSTED = 1;
+const TRUSTED = 1; // eslint-disable-line no-unused-vars
+
 const UNTRUSTED = -1;
 const TAG_LENGTH = 128;
 const KEY_ALGO = {
@@ -72318,9 +72219,8 @@ function parseBundle(bundle_el) {
   /* Given an XML element representing a user's OMEMO bundle, parse it
    * and return a map.
    */
-  const signed_prekey_public_el = bundle_el.querySelector('signedPreKeyPublic'),
-        signed_prekey_signature_el = bundle_el.querySelector('signedPreKeySignature'),
-        identity_key_el = bundle_el.querySelector('identityKey');
+  const signed_prekey_public_el = bundle_el.querySelector('signedPreKeyPublic');
+  const signed_prekey_signature_el = bundle_el.querySelector('signedPreKeySignature');
   const prekeys = converse_omemo_sizzle("prekeys > preKeyPublic", bundle_el).map(el => ({
     'id': parseInt(el.getAttribute('preKeyId'), 10),
     'key': el.textContent
@@ -73023,6 +72923,7 @@ converse_core.plugins.add('converse-omemo', {
       },
 
       isTrustedIdentity(identifier, identity_key, direction) {
+        // eslint-disable-line no-unused-vars
         if (identifier === null || identifier === undefined) {
           throw new Error("Can't check identity key for invalid key");
         }
@@ -73098,6 +72999,7 @@ converse_core.plugins.add('converse-omemo', {
       },
 
       loadSignedPreKey(keyId) {
+        // eslint-disable-line no-unused-vars
         const res = this.get('signed_prekey');
 
         if (res) {
@@ -73716,7 +73618,7 @@ converse_core.plugins.add('converse-omemo', {
       _converse.generateFingerprints(jid).catch(e => _converse.log(e, converse_omemo_Strophe.LogLevel.ERROR));
     });
 
-    _converse.api.listen.on('profileModalInitialized', contact => {
+    _converse.api.listen.on('profileModalInitialized', () => {
       _converse.generateFingerprints(_converse.bare_jid).catch(e => _converse.log(e, converse_omemo_Strophe.LogLevel.ERROR));
     });
 
@@ -73814,10 +73716,7 @@ converse_core.plugins.add('converse-push', {
      */
     const {
       _converse
-    } = this,
-          {
-      __
-    } = _converse;
+    } = this;
 
     _converse.api.settings.update({
       'push_app_servers': [],
@@ -74015,7 +73914,7 @@ converse_core.plugins.add('converse-register', {
     //
     // New functions which don't exist yet can also be added.
     LoginPanel: {
-      render(cfg) {
+      render() {
         const {
           _converse
         } = this.__super__;
@@ -74089,10 +73988,6 @@ converse_core.plugins.add('converse-register', {
     });
     Object.assign(_converse.ControlBoxView.prototype, {
       showLoginOrRegisterForm() {
-        const {
-          _converse
-        } = this.__super__;
-
         if (!this.registerpanel) {
           return;
         }
@@ -74166,7 +74061,7 @@ converse_core.plugins.add('converse-register', {
         'click .button-cancel': 'renderProviderChoiceForm'
       },
 
-      initialize(cfg) {
+      initialize() {
         this.reset();
         this.registerHooks();
       },
@@ -74751,9 +74646,7 @@ var rooms_list_item_default = /*#__PURE__*/__webpack_require__.n(rooms_list_item
 
 const {
   Backbone: converse_roomslist_Backbone,
-  Strophe: converse_roomslist_Strophe,
-  sizzle: converse_roomslist_sizzle,
-  _: converse_roomslist_
+  Strophe: converse_roomslist_Strophe
 } = converse_core.env;
 const converse_roomslist_u = converse_core.env.utils;
 converse_core.plugins.add('converse-roomslist', {
@@ -74787,9 +74680,9 @@ converse_core.plugins.add('converse-roomslist', {
     _converse.OpenRooms = _converse.Collection.extend({
       comparator(room) {
         if (_converse.bookmarks && room.get('bookmarked')) {
-          const bookmark = converse_roomslist_.head(_converse.bookmarks.where({
+          const bookmark = _converse.bookmarks.findWhere({
             'jid': room.get('jid')
-          }));
+          });
 
           return bookmark ? bookmark.get('name') : room.get('name');    // BAO
         } else {
@@ -74996,7 +74889,7 @@ converse_core.plugins.add('converse-roomslist', {
         }
       },
 
-      showOrHide(item) {
+      showOrHide() {
         if (!this.model.models.length) {
           converse_roomslist_u.hideElement(this.el);
         } else {
@@ -75092,11 +74985,8 @@ var roster_filter = __webpack_require__(198);
 var roster_filter_default = /*#__PURE__*/__webpack_require__.n(roster_filter);
 
 // EXTERNAL MODULE: ./src/templates/roster_item.html
-var roster_item = __webpack_require__(199);
-var roster_item_default = /*#__PURE__*/__webpack_require__.n(roster_item);
-
-// EXTERNAL MODULE: ./src/templates/search_contact.html
-var search_contact = __webpack_require__(459);
+var templates_roster_item = __webpack_require__(199);
+var roster_item_default = /*#__PURE__*/__webpack_require__.n(templates_roster_item);
 
 // CONCATENATED MODULE: ./src/converse-rosterview.js
 // Converse.js
@@ -75123,12 +75013,9 @@ var search_contact = __webpack_require__(459);
 
 
 
-
 const {
   Backbone: converse_rosterview_Backbone,
   Strophe: converse_rosterview_Strophe,
-  $iq: converse_rosterview_$iq,
-  sizzle: converse_rosterview_sizzle,
   _: converse_rosterview_
 } = converse_core.env;
 const converse_rosterview_u = converse_core.env.utils;
@@ -75167,9 +75054,6 @@ converse_core.plugins.add('converse-rosterview', {
       'xa': __('This contact is away for an extended period'),
       'away': __('This contact is away')
     };
-
-    const LABEL_GROUPS = __('Groups');
-
     _converse.AddContactModal = _converse.BootstrapModal.extend({
       events: {
         'submit form': 'addContactFromForm'
@@ -75399,7 +75283,7 @@ converse_core.plugins.add('converse-rosterview', {
         }
       },
 
-      liveFilter: converse_rosterview_.debounce(function (ev) {
+      liveFilter: converse_rosterview_.debounce(function () {
         this.model.save({
           'filter_text': this.el.querySelector('.roster-filter').value
         });
@@ -75428,6 +75312,7 @@ converse_core.plugins.add('converse-rosterview', {
       shouldBeVisible() {
         // BAO
         return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
+
       },
 
       showOrHide() {
@@ -75658,10 +75543,8 @@ converse_core.plugins.add('converse-rosterview', {
           return;
         }
 
-        let iq;
-
         try {
-          iq = await this.model.removeFromRoster();
+          await this.model.removeFromRoster();
           this.remove();
 
           if (this.model.collection) {
@@ -75757,17 +75640,16 @@ converse_core.plugins.add('converse-rosterview', {
         return converse_rosterview_u.slideIn(this.contacts_el);
       },
 
+      /* Given a list of contacts, make sure they're filtered out
+       * (aka hidden) and that all other contacts are visible.
+       * If all contacts are hidden, then also hide the group title.
+       * @private
+       * @method _converse.RosterGroupView#filterOutContacts
+       * @param { Array } contacts
+       */
       filterOutContacts() {
         let contacts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-        /* Given a list of contacts, make sure they're filtered out
-         * (aka hidden) and that all other contacts are visible.
-         *
-         * If all contacts are hidden, then also hide the group
-         * title.
-         */
         let shown = 0;
-        const all_contact_views = this.getAll();
         this.model.contacts.forEach(contact => {
           const contact_view = this.get(contact.get('id'));
 
@@ -75786,10 +75668,15 @@ converse_core.plugins.add('converse-rosterview', {
         }
       },
 
+      /**
+       * Given the filter query "q" and the filter type "type",
+       * return a list of contacts that need to be filtered out.
+       * @private
+       * @method _converse.RosterGroupView#getFilterMatches
+       * @param { String } q - The filter query
+       * @param { String } type - The filter type
+       */
       getFilterMatches(q, type) {
-        /* Given the filter query "q" and the filter type "type",
-         * return a list of contacts that need to be filtered out.
-         */
         if (q.length === 0) {
           return [];
         }
@@ -75802,13 +75689,15 @@ converse_core.plugins.add('converse-rosterview', {
             // When filtering by chat state, we still want to
             // show requesting contacts, even though they don't
             // have the state in question.
-            matches = this.model.contacts.filter(contact => !converse_rosterview_.includes(contact.presence.get('show'), q) && !contact.get('requesting'));
+            matches = this.model.contacts.filter(c => !converse_rosterview_.includes(c.presence.get('show'), q) && !c.get('requesting'));
           } else if (q === 'unread_messages') {
             matches = this.model.contacts.filter({
               'num_unread': 0
             });
+          } else if (q === 'online') {
+            matches = this.model.contacts.filter(c => ["offline", "unavailable"].includes(c.presence.get('show')));
           } else {
-            matches = this.model.contacts.filter(contact => !converse_rosterview_.includes(contact.presence.get('show'), q));
+            matches = this.model.contacts.filter(c => !converse_rosterview_.includes(c.presence.get('show'), q));
           }
         } else {
           matches = this.model.contacts.filter(contact => {
@@ -76248,10 +76137,6 @@ converse_core.plugins.add('converse-rosterview', {
  */
 
 
-const {
-  _: converse_uniview_,
-  Strophe: converse_uniview_Strophe
-} = converse_core.env;
 const converse_uniview_u = converse_core.env.utils;
 
 function hideChat(view) {
@@ -76356,7 +76241,7 @@ converse_core.plugins.add('converse-uniview', {
 
 });
 // EXTERNAL MODULE: ./sass/converse.scss
-var sass_converse = __webpack_require__(460);
+var sass_converse = __webpack_require__(458);
 
 // CONCATENATED MODULE: ./src/converse.js
 // Converse.js (A browser based XMPP chat client)

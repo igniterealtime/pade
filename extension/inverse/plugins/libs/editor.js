@@ -7015,7 +7015,7 @@ function drawImage(editor) {
 
 function pasteText()
 {
-    console.log("pasteText")
+    console.debug("pasteText")
 }
 
 function copyText()

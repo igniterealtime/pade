@@ -113,7 +113,7 @@
                         var id = this.model.get("box_id");
                         var jid = this.model.get("jid");
 
-                        console.log("new threaded conversation", match[2]);
+                        console.debug("new threaded conversation", match[2]);
 
                     }
                     else
@@ -160,7 +160,7 @@
 
                                             chrome.storage.local.set(data, function(data)
                                             {
-                                                console.log("feed stored ok", feedId, data);
+                                                console.debug("feed stored ok", feedId, data);
 
                                                 view.showHelpMessages(["Feed " + feed.title + " added\n" + feed.path]);
                                                 view.viewUnreadMessages();
@@ -657,7 +657,7 @@
                     if (obj[topicId]) obj[topicId].thread = targetValue;
 
                     chrome.storage.local.set(obj, function() {
-                        console.log("active subject set",targetValue, id, obj);
+                        console.debug("active subject set",targetValue, id, obj);
 
                         var jid = view.model.get("jid");
                         view.close();
@@ -730,7 +730,7 @@
 
                         chrome.storage.local.set(data, function(data)
                         {
-                            console.log("feed stored ok", feedId, data);
+                            console.debug("feed stored ok", feedId, data);
 
                             view.showHelpMessages(["Feed " + evt.target.title + " removed"]);
                             view.viewUnreadMessages();

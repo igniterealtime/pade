@@ -15,27 +15,27 @@ window.addEventListener("load", function()
 
     textArea.on('pasteImage', function(ev, data)
     {
-        console.log("pade - pasteImage", data);
+        console.debug("pade - pasteImage", data);
 
     }).on('pasteImageError', function(ev, data){
         console.error('pasteImageError', data);
 
     }).on('pasteText', function(ev, data){
-        console.log("pasteText", data);
+        console.debug("pasteText", data);
 
     }).on('pasteTextRich', function(ev, data){
-        //console.log("pasteTextRich", data);
+        //console.debug("pasteTextRich", data);
         textArea.value = clipboard2Markdown.convert(data.text);
 
     }).on('pasteTextHtml', function(ev, data){
-        //console.log("pasteTextHtml", data);
+        //console.debug("pasteTextHtml", data);
         textArea.value = clipboard2Markdown.convert(data.text);
 
     }).on('focus', function(){
-        console.log("paste - focus");
+        console.debug("paste - focus");
 
     }).on('blur', function(){
-        console.log("paste - blur");
+        console.debug("paste - blur");
     });
 */
 });

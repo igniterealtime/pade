@@ -630,7 +630,6 @@
                 afterShown: function() {
 
                     const ret = this.__super__.afterShown.apply(this, arguments);
-                    //hackPwaMode(this);
                     return ret;
                 },
 
@@ -700,7 +699,6 @@
                     if (openBadge) openBadge.setAttribute("data-badge", "0");
 
                     const ret = this.__super__.afterShown.apply(this, arguments);
-                    //hackPwaMode(this);
                     return ret;
 
                 },
@@ -962,21 +960,6 @@
                     console.debug("initialise message thread", box, topic);
                 }
             });
-        }
-    }
-
-
-    var hackPwaMode = function(view)
-    {
-        const controlBox = _converse.root.querySelector('#controlbox');
-        const navBack = view.el.querySelector('#conversejs .chatbox-navback');
-
-        if (!view.model.get('hidden') && navBack)
-        {
-            if (window.outerWidth < 670)
-            {
-                controlBox.style.display = "none";
-            }
         }
     }
 }));

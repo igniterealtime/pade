@@ -30,7 +30,7 @@
             {
                 if (bgWindow.pade.activeView && message.markdown)
                 {
-                    console.log("chrome.runtime.onMessage", message);
+                    console.debug("chrome.runtime.onMessage", message);
                     submitMessage(bgWindow.pade.activeView, message.markdown);
                     bgWindow.closeWebAppsWindow(chrome.extension.getURL("inverse/plugins/editor.html"));
                 }
@@ -64,7 +64,7 @@
                 Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
                 {
                     ready = true;
-                    console.log("markdown plugin is ready");
+                    console.debug("markdown plugin is ready");
                 })
 
                 _converse.__super__.onConnected.apply(this, arguments);

@@ -1,19 +1,5 @@
 /* pade plugins for converse */
 
-/* TODO - remove when padding issue is fixed */
-
-@media screen and (max-width: 480px) {
-    #page-content #conversejs .chatroom .box-flyout {
-    height: 100% !important;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    #conversejs .converse-chatboxes .chatbox .box-flyout {
-    bottom: initial;
-    margin-left: 0;
-    }
-}
 
 #conversejs .pade-preview-image {
     max-width: -webkit-fill-available;
@@ -199,7 +185,7 @@
     content:attr(data-badge);
     position:absolute;
     top:-4px;
-    right:40px;
+    right:28px;
     font-size:.7em;
     background:red;
     color:white;

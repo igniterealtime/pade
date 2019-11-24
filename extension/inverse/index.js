@@ -1,5 +1,4 @@
 var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-var __jid = bgWindow.pade.username + "@" + bgWindow.pade.domain;
 var __origins = {}, __irmaVerifications = {};
 
 window.addEventListener("unload", function()
@@ -11,6 +10,37 @@ window.addEventListener("unload", function()
 window.addEventListener("load", function()
 {
     console.debug("inverse addListener load");
+
+    // Temp hack to spped up converse by clearing localStorage
+    // TODO fix this
+
+    if (getSetting("clearCacheOnConnect", false))
+    {
+        let savedSettings = {};
+        console.debug("clearCacheOnConnect, old size", localStorage.length);
+
+        for (var i = 0; i < localStorage.length; i++)
+        {
+            if (localStorage.key(i).startsWith("store.settings."))
+            {
+                const key = localStorage.key(i);
+                savedSettings[key] = localStorage.getItem(localStorage.key(i));
+                console.debug("clearCacheOnConnect, saving", key, savedSettings[key]);
+            }
+        }
+
+        localStorage.clear();
+
+        const keys = Object.getOwnPropertyNames(savedSettings);
+
+        for (var i=0; i<keys.length; i++)
+        {
+            localStorage[keys[i]] = savedSettings[keys[i]];
+            console.debug("clearCacheOnConnect, restoring", keys[i], savedSettings[keys[i]]);
+        }
+
+        console.debug("clearCacheOnConnect, new size", localStorage.length);
+    }
 
     BrowserDetect.init();
 
@@ -232,7 +262,7 @@ var BrowserDetect = {
 
 function doConverse(server, username, password, anonUser)
 {
-    console.log("doConverse", server, username, anonUser);
+    console.debug("doConverse", server, username, anonUser);
 
     function getUniqueID()
     {
@@ -304,19 +334,19 @@ function doConverse(server, username, password, anonUser)
                 converse.env.Strophe.SASLOFChat.prototype.onChallenge = function (connection)
                 {
                     var token = getSetting("username", null) + ":" + getSetting("password", null);
-                    console.log("Strophe.SASLOFChat", token);
+                    console.debug("Strophe.SASLOFChat", token);
                     return token;
                 };
 
                 connection.mechanisms[converse.env.Strophe.SASLOFChat.prototype.name] = converse.env.Strophe.SASLOFChat;
-                console.log("strophe plugin: ofchatsasl enabled");
+                console.debug("strophe plugin: ofchatsasl enabled");
             }
         });
     }
 
     if (getSetting("useClientCert", false))
     {
-        console.log("useClientCert enabled");
+        console.debug("useClientCert enabled");
 
         converse.env.Strophe.addConnectionPlugin('externalsasl',
         {
@@ -336,7 +366,7 @@ function doConverse(server, username, password, anonUser)
                 };
 
                 connection.mechanisms[converse.env.Strophe.SASLExternal.prototype.name] = converse.env.Strophe.SASLExternal;
-                console.log("strophe plugin: externalsasl enabled");
+                console.debug("strophe plugin: externalsasl enabled");
             }
         });
     }
@@ -414,6 +444,7 @@ function doConverse(server, username, password, anonUser)
           allow_bookmarks: true,
           allow_chat_pending_contacts: true,
           allow_logout: false,
+          allow_message_corrections: 'all',
           allow_muc_invitations: true,
           allow_non_roster_messaging: getSetting("allowNonRosterMessaging", true),
           allow_public_bookmarks: true,
@@ -473,7 +504,7 @@ function doConverse(server, username, password, anonUser)
           whitelisted_plugins: whitelistedPlugins
         };
 
-        console.log("converse.initialize", config);
+        console.debug("converse.initialize", config);
         converse.initialize( config );
     }
 }
@@ -654,7 +685,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
             setAvatar(display_name, dataUri);
         }
 
-        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
+        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 24px; width: 24px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
         activeDiv.appendChild(msg_content);
 
         const openButton = document.getElementById("pade-active-" + id);
