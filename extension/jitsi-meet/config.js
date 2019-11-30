@@ -1,16 +1,6 @@
 /* eslint-disable no-unused-vars, no-var */
 
 var config = {
-    // Configuration
-    //
-
-    // Alternative location for the configuration.
-    // configLocation: './config.json',
-
-    // Custom function which given the URL path should return a room name.
-    // getroomnode: function (path) { return 'someprefixpossiblybasedonpath'; },
-
-
     // Connection
     //
 
@@ -60,6 +50,10 @@ var config = {
 
         // Enables the test specific features consumed by jitsi-meet-torture
         // testMode: false
+
+        // Disables the auto-play behavior of *all* newly created video element.
+        // This is useful when the client runs on a host with limited resources.
+        // noAutoPlayVideo: false
     },
 
     // Disables ICE/UDP by filtering out local and remote UDP candidates in
@@ -90,6 +84,10 @@ var config = {
     // applied locally. FIXME: having these 2 options is confusing.
     // startWithAudioMuted: false,
 
+    // Enabling it (with #params) will disable local audio output of remote
+    // participants and to enable it back a reload is needed.
+    // startSilent: false
+
     // Video
 
     // Sets the preferred resolution (height) for local video. Defaults to 720.
@@ -119,10 +117,6 @@ var config = {
     // are requested again.
     // enableLayerSuspension: false,
 
-    // Suspend sending video if bandwidth estimation is too low. This may cause
-    // problems with audio playback. Disabled until these are fixed.
-    disableSuspendVideo: true,
-
     // Every participant after the Nth will start video muted.
     // startVideoMuted: 10,
 
@@ -146,7 +140,7 @@ var config = {
     desktopSharingChromeExtId: null,
 
     // Whether desktop sharing should be disabled on Chrome.
-    desktopSharingChromeDisabled: true,
+    // desktopSharingChromeDisabled: false,
 
     // The media sources to use when using screen sharing with the Chrome
     // extension.
@@ -156,7 +150,7 @@ var config = {
     desktopSharingChromeMinExtVersion: '0.1',
 
     // Whether desktop sharing should be disabled on Firefox.
-    desktopSharingFirefoxDisabled: false,
+    // desktopSharingFirefoxDisabled: false,
 
     // Optional desktop sharing frame rate options. Default value: min:5, max:5.
     // desktopSharingFrameRate: {
@@ -174,7 +168,21 @@ var config = {
     // Enable the dropbox integration.
     // dropbox: {
     //     appKey: '<APP_KEY>' // Specify your app key here.
+    //     // A URL to redirect the user to, after authenticating
+    //     // by default uses:
+    //     // 'https://jitsi-meet.example.com/static/oauth.html'
+    //     redirectURI:
+    //          'https://jitsi-meet.example.com/subfolder/static/oauth.html'
     // },
+    // When integrations like dropbox are enabled only that will be shown,
+    // by enabling fileRecordingsServiceEnabled, we show both the integrations
+    // and the generic recording service (its configuration and storage type
+    // depends on jibri configuration)
+    // fileRecordingsServiceEnabled: false,
+    // Whether to show the possibility to share file recording with other people
+    // (e.g. meeting participants), based on the actual implementation
+    // on the backend.
+    // fileRecordingsServiceSharingEnabled: false,
 
     // Whether to enable live streaming or not.
     // liveStreamingEnabled: false,
@@ -182,6 +190,9 @@ var config = {
     // Transcription (in interface_config,
     // subtitles and buttons can be configured)
     // transcribingEnabled: false,
+
+    // Enables automatic turning on captions when recording is started
+    // autoCaptionOnRecord: false,
 
     // Misc
 
@@ -252,6 +263,13 @@ var config = {
     // Whether or not some features are checked based on token.
     // enableFeaturesBasedOnToken: false,
 
+    // Enable lock room for all moderators, even when userRolesBasedOnToken is enabled and participants are guests.
+    // lockRoomGuestEnabled: false,
+
+    // When enabled the password used for locking a room is restricted to up to the number of digits specified
+    // roomPasswordNumberOfDigits: 10,
+    // default: roomPasswordNumberOfDigits: false,
+
     // Message to show the users. Example: 'The service will be down for
     // maintenance at 01:00 AM GMT,
     // noticeMessage: '',
@@ -274,13 +292,11 @@ var config = {
     // callStatsID: '',
     // callStatsSecret: '',
 
-    // enables callstatsUsername to be reported as statsId and used
-    // by callstats as repoted remote id
-    // enableStatsID: false
-
     // enables sending participants display name to callstats
     // enableDisplayNameInStats: false
 
+    // enables sending participants email if available to callstats and other analytics
+    // enableEmailInStats: false
 
     // Privacy
     //
@@ -393,6 +409,24 @@ var config = {
     // use only.
     // _desktopSharingSourceDevice: 'sample-id-or-label'
 
+    // If true, any checks to handoff to another application will be prevented
+    // and instead the app will continue to display in the current browser.
+    // disableDeepLinking: false
+
+    // A property to disable the right click context menu for localVideo
+    // the menu has option to flip the locally seen video for local presentations
+    // disableLocalVideoFlip: false
+
+    // Deployment specific URLs.
+    // deploymentUrls: {
+    //    // If specified a 'Help' button will be displayed in the overflow menu with a link to the specified URL for
+    //    // user documentation.
+    //    userDocumentationURL: 'https://docs.example.com/video-meetings.html',
+    //    // If specified a 'Download our apps' button will be displayed in the overflow menu with a link
+    //    // to the specified URL for an app download page.
+    //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
+    // }
+
     // List of undocumented settings used in jitsi-meet
     /**
      _immediateReloadThreshold
@@ -407,12 +441,10 @@ var config = {
      dialOutCodesUrl
      disableRemoteControl
      displayJids
-     enableLocalVideoFlip
      etherpad_base
      externalConnectUrl
      firefox_fake_device
      googleApiApplicationClientID
-     googleApiIOSClientID
      iAmRecorder
      iAmSipGateway
      microsoftApiApplicationClientID

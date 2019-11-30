@@ -23,9 +23,9 @@
                 rssGroupChatCheck(view);
             });
 
-            _converse.api.listen.on('chatBoxOpened', function (view)
+            _converse.api.listen.on('chatBoxInitialized', function (view)
             {
-                console.debug("gateway chatBoxOpened", view);
+                console.debug("gateway chatBoxInitialized", view);
 
                 var jid = view.model.get("jid");
 

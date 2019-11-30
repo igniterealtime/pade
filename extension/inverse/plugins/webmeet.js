@@ -359,10 +359,10 @@
                 }
             });
 
-            _converse.api.listen.on('chatBoxOpened', function (view)
+            _converse.api.listen.on('chatBoxInitialized', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("chatBoxOpened", jid);
+                console.debug("chatBoxInitialized", jid);
             });
 
             _converse.api.listen.on('renderToolbar', function(view)

@@ -27,8 +27,10 @@ var interfaceConfig = {
     SHOW_DEEP_LINKING_IMAGE: false,
     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: true,
     DISPLAY_WELCOME_PAGE_CONTENT: true,
+    DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
     APP_NAME: 'Jitsi Meet',
     NATIVE_APP_NAME: 'Jitsi Meet',
+    PROVIDER_NAME: 'Jitsi',
     LANG_DETECTION: false, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: true,
 
@@ -49,7 +51,7 @@ var interfaceConfig = {
         'fodeviceselection', 'hangup', 'profile', 'info', 'chat', 'recording',
         'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
         'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview'
+        'tileview', 'videobackgroundblur', 'download', 'help'
     ],
 
     SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar' ],
@@ -154,11 +156,6 @@ var interfaceConfig = {
     CONNECTION_INDICATOR_DISABLED: false,
 
     /**
-     * The name of the application connected to the "Add people" search service.
-     */
-    // ADD_PEOPLE_APP_NAME: "",
-
-    /**
      * If true, hides the video quality label indicating the resolution status
      * of the current large video.
      *
@@ -171,7 +168,27 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    RECENT_LIST_ENABLED: true
+    RECENT_LIST_ENABLED: true,
+
+    // Names of browsers which should show a warning stating the current browser
+    // has a suboptimal experience. Browsers which are not listed as optimal or
+    // unsupported are considered suboptimal. Valid values are:
+    // chrome, chromium, edge, electron, firefox, nwjs, opera, safari
+    OPTIMAL_BROWSERS: [ 'chrome', 'chromium', 'firefox', 'nwjs', 'electron' ],
+
+    // Browsers, in addition to those which do not fully support WebRTC, that
+    // are not supported and should show the unsupported browser page.
+    UNSUPPORTED_BROWSERS: [],
+
+    /**
+     * A UX mode where the last screen share participant is automatically
+     * pinned. Valid values are the string "remote-only" so remote participants
+     * get pinned but not local, otherwise any truthy value for all participants,
+     * and any falsy value to disable the feature.
+     *
+     * Note: this mode is experimental and subject to breakage.
+     */
+    AUTO_PIN_LATEST_SCREEN_SHARE: 'remote-only'
 
     /**
      * How many columns the tile view can expand to. The respected range is
@@ -192,7 +209,26 @@ var interfaceConfig = {
     /**
      * Specify mobile app scheme for opening the app from the mobile browser.
      */
-    // APP_SCHEME: 'org.jitsi.meet'
+    // APP_SCHEME: 'org.jitsi.meet',
+
+    /**
+     * Specify the Android app package name.
+     */
+    // ANDROID_APP_PACKAGE: 'org.jitsi.meet',
+
+    /**
+     * Override the behavior of some notifications to remain displayed until
+     * explicitly dismissed through a user action. The value is how long, in
+     * milliseconds, those notifications should remain displayed.
+     */
+    // ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 15000,
+
+    // List of undocumented settings
+    /**
+     INDICATOR_FONT_SIZES
+     MOBILE_DYNAMIC_LINK
+     PHONE_NUMBER_REGEX
+    */
 };
 
 /* eslint-enable no-unused-vars, no-var, max-len */

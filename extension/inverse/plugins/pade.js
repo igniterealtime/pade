@@ -288,10 +288,10 @@
                 }
             });
 
-            _converse.api.listen.on('chatBoxOpened', function (view)
+            _converse.api.listen.on('chatBoxInitialized', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("pade plugin chatBoxOpened", jid);
+                console.debug("pade plugin chatBoxInitialized", jid);
 
                 if (bgWindow)
                 {
