@@ -2707,7 +2707,7 @@ function acceptRejectOffer(properties)
 
         startTone("Diggztone_DigitalSanity");
 
-        notifyText(question, "Ask - " + email, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+        notifyText(question, "Fastpath - " + email, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
         {
             console.debug("handleAction callback", notificationId, buttonIndex);
 

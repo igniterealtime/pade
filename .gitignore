@@ -9,5 +9,7 @@ branding/bloqzone/
 branding/templates/bloqzone/
 branding/*.cmd
 
+electron/target/
+
 # Ignore MacOSX files
 .DS_Store
