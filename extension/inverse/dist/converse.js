@@ -65726,7 +65726,7 @@ converse_core.plugins.add('converse-chatview', {
         const msgId = message_el.getAttribute('data-msgid');
         const message = this.model.messages.findWhere({'msgid': msgId});
         const type = message.get('type');
-        const prefix = (type == "groupchat") ? message.get('nick') + ": " : "";
+        const prefix = (type == "groupchat") ? message.get('nick') + " : " : "";
 
         let replyMessage = window.getSelection().toString();
 
@@ -65737,8 +65737,9 @@ converse_core.plugins.add('converse-chatview', {
             replyMessage = pos == -1 ? text : text.substring(0, pos);
         }
 
-        this.insertIntoTextArea('>' + prefix + replyMessage + "\n\n", false, false);
-        __origins['>' + prefix + replyMessage] = msgId;
+        const replyText = '> ' + prefix + replyMessage;
+        this.insertIntoTextArea(replyText + "\n\n", false, false);
+        __origins[replyText] = msgId;
       },
 
       onMessageForwardButtonClicked(ev) { // BAO
