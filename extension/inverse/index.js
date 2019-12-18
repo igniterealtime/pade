@@ -769,8 +769,8 @@ function addToolbarItem(view, id, label, html)
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', __newElement('li', 'place-holder'));
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(__newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
         placeHolder.insertAdjacentElement('afterEnd', __newElement('li', label, html));

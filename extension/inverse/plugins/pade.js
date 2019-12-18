@@ -412,6 +412,11 @@
 
                 if (chrome.pade)    // browser mode
                 {
+                    if (typeof module === 'object') // electron fix for jQuery
+                    {
+                        window.module = module; module = undefined;
+                    }
+
                     top.pade.connection = _converse.connection;
                     top.addHandlers();
                     top.publishUserLocation();
