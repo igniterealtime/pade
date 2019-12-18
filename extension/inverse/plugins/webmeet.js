@@ -377,9 +377,10 @@
                     const textEl = view.el.querySelector('.chat-textarea');
                     const isFocused = (document.activeElement === textEl);
                     const dialog = document.body.querySelector('.modal.show');
-                    const isForm = view.el.querySelector('.form-control.invited-contact') === document.activeElement;
+                    const isInvitedContact = view.el.querySelector('.invited-contact') === document.activeElement;
+                    const isRosterFilter = document.body.querySelector('.roster-filter') === document.activeElement;
 
-                    if (/[a-zA-Z0-9-_ ]/.test(input) && !isFocused && !view.model.get('hidden') && !dialog && !isForm)
+                    if (/[a-zA-Z0-9-_ ]/.test(input) && !isFocused && !view.model.get('hidden') && !dialog && !isInvitedContact && !isRosterFilter)
                     {
                         textEl.focus();
                     }
