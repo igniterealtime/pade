@@ -459,7 +459,7 @@ function doConverse(server, username, password, anonUser)
           auto_reconnect: getSetting("autoReconnectConverse", true),
           auto_subscribe: getSetting("autoSubscribe", false),
           auto_xa: 0, //autoXa,
-          bosh_service_url: "https://" + server + "/http-bind/",
+          bosh_service_url: "https://" + server + "/http-bind",
           clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
           debug: getSetting("converseDebug", false),
           default_domain: domain,

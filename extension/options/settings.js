@@ -1190,7 +1190,7 @@ window.addEvent("domready", function () {
                    lynks.password = JSON.parse(window.localStorage["store.settings.password"]);
                 }
 
-                lynks.connUrl = "https://" + lynks.server + "/http-bind/";
+                lynks.connUrl = "https://" + lynks.server + "/http-bind";
 
                 if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
                 {
@@ -1309,7 +1309,7 @@ window.addEvent("domready", function () {
                     {
                         var doConnect = function(creds)
                         {
-                            var connUrl = "https://" + lynks.server + "/http-bind/";
+                            var connUrl = "https://" + lynks.server + "/http-bind";
 
                             if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
                             {
@@ -1473,7 +1473,7 @@ function doDefaults(background)
     //setDefaultSetting("converseTimeAgo", true);
 
     // web apps
-    setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com");
+    setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com, messages.google.com");
 
     // only office
     setDefaultSetting("onlyOfficeVersion", "5.2.2-2");
