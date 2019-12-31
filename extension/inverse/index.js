@@ -661,6 +661,13 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
     {
         console.debug("addActiveConversation", chatbox);
 
+        const panel = document.getElementById("pade-active-" + chatbox.get('box_id'));
+
+        if (panel)
+        {
+            activeDiv.removeChild(panel.parentElement);
+        }
+
         if (!newMessage) newMessage = "";
 
         const status = chatbox.get("status") ? chatbox.get("status") : "";
@@ -674,6 +681,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
 
         let display_name = chatbox.getDisplayName();
         if (!display_name || display_name.trim() == "") display_name = jid;
+        if (display_name.indexOf("@") > -1) display_name = display_name.split("@")[0];
 
         let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
 
@@ -746,9 +754,9 @@ function setAvatar(nickname, avatar)
     if (bgWindow) bgWindow.setAvatar(nickname, avatar);
 }
 
-function createAvatar(nickname, width, height, font)
+function createAvatar(nickname, width, height, font, force)
 {
-    if (bgWindow) return bgWindow.createAvatar(nickname, width, height, font);
+    if (bgWindow) return bgWindow.createAvatar(nickname, width, height, font, force);
 }
 
 function __newElement(el, id, html, className)
@@ -784,7 +792,10 @@ function occupantAvatarClicked(ev, view)
 
     if (jid && converse.env.Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
     {
-        _converse.api.chats.open(jid);
+         _converse.api.chats.open(jid, {nickname: nick, fullname: nick}).then(chat => {
+             if (!chat.vcard.attributes.fullname) chat.vcard.set('fullname', nick);
+             if (!chat.vcard.attributes.nickname) chat.vcard.set('nickname', nick);
+         });
     }
 }
 

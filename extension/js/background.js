@@ -3318,14 +3318,14 @@ function updateVCardAvatar(jid, avatar)
 }
 
 
-function createAvatar(nickname, width, height, font)
+function createAvatar(nickname, width, height, font, force)
 {
     if (!nickname) nickname = "Anonymous";
     nickname = nickname.toLowerCase();
 
     if (avatars[nickname])
     {
-        return avatars[nickname];
+        if (!force) return avatars[nickname];
     }
 
     if (getSetting("converseRandomAvatars", false))

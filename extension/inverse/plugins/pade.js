@@ -18,6 +18,7 @@
      var _converse = null;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var notified = false;
+     var anonRoster = {};
 
      window.chatThreads = {};
 
@@ -168,7 +169,7 @@
                         }
                     }
 
-                    if (type == "chatroom")  // chatboxes handled in background.js
+                    if (type == "chatroom")
                     {
                         var theNick =  message.getAttribute("from").split("/")[1];
                         var myName =  chatbox.get('name');
@@ -258,6 +259,23 @@
                 const jid = view.model.get("jid");
                 console.debug("chatRoomOpened", view);
 
+                if (!_converse.connection.pass) // anonymous, track roster
+                {
+                    view.model.occupants.on('add', occupant =>
+                    {
+                        console.debug("chatbox.occupants added", occupant);
+                        anonRoster[occupant.get("jid")] = occupant.get("nick");
+
+                    });
+
+                    view.model.occupants.on('remove', occupant =>
+                    {
+                        console.debug("chatbox.occupants removed", occupant);
+                        delete anonRoster[occupant.get("jid")];
+                    });
+                }
+
+
                 if (getSetting("enableThreading", false))
                 {
                     const box_id = view.model.get("box_id");
@@ -290,13 +308,36 @@
 
             _converse.api.listen.on('chatBoxInitialized', function (view)
             {
+                console.debug("chatBoxInitialized", view.model, anonRoster);
+
                 const jid = view.model.get("jid");
-                console.debug("pade plugin chatBoxInitialized", jid);
+                const activeDiv = document.getElementById("active-conversations");
+                console.debug("pade plugin chatBoxInitialized", jid, activeDiv);
 
                 if (bgWindow)
                 {
                     bgWindow.pade.autoJoinPrivateChats[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
                 }
+
+                if (!_converse.connection.pass)
+                {
+                    if (anonRoster[view.model.get("jid")])
+                    {
+                        const nick = anonRoster[view.model.get("jid")];
+                        view.model.set('fullname', nick);
+                        view.model.set('nickname', nick);
+                        view.model.vcard.set('nickname', nick);
+                        view.model.vcard.set('fullname', nick);
+
+                        const dataUri = getSetting("avatar", createAvatar(nick, null, null, null, true));
+                        const avatar = dataUri.split(";base64,");
+
+                        view.model.vcard.set('image', avatar[1]);
+                        view.model.vcard.set('image_type', 'image/png');
+                    }
+                }
+
+                if (activeDiv) addActiveConversation(view.model, activeDiv);
             });
 
             _converse.api.listen.on('chatBoxClosed', function (chatbox)
@@ -332,8 +373,45 @@
 
             _converse.api.listen.on('connected', function()
             {
-                var initPade = function initPade()
+                if (chrome.pade)    // browser mode
                 {
+                    if (typeof module === 'object') // electron fix for jQuery
+                    {
+                        window.module = module; module = undefined;
+                    }
+
+                    top.pade.connection = _converse.connection;
+                    top.addHandlers();
+                    top.publishUserLocation();
+                    top.setupUserPayment();
+
+                    const username = Strophe.getNodeFromJid(_converse.connection.jid);
+                    const password = _converse.connection.pass;
+
+                    if (username && password)
+                    {
+                        if (top.setCredentials)    // save new credentials
+                        {
+                            top.setCredentials({id: username, password: password});
+                        }
+
+                        if (top.webpush && top.webpush.registerServiceWorker) // register webpush service worker
+                        {
+                            top.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
+                        }
+                    }
+                    else {
+
+                    }
+
+                    window.addEventListener('focus', function(evt)
+                    {
+                        chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                        chrome.browserAction.setBadgeText({ text: "" });
+                    });
+                }
+
+                _converse.api.waitUntil('bookmarksInitialized').then((initPade) => {
                     var myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
 
                     if (!_converse.singleton)
@@ -405,45 +483,35 @@
                         }
                     }
 
-                    console.log("pade plugin is ready");
-                }
+                });
 
-                Promise.all([_converse.api.waitUntil('bookmarksInitialized')]).then(initPade);
+                _converse.api.waitUntil('controlBoxInitialized').then(() => {
 
-                if (chrome.pade)    // browser mode
-                {
-                    if (typeof module === 'object') // electron fix for jQuery
+                    if (!_converse.connection.pass)     // anonymous connection, use Pade settings for _converse.xmppstatus
                     {
-                        window.module = module; module = undefined;
+                        setTimeout(function()
+                        {
+                            const nick = getSetting("displayname");
+                            _converse.xmppstatus.set('fullname', nick);
+                            _converse.xmppstatus.set('nickname', nick);
+                            _converse.xmppstatus.vcard.set('nickname', nick);
+                            _converse.xmppstatus.vcard.set('fullname', nick);
+
+                            const dataUri = getSetting("avatar", createAvatar(nick, null, null, null, true));
+                            const avatar = dataUri.split(";base64,");
+
+                            _converse.xmppstatus.vcard.set('image', avatar[1]);
+                            _converse.xmppstatus.vcard.set('image_type', 'image/png');
+                        }, 1000);
                     }
 
-                    top.pade.connection = _converse.connection;
-                    top.addHandlers();
-                    top.publishUserLocation();
-                    top.setupUserPayment();
-
-                    const username = Strophe.getNodeFromJid(_converse.connection.jid);
-                    const password = _converse.connection.pass;
-
-                    if (username && password)
+                    if (getSetting("converseSimpleView", false))
                     {
-                        if (top.setCredentials)    // save new credentials
-                        {
-                            top.setCredentials({id: username, password: password});
-                        }
-
-                        if (top.webpush && top.webpush.registerServiceWorker) // register webpush service worker
-                        {
-                            top.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
-                        }
+                        handleActiveConversations();
                     }
+                });
 
-                    window.addEventListener('focus', function(evt)
-                    {
-                        chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
-                        chrome.browserAction.setBadgeText({ text: "" });
-                    });
-                }
+                console.log("pade plugin is ready");
             });
         },
 

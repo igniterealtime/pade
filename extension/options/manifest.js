@@ -1087,6 +1087,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "converseSimpleView",
+            "type": "checkbox",
+            "label": i18n.get("Use simple conversations view")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "converseEmbedOfMeet",
             "type": "checkbox",
             "label": i18n.get("Embed Openfire Meetings in Converse")

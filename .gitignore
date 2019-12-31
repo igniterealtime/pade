@@ -1,11 +1,15 @@
 branding/home.zip
 branding/work.zip
 branding/ignite.zip
+branding/jitsi.zip
 branding/bloqzone.zip
+
 branding/home/
 branding/work/
 branding/ignite/
 branding/bloqzone/
+branding/jitsi/
+
 branding/templates/bloqzone/
 branding/*.cmd
 

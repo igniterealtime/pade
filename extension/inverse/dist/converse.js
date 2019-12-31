@@ -61830,7 +61830,7 @@ converse_core.plugins.add('converse-vcard', {
 
       getDisplayName() {
         // BAO
-        return this.get('fullname') || this.get('nickname') || this.get('jid');
+        return this.get('fullname') || this.get('nickname') || converse.env.Strophe.getNodeFromJid(this.get('jid'));
       }
 
     });
