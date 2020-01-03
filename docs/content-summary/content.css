@@ -1,0 +1,41 @@
+#pade-preview-image {
+    max-width: 768px;
+}
+
+.plugin-contentbox {
+    border-left: 0.1em solid #707070 !important;
+    width: 100%;
+    overflow-y: scroll;    
+    padding: 6px !important;      
+}
+
+.plugin-contentbox h3 {
+    font-weight: bold !important; 
+    padding: 6px !important;      
+}
+
+.plugin-contentbox details {
+    padding: 6px !important;  
+    color: var(--message-text-color);
+    border: none !important;
+    text-align: left;
+    outline: none;
+    font-size: 15px !important;
+    cursor: pointer;
+}
+.plugin-contentbox summary {
+  outline:none;
+  color: var(--message-text-color);
+}
+
+.mediaItem {
+  color: var(--message-text-color);
+  max-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plugin-contentbox li {
+    height: 18px !important;
+}

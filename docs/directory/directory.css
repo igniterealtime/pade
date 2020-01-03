@@ -1,0 +1,24 @@
+#plugin-directory table {
+    color: #333;
+    font-family: Helvetica, Arial, sans-serif;
+    border-collapse:
+    collapse; border-spacing: 0;
+    width: 95%;
+}
+
+#plugin-directory td, th {
+    border: 1px solid transparent; /* No more visible border */
+    height: 30px;
+    transition: all 0.3s;  /* Simple transition for hover effect */
+}
+
+#plugin-directory th {
+    background: #DFDFDF;  /* Darken header a bit */
+    font-weight: bold;
+}
+
+#plugin-directory td {
+    background: #FAFAFA;
+    text-align: left;
+    vertical-align: top;
+}
