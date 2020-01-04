@@ -1,5 +1,6 @@
 {
   "auto_login": false,
+  "allow_logout": false,  
   "authentication": "login",
   "auto_away": 300,
   "domain_placeholder": "igniterealtime.org",
@@ -43,5 +44,6 @@
   "message_limit": 0,
   "sounds_path": "./dist/sounds/",
   "enable_smacks": false,
+  "show_client_info": false,  
   "auto_join_rooms": ["open_chat@conference.igniterealtime.org"]
 }
