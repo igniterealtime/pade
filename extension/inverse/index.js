@@ -756,6 +756,12 @@ function setAvatar(nickname, avatar)
 
 function createAvatar(nickname, width, height, font, force)
 {
+    if (_converse.vcards)
+    {
+        const vcard = _converse.vcards.findWhere({'nickname': nickname});
+        if (vcard && vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
+    }
+
     if (bgWindow) return bgWindow.createAvatar(nickname, width, height, font, force);
 }
 

@@ -227,7 +227,7 @@
             const status = element.querySelector(".occupant-status");
             let imgEle = element.querySelector(".occupant-avatar");
             const image = createAvatar(occupant.get('nick'));
-            const imgHtml = '<img title="click to chat" data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
+            const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
 
             if (imgEle)
             {
@@ -237,13 +237,6 @@
                 imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
                 status.insertAdjacentElement('beforeBegin', imgEle);
             }
-
-            imgEle.addEventListener('click', function(evt)
-            {
-                evt.stopPropagation();
-                occupantAvatarClicked(evt);
-
-            }, false);
 
             if (occupant.get('jid'))
             {
@@ -277,6 +270,12 @@
         if (avatars[nickname] && !force)
         {
             return avatars[nickname];
+        }
+
+        if (_converse.vcards)
+        {
+            const vcard = _converse.vcards.findWhere({'nickname': nickname});
+            if (vcard && vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
         }
 
         if (!width) width = 32;

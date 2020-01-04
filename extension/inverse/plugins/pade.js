@@ -259,21 +259,22 @@
                 const jid = view.model.get("jid");
                 console.debug("chatRoomOpened", view);
 
-                if (!_converse.connection.pass) // anonymous, track roster
+                view.model.occupants.on('add', occupant =>
                 {
-                    view.model.occupants.on('add', occupant =>
+                    if (occupant.get("jid"))
                     {
                         console.debug("chatbox.occupants added", occupant);
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
+                    }
 
-                    });
+                    setTimeout(function() {extendOccupant(occupant, view)}, 500);
+                });
 
-                    view.model.occupants.on('remove', occupant =>
-                    {
-                        console.debug("chatbox.occupants removed", occupant);
-                        delete anonRoster[occupant.get("jid")];
-                    });
-                }
+                view.model.occupants.on('remove', occupant =>
+                {
+                    console.debug("chatbox.occupants removed", occupant);
+                    delete anonRoster[occupant.get("jid")];
+                });
 
 
                 if (getSetting("enableThreading", false))
@@ -837,6 +838,66 @@
             }
         }
     });
+
+    var occupantAvatarClicked = function(ev)
+    {
+        const jid = ev.target.getAttribute('data-room-jid');
+        const nick = ev.target.getAttribute('data-room-nick');
+
+        if (jid && converse.env.Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
+        {
+             _converse.api.chats.open(jid, {nickname: nick, fullname: nick}).then(chat => {
+                 if (!chat.vcard.attributes.fullname) chat.vcard.set('fullname', nick);
+                 if (!chat.vcard.attributes.nickname) chat.vcard.set('nickname', nick);
+             });
+        }
+    }
+
+    var extendOccupant = function(occupant, view)
+    {
+        const element = document.getElementById(occupant.get('id'));
+        console.debug("extendOccupant", element);
+
+        if (element)
+        {
+            const status = element.querySelector(".occupant-status");
+            let imgEle = element.querySelector(".occupant-avatar");
+            const image = createAvatar(occupant.get('nick'));
+            const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
+
+            if (imgEle)
+            {
+                imgEle.innerHTML = imgHtml;
+            }
+            else {
+                imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
+                status.insertAdjacentElement('beforeBegin', imgEle);
+            }
+
+            if (occupant.get('jid'))
+            {
+                const badges = element.querySelector(".occupant-badges");
+                let padeEle = element.querySelector(".occupants-pade-chat");
+                const html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+                if (padeEle)
+                {
+                    padeEle.innerHTML = html;
+                }
+                else {
+                    padeEle = __newElement('span', null, html, 'occupants-pade-chat');
+                    badges.appendChild(padeEle);
+                }
+
+                padeEle.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    occupantAvatarClicked(evt);
+
+                }, false);
+            }
+        }
+    }
 
     var displayReactions = function(msgId, positives, negatives)
     {

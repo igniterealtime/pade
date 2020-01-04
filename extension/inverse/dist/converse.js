@@ -62149,10 +62149,10 @@ converse_core.plugins.add("converse-autocomplete", {
       if (_converse.vcards)
       {
         const vcard = _converse.vcards.findWhere({'nickname': text});
-        if (vcard) dataUri = "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
+        if (vcard && vcard.get('image')) dataUri = "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
       }
 
-      img.setAttribute("src", createAvatar(text));
+      img.setAttribute("src", dataUri);
       img.setAttribute("width", "22");
       img.setAttribute("class", "roster-avatar avatar");
       element.appendChild(img);
