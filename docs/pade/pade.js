@@ -314,6 +314,15 @@
         }
     }
 
+    function setAvatar(nickname, avatar)
+    {
+        if (nickname && !avatars[nickname])
+        {
+            nickname = nickname.toLowerCase();
+            avatars[nickname] = avatar;
+        }
+    }
+
     function createAvatar (nickname, width, height, font, force)
     {
         nickname = nickname.toLowerCase();
