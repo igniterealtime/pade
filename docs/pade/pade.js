@@ -57,8 +57,9 @@
                     {
                         console.debug("chatbox.occupants added", occupant);
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
-                        setTimeout(function() {attachBadge(occupant, view)}, 500);
                     }
+
+                    setTimeout(function() {extendOccupant(occupant, view)}, 500);
 
                 });
 
@@ -216,32 +217,56 @@
         }
     }
 
-    function attachBadge(occupant, view)
+    function extendOccupant(occupant, view)
     {
         const element = document.getElementById(occupant.get('id'));
-        console.debug("attachBadge", element);
+        console.debug("extendOccupant", element);
 
         if (element)
         {
-            const badges = element.querySelector(".occupant-badges");
-            let padeEle = element.querySelector(".occupants-pade");
-            const html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+            const status = element.querySelector(".occupant-status");
+            let imgEle = element.querySelector(".occupant-avatar");
+            const image = createAvatar(occupant.get('nick'));
+            const imgHtml = '<img title="click to chat" data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
 
-            if (padeEle)
+            if (imgEle)
             {
-                padeEle.innerHTML = html;
+                imgEle.innerHTML = imgHtml;
             }
             else {
-                padeEle = __newElement('span', null, html, 'occupants-pade');
-                badges.appendChild(padeEle);
+                imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
+                status.insertAdjacentElement('beforeBegin', imgEle);
             }
 
-            padeEle.addEventListener('click', function(evt)
+            imgEle.addEventListener('click', function(evt)
             {
                 evt.stopPropagation();
                 occupantAvatarClicked(evt);
 
             }, false);
+
+            if (occupant.get('jid'))
+            {
+                const badges = element.querySelector(".occupant-badges");
+                let padeEle = element.querySelector(".occupants-pade-chat");
+                const html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+                if (padeEle)
+                {
+                    padeEle.innerHTML = html;
+                }
+                else {
+                    padeEle = __newElement('span', null, html, 'occupants-pade-chat');
+                    badges.appendChild(padeEle);
+                }
+
+                padeEle.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    occupantAvatarClicked(evt);
+
+                }, false);
+            }
         }
     }
 
