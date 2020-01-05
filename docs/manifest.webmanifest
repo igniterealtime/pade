@@ -1,7 +1,7 @@
 {
     "short_name": "pade.chat",
     "name": "pade.chat",
-    "description": "Unified Communications web client",    
+    "description": "Pade - Converse",    
     "icons": [
         {
             "src": "images/image_192.png",
