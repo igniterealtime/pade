@@ -10,7 +10,7 @@
     <version>0.0.1-SNAPSHOT</version>
     
     <properties>
-        <pade.url>https://desktop-545pc5b:7443/apps/index.html</pade.url>
+        <pade.url>https://igniterealtime.github.io/Pade/</pade.url>
     </properties>    
 
     <name>Pade Electron</name>
