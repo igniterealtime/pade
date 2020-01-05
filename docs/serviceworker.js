@@ -13,7 +13,7 @@ self.addEventListener('install', function(event) {
 // activate trigger
 
 self.addEventListener('activate', function (event) {
-    console.log('Activated', event);
+    console.debug('Activated', event);
 });
 
 
@@ -39,30 +39,53 @@ self.addEventListener('fetch', function(event) {
 // push trigger
 
 self.addEventListener('push', function (event) {
-    var data = event.data.text();
+   const data = event.data.json();
+   const pos = location.href.lastIndexOf('/') + 1;
 
-   console.log('Push message', data);
-    //data = JSON.parse(data);
+   data.url = location.href.substring(0, pos);
 
-    var options = {
-        body: data,
-        icon: 'icon.png',
+   console.debug('Push message', data);
+
+   const options = {
+        body: data.msgBody,
+        icon: 'images/converse.png',
         vibrate: [100, 50, 100],
         data: data,
         actions: [
-          {action: 'read', title: 'Read', icon: './check-solid.png'},
-          {action: 'ignore', title: 'Ignore', icon: './times-solid.png'},
+          {action: 'read', title: 'Read', icon: 'images/check-solid.png'},
+          {action: 'ignore', title: 'Ignore', icon: 'images/times-solid.png'},
         ]
     };
     event.waitUntil(
-        self.registration.showNotification(data.title, options)
+        self.registration.showNotification("Pade - Converse", options)
     );
+});
+
+self.addEventListener('notificationclose', function(e) {
+  console.debug('Closed notification', e.notification);
 });
 
 self.addEventListener('notificationclick', function(event) {
     event.notification.close();
 
-    if (event.action === 'read') {
-        event.waitUntil(clients.openWindow(event.notification.data.url, event.notification.data.url));
+    if (event.action === 'read')
+    {
+        event.waitUntil(clients.matchAll({type: "window"}).then(function(clientList)
+        {
+            const url = event.notification.data.url;
+
+            for (var i = 0; i < clientList.length; i++) {
+                var client = clientList[i];
+                console.debug("found url", client.url, client);
+
+                if (client.url == event.notification.data.url && client.visibilityState == "visible") {
+                    client.postMessage(event.notification.data);
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(event.notification.data.url);
+            }
+        }));
     }
 }, false);

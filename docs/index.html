@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>inVerse</title>
+    <title>Pade - Converse</title>
     <link rel="shortcut icon" type="image/ico" href="css/images/favicon.ico"/>
 
     <link type="text/css" rel="stylesheet" media="screen" href="dist/converse.css" />
@@ -110,16 +110,20 @@
 
                 swRegistration.pushManager.getSubscription().then(function(subscription)
                 {
-                    //if (subscription) subscription.unsubscribe();
+                    if (subscription && !localStorage["pade.vapid.keys"])
+                    {
+                        subscription.unsubscribe();
+                        subscription = null;
+                    }
 
                     if (!subscription) {
                         const keys = window.WebPushLib.generateVAPIDKeys();
                         console.log('Service Worker new subscription keys', keys);
-                        localStorage["pade.vapid.keys"] = JSON.stringify(keys);
 
                         swRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(keys.publicKey)}).then(function(subscription)
                         {
                             console.log('User is subscribed.');
+                            localStorage["pade.vapid.keys"] = JSON.stringify(keys);
                             handleSubscription(config, subscription, keys);
 
                         }).catch(function(err) {

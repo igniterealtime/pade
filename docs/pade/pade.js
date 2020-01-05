@@ -40,18 +40,12 @@
             {
                 var chatbox = data.chatbox;
                 var message = data.stanza;
+                var history = message.querySelector('forwarded');
+                var body = message.querySelector('body');
 
-                if (chatbox)
+                if (!history && body && chatbox)
                 {
-                    var body = message.querySelector('body');
-
-                    if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
-                    {
-                        setActiveConversationsUread(chatbox, body.innerHTML);
-                    }
-                    else {
-                        setActiveConversationsRead(chatbox);
-                    }
+                    setActiveConversationsUread(chatbox, body.innerHTML);
                 }
             });
 
@@ -73,8 +67,7 @@
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
                     }
 
-                    setTimeout(function() {extendOccupant(occupant, view)}, 500);
-
+                    extendOccupant(occupant, this);
                 });
 
                 view.model.occupants.on('remove', occupant =>
@@ -168,7 +161,7 @@
                     webpush.addEventListener('click', function(evt)
                     {
                         evt.stopPropagation();
-                        sendSelfNotification({title: 'Web Push Plugin', body: 'Web Push Plugin is ready'});
+                        sendSelfNotification({msgBody: 'Web Push Plugin is working', msgFrom: _converse.bare_jid, msgType: 'chat'});
 
                     }, false);
                 }
@@ -201,21 +194,44 @@
             ChatRoomView: {
 
                 afterShown: function() {
-
                     const ret = this.__super__.afterShown.apply(this, arguments);
                     return ret;
                 },
 
                 setChatRoomSubject: function() {
-
                     const retValue = this.__super__.setChatRoomSubject.apply(this, arguments);
                     return retValue;
-                }
+                },
+
+                showJoinNotification: function(occupant) {
+                    const retValue = this.__super__.showJoinNotification.apply(this, arguments);
+                    return retValue;
+                },
             },
 
             ChatBoxView: {
 
                 afterShown: function() {
+
+                    var id = this.model.get("box_id");
+                    var jid = this.model.get("jid");
+                    var type = this.model.get("type");
+
+                    var display_name = this.model.getDisplayName().trim();
+                    if (!display_name || display_name == "") display_name = jid;
+
+                    console.debug("afterShown", id, jid, type);
+
+                    var openButton = document.getElementById("pade-active-" + id);
+                    var openBadge = document.getElementById("pade-badge-" + id);
+
+                    if (openButton)
+                    {
+                        openButton.innerText = display_name;
+                        openButton.style.fontWeight = "bold";
+                    }
+
+                    if (openBadge) openBadge.setAttribute("data-badge", "0");
 
                     const ret = this.__super__.afterShown.apply(this, arguments);
                     return ret;
@@ -259,13 +275,28 @@
         }
     }
 
+    function rafAsync() {
+        return new Promise(resolve => {
+            requestAnimationFrame(resolve);
+        });
+    }
+
+    function checkElement(id) {
+        if (document.getElementById(id) === null) {
+            return rafAsync().then(() => checkElement(id));
+        } else {
+            return Promise.resolve(document.getElementById(id));
+        }
+    }
+
     function extendOccupant(occupant, view)
     {
-        const element = document.getElementById(occupant.get('id'));
-        console.debug("extendOccupant", element);
+        console.debug("extendOccupant", occupant, view);
 
-        if (element)
+        checkElement(occupant.get('id')).then((element) =>
         {
+            console.debug("extendOccupant", element);
+
             const status = element.querySelector(".occupant-status");
             let imgEle = element.querySelector(".occupant-avatar");
             const image = createAvatar(occupant.get('nick'));
@@ -304,7 +335,9 @@
 
                 }, false);
             }
-        }
+        });
+
+        const element = document.getElementById(occupant.get('id'));
     }
 
     function extendControlBox()
@@ -604,6 +637,13 @@
                 }, false);
             }
         }
+    }
+
+    function setActiveConversationsTitle(chatbox, newMessage)
+    {
+        var id = chatbox.get("box_id");
+        var openButton = document.getElementById("pade-active-" + id);
+        if (openButton && newMessage) openButton.title = newMessage;
     }
 
     function setActiveConversationsUread(chatbox, newMessage)

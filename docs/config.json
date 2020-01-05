@@ -1,9 +1,8 @@
 {
   "auto_login": false,
-  "allow_logout": false,  
+  "allow_logout": false,
   "authentication": "login",
   "auto_away": 300,
-  "domain_placeholder": "igniterealtime.org",
   "notification_icon": "./css/images/logo/conversejs-filled.svg",
   "view_mode": "fullscreen",
   "muc_show_join_leave_status": true,
@@ -12,8 +11,8 @@
   "muc_mention_autocomplete_min_chars": 0,
   "assets_path": "./dist/",
   "clear_messages_on_reconnection": true,
-  "default_domain": "igniterealtime.org",
-  "bosh_service_url": "https://igniterealtime.org/http-bind/",
+  "default_domain": "conversejs.org",
+  "bosh_service_url": "https://conversejs.org/http-bind/",
   "auto_reconnect": true,
   "roster_groups": true,
   "singleton": false,
@@ -41,9 +40,9 @@
     "converse-minimize",
     "converse-dragresize"
   ], 
+  "show_client_info": false,
   "message_limit": 0,
   "sounds_path": "./dist/sounds/",
   "enable_smacks": false,
-  "show_client_info": false,  
-  "auto_join_rooms": ["open_chat@conference.igniterealtime.org"]
+  "auto_join_rooms": ["discuss@conference.conversejs.org"]
 }
