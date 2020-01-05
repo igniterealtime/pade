@@ -161,14 +161,17 @@
 
                 }, false);
 
-                const webpush = addToolbarItem(view, id, "pade-webpush-" + id, '<a class="fa fa-bell" title="Web Push"></a>');
-
-                webpush.addEventListener('click', function(evt)
+                if (localStorage["pade.vapid.keys"])
                 {
-                    evt.stopPropagation();
-                    sendSelfNotification({title: 'Web Push Plugin', body: 'Web Push Plugin is ready'});
+                    const webpush = addToolbarItem(view, id, "pade-webpush-" + id, '<a class="fa fa-bell" title="Web Push Self"></a>');
 
-                }, false);
+                    webpush.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+                        sendSelfNotification({title: 'Web Push Plugin', body: 'Web Push Plugin is ready'});
+
+                    }, false);
+                }
             });
         },
 
