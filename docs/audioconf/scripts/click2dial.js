@@ -2190,12 +2190,12 @@ var requirejs, require, define, infoVoxbone;
       if (!window.JitsiMeetJS) {
         requirejs(['jquery'],
           function() {
-            console.log("jquery loaded");
+            console.debug("jquery loaded");
             requirejs(['libjitsi'],
               function(jitsi) {
                 window.JitsiMeetJS = jitsi;
                 loadJitsi();
-                console.log("libjitsi loaded", JitsiMeetJS);
+                console.debug("libjitsi loaded", JitsiMeetJS);
               }
             );
           }
