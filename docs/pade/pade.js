@@ -140,7 +140,6 @@
                 }
 
                 _converse.api.waitUntil('roomsPanelRendered').then(() => {
-                    console.log("roomsPanelRendered");
                     extendControlBox();
 
                     console.log("pade plugin is ready");
@@ -153,12 +152,21 @@
                 var id = view.model.get("box_id");
                 var jid = view.model.get("jid");
 
-                var scrolldown = addToolbarItem(view, id, "ignite-scrolldown-" + id, '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>');
+                var scrolldown = addToolbarItem(view, id, "pade-scrolldown-" + id, '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>');
 
                 scrolldown.addEventListener('click', function(evt)
                 {
                     evt.stopPropagation();
                     view.viewUnreadMessages()
+
+                }, false);
+
+                const webpush = addToolbarItem(view, id, "pade-webpush-" + id, '<a class="fa fa-bell" title="Web Push"></a>');
+
+                webpush.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    sendSelfNotification({title: 'Web Push Plugin', body: 'Web Push Plugin is ready'});
 
                 }, false);
             });
@@ -225,6 +233,15 @@
         }
     });
 
+    function sendSelfNotification(payload)
+    {
+        window.WebPushLib.sendNotification(window.WebPushLib.selfSubscription, JSON.stringify(payload), {TTL: 60}).then(response => {
+            console.log("Web Push Notification is sended!")
+        }).catch(e => {
+            console.error('Failed to notify self: ', e)
+        })
+    }
+
     function occupantAvatarClicked(ev)
     {
         const jid = ev.target.getAttribute('data-room-jid');
@@ -260,7 +277,9 @@
                 status.insertAdjacentElement('beforeBegin', imgEle);
             }
 
-            if (occupant.get('jid'))
+            const myJid = Strophe.getBareJidFromJid(_converse.connection.jid);
+
+            if (occupant.get('jid') && myJid != occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");
@@ -288,7 +307,7 @@
     function extendControlBox()
     {
         const section = document.body.querySelector('.controlbox-section.profile.d-flex');
-        console.log("extendControlBox", section);
+        console.debug("extendControlBox", section);
 
         if (section)
         {
@@ -311,6 +330,9 @@
 
 
             }, false);
+
+            // set active conversations as default view
+            handleActiveConversations();
         }
     }
 

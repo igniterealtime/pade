@@ -27,6 +27,7 @@
     <script src="jitsimeet/jitsimeet.js"></script>
     <script src="audioconf/audioconf.js"></script>
     <script src="fastpath/fastpath.js"></script>
+    <script src="pade/webpush-browserify-bundle.js"></script>
     <script src="pade/pade.js"></script>
 
 </head>
@@ -62,7 +63,7 @@
             if ( request.status >= 200 && request.status < 400 )
             {
                 var config = JSON.parse( request.responseText );
-                converse.initialize( config )
+                initServiceWorker( config );
             }
             else
             {
@@ -78,6 +79,84 @@
         request.send();
     }
 
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    function initServiceWorker(config)
+    {
+        if ('serviceWorker' in navigator && 'PushManager' in window)
+        {
+            console.log('Service Worker and Push is supported', config);
+
+            navigator.serviceWorker.onmessage = function(event) {
+                console.log("Broadcasted from SW : ", event.data);
+            };
+
+            navigator.serviceWorker.register('./serviceworker.js').then(function(swRegistration)
+            {
+                console.log('Service Worker is registered', swRegistration);
+
+                swRegistration.pushManager.getSubscription().then(function(subscription)
+                {
+                    //if (subscription) subscription.unsubscribe();
+
+                    if (!subscription) {
+                        const keys = window.WebPushLib.generateVAPIDKeys();
+                        console.log('Service Worker new subscription keys', keys);
+                        localStorage["pade.vapid.keys"] = JSON.stringify(keys);
+
+                        swRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(keys.publicKey)}).then(function(subscription)
+                        {
+                            console.log('User is subscribed.');
+                            handleSubscription(config, subscription, keys);
+
+                        }).catch(function(err) {
+                            console.log('Failed to subscribe the user: ', err);
+                            converse.initialize( config )
+                        });
+                    }
+                    else {
+                        handleSubscription(config, subscription, JSON.parse(localStorage["pade.vapid.keys"]));
+                    }
+
+                }).catch(function(error) {
+                    console.log('Error unsubscribing', error);
+                    converse.initialize( config )
+                });
+
+            }).catch(function(error) {
+                console.error('Service Worker Error', error);
+                converse.initialize( config )
+            });
+        } else {
+            console.warn('Push messaging is not supported');
+            converse.initialize( config )
+        }
+    }
+
+    function handleSubscription(config, subscription, keys)
+    {
+        console.log('handleSubscription', config, subscription, keys);
+
+        const secret = btoa(JSON.stringify({privateKey: keys.privateKey, publicKey: keys.publicKey, subscription: subscription}));
+        if (secret) config.push_app_servers = [{'jid': config.domain_placeholder, 'node': 'webpush', 'secret': secret}];
+        converse.initialize( config )
+
+        window.WebPushLib.setVapidDetails('xmpp:' + config.domain_placeholder, keys.publicKey, keys.privateKey);
+        window.WebPushLib.selfSubscription = JSON.parse(JSON.stringify(subscription));
+    }
     ready( initConverse );
 </script>
 </body>

@@ -874,7 +874,9 @@
                 status.insertAdjacentElement('beforeBegin', imgEle);
             }
 
-            if (occupant.get('jid'))
+            const myJid = Strophe.getBareJidFromJid(_converse.connection.jid);
+
+            if (occupant.get('jid') && myJid != occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");
