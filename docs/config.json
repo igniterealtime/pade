@@ -32,6 +32,7 @@
     "jitsimeet", 
     "audioconf", 
     "fastpath",
+    "browsertab",     
     "pade"
   ],
   "message_carbons": true,
