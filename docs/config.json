@@ -11,6 +11,7 @@
   "muc_mention_autocomplete_min_chars": 0,
   "assets_path": "./dist/",
   "clear_messages_on_reconnection": true,
+  "domain_placeholder": "conversejs.org",  
   "default_domain": "conversejs.org",
   "bosh_service_url": "https://conversejs.org/http-bind/",
   "auto_reconnect": true,

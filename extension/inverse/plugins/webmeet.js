@@ -743,6 +743,14 @@
 
             MessageView: {
 
+                transformOOBURL: function(url)
+                {
+                    if (url && url.indexOf("location/leaflet/index.html?accuracy=") > -1)
+                    {
+                        return "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='" + url + "'></iframe>";
+                    }
+                },
+
                 renderChatMessage: async function renderChatMessage()
                 {
                     console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model);

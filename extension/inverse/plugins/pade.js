@@ -267,7 +267,7 @@
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
                     }
 
-                    setTimeout(function() {extendOccupant(occupant, view)}, 500);
+                    setTimeout(function() {extendOccupant(occupant, view)}, 1000);
                 });
 
                 view.model.occupants.on('remove', occupant =>

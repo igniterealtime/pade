@@ -1186,6 +1186,7 @@ this.manifest = {
                 {"text": "Fly Concord", "value": "concord"},
                 {"text": "Paper White", "value": "paperwhite"},
                 {"text": "Hand Write", "value": "handwrite"},
+                {"text": "Red Pill", "value": "redpill"},
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}
             ]
