@@ -34,6 +34,7 @@
     "audioconf", 
     "fastpath",
     "browsertab",     
+    "location",      
     "pade"
   ],
   "message_carbons": true,
