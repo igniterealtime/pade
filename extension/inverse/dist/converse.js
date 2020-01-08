@@ -24428,7 +24428,8 @@ module.exports = isArray;
 
   // Throw an error when a URL is needed, and none is supplied.
   var urlError = function() {
-    throw new Error('A "url" property or function must be specified');
+    // BAO
+    //throw new Error('A "url" property or function must be specified');
   };
 
   // Wrap an optional error callback with a fallback error event.
@@ -46285,11 +46286,8 @@ Strophe.Connection.prototype = {
         {
             if (elem.outerHTML.indexOf("pade." + self.domain) > -1)
             {
-                if (typeof this.injectedMessage === "function")
-                {
-                    this.injectedMessage(elem);
-                    return
-                }
+                if (typeof self.injectedMessage === "function") self.injectedMessage(elem);
+                return
             }
             self._queueData(elem);
         }
@@ -59839,6 +59837,12 @@ converse_core.plugins.add('converse-mam', {
               stanza.c('field', {
                 'var': 'with'
               }).c('value').t(options['with']).up().up();
+            }
+
+            if (options['search']) {    // BAO
+              stanza.c('field', {
+                'var': 'urn:example:xmpp:free-text-search'
+              }).c('value').t(options['search']).up().up();
             }
 
             ['start', 'end'].forEach(t => {

@@ -242,12 +242,6 @@
 #conversejs #controlbox .controlbox-pane .controlbox-padded {
   padding-top: 4px;
 }
-      
-#conversejs .items-list .list-item.open {
-    padding-left: 5px;
-    border-left: 4px solid var(--light-blue);
-    /* background-color: #444 !important; */
-}
 
 #conversejs .chat-msg__time { 
   width: 120px;   

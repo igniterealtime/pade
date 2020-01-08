@@ -17804,7 +17804,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .items-list .list-item {
-    border: none;
+    border-left: 4px solid var(--controlbox-pane-background-color); /* BAO */
     clear: both;
     color: var(--text-color);
     overflow: hidden;
@@ -17872,6 +17872,7 @@ body.converse-fullscreen {
 }
 
 #conversejs .items-list .list-item.open {
+    border-left: 4px solid var(--light-blue);   /* BAO */
     background-color: var(--list-item-open-color)
 }
 

@@ -147,24 +147,36 @@
                     var numUnreadBox = chatbox.get("num_unread");
                     var numUnreadRoom = chatbox.get("num_unread_general");
 
-                    if (document.hasFocus())
+                    if (document.hasFocus() || notified)
                     {
                         chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
                         chrome.browserAction.setBadgeText({ text: "" });
                     }
                     else {
 
-                        if (!notified)
+                        if (bgWindow)
                         {
                             chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
+                            let count = 0;
 
-                            if (bgWindow)
+                            _converse.chatboxes.each(function (chat_box)
                             {
-                                if (!bgWindow.pade.messageCount) bgWindow.pade.messageCount = 0;
-                                bgWindow.pade.messageCount++;
+                                if (chat_box.get("type") == "chatbox")
+                                {
+                                    count = count + chat_box.get("num_unread");
+                                }
+                                else
 
+                                if (chat_box.get("type") == "chatroom")
+                                {
+                                    count = count + chat_box.get("num_unread_general");
+                                }
+                            });
+
+                            if (count > 0)
+                            {
                                 chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
-                                chrome.browserAction.setBadgeText({ text: bgWindow.pade.messageCount.toString() });
+                                chrome.browserAction.setBadgeText({ text: count.toString() });
                             }
                         }
                     }

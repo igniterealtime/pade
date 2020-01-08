@@ -133,7 +133,7 @@
                 console.error('createRosterEntry', err, url, options);
             });
         }
-        else openChat(jid, name);
+        else openChat(jid, name, groups);
     }
 
     var rssRefresh = function()
