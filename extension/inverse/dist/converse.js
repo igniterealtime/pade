@@ -46281,25 +46281,27 @@ Strophe.Connection.prototype = {
 
         // BAO - Interceptor for messages sennt to user@pade.domain to be handled by gateway plugin
 
-        if (elem.nodeTree && typeof elem.nodeTree.getAttribute === "function")
+        function checkForPadeBots(elem, self)
         {
-            const target = elem.nodeTree.getAttribute("to");
-
-            if (target && target.indexOf("pade." + this.domain) > -1)
+            if (elem.outerHTML.indexOf("pade." + self.domain) > -1)
             {
-                if (typeof this.injectedMessage === "function") this.injectedMessage(elem.nodeTree);
-                return;
+                if (typeof this.injectedMessage === "function")
+                {
+                    this.injectedMessage(elem);
+                    return
+                }
             }
+            self._queueData(elem);
         }
 
         if (typeof(elem.sort) === "function") {
             for (let i=0; i < elem.length; i++) {
-                this._queueData(elem[i]);
+                checkForPadeBots(elem[i], this);      // BAO
             }
         } else if (typeof(elem.tree) === "function") {
-            this._queueData(elem.tree());
+            checkForPadeBots(elem.tree(), this);      // BAO
         } else {
-            this._queueData(elem);
+            checkForPadeBots(elem, this);             // BAO
         }
         this._proto._send();
     },

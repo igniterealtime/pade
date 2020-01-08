@@ -133,9 +133,7 @@
                 console.error('createRosterEntry', err, url, options);
             });
         }
-        else {
-            _converse.api.chats.open(jid, {fullname: name});
-        }
+        else openChat(jid, name);
     }
 
     var rssRefresh = function()

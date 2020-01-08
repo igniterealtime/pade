@@ -509,19 +509,34 @@ function doConverse(server, username, password, anonUser)
     }
 }
 
-function openChat(from, name)
+function openChat(from, name, groups)
 {
     if (_inverse)
     {
+        if (!groups) groups = [];
+
         if (!name)
         {
             name = from.split("@")[0];
             if (name.indexOf("sms-") == 0) name = name.substring(4);
         }
 
-        var contact = _converse.roster.findWhere({'jid': from});
-        if (!contact) _inverse.roster.addAndSubscribe(from, name);
+        var contact = _inverse.roster.findWhere({'jid': from});
+
+        if (!contact)
+        {
+          _converse.roster.create({
+            'nickname': name,
+            'groups': groups,
+            'jid': from,
+            'subscription': 'both'
+          }, {
+            sort: false
+          });
+        }
+
         _inverse.api.chats.open(from);
+        _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + from + '"/>');
     }
 }
 
