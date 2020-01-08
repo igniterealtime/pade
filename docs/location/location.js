@@ -114,6 +114,9 @@
                     {
                         return "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='" + url + "'></iframe>";
                     }
+                    else {
+                        return this.__super__.transformOOBURL.apply(this, arguments);
+                    }
                 }
             }
         }
