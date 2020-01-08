@@ -844,7 +844,7 @@
         const jid = ev.target.getAttribute('data-room-jid');
         const nick = ev.target.getAttribute('data-room-nick');
 
-        if (jid && converse.env.Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
+        if (jid && _converse.bare_jid != jid)
         {
              _converse.api.chats.open(jid, {nickname: nick, fullname: nick}).then(chat => {
                  if (!chat.vcard.attributes.fullname) chat.vcard.set('fullname', nick);
@@ -860,23 +860,7 @@
 
         if (element)
         {
-            const status = element.querySelector(".occupant-status");
-            let imgEle = element.querySelector(".occupant-avatar");
-            const image = createAvatar(occupant.get('nick'));
-            const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
-
-            if (imgEle)
-            {
-                imgEle.innerHTML = imgHtml;
-            }
-            else {
-                imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
-                status.insertAdjacentElement('beforeBegin', imgEle);
-            }
-
-            const myJid = Strophe.getBareJidFromJid(_converse.connection.jid);
-
-            if (occupant.get('jid') && myJid != occupant.get('jid'))
+            if (occupant.get('jid') && _converse.bare_jid != occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");

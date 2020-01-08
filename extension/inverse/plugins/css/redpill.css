@@ -14876,9 +14876,9 @@ a#conversejs .badge-dark:focus {
     --occupants-padding: 1em;
     --occupants-background-color: var(--darkest-grey);
     --occupants-max-width: inherit;
-    --occupants-border-left: 1px solid var(--text-color);
-    --occupants-border-bottom: 1px solid lightgrey;
-    --occupants-features-display: block;
+    --occupants-border-left: 0px;
+    --occupants-border-bottom: 0px;    
+    --occupants-features-display: none;
     --embedded-emoji-picker-height: 300px;
     --avatar-border-radius: 50%;
     --avatar-border: 1px solid lightgrey;
@@ -18363,7 +18363,7 @@ body.converse-fullscreen {
     overflow-y: auto;
     flex-basis: 0;
     flex-grow: 1;
-    border-bottom: var(--occupants-border-bottom)
+    /* border-bottom: var(--occupants-border-bottom) */
 }
 
 #conversejs .chatroom .box-flyout .chatroom-body .occupants ul li,
