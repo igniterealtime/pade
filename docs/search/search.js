@@ -158,7 +158,7 @@
                     _converse.api.archive.query({to: jid, start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': groupchat, 'with': participant}).then(function(result)
                     {
                         const messages = result.messages;
-                        let html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
+                        let html = "<div><div class='row'><div class='col'><b>Date</b></div><div class='col'><b>Message</b></div><div class='col'><b>Participant</b></div></div><p/>";
 
                         for (let i=0; i<messages.length; i++)
                         {
@@ -168,18 +168,18 @@
                                 const delay = messages[i].querySelector('forwarded').querySelector('delay');
                                 const from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
                                 const time = delay ? delay.getAttribute('stamp') : dayjs().format();
-                                const pretty_time = dayjs(time).format('MMM DD<br/>HH:mm:ss');
+                                const pretty_time = dayjs(time).format('MMM DD HH:mm:ss');
                                 const pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
 
                                 if (keyword == "" || _converse.api.settings.get("search_free_text_search") || searchRegExp.test(body))
                                 {
                                     const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
-                                    html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
+                                    html = html + "<div class='row'><div class='col'>" + pretty_time + "</div><div class='col'>" + tagged + "</div><div class='col'>" + pretty_from + "</div></div>";
                                 }
                             }
                         }
 
-                        html =  html + "</table>";
+                        html =  html + "</div>";
                         searchResults.innerHTML = html;
                     });
                 }
