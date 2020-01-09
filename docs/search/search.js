@@ -34,66 +34,76 @@
                     const label = view.model.getDisplayName();
 
                     let participants = '';
-                    participants = participants + '   <label for="pade-search-participants"></label>';
-                    participants = participants + '   <select class="form-control" id="pade-search-participants" name="pade-search-participants">';
-                    participants = participants + '       <option value="' + jid + '">' + label + '</option>';
+                    this.model.set("participant", jid); // default
 
                     if (type == _converse.CHATROOMS_TYPE)
                     {
+                        participants = participants + '   <label for="pade-search-participants"></label>';
+                        participants = participants + '   <select class="form-control" id="pade-search-participants" name="pade-search-participants">';
+                        participants = participants + '       <option value="' + jid + '">' + label + '</option>';
+
                         view.model.occupants.each(function (occupant) {
                             if (occupant.get("jid")) participants = participants + '       <option value="' + occupant.get("jid") + '">' + occupant.get("nick") + '</option>';
                         });
+                        participants = participants + '   </select>';
                     }
-                    participants = participants + '   </select>';
 
                     return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
                          '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" >' +
                          participants +
+                         '  <label for="pade-search-start" class="col-form-label">Start:</label>' +
+                         '  <input id="pade-search-start" type="text" class="form-control" name="pade-search-start"/>' +
+                         '  <label for="pade-search-end" class="col-form-label">End:</label>' +
+                         '  <input id="pade-search-end" type="text" class="form-control" name="pade-search-end"/>' +
                          '<p/><div id="pade-search-results"></div>' +
                          '</div>' +
-                         '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
+                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-search">Search</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
                   const that = this;
                   this.el.addEventListener('shown.bs.modal', function()
                   {
-                      if (that.model.get("keyword"))
-                      {
-                          that.el.querySelector('#pade-search-keywords').style.display = "none";
-                          that.doSearch();
-                      }
-                      else {
-                        that.el.querySelector('#pade-search-keywords').focus();
-                      }
+                        flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(dayjs().startOf('day'))});
+                        flatpickr('#pade-search-end', {dateFormat: 'Z', enableTime: true, defaultDate: new Date()});
+
+                        if (that.model.get("keyword"))
+                        {
+                            that.el.querySelector('#pade-search-keywords').style.display = "none";
+                            that.doSearch();
+                        }
+                        else {
+                            that.el.querySelector('#pade-search-keywords').focus();
+                        }
 
                   }, false);
                 },
                 events: {
-                    'keyup #pade-search-keywords': 'keyUp'
+                    'keyup #pade-search-keywords': 'clickSearch',
+                    'click .btn-search': 'doSearch'
                 },
 
-                keyUp(ev) {
+                clickSearch(ev) {
                     if (ev.key === "Enter")
                     {
-                        const keyword = this.el.querySelector("#pade-search-keywords").value.trim();
-                        const participant = this.el.querySelector("#pade-search-participants").value.trim();
-
-                        this.model.set("keyword", keyword)
-                        this.model.set("participant", participant)
                         this.doSearch();
                     }
                 },
 
                 doSearch() {
+                    const start = this.el.querySelector("#pade-search-start").value;
+                    const end = this.el.querySelector("#pade-search-end").value;
+
+                    let participant = this.el.querySelector("#pade-search-participants");
+                    if (participant) participant = participant.value.trim();
+                    const keyword = this.el.querySelector("#pade-search-keywords").value.trim();
+
                     const view = this.model.get("view");
                     const type = view.model.get("type");
 
                     const that = this;
-                    const keyword = this.model.get("keyword");
-                    const participant = this.model.get("participant");
                     const searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'i');
                     const tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "im");
 
@@ -102,7 +112,7 @@
                     const searchResults = that.el.querySelector("#pade-search-results");
                     searchResults.innerHTML = "No Match";
 
-                    _converse.api.archive.query({before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': true, 'with': participant}).then(function(result)
+                    _converse.api.archive.query({start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': true, 'with': participant}).then(function(result)
                     {
                         const messages = result.messages;
                         let html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
