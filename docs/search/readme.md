@@ -9,4 +9,5 @@ This plugin uses [XMPP Message Archive Management](https://xmpp.org/extensions/x
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
 
 ## How to use
-Click on the magnifying glass icon on the conversation toolbar to display the modal form
+Click on the magnifying glass icon on the conversation toolbar to display the modal form. 
+Use a search command /search [/p <participant>] <text> for the text input box where <participant> is a full JID or username of a participant.

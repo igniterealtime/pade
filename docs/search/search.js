@@ -31,16 +31,15 @@
                     const view = this.model.get("view");
                     const jid = view.model.get("jid");
                     const type = view.model.get("type");
-                    const label = view.model.getDisplayName();
+                    const roomLabel = view.model.getDisplayName() + " (All)";
 
                     let participants = '';
                     this.model.set("participant", jid); // default
 
                     if (type == _converse.CHATROOMS_TYPE)
                     {
-                        participants = participants + '   <label for="pade-search-participants"></label>';
                         participants = participants + '   <select class="form-control" id="pade-search-participants" name="pade-search-participants">';
-                        participants = participants + '       <option value="' + jid + '">' + label + '</option>';
+                        participants = participants + '       <option value="' + jid + '">' + roomLabel + '</option>';
 
                         view.model.occupants.each(function (occupant) {
                             if (occupant.get("jid")) participants = participants + '       <option value="' + occupant.get("jid") + '">' + occupant.get("nick") + '</option>';
@@ -51,30 +50,55 @@
                     return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
-                         '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" >' +
+                         '<div class="form-group">' +
+                         '<div class="row">' +
+                         '  <div class="col">' +
+                         '    <input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" >' +
+                         '  </div>' +
+                         '  <div class="col">' +
                          participants +
-                         '  <label for="pade-search-start" class="col-form-label">Start:</label>' +
-                         '  <input id="pade-search-start" type="text" class="form-control" name="pade-search-start"/>' +
-                         '  <label for="pade-search-end" class="col-form-label">End:</label>' +
-                         '  <input id="pade-search-end" type="text" class="form-control" name="pade-search-end"/>' +
-                         '<p/><div id="pade-search-results"></div>' +
+                         '  </div>' +
+                         '</div>' +
+                         '<div class="row">' +
+                         '  <div class="col">' +
+                         '    <label for="pade-search-start" class="col-form-label">Start:</label>' +
+                         '    <input id="pade-search-start" type="text" class="form-control" name="pade-search-start"/>' +
+                         '  </div>' +
+                         '  <div class="col">' +
+                         '    <label for="pade-search-end" class="col-form-label">End:</label>' +
+                         '    <input id="pade-search-end" type="text" class="form-control" name="pade-search-end"/>' +
+                         '  </div>' +
+                         '</div><p/>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '<div id="pade-search-results"></div>' +
+                         '</div>' +
                          '</div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-success btn-search">Search</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
                   const that = this;
+
                   this.el.addEventListener('shown.bs.modal', function()
                   {
-                        flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(dayjs().startOf('day'))});
                         flatpickr('#pade-search-end', {dateFormat: 'Z', enableTime: true, defaultDate: new Date()});
+                        const keyword = that.model.get("keyword");
 
-                        if (that.model.get("keyword"))
+                        let start = dayjs().startOf('day');
+
+                        if (keyword)
                         {
+                            if (keyword != "") start = new Date(0);
+                            flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(start)});
+
+                            that.el.querySelector("#pade-search-keywords").value = that.model.get("keyword");
                             that.el.querySelector('#pade-search-keywords').style.display = "none";
+                            that.el.querySelector('#pade-search-participants').style.display = "none";
                             that.doSearch();
                         }
                         else {
+                            flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(start)});
                             that.el.querySelector('#pade-search-keywords').focus();
                         }
 
@@ -96,14 +120,31 @@
                     const start = this.el.querySelector("#pade-search-start").value;
                     const end = this.el.querySelector("#pade-search-end").value;
 
+                    let keyword = this.el.querySelector("#pade-search-keywords").value.trim();
                     let participant = this.el.querySelector("#pade-search-participants");
                     if (participant) participant = participant.value.trim();
-                    const keyword = this.el.querySelector("#pade-search-keywords").value.trim();
 
                     const view = this.model.get("view");
                     const jid = view.model.get("jid");
                     const type = view.model.get("type");
                     const groupchat = view.model.get("type") == "chatroom";
+
+                    if (keyword.startsWith("/p"))
+                    {
+                        let temp = keyword.substring(3).trim();
+                        const pos = temp.indexOf(" ");
+
+                        if (pos > -1)
+                        {
+                            keyword = temp.substring(pos + 1);
+
+                            if (groupchat)
+                            {
+                                participant = temp.substring(0, pos);
+                                if (participant.indexOf("@") == -1) participant = participant + "@" + _converse.connection.domain;
+                            }
+                        }
+                    }
 
                     const that = this;
                     const searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'i');
@@ -130,7 +171,7 @@
                                 const pretty_time = dayjs(time).format('MMM DD<br/>HH:mm:ss');
                                 const pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
 
-                                if (keyword == "" || searchRegExp.test(body))
+                                if (keyword == "" || _converse.api.settings.get("search_free_text_search") || searchRegExp.test(body))
                                 {
                                     const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
                                     html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
@@ -164,14 +205,14 @@
         'overrides': {
             ChatBoxView: {
                 parseMessageForCommands: function(text) {
-                    console.debug('search - parseMessageForCommands', text);
-
                     const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
                     const command = match[1].toLowerCase();
 
+                    console.debug('search - parseMessageForCommands', command, match);
+
                     if (command === "search")
                     {
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view, keyword: match[2]}) });
+                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: this, keyword: match[2]}) });
                         searchDialog.show();
                         return true;
                     }
