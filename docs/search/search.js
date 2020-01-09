@@ -18,7 +18,7 @@
 
             _converse.api.settings.update({
                 search_max: 999,
-                search_free_text_search: true
+                search_free_text_search: false
             });
 
 
