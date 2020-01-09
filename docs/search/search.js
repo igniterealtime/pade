@@ -102,6 +102,7 @@
 
                     const view = this.model.get("view");
                     const jid = view.model.get("jid");
+                    const type = view.model.get("type");
                     const groupchat = view.model.get("type") == "chatroom";
 
                     const that = this;
