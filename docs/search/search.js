@@ -31,21 +31,24 @@
                     const view = this.model.get("view");
                     const jid = view.model.get("jid");
                     const type = view.model.get("type");
-                    const roomLabel = view.model.getDisplayName() + " (All)";
 
+                    let roomLabel = view.model.getDisplayName();
                     let participants = '';
+
+                    participants = participants + '   <select class="form-control" id="pade-search-participant" name="pade-search-participant">';
+                    participants = participants + '       <option value="' + jid + '">' + roomLabel + '</option>';
+
                     this.model.set("participant", jid); // default
 
                     if (type == _converse.CHATROOMS_TYPE)
                     {
-                        participants = participants + '   <select class="form-control" id="pade-search-participants" name="pade-search-participants">';
-                        participants = participants + '       <option value="' + jid + '">' + roomLabel + '</option>';
+                        roomLabel = roomLabel + " (All)"
 
                         view.model.occupants.each(function (occupant) {
                             if (occupant.get("jid")) participants = participants + '       <option value="' + occupant.get("jid") + '">' + occupant.get("nick") + '</option>';
                         });
-                        participants = participants + '   </select>';
                     }
+                    participants = participants + '   </select>';
 
                     return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
@@ -94,7 +97,7 @@
 
                             that.el.querySelector("#pade-search-keywords").value = that.model.get("keyword");
                             that.el.querySelector('#pade-search-keywords').style.display = "none";
-                            that.el.querySelector('#pade-search-participants').style.display = "none";
+                            that.el.querySelector('#pade-search-participant').style.display = "none";
                             that.doSearch();
                         }
                         else {
@@ -121,7 +124,7 @@
                     const end = this.el.querySelector("#pade-search-end").value;
 
                     let keyword = this.el.querySelector("#pade-search-keywords").value.trim();
-                    let participant = this.el.querySelector("#pade-search-participants");
+                    let participant = this.el.querySelector("#pade-search-participant");
                     if (participant) participant = participant.value.trim();
 
                     const view = this.model.get("view");
@@ -158,7 +161,7 @@
                     _converse.api.archive.query({to: jid, start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': groupchat, 'with': participant}).then(function(result)
                     {
                         const messages = result.messages;
-                        let html = "<div><div class='row'><div class='col'><b>Date</b></div><div class='col'><b>Message</b></div><div class='col'><b>Participant</b></div></div><p/>";
+                        let html = "<div><div class='row'><div class='col'><b>Date</b></div><div class='col'><b>Participant</b></div><div class='col'><b>Message</b></div></div><p/>";
 
                         for (let i=0; i<messages.length; i++)
                         {
@@ -174,7 +177,7 @@
                                 if (keyword == "" || _converse.api.settings.get("search_free_text_search") || searchRegExp.test(body))
                                 {
                                     const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
-                                    html = html + "<div class='row'><div class='col'>" + pretty_time + "</div><div class='col'>" + tagged + "</div><div class='col'>" + pretty_from + "</div></div>";
+                                    html = html + "<div class='row'><div class='col'>" + pretty_time + "</div><div class='col'>" + pretty_from + "</div><div class='col'>" + tagged + "</div></div>";
                                 }
                             }
                         }
