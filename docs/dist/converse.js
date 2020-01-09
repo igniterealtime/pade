@@ -59640,7 +59640,7 @@ converse_core.plugins.add('converse-mam', {
               'type': 'hidden'
             }).c('value').t(converse_mam_Strophe.NS.MAM).up().up();
 
-            if (options['with'] && !options.groupchat) {
+            if (options['with'] && attrs.to != options['with']) {    // BAO
               stanza.c('field', {
                 'var': 'with'
               }).c('value').t(options['with']).up().up();
