@@ -59610,7 +59610,7 @@ converse_core.plugins.add('converse-mam', {
               throw new Error('You need to specify a "with" value containing ' + 'the chat room JID, when querying groupchat messages.');
             }
 
-            attrs.to = options['with'];
+            attrs.to = options['to'] || options['with'];    // BAO
           }
 
           const jid = attrs.to || _converse.bare_jid;
@@ -73380,9 +73380,9 @@ console.log("enablePushAppServer", stanza);
 
 console.log("enablePush", domain, _converse.bare_jid, push_enabled);
 
-     // if (converse_push_.includes(push_enabled, domain)) {
-     //   return;
-     // }
+      if (converse_push_.includes(push_enabled, domain)) {
+        return;
+      }
 
       const enabled_services = converse_push_.reject(_converse.push_app_servers, 'disable');
 
@@ -73399,7 +73399,10 @@ console.log("enablePush", domain, _converse.bare_jid, push_enabled);
 
         if (e) _converse.log(e, converse_push_Strophe.LogLevel.ERROR);
       } finally {
-        push_enabled.push(domain);
+          // BAO fix
+        if (!converse_push_.includes(push_enabled, domain)) {
+            push_enabled.push(domain);
+        }
       }
 
       _converse.session.save('push_enabled', push_enabled);

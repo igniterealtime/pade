@@ -101,7 +101,8 @@
                     const keyword = this.el.querySelector("#pade-search-keywords").value.trim();
 
                     const view = this.model.get("view");
-                    const type = view.model.get("type");
+                    const jid = view.model.get("jid");
+                    const groupchat = view.model.get("type") == "chatroom";
 
                     const that = this;
                     const searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'i');
@@ -112,7 +113,7 @@
                     const searchResults = that.el.querySelector("#pade-search-results");
                     searchResults.innerHTML = "No Match";
 
-                    _converse.api.archive.query({start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': true, 'with': participant}).then(function(result)
+                    _converse.api.archive.query({to: jid, start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': groupchat, 'with': participant}).then(function(result)
                     {
                         const messages = result.messages;
                         let html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
