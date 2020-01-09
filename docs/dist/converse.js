@@ -59681,9 +59681,9 @@ converse_core.plugins.add('converse-mam', {
 
             if (options.groupchat) {
               if (from !== options['with']) {
-                _converse.log("Ignoring alleged groupchat MAM message from ".concat(stanza.getAttribute('from')), converse_mam_Strophe.LogLevel.WARN);
+                //_converse.log("Ignoring alleged groupchat MAM message from ".concat(stanza.getAttribute('from')), converse_mam_Strophe.LogLevel.WARN);
 
-                return true;
+                //return true;  // BAO
               }
             } else if (from !== _converse.bare_jid) {
               _converse.log("Ignoring alleged MAM message from ".concat(stanza.getAttribute('from')), converse_mam_Strophe.LogLevel.WARN);
