@@ -19,124 +19,197 @@
             Strophe = converse.env.Strophe;
             dayjs = converse.env.dayjs;
 
+            _converse.api.settings.update({
+                search_max: 999,
+                search_free_text_search: false
+            });
+
             SearchDialog = _converse.BootstrapModal.extend({
                 initialize() {
                     _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
                     this.model.on('change', this.render, this);
                 },
                 toHTML() {
-                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                    const view = this.model.get("view");
+                    const jid = view.model.get("jid");
+                    const type = view.model.get("type");
+
+                    let roomLabel = view.model.getDisplayName();
+                    let participants = '';
+
+                    participants = participants + '   <select class="form-control" id="pade-search-participant" name="pade-search-participant">';
+                    participants = participants + '       <option value="' + jid + '">' + roomLabel + '</option>';
+
+                    this.model.set("participant", jid); // default
+
+                    if (type == _converse.CHATROOMS_TYPE)
+                    {
+                        roomLabel = roomLabel + " (All)"
+
+                        view.model.occupants.each(function (occupant) {
+                            if (occupant.get("jid")) participants = participants + '       <option value="' + occupant.get("jid") + '">' + occupant.get("nick") + '</option>';
+                        });
+                    }
+                    participants = participants + '   </select>';
+
+                    return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
-                         '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" ><p/><div id="pade-search-results"></div>' +
+                         '<div class="form-group">' +
+                         '<div class="row">' +
+                         '  <div class="col">' +
+                         '    <input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" >' +
+                         '  </div>' +
+                         '  <div class="col">' +
+                         participants +
+                         '  </div>' +
                          '</div>' +
-                         '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
+                         '<div class="row">' +
+                         '  <div class="col">' +
+                         '    <label for="pade-search-start" class="col-form-label">Start:</label>' +
+                         '    <input id="pade-search-start" type="text" class="form-control" name="pade-search-start"/>' +
+                         '  </div>' +
+                         '  <div class="col">' +
+                         '    <label for="pade-search-end" class="col-form-label">End:</label>' +
+                         '    <input id="pade-search-end" type="text" class="form-control" name="pade-search-end"/>' +
+                         '  </div>' +
+                         '</div><p/>' +
+                         '</div>' +
+                         '<div class="form-group">' +
+                         '<div id="pade-search-results"></div>' +
+                         '</div>' +
+                         '</div>' +
+                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-search">Search</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
-                  var that = this;
+                  const that = this;
+
                   this.el.addEventListener('shown.bs.modal', function()
                   {
-                      if (that.model.get("keyword"))
-                      {
-                          that.el.querySelector('#pade-search-keywords').style.display = "none";
-                          that.doSearch();
-                      }
-                      else {
-                        that.el.querySelector('#pade-search-keywords').focus();
-                      }
+                        flatpickr('#pade-search-end', {dateFormat: 'Z', enableTime: true, defaultDate: new Date()});
+                        const keyword = that.model.get("keyword");
+
+                        let start = dayjs().startOf('day');
+
+                        if (keyword)
+                        {
+                            if (keyword != "") start = new Date(0);
+                            flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(start)});
+
+                            that.el.querySelector("#pade-search-keywords").value = that.model.get("keyword");
+                            that.el.querySelector('#pade-search-keywords').style.display = "none";
+                            that.el.querySelector('#pade-search-participant').style.display = "none";
+                            that.doSearch();
+                        }
+                        else {
+                            flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(start)});
+                            that.el.querySelector('#pade-search-keywords').focus();
+                        }
 
                   }, false);
                 },
                 events: {
-                    'keyup #pade-search-keywords': 'keyUp'
+                    'keyup #pade-search-keywords': 'clickSearch',
+                    'click .btn-search': 'doSearch'
                 },
 
-                keyUp(ev) {
+                clickSearch(ev) {
                     if (ev.key === "Enter")
                     {
-                        var keyword = this.el.querySelector("#pade-search-keywords").value.trim();
-                        this.model.set("keyword", keyword)
                         this.doSearch();
                     }
                 },
 
                 doSearch() {
-                    var view = this.model.get("view");
-                    var jid = view.model.get("jid");
-                    var type = view.model.get("type");
+                    const start = this.el.querySelector("#pade-search-start").value;
+                    const end = this.el.querySelector("#pade-search-end").value;
 
-                    var that = this;
-                    var keyword = that.model.get("keyword");
-                    var searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'ig');
-                    var tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "gim");
+                    let keyword = this.el.querySelector("#pade-search-keywords").value.trim();
+                    let participant = this.el.querySelector("#pade-search-participant");
+                    if (participant) participant = participant.value.trim();
 
-                    var messages = view.model.messages.models;
+                    const view = this.model.get("view");
+                    const jid = view.model.get("jid");
+                    const type = view.model.get("type");
+                    const groupchat = view.model.get("type") == "chatroom";
 
-                    console.debug("doSearch", keyword, jid, messages);
-
-                    if (keyword != "")
+                    if (keyword.startsWith("/p"))
                     {
-                        var searchResults = that.el.querySelector("#pade-search-results");
-                        searchResults.innerHTML = "No Match";
+                        let temp = keyword.substring(3).trim();
+                        const pos = temp.indexOf(" ");
 
-                        var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
-
-                        for (var i=0; i<messages.length; i++)
+                        if (pos > -1)
                         {
-                            var body = messages[i].get('message');
-                            var from = messages[i].get('from');
-                            var pretty_time = dayjs(messages[i].get('time')).format('MMM DD<br/>HH:mm:ss');
-                            var pretty_from = from;
+                            keyword = temp.substring(pos + 1);
 
-                            if (from) pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
-
-                            if (searchRegExp.test(body))
+                            if (groupchat)
                             {
-                                var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' name='" + messages[i].get('msgid') + "' id='search-" + messages[i].get('msgid') + "'>$1</a></span>");
-                                html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
+                                participant = temp.substring(0, pos);
+                                if (participant.indexOf("@") == -1) participant = participant + "@" + _converse.connection.domain;
+                            }
+                        }
+                    }
+
+                    const that = this;
+                    const searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'i');
+                    const tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "im");
+
+                    console.debug("doSearch", keyword, participant);
+
+                    const searchResults = that.el.querySelector("#pade-search-results");
+                    searchResults.innerHTML = "No Match";
+
+                    _converse.api.archive.query({to: jid, start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': groupchat, 'with': participant}).then(function(result)
+                    {
+                        const messages = result.messages;
+                        let html = "<div><div class='row'><div class='col'><b>Date</b></div><div class='col'><b>Participant</b></div><div class='col'><b>Message</b></div></div><p/>";
+
+                        for (let i=0; i<messages.length; i++)
+                        {
+                            if (messages[i].querySelector('body'))
+                            {
+                                const body = messages[i].querySelector('body').innerHTML;
+                                const message = messages[i].querySelector('forwarded').querySelector('message');
+                                const from = message.getAttribute('from');
+                                const originId = message.querySelector('origin-id');
+                                const stanzaId = message.querySelector('stanza-id');
+
+                                if (originId || stanzaId)
+                                {
+                                    const delay = messages[i].querySelector('forwarded').querySelector('delay');
+                                    const time = delay ? delay.getAttribute('stamp') : dayjs().format();
+                                    const pretty_time = dayjs(time).format('MMM DD HH:mm:ss');
+                                    const pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
+
+                                    if (keyword == "" || _converse.api.settings.get("search_free_text_search") || searchRegExp.test(body))
+                                    {
+                                        const id = originId ? originId.getAttribute('id') : stanzaId.getAttribute('id');
+                                        const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' name='" + id + "' id='search-" + id + "'>$1</a></span>");
+                                        html = html + "<div class='row'><div class='col'>" + pretty_time + "</div><div class='col'>" + pretty_from + "</div><div class='col'>" + tagged + "</div></div>";
+                                    }
+                                }
                             }
                         }
 
-                        html =  html + "</table>";
+                        html =  html + "</div>";
                         searchResults.innerHTML = html;
-
-                        for (var i=0; i<messages.length; i++)
-                        {
-                            var button = document.getElementById("search-" + messages[i].get('msgid'));
-
-                            if (button) button.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                var elmnt = document.getElementById("msg-" + evt.target.name);
-                                // chrome bug
-                                //if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
-                                if (elmnt) elmnt.scrollIntoView(false);
-
-                            }, false);
-                        }
-                    }
+                    });
                 }
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                if (!view.el.querySelector(".plugin-search"))
+                const id = view.model.get("box_id");
+                const search = addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
+
+                if (search) search.addEventListener('click', function(evt)
                 {
-                    var id = view.model.get("box_id");
-                    addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
+                    evt.stopPropagation();
 
-                    var search = document.getElementById("pade-search-" + id);
-
-                    if (search) search.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
-                        searchDialog.show();
-                    }, false);
-                }
+                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                    searchDialog.show();
+                }, false);
             });
 
             console.log("search plugin is ready");
@@ -144,12 +217,11 @@
 
         'overrides': {
             ChatBoxView: {
-
                 parseMessageForCommands: function(text) {
-                    console.debug('search - parseMessageForCommands', text);
-
                     const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
                     const command = match[1].toLowerCase();
+
+                    console.debug('search - parseMessageForCommands', command, match);
 
                     if (command === "search")
                     {

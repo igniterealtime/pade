@@ -165,11 +165,12 @@
 
                         for (let i=0; i<messages.length; i++)
                         {
+                            const from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
+
                             if (messages[i].querySelector('body'))
                             {
                                 const body = messages[i].querySelector('body').innerHTML;
                                 const delay = messages[i].querySelector('forwarded').querySelector('delay');
-                                const from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
                                 const time = delay ? delay.getAttribute('stamp') : dayjs().format();
                                 const pretty_time = dayjs(time).format('MMM DD HH:mm:ss');
                                 const pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];

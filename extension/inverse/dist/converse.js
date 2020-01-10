@@ -59803,7 +59803,7 @@ converse_core.plugins.add('converse-mam', {
               throw new Error('You need to specify a "with" value containing ' + 'the chat room JID, when querying groupchat messages.');
             }
 
-            attrs.to = options['with'];
+            attrs.to = options['to'] || options['with'];    // BAO
           }
 
           const jid = attrs.to || _converse.bare_jid;
@@ -59833,7 +59833,7 @@ converse_core.plugins.add('converse-mam', {
               'type': 'hidden'
             }).c('value').t(converse_mam_Strophe.NS.MAM).up().up();
 
-            if (options['with'] && !options.groupchat) {
+            if (options['with'] && attrs.to != options['with']) {    // BAO
               stanza.c('field', {
                 'var': 'with'
               }).c('value').t(options['with']).up().up();
@@ -59880,9 +59880,9 @@ converse_core.plugins.add('converse-mam', {
 
             if (options.groupchat) {
               if (from !== options['with']) {
-                _converse.log("Ignoring alleged groupchat MAM message from ".concat(stanza.getAttribute('from')), converse_mam_Strophe.LogLevel.WARN);
-
-                return true;
+                //_converse.log("Ignoring alleged groupchat MAM message from ".concat(stanza.getAttribute('from')), converse_mam_Strophe.LogLevel.WARN);
+                // BAO
+                //return true;
               }
             } else if (from !== _converse.bare_jid) {
               _converse.log("Ignoring alleged MAM message from ".concat(stanza.getAttribute('from')), converse_mam_Strophe.LogLevel.WARN);

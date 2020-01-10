@@ -782,7 +782,7 @@ function createAvatar(nickname, width, height, font, force)
 
 function __newElement(el, id, html, className)
 {
-    var ele = document.createElement(el);
+    const ele = document.createElement(el);
     if (id) ele.id = id;
     if (html) ele.innerHTML = html;
     if (className) ele.classList.add(className);
@@ -790,20 +790,19 @@ function __newElement(el, id, html, className)
     return ele;
 }
 
-function addToolbarItem(view, id, label, html)
+function addToolbarItem (view, id, label, html)
 {
-    if (getSetting("showToolbarIcons", true) || label == "webmeet-scrolldown-" + id || label == "webmeet-trash-" + id || label == "webmeet-refresh-" + id || label == "webmeet-notepad-" + id)
-    {
-        var placeHolder = view.el.querySelector('#place-holder');
+    let placeHolder = view.el.querySelector('#place-holder');
 
-        if (!placeHolder)
-        {
-            const toolbar = view.el.querySelector('.chat-toolbar');
-            toolbar.appendChild(__newElement('li', 'place-holder'));
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        placeHolder.insertAdjacentElement('afterEnd', __newElement('li', label, html));
+    if (!placeHolder)
+    {
+        const toolbar = view.el.querySelector('.chat-toolbar');
+        toolbar.appendChild(__newElement('li', 'place-holder'));
+        placeHolder = view.el.querySelector('#place-holder');
     }
+    const newEle = __newElement('li', label, html);
+    placeHolder.insertAdjacentElement('afterEnd', newEle);
+    return newEle;
 }
 
 function occupantAvatarClicked(ev, view)
