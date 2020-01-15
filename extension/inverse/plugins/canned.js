@@ -150,7 +150,10 @@
 
         console.debug("canned", response, responses);
 
-        cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({response: response, responses: responses, textArea: textArea}) });
+        if (!cannedDialog)
+        {
+            cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({response: response, responses: responses, textArea: textArea}) });
+        }
         cannedDialog.show();
 
         return true;

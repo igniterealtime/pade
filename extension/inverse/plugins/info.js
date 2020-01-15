@@ -1081,7 +1081,10 @@
 
             if (type == "image" || type == "audio" || type == "video")
             {
-                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: url, type: type, timestamp: timestamp, from: from}) });
+                if (!previewDialog)
+                {
+                    previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: url, type: type, timestamp: timestamp, from: from}) });
+                }
                 previewDialog.show();
             }
             else

@@ -76,7 +76,7 @@
                          '</div><p/>' +
                          '</div>' +
                          '<div class="form-group">' +
-                         '<div id="pade-search-results"></div>' +
+                         '<div style="overflow-x:hidden; overflow-y:scroll; height: 400px;" id="pade-search-results"></div>' +
                          '</div>' +
                          '</div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-success btn-search">Search</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
@@ -111,7 +111,8 @@
                 },
                 events: {
                     'keyup #pade-search-keywords': 'clickSearch',
-                    'click .btn-search': 'doSearch'
+                    'click .btn-search': 'doSearch',
+                    'click .btn-danger': 'doDestroy'
                 },
 
                 clickSearch(ev) {
@@ -119,6 +120,10 @@
                     {
                         this.doSearch();
                     }
+                },
+
+                doDestroy() {
+
                 },
 
                 doSearch() {
@@ -163,7 +168,8 @@
                     _converse.api.archive.query({to: jid, start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': groupchat, 'with': participant}).then(function(result)
                     {
                         const messages = result.messages;
-                        let html = "<div><div class='row'><div class='col'><b>Date</b></div><div class='col'><b>Participant</b></div><div class='col'><b>Message</b></div></div><p/>";
+                        let html = "<div class='row'><div style='max-width: 20%;' class='col'><b>Date</b></div><div style='max-width: 15%;' class='col'><b>Participant</b></div><div class='col'><b>Message</b></div></div>";
+                        let ids = [];
 
                         for (let i=0; i<messages.length; i++)
                         {
@@ -185,8 +191,9 @@
                                     if (keyword == "" || _converse.api.settings.get("search_free_text_search") || searchRegExp.test(body))
                                     {
                                         const id = originId ? originId.getAttribute('id') : stanzaId.getAttribute('id');
-                                        const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' name='" + id + "' id='search-" + id + "'>$1</a></span>");
-                                        html = html + "<div class='row'><div class='col'>" + pretty_time + "</div><div class='col'>" + pretty_from + "</div><div class='col'>" + tagged + "</div></div>";
+                                        ids.push(id);
+                                        const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' data-id='" + id + "' id='search-" + id + "'>$1</a></span>");
+                                        html = html + "<div class='row'><div style='max-width: 20%;' class='col'>" + pretty_time + "</div><div style='max-width: 15%;' class='col'>" + pretty_from + "</div><div class='col'>" + tagged + "</div></div>";
                                     }
                                 }
                             }
@@ -194,6 +201,22 @@
 
                         html =  html + "</div>";
                         searchResults.innerHTML = html;
+
+                        for (var i=0; i<ids.length; i++)
+                        {
+                            var button = document.getElementById("search-" + ids[i]);
+
+                            if (button) button.addEventListener('click', function(evt)
+                            {
+                                //evt.stopPropagation();
+
+                                var elmnt = document.getElementById("msg-" + evt.target.getAttribute("data-id"));
+                                // chrome bug
+                                //if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
+                                if (elmnt) elmnt.scrollIntoView(false);
+
+                            }, false);
+                        }
                     });
                 }
             });
@@ -207,7 +230,10 @@
                 {
                     evt.stopPropagation();
 
-                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                    if (!searchDialog)
+                    {
+                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                    }
                     searchDialog.show();
                 }, false);
             });
@@ -225,7 +251,10 @@
 
                     if (command === "search")
                     {
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: this, keyword: match[2]}) });
+                        if (!searchDialog)
+                        {
+                            searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: this, keyword: match[2]}) });
+                        }
                         searchDialog.show();
                         return true;
                     }

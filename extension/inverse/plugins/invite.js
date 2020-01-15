@@ -100,7 +100,10 @@
                     {
                         evt.stopPropagation();
 
-                        inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
+                        if (!inviteDialog)
+                        {
+                            inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
+                        }
                         inviteDialog.show();
                     }, false);
                 }

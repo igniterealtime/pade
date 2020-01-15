@@ -124,7 +124,10 @@
                     {
                         evt.stopPropagation();
 
-                        directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                        if (!directoryDialog)
+                        {
+                            directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                        }
                         directoryDialog.show();
                     }, false);
                 }
@@ -144,7 +147,10 @@
 
                     if (command === "find")
                     {
-                        directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({query: match[2]}) });
+                        if (!directoryDialog)
+                        {
+                            directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({query: match[2]}) });
+                        }
                         directoryDialog.show();
                         return true;
                     }

@@ -106,7 +106,10 @@
                             {
                                 evt.stopPropagation();
 
-                                transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: view}) });
+                                if (!transferWiseDialog)
+                                {
+                                    transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: view}) });
+                                }
                                 transferWiseDialog.show();
 
                             }, false);
@@ -154,7 +157,10 @@
 
                         if (command === "tw" && this.model.get('type') === "chatbox" && bgWindow.pade.transferWiseProfile && bgWindow.pade.transferWiseProfile.length > 0 && email)
                         {
-                            transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: this}) });
+                            if (!transferWiseDialog)
+                            {
+                                transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: this}) });
+                            }
                             transferWiseDialog.show();
                             return true;
                         }

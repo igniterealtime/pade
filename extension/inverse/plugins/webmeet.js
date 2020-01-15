@@ -537,7 +537,10 @@
                         {
                             evt.stopPropagation();
 
-                            geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+                            if (!geoLocationDialog)
+                            {
+                                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+                            }
                             geoLocationDialog.show();
 
                         }, false);
@@ -647,7 +650,11 @@
                         savePDF.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
-                            pdfDialog = new PDFDialog({'model': new converse.env.Backbone.Model({view: view}) });
+
+                            if (!pdfDialog)
+                            {
+                                pdfDialog = new PDFDialog({'model': new converse.env.Backbone.Model({view: view}) });
+                            }
                             pdfDialog.show();
                         }, false);
                     }
@@ -989,7 +996,11 @@
             if (!obj["pade.notepad"]) obj["pade.notepad"] = "";
 
             view.model.set("notepad", obj["pade.notepad"]);
-            notepadDialog = new NotepadDialog({'model': new converse.env.Backbone.Model({view: view}) });
+
+            if (!notepadDialog)
+            {
+                notepadDialog = new NotepadDialog({'model': new converse.env.Backbone.Model({view: view}) });
+            }
             notepadDialog.show();
         });
     }
@@ -1018,7 +1029,10 @@
         {
             console.debug("pade - pasteImage", data);
 
-            previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
+            if (!previewDialog)
+            {
+                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
+            }
             previewDialog.show();
 
         }).on('pasteImageError', function(ev, data){
@@ -1495,7 +1509,10 @@
                 if (preview.descriptionShort) text = text + preview.descriptionShort;
 
 
-                previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({html: text, view: view, preview: preview, textarea: textarea}) });
+                if (!previewDialog)
+                {
+                    previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({html: text, view: view, preview: preview, textarea: textarea}) });
+                }
                 previewDialog.show();
 
             }
