@@ -1080,9 +1080,9 @@ this.manifest = {
             "name": "archivedMessagesPageSize",
             "type": "slider",
             "label": i18n.get("Archived Messages Page Size"),
-            "max": 121,
+            "max": 201,
             "min": 1,
-            "step": 10
+            "step": 20
         },
         {
             "tab": i18n.get("Converse"),

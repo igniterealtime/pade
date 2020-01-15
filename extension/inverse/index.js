@@ -375,6 +375,7 @@ function doConverse(server, username, password, anonUser)
     {
         var domain = getSetting("domain", null);
         var displayname = getSetting("displayname", username);
+        var myName = getSetting("autoCreateNickname", false) ? username : displayname
 
         var autoJoinRooms = undefined;
         var autoJoinPrivateChats = undefined;
@@ -480,7 +481,8 @@ function doConverse(server, username, password, anonUser)
           muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
           muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", true),
           muc_mention_autocomplete_filter: getSetting("converseAutoCompleteFilter", "starts_with"),
-          nickname: getSetting("autoCreateNickname", false) ? username : displayname,
+          nickname: myName,
+          fullname: myName,
           notification_icon: '../image.png',
           notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
           password: anonUser ? null : password,
