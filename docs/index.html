@@ -40,6 +40,7 @@
     <script src="browsertab/browsertab.js"></script>
     <script src="pade/webpush-browserify-bundle.js"></script>
     <script src="location/location.js"></script>
+    <script src="settings/settings.js"></script>
     <script src="pade/pade.js"></script>
 
 </head>
@@ -75,6 +76,20 @@
             if ( request.status >= 200 && request.status < 400 )
             {
                 var config = JSON.parse( request.responseText );
+
+                if (window.converse_settings)
+                {
+                    var localConfig = window.converse_settings.getConfig();
+
+                    const keys = Object.getOwnPropertyNames(localConfig);
+
+                    for (var i=0; i<keys.length; i++)
+                    {
+                        config[keys[i]] = localConfig[keys[i]];
+                        console.debug("Use local saved setting", keys[i], localConfig[keys[i]]);
+                    }
+                }
+
                 initServiceWorker( config );
             }
             else

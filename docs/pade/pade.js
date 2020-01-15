@@ -80,28 +80,28 @@
                 });
             });
 
-            _converse.api.listen.on('chatBoxInitialized', function (view)
+            _converse.api.listen.on('chatBoxInitialized', function (model)
             {
-                console.debug("chatBoxInitialized", view.model, anonRoster);
-                const jid = view.model.get("jid");
+                console.debug("chatBoxInitialized", model, anonRoster);
+                const jid = model.get("jid");
 
-                if (anonRoster[view.model.get("jid")])
+                if (anonRoster[model.get("jid")])
                 {
-                    const nick = anonRoster[view.model.get("jid")];
-                    view.model.set('fullname', nick);
-                    view.model.set('nickname', nick);
-                    view.model.vcard.set('nickname', nick);
-                    view.model.vcard.set('fullname', nick);
+                    const nick = anonRoster[model.get("jid")];
+                    model.set('fullname', nick);
+                    model.set('nickname', nick);
+                    model.vcard.set('nickname', nick);
+                    model.vcard.set('fullname', nick);
 
                     const dataUri = createAvatar(nick, null, null, null, true);
                     const avatar = dataUri.split(";base64,");
 
-                    view.model.vcard.set('image', avatar[1]);
-                    view.model.vcard.set('image_type', 'image/png');
+                    model.vcard.set('image', avatar[1]);
+                    model.vcard.set('image_type', 'image/png');
                 }
 
                 const activeDiv = document.getElementById("active-conversations");
-                if (activeDiv) addActiveConversation(view.model, activeDiv);
+                if (activeDiv) addActiveConversation(model, activeDiv);
             });
 
             _converse.api.listen.on('chatBoxClosed', function (chatbox)
@@ -145,15 +145,6 @@
                 var id = view.model.get("box_id");
                 var jid = view.model.get("jid");
 
-                var scrolldown = addToolbarItem(view, id, "pade-scrolldown-" + id, '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>');
-
-                scrolldown.addEventListener('click', function(evt)
-                {
-                    evt.stopPropagation();
-                    view.viewUnreadMessages()
-
-                }, false);
-
                 if (localStorage["pade.vapid.keys"])
                 {
                     const webpush = addToolbarItem(view, id, "pade-webpush-" + id, '<a class="fa fa-bell" title="Web Push Self"></a>');
@@ -165,6 +156,35 @@
 
                     }, false);
                 }
+
+                var trash = addToolbarItem(view, id, "pade-trash-" + id, '<a class="far fa-trash-alt" title="Trash local storage of chat history"></a>');
+
+                trash.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    view.clearMessages();
+
+                }, false);
+
+                var refresh = addToolbarItem(view, id, "pade-refresh-" + id, '<a class="fa fa-sync" title="Refresh"></a>');
+
+                refresh.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    view.close();
+                    setTimeout(function() { openChatbox(view); });
+
+                }, false);
+
+                var scrolldown = addToolbarItem(view, id, "pade-scrolldown-" + id, '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>');
+
+                scrolldown.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    view.viewUnreadMessages()
+
+                }, false);
+
             });
         },
 
@@ -275,6 +295,19 @@
         }
     }
 
+    var openChatbox = function openChatbox(view)
+    {
+        let jid = view.model.get("jid");
+        let type = view.model.get("type");
+
+        if (jid)
+        {
+            if (type == "chatbox") _converse.api.chats.open(jid);
+            else
+            if (type == "chatroom") _converse.api.rooms.open(jid);
+        }
+    }
+
     function rafAsync() {
         return new Promise(resolve => {
             requestAnimationFrame(resolve);
@@ -354,16 +387,6 @@
             {
                 evt.stopPropagation();
                 handleActiveConversations();
-
-            }, false);
-
-            const prefButton = __newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>');
-            section.appendChild(prefButton);
-
-            prefButton.addEventListener('click', function(evt)
-            {
-                evt.stopPropagation();
-
 
             }, false);
 

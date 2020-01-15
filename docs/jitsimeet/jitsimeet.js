@@ -25,7 +25,7 @@
             dayjs = converse.env.dayjs;
 
             _converse.api.settings.update({
-                jitsimeet_modal: false,
+                jitsimeet_modal: true,
                 jitsimeet_url: 'https://meet.jit.si',
                 jitsimeet_confirm: "Meeting?",
                 jitsimeet_invitation: 'Please join meeting in room at'
@@ -130,74 +130,54 @@
 
             MessageView: {
 
-                renderChatMessage: async function renderChatMessage()
+                transformOOBURL: function(url)
                 {
-                    var dataJid = Strophe.getBareJidFromJid(this.model.get("from") || this.model.get("jid"));
-                    var body = this.model.get('message');
-                    var url = _converse.api.settings.get("jitsimeet_url");
-                    var pos = body.indexOf(url + "/");
-
-                    if (pos > -1)
+                    if (url && url.indexOf(_converse.api.settings.get("jitsimeet_url")) > -1)
                     {
-                        var link_room = body.substring(pos + url.length + 1);
-                        var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
-                        var link_label = pos > 0 ? body.substring(0, pos) : _converse.api.settings.get("jitsimeet_invitation");
-                        var link_content = '<a data-jid="' + dataJid + '" id="' + link_id + '" href="#">' + link_label + " " + link_room + '</a>';
+                        var view = this;
 
-                        setupContentHandler(this, link_room, link_content, link_id, link_label);
+                        const link_jid = Strophe.getBareJidFromJid(this.model.get("from") || this.model.get("jid"));
+                        const link_room = url.substring(url.lastIndexOf("/") + 1);
+                        const link_label = _converse.api.settings.get("jitsimeet_invitation");
+                        const link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
+                        const html = '<a data-room="' + link_room + '" data-url="' + url + '" data-jid="' + link_jid + '" id="' + link_id + '" href="#">' + link_label + ' ' + link_room + '</a>';
+
+                        setTimeout(function()
+                        {
+                            if (document.getElementById(link_id)) document.getElementById(link_id).onclick = function(evt)
+                            {
+                                var url = evt.target.getAttribute("data-url");
+                                var room = evt.target.getAttribute("data-room");
+                                var jid = evt.target.getAttribute("data-jid");
+
+                                if (view) doLocalVideo(view, room, url, _converse.api.settings.get("jitsimeet_invitation"));
+                            }
+                        }, 1000);
+
+                        return html;
                     }
                     else {
-                        await this.__super__.renderChatMessage.apply(this, arguments);
+                        return this.__super__.transformOOBURL.apply(this, arguments);
                     }
                 }
-
             }
         }
     });
 
-    var setupContentHandler = function(chat, avRoom, content, linkId, linkLabel)
-    {
-        var dayjs_time = dayjs(chat.model.get('time'));
-        var pretty_time = dayjs_time.format(_converse.time_format);
-        var time = dayjs_time.format();
-
-        var msg_content = document.createElement("div");
-        msg_content.setAttribute("class", "message chat-msg groupchat");
-        msg_content.setAttribute("data-isodate", time);
-
-        if (chat.model.vcard)
-        {
-            msg_content.innerHTML = '<img class="avatar" src="data:image/png;base64,' + chat.model.vcard.attributes.image + '" style="width: 36px; width: 36px; height: 100%; margin-right: 10px;"/> <div class="chat-msg-content"> <span class="chat-msg-heading"> <span class="chat-msg-author">' + chat.model.getDisplayName() + '</span> <span class="chat-msg-time">' + pretty_time + '</span> </span> <span class="chat-msg-text">' + content + '</span> <div class="chat-msg-media"></div> </div>';
-            chat.replaceElement(msg_content);
-        }
-
-        if (avRoom && linkId)
-        {
-            setTimeout(function()
-            {
-                if (document.getElementById(linkId)) document.getElementById(linkId).onclick = function(evt)
-                {
-                    var url = _converse.api.settings.get("jitsimeet_url") + '/' + avRoom;
-                    var dataJid = evt.target.getAttribute("data-jid");
-                    var view = _converse.chatboxviews.get(dataJid);
-
-                    if (view) doLocalVideo(view, avRoom, url, linkLabel);
-                }
-            }, 1000);
-        }
-    }
-
 
     var doVideo = function doVideo(view)
     {
-        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
-        var url = _converse.api.settings.get("jitsimeet_url") + '/' + room;
+        const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+        const url = _converse.api.settings.get("jitsimeet_url") + '/' + room;
 
         console.debug("doVideo", room, url, view);
 
-        var label = _converse.api.settings.get("jitsimeet_invitation");
-        view.model.sendMessage(label + ' ' + url);
+        const label = _converse.api.settings.get("jitsimeet_invitation");
+        const attrs = view.model.getOutgoingMessageAttributes(url);
+        const message = view.model.messages.create(attrs);
+        message.set('oob_url', url);
 
+        _converse.api.send(view.model.createMessageStanza(message));
         doLocalVideo(view, room, url, label);
     }
 
