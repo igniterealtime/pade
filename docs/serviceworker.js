@@ -39,6 +39,8 @@ self.addEventListener('fetch', function(event) {
 // push trigger
 
 self.addEventListener('push', function (event) {
+   console.debug('push', event);
+
    const data = event.data.json();
    const pos = location.href.lastIndexOf('/') + 1;
 
@@ -62,10 +64,12 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('notificationclose', function(e) {
-  console.debug('Closed notification', e.notification);
+    console.debug('Closed notification', e.notification);
 });
 
 self.addEventListener('notificationclick', function(event) {
+    console.debug('notificationclick', event);
+
     event.notification.close();
 
     if (event.action === 'read')
@@ -84,7 +88,7 @@ self.addEventListener('notificationclick', function(event) {
                 }
             }
             if (clients.openWindow) {
-                return clients.openWindow(event.notification.data.url);
+                return clients.openWindow(event.notification.data.url + '#converse/' + event.notification.data.msgType + '?jid=' + event.notification.data.msgFrom;);
             }
         }));
     }

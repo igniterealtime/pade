@@ -56,7 +56,7 @@
         </div>
     </div>
 </div>
-<div id="conversejs"></div>
+<div id="conversejs" class="theme-concord"></div>
 <script>
     function ready(fn) {
         if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
@@ -87,11 +87,6 @@
                     {
                         config[keys[i]] = localConfig[keys[i]];
                         console.debug("Use local saved setting", keys[i], localConfig[keys[i]]);
-                    }
-
-                    if (config.theme)
-                    {
-                        document.getElementById("conversejs").classList.add("theme-" + config.theme);
                     }
                 }
 
@@ -131,10 +126,6 @@
         if ('serviceWorker' in navigator && 'PushManager' in window)
         {
             console.debug('Service Worker and Push is supported', config);
-
-            navigator.serviceWorker.onmessage = function(event) {
-                console.debug("Broadcasted from SW : ", event.data);
-            };
 
             navigator.serviceWorker.register('./serviceworker.js').then(function(swRegistration)
             {
@@ -191,7 +182,7 @@
         converse.initialize( config )
 
         window.WebPushLib.setVapidDetails('xmpp:' + config.domain_placeholder, keys.publicKey, keys.privateKey);
-        window.WebPushLib.selfSubscription = JSON.parse(JSON.stringify(subscription));
+        window.WebPushLib.selfSecret = secret;
     }
     ready( initConverse );
 </script>

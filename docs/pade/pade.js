@@ -5,11 +5,11 @@
         factory(converse);
     }
 }(this, function (converse) {
-     var nickColors = {}, avatars = {}, anonRoster = {};
-     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
-     var _converse = null;
-     var notified = false;
-     var anonRoster = {};
+    var nickColors = {}, avatars = {}, anonRoster = {};
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
+    var _converse = null;
+    var notified = false;
+    var anonRoster = {};
 
     converse.plugins.add("pade", {
 
@@ -29,7 +29,7 @@
             dayjs = converse.env.dayjs;
 
             _converse.api.settings.update({
-
+                pade_publish_webpush: true
             });
 
             _converse.on('messageAdded', function (data) {
@@ -104,6 +104,18 @@
                 if (activeDiv) addActiveConversation(model, activeDiv);
             });
 
+            _converse.api.listen.on('chatBoxInsertedIntoDOM', function (chatbox)
+            {
+                const jid = chatbox.model.get("jid");
+
+                console.debug("chatBoxInsertedIntoDOM", chatbox, jid);
+
+                if (_converse.api.settings.get("pade_publish_webpush") && chatbox.model.get("type") == "chatbox")
+                {
+                    sendWebPush(jid);
+                }
+            });
+
             _converse.api.listen.on('chatBoxClosed', function (chatbox)
             {
                 console.debug("chatBoxClosed", chatbox);
@@ -137,6 +149,11 @@
 
                     console.log("pade plugin is ready");
                 });
+
+                if (_converse.api.settings.get("pade_publish_webpush"))
+                {
+                    listenForWebPush();
+                }
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
@@ -145,17 +162,7 @@
                 var id = view.model.get("box_id");
                 var jid = view.model.get("jid");
 
-                if (localStorage["pade.vapid.keys"])
-                {
-                    const webpush = addToolbarItem(view, id, "pade-webpush-" + id, '<a class="fa fa-bell" title="Web Push Self"></a>');
-
-                    webpush.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-                        sendSelfNotification({msgBody: 'Web Push Plugin is working', msgFrom: _converse.bare_jid, msgType: 'chat'});
-
-                    }, false);
-                }
+                updateToolbar(view);
 
                 var trash = addToolbarItem(view, id, "pade-trash-" + id, '<a class="far fa-trash-alt" title="Trash local storage of chat history"></a>');
 
@@ -272,13 +279,80 @@
         }
     });
 
-    function sendSelfNotification(payload)
+    function sendWebPush(jid)
     {
-        window.WebPushLib.sendNotification(window.WebPushLib.selfSubscription, JSON.stringify(payload), {TTL: 60}).then(response => {
-            console.log("Web Push Notification is sended!")
-        }).catch(e => {
-            console.error('Failed to notify self: ', e)
-        })
+        if (window.WebPushLib && window.WebPushLib.selfSecret)
+        {
+            console.debug("sendWebPush", window.WebPushLib.selfSecret);
+            _converse.connection.send($msg({to: jid}).c('webpush', {xmlns: "urn:xmpp:push:0"}).t(window.WebPushLib.selfSecret));
+        }
+    }
+
+    function listenForWebPush()
+    {
+        _converse.connection.addHandler(function(message)
+        {
+            console.debug('webpush handler', message);
+            const handleElement = message.querySelector('webpush');
+
+            if (handleElement)
+            {
+                const secret = handleElement.innerHTML;
+                const jid = Strophe.getBareJidFromJid(message.getAttribute("from"));
+                const view = _converse.chatboxviews.get(jid);
+
+                localStorage['pade.webpush.' + jid] = atob(secret);
+
+                if (view) updateToolbar(view);
+            }
+
+            return true;
+
+        }, "urn:xmpp:push:0", "message");
+
+        navigator.serviceWorker.onmessage = function(event)
+        {
+            console.debug("Broadcasted from service worker : ", event.data);
+
+            if (event.data.msgFrom)
+            {
+                if (event.data.msgType == "chat") _converse.api.chats.open(event.data.msgFrom);
+                else
+                if (event.data.msgType == "room") _converse.api.rooms.open(event.data.msgFrom);
+            }
+        }
+
+    }
+
+    function updateToolbar(view)
+    {
+        const id = view.model.get("box_id");
+        const jid = view.model.get("jid");
+
+        console.debug("updateToolbar", jid, localStorage['pade.webpush.' + jid]);
+
+        if (localStorage['pade.webpush.' + jid] && !document.getElementById("pade-webpush-" + id))
+        {
+            const webpush = addToolbarItem(view, id, "pade-webpush-" + id, '<a class="fa fa-bell" title="Send Ping"></a>');
+
+            webpush.addEventListener('click', function(evt)
+            {
+                evt.stopPropagation();
+                const payload = {msgBody: 'Ping!!', msgFrom: _converse.bare_jid, msgType: 'chat'};
+
+                const secret = JSON.parse(localStorage['pade.webpush.' + jid]);
+                console.debug("updateToolbar secret", secret);
+
+                window.WebPushLib.setVapidDetails('xmpp:' + _converse.bare_jid, secret.publicKey, secret.privateKey);
+
+                window.WebPushLib.sendNotification(secret.subscription, JSON.stringify(payload), {TTL: 60}).then(response => {
+                    console.log("Web Push Notification is sended!")
+                }).catch(e => {
+                    console.error('Failed to notify ' + jid, e)
+                })
+
+            }, false);
+        }
     }
 
     function occupantAvatarClicked(ev)
