@@ -39,7 +39,7 @@
                   return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title"><b>Invitations</b></h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
-                         '<input id="pade-invite-query" class="form-control" type="text" placeholder="Type a query string and press [Enter] to find an invitation" ><p/><div id="pade-invite-results"></div>' +
+                         '<input id="pade-invite-query" class="form-control" type="text" placeholder="Type a query string and press [Enter] to find an invitation" ><p/><div style="overflow-x:hidden; overflow-y:scroll; height: 400px;" id="pade-invite-results"></div>' +
                          '</div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
@@ -50,7 +50,6 @@
                   {
                       if (that.model.get("query"))
                       {
-                          that.el.querySelector('#pade-invite-query').style.display = "none";
                           that.doDirectory();
                       }
                       else {

@@ -97,9 +97,7 @@
                             if (keyword != "") start = new Date(0);
                             flatpickr('#pade-search-start', {dateFormat: 'Z', enableTime: true, defaultDate: new Date(start)});
 
-                            that.el.querySelector("#pade-search-keywords").value = that.model.get("keyword");
-                            that.el.querySelector('#pade-search-keywords').style.display = "none";
-                            that.el.querySelector('#pade-search-participant').style.display = "none";
+                            that.el.querySelector("#pade-search-keywords").value = that.model.get("keyword");;
                             that.doSearch();
                         }
                         else {

@@ -23,7 +23,7 @@
                   return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Canned Responses</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
-                         '<input id="pade-canned-responses" class="form-control" type="text" placeholder="Start typing to canned" ><p/><div id="pade-canned-results"></div>' +
+                         '<input id="pade-canned-responses" class="form-control" type="text" placeholder="Start typing to canned" ><p/><div style="overflow-x:hidden; overflow-y:scroll; height: 400px;" id="pade-canned-results"></div>' +
                          '</div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
