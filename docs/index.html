@@ -56,7 +56,7 @@
         </div>
     </div>
 </div>
-<div id="conversejs" class="theme-concord"></div>
+<div id="conversejs"></div>
 <script>
     function ready(fn) {
         if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
@@ -87,6 +87,11 @@
                     {
                         config[keys[i]] = localConfig[keys[i]];
                         console.debug("Use local saved setting", keys[i], localConfig[keys[i]]);
+                    }
+
+                    if (config.theme)
+                    {
+                        document.getElementById("conversejs").classList.add("theme-" + config.theme);
                     }
                 }
 
