@@ -95,7 +95,7 @@
 
     function setUnreadCount(count)
     {
-        console.log("setUnreadCount", count);
+        console.debug("setUnreadCount", count);
 
         if (_converse.api.settings.get("browsertab_use_title"))
         {
