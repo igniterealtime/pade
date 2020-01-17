@@ -88,7 +88,7 @@ self.addEventListener('notificationclick', function(event) {
                 }
             }
             if (clients.openWindow) {
-                return clients.openWindow(event.notification.data.url + '#converse/' + event.notification.data.msgType + '?jid=' + event.notification.data.msgFrom;);
+                return clients.openWindow(event.notification.data.url + '#converse/' + event.notification.data.msgType + '?jid=' + event.notification.data.msgFrom);
             }
         }));
     }
