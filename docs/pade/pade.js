@@ -314,14 +314,31 @@
         {
             console.debug("Broadcasted from service worker : ", event.data);
 
-            if (event.data.msgFrom)
+            if (event.data.msgFrom)     // notification
             {
                 if (event.data.msgType == "chat") _converse.api.chats.open(event.data.msgFrom);
                 else
                 if (event.data.msgType == "room") _converse.api.rooms.open(event.data.msgFrom);
             }
-        }
+            else
 
+            if (event.data.options)    // subscription renewal.
+            {
+                makeSubscription(function(err, subscription, keys)
+                {
+                    if (!err)
+                    {
+                        // TODO when converse implements dynamic configuration, update push_servers here
+                        handleSubscription(_converse.settings, subscription, keys);
+
+                        _converse.chatboxviews.forEach(view =>
+                        {
+                          if (view.model.get('type') == 'chatbox') sendWebPush(view.model.get('jid'));
+                        });
+                    }
+                })
+            }
+        }
     }
 
     function updateToolbar(view)

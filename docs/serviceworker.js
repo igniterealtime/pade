@@ -63,6 +63,15 @@ self.addEventListener('push', function (event) {
     );
 });
 
+self.addEventListener('pushsubscriptionchange', function(event) {
+  console.log('[Service Worker]: \'pushsubscriptionchange\' event fired.');
+});
+
+self.addEventListener("pushsubscriptionchange", event => {
+    localStorage.removeItem("pade.vapid.keys"); // force new subscription on next login
+    client.postMessage(event.oldSubscription);  // send re-subscribe to web app if running
+});
+
 self.addEventListener('notificationclose', function(e) {
     console.debug('Closed notification', e.notification);
 });

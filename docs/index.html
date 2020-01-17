@@ -58,6 +58,8 @@
 </div>
 <div id="conversejs" class="theme-concord"></div>
 <script>
+    var swRegistration;
+
     function ready(fn) {
         if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
             fn();
@@ -127,8 +129,9 @@
         {
             console.debug('Service Worker and Push is supported', config);
 
-            navigator.serviceWorker.register('./serviceworker.js').then(function(swRegistration)
+            navigator.serviceWorker.register('./serviceworker.js').then(function(registration)
             {
+                swRegistration = registration;
                 console.debug('Service Worker is registered', swRegistration);
 
                 swRegistration.pushManager.getSubscription().then(function(subscription)
@@ -140,22 +143,21 @@
                     }
 
                     if (!subscription) {
-                        const keys = window.WebPushLib.generateVAPIDKeys();
-                        console.debug('Service Worker new subscription keys', keys);
-
-                        swRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(keys.publicKey)}).then(function(subscription)
+                        makeSubscription(function(err, subscription, keys)
                         {
-                            console.debug('User is subscribed.');
-                            localStorage["pade.vapid.keys"] = JSON.stringify(keys);
-                            handleSubscription(config, subscription, keys);
-
-                        }).catch(function(err) {
-                            console.debug('Failed to subscribe the user: ', err);
-                            converse.initialize( config )
-                        });
+                            if (err)
+                            {
+                                converse.initialize(config);
+                            }
+                            else {
+                                handleSubscription(config, subscription, keys);
+                                converse.initialize(config);
+                            }
+                        })
                     }
                     else {
                         handleSubscription(config, subscription, JSON.parse(localStorage["pade.vapid.keys"]));
+                        converse.initialize(config);
                     }
 
                 }).catch(function(error) {
@@ -173,14 +175,29 @@
         }
     }
 
+    function makeSubscription(callback)
+    {
+        const keys = window.WebPushLib.generateVAPIDKeys();
+        console.debug('makeSubscription', keys);
+
+        swRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(keys.publicKey)}).then(function(subscription)
+        {
+            console.debug('User is subscribed.');
+            localStorage["pade.vapid.keys"] = JSON.stringify(keys);
+            if (callback) callback(false, subscription, keys);
+
+        }).catch(function(err) {
+            console.error('Failed to subscribe the user: ', err);
+            if (callback) callback(true);
+        });
+    }
+
     function handleSubscription(config, subscription, keys)
     {
         console.debug('handleSubscription', config, subscription, keys);
 
         const secret = btoa(JSON.stringify({privateKey: keys.privateKey, publicKey: keys.publicKey, subscription: subscription}));
         if (secret) config.push_app_servers = [{'jid': config.domain_placeholder, 'node': 'webpush', 'secret': secret}];
-        converse.initialize( config )
-
         window.WebPushLib.setVapidDetails('xmpp:' + config.domain_placeholder, keys.publicKey, keys.privateKey);
         window.WebPushLib.selfSecret = secret;
     }
