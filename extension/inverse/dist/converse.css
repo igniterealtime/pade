@@ -14952,7 +14952,7 @@ a#conversejs .badge-dark:focus {
     --chatroom-separator-border-bottom: 1px solid #AAA;
     --message-input-border-top: 1px solid #CCC;
     --message-input-color: #CCC;
-    --fullpage-chat-head-height: 40px;
+  /*  --fullpage-chat-head-height: 40px;   BAO */
   /* --fullpage-chatbox-button-size: 24px; BAO */
     --list-toggle-font-weight: bold;
     --list-item-link-color: inherit;    /* BAO */
