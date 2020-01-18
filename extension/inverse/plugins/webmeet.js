@@ -369,24 +369,6 @@
             {
                 console.debug('webmeet - renderToolbar', view.model);
 
-                // TODO - remove when code is merged into converse
-                //
-                document.addEventListener("keydown", function(event)
-                {
-                    const input = String.fromCharCode(event.keyCode);
-                    const textEl = view.el.querySelector('.chat-textarea');
-                    const isFocused = (document.activeElement === textEl);
-                    const dialog = document.body.querySelector('.modal.show');
-                    const isInvitedContact = view.el.querySelector('.invited-contact') === document.activeElement;
-                    const isRosterFilter = document.body.querySelector('.roster-filter') === document.activeElement;
-
-                    if (/[a-zA-Z0-9-_ ]/.test(input) && !isFocused && !view.model.get('hidden') && !dialog && !isInvitedContact && !isRosterFilter)
-                    {
-                        textEl.focus();
-                    }
-                });
-
-
                 var id = view.model.get("box_id");
                 var jid = view.model.get("jid");
                 var type = view.model.get("type");
@@ -395,7 +377,6 @@
                 {
                     setupPastingHandlers(view, id, jid, type);
                 }
-
 
                 testFileUploadAvailable(view, function(isFileUploadAvailable)
                 {
