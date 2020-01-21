@@ -150,6 +150,9 @@
                         {
                             directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({query: match[2]}) });
                         }
+                        else {
+                            directoryDialog.model.set("query", match[2]);
+                        }
                         directoryDialog.show();
                         return true;
                     }

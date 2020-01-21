@@ -253,6 +253,10 @@
                         {
                             searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: this, keyword: match[2]}) });
                         }
+                        else {
+                            searchDialog.model.set("keyword", match[2]);
+                        }
+
                         searchDialog.show();
                         return true;
                     }

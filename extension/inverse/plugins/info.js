@@ -1085,6 +1085,12 @@
                 {
                     previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: url, type: type, timestamp: timestamp, from: from}) });
                 }
+                else {
+                    previewDialog.model.set("url", url);
+                    previewDialog.model.set("type", type);
+                    previewDialog.model.set("timestamp", timestamp);
+                    previewDialog.model.set("from", from);
+                }
                 previewDialog.show();
             }
             else

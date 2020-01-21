@@ -522,6 +522,9 @@
                             {
                                 geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
                             }
+                            else {
+                               geoLocationDialog.model.set("geoloc", bgWindow.pade.geoloc[jid]);
+                            }
                             geoLocationDialog.show();
 
                         }, false);
@@ -1014,6 +1017,9 @@
             {
                 previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
             }
+            else {
+               previewDialog.model.set("blob", data.blob);
+            }
             previewDialog.show();
 
         }).on('pasteImageError', function(ev, data){
@@ -1493,6 +1499,10 @@
                 if (!previewDialog)
                 {
                     previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({html: text, view: view, preview: preview, textarea: textarea}) });
+                }
+                else {
+                    previewDialog.model.set("html", text);
+                    previewDialog.model.set("preview", preview);
                 }
                 previewDialog.show();
 
