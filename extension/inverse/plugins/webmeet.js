@@ -20,7 +20,7 @@
      var doneIt = false;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
-     var PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null, PDFDialog = null, pdfDialog = null;
+     var ViewerDialog = null, viewerDialog = null, PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null, PDFDialog = null, pdfDialog = null;
 
      // The following line registers your plugin.
     converse.plugins.add("webmeet", {
@@ -51,6 +51,45 @@
             baseUrl = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2];
             _converse.log("The \"webmeet\" plugin is being initialized");
 
+
+            ViewerDialog = _converse.BootstrapModal.extend({
+                initialize() {
+                    _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
+                    this.model.on('change', this.render, this);
+                },
+                toHTML() {
+                    const editable = this.model.get("editable");
+                    const editbutton = editable == "true" ? '<button type="button" class="btn btn-success btn-edit-document" data-dismiss="modal">Edit</button>' : '';
+
+                    return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                         '<div class="modal-header"><h1 class="modal-title">Viewer</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
+                         '<div class="modal-body"></div>' +
+                         '<div class="modal-footer">' + editbutton + '<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>' +
+                         '</div> </div> </div>';
+                },
+                afterRender() {
+                    var that = this;
+                    var baseUrl = this.model.get("baseUrl");
+                    var url = this.model.get("url");
+
+                    this.el.addEventListener('shown.bs.modal', function()
+                    {
+                        if (url)
+                        {
+                            that.el.querySelector('.modal-body').innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='" + baseUrl + url + "'></iframe>";
+                        }
+
+                    }, false);
+                },
+                events: {
+                    "click .btn-edit-document": "editDocument",
+                },
+
+                editDocument() {
+                    var url = this.model.get("url");
+                    bgWindow.openWebAppsWindow(chrome.extension.getURL("wodo/index.html#" + url), null, 1400, 900)
+                }
+            });
 
             PreviewDialog = _converse.BootstrapModal.extend({
                 initialize() {
@@ -736,9 +775,52 @@
 
                 transformOOBURL: function(url)
                 {
+                    function setupLink(prefix, baseUrl, newUrl, editable)
+                    {
+                        const id = "preview-" + Math.random().toString(36).substr(2,9);
+
+                        setTimeout(function()
+                        {
+                            const div = document.getElementById(id);
+
+                            if (div) div.addEventListener('click', function(evt)
+                            {
+                                if (!previewDialog)
+                                {
+                                    viewerDialog = new ViewerDialog({'model': new converse.env.Backbone.Model({baseUrl: evt.target.getAttribute('data-base-url'), url: evt.target.getAttribute('data-url'), editable: evt.target.getAttribute('data-editable')}) });
+                                }
+                                else {
+                                   viewerDialog.model.set("baseUrl", evt.target.getAttribute('data-base-urll'));
+                                   viewerDialog.model.set("url", evt.target.getAttribute('data-url'));
+                                   viewerDialog.model.set("editable", evt.target.getAttribute('data-editable'));
+                                }
+                                viewerDialog.show();
+                            });
+
+                        }, 1000);
+
+                        let label = newUrl;
+                        const pos = newUrl.lastIndexOf("/");
+                        if (pos == -1) pos = newUrl.lastIndexOf("?");
+                        if (pos > -1) label = newUrl.substring(pos + 1);
+                        return "<a data-editable='" + editable + "' data-base-url='" + baseUrl + "' data-url='" + newUrl + "' id='" + id + "'>" + prefix + " " + unescape(label) + "</a>";
+                    }
+
                     if (url && url.indexOf("location/leaflet/index.html?accuracy=") > -1)
                     {
-                        return "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='" + url + "'></iframe>";
+                        return setupLink("View Location", "", url, "false");
+                    }
+                    else
+
+                    if (url && url.endsWith(".pdf"))
+                    {
+                        return setupLink("View PDF", "", url, "false");
+                    }
+                    else
+
+                    if (url && (url.endsWith(".odt") || url.endsWith(".odp") || url.endsWith(".ods")))
+                    {
+                        return setupLink("View OpenDocument file", chrome.extension.getURL("/webodf/index.html#"), url, "true");
                     }
                     else {
                         return this.__super__.transformOOBURL.apply(this, arguments);
