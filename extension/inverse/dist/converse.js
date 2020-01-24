@@ -59841,7 +59841,7 @@ converse_core.plugins.add('converse-mam', {
 
             if (options['search']) {    // BAO
               stanza.c('field', {
-                'var': 'urn:example:xmpp:free-text-search'
+                'var': '{urn:xmpp:fulltext:0}fulltext'
               }).c('value').t(options['search']).up().up();
             }
 

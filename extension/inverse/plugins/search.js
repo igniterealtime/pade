@@ -21,7 +21,7 @@
 
             _converse.api.settings.update({
                 search_max: 999,
-                search_free_text_search: false
+                search_free_text_search: true
             });
 
             SearchDialog = _converse.BootstrapModal.extend({
@@ -186,7 +186,7 @@
                                     const pretty_time = dayjs(time).format('MMM DD HH:mm:ss');
                                     const pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
 
-                                    if (keyword == "" || _converse.api.settings.get("search_free_text_search") || searchRegExp.test(body))
+                                    if ((keyword == "" || _converse.api.settings.get("search_free_text_search")) && searchRegExp.test(body))
                                     {
                                         const id = originId ? originId.getAttribute('id') : stanzaId.getAttribute('id');
                                         ids.push(id);
