@@ -872,11 +872,16 @@
 
         if (element)
         {
-            if (occupant.get('jid') && _converse.bare_jid != occupant.get('jid'))
+            if (occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");
-                const html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+                let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+                if (_converse.bare_jid == occupant.get('jid'))
+                {
+                    html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
+                }
 
                 if (padeEle)
                 {

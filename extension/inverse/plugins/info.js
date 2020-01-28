@@ -825,6 +825,12 @@
                             }
                             else
 
+                            if (isOpenOfficeDoc(file))
+                            {
+                                media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "odf"});
+                            }
+                            else
+
                             if (isOnlyOfficeDoc(file))
                             {
                                 media.ppt.urls.push({timestamp: stamp, id: msgId, url: urls[j], file: file, from: from, type: "doc"});
@@ -1024,6 +1030,19 @@
       return filename.endsWith('.mp4') || filename.endsWith('.webm');
     };
 
+    var isOpenOfficeDoc = function (url)
+    {
+        var openOfficeDoc = false;
+        var pos = url.lastIndexOf(".");
+
+        if (pos > -1)
+        {
+            var exten = url.substring(pos + 1);
+            openOfficeDoc = "odt ods odp".indexOf(exten) > -1;
+        }
+        return openOfficeDoc;
+    };
+
     var isOnlyOfficeDoc = function (url)
     {
         var onlyOfficeDoc = false;
@@ -1032,7 +1051,7 @@
         if (pos > -1)
         {
             var exten = url.substring(pos + 1);
-            onlyOfficeDoc = "doc docx ppt pptx xls xlsx csv pdf".indexOf(exten) > -1;
+            onlyOfficeDoc = "doc docx ppt pptx xls xlsx csv".indexOf(exten) > -1;
         }
         return onlyOfficeDoc;
     };
@@ -1098,6 +1117,20 @@
             if (type == "link")
             {
                 window.open(url, "pade-media-link");
+            }
+            else
+
+            if (type == "odf")
+            {
+                const username = getSetting("username");
+                const name = getSetting("displayname");
+                const domain = getSetting("domain");
+                const avatar = "data:" + _converse.xmppstatus.vcard.get("image_type") + ";base64," + _converse.xmppstatus.vcard.get("image");
+                const file = url.substring(url.lastIndexOf("/") + 1);
+                const bosh = "wss://" + getSetting("server") + "/ws";
+
+                const query = `username=$(username}&name=${name}&avatar=${avatar}&docurl=${url}&docname=${file}&domain=${domain}&bosh=${bosh}`;
+                bgWindow.openWebAppsWindow(chrome.extension.getURL("akowe/index.html?" + query), null, 1400, 900);
             }
             else {  // insert into textarea
                 replyInverseChat(url);

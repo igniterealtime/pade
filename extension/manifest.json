@@ -38,6 +38,7 @@
     "options/*",
     "js/*",     
     "ringtones/*",       
+    "akowe/*",      
     "jitsi-meet/*",     
     "groupchat/*"
   ],

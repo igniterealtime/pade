@@ -1,0 +1,151 @@
+.navbar {
+    display: none;
+}
+
+h1.logo {
+    font-size: 72pt;
+    color: brown;
+    font-family: "Poiret One";
+    font-weight: normal;
+    letter-spacing: -5px;
+    text-align: center;
+}
+
+.registernote {
+    margin-top: -30px;
+    font-size: 10pt;
+    text-align: center;
+}
+
+.messages-list {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    box-shadow: 1px 2px 4px black;
+    min-width: 300px;
+    font-size: 10pt;
+}
+
+.login-form, .signup-form, .oauth-form {
+    background-color: white;
+    width: 300px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px #777;
+    padding: 25px;
+}
+
+.switch-form {
+    text-align: center;
+}
+
+.form-separator {
+    text-align: center;
+    font-style: italic;
+    margin: 50px;
+}
+
+h2, h3 {
+    text-align: center;
+    margin-top: 0;
+    padding: 0;
+}
+
+form {
+    width: 100%;
+    margin: auto;
+}
+
+.avatar-image {
+    width: 70px;
+    height: 70px;
+}
+
+#imageUploadButton {
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+#imageUploadButton:hover {
+    opacity: 0.8;
+}
+#imageUploadButton:hover:before {
+    content: "Upload an avatar";
+    background-color: black;
+    border: 1px gray;
+    padding: 5px;
+    color: white;
+    position: absolute;
+    margin: -35px 0 0 -25px;
+    box-shadow: 0px 1px 3px #ddd;
+    border-radius: 3px;
+}
+
+#imageInput {
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
+}
+
+button {
+    margin-top: 10px;
+}
+
+input {
+    font-family: "Roboto";
+    font-size: 10pt;
+    box-shadow: 0px 1px 1px #ddd inset;
+    padding: 5px;
+    outline: medium none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #F9F9F9;
+    width: 100%;
+    margin: 3px;
+}
+input:focus {
+    border-color: black;
+}
+
+.signinbyservice {
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3px;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    box-shadow: 10px;
+    background-color: #eee;
+    color: black;
+}
+.signinbyservice:hover {
+    box-shadow: 0 0px 2px 0px #777;
+}
+
+.oauth-form {
+    display: block;
+}
+
+#signupForm {
+    display: none;
+}
+
+#loginForm {
+    display: block;
+}
+
+#formSwitch {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
