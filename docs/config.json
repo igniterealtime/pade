@@ -11,9 +11,9 @@
   "muc_mention_autocomplete_min_chars": 0,
   "assets_path": "./dist/",
   "clear_messages_on_reconnection": true,
-  "domain_placeholder": "conversejs.org",  
-  "default_domain": "conversejs.org",
-  "bosh_service_url": "https://conversejs.org/http-bind/",
+  "domain_placeholder": "pade.chat",  
+  "default_domain": "pade.chat",
+  "bosh_service_url": "https://pade.chat/http-bind/",
   "auto_reconnect": true,
   "roster_groups": true,
   "singleton": false,
@@ -48,5 +48,5 @@
   "message_limit": 0,
   "sounds_path": "./dist/sounds/",
   "enable_smacks": false,
-  "auto_join_rooms": ["discuss@conference.conversejs.org"]
+  "auto_join_rooms": ["discuss@conference.pade.chat"]
 }
