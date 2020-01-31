@@ -972,6 +972,7 @@ goog.dom.removeChildren = function(node) {
  */
 goog.dom.insertSiblingBefore = function(newNode, refNode) {
   if (refNode.parentNode) {
+    // BAO - chrome permissions exception
     //refNode.parentNode.insertBefore(newNode, refNode);
   }
 };

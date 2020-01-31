@@ -22,6 +22,7 @@ var kotypeEditor = (function () {
     "use strict";
     var editableTitle,
         exportButton,
+        audioControl,
         documentPermissions,
         statusLabel,
         editorInstance,
@@ -40,7 +41,7 @@ var kotypeEditor = (function () {
     }
 
     function onEditingStarted() {
-        [editableTitle, exportButton, statusLabel].forEach(function (widget) {
+        [editableTitle, exportButton, audioControl, statusLabel].forEach(function (widget) {
             widget.setSessionLoaded(true);
         });
         setWindowTitle(editorInstance.getMetadata("dc:title"));
@@ -78,6 +79,7 @@ var kotypeEditor = (function () {
         }
 
         editableTitle = new widgets.EditableTitle(titleElement, editorInstance, socket);
+        audioControl = new widgets.AudioControl(navBarElement, editorInstance);
         exportButton = new widgets.ExportButton(navBarElement, editorInstance, getDocumentOriginalFileName);
         documentPermissions = new widgets.DocumentPermissions(navBarElement, kotypeGlobals.user, socket);
         statusLabel = new widgets.StatusLabel(navBarElement, editorInstance, socket);

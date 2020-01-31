@@ -47,7 +47,7 @@ widgets.DocumentPermissions = function (parentElement, user, socket) {
         button = new goog.ui.CustomButton("Share", new goog.ui.Css3ButtonRenderer());
         button.render(parentElement);
         button.getElement().classList.add('button');
-        button.getElement().classList.add('blue');
+        //button.getElement().classList.add('blue');
         button.getElement().classList.add('share-button');
 
         goog.events.listen(checkbox, goog.ui.Component.EventType.CHANGE, applyPermissionsChange);

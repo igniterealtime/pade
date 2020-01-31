@@ -195,12 +195,6 @@ var OperationRouter = function (socket, odfContainer, errorCb) {
 
         receiveServerOpspecs(getCounter(), kotypeGlobals.self);
         socket.emit("new_ops", {head: getCounter(), ops: kotypeGlobals.self});
-
-        Object.getOwnPropertyNames(kotypeGlobals.pendingOccupants).forEach(function(occupant)
-        {
-            receiveServerOpspecs(getCounter(), kotypeGlobals.pendingOccupants[occupant]);
-            delete kotypeGlobals.pendingOccupants[occupant];
-        });
     };
 
     this.close = function (cb) {
@@ -241,6 +235,9 @@ var OperationRouter = function (socket, odfContainer, errorCb) {
 var ClientAdaptor = function (documentId, documentURL, urlPathPrefix, connectedCb, kickedCb, disconnectedCb) {
     var memberId, opRouter, socket, callbacks = {}, messages = {}, nickColors = {}, members = {};
 
+    kotypeGlobals.localTracks = [];
+    kotypeGlobals.remoteTracks = {};
+
     this.getMemberId = function () {
         return memberId;
     };
@@ -256,61 +253,11 @@ var ClientAdaptor = function (documentId, documentURL, urlPathPrefix, connectedC
     };
 
     this.joinSession = function (cb) {
-
-        kotypeGlobals.pendingOccupants = {};
-
-        kotypeGlobals.conference = kotypeGlobals.connection.initJitsiConference(kotypeGlobals.documentId, {openBridgeChannel: false});
-
-        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, function ()
-        {
-            console.debug("conference joined!", kotypeGlobals.conference.room.roomjid, kotypeGlobals.conference.room.myroomjid);
-
-            const id = Strophe.getResourceFromJid(kotypeGlobals.conference.room.myroomjid);
-            kotypeGlobals.user.color = getRandomColor(id);
-            kotypeGlobals.self = addMembers(kotypeGlobals.user, id);
-            memberId = kotypeGlobals.self[0].memberid;
-            cb(memberId);
-        });
-
-        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.CONFERENCE_LEFT, function ()
-        {
-            console.debug("conference left!", pade.port);
-            kickedCb();
-
-            const id = Strophe.getResourceFromJid(kotypeGlobals.conference.room.myroomjid);
-            socket.emit("new_ops", {head: getCounter(), ops: removeMember(id)});
-        });
-
-        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.USER_JOINED, function (id)
-        {
-            console.debug("user join", id);
-
-            members[id] = {avatar_url: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiA8cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0iIzU1NSIvPgogPGNpcmNsZSBjeD0iNjQiIGN5PSI0MSIgcj0iMjQiIGZpbGw9IiNmZmYiLz4KIDxwYXRoIGQ9Im0yOC41IDExMiB2LTEyIGMwLTEyIDEwLTI0IDI0LTI0IGgyMyBjMTQgMCAyNCAxMiAyNCAyNCB2MTIiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==", color: getRandomColor(id), username: id, name: "Unknown"};
-
-            const memberOps = addMembers(members[id], id);
-
-            if (opRouter) {
-                //opRouter.receiveServerOpspecs(getCounter(), memberOps);
-            } else {
-                //kotypeGlobals.pendingOccupants[id] = memberOps;
-            }
-        });
-
-        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.USER_LEFT, function (id)
-        {
-            console.debug("user left", id);
-            delete kotypeGlobals.pendingOccupants[id];
-            delete members[id];
-
-            if (opRouter) opRouter.receiveServerOpspecs(getCounter(), removeMember(id));
-        });
-
-        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.ENDPOINT_MESSAGE_RECEIVED, function(id, message)
-        {
-            console.debug("endpoint_message", id, message);
-        });
-
-        kotypeGlobals.conference.join();
+        if (kotypeGlobals.audio) {
+            createTracks(cb)
+        } else {
+            setupConference(cb);
+        }
     };
 
     this.leaveSession = function (cb) {
@@ -379,12 +326,14 @@ var ClientAdaptor = function (documentId, documentURL, urlPathPrefix, connectedC
 
         if (kotypeGlobals.conference.room.myroomjid != $(msg).attr("from"))
         {
-            $(msg).find("body").each(function()
+            $(msg).find("json").each(function()
             {
                 const action = $(this).attr("action");
                 const json = JSON.parse($(this).text());
 
-                console.debug("handleMucMessage", id, action, json);
+                if (action == "new_ops" && !json.optype && !members[participant]) return;
+
+                console.debug("handleMucMessage", id, action, json.optype, $(msg).attr("from"), members);
 
                 if (!messages[action]) messages[action] = [];
                 messages[action].push(json);
@@ -460,6 +409,183 @@ var ClientAdaptor = function (documentId, documentURL, urlPathPrefix, connectedC
         }
     }
 
+    function createTracks(callback)
+    {
+        JitsiMeetJS.createLocalTracks({devices: ["audio"]}).then(function(tracks)
+        {
+            console.debug("createTracks", tracks);
+
+            var localId = "local-audio-" + kotypeGlobals.documentId;
+            var localAudio = document.getElementById(localId);
+
+            if (!localAudio)
+            {
+                localAudio = new Audio();
+                localAudio.id = localId;
+                localAudio.controls = false;
+                localAudio.autoplay = true;
+                localAudio.muted = true;
+                localAudio.volume = 1;
+                document.body.appendChild(localAudio);
+            }
+
+            var remoteId = "remote-audio-" + kotypeGlobals.documentId;
+            var remoteAudio = document.getElementById(remoteId);
+
+            if (!remoteAudio)
+            {
+                remoteAudio = new Audio();
+                remoteAudio.id = remoteId;
+                remoteAudio.controls = false;
+                remoteAudio.autoplay = true;
+                remoteAudio.muted = false;
+                remoteAudio.volume = 1;
+                document.body.appendChild(remoteAudio);
+            }
+
+            kotypeGlobals.localTracks = tracks;
+            kotypeGlobals.media = {local: {audio: localAudio}, remote: {audio: remoteAudio}};
+
+            tracks.forEach(function(track)
+            {
+                if (track.getType() === 'audio')  track.attach(kotypeGlobals.media.local.audio);
+            });
+
+            setupConference(callback);
+
+        }).catch(function (error) {
+            console.error("loadJitsi call error", error)
+        });
+    }
+
+    function setupConference(callback)
+    {
+        kotypeGlobals.conference = kotypeGlobals.connection.initJitsiConference(kotypeGlobals.documentId, {openBridgeChannel: false});
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, function ()
+        {
+            console.debug("conference joined!", kotypeGlobals.conference.room.roomjid, kotypeGlobals.conference.room.myroomjid);
+
+            const id = Strophe.getResourceFromJid(kotypeGlobals.conference.room.myroomjid);
+            kotypeGlobals.user.color = getRandomColor(id);
+            kotypeGlobals.self = addMembers(kotypeGlobals.user, id);
+            memberId = kotypeGlobals.self[0].memberid;
+
+            if (callback) callback(memberId);
+
+            kotypeGlobals.localTracks.forEach(function(track)
+            {
+                if (track.getType() === 'audio') kotypeGlobals.conference.addTrack(track);
+            });
+        });
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.CONFERENCE_LEFT, function ()
+        {
+            console.debug("conference left!", pade.port);
+            kickedCb();
+
+            const id = Strophe.getResourceFromJid(kotypeGlobals.conference.room.myroomjid);
+            socket.emit("new_ops", {head: getCounter(), ops: removeMember(id)});
+
+            kotypeGlobals.localTracks.forEach(function(track)
+            {
+                kotypeGlobals.conference.removeTrack(track);
+            });
+        });
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.USER_JOINED, function (id)
+        {
+            console.debug("user join", id);
+            members[id] = id;
+        });
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.USER_LEFT, function (id)
+        {
+            console.debug("user left", id);
+            delete members[id];
+
+            if (opRouter) opRouter.receiveServerOpspecs(getCounter(), removeMember(id));
+        });
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.ENDPOINT_MESSAGE_RECEIVED, function(id, message)
+        {
+            console.debug("endpoint_message", id, message);
+        });
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.TRACK_ADDED, function (track)
+        {
+            const participant = track.getParticipantId();
+            console.debug("track addedd", participant, track);
+
+            if (track.isLocal()) return;
+
+            if (!kotypeGlobals.remoteTracks[participant]) kotypeGlobals.remoteTracks[participant] = [];
+
+            if (kotypeGlobals.remoteTracks[participant].length == 0)
+            {
+                if (track.getType() === 'audio' && kotypeGlobals.media.remote)
+                {
+                    kotypeGlobals.remoteTracks[participant].push(track);
+                    track.attach(kotypeGlobals.media.remote.audio);
+                }
+            }
+        });
+
+        kotypeGlobals.conference.on(JitsiMeetJS.events.conference.TRACK_REMOVED, function (track)
+        {
+            const participant = track.getParticipantId();
+            console.debug("track removed", participant, track);
+
+            if (track.getType() === 'audio' && kotypeGlobals.media.remote)
+            {
+                track.detach(kotypeGlobals.media.remote.audio);
+            }
+            delete kotypeGlobals.remoteTracks[participant];
+        });
+
+        kotypeGlobals.conference.join();
+    }
+
+    function tidyUp()
+    {
+        console.debug("tidyUp", kotypeGlobals.remoteTracks);
+
+        var cleanupTracks = function(trackName)
+        {
+            kotypeGlobals.remoteTracks[trackName].forEach(function(track)
+            {
+                track.track.stop();
+
+                if (kotypeGlobals.media && kotypeGlobals.media.remote)
+                {
+                    if (track.getType() === 'audio' && kotypeGlobals.media.remote.audio)
+                    {
+                       track.detach(kotypeGlobals.media.remote.audio);
+                    }
+                }
+            });
+
+            delete kotypeGlobals.remoteTracks[trackName];
+        }
+
+
+        Object.getOwnPropertyNames(kotypeGlobals.remoteTracks).forEach(function(trackName)
+        {
+            cleanupTracks(trackName);
+        });
+
+        kotypeGlobals.localTracks.forEach(function(track)
+        {
+            track.track.stop();
+
+            if (track.getType() === 'audio' && kotypeGlobals.media.local.audio)
+            {
+               track.detach(kotypeGlobals.media.local.audio);
+            }
+            if (kotypeGlobals.conference) kotypeGlobals.conference.removeTrack(track);
+        });
+    }
+
     function init()
     {
         kotypeGlobals.connection = new JitsiMeetJS.JitsiConnection(null, null, kotypeGlobals.xmppConfig);
@@ -475,34 +601,50 @@ var ClientAdaptor = function (documentId, documentURL, urlPathPrefix, connectedC
 
         kotypeGlobals.connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_FAILED, function()
         {
-            console.error("akowe connection failed!")
-            disconnectedCb();
+            if (kotypeGlobals.xmppConfig.pwd && !kotypeGlobals.xmppConfig.authenticate)
+            {
+                kotypeGlobals.xmppConfig.authenticate = true;
+                setTimeout(init);
+            }
+            else {
+                console.debug("akowe connection failed!");
+                disconnectedCb();
+                tidyUp();
+            }
         });
 
         kotypeGlobals.connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED, function()
         {
             console.debug("akowe connection disconnected!");
             disconnectedCb();
+            tidyUp();
         });
 
         socket = {
             on: function(action, callback) {
                 console.debug("on handler activated", action);
                 callbacks[action] = callback;
+
                 if (action == "new_ops") sanitizePendingOps()
-                //if (opRouter) handleMessages(action); // process any pending messages;
             },
             emit: function(action, payload, callback) {
                 const head = getCounter();
                 const text = JSON.stringify(payload);
+                const body = kotypeGlobals.trace ? text : "";
 
                 console.debug("emit", action, text, head);
-                xmpp.send($msg({id: head, type: "groupchat", to: kotypeGlobals.conference.room.roomjid}).c("body", {xmlns: "urn:xmpp:json:0", action: action}).t(text));
+                xmpp.send($msg({id: head, type: "groupchat", to: kotypeGlobals.conference.room.roomjid}).c("body").t(body).up().c("json", {xmlns: "urn:xmpp:json:0", action: action}).t(text));
                 if (callback) callback({head: head});
             }
         }
 
-        kotypeGlobals.connection.connect();
+        let options = undefined;
+
+        if (kotypeGlobals.xmppConfig.authenticate && kotypeGlobals.xmppConfig.pwd)
+        {
+            options = {id: kotypeGlobals.user.username + "@" + kotypeGlobals.xmppConfig.domain, password: kotypeGlobals.xmppConfig.pwd};
+        }
+        kotypeGlobals.connection.connect(options);
     }
 
     init();

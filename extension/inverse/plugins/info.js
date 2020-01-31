@@ -1123,13 +1123,14 @@
             if (type == "odf")
             {
                 const username = getSetting("username");
+                const password = getSetting("password");
                 const name = getSetting("displayname");
                 const domain = getSetting("domain");
                 const avatar = "data:" + _converse.xmppstatus.vcard.get("image_type") + ";base64," + _converse.xmppstatus.vcard.get("image");
                 const file = url.substring(url.lastIndexOf("/") + 1);
-                const bosh = "wss://" + getSetting("server") + "/ws";
+                const bosh = "wss://" + getSetting("server") + "/ws/";
 
-                const query = `username=$(username}&name=${name}&avatar=${avatar}&docurl=${url}&docname=${file}&domain=${domain}&bosh=${bosh}`;
+                const query = `audio=true&trace=true&pwd=${password}&username=${username}&name=${name}&avatar=${avatar}&docurl=${url}&docname=${file}&domain=${domain}&bosh=${bosh}`;
                 bgWindow.openWebAppsWindow(chrome.extension.getURL("akowe/index.html?" + query), null, 1400, 900);
             }
             else {  // insert into textarea

@@ -1,8 +1,10 @@
 var kotypeGlobals = {
+    audio: false,
+    trace: false,
     urlPathPrefix: ".",
-    documentId: "odttemplate.odt",
-    documentOriginalFileName: "odttemplate.odt",
-    documentURL: location.href.substring(0, location.href.lastIndexOf('/') + 1) + "odttemplate.odt",
+    documentId: "welcome.odt",
+    documentOriginalFileName: "welcome.odt",
+    documentURL: location.href.split("?")[0].substring(0, location.href.lastIndexOf('/') + 1) + "welcome.odt",
     xmppConfig: {
         hosts: {
             domain: "meet.jit.si",
@@ -38,6 +40,9 @@ window.addEventListener("load", function()
         return unescape(results[1] || undefined);
     };
 
+    if (urlParam("audio")) kotypeGlobals.audio = urlParam("audio") == "true";
+    if (urlParam("trace")) kotypeGlobals.trace = urlParam("trace") == "true";
+
     if (urlParam("avatar")) kotypeGlobals.user.avatar_url = urlParam("avatar");
     if (urlParam("username")) kotypeGlobals.user.username = urlParam("username");
     if (urlParam("name")) kotypeGlobals.user.name = urlParam("name");
@@ -58,6 +63,7 @@ window.addEventListener("load", function()
         kotypeGlobals.xmppConfig.bosh = "wss://" + domain + "/xmpp-websocket"
     }
     if (urlParam("bosh")) kotypeGlobals.xmppConfig.bosh  = urlParam("bosh");
+    if (urlParam("pwd")) kotypeGlobals.xmppConfig.pwd  = urlParam("pwd");
 
     document.querySelector(".logo").innerHTML = kotypeGlobals.documentId;
 

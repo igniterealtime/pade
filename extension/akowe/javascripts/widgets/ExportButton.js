@@ -73,7 +73,7 @@ widgets.ExportButton = function (parentElement, editorInstance, getDocumentOrigi
         button.render(parentElement);
         button.getElement().setAttribute('id', 'exportButton');
         button.getElement().classList.add('button');
-        button.getElement().classList.add('red');
+        //button.getElement().classList.add('red');
         button.getElement().classList.add('export-button');
     }
 

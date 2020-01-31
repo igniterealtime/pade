@@ -820,7 +820,7 @@ this.manifest = {
             "name": "ofmeetUrl",
             "type": "text",
             "label": i18n.get("Base Url"),
-            "text": "https://server:7443/ofmeet"
+            "text": "https://server:7443/ofmeet/"
         },
         {
             "tab": i18n.get("Meetings"),
