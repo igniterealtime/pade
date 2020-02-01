@@ -54,10 +54,10 @@
 
             });
 
-            _converse.api.listen.on('chatRoomOpened', function (view)
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("chatRoomOpened", view);
+                console.debug("chatRoomViewInitialized", view);
 
                 view.model.occupants.on('add', occupant =>
                 {
@@ -80,9 +80,9 @@
                 });
             });
 
-            _converse.api.listen.on('chatBoxInitialized', function (model)
+            _converse.api.listen.on('chatBoxInsertedIntoDOM', function (model)
             {
-                console.debug("chatBoxInitialized", model, anonRoster);
+                console.debug("chatBoxInsertedIntoDOM", model, anonRoster);
                 const jid = model.get("jid");
 
                 if (anonRoster[model.get("jid")])
@@ -435,13 +435,16 @@
                 status.insertAdjacentElement('beforeBegin', imgEle);
             }
 
-            const myJid = Strophe.getBareJidFromJid(_converse.connection.jid);
-
-            if (occupant.get('jid') && myJid != occupant.get('jid'))
+            if (occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");
-                const html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+                let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+                if (_converse.bare_jid == occupant.get('jid'))
+                {
+                    html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
+                }
 
                 if (padeEle)
                 {

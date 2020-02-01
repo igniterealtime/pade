@@ -462,7 +462,7 @@ function doConverse(server, username, password, anonUser)
           auto_xa: 0, //autoXa,
           bosh_service_url: "https://" + server + "/http-bind",
           clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
-          debug: getSetting("converseDebug", false),
+          loglevel: getSetting("converseDebug", false) ? "debug" : "info",
           default_domain: domain,
           default_state: getSetting("converseOpenState", "online"),
           domain_placeholder: domain,
@@ -493,7 +493,6 @@ function doConverse(server, username, password, anonUser)
           show_controlbox_by_default: false,
           show_desktop_notifications: false,
           show_message_load_animation: false,
-          show_only_online_users: getSetting("converseShowOnlyOnlineUsers", false),
           show_send_button: getSetting("showSendButton", false),
           sounds_path: chrome.runtime.getURL('inverse/sounds/'),
           theme: 'concord',
@@ -538,7 +537,11 @@ function openChat(from, name, groups)
         }
 
         _inverse.api.chats.open(from);
-        _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + from + '"/>');
+
+        if (_converse.connection.injectMessage)
+        {
+            _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + from + '"/>');
+        }
     }
 }
 
@@ -618,42 +621,45 @@ function handleActiveConversations()
     const chatDiv = document.getElementById("converse-roster");
     let activeDiv = document.getElementById("active-conversations");
 
-    let display = roomDiv.style.display;
-
-    if (display != "none")
+    if (roomDiv)
     {
-        roomDiv.style.display = "none";
-        if (chatDiv) chatDiv.style.display = "none";
+        let display = roomDiv.style.display;
 
-        if (!activeDiv)
+        if (display != "none")
         {
-            activeDiv = document.createElement("div");
-            activeDiv.id = "active-conversations";
-            activeDiv.classList.add("controlbox-section");
-            roomDiv.parentElement.appendChild(activeDiv);
+            roomDiv.style.display = "none";
+            if (chatDiv) chatDiv.style.display = "none";
+
+            if (!activeDiv)
+            {
+                activeDiv = document.createElement("div");
+                activeDiv.id = "active-conversations";
+                activeDiv.classList.add("controlbox-section");
+                roomDiv.parentElement.appendChild(activeDiv);
+            }
+
+            var compare = function ( x, y )
+            {
+                const one = x.get("name");
+                const two = y.get("name");
+                const a = one ? one.toLowerCase() : "";
+                const b = two ? two.toLowerCase() : "";
+
+                if ( a < b ) return -1;
+                if ( a > b ) return 1;
+                return 0;
+            }
+
+            _converse.chatboxes.models.sort(compare).forEach(function (chatbox)
+            {
+                addActiveConversation(chatbox, activeDiv);
+            });
+
+        } else {
+            roomDiv.style.display = "";
+            if (chatDiv) chatDiv.style.display = "";
+            if (activeDiv) roomDiv.parentElement.removeChild(activeDiv);
         }
-
-        var compare = function ( x, y )
-        {
-            const one = x.get("name");
-            const two = y.get("name");
-            const a = one ? one.toLowerCase() : "";
-            const b = two ? two.toLowerCase() : "";
-
-            if ( a < b ) return -1;
-            if ( a > b ) return 1;
-            return 0;
-        }
-
-        _converse.chatboxes.models.sort(compare).forEach(function (chatbox)
-        {
-            addActiveConversation(chatbox, activeDiv);
-        });
-
-    } else {
-        roomDiv.style.display = "";
-        if (chatDiv) chatDiv.style.display = "";
-        if (activeDiv) roomDiv.parentElement.removeChild(activeDiv);
     }
 }
 
@@ -710,7 +716,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
             setAvatar(display_name, dataUri);
         }
 
-        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 24px; width: 24px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
+        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 22px; width: 22px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
         activeDiv.appendChild(msg_content);
 
         const openButton = document.getElementById("pade-active-" + id);
@@ -794,6 +800,8 @@ function __newElement(el, id, html, className)
 
 function addToolbarItem (view, id, label, html)
 {
+    if (document.getElementById(label)) return;
+
     let placeHolder = view.el.querySelector('#place-holder');
 
     if (!placeHolder)

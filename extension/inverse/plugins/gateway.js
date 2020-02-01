@@ -17,17 +17,16 @@
             Strophe = converse.env.Strophe;
             dayjs = converse.env.dayjs;
 
-            _converse.api.listen.on('chatRoomOpened', function (view)
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 console.debug("gateway chatRoomOpened", view);
                 rssGroupChatCheck(view);
             });
 
-            _converse.api.listen.on('chatBoxInitialized', function (view)
+            _converse.api.listen.on('chatBoxInsertedIntoDOM', function (view)
             {
-                console.debug("gateway chatBoxInitialized", view);
-
                 var jid = view.model.get("jid");
+                console.debug("gateway chatBoxInsertedIntoDOM", jid);
 
                 if (jid === "rss@pade." + _converse.connection.domain)
                 {
@@ -38,33 +37,43 @@
 
             _converse.api.listen.on('connected', function()
             {
-                Promise.all([_converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
+                _converse.connection.injectedMessage = function(element)
                 {
-                    _converse.connection.injectedMessage = function(element)
-                    {
-                        const to = element.getAttribute("to");
+                    console.debug("gateway injected message", element);
 
-                        if (to == "rss@pade." + _converse.connection.domain)
-                        {
-                            // TODO
-                        }
+                    const id = element.getAttribute("id");
+                    const xmlns = element.getAttribute("xmlns");
+                    const to = element.getAttribute("to");
+                    const query = element.querySelector("query");
+
+                    if (query && query.getAttribute("xmlns") == "urn:xmpp:mam:2")
+                    {
+                        _converse.connection.injectMessage(`<iq type="result" id="${id}" to="${_converse.connection.jid}"/><fin xmlns="urn:xmpp:mam:2"><set xmlns="http://jabber.org/protocol/rsm"></set></fin>`);
                     }
 
-                    window.addEventListener("unload", function ()
+                    if (to == "rss@pade." + _converse.connection.domain)
                     {
-                        console.debug("gateway unloading all feed refreshing");
 
-                        if (rssInterval) clearInterval(rssInterval);
-                    });
-                });
-
-                if (getSetting("enableRssFeeds", false))
-                {
-                    var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
-                    rssInterval = setInterval(rssRefresh, rssFeedCheck);
-
-                    createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), "RSS Feed");
+                    }
                 }
+
+                _converse.api.waitUntil('rosterContactsFetched').then(() => {
+
+                    if (getSetting("enableRssFeeds", false))
+                    {
+                        window.addEventListener("unload", function ()
+                        {
+                            console.debug("gateway unloading all feed refreshing");
+
+                            if (rssInterval) clearInterval(rssInterval);
+                        });
+
+                        var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
+                        rssInterval = setInterval(rssRefresh, rssFeedCheck);
+
+                        createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), "RSS Feed");
+                    }
+                });
             });
 
             console.log("gateway plugin is ready");
@@ -77,9 +86,9 @@
                 renderChatMessage: async function renderChatMessage()
                 {
                     const sender = this.model.get("sender");
-                    const jid = this.model.get("jid");
+                    const from = this.model.get("from");
 
-                    if (jid == "rss@pade." + _converse.connection.domain && sender == "me")
+                    if (from == "rss@pade." + _converse.connection.domain && sender == "me")
                     {
                         return false;
                     }
@@ -110,6 +119,8 @@
 
     var createRosterEntry = function(jid, name, groups)
     {
+        console.debug("createRosterEntry", jid, name, groups);
+
         if (bgWindow.pade.chatAPIAvailable)
         {
             var body = {

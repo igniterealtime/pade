@@ -65,27 +65,9 @@
                 resetAllMsgCount();
             }
 
-            /* From the `_converse` object you can get any configuration
-             * options that the user might have passed in via
-             * `converse.initialize`.
-             *
-             * You can also specify new configuration settings for this
-             * plugin, or override the default values of existing
-             * configuration settings. This is done like so:
-            */
-
             _converse.api.settings.update({
-
+              'show_client_info': false
             });
-
-            /* The user can then pass in values for the configuration
-             * settings when `converse.initialize` gets called.
-             * For example:
-             *
-             *      converse.initialize({
-             *           "initialize_message": "My plugin has been initialized"
-             *      });
-             */
 
             _converse.on('messageAdded', function (data) {
                 // The message is at `data.message`
@@ -266,10 +248,10 @@
                 }
             });
 
-            _converse.api.listen.on('chatRoomOpened', function (view)
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("chatRoomOpened", view);
+                console.debug("chatRoomViewInitialized", view);
 
                 view.model.occupants.on('add', occupant =>
                 {
@@ -279,7 +261,7 @@
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
                     }
 
-                    setTimeout(function() {extendOccupant(occupant, view)}, 1000);
+                    setTimeout(function() {extendOccupant(occupant, view)});
                 });
 
                 view.model.occupants.on('remove', occupant =>
@@ -319,13 +301,13 @@
                 }
             });
 
-            _converse.api.listen.on('chatBoxInitialized', function (view)
+            _converse.api.listen.on('chatBoxInsertedIntoDOM', function (view)
             {
-                console.debug("chatBoxInitialized", view.model, anonRoster);
+                console.debug("chatBoxInsertedIntoDOM", view.model, anonRoster);
 
                 const jid = view.model.get("jid");
                 const activeDiv = document.getElementById("active-conversations");
-                console.debug("pade plugin chatBoxInitialized", jid, activeDiv);
+                console.debug("pade plugin chatBoxInsertedIntoDOM", jid, activeDiv);
 
                 if (bgWindow)
                 {
@@ -435,9 +417,10 @@
 
                         var bookmarkRoom = function bookmarkRoom(json)
                         {
-                            var room = _converse.chatboxes.get(json.jid);
+                            const room = _converse.chatboxes.get(json.jid);
+                            const bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
 
-                            if (!room)
+                            if (!bookmark)
                             {
                                 _converse.bookmarks.create({
                                     'jid': json.jid,
@@ -445,10 +428,9 @@
                                     'autojoin': json.autojoin,
                                     'nick': myNick
                                 });
-
-                                room = _converse.chatboxes.get(json.jid);
-                                if (room) room.save('bookmarked', true);
                             }
+
+                            if (room) room.save('bookmarked', true);
                             return room;
                         }
 
@@ -496,6 +478,40 @@
                         }
                     }
 
+                    _converse.api.waitUntil('roomsPanelRendered').then(() => {
+                        const section = document.body.querySelector('.controlbox-section.profile.d-flex');
+                        console.debug("extendControlBox", section);
+
+                        if (section)
+                        {
+                            const viewButton = __newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="Change view"></a>');
+                            section.appendChild(viewButton);
+
+                            viewButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+                                handleActiveConversations();
+
+                            }, false);
+
+
+                            if (getSetting("converseSimpleView", false))
+                            {
+                                handleActiveConversations();
+                            }
+
+                            const prefButton = __newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>');
+                            section.appendChild(prefButton);
+
+                            prefButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+                                const url = chrome.extension.getURL("options/index.html");
+                                bgWindow.openWebAppsWindow(url, null, 1300, 950);
+
+                            }, false);
+                        }
+                    });
                 });
 
                 _converse.api.waitUntil('controlBoxInitialized').then(() => {
@@ -517,11 +533,6 @@
                             _converse.xmppstatus.vcard.set('image_type', 'image/png');
                         }, 1000);
                     }
-
-                    if (getSetting("converseSimpleView", false))
-                    {
-                        handleActiveConversations();
-                    }
                 });
 
                 console.log("pade plugin is ready");
@@ -541,7 +552,7 @@
                     if (getSetting("enableThreading", false))
                     {
                         const msgThread = this.model.get('thread');
-                        const source = this.model.get("type") == "groupchat" ? this.model.get("from") : this.model.get("jid");
+                        const source = this.model.get("from");
                         const box_jid = Strophe.getBareJidFromJid(source);
                         const box = _converse.chatboxes.get(box_jid);
 
@@ -872,6 +883,20 @@
 
         if (element)
         {
+            const status = element.querySelector(".occupant-status");
+            let imgEle = element.querySelector(".occupant-avatar");
+            const image = createAvatar(occupant.get('nick'));
+            const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
+
+            if (imgEle)
+            {
+                imgEle.innerHTML = imgHtml;
+            }
+            else {
+                imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
+                status.insertAdjacentElement('beforeBegin', imgEle);
+            }
+
             if (occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
@@ -899,6 +924,9 @@
 
                 }, false);
             }
+        }
+        else {
+            setTimeout(function() {extendOccupant(occupant, view)});
         }
     }
 

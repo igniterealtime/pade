@@ -383,13 +383,13 @@
                 var history = message.querySelector('forwarded');
             });
 
-            _converse.api.listen.on('chatRoomOpened', function (view)
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 const jid = view.model.get("jid");
                 const chat_area = view.el.querySelector('.chat-area');
                 const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
 
-                console.debug("chatRoomOpened", jid, chat_area.classList, occupants_area.classList);
+                console.debug("chatRoomViewInitialized", jid, chat_area.classList, occupants_area.classList);
 
                 if (!getSetting("alwaysShowOccupants", false))
                 {
@@ -398,10 +398,10 @@
                 }
             });
 
-            _converse.api.listen.on('chatBoxInitialized', function (view)
+            _converse.api.listen.on('chatBoxInsertedIntoDOM', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("chatBoxInitialized", jid);
+                console.debug("chatBoxInsertedIntoDOM", jid);
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
@@ -961,6 +961,28 @@
               shouldBeVisible() {
                 return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
               }
+            },
+
+            RosterContactView: {
+
+                renderAvatar: function() {
+
+                    if (this.model.vcard)
+                    {
+                        var nick = this.model.getDisplayName();
+
+                        if (nick && _converse.DEFAULT_IMAGE == this.model.vcard.attributes.image)
+                        {
+                            var dataUri = createAvatar(nick);
+                            var avatar = dataUri.split(";base64,");
+
+                            this.model.vcard.set("image", avatar[1]);
+                            this.model.vcard.set("image_type", "image/png");
+                        }
+                    }
+
+                    this.__super__.renderAvatar.apply(this, arguments);
+                }
             },
 
             ChatBoxView: {
