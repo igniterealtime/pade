@@ -54,10 +54,10 @@
 
             });
 
-            _converse.api.listen.on('chatRoomViewInitialized', function (view)
+            _converse.api.listen.on('chatRoomOpened', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("chatRoomViewInitialized", view);
+                console.debug("chatRoomOpened", view);
 
                 view.model.occupants.on('add', occupant =>
                 {
@@ -80,9 +80,9 @@
                 });
             });
 
-            _converse.api.listen.on('chatBoxInsertedIntoDOM', function (model)
+            _converse.api.listen.on('chatBoxInitialized', function (model)
             {
-                console.debug("chatBoxInsertedIntoDOM", model, anonRoster);
+                console.debug("chatBoxInitialized", model, anonRoster);
                 const jid = model.get("jid");
 
                 if (anonRoster[model.get("jid")])
@@ -435,16 +435,13 @@
                 status.insertAdjacentElement('beforeBegin', imgEle);
             }
 
-            if (occupant.get('jid'))
+            const myJid = Strophe.getBareJidFromJid(_converse.connection.jid);
+
+            if (occupant.get('jid') && myJid != occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");
-                let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
-
-                if (_converse.bare_jid == occupant.get('jid'))
-                {
-                    html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
-                }
+                const html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
 
                 if (padeEle)
                 {

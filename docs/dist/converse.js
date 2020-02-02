@@ -36194,7 +36194,7 @@ __e(o.default_domain) +
 '\n            </div>\n            ';
  } else { ;
 __p += '\n                <input class="form-control" autofocus="autofocus" required="required" type="text" name="domain" placeholder="' +
-__e(o.domain_placeholder) + '" value="' + __e(o.domain_placeholder) + // BAO
+__e(o.domain_placeholder) +
 '"/>\n                <p class="form-text text-muted">' +
 __e(o.help_providers) +
 ' <a href="' +
