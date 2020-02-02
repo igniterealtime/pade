@@ -557,14 +557,7 @@
                         {
                             evt.stopPropagation();
 
-                            if (!geoLocationDialog)
-                            {
-                                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
-                            }
-                            else {
-                               geoLocationDialog.model.set("geoloc", bgWindow.pade.geoloc[jid]);
-                            }
-                            geoLocationDialog.show();
+                            showGeolocation(jid, view);
 
                         }, false);
 
@@ -1061,6 +1054,18 @@
                     // Custom code can come here ...
                 }
             }
+        },
+
+        showGeolocation: function(jid, view)
+        {
+            if (!geoLocationDialog)
+            {
+                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+            }
+            else {
+               geoLocationDialog.model.set("geoloc", bgWindow.pade.geoloc[jid]);
+            }
+            geoLocationDialog.show();
         }
     });
 

@@ -883,22 +883,26 @@
 
         if (element)
         {
-            const status = element.querySelector(".occupant-status");
-            let imgEle = element.querySelector(".occupant-avatar");
-            const image = createAvatar(occupant.get('nick'));
-            const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
-
-            if (imgEle)
-            {
-                imgEle.innerHTML = imgHtml;
-            }
-            else {
-                imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
-                status.insertAdjacentElement('beforeBegin', imgEle);
-            }
-
             if (occupant.get('jid'))
             {
+                // avatar
+
+                const status = element.querySelector(".occupant-status");
+                let imgEle = element.querySelector(".occupant-avatar");
+                const image = createAvatar(occupant.get('nick'));
+                const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
+
+                if (imgEle)
+                {
+                    imgEle.innerHTML = imgHtml;
+                }
+                else {
+                    imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
+                    status.insertAdjacentElement('beforeBegin', imgEle);
+                }
+
+                // chat badge
+
                 const badges = element.querySelector(".occupant-badges");
                 let padeEle = element.querySelector(".occupants-pade-chat");
                 let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
@@ -923,6 +927,32 @@
                     occupantAvatarClicked(evt);
 
                 }, false);
+
+                // location
+
+                if (bgWindow.pade.geoloc[occupant.get('jid')])
+                {
+                    let locationEle = element.querySelector(".occupants-pade-location");
+                    let locationHtml = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to see location' class='badge badge-dark'>GeoLoc</span>";
+
+                    if (locationEle)
+                    {
+                        locationEle.innerHTML = locationHtml;
+                    }
+                    else {
+                        locationEle = __newElement('span', null, locationHtml, 'occupants-pade-location');
+                        badges.appendChild(locationEle);
+                    }
+
+                    locationEle.addEventListener('click', function(evt)
+                    {
+                        evt.stopPropagation();
+
+                        const jid = evt.target.getAttribute('data-room-jid');
+                        _converse.pluggable.plugins["webmeet"].showGeolocation(jid, view);
+
+                    }, false);
+                }
             }
         }
         else {
