@@ -883,25 +883,25 @@
 
         if (element)
         {
+            // avatar
+
+            const status = element.querySelector(".occupant-status");
+            let imgEle = element.querySelector(".occupant-avatar");
+            const image = createAvatar(occupant.get('nick'));
+            const imgHtml = '<img class="room-avatar avatar" src="' + image + '" height="22" width="22">';
+
+            if (imgEle)
+            {
+                imgEle.innerHTML = imgHtml;
+            }
+            else {
+                imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
+                status.insertAdjacentElement('beforeBegin', imgEle);
+            }
+
             if (occupant.get('jid'))
             {
                 const badges = element.querySelector(".occupant-badges");
-
-                // avatar
-
-                const status = element.querySelector(".occupant-status");
-                let imgEle = element.querySelector(".occupant-avatar");
-                const image = createAvatar(occupant.get('nick'));
-                const imgHtml = '<img data-room-nick="' + occupant.get('nick') + '" data-room-jid="' + occupant.get('jid') + '" class="room-avatar avatar" src="' + image + '" height="22" width="22">';
-
-                if (imgEle)
-                {
-                    imgEle.innerHTML = imgHtml;
-                }
-                else {
-                    imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
-                    status.insertAdjacentElement('beforeBegin', imgEle);
-                }
 
                 // location
 
