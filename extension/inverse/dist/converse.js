@@ -64458,7 +64458,8 @@ function getURI(url) {
 }
 
 function checkTLS(uri) {
-  return window.location.protocol === 'http:' || window.location.protocol === 'https:' && uri.protocol().toLowerCase() === "https";
+  // BAO
+  return window.location.protocol === 'chrome-extension:' || window.location.protocol === 'http:' || window.location.protocol === 'https:' && uri.protocol().toLowerCase() === "https";
 }
 
 function checkFileTypes(types, url) {
