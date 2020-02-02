@@ -8,9 +8,9 @@
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var _converse = null;
     var infoDialog = null;
-    var panelHTML = {};
 
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
+    var PreviewDialog = null, previewDialog = null;
 
     converse.plugins.add("info", {
         'dependencies': [],
@@ -224,13 +224,26 @@
 
     var toggleInfoBar = function(view, id, jid)
     {
-        const chat_area = view.el.querySelector('.chat-area');
+        const chatroom_body = view.el.querySelector('.chatroom-body');
+        let info_area = view.el.querySelector('.occupants-pade-info');
+
+        if (!info_area)
+        {
+            info_area = document.createElement("div");
+            info_area.classList.add('occupants-pade-info');
+            info_area.classList.add('col-md-3');
+            info_area.classList.add('col-4');
+            chatroom_body.appendChild(info_area);
+        }
+
         const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
 
-        if (!panelHTML[id])
+        if (occupants_area.style.display != "none")
         {
-            panelHTML[id] = occupants_area.innerHTML;
-            occupants_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
+            occupants_area.style.display = "none";
+
+            info_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
+            info_area.style.display = "";
 
             createContentSummary(view, jid, id);
             createMediaContentSummary(jid, id);
@@ -244,8 +257,8 @@
             createBroadcastEndpoints(jid, id);
 
         } else {
-            occupants_area.innerHTML = panelHTML[id];
-            panelHTML[id] = null;
+            occupants_area.style.display = "";
+            info_area.style.display = "none";
         }
         view.scrollDown();
     }

@@ -885,6 +885,8 @@
         {
             if (occupant.get('jid'))
             {
+                const badges = element.querySelector(".occupant-badges");
+
                 // avatar
 
                 const status = element.querySelector(".occupant-status");
@@ -900,33 +902,6 @@
                     imgEle = __newElement('span', null, imgHtml, 'occupant-avatar');
                     status.insertAdjacentElement('beforeBegin', imgEle);
                 }
-
-                // chat badge
-
-                const badges = element.querySelector(".occupant-badges");
-                let padeEle = element.querySelector(".occupants-pade-chat");
-                let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
-
-                if (_converse.bare_jid == occupant.get('jid'))
-                {
-                    html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
-                }
-
-                if (padeEle)
-                {
-                    padeEle.innerHTML = html;
-                }
-                else {
-                    padeEle = __newElement('span', null, html, 'occupants-pade-chat');
-                    badges.appendChild(padeEle);
-                }
-
-                padeEle.addEventListener('click', function(evt)
-                {
-                    evt.stopPropagation();
-                    occupantAvatarClicked(evt);
-
-                }, false);
 
                 // location
 
@@ -953,6 +928,32 @@
 
                     }, false);
                 }
+
+                // chat badge
+
+                let padeEle = element.querySelector(".occupants-pade-chat");
+                let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+                if (_converse.bare_jid == occupant.get('jid'))
+                {
+                    html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
+                }
+
+                if (padeEle)
+                {
+                    padeEle.innerHTML = html;
+                }
+                else {
+                    padeEle = __newElement('span', null, html, 'occupants-pade-chat');
+                    badges.appendChild(padeEle);
+                }
+
+                padeEle.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+                    occupantAvatarClicked(evt);
+
+                }, false);
             }
         }
         else {
