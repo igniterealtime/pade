@@ -815,6 +815,12 @@ window.addEventListener("load", function()
     }
 
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
+
+    chrome.contextMenus.create({parentId: "pade_applications", id: "pade_public_chat", type: "normal", title: "Public Chat", contexts: ["browser_action"],  onclick: function()
+    {
+        openWebAppsWindow("https://" + getSetting("server") + "/monitoring/", null, 1024, 800);
+    }});
+
     chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
 
     if (getSetting("enableInverse", false))
@@ -2915,7 +2921,7 @@ function addCommunityMenu()
     {
         chrome.contextMenus.create({parentId: "pade_applications", id: "pade_community", type: "normal", title: "CMS/Community Client", contexts: ["browser_action"],  onclick: function()
         {
-            openWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki", null, 1024, 800);
+            openWebAppsWindow(getSetting("communityUrl"), null, 1024, 800);
         }});
     }
 }
