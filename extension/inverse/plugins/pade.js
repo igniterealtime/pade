@@ -652,18 +652,10 @@
                             messageDiv.parentElement.appendChild(messageActionButtons);
                         }
 
-                        if (getSetting("enableMessageRetraction", false) && !messageActionButtons.querySelector('.chat-msg__action-delete') && this.model.get("type") !== 'headline' && !this.model.isMeCommand() && this.model.get('sender') === 'me')
-                        {
-                            var ele = document.createElement("button");
-                            ele.classList.add("chat-msg__action", "chat-msg__action-delete", "far", "fa-trash-alt");
-                            ele.title = "Reract this message";
-                            messageActionButtons.appendChild(ele);
-                        }
-
                         if (!messageActionButtons.querySelector('.chat-msg__action-reply'))
                         {
                             var ele = document.createElement("button");
-                            ele.classList.add("chat-msg__action", "chat-msg__action-reply", "fas", "fa-reply");
+                            ele.classList.add("chat-msg__action", "chat-msg__action-reply", "fas", "fa-reply-all");
                             ele.title = "Reply this message";
                             messageActionButtons.appendChild(ele);
                         }

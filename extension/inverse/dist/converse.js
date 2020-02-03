@@ -65391,7 +65391,7 @@ converse_core.plugins.add('converse-message-view', {
         })));
         const url = this.model.get('oob_url');
 
-        if (url) {
+        if (url && msg.querySelector('.chat-msg__media')) { // BAO
           msg.querySelector('.chat-msg__media').innerHTML = this.transformOOBURL(url);
         }
 

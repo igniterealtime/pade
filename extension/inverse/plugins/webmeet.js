@@ -1012,25 +1012,29 @@
                 toggleCall: function toggleCall(ev) {
                     console.debug("toggleCall", this.model);
 
-                    ev.stopPropagation();
-
-                    if ( _converse.view_mode === 'overlayed')
+                    if (getSetting("enableSip", false))
                     {
+                        ev.stopPropagation();
 
-                    }
-                    else
-
-                    if (bgWindow) {
-                        console.debug('callButtonClicked');
-                        var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
-
-                        if (this.model.get("message_type") == "chat")
+                        if ( _converse.view_mode === 'overlayed')
                         {
-                            room = bgWindow.makeRoomName(room);
-                        }
 
-                        bgWindow.openWebAppsWindow(chrome.extension.getURL("webcam/sip-video.html?url=sip:" + room), null, 800, 640)
+                        }
+                        else
+
+                        if (bgWindow) {
+                            console.debug('callButtonClicked');
+                            var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
+
+                            if (this.model.get("message_type") == "chat")
+                            {
+                                room = bgWindow.makeRoomName(room);
+                            }
+
+                            bgWindow.openWebAppsWindow(chrome.extension.getURL("webcam/sip-video.html?url=sip:" + room), null, 800, 640)
+                        }
                     }
+                    this.__super__.toggleCall.apply(this, arguments);
                 }
             },
 
