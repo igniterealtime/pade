@@ -1,5 +1,5 @@
 var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
-var __origins = {}, __irmaVerifications = {};
+var __origins = {};
 
 window.addEventListener("unload", function()
 {
@@ -440,6 +440,11 @@ function doConverse(server, username, password, anonUser)
             whitelistedPlugins.push("canned");
         }
 
+        if (getSetting("enableIrma", false))
+        {
+            whitelistedPlugins.push("irma");
+        }
+
         if (!getSetting("enableSip", false))
         {
            whitelistedPlugins.push("audioconf");
@@ -507,6 +512,7 @@ function doConverse(server, username, password, anonUser)
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
           webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
           websocket_url: connUrl,
+          enable_smacks: false, // TODO Fix Openfire websockets stream mgmt
           whitelisted_plugins: whitelistedPlugins
         };
 
@@ -715,13 +721,13 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
 
         if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image)
         {
-            dataUri = createAvatar(display_name);
+            dataUri = createAvatar(display_name, null, null, null, null);
         }
         else {
             setAvatar(display_name, dataUri);
         }
 
-        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 22px; width: 22px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fas fa-window-close"></a>';
+        msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="width: 22px; width: 22px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fa fa-times"></a>';
         activeDiv.appendChild(msg_content);
 
         const openButton = document.getElementById("pade-active-" + id);
@@ -782,12 +788,15 @@ function setAvatar(nickname, avatar)
     if (bgWindow) bgWindow.setAvatar(nickname, avatar);
 }
 
-function createAvatar(nickname, width, height, font, force)
+function createAvatar(nickname, width, height, font, force, jid)
 {
     if (_converse.vcards)
     {
-        const vcard = _converse.vcards.findWhere({'nickname': nickname});
-        if (vcard && vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
+        let vcard = _converse.vcards.findWhere({'jid': nickname});
+        if (!vcard && jid) vcard = _converse.vcards.findWhere({'jid': jid});
+        if (!vcard) vcard = _converse.vcards.findWhere({'nickname': nickname});
+
+        if (vcard && vcard.get('image') && _converse.DEFAULT_IMAGE != vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
     }
 
     if (bgWindow) return bgWindow.createAvatar(nickname, width, height, font, force);
