@@ -324,7 +324,7 @@
                         view.model.vcard.set('nickname', nick);
                         view.model.vcard.set('fullname', nick);
 
-                        const dataUri = getSetting("avatar", createAvatar(nick, null, null, null, true));
+                        const dataUri = getSetting("avatar", createAvatar(nick, null, null, null, true, jid));
                         const avatar = dataUri.split(";base64,");
 
                         view.model.vcard.set('image', avatar[1]);
@@ -879,7 +879,7 @@
 
             const status = element.querySelector(".occupant-status");
             let imgEle = element.querySelector(".occupant-avatar");
-            const image = createAvatar(occupant.get('nick'));
+            const image = createAvatar(occupant.get('nick'), null, null, null, null, occupant.get('jid'));
             const imgHtml = '<img class="room-avatar avatar" src="' + image + '" height="22" width="22">';
 
             if (imgEle)

@@ -30,7 +30,11 @@
 
                 if (jid === "rss@pade." + _converse.connection.domain)
                 {
-                    view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
+                    if (getSetting("showRssToolbar", false)) {
+                        view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
+                    } else {
+                        view.el.querySelector('.bottom-panel').style.display = "none";
+                    }
                     rssChatCheck();
                 }
             });

@@ -1879,6 +1879,13 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Audio/Video Capture")
         },
+        {                                       // irma
+            "tab": i18n.get("Applications"),
+            "group": i18n.get("IRMA"),
+            "name": "enableIrma",
+            "type": "checkbox",
+            "label": i18n.get("Enable IRMA (I reveal my attributes)")
+        },
         {                                               // search
             "tab": i18n.get("Search"),
             "group": i18n.get("Rooms Directory"),
@@ -2008,6 +2015,13 @@ this.manifest = {
             "name": "useRssDate",
             "type": "checkbox",
             "label": i18n.get("Replace published timestamp with fetch timestamp")
+        },
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("RSS/Atom"),
+            "name": "showRssToolbar",
+            "type": "checkbox",
+            "label": i18n.get("Show Chatbox Toolbar")
         },
         {
             "tab": i18n.get("Feeds"),
