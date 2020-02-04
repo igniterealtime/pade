@@ -43,7 +43,7 @@
                     use_default_button_css: "true",
                     protocol: "xmpp",    // 'sip' or 'xmpp'
                     sip: {domain: "192.168.1.251", server: "wss://desktop-545pc5b:7443/sip/proxy?url=ws://192.168.1.251:5066", register: false, caller_uri: "sip:1002@192.168.1.251", authorization_user: "1002", password: "1234"},
-                    xmpp: {domain: getSetting("domain"), server: "https://" + getSetting("server") + "/http-bind"}
+                    xmpp: {domain: getSetting("domain"), server: "https://" + getSetting("server") + "/http-bind", username: getSetting("username"), password: getSetting("password")}
                 }
             });
 
@@ -133,29 +133,32 @@
                 toggleCall: function toggleCall(ev) {
                     ev.stopPropagation();
 
-                    let room = Strophe.getNodeFromJid(this.model.get("jid")).toLowerCase();
-
-                    if (this.model.get("type") == "chatbox")
+                    if (confirm(window.click2Dial.text + "?"))
                     {
-                        room = bgWindow.makeRoomName(room);
-                    }
+                        let room = Strophe.getNodeFromJid(this.model.get("jid")).toLowerCase();
 
-                    console.debug("toggleCall", room);
+                        if (this.model.get("type") == "chatbox")
+                        {
+                            room = bgWindow.makeRoomName(room);
+                        }
 
-                    if (!voxbone.WebRTC.rtcSession.isEnded || voxbone.WebRTC.rtcSession.isEnded())
-                    {
-                        window.click2Dial.did = "audioconf_" + room;
-                        window.click2Dial.makeCall(true);
+                        console.debug("toggleCall", room);
 
-                        const attrs = this.model.getOutgoingMessageAttributes(window.click2Dial.text);
-                        const message = this.model.messages.create(attrs);
-                        message.set('oob_url', "web+audio-conf:" + window.click2Dial.did);
-                        _converse.api.send(this.model.createMessageStanza(message));
+                        if (!voxbone.WebRTC.rtcSession.isEnded || voxbone.WebRTC.rtcSession.isEnded())
+                        {
+                            window.click2Dial.did = "audioconf_" + room;
+                            window.click2Dial.makeCall(true);
 
-                        //this.showHelpMessages(["Calling " + click2_dial.did]);
-                    }
-                    else {
-                        this.showHelpMessages(["Active call in progress. Clear call and try again"]);
+                            const attrs = this.model.getOutgoingMessageAttributes(window.click2Dial.text);
+                            const message = this.model.messages.create(attrs);
+                            message.set('oob_url', "web+audio-conf:" + window.click2Dial.did);
+                            _converse.api.send(this.model.createMessageStanza(message));
+
+                            //this.showHelpMessages(["Calling " + click2_dial.did]);
+                        }
+                        else {
+                            this.showHelpMessages(["Active call in progress. Clear call and try again"]);
+                        }
                     }
                 }
             }

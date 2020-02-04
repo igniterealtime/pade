@@ -2559,7 +2559,8 @@ var requirejs, require, define, infoVoxbone;
             console.debug("loadJitsi disconnected!");
         });
 
-        connection.connect();
+        const options = click2Dial.xmpp.username ? {id: click2Dial.xmpp.username + "@" + click2Dial.xmpp.domain, password: click2Dial.xmpp.password} : undefined
+        connection.connect(options);
     }
 
     JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.ERROR);
