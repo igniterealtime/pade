@@ -3773,11 +3773,11 @@ function getConnection(connUrl)
 function doPadeConnect()
 {
     var resource = chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS + "-" + Math.random().toString(36).substr(2,9);
-    var connUrl = "https://" + pade.server + "/http-bind";
+    var connUrl = getSetting("boshUri", "https://" + pade.server + "/http-bind/");
 
     if (getSetting("useWebsocket", false))
     {
-        connUrl = "wss://" + pade.server + "/ws/";
+        connUrl = getSetting("websocketUri", "wss://" + pade.server + "/ws/");
     }
 
     var connJid = pade.username + "@" + pade.domain  + "/" + resource;

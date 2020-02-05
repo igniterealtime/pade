@@ -413,7 +413,7 @@ function doConverse(server, username, password, anonUser)
 
         if (getSetting("useWebsocket", false))
         {
-            connUrl = "wss://" + server + "/ws/";
+            connUrl = getSetting("websocketUri", "wss://" + server + "/ws/");
         }
 
         var whitelistedPlugins = ["search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
@@ -470,7 +470,7 @@ function doConverse(server, username, password, anonUser)
           auto_reconnect: getSetting("autoReconnectConverse", true),
           auto_subscribe: getSetting("autoSubscribe", false),
           auto_xa: 0, //autoXa,
-          bosh_service_url: "https://" + server + "/http-bind",
+          bosh_service_url: getSetting("boshUri", "https://" + server + "/http-bind/"),
           clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
           loglevel: getSetting("converseDebug", false) ? "debug" : "info",
           default_domain: domain,
@@ -512,7 +512,7 @@ function doConverse(server, username, password, anonUser)
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
           webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
           websocket_url: connUrl,
-          enable_smacks: false, // TODO Fix Openfire websockets stream mgmt
+          enable_smacks: !getSetting("useWebsocket"), // TODO Fix Openfire websockets stream mgmt issues
           whitelisted_plugins: whitelistedPlugins
         };
 

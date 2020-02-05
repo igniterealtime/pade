@@ -1190,11 +1190,11 @@ window.addEvent("domready", function () {
                    lynks.password = JSON.parse(window.localStorage["store.settings.password"]);
                 }
 
-                lynks.connUrl = "https://" + lynks.server + "/http-bind";
+                lynks.connUrl = getSetting("boshUri", "https://" + lynks.server + "/http-bind/");
 
                 if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
                 {
-                    lynks.connUrl = "wss://" + lynks.server + "/ws/";
+                    lynks.connUrl = getSetting("websocketUri", "wss://" + lynks.server + "/ws/");
                 }
 
                 var connection = background.getConnection(lynks.connUrl);
@@ -1309,11 +1309,11 @@ window.addEvent("domready", function () {
                     {
                         var doConnect = function(creds)
                         {
-                            var connUrl = "https://" + lynks.server + "/http-bind";
+                            var connUrl = getSetting("boshUri", "https://" + lynks.server + "/http-bind/");
 
                             if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
                             {
-                                connUrl = "wss://" + lynks.server + "/ws/";
+                                connUrl = getSetting("websocketUri", "wss://" + lynks.server + "/ws/");
                             }
                             var connection = background.getConnection(connUrl);
 

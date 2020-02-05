@@ -81,6 +81,22 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
+            "group": i18n.get("URIs"),
+            "name": "boshUri",
+            "type": "text",
+            "label": i18n.get("Bosh"),
+            "text": "https://example.com:7443/http-bind/"
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("URIs"),
+            "name": "websocketUri",
+            "type": "text",
+            "label": i18n.get("WebSocket"),
+            "text": "wss://example.com:7443/ws/"
+        },
+        {
+            "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
             "name": "restartDesc",
             "type": "description",
@@ -2149,6 +2165,10 @@ this.manifest = {
             "ofmeetInvitation",
             "letsCollaborate",
             "webinarInvite"
+        ],
+        [
+            "boshUri",
+            "websocketUri"
         ]
     ]
 };
