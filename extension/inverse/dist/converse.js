@@ -56260,7 +56260,7 @@ converse_core.plugins.add('converse-chat', {
           'id': converse_chat_u.getUniqueId(),
           'to': this.get('jid'),
           'type': "chat"
-        }).c('store', {
+        }).c('body').t("**RETRACTED**").up().c('store', {
           xmlns: converse_chat_Strophe.NS.HINTS
         }).up().c("apply-to", {
           'id': origin_id,
