@@ -545,7 +545,7 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    //console.debug("renderChatMessage", this.model);
+                    console.debug("renderChatMessage", this.model);
 
                     const body = this.model.get('message');
 
@@ -615,7 +615,6 @@
                     }
 
                     await this.__super__.renderChatMessage.apply(this, arguments);
-
 
                     // action button for quoting, pinning
 

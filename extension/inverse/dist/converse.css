@@ -18914,8 +18914,8 @@ body.converse-fullscreen {
 }
 
 #conversejs .message.chat-msg .chat-msg__text img.emoji {
-    height: 1.5em;
-    width: 1.5em;
+    height: 96px;   /* BAO */
+    width: 96px;    /* BAO */
     margin: 0 .05em 0 .1em;
     vertical-align: -.1em
 }

@@ -54,6 +54,10 @@
     padding: 5px;
 }
 
+#conversejs .chat-msg__content--action .chat-msg__actions { 
+    display: none!important;
+}
+
 #conversejs .chat-msg__reaction {
     padding-right: 10px;
 }
@@ -62,6 +66,7 @@
     position: relative;
     overflow: hidden !important;       
 }
+
 #conversejs .chat-msg__actions {
     vertical-align: middle !important;
     background-color: rgba(255,255,255,1);
@@ -73,6 +78,7 @@
     right: 30px;
     bottom: 0;
 }
+
 
 #conversejs.converse-fullscreen .flyout {
   border-radius: 0;

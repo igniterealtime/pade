@@ -1138,13 +1138,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "enableMessageRetraction",
-            "type": "checkbox",
-            "label": i18n.get("Enable message retraction action")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
             "name": "showGroupChatStatusMessages",
             "type": "checkbox",
             "label": i18n.get("Show GroupChat Status Messages")
