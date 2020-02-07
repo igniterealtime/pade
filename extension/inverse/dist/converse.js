@@ -53428,12 +53428,15 @@ const stanza_utils = {
   // BAO
 
   getMsgAttachAttributes(stanza) {
-    return sizzle_default()(`attach-to[xmlns="urn:xmpp:message-attaching:1"]`, stanza).map(attach => {
-      const msg_attach_to = attach.getAttribute('id');
+    const attach = sizzle_default()('attach-to[xmlns="urn:xmpp:message-attaching:1"]', stanza).pop();
+
+    if (attach) {
       return {
         'msg_attach_to': attach.getAttribute('id')
       };
-    });
+    }
+
+    return {};
   },
 
   getOutOfBandAttributes(stanza) {
@@ -58213,7 +58216,12 @@ converse_core.plugins.add('converse-emoji', {
         "food": ":hotdog:",
         "symbols": ":musical_note:",
         "flags": ":flag_ac:",
-        "custom": null
+        "racoon": ":racoon:",    // BAO
+        "mochi": ":mochi:",
+        "zemarmot": ":zemarmot:",
+        "miho": ":miho:",
+        "cuppy": ":cuppy:",
+        "animals": ":animals:",
       },
       // We use the triple-underscore method which doesn't actually
       // translate but does signify to gettext that these strings should
@@ -58231,7 +58239,12 @@ converse_core.plugins.add('converse-emoji', {
         "food": ___("Food and drink"),
         "symbols": ___("Symbols"),
         "flags": ___("Flags"),
-        "custom": ___("Stickers")
+        "racoon": ___("Racoon"), // BAO
+        "mochi": ___("Mochi"),
+        "zemarmot": ___("Zemarmot"),
+        "miho": ___("Miho"),
+        "cuppy": ___("Cuppy"),
+        "animals": ___("Animals"),
       }
     });
 
@@ -59347,7 +59360,7 @@ converse_core.plugins.add('converse-muc', {
           'id': utils_form.getUniqueId(),
           'to': this.get('jid'),
           'type': "groupchat"
-        }).c('store', {
+        }).c('body').t("**RETRACTED**").up().c('store', {
           xmlns: converse_muc_Strophe.NS.HINTS
         }).up().c("apply-to", {
           'id': origin_id,
@@ -66881,21 +66894,25 @@ converse_core.plugins.add('converse-chatview', {
         const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
         const msgId = message_el.getAttribute('data-msgid');
         const message = this.model.messages.findWhere({'msgid': msgId});
-        const type = message.get('type');
-        const prefix = (type == "groupchat") ? message.get('nick') + " : " : "";
 
-        let replyMessage = window.getSelection().toString();
-
-        if (!replyMessage || replyMessage == "")
+        if (message)
         {
-            const text = message.get('message');
-            let pos = text.indexOf("\n");
-            replyMessage = pos == -1 ? text : text.substring(0, pos);
-        }
+            const type = message.get('type');
+            const prefix = (type == "groupchat") ? message.get('nick') + " : " : "";
 
-        const replyText = '> ' + prefix + replyMessage;
-        this.insertIntoTextArea(replyText + "\n\n", false, false);
-        __origins[replyText] = msgId;
+            let replyMessage = window.getSelection().toString();
+
+            if (!replyMessage || replyMessage == "")
+            {
+                const text = message.get('message');
+                let pos = text.indexOf("\n");
+                replyMessage = pos == -1 ? text : text.substring(0, pos);
+            }
+
+            const replyText = '> ' + prefix + replyMessage;
+            this.insertIntoTextArea(replyText + "\n\n", false, false);
+            __origins[replyText] = msgId;
+        }
       },
 
       onMessageForwardButtonClicked(ev) { // BAO
@@ -66904,7 +66921,7 @@ converse_core.plugins.add('converse-chatview', {
         const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
         const message = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')}).get('message');
 
-        if (chrome.storage)
+        if (message && chrome.storage)
         {
             chrome.storage.local.get("pade.notepad", function(obj) {
                 console.debug("get pade.notepad", obj);
@@ -66985,50 +67002,33 @@ converse_core.plugins.add('converse-chatview', {
 
         const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
         const msg = this.model.messages.findWhere({'msgid': message_el.getAttribute('data-msgid')});
-        const message = msg.get('message');
-        const type = msg.get('type');
-        const prefix = (type == "groupchat") ? msg.get('nick') + ": " : "";
 
-        let pos = message.indexOf("\n");
-
-        const pinnedMessage = prefix + (pos == -1 ? message : message.substring(0, pos));
-        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
-        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
-        const msgId = message_el.getAttribute('data-msgid');
-
-        if (chrome.storage)
+        if (msg)
         {
-            let pinned = {};
+            const message = msg.get('message');
+            const type = msg.get('type');
+            const prefix = (type == "groupchat") ? msg.get('nick') + ": " : "";
 
-            chrome.storage.local.get('pinned', function(data) {
-                if (data && data.pinned) pinned = data.pinned;
-                pinned[from + "-" + msgId] = {from: from, msgId: msgId, message: pinnedMessage, nick: nick};
+            let pos = message.indexOf("\n");
 
-                chrome.storage.local.set({pinned: pinned}, function() {
-                  console.debug('chrome.storage is set for pinned', pinned);
+            const pinnedMessage = prefix + (pos == -1 ? message : message.substring(0, pos));
+            const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
+            const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
+            const msgId = message_el.getAttribute('data-msgid');
+
+            if (chrome.storage)
+            {
+                let pinned = {};
+
+                chrome.storage.local.get('pinned', function(data) {
+                    if (data && data.pinned) pinned = data.pinned;
+                    pinned[from + "-" + msgId] = {from: from, msgId: msgId, message: pinnedMessage, nick: nick};
+
+                    chrome.storage.local.set({pinned: pinned}, function() {
+                      console.debug('chrome.storage is set for pinned', pinned);
+                    });
                 });
-            });
-        }
-      },
-
-      onMessageDeleteButtonClicked(ev) {    // BAO
-        ev.preventDefault();
-        const idx = this.model.messages.findLastIndex('correcting'),
-              currently_correcting = idx >= 0 ? this.model.messages.at(idx) : null,
-              message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg'),
-              message = this.model.messages.findWhere({
-          'msgid': message_el.getAttribute('data-msgid')
-        });
-
-        if (currently_correcting !== message) {
-          if (!_.isNil(currently_correcting)) {
-            currently_correcting.save('correcting', false);
-          }
-
-          message.save('correcting', true);
-          this.model.sendMessage("** retracted **");
-        } else {
-          message.save('correcting', false);
+            }
         }
       },
 
@@ -75243,7 +75243,7 @@ converse_core.plugins.add('converse-muc-views', {
 
         const retraction_warning = __("Be aware that other XMPP/Jabber clients (and servers) may " + "not yet support retractions and that this message may not " + "be removed everywhere.");
 
-        if (message.get('sender') === 'me') {
+        if (message && message.get('sender') === 'me') {
           const messages = [__('Are you sure you want to retract this message?')];
 
           if (_converse.show_retraction_warning) {
@@ -75264,7 +75264,7 @@ converse_core.plugins.add('converse-muc-views', {
 
           const reason = await _converse.api.prompt(__('Message Retraction'), messages, __('Optional reason'));
 
-          if (reason !== false) {
+          if (message && reason !== false) {
             this.retractOtherMessage(message, reason);
           }
         }
