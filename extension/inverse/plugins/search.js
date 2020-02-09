@@ -224,6 +224,8 @@
                 const id = view.model.get("box_id");
                 const search = addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
 
+                console.debug('search - renderToolbar', search, view.model);
+
                 if (search) search.addEventListener('click', function(evt)
                 {
                     evt.stopPropagation();

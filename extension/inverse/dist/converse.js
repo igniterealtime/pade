@@ -58222,6 +58222,7 @@ converse_core.plugins.add('converse-emoji', {
         "miho": ":miho:",
         "cuppy": ":cuppy:",
         "animals": ":animals:",
+        "animations": ":animations:",
       },
       // We use the triple-underscore method which doesn't actually
       // translate but does signify to gettext that these strings should
@@ -58245,6 +58246,7 @@ converse_core.plugins.add('converse-emoji', {
         "miho": ___("Miho"),
         "cuppy": ___("Cuppy"),
         "animals": ___("Animals"),
+        "animations": ___("Animations"),
       }
     });
 
@@ -66203,10 +66205,12 @@ converse_core.plugins.add('converse-chatview', {
       },
 
       renderToolbar() {
-        if (!_converse.show_toolbar) {
+        if (!_converse.show_toolbar || this.toolbarRendered) {  // BAO
           return this;
         }
 
+        // BAO
+        this.toolbarRendered = true;
         const options = Object.assign(this.model.toJSON(), this.getToolbarOptions());
         this.el.querySelector('.chat-toolbar').innerHTML = toolbar_default()(options);
         this.addSpoilerButton(options);
@@ -66218,7 +66222,8 @@ converse_core.plugins.add('converse-chatview', {
          * @example _converse.api.listen.on('renderToolbar', view => { ... });
          */
 
-        _converse.api.trigger('renderToolbar', this);
+        const that = this;
+        setTimeout(function() {_converse.api.trigger('renderToolbar', that)});
 
         return this;
       },

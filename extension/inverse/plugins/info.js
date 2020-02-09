@@ -41,25 +41,33 @@
                          '</div> </div> </div>';
                 },
                 afterRender() {
+                    const url = this.model.get("url");
 
                     if (this.model.get("type") == "image")
                     {
-                        this.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + this.model.get("url") + '"/>';
+                        this.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + url + '"/>';
                     }
                     else
 
                     if (this.model.get("type") == "video")
                     {
-                        this.el.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + this.model.get("url") + '"/>';
+                        if (url.endsWith(".tgs")) {
+                            this.el.querySelector('.modal-body').innerHTML = '<tgs-player style="height: 512px; width: 512px;" autoplay controls loop mode="normal" src="' + url + '"></tgs-player>';
+
+                        } else if (url.endsWith(".json")) {
+                            this.el.querySelector('.modal-body').innerHTML = '<lottie-player autoplay controls loop mode="normal" src="' + url + '"></lottie-player>';
+                        } else {
+                            this.el.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + url + '"/>';
+                        }
                     }
                     else
 
                     if (this.model.get("type") == "audio")
                     {
-                        this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + this.model.get("url") + '"/>';
+                        this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + url + '"/>';
                     }
 
-                    this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + this.model.get("url") + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
+                    this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
                 },
                 events: {
                     "click .btn-danger": "clearIframe",
@@ -72,6 +80,8 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
+                console.debug('info - renderToolbar', view.model);
+
                 if (view.model.get("type") === "chatroom" && !view.el.querySelector(".fa-info"))
                 {
                     var jid = view.model.get("jid");
@@ -1040,7 +1050,7 @@
     var isVideoURL = function (url)
     {
       const filename = url.toLowerCase();
-      return filename.endsWith('.mp4') || filename.endsWith('.webm');
+      return filename.endsWith('.mp4') || filename.endsWith('.webm') || filename.endsWith('.tgs') || filename.endsWith('.json');
     };
 
     var isOpenOfficeDoc = function (url)

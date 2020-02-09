@@ -1,6 +1,57 @@
 (window.webpackJsonp = window.webpackJsonp || []).push([
     [129], {496: function(n) {n.exports =
             {
+                "animations": {
+                    /*
+                        author      = https://lottiefiles.com/
+                        license     = CreativeCommon BY SA
+                    */
+                    ":animations:": {
+                        "sn": ":animations:",
+                        "url": "./dist/custom_emojis/animations/15179-confirm-popup.gif",
+                        "c": "animations"
+                    },
+                    ":cute-doggie:": {
+                        "sn": ":cute-doggie:",
+                        "url": "./dist/custom_emojis/animations/15224-cute-doggie.gif",
+                        "c": "animations"
+                    },
+                    ":pushups:": {
+                        "sn": ":pushups:",
+                        "url": "./dist/custom_emojis/animations/15260-pushups.gif",
+                        "c": "animations"
+                    },
+                    ":karaoke:": {
+                        "sn": ":karaoke:",
+                        "url": "./dist/custom_emojis/animations/15307-karaoke.gif",
+                        "c": "animations"
+                    },
+                    ":heart:": {
+                        "sn": ":heart:",
+                        "url": "./dist/custom_emojis/animations/heart.gif",
+                        "c": "animations"
+                    },
+                    ":gears:": {
+                        "sn": ":gears:",
+                        "url": "./dist/custom_emojis/animations/47-gears.gif",
+                        "c": "animations"
+                    },
+                    ":around-the-world:": {
+                        "sn": ":around-the-world:",
+                        "url": "./dist/custom_emojis/animations/128-around-the-world.gif",
+                        "c": "animations"
+                    },
+                    ":happy-birthday:": {
+                        "sn": ":happy-birthday:",
+                        "url": "./dist/custom_emojis/animations/427-happy-birthday.gif",
+                        "c": "animations"
+                    },
+                    ":check-animation:": {
+                        "sn": ":check-animation:",
+                        "url": "./dist/custom_emojis/animations/1798-check-animation.gif",
+                        "c": "animations"
+                    },
+                },
                 "racoon": {
                     /*
                         author      = Corine Tea

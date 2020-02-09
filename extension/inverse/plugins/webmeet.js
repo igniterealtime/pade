@@ -811,6 +811,18 @@
                     }
                     else
 
+                    if (url && url.endsWith(".json"))
+                    {
+                        return '<lottie-player autoplay controls loop mode="normal" src="' + url + '"></lottie-player>';
+                    }
+                    else
+
+                    if (url && url.endsWith(".tgs"))
+                    {
+                        return '<tgs-player style="height: 512px; width: 512px;" autoplay controls loop mode="normal" src="' + url + '"></tgs-player>';
+                    }
+                    else
+
                     if (url && (url.endsWith(".odt") || url.endsWith(".odp") || url.endsWith(".ods")))
                     {
                         return setupLink("View OpenDocument file", chrome.extension.getURL("/webodf/index.html#"), url, "true");
