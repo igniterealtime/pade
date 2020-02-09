@@ -68,13 +68,6 @@
                     }
 
                     this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
-                },
-                events: {
-                    "click .btn-danger": "clearIframe",
-                },
-
-                clearIframe() {
-                    this.el.querySelector('.modal-body').innerHTML = "about:blank";
                 }
             });
 
