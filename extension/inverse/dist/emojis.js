@@ -26,11 +26,6 @@
                         "url": "./dist/custom_emojis/animations/15307-karaoke.gif",
                         "c": "animations"
                     },
-                    ":heart:": {
-                        "sn": ":heart:",
-                        "url": "./dist/custom_emojis/animations/heart.gif",
-                        "c": "animations"
-                    },
                     ":gears:": {
                         "sn": ":gears:",
                         "url": "./dist/custom_emojis/animations/47-gears.gif",

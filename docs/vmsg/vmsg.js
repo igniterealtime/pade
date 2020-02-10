@@ -70,29 +70,4 @@
             console.log("vmsg plugin is ready");
         }
     });
-
-    function newElement (el, id, html, className)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        if (className) ele.classList.add(className);
-        document.body.appendChild(ele);
-        return ele;
-    }
-
-    function addToolbarItem (view, id, label, html)
-    {
-        let placeHolder = view.el.querySelector('#place-holder');
-
-        if (!placeHolder)
-        {
-            const toolbar = view.el.querySelector('.chat-toolbar');
-            toolbar.appendChild(newElement('li', 'place-holder'));
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        var newEle = newElement('li', label, html);
-        placeHolder.insertAdjacentElement('afterEnd', newEle);
-        return newEle;
-    }
 }));

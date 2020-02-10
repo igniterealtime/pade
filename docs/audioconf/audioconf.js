@@ -39,7 +39,7 @@
                     server_url: "./audioconf",
                     show_branding: "false",
                     show_frame: "true",
-                    text: "Ask",
+                    text: "Audio Conference",
                     use_default_button_css: "true",
                     protocol: "xmpp",    // 'sip' or 'xmpp'
                     sip: {domain: "192.168.1.251", server: "wss://desktop-545pc5b:7443/sip/proxy?url=ws://192.168.1.251:5066", register: false, caller_uri: "sip:1002@192.168.1.251", authorization_user: "1002", password: "1234"},
@@ -63,18 +63,22 @@
 
                 toggleCall: function toggleCall(ev) {
                     ev.stopPropagation();
-                    var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
-                    console.debug("toggleCall", room);
 
-                    if (!voxbone.WebRTC.rtcSession.isEnded || voxbone.WebRTC.rtcSession.isEnded())
+                    if (confirm(window.click2Dial.text + "?"))
                     {
-                        infoVoxbone.did = "audioconf_" + room;
-                        click2Dial.makeCall(true);
+                        var room = Strophe.getNodeFromJid(this.model.attributes.jid).toLowerCase();
+                        console.debug("toggleCall", room);
 
-                        this.showHelpMessages(["Calling " + infoVoxbone.did]);
-                    }
-                    else {
-                        this.showHelpMessages(["Active call in progress. Clear call and try again"]);
+                        if (!voxbone.WebRTC.rtcSession.isEnded || voxbone.WebRTC.rtcSession.isEnded())
+                        {
+                            infoVoxbone.did = "audioconf_" + room;
+                            click2Dial.makeCall(true);
+
+                            this.showHelpMessages(["Calling " + infoVoxbone.did]);
+                        }
+                        else {
+                            this.showHelpMessages(["Active call in progress. Clear call and try again"]);
+                        }
                     }
                 }
             }

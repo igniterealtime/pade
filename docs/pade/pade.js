@@ -54,10 +54,10 @@
 
             });
 
-            _converse.api.listen.on('chatRoomOpened', function (view)
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 const jid = view.model.get("jid");
-                console.debug("chatRoomOpened", view);
+                console.debug("chatRoomViewInitialized", view);
 
                 view.model.occupants.on('add', occupant =>
                 {
@@ -570,31 +570,6 @@
             nickColors[nickname] = color;
             return color;
         }
-    }
-
-    function __newElement (el, id, html, className)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        if (className) ele.classList.add(className);
-        document.body.appendChild(ele);
-        return ele;
-    }
-
-    function addToolbarItem (view, id, label, html)
-    {
-        var placeHolder = view.el.querySelector('#place-holder');
-
-        if (!placeHolder)
-        {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', __newElement('li', 'place-holder'));
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        var newEle = __newElement('li', label, html);
-        placeHolder.insertAdjacentElement('afterEnd', newEle);
-        return newEle;
     }
 
     function handleActiveConversations()
