@@ -537,7 +537,7 @@ function openChat(from, name, groups)
 
         if (!contact)
         {
-          _converse.roster.create({
+          _inverse.roster.create({
             'nickname': name,
             'groups': groups,
             'jid': from,
@@ -549,9 +549,9 @@ function openChat(from, name, groups)
 
         _inverse.api.chats.open(from);
 
-        if (_converse.connection.injectMessage)
+        if (_inverse.connection.injectMessage)
         {
-            _converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + from + '"/>');
+            _inverse.connection.injectMessage('<presence to="' + _inverse.connection.jid + '" from="' + from + '"/>');
         }
     }
 }
@@ -632,7 +632,7 @@ function handleActiveConversations()
     const chatDiv = document.getElementById("converse-roster");
     let activeDiv = document.getElementById("active-conversations");
 
-    if (roomDiv)
+    if (roomDiv && _inverse)
     {
         let display = roomDiv.style.display;
 
@@ -661,7 +661,7 @@ function handleActiveConversations()
                 return 0;
             }
 
-            _converse.chatboxes.models.sort(compare).forEach(function (chatbox)
+            _inverse.chatboxes.models.sort(compare).forEach(function (chatbox)
             {
                 addActiveConversation(chatbox, activeDiv);
             });
@@ -691,7 +691,7 @@ function removeActiveConversation(chatbox, activeDiv)
 
 function addActiveConversation(chatbox, activeDiv, newMessage)
 {
-    if (chatbox.vcard)
+    if (_inverse && chatbox.vcard)
     {
         console.debug("addActiveConversation", chatbox);
 
@@ -719,7 +719,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
 
         let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
 
-        if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image)
+        if (_inverse.DEFAULT_IMAGE == chatbox.vcard.attributes.image)
         {
             dataUri = createAvatar(display_name, null, null, null, null);
         }
@@ -745,12 +745,12 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
 
                 if (jid)
                 {
-                    if (type == "chat") _converse.api.chats.open(jid);
+                    if (type == "chat") _inverse.api.chats.open(jid);
                     else
-                    if (type == "groupchat") _converse.api.rooms.open(jid);
+                    if (type == "groupchat") _inverse.api.rooms.open(jid);
                 }
 
-                _converse.chatboxes.each(function (chatbox)
+                _inverse.chatboxes.each(function (chatbox)
                 {
                     const itemId = chatbox.get('box_id');
                     const itemLabel = document.getElementById("pade-active-" + itemId);
@@ -774,7 +774,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage)
                 evt.stopPropagation();
 
                 const jid = evt.target.getAttribute("data-jid");
-                const view = _converse.chatboxviews.get(jid);
+                const view = _inverse.chatboxviews.get(jid);
 
                 if (view) view.close();
 
@@ -790,13 +790,13 @@ function setAvatar(nickname, avatar)
 
 function createAvatar(nickname, width, height, font, force, jid)
 {
-    if (_converse.vcards)
+    if (_inverse && _inverse.vcards)
     {
-        let vcard = _converse.vcards.findWhere({'jid': nickname});
-        if (!vcard && jid) vcard = _converse.vcards.findWhere({'jid': jid});
-        if (!vcard) vcard = _converse.vcards.findWhere({'nickname': nickname});
+        let vcard = _inverse.vcards.findWhere({'jid': nickname});
+        if (!vcard && jid) vcard = _inverse.vcards.findWhere({'jid': jid});
+        if (!vcard) vcard = _inverse.vcards.findWhere({'nickname': nickname});
 
-        if (vcard && vcard.get('image') && _converse.DEFAULT_IMAGE != vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
+        if (vcard && vcard.get('image') && _inverse.DEFAULT_IMAGE != vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
     }
 
     if (bgWindow) return bgWindow.createAvatar(nickname, width, height, font, force);
@@ -814,7 +814,7 @@ function __newElement(el, id, html, className)
 
 function addToolbarItem (view, id, label, html)
 {
-    if (document.getElementById(label)) return;
+    if (document.getElementById(label)) return null;
 
     let placeHolder = view.el.querySelector('#place-holder');
 
@@ -834,9 +834,9 @@ function occupantAvatarClicked(ev, view)
     const jid = ev.target.getAttribute('data-room-jid');
     const nick = ev.target.getAttribute('data-room-nick');
 
-    if (jid && converse.env.Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
+    if (_inverse && jid && converse.env.Strophe.getNodeFromJid(jid) && _inverse.bare_jid != jid)
     {
-         _converse.api.chats.open(jid, {nickname: nick, fullname: nick}).then(chat => {
+         _inverse.api.chats.open(jid, {nickname: nick, fullname: nick}).then(chat => {
              if (!chat.vcard.attributes.fullname) chat.vcard.set('fullname', nick);
              if (!chat.vcard.attributes.nickname) chat.vcard.set('nickname', nick);
          });

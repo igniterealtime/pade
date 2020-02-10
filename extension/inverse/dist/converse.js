@@ -36896,13 +36896,13 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/toolbar.html -->\n';
- if (o.show_call_button)  { ;
+ //if (o.show_call_button)  { ;
 __p += '\n<li class="toggle-call fa fa-phone" title="' +
 __e(o.label_start_call) +
 '"></li>\n';
- } ;
+ //} ;
 __p += '\n';
- if (o.show_occupants_toggle)  { ;
+ //if (o.show_occupants_toggle)  { ;
 __p += '\n<li class="toggle-occupants float-right fa ';
  if (o.hidden_occupants)  { ;
 __p += ' fa-angle-double-left ';
@@ -36912,7 +36912,7 @@ __p += ' fa-angle-double-right ';
 __p += '"\n    title="' +
 __e(o.label_hide_occupants) +
 '"></li>\n';
- } ;
+// } ;
 __p += '\n';
  if (o.message_limit)  { ;
 __p += '\n<li class="message-limit font-weight-bold float-right" title="' +
@@ -66205,12 +66205,10 @@ converse_core.plugins.add('converse-chatview', {
       },
 
       renderToolbar() {
-        if (!_converse.show_toolbar || this.toolbarRendered) {  // BAO
+        if (!_converse.show_toolbar) {
           return this;
         }
 
-        // BAO
-        this.toolbarRendered = true;
         const options = Object.assign(this.model.toJSON(), this.getToolbarOptions());
         this.el.querySelector('.chat-toolbar').innerHTML = toolbar_default()(options);
         this.addSpoilerButton(options);
@@ -66222,9 +66220,7 @@ converse_core.plugins.add('converse-chatview', {
          * @example _converse.api.listen.on('renderToolbar', view => { ... });
          */
 
-        const that = this;
-        setTimeout(function() {_converse.api.trigger('renderToolbar', that)});
-
+        _converse.api.trigger('renderToolbar', this);
         return this;
       },
 

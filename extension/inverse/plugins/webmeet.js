@@ -412,6 +412,19 @@
                 var jid = view.model.get("jid");
                 var type = view.model.get("type");
 
+                if (getSetting("converseTimeAgo", false) && !doneIt)
+                {
+                    doneIt = true; // make sure we get called only once
+
+                    setInterval(function()
+                    {
+                        console.debug("timeago render");
+                        timeago.cancel();
+                        var locale = navigator.language.replace('-', '_');
+                        timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+                    }, 60000);
+                }
+
                 if (getSetting("enablePasting", true))
                 {
                     setupPastingHandlers(view, id, jid, type);
@@ -428,19 +441,47 @@
                         if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
                         {
                             html = '<a class="fa fa-wrench" title="Open Groupchat Moderator Tools GUI"></a>';
-                            addToolbarItem(view, id, "moderator-tools-" + id, html);
+                            var moderatorTools = addToolbarItem(view, id, "moderator-tools-" + id, html);
+
+                            if (moderatorTools) moderatorTools.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+                                view.showModeratorToolsModal('');
+
+                            }, false);
                         }
 
                         if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
                         {
                             html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
-                            addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
+                            var geoLocButton = addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
+
+                            if (geoLocButton) geoLocButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                showGeolocation(jid, view);
+
+                            }, false);
                         }
 
                         if (bgWindow.pade.ofmeetUrl)
                         {
                             html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
-                            addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
+                            var handleJitsiMeet = addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
+
+                            if (handleJitsiMeet) handleJitsiMeet.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
+
+                                if (confirm(jitsiConfirm))
+                                {
+                                    doVideo(view);
+                                }
+
+                            }, false);
                         }
 
                         if (bgWindow.pade.chatAPIAvailable)
@@ -450,160 +491,123 @@
                             if (domain == 'conference.' + _converse.connection.domain || domain == _converse.connection.domain)
                             {
                                 html = '<a class="far fa-file-pdf" title="Save conversation to PDF"></a>';
-                                addToolbarItem(view, id, "webmeet-savepdf-" + id, html);
+                                var savePDF = addToolbarItem(view, id, "webmeet-savepdf-" + id, html);
+
+                                if (savePDF)
+                                {
+                                    savePDF.addEventListener('click', function(evt)
+                                    {
+                                        evt.stopPropagation();
+
+                                        if (!pdfDialog)
+                                        {
+                                            pdfDialog = new PDFDialog({'model': new converse.env.Backbone.Model({view: view}) });
+                                        }
+                                        pdfDialog.show();
+                                    }, false);
+                                }
                             }
 
                             if (bgWindow.pade.activeH5p)
                             {
                                 var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                                addToolbarItem(view, id, "h5p-" + id, html);
+                                var h5pButton = addToolbarItem(view, id, "h5p-" + id, html);
+
+                                if (h5pButton) h5pButton.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+
+                                    if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
+                                    {
+                                        doH5p(view, id);
+                                    }
+
+                                }, false);
                             }
 
                             if (getSetting("enableBlast", false))   // check for chat api plugin
                             {
                                 html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
-                                addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+                                var messageblast = addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+
+                                if (messageblast) messageblast.addEventListener('click', function(evt)
+                                {
+                                    evt.stopPropagation();
+                                    bgWindow.openBlastWindow();
+
+                                }, false);
                             }
                         }
 
                         if (bgWindow.pade.activeUrl && getSetting("enableCollaboration", false))
                         {
                             var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
-                            addToolbarItem(view, id, "oob-" + id, html);
+                            var oobButton = addToolbarItem(view, id, "oob-" + id, html);
+
+                            if (oobButton) oobButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
+                                {
+                                    doooB(view, id, jid, type);
+                                }
+
+                            }, false);
                         }
 
 
                         if (getSetting("webinarMode", false) && bgWindow.pade.ofmeetUrl)
                         {
                             html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
-                            addToolbarItem(view, id, "webmeet-webinar-" + id, html);
+                            var handleWebinarPresenter = addToolbarItem(view, id, "webmeet-webinar-" + id, html);
+
+                            if (handleWebinarPresenter) handleWebinarPresenter.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+
+                                var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
+                                var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
+
+                                if (title && title != "")
+                                {
+                                    doWebinarPresenter(view, title);
+                                }
+
+                            }, false);
                         }
 
                         if (getSetting("enableTasksTool", false))
                         {
                             html = '<a class="fa fa-tasks" title="Tasks"></a>';
-                            addToolbarItem(view, id, "webmeet-tasks-" + id, html);
+                            var tasks = addToolbarItem(view, id, "webmeet-tasks-" + id, html);
+
+                            if (tasks) tasks.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
+                                openTasks(view);
+
+                            }, false);
+
                         }
                     }
 
                     if (getSetting("enableNotesTool", true))
                     {
                         html = '<a class="fa fa-pencil-alt" title="Notepad"></a>';
-                        addToolbarItem(view, id, "webmeet-notepad-" + id, html);
+                        var notepad = addToolbarItem(view, id, "webmeet-notepad-" + id, html);
+
+                        if (notepad) notepad.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            openNotepad(view);
+
+                        }, false);
+
                     }
 
                     html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
-                    addToolbarItem(view, id, "webmeet-screencast-" + id, html);
-
-                    html = '<a class="fa fa-sync" title="Refresh"></a>';
-                    addToolbarItem(view, id, "webmeet-refresh-" + id, html);
-
-                    html = '<a class="far fa-trash-alt" title="Trash local storage of chat history"></a>';
-                    addToolbarItem(view, id, "webmeet-trash-" + id, html);
-
-                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
-                    addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
-
-
-                    // file upload by drag & drop
-
-                    var dropZone = $(view.el).find('.chat-body')[0];
-                    dropZone.removeEventListener('dragover', handleDragOver);
-                    dropZone.removeEventListener('drop', handleDropFileSelect);
-                    dropZone.addEventListener('dragover', handleDragOver, false);
-                    dropZone.addEventListener('drop', handleDropFileSelect, false);
-
-                    if (bgWindow)
-                    {
-                        var h5pButton = document.getElementById("h5p-" + id);
-
-                        if (h5pButton) h5pButton.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            if (confirm(bgWindow.pade.activeH5p + " " + (chrome.i18n ? chrome.i18n.getMessage("hp5Confirm") : "H5p?")))
-                            {
-                                doH5p(view, id);
-                            }
-
-                        }, false);
-
-
-                        var oobButton = document.getElementById("oob-" + id);
-
-                        if (oobButton) oobButton.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            if (confirm((chrome.i18n ? chrome.i18n.getMessage("oobConfirm") : "Collaboration") + "\n\"" + bgWindow.pade.collabDocs[bgWindow.pade.activeUrl] + "\"?"))
-                            {
-                                doooB(view, id, jid, type);
-                            }
-
-                        }, false);
-
-                        var moderatorTools = document.getElementById("moderator-tools-" + id);
-
-                        if (moderatorTools) moderatorTools.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-                            view.showModeratorToolsModal('');
-
-                        }, false);
-
-                        var geoLocButton = document.getElementById("webmeet-geolocation-" + id);
-
-                        if (geoLocButton) geoLocButton.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            showGeolocation(jid, view);
-
-                        }, false);
-
-                        var messageblast = document.getElementById("webmeet-messageblast-" + id);
-
-                        if (messageblast) messageblast.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-                            bgWindow.openBlastWindow();
-
-                        }, false);
-                    }
-
-                    var handleJitsiMeet = document.getElementById("webmeet-jitsi-meet-" + id);
-
-                    if (handleJitsiMeet) handleJitsiMeet.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-
-                        var jitsiConfirm = chrome.i18n ? chrome.i18n.getMessage("jitsiConfirm") : "Meeting?";
-
-                        if (confirm(jitsiConfirm))
-                        {
-                            doVideo(view);
-                        }
-
-                    }, false);
-
-
-                    var handleWebinarPresenter = document.getElementById("webmeet-webinar-" + id);
-
-                    if (handleWebinarPresenter) handleWebinarPresenter.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-
-                        var webinarConfirm = chrome.i18n ? chrome.i18n.getMessage("webinarConfirm") : "Webinar?";
-                        var title = prompt(webinarConfirm, _converse.api.settings.get("webinar_invitation"));
-
-                        if (title && title != "")
-                        {
-                            doWebinarPresenter(view, title);
-                        }
-
-                    }, false);
-
-                    var screencast = document.getElementById("webmeet-screencast-" + id);
+                    var screencast = addToolbarItem(view, id, "webmeet-screencast-" + id, html);
 
                     if (screencast) screencast.addEventListener('click', function(evt)
                     {
@@ -613,16 +617,8 @@
 
                     }, false);
 
-                    var scrolldown = document.getElementById("webmeet-scrolldown-" + id);
-
-                    if (scrolldown) scrolldown.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-                        view.viewUnreadMessages()
-
-                    }, false);
-
-                    var refresh = document.getElementById("webmeet-refresh-" + id);
+                    html = '<a class="fa fa-sync" title="Refresh"></a>';
+                    var refresh = addToolbarItem(view, id, "webmeet-refresh-" + id, html);
 
                     if (refresh) refresh.addEventListener('click', function(evt)
                     {
@@ -632,7 +628,8 @@
 
                     }, false);
 
-                    var trash = document.getElementById("webmeet-trash-" + id);
+                    html = '<a class="far fa-trash-alt" title="Trash local storage of chat history"></a>';
+                    var trash = addToolbarItem(view, id, "webmeet-trash-" + id, html);
 
                     if (trash) trash.addEventListener('click', function(evt)
                     {
@@ -641,39 +638,25 @@
 
                     }, false);
 
-                    var tasks = document.getElementById("webmeet-tasks-" + id);
 
-                    if (tasks) tasks.addEventListener('click', function(evt)
+                    html = '<a class="fa fa-angle-double-down" title="Scroll to the bottom"></a>';
+                    var scrolldown = addToolbarItem(view, id, "webmeet-scrolldown-" + id, html);
+
+                    if (scrolldown) scrolldown.addEventListener('click', function(evt)
                     {
                         evt.stopPropagation();
-                        openTasks(view);
+                        view.viewUnreadMessages()
 
                     }, false);
 
-                    var notepad = document.getElementById("webmeet-notepad-" + id);
 
-                    if (notepad) notepad.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-                        openNotepad(view);
+                    // file upload by drag & drop
 
-                    }, false);
-
-                    var savePDF = document.getElementById("webmeet-savepdf-" + id);
-
-                    if (savePDF)
-                    {
-                        savePDF.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            if (!pdfDialog)
-                            {
-                                pdfDialog = new PDFDialog({'model': new converse.env.Backbone.Model({view: view}) });
-                            }
-                            pdfDialog.show();
-                        }, false);
-                    }
+                    var dropZone = $(view.el).find('.chat-body')[0];
+                    dropZone.removeEventListener('dragover', handleDragOver);
+                    dropZone.removeEventListener('drop', handleDropFileSelect);
+                    dropZone.addEventListener('dragover', handleDragOver, false);
+                    dropZone.addEventListener('drop', handleDropFileSelect, false);
                 });
             });
 
@@ -995,25 +978,6 @@
                 onPaste(ev) {
                     console.debug("onPaste", ev);
                     // TODO Replace jquery paste library with this. For now stop duplication by disabling default converse pasting event handling
-                },
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-
-                    if (getSetting("converseTimeAgo", false) && !doneIt)
-                    {
-                        doneIt = true; // make sure we get called only once
-
-                        setInterval(function()
-                        {
-                            console.debug("timeago render");
-                            timeago.cancel();
-                            var locale = navigator.language.replace('-', '_');
-                            timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
-                        }, 60000);
-                    }
-
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-                    return result;
                 },
 
                 parseMessageForCommands: function(text) {

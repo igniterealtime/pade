@@ -133,7 +133,7 @@
                 toggleCall: function toggleCall(ev) {
                     ev.stopPropagation();
 
-                    if (confirm(window.click2Dial.text + "?"))
+                    if (!getSetting("enableSip", false) && confirm(window.click2Dial.text + "?"))
                     {
                         let room = Strophe.getNodeFromJid(this.model.get("jid")).toLowerCase();
 
