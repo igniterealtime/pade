@@ -166,7 +166,7 @@
                     _converse.api.archive.query({to: jid, start: start, end: end, before: '', search: keyword, max: _converse.api.settings.get("search_max"), 'groupchat': groupchat, 'with': participant}).then(function(result)
                     {
                         const messages = result.messages;
-                        let html = "<div class='row'><div style='max-width: 20%;' class='col'><b>Date</b></div><div style='max-width: 15%;' class='col'><b>Participant</b></div><div class='col'><b>Message</b></div></div>";
+                        let html = "<div class='row'><div style='max-width: 20%;' class='col'><b>Date</b></div><div style='max-width: 15%;' class='col'><b>Person</b></div><div class='col'><b>Message</b></div></div>";
                         let ids = [];
 
                         for (let i=0; i<messages.length; i++)
