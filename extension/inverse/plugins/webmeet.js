@@ -503,6 +503,9 @@
                                         {
                                             pdfDialog = new PDFDialog({'model': new converse.env.Backbone.Model({view: view}) });
                                         }
+                                        else {
+                                           pdfDialog.model.set("view", view);
+                                        }
                                         pdfDialog.show();
                                     }, false);
                                 }
@@ -1043,6 +1046,7 @@
                 geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
             }
             else {
+               geoLocationDialog.model.set("view", view);
                geoLocationDialog.model.set("geoloc", bgWindow.pade.geoloc[jid]);
             }
             geoLocationDialog.show();
@@ -1074,6 +1078,9 @@
             {
                 notepadDialog = new NotepadDialog({'model': new converse.env.Backbone.Model({view: view}) });
             }
+            else {
+               notepadDialog.model.set("view", view);
+           }
             notepadDialog.show();
         });
     }
@@ -1107,6 +1114,7 @@
                 previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({blob: data.blob, view: view}) });
             }
             else {
+               previewDialog.model.set("view", view);
                previewDialog.model.set("blob", data.blob);
             }
             previewDialog.show();
@@ -1590,6 +1598,8 @@
                     previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({html: text, view: view, preview: preview, textarea: textarea}) });
                 }
                 else {
+                    previewDialog.model.set("view", view);
+                    previewDialog.model.set("textarea", textarea);
                     previewDialog.model.set("html", text);
                     previewDialog.model.set("preview", preview);
                 }

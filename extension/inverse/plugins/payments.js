@@ -108,6 +108,9 @@
                                 {
                                     transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: view}) });
                                 }
+                                else {
+                                    transferWiseDialog.model.set("view", view);
+                                }
                                 transferWiseDialog.show();
 
                             }, false);
@@ -156,6 +159,9 @@
                             if (!transferWiseDialog)
                             {
                                 transferWiseDialog = new TransferWiseDialog({'model': new converse.env.Backbone.Model({view: this}) });
+                            }
+                            else {
+                                transferWiseDialog.model.set("view", this);
                             }
                             transferWiseDialog.show();
                             return true;

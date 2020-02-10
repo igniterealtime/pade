@@ -69,6 +69,9 @@
                         {
                             vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
                         }
+                        else {
+                            vmsgDialog.model.set("view", view);
+                        }
                         vmsgDialog.show();
 
                     }, false);
@@ -92,6 +95,9 @@
                         if (!vmsgDialog)
                         {
                             vmsgDialog = new VmsgDialog({ 'model': new converse.env.Backbone.Model({view: this}) });
+                        }
+                        else {
+                            vmsgDialog.model.set("view", this);
                         }
                         vmsgDialog.show();
                         return true;

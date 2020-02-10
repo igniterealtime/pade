@@ -103,6 +103,9 @@
                         {
                             inviteDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({model: view.model}) });
                         }
+                        else {
+                           inviteDialog.model.set("model", view.model);
+                        }
                         inviteDialog.show();
                     }, false);
                 }
