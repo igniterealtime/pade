@@ -286,16 +286,16 @@
                     return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Notepad</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body"></div>' +
-                         '<div class="modal-footer"> <button title="Copy to clipboard" type="button" class="btn btn-success btn-share" data-dismiss="modal">Share</button> <button title="Clear notepad contents" type="button" class="btn btn-danger">Clear</button><button type="button" class="btn" data-dismiss="modal">Close</button></div>' +
+                         '<div class="modal-footer"> <button title="Copy to clipboard" type="button" class="btn btn-success btn-share" data-dismiss="modal">Share</button> <button title="Clear notepad contents" type="button" class="btn btn-danger">Clear</button><button type="button" class="btn btn-warning" data-dismiss="modal">Close</button></div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
-                    var that = this;
-                    var view = this.model.get("view");
-                    var notepad = view.model.get("notepad");
+                    const that = this;
+                    const view = this.model.get("view");
 
                     this.el.addEventListener('shown.bs.modal', function()
                     {
+                        let notepad = view.model.get("notepad");
                         if (!notepad) notepad = "";
                         that.el.querySelector('.modal-body').innerHTML = '<textarea class="pade-notepad" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:200px;">' + notepad + '</textarea>';
 
@@ -410,6 +410,7 @@
                 var id = view.model.get("box_id");
                 var jid = view.model.get("jid");
                 var type = view.model.get("type");
+                var nick = view.model.getDisplayName();
 
                 if (getSetting("converseTimeAgo", false) && !doneIt)
                 {
@@ -459,7 +460,7 @@
                             {
                                 evt.stopPropagation();
 
-                                showGeolocation(jid, view);
+                                _converse.pluggable.plugins["webmeet"].showGeolocation(jid, nick, view);
 
                             }, false);
                         }
