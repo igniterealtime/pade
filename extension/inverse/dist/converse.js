@@ -61750,7 +61750,7 @@ converse_core.plugins.add('converse-bookmarks', {
             'jid': jid,
             'name': bookmark.getAttribute('name') || jid,
             'autojoin': bookmark.getAttribute('autojoin') === 'true',
-            'nick': Object(lodash["get"])(bookmark.querySelector('nick'), 'textContent')
+            'nick': Object(lodash["get"])(bookmark.querySelector('nick'), 'textContent') || converse_muc_Strophe.getNodeFromJid(jid)
           });
         });
       },
