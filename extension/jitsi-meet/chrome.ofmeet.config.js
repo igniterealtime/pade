@@ -6,7 +6,7 @@ __bgWin = chrome.extension.getBackgroundPage();
 
 var __server = getSetting("server");
 var __domain = getSetting("domain");
-var __baseUrl = getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
+var __baseUrl = getSetting("ofmeetUrl", "https://meet.jit.si");
 var __sameOrigin = true;
 
 if (__baseUrl.indexOf("https://" + __server) == -1)

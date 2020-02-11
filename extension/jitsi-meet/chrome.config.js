@@ -7,7 +7,7 @@ if (getSetting("useWebsocket", true))
     connUrl = getSetting("websocketUri", "wss://" + __server + "/ws/");
 }
 
-var __baseUrl = getSetting("ofmeetUrl", "https://" + __server + "/ofmeet/");
+var __baseUrl = getSetting("ofmeetUrl", "https://meet.jit.si");
 
 if (__baseUrl.indexOf("https://" + __server) == -1)
 {
