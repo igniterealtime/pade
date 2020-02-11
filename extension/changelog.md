@@ -1,6 +1,6 @@
 <h1 id="changelog">Changelog</h1>
 
-<p><b>1.6.0</b> -- <i>February ??, 2020</i></p>
+<p><b>1.6.0</b> -- <i>February 11, 2020</i></p>
 <ul>
     <li>Upgraded to Converse 6.0.0</li>
     <li>Added support for stickers using converse custom emojis.</li>

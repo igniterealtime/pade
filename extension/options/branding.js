@@ -5,6 +5,7 @@ var branding = {
     beeKeeperUrl            : {disable: true},
     beeFeedCheck            : {disable: true},
     beeKeeperPageSize       : {disable: true},
+    enableIrma              : {disable: true},
 /*
     uport                   : {disable: true},
     uportPermission         : {disable: true},
