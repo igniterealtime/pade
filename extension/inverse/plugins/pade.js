@@ -915,7 +915,8 @@
                         evt.stopPropagation();
 
                         const jid = evt.target.getAttribute('data-room-jid');
-                        _converse.pluggable.plugins["webmeet"].showGeolocation(jid, view);
+                        const nick = evt.target.getAttribute('data-room-nick');
+                        _converse.pluggable.plugins["webmeet"].showGeolocation(jid, nick, view);
 
                     }, false);
                 }

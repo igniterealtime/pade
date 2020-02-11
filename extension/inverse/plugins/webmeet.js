@@ -263,8 +263,7 @@
                 afterRender() {
                     var that = this;
                     var geoloc = this.model.get("geoloc");
-                    var view = this.model.get("view");
-                    var label = view.model.getDisplayName();
+                    var label = this.model.get("nick");
 
                     this.el.addEventListener('shown.bs.modal', function()
                     {
@@ -1039,13 +1038,15 @@
             }
         },
 
-        showGeolocation: function(jid, view)
+        showGeolocation: function(jid, nick, view)
         {
             if (!geoLocationDialog)
             {
-                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({jid: jid, nick: nick, geoloc: bgWindow.pade.geoloc[jid], view: view}) });
             }
             else {
+               geoLocationDialog.model.set("jid", jid);
+               geoLocationDialog.model.set("nick", nick);
                geoLocationDialog.model.set("view", view);
                geoLocationDialog.model.set("geoloc", bgWindow.pade.geoloc[jid]);
             }
