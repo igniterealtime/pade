@@ -22,6 +22,23 @@
             Backbone = converse.env.Backbone;
             dayjs = converse.env.dayjs;
 
+            let username = getSetting("username");
+            let password = getSetting("password");
+            let server = getSetting("server");
+            let domain = getSetting("domain");
+            let connUrl = getSetting("boshUri", "https://" + server + "/http-bind");
+
+            const baseUrl = getSetting("ofmeetUrl", "https://meet.jit.si");
+
+            if (baseUrl.indexOf("https://" + server) == -1)
+            {
+                server = baseUrl.split("/")[2];
+                domain = server.split(":")[0];
+                connUrl = "https://" + server + "/http-bind";
+                username = undefined;
+                password = undefined;
+            }
+
             _converse.api.settings.update({
                 visible_toolbar_buttons: {call: true},
                 click2_dial: {
@@ -43,7 +60,7 @@
                     use_default_button_css: "true",
                     protocol: "xmpp",    // 'sip' or 'xmpp'
                     sip: {domain: "192.168.1.251", server: "wss://desktop-545pc5b:7443/sip/proxy?url=ws://192.168.1.251:5066", register: false, caller_uri: "sip:1002@192.168.1.251", authorization_user: "1002", password: "1234"},
-                    xmpp: {domain: getSetting("domain"), server: "https://" + getSetting("server") + "/http-bind", username: getSetting("username"), password: getSetting("password")}
+                    xmpp: {domain: domain, server: connUrl, username: username, password: password}
                 }
             });
 
