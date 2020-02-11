@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "minimum_chrome_version": "34",   
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data: http: https:",  
+  "minimum_chrome_version": "34",  
+  "content_security_policy": "script-src 'self'",   
   "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
   "description": "__MSG_manifest_extensionDescription__",

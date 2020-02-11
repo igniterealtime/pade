@@ -684,7 +684,7 @@ window.addEvent("domready", function () {
             location.reload()
         });
 
-        if (settings.manifest.useSmartIdCard)
+        if (settings.manifest.useSmartIdCard && chrome.tabs)
         {
             settings.manifest.useSmartIdCard.addEvent("action", function ()
             {
@@ -1528,7 +1528,7 @@ function setDefaultServer()
             });
         }
 
-        chrome.tabs.query({}, function(tabs)
+        if (chrome.tabs) chrome.tabs.query({}, function(tabs)
         {
             if (tabs)
             {

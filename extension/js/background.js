@@ -1729,23 +1729,26 @@ function openVertoWindow(state)
 
 function doExtensionPage(url)
 {
-    chrome.tabs.query({}, function(tabs)
+    if (chrome.tabs)
     {
-        var setupUrl = chrome.runtime.getURL(url);
-
-        if (tabs)
+        chrome.tabs.query({}, function(tabs)
         {
-            var option_tab = tabs.filter(function(t) { return t.url === setupUrl; });
+            var setupUrl = chrome.runtime.getURL(url);
 
-            if (option_tab.length)
+            if (tabs)
             {
-            chrome.tabs.update(option_tab[0].id, {highlighted: true, active: true});
+                var option_tab = tabs.filter(function(t) { return t.url === setupUrl; });
 
-            }else{
-            chrome.tabs.create({url: setupUrl, active: true});
+                if (option_tab.length)
+                {
+                chrome.tabs.update(option_tab[0].id, {highlighted: true, active: true});
+
+                }else{
+                chrome.tabs.create({url: setupUrl, active: true});
+                }
             }
-        }
-    });
+        });
+    } else window.open(chrome.runtime.getURL(url), url);
 }
 
 function addHandlers()

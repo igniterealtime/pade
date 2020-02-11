@@ -1,5 +1,45 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.6.0</b> -- <i>February ??, 2020</i></p>
+<ul>
+    <li>Upgraded to Converse 6.0.0</li>
+    <li>Added support for stickers using converse custom emojis.</li>
+    <li>Added audio-conf plugin to Converse</li>
+    <li>Added Openfire public chat viewer application to main context menu</li>
+    <li>Added support for showing Geo Locations of MUC room occupants</li>
+    <li>Added support for OpenDocument Format (ODF)</li>
+</ul>
+
+<p><b>1.5.7</b> -- <i>January 21, 2020</i></p>
+<ul>
+    <li>Fixed message edit icon overlayed by action buttons</li>
+    <li>Fixed broken modal dialog boxes</li>
+</ul>
+
+<p><b>1.5.6</b> -- <i>January 18, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/209">Fixed #209: Lag time entering message</a></li>
+</ul>
+
+<p><b>1.5.5</b> -- <i>January 16, 2020</i></p>
+<ul>
+    <li>Added new branded version pade@jitsi</li>
+    <li>Added support for MAM (XEP 0313) full text search</li>
+    <li>Added new theme redpill from Disroot</li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/207">Fixed #207: Improve UX Issues with anonymous connections</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/208">Fixed #208: Converse is spamming XMPP server with messages to rss@pade.domain</a></li>
+    <li><a href="https://github.com/igniterealtime/openfire-monitoring-plugin/issues/63">Fixed #63: no support for filter on text or 'with' criteria when using mam:2</a></li>
+</ul>
+
+<p><b>1.5.4</b> -- <i>December 30, 2019</i></p>
+<ul>
+    <li>Changed BOSH URL from /http-bind/ to /http-bind to be compatible with Jitsi Meet</li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/206">Fixed #206: Contacts filter text box input is broken</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/205">Fixed #205: When using Reply feature, text does include recipients name, but does not trigger a mention prompt</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/204">Fixed #204: System admin broadcast message fails to display</a></li>
+    <li><a href="https://github.com/conversejs/community-plugins/issues/17">Fixed #17: Seach plugin requires smilely button, otherwise breaks converseJS</a></li>
+</ul>
+
 <p><b>1.5.3</b> -- <i>November 27, 2019</i></p>
 <ul>
     <li>Upgraded to latest Jitsi Meet</li>
