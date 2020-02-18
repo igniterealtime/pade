@@ -1,4 +1,4 @@
-# Location plugin for converse.js
+# Settings plugin for converse.js
 
 <img src="https://github.com/conversejs/community-plugins/blob/master/settings/settings.png?raw=true" />
 
