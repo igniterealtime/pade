@@ -820,7 +820,7 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model);
+                    //console.debug('webmeet - renderChatMessage', this.model.get("fullname"), this.model.getDisplayName(), this.model);
                     // intercepting email IM
 
                     if (this.model.vcard)

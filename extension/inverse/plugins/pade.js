@@ -261,7 +261,7 @@
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
                     }
 
-                    setTimeout(function() {extendOccupant(occupant, view)}, 500);
+                    setTimeout(function() {extendOccupant(occupant, view)}, 1000);
                 });
 
                 view.model.occupants.on('remove', occupant =>
@@ -545,7 +545,7 @@
 
                 renderChatMessage: async function renderChatMessage()
                 {
-                    console.debug("renderChatMessage", this.model);
+                    //console.debug("renderChatMessage", this.model);
 
                     const body = this.model.get('message');
 
@@ -575,7 +575,7 @@
                         }
                     }
 
-                    if (body.indexOf(":lol:") > -1)
+                    if (body && body.indexOf(":lol:") > -1)
                     {
                         const newBody = body.replace(":lol:", ":smiley:");
                         this.model.set('message', newBody);
@@ -583,7 +583,7 @@
 
                     const msgAttachId = this.model.get("msg_attach_to");
 
-                    if (msgAttachId && body.indexOf(msgAttachId) == -1) // very important check (duplicates)
+                    if (msgAttachId && body && body.indexOf(msgAttachId) == -1) // very important check (duplicates)
                     {
                         if (body.indexOf(":thumbsup:") > -1 || body.indexOf(":thumbsdown:") > -1)
                         {
@@ -592,7 +592,7 @@
                         }
                     }
 
-                    if (getSetting("notifyOnInterests", false))
+                    if (body && getSetting("notifyOnInterests", false))
                     {
                         var highlightedBody = body;
                         var interestList = getSetting("interestList", "").split("\n");
@@ -947,9 +947,6 @@
 
                 }, false);
             }
-        }
-        else {
-            setTimeout(function() {extendOccupant(occupant, view)}, 500);
         }
     }
 

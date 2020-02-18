@@ -74,19 +74,10 @@ var etherlynk = (function(lynk)
         });
     }
     function keys(store = getDefaultStore()) {
-        const keys = [];
-        const values = [];
-        return store._withIDBStore('readonly', store => {
-            // This would be store.getAllKeys(), but it isn't supported by Edge or Safari.
-            // And openKeyCursor isn't supported by Safari.
-            store.openCursor.call(store).onsuccess = function () {
-                if (!this.result)
-                    return;
-                keys.push(this.result.key);
-                values.push(this.result.value);
-                this.result.continue();
-            };
-        }).then(() => { return {keys: keys, values: values}});
+        let req;
+        return store._withIDBStore('readwrite', store => {
+            req = store.getAll();
+        }).then(() => req.result);
     }
 
     exports.Store = Store;
@@ -902,7 +893,7 @@ var etherlynk = (function(lynk)
                 {
                     console.debug('chrome.storage get video-chunks', data);
 
-                    lynk.uploadFile = new File(data.values, videoFileName, {type: 'video/webm'});
+                    lynk.uploadFile = new File(data, videoFileName, {type: 'video/webm'});
                     lynk.doUploadFile(room);
                 });
             }
