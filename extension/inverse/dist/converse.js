@@ -21873,8 +21873,8 @@ module.exports = isObject;
   Model.extend = Collection.extend = Router.extend = View.extend = History.extend = extend;
 
   // Throw an error when a URL is needed, and none is supplied.
-  var urlError = function() {
-    throw new Error('A "url" property or function must be specified');
+  var urlError = function() {   // BAO
+    //throw new Error('A "url" property or function must be specified');
   };
 
   // Wrap an optional error callback with a fallback error event.
@@ -53704,7 +53704,7 @@ converse_core_converse.LOGIN = 'login';
 converse_core_converse.LOGOUT = 'logout';
 converse_core_converse.OPENED = 'opened';
 converse_core_converse.PREBIND = 'prebind';
-converse_core_converse.STANZA_TIMEOUT = 10000;
+converse_core_converse.STANZA_TIMEOUT = 30000;  // BAO
 converse_core_converse.CONNECTION_STATUS = {
   0: 'ERROR',
   1: 'CONNECTING',
@@ -61764,24 +61764,26 @@ converse_core.plugins.add('converse-bookmarks', {
         }
       },
 
-      onBookmarksReceivedError(deferred, iq) {
+      onBookmarksReceivedError (deferred, iq) {
         if (iq === null) {
-          headless_log.error('Error: timeout while fetching bookmarks');
-
-          _converse.api.alert('error', __('Timeout Error'), [__("The server did not return your bookmarks within the allowed time. " + "You can reload the page to request them again.")]);
+            headless_log.error('Error: timeout while fetching bookmarks');
+            _converse.api.alert('error', __('Timeout Error'),
+                [__("The server did not return your bookmarks within the allowed time. "+
+                    "You can reload the page to request them again.")]
+            );
+        } else if (deferred) {
+            if (iq.querySelector('error[type="cancel"] item-not-found')) {
+                // Not an exception, the user simply doesn't have any bookmarks.
+                window.sessionStorage.setItem(this.fetched_flag, true);
+                return deferred.resolve();
+            } else {
+                headless_log.error('Error while fetching bookmarks');
+                headless_log.error(iq);
+                return deferred.reject(new Error("Could not fetch bookmarks"));
+            }
         } else {
-          headless_log.error('Error while fetching bookmarks');
-          headless_log.error(iq);
-        }
-
-        if (deferred) {
-          if (iq.querySelector('error[type="cancel"] item-not-found')) {
-            // Not an exception, the user simply doesn't have any bookmarks.
-            window.sessionStorage.setItem(this.fetched_flag, true);
-            return deferred.resolve();
-          } else {
-            return deferred.reject(new Error("Could not fetch bookmarks"));
-          }
+            headless_log.error('Error while fetching bookmarks');
+            headless_log.error(iq);
         }
       },
 
@@ -65387,7 +65389,7 @@ converse_core.plugins.add('converse-message-view', {
         const is_own_message = this.model.get('sender') === 'me';
         const chatbox = this.model.collection.chatbox;
         const may_retract_own_message = is_own_message && ['all', 'own'].includes(_converse.allow_message_retraction);
-        const may_moderate_message = !is_own_message && is_groupchat && ['all', 'moderator'].includes(_converse.allow_message_retraction) && (await chatbox.canRetractMessages());
+        const may_moderate_message = !is_own_message && is_groupchat && ['all', 'moderator'].includes(_converse.allow_message_retraction) && typeof chatbox.canRetractMessages == 'function' && (await chatbox.canRetractMessages()); // BAO
         const retractable = !is_retracted && (may_moderate_message || may_retract_own_message);
         const msg = converse_message_view_u.stringToElement(message_default()(Object.assign(this.model.toJSON(), {
           __,
@@ -65532,7 +65534,8 @@ converse_core.plugins.add('converse-message-view', {
             extra_classes.push(this.model.occupant.get('affiliation'));
           }
 
-          if (this.model.get('sender') === 'them' && this.model.collection.chatbox.isUserMentioned(this.model)) {
+          // BAO
+          if (this.model.get('sender') === 'them' && typeof this.model.collection.chatbox.isUserMentioned == 'function' && this.model.collection.chatbox.isUserMentioned(this.model)) {
             // Add special class to mark groupchat messages
             // in which we are mentioned.
             extra_classes.push('mentioned');

@@ -17,25 +17,29 @@
             Strophe = converse.env.Strophe;
             dayjs = converse.env.dayjs;
 
-            _converse.api.listen.on('chatRoomViewInitialized', function (view)
-            {
-                console.debug("gateway chatRoomOpened", view);
-                rssGroupChatCheck(view);
-            });
-
             _converse.api.listen.on('chatBoxInsertedIntoDOM', function (view)
             {
-                var jid = view.model.get("jid");
-                console.debug("gateway chatBoxInsertedIntoDOM", jid);
-
-                if (jid === "rss@pade." + _converse.connection.domain)
+                if (getSetting("enableRssFeeds", false))
                 {
-                    if (getSetting("showRssToolbar", false)) {
-                        view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
-                    } else {
-                        view.el.querySelector('.bottom-panel').style.display = "none";
+                    var jid = view.model.get("jid");
+                    var type = view.model.get("type");
+                    console.debug("gateway chatBoxInsertedIntoDOM", jid, type);
+
+                    if (jid === "rss@pade." + _converse.connection.domain)
+                    {
+                        if (getSetting("showRssToolbar", false)) {
+                            view.el.querySelector('.chat-textarea').setAttribute("disabled", "true");
+                        } else {
+                            view.el.querySelector('.bottom-panel').style.display = "none";
+                        }
+                        rssChatCheck();
                     }
-                    rssChatCheck();
+                    else
+
+                    if (type == "chatroom")
+                    {
+                        setTimeout(function() {rssGroupChatCheck(view)}, 10000);
+                    }
                 }
             });
 
@@ -75,7 +79,7 @@
                         var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
                         rssInterval = setInterval(rssRefresh, rssFeedCheck);
 
-                        createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), "RSS Feed");
+                        createRosterEntry("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);
                     }
                 });
             });

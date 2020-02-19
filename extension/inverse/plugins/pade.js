@@ -531,8 +531,14 @@
 
                             _converse.xmppstatus.vcard.set('image', avatar[1]);
                             _converse.xmppstatus.vcard.set('image_type', 'image/png');
-                        }, 1000);
+                        }, 3000);
                     }
+
+                    // add self for testing
+                    setTimeout(function() {
+                        openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"])
+                    }, 3000);
+
                 });
 
                 console.log("pade plugin is ready");
