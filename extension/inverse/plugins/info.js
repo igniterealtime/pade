@@ -167,14 +167,9 @@
 
                                                 view.showHelpMessages(["Feed " + feed.title + " added\n" + feed.path]);
                                                 view.viewUnreadMessages();
+                                                view.close();
 
-                                                setTimeout(function()
-                                                {
-                                                    view.close();
-                                                    _converse.api.rooms.open(view.model.get("jid"));
-
-                                                }, 3000);
-
+                                                setTimeout(function() {_converse.api.rooms.open(view.model.get("jid"))});
                                             });
                                         });
                                     });
@@ -751,14 +746,9 @@
                             view.showHelpMessages(["Feed " + evt.target.title + " removed"]);
                             view.viewUnreadMessages();
                             view.clearMessages();
+                            view.close();
 
-                            setTimeout(function()
-                            {
-                                view.close();
-                                _converse.api.rooms.open(view.model.get("jid"));
-
-                            }, 3000);
-
+                            setTimeout(function() {_converse.api.rooms.open(view.model.get("jid"))});
                         });
                     }
                 });
