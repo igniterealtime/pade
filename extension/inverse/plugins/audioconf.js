@@ -53,7 +53,7 @@
                     placement: "bottom-right",
                     rating: "false",
                     ringback: "true",
-                    server_url: "/inverse/plugins/audioconf",
+                    server_url: chrome.pade ? "/apps/inverse/plugins/audioconf" : "/inverse/plugins/audioconf",
                     show_branding: "false",
                     show_frame: "true",
                     text: "Audio Conference",
