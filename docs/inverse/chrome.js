@@ -356,6 +356,12 @@ function setDefaultSetting(name, defaultValue)
 {
     console.debug("setDefaultSetting", name, defaultValue, window.localStorage["store.settings." + name]);
 
+    if (branding[name] != undefined)
+    {
+        window.localStorage["store.settings." + name] = JSON.stringify(branding[name].value);
+    }
+    else
+
     if (!window.localStorage["store.settings." + name] && window.localStorage["store.settings." + name] != false)
     {
         if (defaultValue) window.localStorage["store.settings." + name] = JSON.stringify(defaultValue);

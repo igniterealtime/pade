@@ -75,7 +75,7 @@
             {
                 console.debug('info - renderToolbar', view.model);
 
-                if (view.model.get("type") === "chatroom" && !view.el.querySelector(".fa-info"))
+                if (view.model.get("type") === "chatroom" && !view.el.querySelector(".fa-info") && getSetting("showToolbarIcons", true))
                 {
                     var jid = view.model.get("jid");
                     var id = view.model.get("box_id");

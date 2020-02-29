@@ -105,7 +105,7 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                if (!view.el.querySelector(".fa-sticky-note"))
+                if (!view.el.querySelector(".fa-sticky-note") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
                     addToolbarItem(view, id, "pade-canned-" + id, '<a class="fas fa-sticky-note" title="Canned Responses/Replies"></a>');

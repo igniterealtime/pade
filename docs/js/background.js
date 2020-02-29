@@ -2884,7 +2884,13 @@ function setSetting(name, value)
 
 function setDefaultSetting(name, defaultValue)
 {
-    console.debug("setDefaultSetting", name, defaultValue, window.localStorage["store.settings." + name]);
+    console.debug("setDefaultSetting", name, branding[name], defaultValue, window.localStorage["store.settings." + name]);
+
+    if (branding[name] != undefined)
+    {
+        window.localStorage["store.settings." + name] = JSON.stringify(branding[name].value);
+    }
+    else
 
     if (!window.localStorage["store.settings." + name] && window.localStorage["store.settings." + name] != false)
     {
@@ -4043,7 +4049,7 @@ function doSetupStrophePlugins()
             var height = 384;
 
             var server = getSetting("server", null);
-            var url = "https://" + server + "/pade/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
+            var url = "https://" + server + "/apps/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
 
             console.debug("doSetupStrophePlugins - CredsMgrApi", server, url);
 

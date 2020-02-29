@@ -54,12 +54,10 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                isFileUploadAvailable(view, function()
+                if (!view.el.querySelector(".fa-microphone") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
-                    addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
-
-                    var vmsg = document.getElementById("pade-vmsg-" + id);
+                    var vmsg = addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
 
                     if (vmsg) vmsg.addEventListener('click', function(evt)
                     {
@@ -75,7 +73,7 @@
                         vmsgDialog.show();
 
                     }, false);
-                });
+                };
             });
 
             console.log("vmsg plugin is ready");
@@ -109,10 +107,4 @@
             }
         }
     });
-
-    var isFileUploadAvailable = async function(view, callback)
-    {
-        const result = await _converse.api.disco.supports('urn:xmpp:http:upload:0', _converse.domain);
-        if (result.length > 0 && !view.el.querySelector(".fa-microphone")) callback();
-    }
 }));

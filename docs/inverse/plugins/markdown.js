@@ -39,7 +39,7 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                if (bgWindow && !view.el.querySelector(".plugin-markdown"))
+                if (bgWindow && !view.el.querySelector(".plugin-markdown") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
                     addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="plugin-markdown fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');

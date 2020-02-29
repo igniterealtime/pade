@@ -221,24 +221,27 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                const id = view.model.get("box_id");
-                const search = addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
-
-                console.debug('search - renderToolbar', search, view.model);
-
-                if (search) search.addEventListener('click', function(evt)
+                if (getSetting("showToolbarIcons", true))
                 {
-                    evt.stopPropagation();
+                    const id = view.model.get("box_id");
+                    const search = addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
 
-                    if (!searchDialog)
+                    console.debug('search - renderToolbar', search, view.model);
+
+                    if (search) search.addEventListener('click', function(evt)
                     {
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
-                    }
-                    else {
-                        searchDialog.model.set("view", view);
-                    }
-                    searchDialog.show();
-                }, false);
+                        evt.stopPropagation();
+
+                        if (!searchDialog)
+                        {
+                            searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                        }
+                        else {
+                            searchDialog.model.set("view", view);
+                        }
+                        searchDialog.show();
+                    }, false);
+                }
             });
 
             console.log("search plugin is ready");

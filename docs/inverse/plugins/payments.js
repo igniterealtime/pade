@@ -94,7 +94,7 @@
                     var email = view.model.vcard.get("email");
                     var url = view.model.vcard.get("url");
 
-                    if (view.model.get('type') === "chatbox" && bgWindow.pade.transferWiseProfile && bgWindow.pade.transferWiseProfile.length > 0 && email)
+                    if (view.model.get('type') === "chatbox" && bgWindow.pade.transferWiseProfile && bgWindow.pade.transferWiseProfile.length > 0 && email && getSetting("showToolbarIcons", true))
                     {
                         var transferWiseButton = addToolbarItem(view, id, "webmeet-transferwise-" + id, '<a class="plugin-transferwise fa" title="TransferWise. Click to open"><img height="16" src="plugins/css/images/transferwise.svg"/></a>');
 

@@ -36896,11 +36896,11 @@ module.exports = function(o) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 __p += '<!-- src/templates/toolbar.html -->\n';
- //if (o.show_call_button)  { ;
+ if (o.show_call_button)  { ;
 __p += '\n<li class="toggle-call fa fa-phone" title="' +
 __e(o.label_start_call) +
 '"></li>\n';
- //} ;
+ } ;
 __p += '\n';
  //if (o.show_occupants_toggle)  { ;
 __p += '\n<li class="toggle-occupants float-right fa ';

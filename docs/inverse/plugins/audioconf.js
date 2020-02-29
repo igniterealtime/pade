@@ -40,7 +40,7 @@
             }
 
             _converse.api.settings.update({
-                visible_toolbar_buttons: {call: true},
+                visible_toolbar_buttons: {call: getSetting("showToolbarIcons", true)},
                 click2_dial: {
                     custom_button_color: "orange",
                     custom_frame_color: "black",
