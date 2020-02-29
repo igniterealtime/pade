@@ -1,0 +1,22 @@
+{
+    "short_name": "pade.chat",
+    "name": "pade.chat",
+    "description": "Unified Communications web client",    
+    "icons": [
+        {
+            "src": "images/image_192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/image_512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "./",
+    "background_color": "#FFFFFF",
+    "theme_color": "#FFFFFF",
+    "display": "standalone",
+    "orientation": "portrait"
+}
