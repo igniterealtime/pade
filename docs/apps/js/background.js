@@ -226,8 +226,8 @@ window.addEventListener("load", function()
         setDefaultSetting("useWebsocket", false);
         setDefaultSetting("ofmeetUrl", "https://" + location.host + "/ofmeet/");
 
-        setSetting("server", location.host);
-        setSetting("domain", location.hostname);
+        setDefaultSetting("server", location.host);
+        setDefaultSetting("domain", location.hostname);
 
         top.getCredentials(function(credential)
         {

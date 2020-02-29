@@ -78,8 +78,8 @@ window.addEventListener("load", function()
         setDefaultSetting("useBasicAuth", false);
         setDefaultSetting("ofmeetUrl", "https://" + server + "/ofmeet/");
 
-        setSetting("server", location.host);
-        setSetting("domain", location.hostname);
+        setDefaultSetting("server", location.host);
+        setDefaultSetting("domain", location.hostname);
 
         top.getCredentials(function(credential)
         {
