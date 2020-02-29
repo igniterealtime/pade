@@ -16,7 +16,7 @@
   "background": {
         "persistent": true,
         "scripts": [ 
-            "js/jquery.js", "js/libs.bundle.js", "js/strophe.reconnect.js", "js/strophe.vcard.js", "js/moment.js", "js/sip.js", "js/etherlynk.js", "js/background.js"
+            "js/jquery.js", "js/libs.bundle.js", "js/strophe.reconnect.js", "js/strophe.vcard.js", "js/moment.js", "js/sip.js", "js/etherlynk.js", "options/branding.js", "js/background.js"
         ]
   }, 
    
