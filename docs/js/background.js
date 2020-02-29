@@ -4043,7 +4043,7 @@ function doSetupStrophePlugins()
             var height = 384;
 
             var server = getSetting("server", null);
-            var url = "https://" + server + "/apps/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
+            var url = "https://" + server + "/pade/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
 
             console.debug("doSetupStrophePlugins - CredsMgrApi", server, url);
 

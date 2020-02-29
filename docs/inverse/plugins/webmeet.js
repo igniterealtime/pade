@@ -936,7 +936,7 @@
                         {
                             console.debug("h5p content", this.model.attributes);
                             var path = body.substring(pos2 + 11);
-                            var hp5_url = baseUrl + "/apps/h5p/?path=" + path;
+                            var hp5_url = baseUrl + "/pade/h5p/?path=" + path;
                             var h5p_content = '<iframe src="' + hp5_url + '" id="hp5_' + path + '" allow="microphone; camera;" frameborder="0" seamless="seamless" allowfullscreen="true" style="z-index: 2147483647;width:100%;height:640px;resize: both;overflow: auto;"></iframe>';
                             setupContentHandler(this, null, h5p_content);
                         }
