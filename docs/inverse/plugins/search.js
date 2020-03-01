@@ -79,7 +79,7 @@
                          '<div style="overflow-x:hidden; overflow-y:scroll; height: 400px;" id="pade-search-results"></div>' +
                          '</div>' +
                          '</div>' +
-                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-search">Search</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
+                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-search">Search</button><button type="button" class="btn btn-success btn-pdf">PDF</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
@@ -110,6 +110,7 @@
                 events: {
                     'keyup #pade-search-keywords': 'clickSearch',
                     'click .btn-search': 'doSearch',
+                    'click .btn-pdf': 'doPDF',
                     'click .btn-danger': 'doDestroy'
                 },
 
@@ -123,10 +124,34 @@
                 doDestroy() {
 
                 },
+                doPDF() {
+                    const margins = {
+                      top: 70,
+                      bottom: 40,
+                      left: 30,
+                      width: 550
+                    };
+                    const pdf = new jsPDF('p','pt','a4');
+                    //pdf.setFontSize(18);
 
+                    pdf.autoTable({
+                        head: [['Date', 'Person', 'Message']],
+                        body: this.model.get("pdf_body"),
+                        columnStyles: {
+                            0: {cellWidth: 100},
+                            1: {cellWidth: 100},
+                            2: {cellWidth: 300}
+                        }
+                    })
+
+                    const view = this.model.get("view");
+                    const roomLabel = view.model.getDisplayName() || view.model.get("jid");
+                    pdf.save(roomLabel + '.pdf')
+                },
                 doSearch() {
                     const start = this.el.querySelector("#pade-search-start").value;
                     const end = this.el.querySelector("#pade-search-end").value;
+                    const pdf_body = [];
 
                     let keyword = this.el.querySelector("#pade-search-keywords").value.trim();
                     let participant = this.el.querySelector("#pade-search-participant");
@@ -192,6 +217,7 @@
                                         ids.push(id);
                                         const tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;><a href='#' data-id='" + id + "' id='search-" + id + "'>$1</a></span>");
                                         html = html + "<div class='row'><div style='max-width: 20%;' class='col'>" + pretty_time + "</div><div style='max-width: 15%;' class='col'>" + pretty_from + "</div><div class='col'>" + tagged + "</div></div>";
+                                        pdf_body.push([pretty_time, pretty_from, body]);
                                     }
                                 }
                             }
@@ -199,6 +225,7 @@
 
                         html =  html + "</div>";
                         searchResults.innerHTML = html;
+                        that.model.set("pdf_body", pdf_body);
 
                         for (var i=0; i<ids.length; i++)
                         {
