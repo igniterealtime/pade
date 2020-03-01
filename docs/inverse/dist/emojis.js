@@ -36,14 +36,114 @@
                         "url": "./dist/custom_emojis/animations/128-around-the-world.gif",
                         "c": "animations"
                     },
-                    ":happy-birthday:": {
-                        "sn": ":happy-birthday:",
-                        "url": "./dist/custom_emojis/animations/427-happy-birthday.gif",
+                    ":present:": {
+                        "sn": ":present:",
+                        "url": "./dist/custom_emojis/animations/427-present.gif",
                         "c": "animations"
                     },
                     ":check-animation:": {
                         "sn": ":check-animation:",
                         "url": "./dist/custom_emojis/animations/1798-check-animation.gif",
+                        "c": "animations"
+                    },
+                    ":waiting-for-ideas:": {
+                        "sn": ":waiting-for-ideas:",
+                        "url": "./dist/custom_emojis/animations/16546-waiting-for-ideas.gif",
+                        "c": "animations"
+                    },
+                    ":thumbs-up:": {
+                        "sn": ":thumbs-up:",
+                        "url": "./dist/custom_emojis/animations/16429-thumbs-up.gif",
+                        "c": "animations"
+                    },
+                    ":post-it:": {
+                        "sn": ":post-it:",
+                        "url": "./dist/custom_emojis/animations/16625-first-test-lottie.gif",
+                        "c": "animations"
+                    },
+                    ":light-bulb:": {
+                        "sn": ":light-bulb:",
+                        "url": "./dist/custom_emojis/animations/16678-light-bulb.gif",
+                        "c": "animations"
+                    },
+                    ":closed:": {
+                        "sn": ":closed:",
+                        "url": "./dist/custom_emojis/animations/16683-closed.gif",
+                        "c": "animations"
+                    },
+                    ":phone-call:": {
+                        "sn": ":phone-call:",
+                        "url": "./dist/custom_emojis/animations/16689-phone-call.gif",
+                        "c": "animations"
+                    },
+                    ":loading-moov-boing:": {
+                        "sn": ":loading-moov-boing:",
+                        "url": "./dist/custom_emojis/animations/16703-loading-moov-boing.gif",
+                        "c": "animations"
+                    },
+                    ":sparrow:": {
+                        "sn": ":sparrow:",
+                        "url": "./dist/custom_emojis/animations/16731-sparrow.gif",
+                        "c": "animations"
+                    },
+                    ":bell-animated:": {
+                        "sn": ":bell-animated:",
+                        "url": "./dist/custom_emojis/animations/16737-bell.gif",
+                        "c": "animations"
+                    },
+                    ":handshake:": {
+                        "sn": ":handshake:",
+                        "url": "./dist/custom_emojis/animations/16750-handshake.gif",
+                        "c": "animations"
+                    },
+                    ":animated-mail-illustration:": {
+                        "sn": ":animated-mail-illustration:",
+                        "url": "./dist/custom_emojis/animations/16763-animated-mail-illustration.gif",
+                        "c": "animations"
+                    },
+                    ":happy-birthday:": {
+                        "sn": ":happy-birthday:",
+                        "url": "./dist/custom_emojis/animations/16765-happy-birthday.gif",
+                        "c": "animations"
+                    },
+                    ":forget-password:": {
+                        "sn": ":forget-password:",
+                        "url": "./dist/custom_emojis/animations/16766-forget-password-animation.gif",
+                        "c": "animations"
+                    },
+                    ":stirring-into-the-sunset:": {
+                        "sn": ":stirring-into-the-sunset:",
+                        "url": "./dist/custom_emojis/animations/16768-stirring-into-the-sunset.gif",
+                        "c": "animations"
+                    },
+                    ":launch-qualibrate:": {
+                        "sn": ":launch-qualibrate:",
+                        "url": "./dist/custom_emojis/animations/16701-launch-qualibrate.gif",
+                        "c": "animations"
+                    },
+                    ":creative-time:": {
+                        "sn": ":creative-time:",
+                        "url": "./dist/custom_emojis/animations/16507-creative-time.gif",
+                        "c": "animations"
+                    },
+                    ":liquid-loading:": {
+                        "sn": ":liquid-loading:",
+                        "url": "./dist/custom_emojis/animations/16522-liquid-loading.gif",
+                        "c": "animations"
+                    },
+                    ":circle-count:": {
+                        "sn": ":circle-count:",
+                        "url": "./dist/custom_emojis/animations/16734-circle-count.gif",
+                        "c": "animations"
+                    },
+                    ":wave-animated:": {
+                        "sn": ":wave-animated:",
+                        "url": "./dist/custom_emojis/animations/16738-wave-animated.gif",
+                        "c": "animations"
+                    },
+                    ":super-hero-charging:": {
+                        "sn": ":super-hero-charging:",
+                        "url": "./dist/custom_emojis/animations/16732-super-hero-charging.gif",
                         "c": "animations"
                     },
                 },
