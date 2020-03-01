@@ -1,4 +1,4 @@
-<img src="https://igniterealtime.github.io/Pade/help/assets/images/pade_fosdem.png" />
+<img src="https://igniterealtime.github.io/pade/help/assets/images/pade_fosdem.png" />
 
 Pade is the Yoruba word for "Meet". It is a unified communications client for Openfire Meetings and uses the following front end web applications.
 
