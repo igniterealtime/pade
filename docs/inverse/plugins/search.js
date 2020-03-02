@@ -298,6 +298,45 @@
                     }
                     else
 
+                    if (command === "summary")
+                    {
+                        const title = match[2] || this.model.getDisplayName();
+                        const messages = this.model.messages.models;
+                        let firstMsg = 0;
+
+                        for (let i=0; i<messages.length; i++)
+                        {
+                            const msg = document.getElementById("msg-" + messages[i].get("msgid"));
+
+                            if (msg && isInViewport(msg))
+                            {
+                                console.debug("first message in view", msg);
+                                firstMsg = i;
+                                break;
+                            }
+                        }
+
+                        let detail = "";
+
+                        for (var i=firstMsg; i<messages.length; i++)
+                        {
+                            const body = messages[i].get('message');
+                            const from = messages[i].get('from');
+                            const pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
+
+                            if (!body.startsWith('>')) {
+                                detail = detail + pretty_from + " says " + body + ". ";
+                            }
+                        }
+
+                        const summarizer = new JsSummarize();
+                        const summary = summarizer.summarize(title, detail);
+                        summary.unshift("-------- Summary -----------");
+                        this.showHelpMessages(summary);
+
+                        return true;
+                    }
+
                     return this.__super__.parseMessageForCommands.apply(this, arguments);
                 }
             },
@@ -366,4 +405,13 @@
         }
     });
 
+    function isInViewport (elem) {
+        var distance = elem.getBoundingClientRect();
+        return (
+            distance.top >= 0 &&
+            distance.left >= 0 &&
+            distance.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            distance.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
 }));
