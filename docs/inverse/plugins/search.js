@@ -331,8 +331,9 @@
 
                         const summarizer = new JsSummarize();
                         const summary = summarizer.summarize(title, detail);
-                        summary.unshift("-------- Summary -----------");
+                        summary.unshift("---------- Summary ----------");
                         this.showHelpMessages(summary);
+                        this.viewUnreadMessages();
 
                         return true;
                     }
