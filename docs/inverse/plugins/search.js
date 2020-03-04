@@ -324,7 +324,7 @@
                             const from = messages[i].get('from');
                             const pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
 
-                            if (!body.startsWith('>')) {
+                            if (body && !body.startsWith('>')) {
                                 detail = detail + pretty_from + " says " + body + ". ";
                             }
                         }
