@@ -42,9 +42,7 @@
                 if (bgWindow && !view.el.querySelector(".plugin-markdown") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
-                    addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="plugin-markdown fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
-
-                    var markdown = document.getElementById("webmeet-markdown-" + id);
+                    var markdown = addToolbarItem(view, id, "webmeet-markdown-" + id, '<a class="plugin-markdown fa" title="Markdown Editor. Click to open"><b style="font-size: large;">M&darr;</b></a>');
 
                     if (markdown) markdown.addEventListener('click', function(evt)
                     {
