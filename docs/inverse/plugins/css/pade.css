@@ -50,6 +50,21 @@
 
 /* converse customisation*/
 
+#conversejs .message .mention {
+  background: #FFD759;
+  border-radius: 14px;
+  color: var(--message-text-color);
+  font-size: var(--font-size);
+  font-weight: normal;
+  padding: 1px 12px;
+}
+
+#conversejs .message .mention--self {
+  background: #6259F5;
+  color: white;
+  padding: 4px 12px;
+}
+
 #conversejs .message.chat-msg .chat-msg__actions .chat-msg__action {
     padding: 5px;
 }
@@ -128,10 +143,12 @@
     align-items: center;
 }
 
+/*
 #conversejs .occupant .badge {
     float:right !important;
     margin-left: 2px !important;
 }
+*/
 
 .chat-msg-content {
     width: 100%;
