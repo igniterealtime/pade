@@ -440,9 +440,10 @@
                                 {
                                     var jid = $(this).attr("jid");
                                     var name = $(this).attr("name");
+                                    var avatar_uri = $(this).attr("avatar_uri");
                                     if (!name) name = Strophe.getNodeFromJid(jid);
                                     var autojoin = $(this).attr('autojoin') === 'true' || $(this).attr('autojoin') === '1';
-                                    var json = {name: name, jid: jid, autojoin: autojoin};
+                                    var json = {name: name, jid: jid, autojoin: autojoin, avatar_uri: avatar_uri};
 
                                     console.debug('pade BookmarksReceived', json);
                                     if (_converse.bookmarks) bookmarkRoom(json);
@@ -463,7 +464,7 @@
                                     {
                                         var name = Strophe.getNodeFromJid($(this).attr('jid'));
                                         var jid = 'workgroup-' + name + "@conference." + _converse.connection.domain;
-                                        var json = {name: name, jid: jid, autojoin: true};
+                                        var json = {name: name, jid: jid, autojoin: true, avatar_uri: createAvatar(name, null, null, null, true, jid)};
 
                                         console.debug('pade workgroup recieved', json);
                                         if (_converse.bookmarks) bookmarkRoom(json);
