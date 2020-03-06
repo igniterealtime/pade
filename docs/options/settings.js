@@ -1743,13 +1743,13 @@ function importPreferences(event, settings)
                     window.location.reload();
 
                 } catch (ex) {
-                    console.error("uploadAvatar - error", ex);
+                    console.error("importPreferences - error", ex);
                     settings.manifest.importExportStatus.element.innerHTML = '<b style="color:red">File could not be read! Error ' + ex;
                 }
             };
 
             reader.onerror = function(event) {
-                console.error("uploadAvatar - error", event);
+                console.error("importPreferences - error", event);
                 settings.manifest.importExportStatus.element.innerHTML = '<b style="color:red">File could not be read! Error ' + event.target.error.code;
             };
 
