@@ -80336,7 +80336,7 @@ converse_core.plugins.add('converse-roomslist', {
         await Promise.all([_converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('roomsPanelRendered')]);
       }
 
-      initRoomsListView();
+      setTimeout(initRoomsListView, 500);  // BAO
     });
 
     _converse.api.listen.on('reconnected', initRoomsListView);
