@@ -44,11 +44,16 @@
     vertical-align: top;
 }
 
+/* converse customisation*/
+
+#conversejs .chatroom .box-flyout .chatroom-body .occupants .chatroom-features,
+#conversejs.converse-embedded .chatroom .box-flyout .chatroom-body .occupants .chatroom-features {
+    display: none;
+}
+
 #conversejs .mention {
   cursor: pointer; 
 }
-
-/* converse customisation*/
 
 #conversejs .message .mention {
   background: #FFD759;
