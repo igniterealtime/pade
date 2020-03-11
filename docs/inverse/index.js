@@ -448,6 +448,11 @@ function doConverse(server, username, password, anonUser)
            whitelistedPlugins.push("audioconf");
         }
 
+        if (chrome.pade && getSetting("wgEnabled", false))
+        {
+            whitelistedPlugins.push("fastpath");
+        }
+
         var config =
         {
           allow_bookmarks: true,
@@ -531,7 +536,7 @@ function doConverse(server, username, password, anonUser)
 
 function openChat(from, name, groups, open)
 {
-    if (_inverse)
+    if (_inverse && _inverse.roster)
     {
         if (!groups) groups = [];
 

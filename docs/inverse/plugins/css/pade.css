@@ -59,7 +59,7 @@
   background: #FFD759;
   border-radius: 14px;
   color: var(--message-text-color);
-  font-size: var(--font-size);
+  font-size: var(--message-font-size) !important;
   font-weight: normal;
   padding: 1px 12px;
 }
@@ -67,7 +67,7 @@
 #conversejs .message .mention--self {
   background: #6259F5;
   color: white;
-  padding: 4px 12px;
+  padding: 2px 12px;
 }
 
 #conversejs .message.chat-msg .chat-msg__actions .chat-msg__action {

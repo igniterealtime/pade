@@ -4,6 +4,7 @@
     } else {
         factory(converse);
     }
+
 }(this, function (converse) {
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse;
     converse.plugins.add("audioconf", {
@@ -53,7 +54,7 @@
                     placement: "bottom-right",
                     rating: "false",
                     ringback: "true",
-                    server_url: chrome.pade ? "/pade/inverse/plugins/audioconf" : "/inverse/plugins/audioconf",
+                    server_url: chrome.pade ? "/" + chrome.padeName + "/inverse/plugins/audioconf" : "/inverse/plugins/audioconf",
                     show_branding: "false",
                     show_frame: "true",
                     text: "Audio Conference",

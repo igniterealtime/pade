@@ -92,7 +92,7 @@ window.addEventListener("load", function()
         }
 
         document.getElementById("collab-content").src = url;
-        document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Collaboration - " + collab.url;
+        document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Collaboration | " + collab.url;
 
 
         console.log("collab ready", collab);

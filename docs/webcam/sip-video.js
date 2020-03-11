@@ -24,7 +24,7 @@ window.addEventListener("load", function()
        window.sipRoom = url.substring(4);
     }
 
-    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " SIP VideoConference - " + window.sipRoom;
+    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " SIP VideoConference | " + window.sipRoom;
 
     function urlParam(name)
     {

@@ -43,7 +43,7 @@ window.addEvent("domready", function () {
             //settings.manifest.domain.element.parentElement.style.display = "none";
             //settings.manifest.connect.element.parentElement.style.display = "none";
 
-            document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " - Settings";
+            document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " | Settings";
         }
 
         if (settings.manifest.meetingPlanner)

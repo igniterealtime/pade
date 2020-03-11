@@ -54,7 +54,7 @@
                     }
                 });
 
-                document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse - " + _converse.VERSION_NAME;
+                document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + _converse.VERSION_NAME;
             }
 
             if (getSetting("enableThreading", false))

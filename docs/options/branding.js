@@ -6,6 +6,7 @@ var branding = {
     beeFeedCheck            : {disable: true},
     beeKeeperPageSize       : {disable: true},
     enableIrma              : {disable: true},
+    name                    : {disable: false, value: "pade"},
     server                  : {disable: false, value: "pade.chat:5443"},
     domain                  : {disable: false, value: "pade.chat"},
 /*

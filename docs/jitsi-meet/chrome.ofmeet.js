@@ -580,10 +580,10 @@ var ofmeet = (function(of)
 
                 if (OFMEET_CONFIG.mode == "presenter") APP.UI.clickOnVideo(0);
 
-                document.title = interfaceConfig.APP_NAME + " - Webinar " + OFMEET_CONFIG.mode;
+                document.title = interfaceConfig.APP_NAME + " | Webinar " + OFMEET_CONFIG.mode;
                 APP.UI.toggleFilmstrip();
             }
-            else document.title = interfaceConfig.APP_NAME + " - " + APP.conference.roomName;
+            else document.title = interfaceConfig.APP_NAME + " | " + APP.conference.roomName;
         }
     }
 
