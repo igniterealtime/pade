@@ -392,10 +392,17 @@
 
                                 console.debug("pade.mention click", evt.target);
 
-                                const contact = _converse.roster.findWhere({'user_id': evt.target.getAttribute("data-mention")});
+                                const jid = evt.target.getAttribute("data-jid");
 
-                                if (contact) {
-                                    _converse.api.chats.open(contact.get("jid"), {fullname: contact.get("nickname") || contact.get("fullname")});
+                                if (jid) {
+                                    _converse.api.chats.open(jid, {fullname: evt.target.getAttribute("data-mention")});
+                                }
+                                else {
+                                    const contact = _converse.roster.findWhere({'user_id': evt.target.getAttribute("data-mention")});
+
+                                    if (contact) {
+                                        _converse.api.chats.open(contact.get("jid"), {fullname: contact.get("nickname") || contact.get("fullname")});
+                                    }
                                 }
 
                             }, false);

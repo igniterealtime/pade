@@ -58398,7 +58398,7 @@ converse_core.plugins.add('converse-emoji', {
         markedText = markedText.replace(/(^|\s)#([a-z\d-]+)/ig, "$1<span data-hashtag='$2' title='hashtag' class='badge badge-hash-tag'>$2</span>");
 
         // BAO do mentions
-        markedText = markedText.replace(/(^|\s)@([a-z\d-]+)/ig, "$1<span data-mention='$2' title='mention' class='mention mention--self badge badge-info'>$2</span>");
+        markedText = markedText.replace(/(^|\s)@([a-z\d-]+)/ig, "$1<span data-mention='$2' title='mention' class='mention badge badge-info'>$2</span>");
 
         return markedText;
       },
@@ -64785,10 +64785,21 @@ utils_core.addMentionsMarkup = function (text, references, chatbox) {
     const mention = text.slice(ref.begin, ref.end);
     chatbox;
 
-    if (mention === nick) {
-      text = text.slice(0, ref.begin) + "<span class=\"mention mention--self badge badge-info\">".concat(mention, "</span>") + text.slice(ref.end);
+    // BAO
+
+    let data_mention = "";
+    const occupant = chatbox.occupants.findOccupant({'nick': mention});
+
+    if (occupant)
+    {
+        const jid = occupant.get("jid");
+        if (jid) data_mention = ' data-mention="' + mention + '" data-jid="' + jid + '"';
+    }
+
+    if (mention === nick) { // BAO
+      text = text.slice(0, ref.begin) + "<span " + data_mention + " class=\"mention mention--self badge badge-info\">".concat(mention, "</span>") + text.slice(ref.end);
     } else {
-      text = text.slice(0, ref.begin) + "<span class=\"mention\">".concat(mention, "</span>") + text.slice(ref.end);
+      text = text.slice(0, ref.begin) + "<span " + data_mention + " class=\"mention\">".concat(mention, "</span>") + text.slice(ref.end);
     }
   });
   return text;
