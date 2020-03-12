@@ -58223,6 +58223,7 @@ converse_core.plugins.add('converse-emoji', {
         "cuppy": ":cuppy:",
         "animals": ":animals:",
         "animations": ":animations:",
+        "dele": ":dele:",
       },
       // We use the triple-underscore method which doesn't actually
       // translate but does signify to gettext that these strings should
@@ -58247,6 +58248,7 @@ converse_core.plugins.add('converse-emoji', {
         "cuppy": ___("Cuppy"),
         "animals": ___("Animals"),
         "animations": ___("Animations"),
+        "dele": ___("Dele"),
       }
     });
 

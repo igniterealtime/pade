@@ -1,6 +1,117 @@
 (window.webpackJsonp = window.webpackJsonp || []).push([
     [129], {496: function(n) {n.exports =
             {
+                "dele": {
+                    /*
+                        author      = memoji likeness of dele olajide
+                        license     =
+                    */
+                    ":dele:": {
+                        "sn": ":dele:",
+                        "url": "./dist/custom_emojis/dele/dele_is_happy.webp",
+                        "c": "dele"
+                    },
+                    ":dele_blows_kiss:": {
+                        "sn": ":dele_blows_kiss:",
+                        "url": "./dist/custom_emojis/dele/dele_blows_kiss.webp",
+                        "c": "dele"
+                    },
+                    ":dele_cant_believe_it:": {
+                        "sn": ":dele_cant_believe_it:",
+                        "url": "./dist/custom_emojis/dele/dele_cant_believe_it.webp",
+                        "c": "dele"
+                    },
+                    ":dele_excited:": {
+                        "sn": ":dele_excited:",
+                        "url": "./dist/custom_emojis/dele/dele_excited.webp",
+                        "c": "dele"
+                    },
+                    ":dele_feeling_cool:": {
+                        "sn": ":dele_feeling_cool:",
+                        "url": "./dist/custom_emojis/dele/dele_feeling_cool.webp",
+                        "c": "dele"
+                    },
+                    ":dele_feeling_loved:": {
+                        "sn": ":dele_feeling_loved:",
+                        "url": "./dist/custom_emojis/dele/dele_feeling_loved.webp",
+                        "c": "dele"
+                    },
+                    ":dele_feels_the_pain:": {
+                        "sn": ":dele_feels_the_pain:",
+                        "url": "./dist/custom_emojis/dele/dele_feels_the_pain.webp",
+                        "c": "dele"
+                    },
+                    ":dele_has_stars_in_eyes:": {
+                        "sn": ":dele_has_stars_in_eyes:",
+                        "url": "./dist/custom_emojis/dele/dele_has_stars_in_eyes.webp",
+                        "c": "dele"
+                    },
+                    ":dele_is_enjoying_this:": {
+                        "sn": ":dele_is_enjoying_this:",
+                        "url": "./dist/custom_emojis/dele/dele_is_enjoying_this.webp",
+                        "c": "dele"
+                    },
+                    ":dele_is_relieved:": {
+                        "sn": ":dele_is_relieved:",
+                        "url": "./dist/custom_emojis/dele/dele_is_relieved.webp",
+                        "c": "dele"
+                    },
+                    ":dele_lapping_it_up:": {
+                        "sn": ":dele_lapping_it_up:",
+                        "url": "./dist/custom_emojis/dele/dele_lapping_it_up.webp",
+                        "c": "dele"
+                    },
+                    ":dele_laughs:": {
+                        "sn": ":dele_laughs:",
+                        "url": "./dist/custom_emojis/dele/dele_laughs.webp",
+                        "c": "dele"
+                    },
+                    ":dele_loving_it:": {
+                        "sn": ":dele_loving_it:",
+                        "url": "./dist/custom_emojis/dele/dele_loving_it.webp",
+                        "c": "dele"
+                    },
+                    ":dele_rolling_with_laughter:": {
+                        "sn": ":dele_rolling_with_laughter:",
+                        "url": "./dist/custom_emojis/dele/dele_rolling_with_laughter.webp",
+                        "c": "dele"
+                    },
+                    ":dele_seals_lips:": {
+                        "sn": ":dele_seals_lips:",
+                        "url": "./dist/custom_emojis/dele/dele_seals_lips.webp",
+                        "c": "dele"
+                    },
+                    ":dele_sheds_a_tear:": {
+                        "sn": ":dele_sheds_a_tear:",
+                        "url": "./dist/custom_emojis/dele/dele_sheds_a_tear.webp",
+                        "c": "dele"
+                    },
+                    ":dele_smacks_lips:": {
+                        "sn": ":dele_smacks_lips:",
+                        "url": "./dist/custom_emojis/dele/dele_smacks_lips.webp",
+                        "c": "dele"
+                    },
+                    ":dele_sobbing:": {
+                        "sn": ":dele_sobbing:",
+                        "url": "./dist/custom_emojis/dele/dele_sobbing.webp",
+                        "c": "dele"
+                    },
+                    ":dele_sticks_out_tongue:": {
+                        "sn": ":dele_sticks_out_tongue:",
+                        "url": "./dist/custom_emojis/dele/dele_sticks_out_tongue.webp",
+                        "c": "dele"
+                    },
+                    ":dele_wants_more:": {
+                        "sn": ":dele_wants_more:",
+                        "url": "./dist/custom_emojis/dele/dele_wants_more.webp",
+                        "c": "dele"
+                    },
+                    ":dele_winks:": {
+                        "sn": ":dele_winks:",
+                        "url": "./dist/custom_emojis/dele/dele_winks.webp",
+                        "c": "dele"
+                    },
+                },
                 "animations": {
                     /*
                         author      = https://lottiefiles.com/
