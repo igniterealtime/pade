@@ -534,7 +534,7 @@ function doConverse(server, username, password, anonUser)
     }
 }
 
-function openChat(from, name, groups, open)
+function openChat(from, name, groups, closed)
 {
     if (_inverse && _inverse.roster)
     {
@@ -560,7 +560,7 @@ function openChat(from, name, groups, open)
           });
         }
 
-        if (open) _inverse.api.chats.open(from);
+        if (!closed) _inverse.api.chats.open(from);
 
         if (_inverse.connection.injectMessage)
         {
