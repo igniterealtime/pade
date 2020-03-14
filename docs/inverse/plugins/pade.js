@@ -373,24 +373,24 @@
                         window.module = module; module = undefined;
                     }
 
-                    top.pade.connection = _converse.connection;
-                    top.addHandlers();
-                    top.publishUserLocation();
-                    top.setupUserPayment();
+                    parent.pade.connection = _converse.connection;
+                    parent.addHandlers();
+                    parent.publishUserLocation();
+                    parent.setupUserPayment();
 
                     const username = Strophe.getNodeFromJid(_converse.connection.jid);
                     const password = _converse.connection.pass;
 
                     if (username && password)
                     {
-                        if (top.setCredentials)    // save new credentials
+                        if (parent.setCredentials)    // save new credentials
                         {
-                            top.setCredentials({id: username, password: password});
+                            parent.setCredentials({id: username, password: password});
                         }
 
-                        if (top.webpush && top.webpush.registerServiceWorker) // register webpush service worker
+                        if (parent.webpush && parent.webpush.registerServiceWorker) // register webpush service worker
                         {
-                            top.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
+                            parent.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
                         }
                     }
                     else {
