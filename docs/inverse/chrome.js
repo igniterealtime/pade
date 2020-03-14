@@ -125,7 +125,7 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             getViews: function(filter) {
-                return [top.document.getElementById("inverse").contentWindow]
+                return [parent.document.getElementById("inverse").contentWindow]
             }
         },
 
@@ -214,13 +214,13 @@ if (!window.chrome || !window.chrome.extension)
             reload: function() {
                 if (localStorage["store.settings.server"])
                 {
-                    if (top.opener)
+                    if (parent.opener)
                     {
-                        top.opener.location.reload();
-                        top.close();
+                        parent.opener.location.reload();
+                        parent.close();
                     }
                     else {
-                        top.location.href = "/" + padeName + "/index.html";
+                        parent.location.href = "/" + padeName + "/index.html";
                     }
                 }
                 else {
@@ -251,7 +251,7 @@ if (!window.chrome || !window.chrome.extension)
             setBadgeText: function(data) {
               if (!data || !data.text) return;
 
-              var favicon = top.document.getElementById('favicon');
+              var favicon = parent.document.getElementById('favicon');
               var faviconSize = 16;
 
               var canvas = document.createElement('canvas');
