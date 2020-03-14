@@ -229,7 +229,7 @@ window.addEventListener("load", function()
         setDefaultSetting("server", location.host);
         setDefaultSetting("domain", location.hostname);
 
-        top.getCredentials(function(credential)
+        parent.getCredentials(function(credential)
         {
             var setupCreds = function(username, password)
             {
