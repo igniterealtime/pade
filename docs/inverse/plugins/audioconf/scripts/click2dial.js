@@ -207,7 +207,7 @@ var requirejs, require, define;
                 //Defaults. Do not set a default for map
                 //config to speed up normalize(), which
                 //will run faster if there is no default.
-                waitSeconds: 7,
+                waitSeconds: 30,
                 baseUrl: './',
                 paths: {},
                 bundles: {},
@@ -2172,6 +2172,8 @@ var requirejs, require, define, infoVoxbone;
       libjitsi: click2Dial.server_url + "/scripts/lib-jitsi-meet.min"
     }
   });
+
+console.log("WWWWWWWWWWWWWWWWWWWWWWWWW", click2Dial.server_url + "/scripts/lib-jitsi-meet.min.js");
 
   if (click2Dial.protocol == "sip")
   {
