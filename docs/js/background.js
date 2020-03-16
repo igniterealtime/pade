@@ -229,38 +229,73 @@ window.addEventListener("load", function()
         setDefaultSetting("server", location.host);
         setDefaultSetting("domain", location.hostname);
 
-        parent.getCredentials(function(credential)
+        if (getSetting("useWinSSO", false))
         {
-            var setupCreds = function(username, password)
+            var server = getSetting("server", null);
+
+            console.debug("browser mode - WinSSO", server);
+
+            if (server)
             {
-                removeSetting("password");  // don't store password
-
-                setDefaultSetting("username", username);
-                setDefaultSetting("displayname", username);
-                setupBrowserMode(username, password);
-            }
-
-            if (credential)
-            {
-                setupCreds(credential.id, credential.password);
-            }
-            else {
-
-                if (getSetting("useBasicAuth", false))
+                fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
                 {
-                    fetch("https://" + location.host + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+                    console.log("Strophe.SASLOFChat.WINSSO", accessToken);
+
+                    if (accessToken.indexOf(":") > -1 )
                     {
-                        setupCreds(token.username, token.password);
+                        var userPass = accessToken.split(":");
+                        setSetting("username", userPass[0]);
+                        setSetting("password", userPass[1]);
 
-                    }).catch(function (err) {
+                        pade.username = userPass[0];
+                        pade.password = userPass[1];
 
-                        console.error('access denied error', err);
-                        setupBrowserMode(); // anonymous mode
-                    });
+                        pade.jid = pade.username + "@" + pade.domain;
+                        pade.displayName = getSetting("displayname", pade.username);
 
-                } else setupBrowserMode(); // login screen
+                        setupBrowserMode(userPass[0], userPass[1]);
+                    }
+
+                }).catch(function (err) {
+                    console.error("Strophe.SASLOFChat.WINSSO", err);
+                });
             }
-        });
+        }
+        else {
+
+            parent.getCredentials(function(credential)
+            {
+                var setupCreds = function(username, password)
+                {
+                    removeSetting("password");  // don't store password
+
+                    setDefaultSetting("username", username);
+                    setDefaultSetting("displayname", username);
+                    setupBrowserMode(username, password);
+                }
+
+                if (credential)
+                {
+                    setupCreds(credential.id, credential.password);
+                }
+                else {
+
+                    if (getSetting("useBasicAuth", false))
+                    {
+                        fetch("https://" + location.host + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
+                        {
+                            setupCreds(token.username, token.password);
+
+                        }).catch(function (err) {
+
+                            console.error('access denied error', err);
+                            setupBrowserMode(); // anonymous mode
+                        });
+
+                    } else setupBrowserMode(); // login screen
+                }
+            });
+        }
 
         return;
     }
@@ -4020,6 +4055,7 @@ function doSetupStrophePlugins()
 
                         pade.jid = pade.username + "@" + pade.domain;
                         pade.displayName = getSetting("displayname", pade.username);
+                        setDefaultSetting("displayname", pade.displayName);
                     }
 
                     setTimeout(function() { setupSasl(accessToken); })
