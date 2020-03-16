@@ -24,7 +24,7 @@ To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/deta
 
 On your [Openfire] server, you may need the following plugins:
 1. [openfire-meetings](https://github.com/igniterealtime/pade/releases) plugins modified for Pade
-2. [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks/readme.html) [(download from here)](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks.jar) plugin. 
+2. [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks.jar) for shared bookmarks. 
 3. [fastpath](https://igniterealtime.org/projects/openfire/plugins/4.4.5/fastpath.jar) if you want to be an agent
 4. [httpfileupload](https://igniterealtime.org/projects/openfire/plugins/1.1.3/httpfileupload.jar) to transfer/share files
 5. [monitoring](https://igniterealtime.org/projects/openfire/plugins/2.0.0/monitoring.jar) to save and fetch chat history from openfire
