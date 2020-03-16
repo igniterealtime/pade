@@ -317,60 +317,6 @@ function doConverse(server, username, password, anonUser)
         }
     }
 
-    if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false) || getSetting("useSmartIdCard", false))
-    {
-        converse.env.Strophe.addConnectionPlugin('ofchatsasl',
-        {
-            init: function (connection)
-            {
-                converse.env.Strophe.SASLOFChat = function () { };
-                converse.env.Strophe.SASLOFChat.prototype = new converse.env.Strophe.SASLMechanism("OFCHAT", true, 2000);
-
-                converse.env.Strophe.SASLOFChat.test = function (connection)
-                {
-                    return getSetting("password", null) !== null;
-                };
-
-                converse.env.Strophe.SASLOFChat.prototype.onChallenge = function (connection)
-                {
-                    var token = getSetting("username", null) + ":" + getSetting("password", null);
-                    console.debug("Strophe.SASLOFChat", token);
-                    return token;
-                };
-
-                connection.mechanisms[converse.env.Strophe.SASLOFChat.prototype.name] = converse.env.Strophe.SASLOFChat;
-                console.debug("strophe plugin: ofchatsasl enabled");
-            }
-        });
-    }
-
-    if (getSetting("useClientCert", false))
-    {
-        console.debug("useClientCert enabled");
-
-        converse.env.Strophe.addConnectionPlugin('externalsasl',
-        {
-            init: function (connection)
-            {
-                converse.env.Strophe.SASLExternal = function() {};
-                converse.env.Strophe.SASLExternal.prototype = new converse.env.Strophe.SASLMechanism("EXTERNAL", true, 2000);
-
-                converse.env.Strophe.SASLExternal.test = function (connection)
-                {
-                    return connection.authcid !== null;
-                };
-
-                converse.env.Strophe.SASLExternal.prototype.onChallenge = function(connection)
-                {
-                    return connection.authcid === connection.authzid ? '' : connection.authzid;
-                };
-
-                connection.mechanisms[converse.env.Strophe.SASLExternal.prototype.name] = converse.env.Strophe.SASLExternal;
-                console.debug("strophe plugin: externalsasl enabled");
-            }
-        });
-    }
-
     if (server)
     {
         var domain = getSetting("domain", null);
@@ -443,7 +389,7 @@ function doConverse(server, username, password, anonUser)
             whitelistedPlugins.push("irma");
         }
 
-        if (!getSetting("enableSip", false))
+        if (!getSetting("enableSip", false) && getSetting("enableAudioConfWidget", false))
         {
            whitelistedPlugins.push("audioconf");
         }
@@ -510,7 +456,7 @@ function doConverse(server, username, password, anonUser)
           theme: 'concord',
           singleton: (autoJoinRooms && autoJoinRooms.length == 1),
           view_mode: viewMode,
-          visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", true), 'clear': true },
+          visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", true) && getSetting("enableAudioConfWidget", false), 'clear': true },
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
           webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
           websocket_url: connUrl,
@@ -527,6 +473,60 @@ function doConverse(server, username, password, anonUser)
                 _converse = this._converse;
                 window._inverse = _converse;
                 window.inverse = converse;
+
+                if (getSetting("useClientCert", false))
+                {
+                    console.debug("useClientCert enabled");
+
+                    converse.env.Strophe.addConnectionPlugin('externalsasl',
+                    {
+                        init: function (connection)
+                        {
+                            converse.env.Strophe.SASLExternal = function() {};
+                            converse.env.Strophe.SASLExternal.prototype = new converse.env.Strophe.SASLMechanism("EXTERNAL", true, 2000);
+
+                            converse.env.Strophe.SASLExternal.test = function (connection)
+                            {
+                                return connection.authcid !== null;
+                            };
+
+                            converse.env.Strophe.SASLExternal.prototype.onChallenge = function(connection)
+                            {
+                                return connection.authcid === connection.authzid ? '' : connection.authzid;
+                            };
+
+                            connection.mechanisms[converse.env.Strophe.SASLExternal.prototype.name] = converse.env.Strophe.SASLExternal;
+                            console.debug("strophe plugin: externalsasl enabled");
+                        }
+                    });
+                }
+
+                if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false) || getSetting("useSmartIdCard", false))
+                {
+                    converse.env.Strophe.addConnectionPlugin('ofchatsasl',
+                    {
+                        init: function (connection)
+                        {
+                            converse.env.Strophe.SASLOFChat = function () { };
+                            converse.env.Strophe.SASLOFChat.prototype = new converse.env.Strophe.SASLMechanism("OFCHAT", true, 2000);
+
+                            converse.env.Strophe.SASLOFChat.test = function (connection)
+                            {
+                                return getSetting("password", null) !== null;
+                            };
+
+                            converse.env.Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+                            {
+                                var token = getSetting("username", null) + ":" + getSetting("password", null);
+                                console.debug("Strophe.SASLOFChat", token);
+                                return token;
+                            };
+
+                            connection.mechanisms[converse.env.Strophe.SASLOFChat.prototype.name] = converse.env.Strophe.SASLOFChat;
+                            console.debug("strophe plugin: ofchatsasl enabled");
+                        }
+                    });
+                }
             }
 
         });
