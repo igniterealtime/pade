@@ -22,9 +22,16 @@ All the web applications run from within a browser extension in native applicati
 
 To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en).
 
-On your [Openfire] server, you will need at least the two [Openfire Meetings](https://github.com/igniterealtime/community-plugins/tree/master/ofmeet) [(download from here)](https://github.com/igniterealtime/community-plugins/raw/master/openfire_4_1_5/target/openfire/plugins/ofmeet.jar) plugins and the [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks/readme.html) [(download from here)](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks.jar) plugin. If you are running an [Openfire] server lower than 4.2, you will also need the websocket plugin.
-
-For the advanced telephony features with SIP and a REST API, you will need the [Openfire chat plugin](https://github.com/igniterealtime/openfire-chat/releases) and the [Openfire Switch plugin](https://github.com/igniterealtime/openfire-switch/releases).
+On your [Openfire] server, you may need the following plugins:
+1. [openfire-meetings](https://github.com/igniterealtime/pade/releases) plugins modified for Pade
+2. [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks/readme.html) [(download from here)](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks.jar) plugin. 
+3. [fastpath](https://igniterealtime.org/projects/openfire/plugins/4.4.5/fastpath.jar) if you want to be an agent
+4. [httpfileupload](https://igniterealtime.org/projects/openfire/plugins/1.1.3/httpfileupload.jar) to transfer/share files
+5. [monitoring](https://igniterealtime.org/projects/openfire/plugins/2.0.0/monitoring.jar) to save and fetch chat history from openfire
+6. [registration](https://igniterealtime.org/projects/openfire/plugins/1.7.2/registration.jar) to performs various actions whenever a new user account is created.
+7. [broadcast](https://igniterealtime.org/projects/openfire/plugins/1.9.2/broadcast.jar) to broadcasts messages to all users in the system or to specific groups
+8. [chat plugin](https://github.com/igniterealtime/openfire-chat/releases) for the advanced features which includes (SSO, REST API and others)
+9. [openfire switch plugin](https://github.com/igniterealtime/openfire-switch/releases) for SIP telephony using FreeSWITCH.
 
 -------
 [Openfire Meetings]:https://discourse.igniterealtime.org/c/openfire-plugins/openfire-meetings
