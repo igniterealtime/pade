@@ -66,6 +66,7 @@ var config = {
     enableLipSync: getSetting("enableLipSync", false),
     startWithAudioMuted: getSetting("startWithAudioMuted", false),
     startWithVideoMuted: getSetting("startWithVideoMuted", false),
+    startScreenSharing: getSetting("startScreenSharing", false),
 
     p2p: {
         enabled: true,
