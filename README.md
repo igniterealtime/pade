@@ -20,7 +20,7 @@ All the web applications run from within a browser extension in native applicati
 - Agent support for live conversations with web site visitors using chat, audio and video conferencing
 - Support hardware devices like MIDI touch-pads and HID USB touch devices like the Elgato stream deck
 
-To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en).
+To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en) or [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/ckfiipkgbinakolndmobaflkeljfhecl).
 
 On your [Openfire] server, you may need the following plugins:
 1. [openfire-meetings](https://github.com/igniterealtime/pade/releases) plugins modified for Pade
