@@ -41,7 +41,7 @@
             }
 
             _converse.api.settings.update({
-                visible_toolbar_buttons: {call: getSetting("showToolbarIcons", true)},
+                visible_toolbar_buttons: {call: getSetting("showToolbarIcons", true) && getSetting("enableAudioConfWidget", false)},
                 click2_dial: {
                     custom_button_color: "orange",
                     custom_frame_color: "black",
@@ -54,7 +54,7 @@
                     placement: "bottom-right",
                     rating: "false",
                     ringback: "true",
-                    server_url: chrome.pade ? "/" + chrome.padeName + "/inverse/plugins/audioconf" : "/inverse/plugins/audioconf",
+                    server_url: chrome.pade ? "/" + chrome.padeName + "/inverse/plugins/audioconf" : chrome.runtime.getURL("/inverse/plugins/audioconf"),
                     show_branding: "false",
                     show_frame: "true",
                     text: "Audio Conference",
@@ -66,12 +66,6 @@
             });
 
             window.click2Dial = _converse.api.settings.get("click2_dial");
-
-            const head  = document.getElementsByTagName('head')[0];
-            const script  = document.createElement('script');
-            script.src = click2Dial.server_url + '/scripts/click2dial.js';
-            script.async = false;
-            head.appendChild(script);
 
             _converse.api.listen.on('connected', function()
             {
@@ -106,6 +100,13 @@
                 }, function (error) {
                     console.warn("SIP profile not available. Ussing XMPP for audio-conf");
                 });
+
+                const head  = document.getElementsByTagName('head')[0];
+                const script  = document.createElement('script');
+                script.src = click2Dial.server_url + '/scripts/click2dial.js';
+                script.async = false;
+                head.appendChild(script);
+
             });
 
             window.addEventListener("beforeunload", function() {

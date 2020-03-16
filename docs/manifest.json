@@ -36,11 +36,11 @@
   "web_accessible_resources": [
     "*",   
     "options/*",
+    "inverse/*",    
     "js/*",     
     "ringtones/*",       
     "akowe/*",      
-    "jitsi-meet/*",     
-    "groupchat/*"
+    "jitsi-meet/*"
   ],
   
   "permissions": [
