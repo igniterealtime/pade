@@ -2173,8 +2173,6 @@ var requirejs, require, define, infoVoxbone;
     }
   });
 
-console.log("WWWWWWWWWWWWWWWWWWWWWWWWW", click2Dial.server_url + "/scripts/lib-jitsi-meet.min.js");
-
   if (click2Dial.protocol == "sip")
   {
       /* Begin loading voxbone and assets only if this script didnt execute before*/
