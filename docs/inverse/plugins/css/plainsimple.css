@@ -15,6 +15,10 @@
   width: 100%; 
 }
 
+#conversejs .chat-head-chatroom .chatroom-description a,
+#conversejs.converse-embedded .chat-head-chatroom .chatroom-description a {
+    color: #00b3f4;
+}
 #conversejs.converse-fullscreen .chatroom .box-flyout, #conversejs.converse-mobile .chatroom .box-flyout {
     background-color: #F8F8F8;
     border: 0.95px solid #F8F8F8;
