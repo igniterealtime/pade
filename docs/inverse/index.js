@@ -16,27 +16,25 @@ window.addEventListener("load", function()
 
     if (getSetting("clearCacheOnConnect", false))
     {
-        let savedSettings = {};
+        const savedSettings = [];
         console.debug("clearCacheOnConnect, old size", localStorage.length);
 
         for (var i = 0; i < localStorage.length; i++)
         {
             if (localStorage.key(i).startsWith("store.settings."))
             {
-                const key = localStorage.key(i);
-                savedSettings[key] = localStorage.getItem(localStorage.key(i));
-                console.debug("clearCacheOnConnect, saving", key, savedSettings[key]);
+                const entry = {key: localStorage.key(i), value: localStorage.getItem(localStorage.key(i))}
+                savedSettings.push(entry);
+                //console.debug("clearCacheOnConnect, saving", entry);
             }
         }
 
         localStorage.clear();
 
-        const keys = Object.getOwnPropertyNames(savedSettings);
-
-        for (var i=0; i<keys.length; i++)
+        for (var i=0; i<savedSettings.length; i++)
         {
-            localStorage[keys[i]] = savedSettings[keys[i]];
-            console.debug("clearCacheOnConnect, restoring", keys[i], savedSettings[keys[i]]);
+            localStorage[savedSettings[i].key] = savedSettings[i].value;
+            //console.debug("clearCacheOnConnect, restoring", savedSettings[i]);
         }
 
         console.debug("clearCacheOnConnect, new size", localStorage.length);
@@ -420,7 +418,7 @@ function doConverse(server, username, password, anonUser)
           auto_subscribe: getSetting("autoSubscribe", false),
           auto_xa: 0, //autoXa,
           bosh_service_url: getSetting("boshUri", "https://" + server + "/http-bind/"),
-          clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
+          clear_messages_on_reconnection: false,
           loglevel: getSetting("converseDebug", false) ? "debug" : "info",
           default_domain: domain,
           default_state: getSetting("converseOpenState", "online"),
