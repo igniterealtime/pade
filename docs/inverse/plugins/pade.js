@@ -83,7 +83,7 @@
                 var body = message.querySelector('body');
                 var history = message.querySelector('forwarded');
 
-                console.debug("pade plugin message", history, body, chatbox, message);
+                //console.debug("pade plugin message", history, body, chatbox, message);
 
                 if (!history && body && chatbox)
                 {
@@ -255,7 +255,7 @@
                 {
                     if (occupant.get("jid"))
                     {
-                        console.debug("chatbox.occupants added", occupant);
+                        //console.debug("chatbox.occupants added", occupant);
                         anonRoster[occupant.get("jid")] = occupant.get("nick");
                     }
 
@@ -264,7 +264,7 @@
 
                 view.model.occupants.on('remove', occupant =>
                 {
-                    console.debug("chatbox.occupants removed", occupant);
+                    //console.debug("chatbox.occupants removed", occupant);
                     delete anonRoster[occupant.get("jid")];
                 });
 
@@ -875,7 +875,7 @@
     var extendOccupant = function(occupant, view)
     {
         const element = document.getElementById(occupant.get('id'));
-        console.debug("extendOccupant", element);
+        //console.debug("extendOccupant", element);
 
         if (element)
         {
@@ -1089,8 +1089,11 @@
 
                     if (!alerted && getSetting("notifyRoomMentions", false))
                     {
-                        var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
-                        if (mentioned) notifyMe(body, fromNick, fromJid, chatbox);
+                        if (_converse.shouldNotifyOfMessage(message) && !document.hasFocus())
+                        {
+                            var mentioned = new RegExp(`\\b${myNick}\\b`).test(body);
+                            if (mentioned) notifyMe(body, fromNick, fromJid, chatbox);
+                        }
                     }
                 }
             }
