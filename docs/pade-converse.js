@@ -1,6 +1,6 @@
-var getCredentials = function()
+var getCredentials = function(callback)
 {
-    return null;
+    callback(null);
 }
 
 var ofmeet = (function(of)
