@@ -476,48 +476,53 @@
                             }
                         }
                     }
+                });
 
-                    _converse.api.waitUntil('roomsPanelRendered').then(() => {
-                        const section = document.body.querySelector('.controlbox-section.profile.d-flex');
-                        console.debug("extendControlBox", section);
-
-                        if (section)
-                        {
-                            const viewButton = __newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="Change view"></a>');
-                            section.appendChild(viewButton);
-
-                            viewButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-                                handleActiveConversations();
-
-                            }, false);
-
-
-                            if (getSetting("converseSimpleView", false))
-                            {
-                                handleActiveConversations();
-                            }
-
-                            const prefButton = __newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>');
-                            section.appendChild(prefButton);
-
-                            prefButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-                                const url = chrome.extension.getURL("options/index.html");
-                                bgWindow.openWebAppsWindow(url, null, 1300, 950);
-
-                            }, false);
-                        }
-                    });
+                _converse.api.waitUntil('roomsPanelRendered').then(() => {
+                    console.debug("waiting for roomsPanelRendered");
                 });
 
                 _converse.api.waitUntil('controlBoxInitialized').then(() => {
 
-                    if (!_converse.connection.pass)     // anonymous connection, use Pade settings for _converse.xmppstatus
+                    var addControlFeatures = function()
                     {
-                        setTimeout(function()
+                        const section = document.body.querySelector('.controlbox-section.profile.d-flex');
+                        console.debug("addControlFeatures", section);
+
+                        if (!section)
+                        {
+                            setTimeout(addControlFeatures, 1000);
+                            return;
+                        }
+
+                        const viewButton = __newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="Change view"></a>');
+                        section.appendChild(viewButton);
+
+                        viewButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            handleActiveConversations();
+
+                        }, false);
+
+
+                        if (getSetting("converseSimpleView", false))
+                        {
+                            handleActiveConversations();
+                        }
+
+                        const prefButton = __newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>');
+                        section.appendChild(prefButton);
+
+                        prefButton.addEventListener('click', function(evt)
+                        {
+                            evt.stopPropagation();
+                            const url = chrome.extension.getURL("options/index.html");
+                            bgWindow.openWebAppsWindow(url, null, 1300, 950);
+
+                        }, false);
+
+                        if (!_converse.connection.pass)     // anonymous connection, use Pade settings for _converse.xmppstatus
                         {
                             const nick = getSetting("displayname");
                             _converse.xmppstatus.set('fullname', nick);
@@ -530,14 +535,12 @@
 
                             _converse.xmppstatus.vcard.set('image', avatar[1]);
                             _converse.xmppstatus.vcard.set('image_type', 'image/png');
-                        }, 3000);
+                        }
+                        // add self for testing
+                        openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"])
                     }
 
-                    // add self for testing
-                    setTimeout(function() {
-                        openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"])
-                    }, 3000);
-
+                    addControlFeatures();
                 });
 
                 console.log("pade plugin is ready");
