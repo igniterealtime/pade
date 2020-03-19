@@ -1083,7 +1083,7 @@ var ofmeet = (function(of)
                 preload: !1,
                 useStyles: !0,
                 layout: "fixed",
-                host: "./index.html"
+                host: "inverse/index.html"
             },
             z = (0, f.default)("DEFAULTS"),
             A = (0, f.default)("OPTIONS"),

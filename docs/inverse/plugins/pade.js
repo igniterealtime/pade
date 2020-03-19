@@ -404,7 +404,7 @@
                     });
                 }
 
-                _converse.api.waitUntil('bookmarksInitialized').then((initPade) => {
+                if (_converse.api.waitUntil('bookmarksInitialized')) _converse.api.waitUntil('bookmarksInitialized').then((initPade) => {
                     var myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
 
                     if (!_converse.singleton)
@@ -476,9 +476,11 @@
                             }
                         }
                     }
+                }).catch(function (err) {
+                    console.error('waiting for bookmarksInitialized error', err);
                 });
 
-                _converse.api.waitUntil('controlBoxInitialized').then(() => {
+                if (_converse.api.waitUntil('controlBoxInitialized')) _converse.api.waitUntil('controlBoxInitialized').then(() => {
 
                     var addControlFeatures = function()
                     {
@@ -537,6 +539,9 @@
                     }
 
                     addControlFeatures();
+
+                }).catch(function (err) {
+                    console.error('waiting for controlBoxInitialized error', err);
                 });
 
                 console.log("pade plugin is ready");
