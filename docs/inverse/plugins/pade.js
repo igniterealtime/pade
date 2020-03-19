@@ -478,10 +478,6 @@
                     }
                 });
 
-                _converse.api.waitUntil('roomsPanelRendered').then(() => {
-                    console.debug("waiting for roomsPanelRendered");
-                });
-
                 _converse.api.waitUntil('controlBoxInitialized').then(() => {
 
                     var addControlFeatures = function()
