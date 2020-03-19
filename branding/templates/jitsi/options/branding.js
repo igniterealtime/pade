@@ -1,5 +1,5 @@
 var branding = {
-
+    name                    : {disable: false, value: "pade"},
     audioOnly               : {disable: true},
     autoReconnect           : {disable: true, value: true},
     blastDescription        : {disable: true},
@@ -95,9 +95,9 @@ var branding = {
     useClientCert           : {disable: true},
     useCredsMgrApi          : {disable: true, value: false},
     useJabra                : {disable: true},
-    useWebsocket            : {disable: true, value: false},
+    useWebsocket            : {disable: true, value: true},
     webApps                 : {disable: true},
-    wgNotifications         : {disable: true, value: true},
+    wgNotifications         : {disable: true, value: false},
     useStreamDeck           : {disable: true},
     useTotp                 : {disable: true},
     useUport                : {disable: true},
@@ -124,6 +124,9 @@ var branding = {
     autoJoinRooms           : {disable: false, value: "pade@conference.meet.jit.si\nlobby@conference.meet.jit.si"},
 
     ofmeetUrl               : {disable: true, value: "https://meet.jit.si/"},
+    boshUri                 : {disable: false, value: "https://meet.jit.si/http-bind"},
+    websocketUri            : {disable: false, value: "wss://meet.jit.si/xmpp-websocket"},
+
 
     enableRssFeeds          : {disable: false, value: false},
     showRssSummary          : {disable: false, value: false},
@@ -136,4 +139,5 @@ var branding = {
     beeFeedCheck            : {disable: true},
     beeKeeperPageSize       : {disable: true},
     restartDesc             : {disable: true},
+    enableIrma              : {disable: true},
 }
