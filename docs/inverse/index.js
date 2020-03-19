@@ -83,10 +83,7 @@ window.addEventListener("load", function()
         {
             if (credential)
             {
-                username = credential.id;
-                password = credential.password;
-
-                doConverse(server, username, password, anonUser);
+                doConverse(server, credential.id, credential.password, credential.anonymous || anonUser);
             }
             else {
                 doBasicAuth();

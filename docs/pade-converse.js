@@ -1,10 +1,28 @@
 var getCredentials = function(callback)
 {
-    callback(null);
+    callback({anonymous: true});
 }
 
 var ofmeet = (function(of)
 {
+    function loadJS(name)
+    {
+        var s1 = document.createElement('script');
+        s1.src = name;
+        s1.async = false;
+        document.body.appendChild(s1);
+    }
+
+    loadJS("inverse/chrome.js");
+    loadJS("options/branding.js");
+    loadJS("js/jquery.js");
+    loadJS("js/libs.bundle.js");
+    loadJS("js/strophe.vcard.js");
+    loadJS("js/moment.js");
+    loadJS("js/sip.js");
+    loadJS("js/etherlynk.js");
+    loadJS("js/background.js");
+
     let room;
 
     const fpDiv = document.querySelector("pade-converse");
@@ -1814,7 +1832,6 @@ var ofmeet = (function(of)
             return 0
         }
     }, function(t, e) {}]);
-
 
     return of;
 
