@@ -336,6 +336,7 @@ function doConverse(server, username, password, anonUser)
                 }
             }
         }
+
         var tempJids = getSetting("autoJoinPrivateChats", "").split("\n");
 
         if (tempJids.length > 0)
@@ -346,6 +347,15 @@ function doConverse(server, username, password, anonUser)
             {
                 if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i].indexOf("@") == -1 ? tempJids[i].trim() + "@" + domain : tempJids[i].trim());
             }
+        }
+
+        if (location.hash != "")
+        {
+            const pos1 = location.hash.indexOf("converse/room?jid=");
+            if (pos1 != -1) autoJoinRooms = [{jid: location.hash.substring(pos1 + 18), nick: displayname}];
+
+            const pos2 = location.hash.indexOf("converse/chat?jid=");
+            if (pos2 != -1) autoJoinPrivateChats = [location.hash.substring(pos2 + 18)];
         }
 
         var autoAway = getSetting("idleTimeout", 300);
