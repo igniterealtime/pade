@@ -1,3 +1,8 @@
+var getCredentials = function()
+{
+    return null;
+}
+
 var ofmeet = (function(of)
 {
     let room;
