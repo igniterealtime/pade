@@ -40,7 +40,7 @@
             Backbone = converse.env.Backbone;
             dayjs = converse.env.dayjs;
 
-            if (bgWindow && bgWindow.pade.chatWindow)
+            if (bgWindow && bgWindow.pade && bgWindow.pade.chatWindow)
             {
                 chrome.windows.onFocusChanged.addListener(function(win)
                 {
@@ -134,7 +134,7 @@
                     }
                     else {
 
-                        if (bgWindow)
+                        if (bgWindow && bgWindow.pade)
                         {
                             chrome.windows.update(bgWindow.pade.chatWindow.id, {drawAttention: true});
                             let count = 0;
@@ -281,7 +281,7 @@
                     }
                 }
 
-                if (bgWindow)
+                if (bgWindow && bgWindow.pade)
                 {
                     bgWindow.pade.autoJoinRooms[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
                 }
@@ -307,7 +307,7 @@
                 const activeDiv = document.getElementById("active-conversations");
                 console.debug("pade plugin chatBoxInsertedIntoDOM", jid, activeDiv);
 
-                if (bgWindow)
+                if (bgWindow && bgWindow.pade)
                 {
                     bgWindow.pade.autoJoinPrivateChats[view.model.get("jid")] = {jid: jid, type: view.model.get("type")};
                 }
@@ -454,7 +454,7 @@
                                 console.error("bookmarks error", error);
                             });
 
-                            if (bgWindow && bgWindow.pade.activeWorkgroup)
+                            if (bgWindow && bgWindow.pade && bgWindow.pade.activeWorkgroup)
                             {
                                 stanza = $iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"});
 
