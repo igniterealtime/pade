@@ -121,7 +121,7 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             getBackgroundPage: function() {
-                return top;
+                return parent;
             },
 
             getViews: function(filter) {
