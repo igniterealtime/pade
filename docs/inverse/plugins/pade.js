@@ -405,6 +405,7 @@
                 }
 
                 if (_converse.api.waitUntil('bookmarksInitialized')) _converse.api.waitUntil('bookmarksInitialized').then((initPade) => {
+
                     var myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
 
                     if (!_converse.singleton)
@@ -415,8 +416,7 @@
 
                         var bookmarkRoom = function bookmarkRoom(json)
                         {
-                            const room = _converse.chatboxes.get(json.jid);
-                            const bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
+                            let bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
 
                             if (!bookmark)
                             {
@@ -427,9 +427,8 @@
                                     'nick': myNick
                                 });
                             }
-
-                            if (room) room.save('bookmarked', true);
-                            return room;
+                            bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
+                            _converse.bookmarks.markRoomAsBookmarked(bookmark);
                         }
 
                         if (getSetting("enableBookmarks", true))

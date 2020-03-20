@@ -370,7 +370,7 @@ function doConverse(server, username, password, anonUser)
 
         if (getSetting("enableHomePage", false))
         {
-            viewMode = 'overlayed';
+            viewMode = getSetting("homePageView", "fullscreen");
             document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url)
         }
 

@@ -37129,7 +37129,7 @@ __p += '">\n    ';
 o.bookmarks.forEach(function (bm) { ;
 __p += '\n        <div class="list-item controlbox-padded room-item available-chatroom d-flex flex-row ';
  if (o.is_bookmark_hidden(bm)) { ;
-__p += ' hidden ';
+//__p += ' hidden ';
  } ;
 __p += '" data-room-jid="' +
 __e(bm.get('jid')) +

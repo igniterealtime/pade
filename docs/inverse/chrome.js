@@ -339,9 +339,12 @@ function getSetting(name, defaultValue)
 
     if (localStorage["store.settings." + name])
     {
-        value = JSON.parse(localStorage["store.settings." + name]);
-
-        if (name == "password") value = getPassword(value, localStorage);
+        try {
+            value = JSON.parse(localStorage["store.settings." + name]);
+            if (name == "password") value = getPassword(value, localStorage);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     return value;

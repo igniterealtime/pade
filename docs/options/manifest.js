@@ -1079,6 +1079,17 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "homePageView",
+            "type": "popupButton",
+            "label": i18n.get("Home Page View Mode"),
+            "options": [
+                {"text": "Full Screen", "value": "fullscreen"},
+                {"text": "Overlayed", "value": "overlayed"}
+            ]
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "converseOpenState",
             "type": "popupButton",
             "label": i18n.get("Window Open presence state"),
@@ -2176,6 +2187,9 @@ this.manifest = {
         [
             "boshUri",
             "websocketUri"
+        ],
+        [
+            "homePage"
         ]
     ]
 };
