@@ -1448,7 +1448,7 @@ function doDefaults(background)
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("homePage", "https://igniterealtime.github.io/pade/inverse/home.html");
+    setDefaultSetting("homePage", chrome.runtime.getURL("home/index.html"));
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("enableBookmarks", true);
