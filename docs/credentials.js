@@ -9,7 +9,7 @@ function getCredentials(callback)
 
         }).catch(function(err){
             console.error ("credential management api get error", err);
-            if (callback) callback();
+            if (callback) callback({anonymous: true});
         });
     }
     else {

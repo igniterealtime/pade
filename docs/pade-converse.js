@@ -1,8 +1,3 @@
-var getCredentials = function(callback)
-{
-    callback({anonymous: true});
-}
-
 var ofmeet = (function(of)
 {
     function loadJS(name)
@@ -22,6 +17,7 @@ var ofmeet = (function(of)
     loadJS("js/sip.js");
     loadJS("js/etherlynk.js");
     loadJS("js/background.js");
+    loadJS("credentials.js");
 
     let room;
 
