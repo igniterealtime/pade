@@ -55,7 +55,7 @@ if (!window.chrome || !window.chrome.extension)
                     {
                         data[query] = JSON.parse(window.localStorage[query]);
                     }
-                    console.debug("storage.local.get", data);
+                    //console.debug("storage.local.get", data);
                     if (callback) callback(data);
                 },
                 set : function(data, callback) {
@@ -66,15 +66,15 @@ if (!window.chrome || !window.chrome.extension)
                     {
                         window.localStorage[keys[0]] = JSON.stringify(data[keys[0]]);
                     }
-                    console.debug("storage.local.set", data);
+                    //console.debug("storage.local.set", data);
                     if (callback) callback(data);
                 },
                 clear : function() {
-                    console.debug("storage.local.clear");
+                    //console.debug("storage.local.clear");
                     localStorage.clear();
                 },
                 remove : function(key) {
-                    console.debug("storage.local.remove", key);
+                    //console.debug("storage.local.remove", key);
                     localStorage.removeItem(key);
                 }
             }
