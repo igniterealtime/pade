@@ -263,19 +263,21 @@ window.addEventListener("load", function()
         }
         else {
 
-            parent.getCredentials(function(credential)
+            var username = getSetting("username");
+            var password = getSetting("password");
+
+            parent.getCredentials(username, password, function(credential)
             {
                 var setupCreds = function(username, password)
                 {
-                    removeSetting("password");  // don't store password
-
                     setDefaultSetting("username", username);
                     setDefaultSetting("displayname", username);
                     setupBrowserMode(username, password);
                 }
 
-                if (credential)
+                if ((credential.id && credential.password) || credential.anonymous)
                 {
+                    if (!credential.err) removeSetting("password");  // don't store password if credentials ok
                     setupCreds(credential.id, credential.password);
                 }
                 else {

@@ -79,9 +79,9 @@ window.addEventListener("load", function()
         setDefaultSetting("server", location.host);
         setDefaultSetting("domain", location.hostname);
 
-        parent.getCredentials(function(credential)
+        parent.getCredentials(username, password, function(credential)
         {
-            if (credential)
+            if ((credential.id && credential.password) || credential.anonymous)
             {
                 doConverse(server, credential.id, credential.password, credential.anonymous || anonUser);
             }

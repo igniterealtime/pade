@@ -1,15 +1,15 @@
-function getCredentials(callback)
+function getCredentials(username, password, callback)
 {
     if (navigator.credentials)
     {
         navigator.credentials.get({password: true, federated: {providers: [ 'https://accounts.google.com' ]}, mediation: "silent"}).then(function(credential)
         {
             console.log("credential management api get", credential);
-            if (callback) callback(credential || {anonymous: true});
+            if (callback) callback(credential || {err: !credential, id: username, password: password, anonymous: !password});
 
         }).catch(function(err){
             console.error ("credential management api get error", err);
-            if (callback) callback({anonymous: true});
+            if (callback) callback({err: err, id: username, password: password, anonymous: !password});
         });
     }
     else {
