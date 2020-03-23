@@ -423,7 +423,7 @@ window.addEventListener("load", function()
 
                 for (var i=0; i<webApps.length; i++)
                 {
-                    openWebAppsWindow(webApps[i], "minimized");
+                    if (webApps[i] != "") openWebAppsWindow(webApps[i], "minimized");
                 }
             }
 
@@ -2402,27 +2402,62 @@ function fetchContacts(callback)
 
         $(resp).find('url').each(function()
         {
-            console.debug('ofmeet.bookmark.url.item', {name: $(this).attr("name"), url: $(this).attr("url")});
+            const name = $(this).attr("name");
+            const url = $(this).attr("url");
 
-            var ignore = $(this).attr("name") == "Video conferencing web client";
+            console.debug('ofmeet.bookmark.url.item', {name: name, url: url});
+
+            var ignore = name == "Video conferencing web client";
 
             if (ignore)
             {
                 if (!getSetting("ofmeetUrl", null))
                 {
-                    pade.ofmeetUrl = $(this).attr("url") + "/";
+                    pade.ofmeetUrl = url + "/";
                     setSetting("ofmeetUrl", pade.ofmeetUrl);
                 }
             }
+            else
 
-            if (callback && !ignore) callback(
+            if ($(this).attr("rss"))
             {
-                id: urlCount++,
-                type: "url",
-                url: $(this).attr("url"),
-                name: $(this).attr("name")
+                let rss = getSetting("rssAtomFeedUrls", "");
 
-            });
+                if (rss.indexOf(url) == -1)
+                {
+                    rss = rss + url + "\n";
+                    setSetting("rssAtomFeedUrls", rss);
+                    setSetting("enableRssFeeds", true);
+                }
+            }
+            else
+
+            if ($(this).attr("webapp"))
+            {
+                let webApps = getSetting("webApps", "");
+
+                if (webApps.indexOf(url) == -1)
+                {
+                    webApps = webApps + url + ",";
+                    setSetting("webApps", webApps);
+                    setSetting("enableWebApps", true);
+                }
+            }
+            else
+
+            if ($(this).attr("homepage"))
+            {
+                setSetting("homePage", url);
+            }
+            else {
+                if (callback) callback(
+                {
+                    id: urlCount++,
+                    type: "url",
+                    url: url,
+                    name: name
+                });
+            }
         });
 
     }, function (error) {
@@ -3164,10 +3199,13 @@ function addWebApps()
 
         for (var i=0; i<webApps.length; i++)
         {
-            chrome.contextMenus.create({parentId: "pade_applications", id: "pade_webapp_" + webApps[i], type: "normal", title: "App - " + webApps[i], contexts: ["browser_action"],  onclick: function(info)
+            if (webApps[i] != "")
             {
-                openWebAppsWindow(info.menuItemId.substring(11));
-            }});
+                chrome.contextMenus.create({parentId: "pade_applications", id: "pade_webapp_" + webApps[i], type: "normal", title: "App - " + webApps[i], contexts: ["browser_action"],  onclick: function(info)
+                {
+                    openWebAppsWindow(info.menuItemId.substring(11));
+                }});
+            }
         }
     }
 }
@@ -3178,8 +3216,11 @@ function removeWebApps()
 
     for (var i=0; i<webApps.length; i++)
     {
-        closeWebAppsWindow(webApps[i]);
-        chrome.contextMenus.remove("pade_webapp_" + webApps[i]);
+        if (webApps[i] != "")
+        {
+            closeWebAppsWindow(webApps[i]);
+            chrome.contextMenus.remove("pade_webapp_" + webApps[i]);
+        }
     }
 }
 

@@ -78718,7 +78718,7 @@ converse_core.plugins.add('converse-omemo', {
     });
     _converse.Device = converse_omemo_Backbone.Model.extend({
       defaults: {
-        'trusted': UNDECIDED,
+        'trusted': TRUSTED, // BAO
         'active': true
       },
 
