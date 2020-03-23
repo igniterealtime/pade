@@ -484,13 +484,14 @@
                     var addControlFeatures = function()
                     {
                         const section = document.body.querySelector('.controlbox-section.profile.d-flex');
-                        console.debug("addControlFeatures", section);
 
                         if (!section)
                         {
                             setTimeout(addControlFeatures, 1000);
                             return;
                         }
+
+                        console.debug("addControlFeatures", section);
 
                         const viewButton = __newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="Change view"></a>');
                         section.appendChild(viewButton);
