@@ -1447,8 +1447,9 @@ function doDefaults(background)
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseTheme", "concord");
+    setDefaultSetting("enableHomePage", true);
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("homePage", chrome.runtime.getURL("home/index.html"));
+    setDefaultSetting("homePage", chrome.runtime.getURL("help/index.html"));
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("enableBookmarks", true);
@@ -1471,8 +1472,7 @@ function doDefaults(background)
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("moderatorTools", true);
     setDefaultSetting("converseAutoCompleteFilter", "contains");
-    // CPU intensive
-    //setDefaultSetting("converseTimeAgo", true);
+    setDefaultSetting("converseTimeAgo", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com, messages.google.com");
