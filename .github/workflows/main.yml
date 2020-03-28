@@ -1,2 +1,60 @@
-- name: XMPP Notifier
-  uses: processone/xmpp-notifier@v1.0.0
+on:
+  # Specifies that we only want to trigger the following jobs on pushes and pull request creations for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  notif-script:
+    runs-on: ubuntu-latest
+    name: job that pushes repo news to xmpp
+    steps:
+      - name: push_info_step
+        id: push
+        uses: processone/xmpp-notifier@master
+        # Will only trigger when a push is made to the master branch
+        if: github.event_name == 'push'
+        with: # Set the secrets as inputs
+          # jid expects the bot's bare jid (user@domain)
+          jid: ${{ secrets.jid }}
+          password: ${{ secrets.password }}
+          server_host: ${{ secrets.server_host }}
+          # Intended recipient of the notification such as a room or single user. Bare JID expected.
+          recipient: ${{ secrets.recipient }}
+          # Port is optional. Defaults to 5222
+          server_port: ${{ secrets.server_port }}
+          message: |
+            ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }} with message:
+            ${{ join(github.event.commits.*.message) }}
+          # Boolean to indicate if correspondent should be treated as a room (true) or a single user (false)
+          recipient_is_room: true
+      - name: pr_open_info_step
+        id: pull_request_open
+        uses: processone/xmpp-notifier@master
+        # Will only get triggered when a pull request to master is created
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        with: # Set the secrets as inputs
+          jid: ${{ secrets.jid }}
+          password: ${{ secrets.password }}
+          server_host: ${{ secrets.server_host }}
+          recipient: ${{ secrets.recipient }}
+          message: |
+            ${{ github.actor }} opened a PR : ${{ github.event.pull_request.html_url }} with message :
+            ${{ github.event.pull_request.title }}
+          recipient_is_room: true
+      - name: pr_edit_info_step
+        id: pull_request_edit
+        uses: processone/xmpp-notifier@master
+        # Will only get triggered when a pull request to master is created
+        if: github.event_name == 'pull_request' && github.event.action == 'edited'
+        with: # Set the secrets as inputs
+          jid: ${{ secrets.jid }}
+          password: ${{ secrets.password }}
+          server_host: ${{ secrets.server_host }}
+          recipient: ${{ secrets.recipient }}
+          message: |
+            ${{ github.actor }} edited the following PR : ${{ github.event.pull_request.html_url }} with message :
+            ${{ github.event.pull_request.title }}
+          recipient_is_room: true
