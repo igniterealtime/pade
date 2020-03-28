@@ -1,0 +1,2 @@
+- name: XMPP Notifier
+  uses: processone/xmpp-notifier@v1.0.0
