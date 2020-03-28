@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: push_info_step
         id: push
-        uses: igniterealtime/pade@master
+        uses: processone/xmpp-notifier@master
         # Will only trigger when a push is made to the master branch
         if: github.event_name == 'push'
         with: # Set the secrets as inputs
@@ -32,7 +32,7 @@ jobs:
           recipient_is_room: true
       - name: pr_open_info_step
         id: pull_request_open
-        uses: igniterealtime/pade@master
+        uses: processone/xmpp-notifier@master
         # Will only get triggered when a pull request to master is created
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         with: # Set the secrets as inputs
@@ -46,7 +46,7 @@ jobs:
           recipient_is_room: true
       - name: pr_edit_info_step
         id: pull_request_edit
-        uses: igniterealtime/pade@master
+        uses: processone/xmpp-notifier@master
         # Will only get triggered when a pull request to master is created
         if: github.event_name == 'pull_request' && github.event.action == 'edited'
         with: # Set the secrets as inputs
