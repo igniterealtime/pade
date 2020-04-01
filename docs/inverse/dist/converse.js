@@ -67122,31 +67122,6 @@ converse_core.plugins.add('converse-chatview', {
         }
       },
 
-      editLaterMessage() {
-        let message;
-        let idx = this.model.messages.findLastIndex('correcting');
-
-        if (idx >= 0) {
-          this.model.messages.at(idx).save('correcting', false);
-
-          while (idx < this.model.messages.length - 1) {
-            idx += 1;
-            const candidate = this.model.messages.at(idx);
-
-            if (candidate.get('editable')) {
-              message = candidate;
-              break;
-            }
-          }
-        }
-
-        if (message) {
-          this.insertIntoTextArea(message.get('message'), true, true);
-          message.save('correcting', true);
-        } else {
-          this.insertIntoTextArea('', true, false);
-        }
-      },
 
       editEarlierMessage() {
         let message;
@@ -67169,10 +67144,37 @@ converse_core.plugins.add('converse-chatview', {
         message = message || this.getOwnMessages().reverse().find(m => m.get('editable'));
 
         if (message) {
-          this.insertIntoTextArea(message.get('message'), true, true);
+          this.insertIntoTextArea(converse_chatview_u.prefixMentions(message), true, true);
           message.save('correcting', true);
         }
       },
+
+      editLaterMessage() {
+        let message;
+        let idx = this.model.messages.findLastIndex('correcting');
+
+        if (idx >= 0) {
+          this.model.messages.at(idx).save('correcting', false);
+
+          while (idx < this.model.messages.length - 1) {
+            idx += 1;
+            const candidate = this.model.messages.at(idx);
+
+            if (candidate.get('editable')) {
+              message = candidate;
+              break;
+            }
+          }
+        }
+
+        if (message) {
+          this.insertIntoTextArea(converse_chatview_u.prefixMentions(message), true, true);
+          message.save('correcting', true);
+        } else {
+          this.insertIntoTextArea('', true, false);
+        }
+      },
+
 
       inputChanged(ev) {
         const height = ev.target.scrollHeight + 'px';
