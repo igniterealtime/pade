@@ -64,7 +64,10 @@
             }
 
             _converse.api.settings.update({
-              'show_client_info': false
+                rai_muc_service: "conference." + _converse.domain,
+                rai_notification: true,
+                rai_notification_label: "Room Activity Indicator",
+                show_client_info: false
             });
 
             _converse.on('messageAdded', function (data) {
@@ -542,6 +545,12 @@
 
                 }).catch(function (err) {
                     console.error('waiting for controlBoxInitialized error', err);
+                });
+
+                setupRoomActivityIndicators(function(supported)
+                {
+                    console.debug("rai discover", supported);
+                    if (supported) listenForRoomActivityIndicators();
                 });
 
                 console.log("pade plugin is ready");
@@ -1158,5 +1167,48 @@
                 }
             });
         }
+    }
+
+    var setupRoomActivityIndicators = function(callback)
+    {
+        try {
+            const id = Math.random().toString(36).substr(2,9);
+            _converse.connection.send(converse.env.$pres({to: _converse.api.settings.get("rai_muc_service"), id: id}).c('rai', {'xmlns': "xmpp:prosody.im/protocol/rai"}));
+
+            if (callback) callback(true);
+        } catch (e) {
+            console.error("setupRoomActivityIndicators", e);
+            if (callback) callback(false);
+        }
+    }
+
+    var listenForRoomActivityIndicators = function()
+    {
+        console.debug("listenForRoomActivityIndicators");
+
+        _converse.connection.addHandler(function(message)
+        {
+            console.debug("listenForRoomActivityIndicators - addHandler", message);
+
+            message.querySelectorAll('activity').forEach(function(activity)
+            {
+                if (activity) {
+                    const jid = activity.innerHTML;
+                    _converse.api.trigger('chatRoomActivityIndicators', jid);
+
+                    if (_converse.api.settings.get("rai_notification"))
+                    {
+                        bgWindow.notifyText(_converse.api.settings.get("rai_notification_label"), jid, jid, [{title: "Show Conversation?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+                        {
+                            if (buttonIndex == 0) _converse.api.rooms.open(jid);
+
+                        }, jid);
+                    }
+                }
+            });
+
+            return true;
+
+        }, "xmpp:prosody.im/protocol/rai", 'message');
     }
 }));
