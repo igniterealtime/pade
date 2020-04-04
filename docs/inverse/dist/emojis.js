@@ -111,6 +111,31 @@
                         "url": "./dist/custom_emojis/dele/dele_winks.webp",
                         "c": "dele"
                     },
+                    ":dele_says_amen:": {
+                        "sn": ":dele_says_amen:",
+                        "url": "./dist/custom_emojis/dele/dele_says_amen.webp",
+                        "c": "dele"
+                    },
+                    ":dele_says_thank_you:": {
+                        "sn": ":dele_says_thank_you:",
+                        "url": "./dist/custom_emojis/dele/dele_says_thank_you.webp",
+                        "c": "dele"
+                    },
+                    ":dele_celebrates:": {
+                        "sn": ":dele_celebrates:",
+                        "url": "./dist/custom_emojis/dele/dele_celebrates.webp",
+                        "c": "dele"
+                    },
+                    ":dele_says_really:": {
+                        "sn": ":dele_says_really:",
+                        "url": "./dist/custom_emojis/dele/dele_says_really.webp",
+                        "c": "dele"
+                    },
+                    ":dele_says_duh:": {
+                        "sn": ":dele_says_duh:",
+                        "url": "./dist/custom_emojis/dele/dele_says_duh.webp",
+                        "c": "dele"
+                    },
                 },
                 "animations": {
                     /*
