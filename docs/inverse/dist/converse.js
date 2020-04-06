@@ -65995,7 +65995,6 @@ converse_core.plugins.add('converse-chatview', {
 
     _converse.api.settings.update({
       'auto_focus': true,
-      'smooth_scroll': true,
       'message_limit': 0,
       'show_send_button': false,
       'show_retraction_warning': true,
@@ -67475,9 +67474,6 @@ converse_core.plugins.add('converse-chatview', {
         }
 
         if (converse_chatview_u.isVisible(this.content) && !this.model.get('scrolled')) {
-          if (_converse.api.settings.get("smooth_scroll")) {
-            this.content.style.scrollBehavior = "smooth"; // BAO
-          }
           this.content.scrollTop = this.content.scrollHeight;
         }
       },

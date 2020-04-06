@@ -1150,7 +1150,7 @@
 
     var renderMedia = function (id, eleName, urls, check)
     {
-        urls.sort(sortUrls);
+        urls = urls.sort(sortUrls);
 
         var count = document.getElementById(id + "-" + eleName + "-count");
         var detail = document.getElementById(id + "-" + eleName + "-details");
@@ -1197,7 +1197,7 @@
 
     var renderMeeting = function (id, meetings)
     {
-        meetings.sort(sortUrls);
+        meetings = meetings.sort(sortUrls);
         var summary = document.getElementById(id + "-meeting-recordings");
 
         if (summary && meetings.length > 0)

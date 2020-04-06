@@ -365,13 +365,13 @@ function doConverse(server, username, password, anonUser)
             connUrl = getSetting("websocketUri", "wss://" + server + "/ws/");
         }
 
-        var whitelistedPlugins = ["paderoot", "search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
+        var whitelistedPlugins = ["paderoot", "search", "muc-directory", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
         var viewMode = chrome.pade ? 'fullscreen' : (window.pade ? 'overlayed' : 'fullscreen');
 
         if (getSetting("enableHomePage", false))
         {
             viewMode = getSetting("homePageView", "fullscreen");
-            document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url)
+            document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url);
         }
 
         if (getSetting("enableInfoPanel", false))
@@ -475,8 +475,7 @@ function doConverse(server, username, password, anonUser)
             dependencies: [],
 
             initialize: function () {
-                _converse = this._converse;
-                window._inverse = _converse;
+                window._inverse = this._converse;
                 window.inverse = converse;
 
                 if (getSetting("useClientCert", false))

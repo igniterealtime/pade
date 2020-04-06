@@ -16265,6 +16265,7 @@ body.converse-fullscreen {
 #conversejs .chatbox .chat-content {
     padding: 1em 0;
     height: 100%;
+    scroll-behavior: smooth; /* BAO */
     font-size: var(--message-font-size);
     color: var(--text-color);
     overflow-y: auto;
