@@ -365,7 +365,7 @@ function doConverse(server, username, password, anonUser)
             connUrl = getSetting("websocketUri", "wss://" + server + "/ws/");
         }
 
-        var whitelistedPlugins = ["paderoot", "search", "muc-directory", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
+        var whitelistedPlugins = ["paderoot", "search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
         var viewMode = chrome.pade ? 'fullscreen' : (window.pade ? 'overlayed' : 'fullscreen');
 
         if (getSetting("enableHomePage", false))
@@ -402,6 +402,11 @@ function doConverse(server, username, password, anonUser)
         if (chrome.pade && getSetting("wgEnabled", false))
         {
             whitelistedPlugins.push("fastpath");
+        }
+
+        if (getSetting("enableMucDirectory", false))
+        {
+            whitelistedPlugins.push("muc-directory");
         }
 
         var config =

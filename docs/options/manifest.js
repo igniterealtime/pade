@@ -1296,6 +1296,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Group Chat"),
+            "name": "enableMucDirectory",
+            "type": "checkbox",
+            "label": i18n.get("Enable MUC Room Directory")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "alwaysShowOccupants",
             "type": "checkbox",
             "label": i18n.get("Always show occupants")
