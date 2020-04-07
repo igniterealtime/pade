@@ -67474,7 +67474,12 @@ converse_core.plugins.add('converse-chatview', {
         }
 
         if (converse_chatview_u.isVisible(this.content) && !this.model.get('scrolled')) {
-          this.content.scrollTop = this.content.scrollHeight;
+            if ((this.content.scrollTop === 0 || this.content.scrollTop < this.content.scrollHeight/2)) {
+                converse_chatview_u.removeClass('smooth-scroll', this.content);
+            } else if (_converse.api.settings.get('animate')) {
+                converse_chatview_u.addClass('smooth-scroll', this.content);
+            }
+            this.content.scrollTop = this.content.scrollHeight;
         }
       },
 

@@ -15101,6 +15101,10 @@ body.converse-fullscreen {
     padding: 0!important
 }
 
+#conversejs .smooth-scroll {
+    scroll-behavior: smooth !important;
+}
+
 #conversejs.converse-overlayed>.row {
     flex-direction: row-reverse
 }
