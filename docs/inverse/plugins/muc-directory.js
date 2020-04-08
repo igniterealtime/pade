@@ -7,8 +7,8 @@
 }(this, function (converse) {
     var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var Strophe, $iq;
-    var DirectoryDialog = null;
-    var directoryDialog = null;
+    var MUCDirectoryDialog = null;
+    var mucDirectoryDialog = null;
     var mucJids = {}, nextItem = 0;
 
     converse.plugins.add("muc-directory", {
@@ -20,7 +20,7 @@
             Strophe = converse.env.Strophe;
             $iq = converse.env.$iq;
 
-            DirectoryDialog = _converse.BootstrapModal.extend({
+            MUCDirectoryDialog = _converse.BootstrapModal.extend({
                 initialize() {
                     _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
                     this.model.on('change', this.render, this);
@@ -93,11 +93,11 @@
                     {
                         evt.stopPropagation();
 
-                        if (!directoryDialog)
+                        if (!mucDirectoryDialog)
                         {
-                            directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                            mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
                         }
-                        directoryDialog.show();
+                        mucDirectoryDialog.show();
 
                     }, false);
 
@@ -119,12 +119,12 @@
 
                     if (command === "dir")
                     {
-                        if (!directoryDialog)
+                        if (!mucDirectoryDialog)
                         {
-                            directoryDialog = new DirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                            mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
                         }
 
-                        directoryDialog.show();
+                        mucDirectoryDialog.show();
                         return true;
                     }
                     else
@@ -247,7 +247,7 @@
 
             if (jid)
             {
-                directoryDialog.modal.hide();
+                mucDirectoryDialog.modal.hide();
                 _converse.api.rooms.open(jid);
             }
 

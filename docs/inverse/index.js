@@ -79,16 +79,22 @@ window.addEventListener("load", function()
         setDefaultSetting("server", location.host);
         setDefaultSetting("domain", location.hostname);
 
-        parent.getCredentials(username, password, function(credential)
+        if (typeof parent.getCredentials == 'function')
         {
-            if ((credential.id && credential.password) || credential.anonymous)
+            parent.getCredentials(username, password, function(credential)
             {
-                doConverse(server, credential.id, credential.password, credential.anonymous || anonUser);
-            }
-            else {
-                doBasicAuth();
-            }
-        });
+                if ((credential.id && credential.password) || credential.anonymous)
+                {
+                    doConverse(server, credential.id, credential.password, credential.anonymous && anonUser);
+                }
+                else {
+                    doBasicAuth();
+                }
+            });
+        } else {
+            anonUser = true;
+            doBasicAuth();
+        }
     }
     else {
         doBasicAuth();
@@ -425,7 +431,7 @@ function doConverse(server, username, password, anonUser)
           auto_join_private_chats: autoJoinPrivateChats,
           auto_join_rooms: autoJoinRooms,
           auto_list_rooms: getSetting("autoListRooms", true),
-          auto_login: username != null || anonUser,
+          auto_login: username || anonUser,
           auto_reconnect: getSetting("autoReconnectConverse", true),
           auto_subscribe: getSetting("autoSubscribe", false),
           auto_xa: 0, //autoXa,
@@ -439,7 +445,7 @@ function doConverse(server, username, password, anonUser)
           hide_offline_users: getSetting("hideOfflineUsers", false),
           hide_open_bookmarks: true,
           i18n: getSetting("language", "en"),
-          jid : anonUser ? domain : username + "@" + domain,
+          jid : anonUser ? domain : (username ? username + "@" + domain : undefined),
           locked_domain: domain,
           message_archiving: "always",
           message_carbons: getSetting("messageCarbons", true),
@@ -453,7 +459,7 @@ function doConverse(server, username, password, anonUser)
           nickname: displayname,
           notification_icon: '../image.png',
           notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
-          password: anonUser ? null : password,
+          password: anonUser ? undefined : password,
           play_sounds: getSetting("conversePlaySounds", false),
           priority: 0,
           roster_groups: getSetting("rosterGroups", false),
