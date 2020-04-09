@@ -43,11 +43,26 @@ var interfaceConfig = {
      * jwt.
      */
     TOOLBAR_BUTTONS: [
-        'microphone', 'camera', /*'closedcaptions'*/, 'desktop', 'fullscreen',
-        'fodeviceselection', 'hangup', 'profile', 'info', 'chat', 'recording',
-        'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
-        'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview'/*, 'localrecording'*/
+        "camera",
+        "chat",
+        "desktop",
+        "etherpad",
+        "feedback",
+        "fodeviceselection",
+        "fullscreen",
+        "hangup",
+        "info",
+        "invite",
+        "microphone",
+        "profile",
+        "raisehand",
+        "settings",
+        "sharedvideo",
+        "shortcuts",
+        "stats",
+        "videoquality",
+        "tileview",
+        "mute-everyone"
     ],
 
     SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar' ],

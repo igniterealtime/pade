@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+		 version="3.1">
+		 
+	<servlet>
+		<servlet-name>proxy</servlet-name>
+		<servlet-class>org.jivesoftware.openfire.plugin.ofmeet.HttpProxyServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>proxy</servlet-name>
+		<url-pattern>/proxy</url-pattern>
+	</servlet-mapping>			 
+		 
+	<servlet>
+		<servlet-name>config</servlet-name>
+		<servlet-class>org.jivesoftware.openfire.plugin.ofmeet.ConfigServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>config</servlet-name>
+		<url-pattern>/config.js</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>interfaceConfig</servlet-name>
+		<servlet-class>org.jivesoftware.openfire.plugin.ofmeet.InterfaceConfigServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>interfaceConfig</servlet-name>
+		<url-pattern>/interface_config.js</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>WatermarkFilter</filter-name>
+		<filter-class>org.jivesoftware.openfire.plugin.ofmeet.WatermarkFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>WatermarkFilter</filter-name>
+		<url-pattern>/images/watermark.png</url-pattern>
+		<url-pattern>/images/rightwatermark.png</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+	<filter>
+		<filter-name>JitsiMeetRedirectFilter</filter-name>
+		<filter-class>org.jivesoftware.openfire.plugin.ofmeet.JitsiMeetRedirectFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>JitsiMeetRedirectFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

@@ -1,11 +1,7 @@
 var __domain = getSetting("domain");
 var __server = getSetting("server");
 var connUrl = getSetting("boshUri", "https://" + __server + "/http-bind/");
-
-if (getSetting("useWebsocket", true))
-{
-    connUrl = getSetting("websocketUri", "wss://" + __server + "/ws/");
-}
+var wssConnUrl = getSetting("websocketUri", "wss://" + __server + "/ws/");
 
 var __baseUrl = getSetting("ofmeetUrl", "https://meet.jit.si");
 
@@ -13,7 +9,8 @@ if (__baseUrl.indexOf("https://" + __server) == -1)
 {
     __server = __baseUrl.split("/")[2];
     __domain = __server.split(":")[0];
-    connUrl = "https://" + __server + "/http-bind";
+    connUrl = "https://" + __server + (__server == "meet.jit.si" ? "/http-bind" : "/http-bind/");
+    wssConnUrl = "wss://" + __server + (__server == "meet.jit.si" ? "/xmpp-websocket" : "/ws/");
 }
 
 var __displayname = getSetting("displayname");
@@ -43,6 +40,7 @@ var config = {
         }
     },
     bosh: connUrl,
+    websocket: wssConnUrl,
     openBridgeChannel: "datachannel",
     enforcedBridge: "jitsi-videobridge." + __domain,
     clientNode: "http://igniterealtime.org/pade/",

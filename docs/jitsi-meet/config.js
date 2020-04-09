@@ -30,6 +30,9 @@ var config = {
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     bosh: '//jitsi-meet.example.com/http-bind',
 
+    // Websocket URL
+    // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
+
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsimeet',
 
@@ -72,6 +75,18 @@ var config = {
 
     // Disable measuring of audio levels.
     // disableAudioLevels: false,
+    // audioLevelsInterval: 200,
+
+    // Enabling this will run the lib-jitsi-meet no audio detection module which
+    // will notify the user if the current selected microphone has no audio
+    // input and will suggest another valid device if one is present.
+    enableNoAudioDetection: true,
+
+    // Enabling this will run the lib-jitsi-meet noise detection module which will
+    // notify the user if there is noise, other than voice, coming from the current
+    // selected microphone. The purpose it to let the user know that the input could
+    // be potentially unpleasant for other meeting participants.
+    enableNoisyMicDetection: true,
 
     // Start the conference in audio only mode (no video is being received nor
     // sent).
@@ -95,12 +110,11 @@ var config = {
 
     // w3c spec-compliant video constraints to use for video capture. Currently
     // used by browsers that return true from lib-jitsi-meet's
-    // util#browser#usesNewGumFlow. The constraints are independency from
-    // this config's resolution value. Defaults to requesting an ideal aspect
-    // ratio of 16:9 with an ideal resolution of 720.
+    // util#browser#usesNewGumFlow. The constraints are independent from
+    // this config's resolution value. Defaults to requesting an ideal
+    // resolution of 720p.
     // constraints: {
     //     video: {
-    //         aspectRatio: 16 / 9,
     //         height: {
     //             ideal: 720,
     //             max: 720,
@@ -287,16 +301,19 @@ var config = {
     // estimation tests.
     // gatherStats: false,
 
+    // The interval at which PeerConnection.getStats() is called. Defaults to 10000
+    // pcStatsInterval: 10000,
+
     // To enable sending statistics to callstats.io you must provide the
     // Application ID and Secret.
     // callStatsID: '',
     // callStatsSecret: '',
 
     // enables sending participants display name to callstats
-    // enableDisplayNameInStats: false
+    // enableDisplayNameInStats: false,
 
     // enables sending participants email if available to callstats and other analytics
-    // enableEmailInStats: false
+    // enableEmailInStats: false,
 
     // Privacy
     //
@@ -324,9 +341,9 @@ var config = {
 
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' },
-            { urls: 'stun:stun2.l.google.com:19302' }
+
+            // { urls: 'stun:jitsi-meet.example.com:443' },
+            { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
         ],
 
         // Sets the ICE transport policy for the p2p connection. At the time
@@ -370,7 +387,24 @@ var config = {
         // shard: "shard1",
         // region: "europe",
         // userRegion: "asia"
-    }
+    },
+
+    // Decides whether the start/stop recording audio notifications should play on record.
+    // disableRecordAudioNotification: false,
+
+    // Information for the chrome extension banner
+    // chromeExtensionBanner: {
+    //     // The chrome extension to be installed address
+    //     url: 'https://chrome.google.com/webstore/detail/jitsi-meetings/kglhbbefdnlheedjiejgomgmfplipfeb',
+
+    //     // Extensions info which allows checking if they are installed or not
+    //     chromeExtensionsInfo: [
+    //         {
+    //             id: 'kglhbbefdnlheedjiejgomgmfplipfeb',
+    //             path: 'jitsi-logo-48x48.png'
+    //         }
+    //     ]
+    // },
 
     // Local Recording
     //
@@ -388,7 +422,7 @@ var config = {
     //     format: 'flac'
     //
 
-    // }
+    // },
 
     // Options related to end-to-end (participant to participant) ping.
     // e2eping: {
@@ -400,22 +434,22 @@ var config = {
     //   // with the measured RTT will be sent. Defaults to 60000, set
     //   // to <= 0 to disable.
     //   analyticsInterval: 60000,
-    //   }
+    //   },
 
     // If set, will attempt to use the provided video input device label when
     // triggering a screenshare, instead of proceeding through the normal flow
     // for obtaining a desktop stream.
     // NOTE: This option is experimental and is currently intended for internal
     // use only.
-    // _desktopSharingSourceDevice: 'sample-id-or-label'
+    // _desktopSharingSourceDevice: 'sample-id-or-label',
 
     // If true, any checks to handoff to another application will be prevented
     // and instead the app will continue to display in the current browser.
-    // disableDeepLinking: false
+    // disableDeepLinking: false,
 
     // A property to disable the right click context menu for localVideo
     // the menu has option to flip the locally seen video for local presentations
-    // disableLocalVideoFlip: false
+    // disableLocalVideoFlip: false,
 
     // Deployment specific URLs.
     // deploymentUrls: {
@@ -425,7 +459,16 @@ var config = {
     //    // If specified a 'Download our apps' button will be displayed in the overflow menu with a link
     //    // to the specified URL for an app download page.
     //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
-    // }
+    // },
+
+    // Options related to the remote participant menu.
+    // remoteVideoMenu: {
+    //     // If set to true the 'Kick out' button will be disabled.
+    //     disableKick: true
+    // },
+
+    // If set to true all muting operations of remote participants will be disabled.
+    // disableRemoteMute: true,
 
     // List of undocumented settings used in jitsi-meet
     /**
@@ -477,6 +520,12 @@ var config = {
      startBitrate
      */
 
+
+    // Allow all above example options to include a trailing comma and
+    // prevent fear when commenting out the last value.
+    makeJsonParserHappy: 'even if last key had a trailing comma'
+
+    // no configuration value should follow this line.
 };
 
 /* eslint-enable no-unused-vars, no-var */
