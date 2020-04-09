@@ -65207,6 +65207,14 @@ converse_core.plugins.add('converse-message-view', {
       }
     }
 
+    function onEscapeHTMLDuringXSSFilter(html) {
+        if (html.startsWith('>')) {
+            return '>' + html.substring(1).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        } else {
+            return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+    }
+
     _converse.api.settings.update({
       'show_images_inline': true,
       'allow_message_retraction': 'all'
@@ -65362,10 +65370,7 @@ converse_core.plugins.add('converse-message-view', {
           'Synchronous': true
         });
         text = this.model.isMeCommand() ? text.substring(4) : text;
-        text = xss_default.a.filterXSS(text, {
-          'whiteList': {},
-          'onTag': onTagFoundDuringXSSFilter
-        });
+        text = xss_default.a.filterXSS(text, {'whiteList': {}, 'onTag': onTagFoundDuringXSSFilter, 'escapeHtml': onEscapeHTMLDuringXSSFilter});
         text = converse_message_view_u.geoUriToHttp(text, _converse.geouri_replacement);
         text = converse_message_view_u.addMentionsMarkup(text, this.model.get('references'), this.model.collection.chatbox);
         text = converse_message_view_u.addHyperlinks(text);
