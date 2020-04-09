@@ -351,8 +351,7 @@ function doConverse(server, username, password, anonUser)
                 if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i].indexOf("@") == -1 ? tempJids[i].trim() + "@" + domain : tempJids[i].trim());
             }
         }
-
-        if (location.hash != "")
+        if (location.hash != "" && anonUser)
         {
             const pos1 = location.hash.indexOf("converse/room?jid=");
             if (pos1 != -1) autoJoinRooms = [{jid: location.hash.substring(pos1 + 18), nick: displayname}];
@@ -374,7 +373,7 @@ function doConverse(server, username, password, anonUser)
         var whitelistedPlugins = ["paderoot", "search", "directory", "invite", "webmeet", "pade", "vmsg", "payments", "gateway"];
         var viewMode = chrome.pade ? 'fullscreen' : (window.pade ? 'overlayed' : 'fullscreen');
 
-        if (getSetting("enableHomePage", false))
+        if (getSetting("enableHomePage", false) && !location.hash)
         {
             viewMode = getSetting("homePageView", "fullscreen");
             document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url);
