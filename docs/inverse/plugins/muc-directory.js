@@ -5,7 +5,6 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var Strophe, $iq;
     var MUCDirectoryDialog = null;
     var mucDirectoryDialog = null;
