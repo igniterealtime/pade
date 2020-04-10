@@ -228,7 +228,7 @@
     {
         const room = item.getAttribute("jid");
         console.debug("getRoom", room);
-        mucJids[room] = {jid: room};
+        mucJids[room] = {jid: room, label: '', subject: '', occupants: '', description: ''};
     }
 
     async function getRoomDetails(room, ele, filter)
