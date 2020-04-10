@@ -538,7 +538,9 @@
                             _converse.xmppstatus.vcard.set('image_type', 'image/png');
                         }
                         // add self for testing
-                        openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"])
+                        setTimeout(function() {
+                            openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"], true)
+                        });
                     }
 
                     addControlFeatures();
