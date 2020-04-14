@@ -1449,6 +1449,7 @@ function doDefaults(background)
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", false);
     setDefaultSetting("homePageView", "fullscreen");
+    setDefaultSetting("conversePersistentStore", "localStorage");
     setDefaultSetting("homePage", chrome.runtime.getURL("help/index.html"));
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");

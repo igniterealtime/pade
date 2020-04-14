@@ -20496,7 +20496,7 @@ module.exports = isObject;
       var base =
         _.result(this, 'urlRoot') ||
         _.result(this.collection, 'url') ||
-        urlError();
+        urlError() || "";   // BAO
       if (this.isNew()) return base;
       var id = this.get(this.idAttribute);
       return base.replace(/[^\/]$/, '$&/') + encodeURIComponent(id);
@@ -64781,10 +64781,16 @@ utils_core.addMentionsMarkup = function (text, references, chatbox) {
   }
 
   const nick = chatbox.get('nick');
-  references.sort((a, b) => b.begin - a.begin).forEach(ref => {
-    const mention = text.slice(ref.begin, ref.end);
+  references.sort((a, b) => b.begin - a.begin).forEach(ref =>
+  {
+    const prefix = text.slice(0, ref.begin);
+    const offset = ((prefix.match(/&lt;/g) || []).length + (prefix.match(/&gt;/g) || []).length) * 3;
+    const begin = parseInt(ref.begin) + parseInt(offset);
+    const end = parseInt(ref.end) + parseInt(offset);
+    const mention = text.slice(begin, end)
     chatbox;
 
+    //console.log("---->WWWWWWWWWWWWW", offset, begin, end, prefix, ref);
     // BAO
 
     let data_mention = "";
@@ -64796,10 +64802,12 @@ utils_core.addMentionsMarkup = function (text, references, chatbox) {
         if (jid) data_mention = ' data-mention="' + mention + '" data-jid="' + jid + '"';
     }
 
+    chatbox;
+
     if (mention === nick) { // BAO
-      text = text.slice(0, ref.begin) + "<span " + data_mention + " class=\"mention mention--self badge badge-info\">".concat(mention, "</span>") + text.slice(ref.end);
+      text = text.slice(0, begin) + "<span " + data_mention + " class=\"mention mention--self badge badge-info\">".concat(mention, "</span>") + text.slice(end);
     } else {
-      text = text.slice(0, ref.begin) + "<span " + data_mention + " class=\"mention\">".concat(mention, "</span>") + text.slice(ref.end);
+      text = text.slice(0, begin) + "<span " + data_mention + " class=\"mention\">".concat(mention, "</span>") + text.slice(end);
     }
   });
   return text;
@@ -65207,14 +65215,6 @@ converse_core.plugins.add('converse-message-view', {
       }
     }
 
-    function onEscapeHTMLDuringXSSFilter(html) {
-        if (html.startsWith('>')) {
-            return '>' + html.substring(1).replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        } else {
-            return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-    }
-
     _converse.api.settings.update({
       'show_images_inline': true,
       'allow_message_retraction': 'all'
@@ -65370,7 +65370,7 @@ converse_core.plugins.add('converse-message-view', {
           'Synchronous': true
         });
         text = this.model.isMeCommand() ? text.substring(4) : text;
-        text = xss_default.a.filterXSS(text, {'whiteList': {}, 'onTag': onTagFoundDuringXSSFilter, 'escapeHtml': onEscapeHTMLDuringXSSFilter});
+        text = xss_default.a.filterXSS(text, {'whiteList': {}, 'onTag': onTagFoundDuringXSSFilter});
         text = converse_message_view_u.geoUriToHttp(text, _converse.geouri_replacement);
         text = converse_message_view_u.addMentionsMarkup(text, this.model.get('references'), this.model.collection.chatbox);
         text = converse_message_view_u.addHyperlinks(text);

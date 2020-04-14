@@ -1127,6 +1127,17 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("Storage"),
+            "name": "conversePersistentStore",
+            "type": "popupButton",
+            "label": i18n.get("Persistent Store"),
+            "options": [
+                {"text": "Local Storage", "value": "localStorage"},
+                {"text": "IndexedDB", "value": "IndexedDB"}
+            ]
+        },
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
             "name": "converseSimpleView",
             "type": "checkbox",
