@@ -381,25 +381,6 @@
                     parent.publishUserLocation();
                     parent.setupUserPayment();
 
-                    const username = Strophe.getNodeFromJid(_converse.connection.jid);
-                    const password = _converse.connection.pass;
-
-                    if (username && password)
-                    {
-                        if (parent.setCredentials)    // save new credentials
-                        {
-                            parent.setCredentials({id: username, password: password});
-                        }
-
-                        if (parent.webpush && parent.webpush.registerServiceWorker) // register webpush service worker
-                        {
-                            parent.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
-                        }
-                    }
-                    else {
-
-                    }
-
                     window.addEventListener('focus', function(evt)
                     {
                         chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });

@@ -475,6 +475,7 @@ function doConverse(server, username, password, anonUser)
           webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
           webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
           websocket_url: connUrl,
+          persistent_store: getSetting("conversePersistentStore", 'localStorage'),
           enable_smacks: !getSetting("useWebsocket"), // TODO Fix Openfire websockets stream mgmt issues
           whitelisted_plugins: whitelistedPlugins
         };
@@ -487,6 +488,28 @@ function doConverse(server, username, password, anonUser)
             initialize: function () {
                 window._inverse = this._converse;
                 window.inverse = converse;
+
+                this._converse.api.listen.on('connected', function()
+                {
+                    if (chrome.pade)    // browser mode
+                    {
+                        const id = Strophe.getBareJidFromJid(_converse.connection.jid);
+                        const password = _converse.connection.pass;
+
+                        if (id && password)
+                        {
+                            if (parent.setCredentials)    // save new credentials
+                            {
+                                parent.setCredentials({id: id, password: password});
+                            }
+
+                            if (parent.webpush && parent.webpush.registerServiceWorker) // register webpush service worker
+                            {
+                                parent.webpush.registerServiceWorker(bgWindow.pade.server, username, password);
+                            }
+                        }
+                    }
+                });
 
                 if (getSetting("useClientCert", false))
                 {
