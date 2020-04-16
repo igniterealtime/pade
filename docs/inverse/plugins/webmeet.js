@@ -898,7 +898,7 @@
                         }
                         else
 
-                        if (bgWindow && body.indexOf(bgWindow.pade.ofmeetUrl) > -1 && pos3 > -1)
+                        if (bgWindow && body.indexOf(bgWindow.pade.ofmeetUrl) > -1 && pos3 > -1 && body.indexOf("/httpfileupload/") == -1)
                         {
                             var pos4 = body.indexOf(bgWindow.pade.ofmeetUrl);
 
