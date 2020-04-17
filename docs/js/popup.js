@@ -49,10 +49,10 @@ window.addEventListener("DOMContentLoaded", function()
                     channel.postMessage({action: "pade.invite.contact"});
                 }
 
-                location.href = "jitsi-meet/chrome.index.html?room=" + bgWindow.pade.activeContact.room;
+                location.href = bgWindow.getSetting("ofmeetUrl") + bgWindow.pade.activeContact.room;
 
             } else {
-                location.href = "jitsi-meet/chrome.index.html";
+                location.href = bgWindow.getSetting("ofmeetUrl");
             }
         }
 

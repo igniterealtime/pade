@@ -1,2 +1,0 @@
-import './react/index.native';
-

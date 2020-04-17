@@ -982,11 +982,6 @@ window.addEvent("domready", function () {
             {
                 navigator.registerProtocolHandler("tel",  chrome.extension.getURL("phone/index-ext.html?url=%s"), "Pade - Phone");
             }
-
-            if (getSetting("registerMEETProtocol"))
-            {
-                navigator.registerProtocolHandler("web+meet",  chrome.extension.getURL("jitsi-meet/chrome.index.html?url=%s"), "Pade - Meeting");
-            }
         });
 
         if (settings.manifest.uport) settings.manifest.uport.addEvent("action", function ()
@@ -1416,6 +1411,7 @@ function doDefaults(background)
     setDefaultSetting("startBitrate", 800);
     setDefaultSetting("resolution", 720);
     setDefaultSetting("minHDHeight", 540);
+    setDefaultSetting("disableAudioLevels", true);
 
     // meeting
     setDefaultSetting("transcribeLanguage", "en-GB");
@@ -1427,9 +1423,6 @@ function doDefaults(background)
     setDefaultSetting("plannerNotice", 10);
     setDefaultSetting("plannerExpire", 15);
     setDefaultSetting("plannerCheck", 5);
-    setDefaultSetting("channelLastN", 10);
-    setDefaultSetting("startAudioMuted", 5);
-    setDefaultSetting("startVideoMuted", 5);
 
     // community
     setDefaultSetting("chatWithOnlineContacts", true);

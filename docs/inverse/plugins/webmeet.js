@@ -1279,7 +1279,7 @@
         var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
         openVideoWindow(room, "presenter", view);
 
-        var url = "https://" + _converse.api.settings.get("bosh_service_url").split("/")[2] + "/webinar/" + room;
+        var url = getSetting("ofmeetUrl") + room + "#config.webinar=true";
         submitMessage(view, title + ' ' + url);
     }
 
@@ -1310,9 +1310,9 @@
 
         if (isOnlyOfficeDoc(url))
         {
-            if (bgWindow.pade.server == "desktop-545pc5b:7443")   // dev testing
+            if (bgWindow.pade.server == "localhost:7443")   // dev testing
             {
-                url = url.replace("https://desktop-545pc5b:7443", "http://desktop-545pc5b:7070");
+                url = url.replace("https://localhost:7443", "http://localhost:7070");
                 bgWindow.openWebAppsWindow(chrome.extension.getURL("collab/onlyoffice/index.html?url=" + url + "&title=" + title + "&to=" + target + "&from=" + _converse.connection.jid + "&type=" + chatType));
 
             } else

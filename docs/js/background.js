@@ -1631,9 +1631,51 @@ function openVideoWindow(room, mode)
 
 function getVideoWindowUrl(room, mode)
 {
-    var url = chrome.runtime.getURL("jitsi-meet/chrome.index.html");
-    if (room) url = url + "?room=" + room + (mode ? "&mode=" + mode : "");
-    return url;
+    const url = getSetting("ofmeetUrl");
+
+    let params = "#config.webinar=" + (mode != "attendee" ? "false" : "true");
+
+    const minHDHeight = getSetting("minHDHeight");
+    params = params + (minHDHeight ? "&config.minHDHeight=" + minHDHeight : "");
+
+    const resolution = getSetting("resolution");
+    params = params + (resolution ? "&config.resolution=" + resolution : "");
+
+    const startBitrate = getSetting("startBitrate");
+    params = params + (startBitrate ? "&config.startBitrate=" + resolution : "");
+
+    const disableAudioLevels = getSetting("disableAudioLevels", null);
+    params = params + (disableAudioLevels != null ? "&config.disableAudioLevels=" + disableAudioLevels : "");
+
+    const enableLipSync = getSetting("enableLipSync", null);
+    params = params + (enableLipSync != null ? "&config.enableLipSync=" + enableLipSync : "");
+
+    const startWithAudioMuted = getSetting("startWithAudioMuted", null);
+    params = params + (startWithAudioMuted != null ? "&config.startWithAudioMuted=" + startWithAudioMuted : "");
+
+    const startWithVideoMuted = getSetting("startWithVideoMuted", null);
+    params = params + (startWithVideoMuted != null ? "&config.startWithVideoMuted=" + startWithAudioMuted : "");
+
+    const startScreenSharing = getSetting("startScreenSharing", null);
+    params = params + (startScreenSharing != null ? "&config.startScreenSharing=" + startScreenSharing : "");
+
+    const recordMeeting = getSetting("recordMeeting", null);
+    params = params + (recordMeeting != null ? "&interfaceConfig.OFMEET_RECORD_CONFERENCE=" + recordMeeting : "");
+
+    const INITIAL_TOOLBAR_TIMEOUT = getSetting("INITIAL_TOOLBAR_TIMEOUT");
+    params = params + (INITIAL_TOOLBAR_TIMEOUT ? "&interfaceConfig.INITIAL_TOOLBAR_TIMEOUT=" + INITIAL_TOOLBAR_TIMEOUT : "");
+
+    const TOOLBAR_TIMEOUT = getSetting("TOOLBAR_TIMEOUT");
+    params = params + (TOOLBAR_TIMEOUT ? "&interfaceConfig.TOOLBAR_TIMEOUT=" + TOOLBAR_TIMEOUT : "");
+
+    const FILM_STRIP_MAX_HEIGHT = getSetting("FILM_STRIP_MAX_HEIGHT");
+    params = params + (FILM_STRIP_MAX_HEIGHT ? "&interfaceConfig.FILM_STRIP_MAX_HEIGHT=" + FILM_STRIP_MAX_HEIGHT : "");
+
+    const VERTICAL_FILMSTRIP = getSetting("VERTICAL_FILMSTRIP", null);
+    params = params + (VERTICAL_FILMSTRIP != null ? "&interfaceConfig.VERTICAL_FILMSTRIP=" + VERTICAL_FILMSTRIP : "");
+
+
+    return url + room + params;
 }
 
 function openVideoWindowUrl(url)
