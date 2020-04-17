@@ -1419,7 +1419,6 @@ function doDefaults(background)
     setDefaultSetting("FILM_STRIP_MAX_HEIGHT", 90);
     setDefaultSetting("INITIAL_TOOLBAR_TIMEOUT", 20000);
     setDefaultSetting("TOOLBAR_TIMEOUT", 4000);
-    setDefaultSetting("p2pMode", true);
     setDefaultSetting("plannerNotice", 10);
     setDefaultSetting("plannerExpire", 15);
     setDefaultSetting("plannerCheck", 5);

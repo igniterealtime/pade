@@ -882,42 +882,25 @@
 
                     if (body)
                     {
-                        var pos0 = body.indexOf("/webinar/")
-                        var pos1 = body.indexOf("/jitsimeet/index.html?room=")
+                        var pos0 = body.indexOf("config.webinar=true");
+                        var pos1 = body.indexOf("#");
                         var pos2 = body.indexOf("/h5p/");
                         var pos3 = body.indexOf("https://");
-
-                        if ( pos0 > -1 && pos3 > -1)
-                        {
-                            console.debug("webinar invite", body);
-                            var link_room = body.substring(pos0 + 9);
-                            var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
-                            var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webinar_invitation");
-                            var link_content = '<a id="' + link_id + '" href="#">' + link_label + ' webinar</a>';
-                            setupContentHandler(this, link_room, link_content, handleWebinarAttendee, link_id);
-                        }
-                        else
 
                         if (bgWindow && body.indexOf(bgWindow.pade.ofmeetUrl) > -1 && pos3 > -1 && body.indexOf("/httpfileupload/") == -1)
                         {
                             var pos4 = body.indexOf(bgWindow.pade.ofmeetUrl);
+                            var end = body.length;
+                            if (pos1 > 10) end = pos1;
 
-                            var link_room = body.substring(pos4 + bgWindow.pade.ofmeetUrl.length);
+                            var link_room = body.substring(pos4 + bgWindow.pade.ofmeetUrl.length, end);
                             var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
                             var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
                             var link_content = '<a id="' + link_id + '" href="#">' + link_label + " " + link_room + '</a>';
-                            setupContentHandler(this, link_room, link_content, doAVConference, link_id);
-                        }
-                        else
 
-                        if ( pos1 > -1 && pos3 > -1)
-                        {
-                            console.debug("audio/video invite", body);
-                            var link_room = body.substring(pos1 + 27);
-                            var link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
-                            var link_label = pos3 > 0 ? body.substring(0, pos3) : _converse.api.settings.get("webmeet_invitation");
-                            var link_content = '<a id="' + link_id + '" href="#">' + link_label + " " + link_room + '</a>';
-                            setupContentHandler(this, link_room, link_content, doAVConference, link_id);
+                            var handler = doAVConference;
+                            if (pos0 > -1) handler = handleWebinarAttendee
+                            setupContentHandler(this, link_room, link_content, handler, link_id);
                         }
                         else
 

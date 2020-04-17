@@ -685,13 +685,6 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
-            "name": "p2pMode",
-            "type": "checkbox",
-            "label": i18n.get("Enable P2P Mode")
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("General Settings"),
             "name": "startWithAudioMuted",
             "type": "checkbox",
             "label": i18n.get("Start with Audio Muted")
