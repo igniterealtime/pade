@@ -1414,6 +1414,8 @@ function doDefaults(background)
     setDefaultSetting("disableAudioLevels", true);
 
     // meeting
+    setDefaultSetting("showCaptions", false);
+    setDefaultSetting("enableTranscription", false);
     setDefaultSetting("transcribeLanguage", "en-GB");
     setDefaultSetting("VERTICAL_FILMSTRIP", true);
     setDefaultSetting("FILM_STRIP_MAX_HEIGHT", 90);

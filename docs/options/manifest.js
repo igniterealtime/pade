@@ -713,6 +713,13 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
+            "name": "showCaptions",
+            "type": "checkbox",
+            "label": i18n.get("Show text messages as sub-titles/captions on screen")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
             "name": "enableTranscription",
             "type": "checkbox",
             "label": i18n.get("Enable Voice-to-Text Transcription")
