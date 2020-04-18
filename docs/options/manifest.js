@@ -864,13 +864,6 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("UI Settings"),
-            "name": "enableCaptions",
-            "type": "checkbox",
-            "label": i18n.get("Show Chat as Captions/Sub-titles")
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("UI Settings"),
             "name": "INITIAL_TOOLBAR_TIMEOUT",
             "type": "slider",
             "label": i18n.get("Initial Toolbar Timeout"),
