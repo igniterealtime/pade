@@ -617,6 +617,18 @@
 
                     await this.__super__.renderChatMessage.apply(this, arguments);
 
+                    const msgId = this.model.get("msgid");
+
+                    // mermaid transformation
+
+                    const bodyDiv = document.querySelector("#msg-" + msgId + " .chat-msg__text");
+
+                    if (bodyDiv && (bodyDiv.innerHTML.startsWith("graph ") || bodyDiv.innerHTML.startsWith("pie") || bodyDiv.innerHTML.startsWith("gantt") || bodyDiv.innerHTML.startsWith("stateDiagram") || bodyDiv.innerHTML.startsWith("classDiagram") || bodyDiv.innerHTML.startsWith("sequenceDiagram") || bodyDiv.innerHTML.startsWith("erDiagram")))
+                    {
+                        bodyDiv.innerHTML = '<div id="mermaid-' + msgId + '" class="mermaid">' + bodyDiv.innerHTML.replace(/<br>/g, '\n') + '</div>';
+                        window.mermaid.init(bodyDiv.querySelector("#mermaid-" + msgId));
+                    }
+
                     // action button for quoting, pinning
 
                     var messageDiv = this.el.querySelector('.chat-msg__message');
@@ -701,8 +713,6 @@
                     }
 
                     // render message reaction totals
-
-                    const msgId = this.model.get("msgid");
 
                     if (chrome.storage) chrome.storage.local.get(msgId, function(obj)
                     {

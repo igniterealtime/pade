@@ -42,6 +42,8 @@ window.addEventListener("load", function()
 
     BrowserDetect.init();
 
+    mermaid.initialize({});
+
     var anonUser = getSetting("useAnonymous", false);
     var username = getSetting("username");
     var password = getSetting("password");
@@ -452,6 +454,7 @@ function doConverse(server, username, password, anonUser)
           muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
           muc_fetch_members: getSetting("fetchMembersList", false),
           muc_nickname_from_jid: getSetting("autoCreateNickname", false),
+          muc_show_room_info: getSetting("showGroupChatStatusMessages", true),
           muc_show_join_leave: getSetting("showGroupChatStatusMessages", true),
           muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", true),
           muc_mention_autocomplete_filter: getSetting("converseAutoCompleteFilter", "starts_with"),

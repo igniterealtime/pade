@@ -36545,7 +36545,11 @@ __p += '\n    <div class="chat-msg__content chat-msg__content--' +
 __e(o.sender) +
 ' ' +
 __e(o.is_me_message ? 'chat-msg__content--action' : '') +
-'">\n        <span class="chat-msg__heading">\n            ';
+'">\n        ';
+ if (o.first_unread) { // BAO
+__p += '<div class="message date-separator"><hr class="separator"><span class="separator-text">' + __e(o.__('unread messages')) + '</span></div>\n';
+ };
+__p += '<span class="chat-msg__heading">\n            ';
  if (o.is_me_message) { ;
 __p += '<time timestamp="' +
 __e(o.isodate) +
@@ -56703,7 +56707,16 @@ converse_core.plugins.add('converse-chat', {
         }
 
         if (converse_chat_utils.isNewMessage(message) && this.isHidden()) {
+          let first_unread = this.get('first_unread');  // BAO
+
+          if (this.get('num_unread') == 0) {    // BAO
+              if (first_unread) first_unread.set("first_unread", false);
+              message.set("first_unread", true);
+              first_unread = message;
+          }
+
           this.save({
+            'first_unread': first_unread,
             'num_unread': this.get('num_unread') + 1
           });
 
@@ -60758,10 +60771,12 @@ converse_core.plugins.add('converse-muc', {
               return;
             }
 
-            this.messages.create({
-              'type': 'info',
-              message
-            });
+            if (_converse.api.settings.get("muc_show_room_info")) {
+                this.messages.create({
+                  'type': 'info',
+                  message
+                });
+            }
           }
         });
       },
@@ -60991,7 +61006,16 @@ converse_core.plugins.add('converse-muc', {
         }
 
         if (utils_form.isNewMessage(message) && this.isHidden()) {
+          let first_unread = this.get('first_unread');  // BAO
+
+          if (this.get('num_unread_general') == 0) {    // BAO
+              if (first_unread) first_unread.set("first_unread", false);
+              message.set("first_unread", true);
+              first_unread = message;
+          }
+
           const settings = {
+            'first_unread': first_unread,   // BAO
             'num_unread_general': this.get('num_unread_general') + 1
           };
 
@@ -65303,7 +65327,7 @@ converse_core.plugins.add('converse-message-view', {
 
         const isValidChange = prop => Object.prototype.hasOwnProperty.call(this.model.changed, prop);
 
-        const props = ['moderated', 'retracted', 'correcting', 'message', 'type', 'upload', 'received', 'editable'];
+        const props = ['moderated', 'retracted', 'correcting', 'message', 'type', 'upload', 'received', 'editable', 'first_unread'];    // BAO
 
         if (props.filter(isValidChange).length) {
           await this.debouncedRender();
@@ -65420,6 +65444,7 @@ converse_core.plugins.add('converse-message-view', {
           'occupant': this.model.occupant,
           'pretty_time': time.format(_converse.time_format),
           'retraction_text': is_retracted ? this.getRetractionText() : null,
+          'first_unread': this.model.get('first_unread'),   // BAO
           'roles': roles,
           'time': time.toISOString(),
           'username': this.model.getDisplayName()
@@ -74402,6 +74427,7 @@ converse_core.plugins.add('converse-muc-views', {
       'show_retraction_warning': true,
       'muc_disable_slash_commands': false,
       'muc_show_join_leave': true,
+      'muc_show_room_info': true,               // BAO
       'muc_show_join_leave_status': true,
       'muc_mention_autocomplete_min_chars': 0,
       'muc_mention_autocomplete_filter': 'contains',

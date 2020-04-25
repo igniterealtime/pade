@@ -1116,13 +1116,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "showGroupChatStatusMessages",
-            "type": "checkbox",
-            "label": i18n.get("Show GroupChat Status Messages")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
             "name": "converseRandomAvatars",
             "type": "checkbox",
             "label": i18n.get("Use Random Avatars. <b>(requires randomavatar plugin for openfire)</b>")
@@ -1245,6 +1238,13 @@ this.manifest = {
             "name": "enableInfoPanel",
             "type": "checkbox",
             "label": i18n.get("Enable Information Panel")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
+            "name": "showGroupChatStatusMessages",
+            "type": "checkbox",
+            "label": i18n.get("Show GroupChat Status Messages")
         },
         {
             "tab": i18n.get("Converse"),
