@@ -56710,9 +56710,15 @@ converse_core.plugins.add('converse-chat', {
           let first_unread = this.get('first_unread');  // BAO
 
           if (this.get('num_unread') == 0) {    // BAO
-              if (first_unread) first_unread.set("first_unread", false);
+
+              if (first_unread)
+              {
+                  const msg = this.messages.where({'msgid': first_unread});
+                  if (msg.length > 0) msg[0].set("first_unread", false);
+              }
+
               message.set("first_unread", true);
-              first_unread = message;
+              first_unread = message.get('msgid');
           }
 
           this.save({
@@ -60994,7 +61000,7 @@ converse_core.plugins.add('converse-muc', {
        * @method _converse.ChatRoom#incrementUnreadMsgCounter
        * @param { XMLElement } - The <messsage> stanza
        */
-      incrementUnreadMsgCounter(message) {
+      incrementUnreadMsgCounter(message) { // BAO issue #119 (converse #1999)
         if (!message) {
           return;
         }
@@ -61009,9 +61015,14 @@ converse_core.plugins.add('converse-muc', {
           let first_unread = this.get('first_unread');  // BAO
 
           if (this.get('num_unread_general') == 0) {    // BAO
-              if (first_unread) first_unread.set("first_unread", false);
+
+              if (first_unread)
+              {
+                  const msg = this.messages.where({'msgid': first_unread});
+                  if (msg.length > 0) msg[0].set("first_unread", false);
+              }
               message.set("first_unread", true);
-              first_unread = message;
+              first_unread = message.get('msgid');
           }
 
           const settings = {
@@ -61078,7 +61089,10 @@ converse_core.plugins.add('converse-muc', {
       },
 
       getDisplayName() {
-        return this.get('nick') || this.get('jid');
+        let fullname = undefined;   // BAO
+        const vcard = _converse.vcards.findWhere({'jid': this.get('jid')});
+        if (vcard) fullname = vcard.get('fullname');
+        return fullname || this.get('nick') || this.get('jid');
       },
 
       isMember() {
@@ -65444,7 +65458,7 @@ converse_core.plugins.add('converse-message-view', {
           'occupant': this.model.occupant,
           'pretty_time': time.format(_converse.time_format),
           'retraction_text': is_retracted ? this.getRetractionText() : null,
-          'first_unread': this.model.get('first_unread'),   // BAO
+          'first_unread': this.model.get('first_unread'),   // BAO issue #119 (converse #1999)
           'roles': roles,
           'time': time.toISOString(),
           'username': this.model.getDisplayName()
@@ -75203,7 +75217,7 @@ converse_core.plugins.add('converse-muc-views', {
 
       getAutoCompleteList() {
         return this.model.occupants.filter('nick').map(o => ({
-          'label': o.get('nick'),
+          'label': o.getDisplayName(),  // BAO
           'value': "@".concat(o.get('nick'))
         }));
       },
