@@ -1439,7 +1439,8 @@ function doDefaults(background)
     setDefaultSetting("autoReconnectConverse", true);
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
-    setDefaultSetting("showGroupChatStatusMessages", true);
+    // most people do want this
+    //setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", false);
     setDefaultSetting("homePageView", "fullscreen");
