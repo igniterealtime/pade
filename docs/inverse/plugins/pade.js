@@ -621,12 +621,34 @@
 
                     // mermaid transformation
 
-                    const bodyDiv = document.querySelector("#msg-" + msgId + " .chat-msg__text");
+                    const bodyDiv = document.querySelector('div[data-msgid="' + msgId + '"] .chat-msg__text');
 
-                    if (bodyDiv && (bodyDiv.innerHTML.startsWith("graph ") || bodyDiv.innerHTML.startsWith("pie") || bodyDiv.innerHTML.startsWith("gantt") || bodyDiv.innerHTML.startsWith("stateDiagram") || bodyDiv.innerHTML.startsWith("classDiagram") || bodyDiv.innerHTML.startsWith("sequenceDiagram") || bodyDiv.innerHTML.startsWith("erDiagram")))
+                    if (bodyDiv)
                     {
-                        bodyDiv.innerHTML = '<div id="mermaid-' + msgId + '" class="mermaid">' + bodyDiv.innerHTML.replace(/<br>/g, '\n') + '</div>';
-                        window.mermaid.init(bodyDiv.querySelector("#mermaid-" + msgId));
+                        const html = bodyDiv.innerHTML;
+
+                        if (html.startsWith("graph TD") ||
+                            html.startsWith("graph TB") ||
+                            html.startsWith("graph BT") ||
+                            html.startsWith("graph RL") ||
+                            html.startsWith("graph LR") ||
+                            html.startsWith("pie") ||
+                            html.startsWith("gantt") ||
+                            html.startsWith("stateDiagram") ||
+                            html.startsWith("classDiagram") ||
+                            html.startsWith("sequenceDiagram") ||
+                            html.startsWith("erDiagram")) {
+
+                            bodyDiv.innerHTML = '<div class="mermaid">' + html.replace(/<br>/g, '\n') + '</div>';
+                            window.mermaid.init(bodyDiv.querySelector(".mermaid"));
+                        }
+                        else
+
+                        if (html.startsWith("X:1"))
+                        {
+                            bodyDiv.innerHTML = '<div id="abc-' + msgId + '"></div>';
+                            ABCJS.renderAbc("abc-" + msgId, html.replace(/<br>/g, '\n'));
+                        }
                     }
 
                     // action button for quoting, pinning
