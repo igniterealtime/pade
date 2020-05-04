@@ -464,30 +464,4 @@
             console.warn("workgroup offer from unaccepted source", properties.workgroupJid);
         }
     }
-
-    function notifyText(message, title, notifyId, callback)
-    {
-        console.debug("notifyText", title, message, notifyId);
-
-        if (!notifyId) notifyId = Math.random().toString(36).substr(2,9);
-
-        var prompt = new Notification(title,
-        {
-            body: message,
-            icon: 'fastpath/converse.png',
-            requireInteraction: true
-        });
-
-        prompt.onclick = function(event)
-        {
-            event.preventDefault();
-            if (callback) callback(notifyId, 0);
-        }
-
-        prompt.onclose = function(event)
-        {
-            event.preventDefault();
-            if (callback) callback(notifyId, 1);
-        }
-    }
 }));

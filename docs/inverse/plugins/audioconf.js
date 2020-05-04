@@ -7,6 +7,7 @@
 
 }(this, function (converse) {
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse;
+
     converse.plugins.add("audioconf", {
         'dependencies': [],
 
@@ -158,7 +159,7 @@
 
                         if (this.model.get("type") == "chatbox")
                         {
-                            room = bgWindow.makeRoomName(room);
+                            room = makeRoomName(room);
                         }
 
                         console.debug("toggleCall", room);

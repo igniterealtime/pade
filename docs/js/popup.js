@@ -1,4 +1,4 @@
-var bgWindow = null;
+var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
 var channel = null
 
 window.addEventListener("unload", function()
@@ -8,26 +8,24 @@ window.addEventListener("unload", function()
 
 window.addEventListener("DOMContentLoaded", function()
 {
-    chrome.runtime.getBackgroundPage(function(win)
+    channel = chrome.runtime.connect();
+
+    console.log("channel initialised", channel);
+
+    channel.postMessage({event: "pade.popup.open"});
+
+    channel.onMessage.addListener(function (message)
     {
-        bgWindow = win;
 
-        channel = chrome.runtime.connect();
+    });
 
-        console.log("channel initialised", channel);
+    channel.onDisconnect.addListener(function()
+    {
+        console.log("channel disconnect");
+    });
 
-        channel.postMessage({event: "pade.popup.open"});
-
-        channel.onMessage.addListener(function (message)
-        {
-
-        });
-
-        channel.onDisconnect.addListener(function()
-        {
-            console.log("channel disconnect");
-        });
-
+    if (bgWindow)
+    {
         if (bgWindow.getSetting("enableTouchPad", false))
         {
             if (bgWindow.getSetting("popupWindow", false))
@@ -55,8 +53,5 @@ window.addEventListener("DOMContentLoaded", function()
                 location.href = bgWindow.getSetting("ofmeetUrl");
             }
         }
-
-    });
-
-
+    }
 });

@@ -5,7 +5,6 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var rssInterval, htmlTemp = {};
     var Strophe, dayjs
 
@@ -179,7 +178,7 @@
             // when pade.chat (pwa), use proxy servlet in chat api plugin to fetch feed URL contents and avoid CORS
 
             var feed = {
-                path: chrome.pade ? "https://" + bgWindow.pade.server + "/pade/download?url=" + rssUrl : rssUrl
+                path: chrome.pade ? "https://" + getSetting("server") + "/pade/download?url=" + rssUrl : rssUrl
             }
 
             fetch(feed.path).then(function(response)

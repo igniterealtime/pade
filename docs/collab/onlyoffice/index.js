@@ -10,7 +10,7 @@ String.prototype.hashCode = function()
   return hash.toString();
 };
 
-var bgWindow = null, extensionParams = {}
+var extensionParams = {}
 
 window.addEventListener("unload", function()
 {
@@ -24,81 +24,76 @@ window.addEventListener("unload", function()
 
 window.addEventListener("load", function()
 {
-    chrome.runtime.getBackgroundPage(function(win)
+    var urlParam = function(name)
     {
-        bgWindow = win;
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (!results) { return undefined; }
+        return unescape(results[1] || undefined);
+    };
 
-        var urlParam = function(name)
+    var onlyOfficeVersion = getSetting("onlyOfficeVersion", "5.2.2-2");
+    extensionParams = {url: "https://" + getSetting("server") + "/v" + onlyOfficeVersion + "/web-apps/"};
+
+    if (getSetting("server") == "localhost:7443")   // dev testing
+    {
+        extensionParams = {url: "http://desktop-545pc5b:7070/v" + onlyOfficeVersion + "/web-apps/"};
+    }
+
+    var title = urlParam("title");
+    var from = urlParam("from");
+    var to = urlParam("to");
+    var chatType = urlParam("type");
+    var url = urlParam("url");
+    var pos = url.lastIndexOf(".");
+
+    if (url && pos > -1)
+    {
+        if (!title)
         {
-            var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            if (!results) { return undefined; }
-            return unescape(results[1] || undefined);
-        };
-
-        var onlyOfficeVersion = bgWindow.getSetting("onlyOfficeVersion", "5.2.2-2");
-        extensionParams = {url: "https://" + bgWindow.pade.server + "/v" + onlyOfficeVersion + "/web-apps/"};
-
-        if (bgWindow.pade.server == "desktop-545pc5b:7443")   // dev testing
-        {
-            extensionParams = {url: "http://desktop-545pc5b:7070/v" + onlyOfficeVersion + "/web-apps/"};
+            var pos1 = url.lastIndexOf("/");
+            title = url.substring(pos1 + 1);
         }
 
-        var title = urlParam("title");
-        var from = urlParam("from");
-        var to = urlParam("to");
-        var chatType = urlParam("type");
-        var url = urlParam("url");
-        var pos = url.lastIndexOf(".");
+        var type = url.substring(pos + 1);
 
-        if (url && pos > -1)
+        new DocsAPI.DocEditor("placeholder",
         {
-            if (!title)
-            {
-                var pos1 = url.lastIndexOf("/");
-                title = url.substring(pos1 + 1);
-            }
-
-            var type = url.substring(pos + 1);
-
-            new DocsAPI.DocEditor("placeholder",
-            {
-                documentType: type == "xslx" || type == "xls" || type == "csv" ? "spreadsheet" : (type == "pptx" || type == "ppt" ? "presentation" : "text"),
-                document: {
-                    fileType: type,
-                    key: url.hashCode(),
-                    title: title ? title : url,
-                    url: url
+            documentType: type == "xslx" || type == "xls" || type == "csv" ? "spreadsheet" : (type == "pptx" || type == "ppt" ? "presentation" : "text"),
+            document: {
+                fileType: type,
+                key: url.hashCode(),
+                title: title ? title : url,
+                url: url
+            },
+            editorConfig: {
+                user: {
+                    id: btoa(JSON.stringify({from: from, to: to, type: chatType})),
+                    name: getSetting("displayname")
                 },
-                editorConfig: {
-                    user: {
-                        id: btoa(JSON.stringify({from: from, to: to, type: chatType})),
-                        name: bgWindow.pade.displayName
-                    },
-                    customization: {
-                        chat: bgWindow.getSetting("onlychat", true),
-                        comments: bgWindow.getSetting("onlycomments", true),
-                        zoom: bgWindow.getSetting("onlyzoom", 100),
-                        compactToolbar: bgWindow.getSetting("onlycompactToolbar", false),
-                        leftMenu: bgWindow.getSetting("onlyleftMenu", true),
-                        rightMenu: bgWindow.getSetting("onlyrightMenu", true),
-                        toolbar: bgWindow.getSetting("onlytoolbar", true),
-                        header: bgWindow.getSetting("onlyheader", true),
-                        statusBar: bgWindow.getSetting("onlystatusBar", true),
-                        autosave: bgWindow.getSetting("onlyautosave", true),
-                        forcesave: bgWindow.getSetting("onlyforcesave", true),
-                        commentAuthorOnly: bgWindow.getSetting("onlycommentAuthorOnly", false),
-                        showReviewChanges: bgWindow.getSetting("onlyshowReviewChanges", false)
-                    },
-                }
-            });
+                customization: {
+                    chat: getSetting("onlychat", true),
+                    comments: getSetting("onlycomments", true),
+                    zoom: getSetting("onlyzoom", 100),
+                    compactToolbar: getSetting("onlycompactToolbar", false),
+                    leftMenu: getSetting("onlyleftMenu", true),
+                    rightMenu: getSetting("onlyrightMenu", true),
+                    toolbar: getSetting("onlytoolbar", true),
+                    header: getSetting("onlyheader", true),
+                    statusBar: getSetting("onlystatusBar", true),
+                    autosave: getSetting("onlyautosave", true),
+                    forcesave: getSetting("onlyforcesave", true),
+                    commentAuthorOnly: getSetting("onlycommentAuthorOnly", false),
+                    showReviewChanges: getSetting("onlyshowReviewChanges", false)
+                },
+            }
+        });
 
-            setTimeout(function()
-            {
-                document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Collaboration - " + title;
+        setTimeout(function()
+        {
+            document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Collaboration - " + title;
 
-            }, 1000);
-        }
-    });
+        }, 1000);
+    }
 });
 
 

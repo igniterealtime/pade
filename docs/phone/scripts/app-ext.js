@@ -2,7 +2,7 @@
 
 var ctxSip;
 var log = null;
-var bgWindow = null;
+var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
 var sessionid = null;
 var firstTime = true;
 
@@ -643,19 +643,22 @@ window.addEventListener("load", function()
         window.onunload = closePhone;
 
 
-        ctxSip.phone = bgWindow.etherlynk.getSipUI();
+        if (bgWindow)
+        {
+            ctxSip.phone = bgWindow.etherlynk.getSipUI();
 
-        ctxSip.phone.on('connected', onConnected);
-        ctxSip.phone.on('disconnected', onDisconnected);
-        ctxSip.phone.on('registered', onRegistered);
-        ctxSip.phone.on('registrationFailed', onRegistrationFailed);
-        ctxSip.phone.on('unregistered', onUnregistered);
-        ctxSip.phone.on('invite', onInvite);
-        ctxSip.phone.on('uiinvite', onInvite);
+            ctxSip.phone.on('connected', onConnected);
+            ctxSip.phone.on('disconnected', onDisconnected);
+            ctxSip.phone.on('registered', onRegistered);
+            ctxSip.phone.on('registrationFailed', onRegistrationFailed);
+            ctxSip.phone.on('unregistered', onUnregistered);
+            ctxSip.phone.on('invite', onInvite);
+            ctxSip.phone.on('uiinvite', onInvite);
 
-        // Get the userMedia and cache the stream
-        if (bgWindow.etherlynk.getSipWebRtc().isSupported()) {
-            bgWindow.etherlynk.getSipWebRtc().getUserMedia({ audio: true, video: true }, ctxSip.getUserMediaSuccess, ctxSip.getUserMediaFailure);
+            // Get the userMedia and cache the stream
+            if (bgWindow.etherlynk.getSipWebRtc().isSupported()) {
+                bgWindow.etherlynk.getSipWebRtc().getUserMedia({ audio: true, video: true }, ctxSip.getUserMediaSuccess, ctxSip.getUserMediaFailure);
+            }
         }
 
         // Auto-focus number input on backspace.
@@ -851,10 +854,6 @@ window.addEventListener("load", function()
         };
     }
 
-    chrome.runtime.getBackgroundPage(function(win) {
-        bgWindow = win;
-        doIt();
-        bgWindow.etherlynk.sipReady();
-
-    });
+    doIt();
+    if (bgWindow) bgWindow.etherlynk.sipReady();
 });

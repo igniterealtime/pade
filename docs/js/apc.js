@@ -1,4 +1,4 @@
-var bgWindow = null;
+var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
 var etherlynkobj = null;
 var channel = null
 var active = null;
@@ -16,52 +16,47 @@ window.addEventListener("load", function()
 {
     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Communicator";
 
-    chrome.runtime.getBackgroundPage(function(win)
+    etherlynkobj = document.getElementById('app-content');
+    etherlynkobj.timeoutval=500;
+
+    channel = chrome.runtime.connect();
+    console.log("channel initialised", channel);
+
+    channel.onMessage.addListener(function (message)
     {
-        bgWindow = win;
+        handleButtonState(message);
+    });
 
-        etherlynkobj = document.getElementById('app-content');
-        etherlynkobj.timeoutval=500;
+    channel.onDisconnect.addListener(function()
+    {
+        console.log("channel disconnect");
+    });
 
-        channel = chrome.runtime.connect();
-        console.log("channel initialised", channel);
-
-        channel.onMessage.addListener(function (message)
-        {
-            handleButtonState(message);
-        });
-
-        channel.onDisconnect.addListener(function()
-        {
-            console.log("channel disconnect");
-        });
-
-        document.body.addEventListener('etherlynk.ui.event', function (e)
-        {
-            if (e.detail.data1 == 176)     // slider events
-            {
-                handleSlider(e.detail.data2, e.detail.data3);
-            }
-        });
-
-        document.body.addEventListener('etherlynk.event.held', function (e)
-        {
-            handleButtonHeld(e.detail.button);
-        });
-
-
-        document.body.addEventListener('etherlynk.event.buttondown', function (e)
-        {
-            handleButtonPress(e.detail.button);
-        });
-
-        document.body.addEventListener('webmidievent', function (e)
+    document.body.addEventListener('etherlynk.ui.event', function (e)
+    {
+        if (e.detail.data1 == 176)     // slider events
         {
             handleSlider(e.detail.data2, e.detail.data3);
-        });
-
-        setupApc();
+        }
     });
+
+    document.body.addEventListener('etherlynk.event.held', function (e)
+    {
+        handleButtonHeld(e.detail.button);
+    });
+
+
+    document.body.addEventListener('etherlynk.event.buttondown', function (e)
+    {
+        handleButtonPress(e.detail.button);
+    });
+
+    document.body.addEventListener('webmidievent', function (e)
+    {
+        handleSlider(e.detail.data2, e.detail.data3);
+    });
+
+    setupApc();
 });
 
 

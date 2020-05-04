@@ -1,87 +1,87 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+/******/    // The module cache
+/******/    var installedModules = {};
 /******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/    // The require function
+/******/    function __webpack_require__(moduleId) {
 /******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
+/******/        // Check if module is in cache
+/******/        if(installedModules[moduleId]) {
+/******/            return installedModules[moduleId].exports;
+/******/        }
+/******/        // Create a new module (and put it into the cache)
+/******/        var module = installedModules[moduleId] = {
+/******/            i: moduleId,
+/******/            l: false,
+/******/            exports: {}
+/******/        };
 /******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/        // Execute the module function
+/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
+/******/        // Flag the module as loaded
+/******/        module.l = true;
 /******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/        // Return the exports of the module
+/******/        return module.exports;
+/******/    }
 /******/
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./static-wrappers/basic.js");
+/******/    // expose the modules object (__webpack_modules__)
+/******/    __webpack_require__.m = modules;
+/******/
+/******/    // expose the module cache
+/******/    __webpack_require__.c = installedModules;
+/******/
+/******/    // define getter function for harmony exports
+/******/    __webpack_require__.d = function(exports, name, getter) {
+/******/        if(!__webpack_require__.o(exports, name)) {
+/******/            Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/        }
+/******/    };
+/******/
+/******/    // define __esModule on exports
+/******/    __webpack_require__.r = function(exports) {
+/******/        if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/            Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/        }
+/******/        Object.defineProperty(exports, '__esModule', { value: true });
+/******/    };
+/******/
+/******/    // create a fake namespace object
+/******/    // mode & 1: value is a module id, require it
+/******/    // mode & 2: merge all properties of value into the ns
+/******/    // mode & 4: return value when already ns object
+/******/    // mode & 8|1: behave like require
+/******/    __webpack_require__.t = function(value, mode) {
+/******/        if(mode & 1) value = __webpack_require__(value);
+/******/        if(mode & 8) return value;
+/******/        if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/        var ns = Object.create(null);
+/******/        __webpack_require__.r(ns);
+/******/        Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/        if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/        return ns;
+/******/    };
+/******/
+/******/    // getDefaultExport function for compatibility with non-harmony modules
+/******/    __webpack_require__.n = function(module) {
+/******/        var getter = module && module.__esModule ?
+/******/            function getDefault() { return module['default']; } :
+/******/            function getModuleExports() { return module; };
+/******/        __webpack_require__.d(getter, 'a', getter);
+/******/        return getter;
+/******/    };
+/******/
+/******/    // Object.prototype.hasOwnProperty.call
+/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/    // __webpack_public_path__
+/******/    __webpack_require__.p = "";
+/******/
+/******/
+/******/    // Load entry module and return exports
+/******/    return __webpack_require__(__webpack_require__.s = "./static-wrappers/basic.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -389,11 +389,11 @@ var TimingCallbacks = function TimingCallbacks(target, params) {
 
     if (self.eventCallback && self.currentEvent > 0 && self.noteTimings[self.currentEvent - 1].type === 'event') self.eventCallback(self.noteTimings[self.currentEvent - 1]);
     if (self.lineEndCallback) self.lineEndCallback(self.lineEndTimings['e' + lineStart]); // console.log("currentPercent="+currentPercent+
-    // 	" newSeekPercent="+self.newSeekPercent+
-    // 	" percentDifference="+percentDifference+
-    // 	" timeDifference=",timeDifference+
-    // 	" currentBeat="+self.currentBeat+
-    // 	" currentEvent="+self.currentEvent);
+    //  " newSeekPercent="+self.newSeekPercent+
+    //  " percentDifference="+percentDifference+
+    //  " timeDifference=",timeDifference+
+    //  " currentBeat="+self.currentBeat+
+    //  " currentEvent="+self.currentEvent);
   }
 
   self.lastTimestamp = 0;
@@ -799,24 +799,24 @@ var tunebook = {};
       var tuneObj = tunebook.parseOnly(tune.abc)[0];
       var hasPickup = tuneObj.getPickupLength() > 0; // var staves = flattenTune(tuneObj);
       // for (var s = 0; s < staves.length; s++) {
-      // 	var voices = measuresParser(staves[s], tune);
-      // 	if (s === 0)
-      // 		measures = voices;
-      // 	else {
-      // 		for (var ss = 0; ss < voices.length; ss++) {
-      // 			var voice = voices[ss];
-      // 			if (measures.length <= ss)
-      // 				measures.push([]);
-      // 			var measureVoice = measures[ss];
-      // 			for (var sss = 0; sss < voice.length; sss++) {
-      // 				if (measureVoice.length > sss)
-      // 					measureVoice[sss].abc += "\n" + voice[sss].abc;
-      // 				else
-      // 					measures.push(voice[sss]);
-      // 			}
-      // 		}
-      // 	}
-      // 	console.log(voices);
+      //    var voices = measuresParser(staves[s], tune);
+      //    if (s === 0)
+      //        measures = voices;
+      //    else {
+      //        for (var ss = 0; ss < voices.length; ss++) {
+      //            var voice = voices[ss];
+      //            if (measures.length <= ss)
+      //                measures.push([]);
+      //            var measureVoice = measures[ss];
+      //            for (var sss = 0; sss < voice.length; sss++) {
+      //                if (measureVoice.length > sss)
+      //                    measureVoice[sss].abc += "\n" + voice[sss].abc;
+      //                else
+      //                    measures.push(voice[sss]);
+      //            }
+      //        }
+      //    }
+      //    console.log(voices);
       // }
       // measures = measures[0];
 
@@ -1199,25 +1199,25 @@ var Tune = function Tune() {
   // field. The rest of the fields depend on the type and are listed below:
   // REST: duration=1,2,4,8; chord: string
   // NOTE: accidental=none,dbl_flat,flat,natural,sharp,dbl_sharp
-  //		pitch: "C" is 0. The numbers refer to the pitch letter.
-  //		duration: .5 (sixteenth), .75 (dotted sixteenth), 1 (eighth), 1.5 (dotted eighth)
-  //			2 (quarter), 3 (dotted quarter), 4 (half), 6 (dotted half) 8 (whole)
-  //		chord: { name:chord, position: one of 'default', 'above', 'below' }
-  //		end_beam = true or undefined if this is the last note in a beam.
-  //		lyric: array of { syllable: xxx, divider: one of " -_" }
-  //		startTie = true|undefined
-  //		endTie = true|undefined
-  //		startTriplet = num <- that is the number to print
-  //		endTriplet = true|undefined (the last note of the triplet)
+  //        pitch: "C" is 0. The numbers refer to the pitch letter.
+  //        duration: .5 (sixteenth), .75 (dotted sixteenth), 1 (eighth), 1.5 (dotted eighth)
+  //            2 (quarter), 3 (dotted quarter), 4 (half), 6 (dotted half) 8 (whole)
+  //        chord: { name:chord, position: one of 'default', 'above', 'below' }
+  //        end_beam = true or undefined if this is the last note in a beam.
+  //        lyric: array of { syllable: xxx, divider: one of " -_" }
+  //        startTie = true|undefined
+  //        endTie = true|undefined
+  //        startTriplet = num <- that is the number to print
+  //        endTriplet = true|undefined (the last note of the triplet)
   // TODO: actually, decoration should be an array.
-  //		decoration: upbow, downbow, accent
+  //        decoration: upbow, downbow, accent
   // BAR: type=bar_thin, bar_thin_thick, bar_thin_thin, bar_thick_thin, bar_right_repeat, bar_left_repeat, bar_double_repeat
-  //	number: 1 or 2: if it is the start of a first or second ending
+  //    number: 1 or 2: if it is the start of a first or second ending
   // CLEF: type=treble,bass
   // KEY-SIG:
-  //		accidentals[]: { acc:sharp|dblsharp|natural|flat|dblflat,  note:a|b|c|d|e|f|g }
+  //        accidentals[]: { acc:sharp|dblsharp|natural|flat|dblflat,  note:a|b|c|d|e|f|g }
   // METER: type: common_time,cut_time,specified
-  //		if specified, { num: 99, den: 99 }
+  //        if specified, { num: 99, den: 99 }
   this.getBeatLength = function () {
     for (var i = 0; i < this.lines.length; i++) {
       if (this.lines[i].staff) {
@@ -1486,7 +1486,7 @@ var Tune = function Tune() {
         for (s = 0; s < this.lines[i].staff.length; s++) {
           if (this.lines[i].staff[s] === undefined) {
             anyDeleted = true;
-            this.lines[i].staff[s] = null; //this.lines[i].staff[s] = { voices: []};	// TODO-PER: There was a part missing in the abc music. How should we recover?
+            this.lines[i].staff[s] = null; //this.lines[i].staff[s] = { voices: []};    // TODO-PER: There was a part missing in the abc music. How should we recover?
           } else {
             for (v = 0; v < this.lines[i].staff[s].voices.length; v++) {
               if (this.lines[i].staff[s].voices[v] === undefined) this.lines[i].staff[s].voices[v] = []; // TODO-PER: There was a part missing in the abc music. How should we recover?
@@ -1560,7 +1560,7 @@ var Tune = function Tune() {
     }
 
     function cleanUpSlursInLine(line) {
-      var x; //			var lyr = null;	// TODO-PER: debugging.
+      var x; //         var lyr = null; // TODO-PER: debugging.
 
       var addEndSlur = function addEndSlur(obj, num, chordPos) {
         if (currSlur[chordPos] === undefined) {
@@ -1585,7 +1585,7 @@ var Tune = function Tune() {
 
         for (var i = 0; i < num; i++) {
           slurNum = currSlur[chordPos].pop();
-          obj.endSlur.push(slurNum); //					lyr.syllable += '<' + slurNum;	// TODO-PER: debugging
+          obj.endSlur.push(slurNum); //                 lyr.syllable += '<' + slurNum;  // TODO-PER: debugging
         }
 
         if (currSlur[chordPos].length === 0) delete currSlur[chordPos];
@@ -1623,17 +1623,17 @@ var Tune = function Tune() {
           currSlur[chordPos].push(nextNum);
           obj.startSlur.push({
             label: nextNum
-          }); //					lyr.syllable += ' ' + nextNum + '>';	// TODO-PER:debugging
+          }); //                    lyr.syllable += ' ' + nextNum + '>';    // TODO-PER:debugging
 
           nextNum++;
         }
       };
 
       for (var i = 0; i < line.length; i++) {
-        var el = line[i]; //				if (el.lyric === undefined)	// TODO-PER: debugging
-        //					el.lyric = [{ divider: '-' }];	// TODO-PER: debugging
-        //				lyr = el.lyric[0];	// TODO-PER: debugging
-        //				lyr.syllable = '';	// TODO-PER: debugging
+        var el = line[i]; //                if (el.lyric === undefined) // TODO-PER: debugging
+        //                  el.lyric = [{ divider: '-' }];  // TODO-PER: debugging
+        //              lyr = el.lyric[0];  // TODO-PER: debugging
+        //              lyr.syllable = '';  // TODO-PER: debugging
 
         if (el.el_type === 'note') {
           if (el.gracenotes) {
@@ -1702,37 +1702,37 @@ var Tune = function Tune() {
 
     function fixClefPlacement(el) {
       parseKeyVoice.fixClef(el); //if (el.el_type === 'clef') {
-      //				var min = -2;
-      //				var max = 5;
-      //				switch(el.type) {
-      //					case 'treble+8':
-      //					case 'treble-8':
-      //						break;
-      //					case 'bass':
-      //					case 'bass+8':
-      //					case 'bass-8':
-      //						el.verticalPos = 20 + el.verticalPos; min += 6; max += 6;
-      //						break;
-      //					case 'tenor':
-      //					case 'tenor+8':
-      //					case 'tenor-8':
-      //						el.verticalPos = - el.verticalPos; min = -40; max = 40;
-      ////						el.verticalPos+=2; min += 6; max += 6;
-      //						break;
-      //					case 'alto':
-      //					case 'alto+8':
-      //					case 'alto-8':
-      //						el.verticalPos = - el.verticalPos; min = -40; max = 40;
-      ////						el.verticalPos-=2; min += 4; max += 4;
-      //						break;
-      //				}
-      //				if (el.verticalPos < min) {
-      //					while (el.verticalPos < min)
-      //						el.verticalPos += 7;
-      //				} else if (el.verticalPos > max) {
-      //					while (el.verticalPos > max)
-      //						el.verticalPos -= 7;
-      //				}
+      //                var min = -2;
+      //                var max = 5;
+      //                switch(el.type) {
+      //                    case 'treble+8':
+      //                    case 'treble-8':
+      //                        break;
+      //                    case 'bass':
+      //                    case 'bass+8':
+      //                    case 'bass-8':
+      //                        el.verticalPos = 20 + el.verticalPos; min += 6; max += 6;
+      //                        break;
+      //                    case 'tenor':
+      //                    case 'tenor+8':
+      //                    case 'tenor-8':
+      //                        el.verticalPos = - el.verticalPos; min = -40; max = 40;
+      ////                      el.verticalPos+=2; min += 6; max += 6;
+      //                        break;
+      //                    case 'alto':
+      //                    case 'alto+8':
+      //                    case 'alto-8':
+      //                        el.verticalPos = - el.verticalPos; min = -40; max = 40;
+      ////                      el.verticalPos-=2; min += 4; max += 4;
+      //                        break;
+      //                }
+      //                if (el.verticalPos < min) {
+      //                    while (el.verticalPos < min)
+      //                        el.verticalPos += 7;
+      //                } else if (el.verticalPos > max) {
+      //                    while (el.verticalPos > max)
+      //                        el.verticalPos -= 7;
+      //                }
       //}
     }
 
@@ -1960,13 +1960,13 @@ var Tune = function Tune() {
           This.potentialEndBeam = hashParams; // Continue the beaming, look for the end next note.
         }
       } //  end_beam goes on rests and notes which precede rests _except_ when a rest (or set of adjacent rests) has normal notes on both sides (no spaces)
-      //			if (hashParams.rest !== undefined)
-      //			{
-      //				hashParams.end_beam = true;
-      //				var el2 = this.getLastNote();
-      //				if (el2) el2.end_beam = true;
-      //				// TODO-PER: implement exception mentioned in the comment.
-      //			}
+      //            if (hashParams.rest !== undefined)
+      //            {
+      //                hashParams.end_beam = true;
+      //                var el2 = this.getLastNote();
+      //                if (el2) el2.end_beam = true;
+      //                // TODO-PER: implement exception mentioned in the comment.
+      //            }
 
     } else {
       // It's not a note, so there definitely isn't beaming after it.
@@ -2110,13 +2110,13 @@ var Tune = function Tune() {
     }
 
     return false;
-  }; //	anyVoiceContainsNotes: function(line) {
-  //		for (var i = 0; i < line.staff.voices.length; i++) {
-  //			if (this.containsNotes(line.staff.voices[i]))
-  //				return true;
-  //		}
-  //		return false;
-  //	},
+  }; // anyVoiceContainsNotes: function(line) {
+  //        for (var i = 0; i < line.staff.voices.length; i++) {
+  //            if (this.containsNotes(line.staff.voices[i]))
+  //                return true;
+  //        }
+  //        return false;
+  //    },
 
 
   this.changeVoiceScale = function (scale) {
@@ -2706,23 +2706,23 @@ module.exports = Tune;
 //
 // EditArea:
 // - constructor(textareaid)
-//		This contains the id of a textarea control that will be used.
+//      This contains the id of a textarea control that will be used.
 // - addSelectionListener(listener)
-//		A callback class that contains the entry point fireSelectionChanged()
+//      A callback class that contains the entry point fireSelectionChanged()
 // - addChangeListener(listener)
-//		A callback class that contains the entry point fireChanged()
+//      A callback class that contains the entry point fireChanged()
 // - getSelection()
-//		returns the object { start: , end: } with the current selection in characters
+//      returns the object { start: , end: } with the current selection in characters
 // - setSelection(start, end)
-//		start and end are the character positions that should be selected.
+//      start and end are the character positions that should be selected.
 // - getString()
-//		returns the ABC text that is currently displayed.
+//      returns the ABC text that is currently displayed.
 // - setString(str)
-//		sets the ABC text that is currently displayed, and resets the initialText variable
+//      sets the ABC text that is currently displayed, and resets the initialText variable
 // - getElem()
-//		returns the textarea element
+//      returns the textarea element
 // - string initialText
-//		Contains the starting text. This can be compared against the current text to see if anything changed.
+//      Contains the starting text. This can be compared against the current text to see if anything changed.
 //
 
 /*global document, window, clearTimeout, setTimeout */
@@ -2833,53 +2833,53 @@ EditArea.prototype.getElem = function () {
 // window.ABCJS.Editor:
 //
 // constructor(editarea, params)
-//		if editarea is a string, then it is an HTML id of a textarea control.
-//		Otherwise, it should be an instantiation of an object that expresses the EditArea interface.
+//      if editarea is a string, then it is an HTML id of a textarea control.
+//      Otherwise, it should be an instantiation of an object that expresses the EditArea interface.
 //
-//		params is a hash of:
-//		canvas_id: or paper_id: HTML id to draw in. If not present, then the drawing happens just below the editor.
-//		generate_midi: if present, then midi is generated.
-//		midi_id: if present, the HTML id to place the midi control. Otherwise it is placed in the same div as the paper.
-//		midi_download_id: if present, the HTML id to place the midi download link. Otherwise it is placed in the same div as the paper.
-//		generate_warnings: if present, then parser warnings are displayed on the page.
-//		warnings_id: if present, the HTML id to place the warnings. Otherwise they are placed in the same div as the paper.
-//		onchange: if present, the callback function to call whenever there has been a change.
-//		gui: if present, the paper can send changes back to the editor (presumably because the user changed something directly.)
-//		parser_options: options to send to the parser engine.
-//		midi_options: options to send to the midi engine.
-//		render_options: options to send to the render engine.
-//		indicate_changed: the dirty flag is set if this is true.
+//      params is a hash of:
+//      canvas_id: or paper_id: HTML id to draw in. If not present, then the drawing happens just below the editor.
+//      generate_midi: if present, then midi is generated.
+//      midi_id: if present, the HTML id to place the midi control. Otherwise it is placed in the same div as the paper.
+//      midi_download_id: if present, the HTML id to place the midi download link. Otherwise it is placed in the same div as the paper.
+//      generate_warnings: if present, then parser warnings are displayed on the page.
+//      warnings_id: if present, the HTML id to place the warnings. Otherwise they are placed in the same div as the paper.
+//      onchange: if present, the callback function to call whenever there has been a change.
+//      gui: if present, the paper can send changes back to the editor (presumably because the user changed something directly.)
+//      parser_options: options to send to the parser engine.
+//      midi_options: options to send to the midi engine.
+//      render_options: options to send to the render engine.
+//      indicate_changed: the dirty flag is set if this is true.
 //
 // - setReadOnly(bool)
-//		adds or removes the class abc_textarea_readonly, and adds or removes the attribute readonly=yes
+//      adds or removes the class abc_textarea_readonly, and adds or removes the attribute readonly=yes
 // - setDirtyStyle(bool)
-//		adds or removes the class abc_textarea_dirty
+//      adds or removes the class abc_textarea_dirty
 // - renderTune(abc, parserparams, div)
-//		Immediately renders the tune. (Useful for creating the SVG output behind the scenes, if div is hidden)
-//		string abc: the ABC text
-//		parserparams: params to send to the parser
-//		div: the HTML id to render to.
+//      Immediately renders the tune. (Useful for creating the SVG output behind the scenes, if div is hidden)
+//      string abc: the ABC text
+//      parserparams: params to send to the parser
+//      div: the HTML id to render to.
 // - modelChanged()
-//		Called when the model has been changed to trigger re-rendering
+//      Called when the model has been changed to trigger re-rendering
 // - parseABC()
-//		Called internally by fireChanged()
-//		returns true if there has been a change since last call.
+//      Called internally by fireChanged()
+//      returns true if there has been a change since last call.
 // - updateSelection()
-//		Called when the user has changed the selection. This calls the engraver_controller to show the selection.
+//      Called when the user has changed the selection. This calls the engraver_controller to show the selection.
 // - fireSelectionChanged()
-//		Called by the textarea object when the user has changed the selection.
+//      Called by the textarea object when the user has changed the selection.
 // - paramChanged(engraverparams)
-//		Called to signal that the engraver params have changed, so re-rendering should occur.
+//      Called to signal that the engraver params have changed, so re-rendering should occur.
 // - fireChanged()
-//		Called by the textarea object when the user has changed something.
+//      Called by the textarea object when the user has changed something.
 // - setNotDirty()
-//		Called by the client app to reset the dirty flag
+//      Called by the client app to reset the dirty flag
 // - isDirty()
-//		Returns true or false, whether the textarea contains the same text that it started with.
+//      Returns true or false, whether the textarea contains the same text that it started with.
 // - highlight(abcelem)
-//		Called by the engraver_controller to highlight an area.
+//      Called by the engraver_controller to highlight an area.
 // - pause(bool)
-//		Stops the automatic rendering when the user is typing.
+//      Stops the automatic rendering when the user is typing.
 //
 
 
@@ -3217,7 +3217,7 @@ Editor.prototype.isDirty = function () {
 
 Editor.prototype.highlight = function (abcelem, tuneNumber, classes) {
   // TODO-PER: The marker appears to get off by one for each tune parsed. I'm not sure why, but adding the tuneNumber in corrects it for the time being.
-  //	var offset = (tuneNumber !== undefined) ? this.startPos[tuneNumber] + tuneNumber : 0;
+  //    var offset = (tuneNumber !== undefined) ? this.startPos[tuneNumber] + tuneNumber : 0;
   this.editarea.setSelection(abcelem.startChar, abcelem.endChar);
   if (this.selectionChangeCallback) this.selectionChangeCallback(abcelem.startChar, abcelem.endChar);
 };
@@ -3551,9 +3551,9 @@ var flatten;
             break;
 
           case "channel":
-            // 	if (channel === undefined)
-            // 		channel = element.channel;
-            // 	currentTrack[0].channel = element.channel;
+            //  if (channel === undefined)
+            //      channel = element.channel;
+            //  currentTrack[0].channel = element.channel;
             break;
 
           case "drum":
@@ -3614,17 +3614,17 @@ var flatten;
     // var num = startingMeter ? parseInt(startingMeter.num, 10) : meter.num;
     // var den = startingMeter ? parseInt(startingMeter.den, 10) : meter.den;
     // if (den === 2)
-    // 	startingTempo *= 2;
+    //  startingTempo *= 2;
     // else if (den === 8) {
-    // 	if (parseInt(num, 10) % 3 === 0)
-    // 		startingTempo *= 3/2;
-    // 	else
-    // 		startingTempo /= 2;
+    //  if (parseInt(num, 10) % 3 === 0)
+    //      startingTempo *= 3/2;
+    //  else
+    //      startingTempo /= 2;
     // } else if (den === 16) {
-    // 	if (num % 3 === 0)
-    // 		startingTempo *= 3/4;
-    // 	else
-    // 		startingTempo /= 4;
+    //  if (num % 3 === 0)
+    //      startingTempo *= 3/4;
+    //  else
+    //      startingTempo /= 4;
     // }
 
     return {
@@ -3691,16 +3691,16 @@ var flatten;
   // - If a chord modification isn't in our supported list, change it to a major triad.
   //
   // - If there is only one chord in a measure:
-  //		- If 2/4, play root chord
-  //		- If cut time, play root(1) chord(3)
-  //		- If 3/4, play root chord chord
-  //		- If 4/4 or common time, play root chord fifth chord
-  //		- If 6/8, play root(1) chord(3) fifth(4) chord(6)
-  //		- For any other meter, play the full chord on each beat. (TODO-PER: expand this as more support is added.)
+  //        - If 2/4, play root chord
+  //        - If cut time, play root(1) chord(3)
+  //        - If 3/4, play root chord chord
+  //        - If 4/4 or common time, play root chord fifth chord
+  //        - If 6/8, play root(1) chord(3) fifth(4) chord(6)
+  //        - For any other meter, play the full chord on each beat. (TODO-PER: expand this as more support is added.)
   //
-  //	- If there is a chord specified that is not on a beat, move it earlier to the previous beat, unless there is already a chord on that beat.
-  //	- Otherwise, move it later, unless there is already a chord on that beat.
-  // 	- Otherwise, ignore it. (TODO-PER: expand this as more support is added.)
+  //    - If there is a chord specified that is not on a beat, move it earlier to the previous beat, unless there is already a chord on that beat.
+  //    - Otherwise, move it later, unless there is already a chord on that beat.
+  //    - Otherwise, ignore it. (TODO-PER: expand this as more support is added.)
   //
   // - If there is a chord on the second beat, play a chord for the first beat instead of a bass note.
   // - Likewise, if there is a chord on the fourth beat of 4/4, play a chord on the third beat instead of a bass note.
@@ -4745,7 +4745,7 @@ var Preparer;
         subtype: 'setTempo',
         type: 'meta'
       }
-    }, this.nextDuration * this.timeFactor]; //		this.tracks[this.track].push(ev);
+    }, this.nextDuration * this.timeFactor]; //     this.tracks[this.track].push(ev);
 
     ev = [{
       ticksToEvent: 0,
@@ -4756,7 +4756,7 @@ var Preparer;
         text: title,
         type: 'meta'
       }
-    }, this.nextDuration * this.timeFactor]; //		this.tracks[this.track].push(ev);
+    }, this.nextDuration * this.timeFactor]; //     this.tracks[this.track].push(ev);
 
     ev = [{
       ticksToEvent: 0,
@@ -4766,7 +4766,7 @@ var Preparer;
         subtype: 'endOfTrack',
         type: 'meta'
       }
-    }, this.nextDuration * this.timeFactor]; //		this.tracks[this.track].push(ev);
+    }, this.nextDuration * this.timeFactor]; //     this.tracks[this.track].push(ev);
   };
 
   Preparer.prototype.startNote = function (pitch, volume) {
@@ -4818,7 +4818,7 @@ var Preparer;
         type: "meta",
         subtype: "endOfTrack"
       }
-    }, 0]; //		this.tracks[this.track].push(ev);
+    }, 0]; //       this.tracks[this.track].push(ev);
   };
 
   function addAbsoluteTime(tracks) {
@@ -5021,7 +5021,7 @@ var rendererFactory;
   Midi.prototype.endNote = function (pitch) {
     this.track += toDurationHex(this.silencelength); // only need to shift by amount of silence (if there is any)
 
-    this.silencelength = 0; //		this.track += toDurationHex(length); //duration
+    this.silencelength = 0; //      this.track += toDurationHex(length); //duration
 
     this.track += this.noteOffAndChannel;
     this.track += "%" + pitch.toString(16) + "%00"; //end note
@@ -5333,12 +5333,12 @@ var sequence;
       startVoice.push(startingMidi[ss]);
     } // the relevant part of the input structure is:
     // abctune
-    //		array lines
-    //			array staff
-    //				object key
-    //				object meter
-    //				array voices
-    //					array abcelem
+    //      array lines
+    //          array staff
+    //              object key
+    //              object meter
+    //              array voices
+    //                  array abcelem
     // visit each voice completely in turn
 
 
@@ -7214,7 +7214,7 @@ var Parse = function Parse() {
   var nonDecorations = "ABCDEFGabcdefgxyzZ[]|^_{"; // use this to prescreen so we don't have to look for a decoration at every note.
 
   var parseRegularMusicLine = function parseRegularMusicLine(line) {
-    header.resolveTempo(); //multilineVars.havent_set_length = false;	// To late to set this now.
+    header.resolveTempo(); //multilineVars.havent_set_length = false;   // To late to set this now.
 
     multilineVars.is_in_header = false; // We should have gotten a key header by now, but just in case, this is definitely out of the header.
 
@@ -7408,12 +7408,12 @@ var Parse = function Parse() {
           }
           i += ret[0];
           var cv = multilineVars.currentVoice ? multilineVars.currentVoice.staffNum + '-' + multilineVars.currentVoice.index : 'ONLY'; // if (multilineVars.lineBreaks) {
-          // 	if (!multilineVars.barCounter[cv])
-          // 		multilineVars.barCounter[cv] = 0;
-          // 	var breakNow = multilineVars.lineBreaks[''+multilineVars.barCounter[cv]];
-          // 	multilineVars.barCounter[cv]++;
-          // 	if (breakNow)
-          // 		startNewLine();
+          //    if (!multilineVars.barCounter[cv])
+          //        multilineVars.barCounter[cv] = 0;
+          //    var breakNow = multilineVars.lineBreaks[''+multilineVars.barCounter[cv]];
+          //    multilineVars.barCounter[cv]++;
+          //    if (breakNow)
+          //        startNewLine();
           // }
         } else if (line[i] === '&') {
           // backtrack to beginning of measure
@@ -8774,32 +8774,32 @@ var parseDirective = {};
     switch (cmd) {
       // The following directives were added to abc_parser_lint, but haven't been implemented here.
       // Most of them are direct translations from the directives that will be parsed in. See abcm2ps's format.txt for info on each of these.
-      //					alignbars: { type: "number", optional: true },
-      //					aligncomposer: { type: "string", Enum: [ 'left', 'center','right' ], optional: true },
-      //					bstemdown: { type: "boolean", optional: true },
-      //					continueall: { type: "boolean", optional: true },
-      //					dynalign: { type: "boolean", optional: true },
-      //					exprabove: { type: "boolean", optional: true },
-      //					exprbelow: { type: "boolean", optional: true },
-      //					gchordbox: { type: "boolean", optional: true },
-      //					graceslurs: { type: "boolean", optional: true },
-      //					gracespacebefore: { type: "number", optional: true },
-      //					gracespaceinside: { type: "number", optional: true },
-      //					gracespaceafter: { type: "number", optional: true },
-      //					infospace: { type: "number", optional: true },
-      //					lineskipfac: { type: "number", optional: true },
-      //					maxshrink: { type: "number", optional: true },
-      //					maxstaffsep: { type: "number", optional: true },
-      //					maxsysstaffsep: { type: "number", optional: true },
-      //					notespacingfactor: { type: "number", optional: true },
-      //					parskipfac: { type: "number", optional: true },
-      //					slurheight: { type: "number", optional: true },
-      //					splittune: { type: "boolean", optional: true },
-      //					squarebreve: { type: "boolean", optional: true },
-      //					stemheight: { type: "number", optional: true },
-      //					straightflags: { type: "boolean", optional: true },
-      //					stretchstaff: { type: "boolean", optional: true },
-      //					titleformat: { type: "string", optional: true },
+      //                    alignbars: { type: "number", optional: true },
+      //                    aligncomposer: { type: "string", Enum: [ 'left', 'center','right' ], optional: true },
+      //                    bstemdown: { type: "boolean", optional: true },
+      //                    continueall: { type: "boolean", optional: true },
+      //                    dynalign: { type: "boolean", optional: true },
+      //                    exprabove: { type: "boolean", optional: true },
+      //                    exprbelow: { type: "boolean", optional: true },
+      //                    gchordbox: { type: "boolean", optional: true },
+      //                    graceslurs: { type: "boolean", optional: true },
+      //                    gracespacebefore: { type: "number", optional: true },
+      //                    gracespaceinside: { type: "number", optional: true },
+      //                    gracespaceafter: { type: "number", optional: true },
+      //                    infospace: { type: "number", optional: true },
+      //                    lineskipfac: { type: "number", optional: true },
+      //                    maxshrink: { type: "number", optional: true },
+      //                    maxstaffsep: { type: "number", optional: true },
+      //                    maxsysstaffsep: { type: "number", optional: true },
+      //                    notespacingfactor: { type: "number", optional: true },
+      //                    parskipfac: { type: "number", optional: true },
+      //                    slurheight: { type: "number", optional: true },
+      //                    splittune: { type: "boolean", optional: true },
+      //                    squarebreve: { type: "boolean", optional: true },
+      //                    stemheight: { type: "number", optional: true },
+      //                    straightflags: { type: "boolean", optional: true },
+      //                    stretchstaff: { type: "boolean", optional: true },
+      //                    titleformat: { type: "string", optional: true },
       case "bagpipes":
         tune.formatting.bagpipes = true;
         break;
@@ -8986,7 +8986,7 @@ var parseDirective = {};
         break;
 
       case "setfont":
-        var sfTokens = tokenizer.tokenize(restOfString, 0, restOfString.length); //				var sfDone = false;
+        var sfTokens = tokenizer.tokenize(restOfString, 0, restOfString.length); //             var sfDone = false;
 
         if (sfTokens.length >= 4) {
           if (sfTokens[0].token === '-' && sfTokens[1].type === 'number') {
@@ -8996,19 +8996,19 @@ var parseDirective = {};
               if (!multilineVars.setfont) multilineVars.setfont = [];
               sfTokens.shift();
               sfTokens.shift();
-              multilineVars.setfont[sfNum] = getFontParameter(sfTokens, multilineVars.setfont[sfNum], str, 0, 'setfont'); //							var sfSize = sfTokens.pop();
-              //							if (sfSize.type === 'number') {
-              //								sfSize = parseInt(sfSize.token);
-              //								var sfFontName = '';
-              //								for (var sfi = 2; sfi < sfTokens.length; sfi++)
-              //									sfFontName += sfTokens[sfi].token;
-              //								multilineVars.setfont[sfNum] = { face: sfFontName, size: sfSize };
-              //								sfDone = true;
-              //							}
+              multilineVars.setfont[sfNum] = getFontParameter(sfTokens, multilineVars.setfont[sfNum], str, 0, 'setfont'); //                            var sfSize = sfTokens.pop();
+              //                            if (sfSize.type === 'number') {
+              //                                sfSize = parseInt(sfSize.token);
+              //                                var sfFontName = '';
+              //                                for (var sfi = 2; sfi < sfTokens.length; sfi++)
+              //                                    sfFontName += sfTokens[sfi].token;
+              //                                multilineVars.setfont[sfNum] = { face: sfFontName, size: sfSize };
+              //                                sfDone = true;
+              //                            }
             }
           }
-        } //				if (!sfDone)
-        //					return "Bad parameters: " + cmd;
+        } //                if (!sfDone)
+        //                  return "Bad parameters: " + cmd;
 
 
         break;
@@ -9813,7 +9813,7 @@ var ParseHeader = function ParseHeader(tokenizer, warn, multilineVars, tune) {
           return [e, line.charAt(i), parseCommon.strip(line.substring(i + 2))];
 
         case "V:":
-          parseKeyVoice.parseVoice(line, i + 2, line.length); //						startNewLine();
+          parseKeyVoice.parseVoice(line, i + 2, line.length); //                        startNewLine();
 
           return [line.length, line.charAt(i), parseCommon.strip(line.substring(i + 2))];
 
@@ -10532,13 +10532,13 @@ var parseKeyVoice = {};
   parseKeyVoice.parseKey = function (str) // (and clef)
   {
     // returns:
-    //		{ foundClef: true, foundKey: true }
+    //      { foundClef: true, foundKey: true }
     // Side effects:
-    //		calls warn() when there is a syntax error
-    //		sets these members of multilineVars:
-    //			clef
-    //			key
-    //			style
+    //      calls warn() when there is a syntax error
+    //      sets these members of multilineVars:
+    //          clef
+    //          key
+    //          style
     //
     // The format is:
     // K: [⟨key⟩] [⟨modifiers⟩*]
@@ -11063,10 +11063,10 @@ var parseKeyVoice = {};
           case 'cl':
             addNextTokenToStaffInfo('clef'); // TODO-PER: check for a legal clef; do octavizing
 
-            var oct = 0; //							for (var ii = 0; ii < staffInfo.clef.length; ii++) {
-            //								if (staffInfo.clef[ii] === ',') oct -= 7;
-            //								else if (staffInfo.clef[ii] === "'") oct += 7;
-            //							}
+            var oct = 0; //                         for (var ii = 0; ii < staffInfo.clef.length; ii++) {
+            //                              if (staffInfo.clef[ii] === ',') oct -= 7;
+            //                              else if (staffInfo.clef[ii] === "'") oct += 7;
+            //                          }
 
             if (staffInfo.clef !== undefined) {
               staffInfo.clef = staffInfo.clef.replace(/[',]/g, ""); //'//comment for emacs formatting of regexp
@@ -11108,10 +11108,10 @@ var parseKeyVoice = {};
           case 'alto,,':
           case 'none,,':
             // TODO-PER: handle the octave indicators on the clef by changing the middle property
-            var oct2 = 0; //							for (var iii = 0; iii < token.token.length; iii++) {
-            //								if (token.token[iii] === ',') oct2 -= 7;
-            //								else if (token.token[iii] === "'") oct2 += 7;
-            //							}
+            var oct2 = 0; //                            for (var iii = 0; iii < token.token.length; iii++) {
+            //                              if (token.token[iii] === ',') oct2 -= 7;
+            //                              else if (token.token[iii] === "'") oct2 += 7;
+            //                          }
 
             staffInfo.clef = token.token.replace(/[',]/g, ""); //'//comment for emacs formatting of regexp
 
@@ -11225,7 +11225,7 @@ var parseKeyVoice = {};
             break;
           // default:
           // Use this to find V: usages that aren't handled.
-          // 	console.log("parse voice", token, tune.metaText.title);
+          //    console.log("parse voice", token, tune.metaText.title);
         }
       }
 
@@ -11379,13 +11379,13 @@ var Tokenizer = function Tokenizer() {
           len: i + 1,
           token: 'G'
         };
-      //			case 'a':return {len: i+1, token: 'A'};
-      //			case 'b':return {len: i+1, token: 'B'};
-      //			case 'c':return {len: i+1, token: 'C'};
-      //			case 'd':return {len: i+1, token: 'D'};
-      //			case 'e':return {len: i+1, token: 'E'};
-      //			case 'f':return {len: i+1, token: 'F'};
-      //			case 'g':return {len: i+1, token: 'G'};
+      //            case 'a':return {len: i+1, token: 'A'};
+      //            case 'b':return {len: i+1, token: 'B'};
+      //            case 'c':return {len: i+1, token: 'C'};
+      //            case 'd':return {len: i+1, token: 'D'};
+      //            case 'e':return {len: i+1, token: 'E'};
+      //            case 'f':return {len: i+1, token: 'F'};
+      //            case 'g':return {len: i+1, token: 'G'};
     }
 
     return {
@@ -13141,72 +13141,72 @@ function freeFormLineBreaks(widths, lineBreakPoint) {
     totals: totals
   };
 } // function createLineTestArray(numLines, numMeasures, maxMeasuresPerLine, minMeasuresPerLine) {
-// 	var tries = [];
-// 	// To get all the iterations, it is every digit in a particular base-numbering system.
-// 	// That is, we want to generate every number that is (numLines-1) digits, in base (max-min+1)
-// 	// For instance, for 5 lines where the min is 6 and max is 8, we want ever combination of 4 digits in base 3.
-// 	var base = maxMeasuresPerLine - minMeasuresPerLine + 1;
-// 	var digits = numLines - 1; // The last digit is fixed: it is what ever is needed to sum up to the total number of measures.
-// 	var done = false;
-// 	var iter = 0;
-// 	while (!done) {
-// 		var attempt = [];
-// 		var num = iter;
-// 		var total = 0;
-// 		for (var d = digits - 1; d >= 0; d--) {
-// 			attempt[d] = (num % base) + minMeasuresPerLine;
-// 			num = Math.floor(num / base);
-// 			total += attempt[d];
-// 		}
-// 		if (num > 0)
-// 			done = true; // continue until we exceed the greatest number. We know because there is a remainer.
-// 		else {
-// 			var lastLine = numMeasures - total;
-// 			if (lastLine >= minMeasuresPerLine && lastLine <= maxMeasuresPerLine) {
-// 				attempt[digits] = lastLine;
-// 				tries.push(attempt);
-// 			}
-// 			iter++;
-// 		}
-// 	}
-// 	return tries;
+//  var tries = [];
+//  // To get all the iterations, it is every digit in a particular base-numbering system.
+//  // That is, we want to generate every number that is (numLines-1) digits, in base (max-min+1)
+//  // For instance, for 5 lines where the min is 6 and max is 8, we want ever combination of 4 digits in base 3.
+//  var base = maxMeasuresPerLine - minMeasuresPerLine + 1;
+//  var digits = numLines - 1; // The last digit is fixed: it is what ever is needed to sum up to the total number of measures.
+//  var done = false;
+//  var iter = 0;
+//  while (!done) {
+//      var attempt = [];
+//      var num = iter;
+//      var total = 0;
+//      for (var d = digits - 1; d >= 0; d--) {
+//          attempt[d] = (num % base) + minMeasuresPerLine;
+//          num = Math.floor(num / base);
+//          total += attempt[d];
+//      }
+//      if (num > 0)
+//          done = true; // continue until we exceed the greatest number. We know because there is a remainer.
+//      else {
+//          var lastLine = numMeasures - total;
+//          if (lastLine >= minMeasuresPerLine && lastLine <= maxMeasuresPerLine) {
+//              attempt[digits] = lastLine;
+//              tries.push(attempt);
+//          }
+//          iter++;
+//      }
+//  }
+//  return tries;
 // }
 // function getVariance(attempt, idealLineBreak, widths, allowableOverage) {
-// 	var measureNumber = 0;
-// 	var thisWorstVariance = 0;
-// 	for (var j = 0; j < attempt.length; j++) {
-// 		var lineWidth = 0;
-// 		var measuresThisLine = attempt[j];
-// 		for (var k = 0; k < measuresThisLine; k++) {
-// 			lineWidth += widths[measureNumber++];
-// 		}
-// 		if (lineWidth > allowableOverage)
-// 			return null;
-// 		var variance = Math.abs(lineWidth - idealLineBreak);
-// 		if (variance > thisWorstVariance)
-// 			thisWorstVariance = variance;
-// 	}
-// 	return thisWorstVariance;
+//  var measureNumber = 0;
+//  var thisWorstVariance = 0;
+//  for (var j = 0; j < attempt.length; j++) {
+//      var lineWidth = 0;
+//      var measuresThisLine = attempt[j];
+//      for (var k = 0; k < measuresThisLine; k++) {
+//          lineWidth += widths[measureNumber++];
+//      }
+//      if (lineWidth > allowableOverage)
+//          return null;
+//      var variance = Math.abs(lineWidth - idealLineBreak);
+//      if (variance > thisWorstVariance)
+//          thisWorstVariance = variance;
+//  }
+//  return thisWorstVariance;
 // }
 // function getMaxVariance(widths, lineBreakPoint, lineBreaks) {
-// 	var maxVariance = 0;
-// 	var numLines = lineBreaks.length + 1; // the last line doesn't have an explicit break
-// 	var measureNumber = 0;
-// 	var totals = [];
-// 	for (var i = 0; i <= lineBreaks.length; i++) {
-// 		var breakMeasure = (i === lineBreaks.length) ? widths.length : lineBreaks[i];
-// 		var thisTotal = 0;
-// 		for (var j = measureNumber; j < breakMeasure; j++) {
-// 			thisTotal += widths[j];
-// 		}
-// 		measureNumber = breakMeasure;
-// 		var thisVariance = thisTotal <= lineBreakPoint ? lineBreakPoint - thisTotal : 1000000;
-// 		totals.push({total: thisTotal, variance: thisVariance})
-// 		maxVariance = Math.max(maxVariance, thisVariance);
-// 	}
+//  var maxVariance = 0;
+//  var numLines = lineBreaks.length + 1; // the last line doesn't have an explicit break
+//  var measureNumber = 0;
+//  var totals = [];
+//  for (var i = 0; i <= lineBreaks.length; i++) {
+//      var breakMeasure = (i === lineBreaks.length) ? widths.length : lineBreaks[i];
+//      var thisTotal = 0;
+//      for (var j = measureNumber; j < breakMeasure; j++) {
+//          thisTotal += widths[j];
+//      }
+//      measureNumber = breakMeasure;
+//      var thisVariance = thisTotal <= lineBreakPoint ? lineBreakPoint - thisTotal : 1000000;
+//      totals.push({total: thisTotal, variance: thisVariance})
+//      maxVariance = Math.max(maxVariance, thisVariance);
+//  }
 //
-// 	console.log(lineBreakPoint, totals)
-// 	return maxVariance;
+//  console.log(lineBreakPoint, totals)
+//  return maxVariance;
 // }
 
 
@@ -13226,21 +13226,21 @@ function getVariance(widths, lineBreaks) {
 
   return largestVariance;
 } // function getAvgVariance(widths, lineBreakPoint, lineBreaks) {
-// 	var totalVariance = 0;
-// 	var numLines = lineBreaks.length + 1; // the last line doesn't have an explicit break
-// 	var measureNumber = 0;
-// 	for (var i = 0; i <= lineBreaks.length; i++) {
-// 		var breakMeasure = (i === lineBreaks.length) ? widths.length : lineBreaks[i];
-// 		var thisTotal = 0;
-// 		for (var j = measureNumber; j < breakMeasure; j++) {
-// 			thisTotal += widths[j];
-// 		}
-// 		measureNumber = breakMeasure;
-// 		var thisVariance = Math.abs(lineBreakPoint - thisTotal);
-// 		totalVariance += thisVariance;
-// 	}
+//  var totalVariance = 0;
+//  var numLines = lineBreaks.length + 1; // the last line doesn't have an explicit break
+//  var measureNumber = 0;
+//  for (var i = 0; i <= lineBreaks.length; i++) {
+//      var breakMeasure = (i === lineBreaks.length) ? widths.length : lineBreaks[i];
+//      var thisTotal = 0;
+//      for (var j = measureNumber; j < breakMeasure; j++) {
+//          thisTotal += widths[j];
+//      }
+//      measureNumber = breakMeasure;
+//      var thisVariance = Math.abs(lineBreakPoint - thisTotal);
+//      totalVariance += thisVariance;
+//  }
 //
-// 	return totalVariance / numLines;
+//  return totalVariance / numLines;
 // }
 
 
@@ -13372,16 +13372,16 @@ function oneTry(measureWidths, idealWidths, accumulator, lineAccumulator, lineWi
 }
 
 function optimizeLineWidths(widths, lineBreakPoint, lineBreaks, explanation) {
-  //	figure out how many lines - That's one more than was tried before.
-  var numLines = Math.ceil(widths.total / lineBreakPoint) + 1; //	get the ideal width for a line (cumulative width / num lines) - approx the same as lineBreakPoint except for rounding
+  //    figure out how many lines - That's one more than was tried before.
+  var numLines = Math.ceil(widths.total / lineBreakPoint) + 1; //   get the ideal width for a line (cumulative width / num lines) - approx the same as lineBreakPoint except for rounding
 
-  var idealWidth = Math.floor(widths.total / numLines); //	get each ideal line width (1*ideal, 2*ideal, 3*ideal, etc)
+  var idealWidth = Math.floor(widths.total / numLines); //  get each ideal line width (1*ideal, 2*ideal, 3*ideal, etc)
 
   var idealWidths = [];
 
   for (var i = 0; i < numLines; i++) {
     idealWidths.push(idealWidth * (i + 1));
-  } //	from first measure, step through accum. Widths until the abs of the ideal is greater than the last one.
+  } //  from first measure, step through accum. Widths until the abs of the ideal is greater than the last one.
   // This can sometimes look funny in edge cases, so when the length is within 10%, try one more or one less to see which is better.
   // This is better than trying all the possibilities because that would get to be a huge number for even a medium size piece.
   // This method seems to never generate more than about 16 tries and it is usually 4 or less.
@@ -13444,133 +13444,133 @@ function optimizeLineWidths(widths, lineBreakPoint, lineBreaks, explanation) {
     lineBreaks: otherTries[smallestIndex].lineBreaks,
     variance: otherTries[smallestIndex].highestVariance
   };
-} // 	// Instead of having to try all the different combinations to find the best, we start with an important piece of knowledge about the lineBreaks we are given:
-// 	// If there is a line too short, it is the last one.
-// 	// So, let's just do a couple of tweaks to see how it works to add one or two measures to the last line.
-// 	var avg = widths.total / (lineBreaks.length + 1);
-// 	var variance = getVariance(widths, lineBreaks);
-// 	var variancePct = variance/lineBreakPoint*100;
+} //    // Instead of having to try all the different combinations to find the best, we start with an important piece of knowledge about the lineBreaks we are given:
+//  // If there is a line too short, it is the last one.
+//  // So, let's just do a couple of tweaks to see how it works to add one or two measures to the last line.
+//  var avg = widths.total / (lineBreaks.length + 1);
+//  var variance = getVariance(widths, lineBreaks);
+//  var variancePct = variance/lineBreakPoint*100;
 //
-// 	if (lineBreaks.length === 0)
-// 		return { failed: true, reason: "Only one line." };
+//  if (lineBreaks.length === 0)
+//      return { failed: true, reason: "Only one line." };
 //
-// 	var lastLineStart = lineBreaks[lineBreaks.length-1]+1;
-// 	var lastLineVariance = lineVariance(widths.measureWidths, lastLineStart, widths.measureWidths.length, avg);
-// 	if (variance > lastLineVariance)
-// 		return { failed: true, reason: "Last line is not too short." };
+//  var lastLineStart = lineBreaks[lineBreaks.length-1]+1;
+//  var lastLineVariance = lineVariance(widths.measureWidths, lastLineStart, widths.measureWidths.length, avg);
+//  if (variance > lastLineVariance)
+//      return { failed: true, reason: "Last line is not too short." };
 //
-// 	// Let's get a list of all combinations that have a possibility of working. That is, all combinations where no line has a variance larger than "variance".
-// 	var lastLines = lastLinePossibilities(widths.measureWidths, lastLineStart, avg - variance, avg + variance);
-// 	var attempts = getAttempts(widths.measureWidths, 0, lineBreaks.length, avg - variance, avg + variance, lastLines);
-// 	//console.log(attempts, avg - variance, avg + variance);
+//  // Let's get a list of all combinations that have a possibility of working. That is, all combinations where no line has a variance larger than "variance".
+//  var lastLines = lastLinePossibilities(widths.measureWidths, lastLineStart, avg - variance, avg + variance);
+//  var attempts = getAttempts(widths.measureWidths, 0, lineBreaks.length, avg - variance, avg + variance, lastLines);
+//  //console.log(attempts, avg - variance, avg + variance);
 //
-// 	var failed = true;
-// 	for (var i = 0; i < attempts.length; i++) {
-// 		var newVariance = getVariance(widths, attempts[i]);
-// 		if (newVariance < variance) {
-// 			explanation.attempts.push({
-// 				type: "Optimize try", lineBreaks: attempts[i],
-// 				variance: Math.round(variance), newVariance: Math.round(newVariance),
-// 				totalAttempts: attempts.length
-// 			});
-// 			variance = newVariance;
-// 			lineBreaks = attempts[i];
-// 			failed = false;
-// 		}
-// 	}
-// 	if (failed) {
-// 		explanation.attempts.push({ type: "Optimize try", lineBreaks: lineBreaks, variance: variance, reason: "None of the " + attempts.length + " attempts were better." });
-// 		// TODO-PER: This shouldn't be necessary, but just try to move one measure down and see if it helps.
-// 		if (lineBreaks.length > 0) {
-// 			var attempt = [].concat(lineBreaks);
-// 			attempt[attempt.length - 1]--;
-// 			newVariance = getVariance(widths, attempt);
-// 			explanation.attempts.push({
-// 				type: "Optimize last try", lineBreaks: attempts[i],
-// 				variance: Math.round(variance), newVariance: Math.round(newVariance),
-// 				totalAttempts: attempts.length
-// 			});
-// 			if (newVariance < variance) {
-// 				variance = newVariance;
-// 				lineBreaks = attempt;
-// 				failed = false;
-// 			}
-// 		}
-// 	}
-// 	// Let's squeeze the line successively until it spills onto an extra line, then take the option with the lowest variance
-// 	// var targetNumLines = lineBreaks.length;
-// 	// var newNumLines = targetNumLines;
-// 	// var TRY_INCREMENT = 1;
-// 	// var tryBreakPoint = lineBreakPoint - TRY_INCREMENT;
-// 	// var failed = true;
-// 	// while (targetNumLines === newNumLines && tryBreakPoint > 50) {
-// 	// 	var ff = freeFormLineBreaks(widths.measureWidths, tryBreakPoint);
-// 	// 	newNumLines = ff.lineBreaks.length;
-// 	// 	if (newNumLines === targetNumLines) {
-// 	// 		var newVariance = getVariance(widths, ff.lineBreaks);
-// 	// 		var newVariancePct = newVariance/tryBreakPoint*100;
-// 	// 		explanation.attempts.push({type: "Optimize try", tryBreakPoint: Math.round(tryBreakPoint), lineBreaks: ff.lineBreaks, totals: ff.totals,
-// 	// 			variance: Math.round(variance), newVariance: Math.round(newVariance), variancePct: Math.round(variancePct), newVariancePct: Math.round(newVariancePct)
-// 	// 		});
-// 	// 		if (newVariancePct < variancePct) {
-// 	// 			variancePct = newVariancePct;
-// 	// 			lineBreaks = ff.lineBreaks;
-// 	// 			failed = false;
-// 	// 		}
-// 	// 	} else {
-// 	// 		explanation.attempts.push({type: "Optimize try", explanation: "Exceeded number of lines." , tryBreakPoint: Math.round(tryBreakPoint), lineBreaks: ff.lineBreaks, totals: ff.totals, variance: variance, avg: avg, variancePct: variancePct});
-// 	// 	}
-// 	// 	tryBreakPoint -= TRY_INCREMENT;
-// 	// }
+//  var failed = true;
+//  for (var i = 0; i < attempts.length; i++) {
+//      var newVariance = getVariance(widths, attempts[i]);
+//      if (newVariance < variance) {
+//          explanation.attempts.push({
+//              type: "Optimize try", lineBreaks: attempts[i],
+//              variance: Math.round(variance), newVariance: Math.round(newVariance),
+//              totalAttempts: attempts.length
+//          });
+//          variance = newVariance;
+//          lineBreaks = attempts[i];
+//          failed = false;
+//      }
+//  }
+//  if (failed) {
+//      explanation.attempts.push({ type: "Optimize try", lineBreaks: lineBreaks, variance: variance, reason: "None of the " + attempts.length + " attempts were better." });
+//      // TODO-PER: This shouldn't be necessary, but just try to move one measure down and see if it helps.
+//      if (lineBreaks.length > 0) {
+//          var attempt = [].concat(lineBreaks);
+//          attempt[attempt.length - 1]--;
+//          newVariance = getVariance(widths, attempt);
+//          explanation.attempts.push({
+//              type: "Optimize last try", lineBreaks: attempts[i],
+//              variance: Math.round(variance), newVariance: Math.round(newVariance),
+//              totalAttempts: attempts.length
+//          });
+//          if (newVariance < variance) {
+//              variance = newVariance;
+//              lineBreaks = attempt;
+//              failed = false;
+//          }
+//      }
+//  }
+//  // Let's squeeze the line successively until it spills onto an extra line, then take the option with the lowest variance
+//  // var targetNumLines = lineBreaks.length;
+//  // var newNumLines = targetNumLines;
+//  // var TRY_INCREMENT = 1;
+//  // var tryBreakPoint = lineBreakPoint - TRY_INCREMENT;
+//  // var failed = true;
+//  // while (targetNumLines === newNumLines && tryBreakPoint > 50) {
+//  //  var ff = freeFormLineBreaks(widths.measureWidths, tryBreakPoint);
+//  //  newNumLines = ff.lineBreaks.length;
+//  //  if (newNumLines === targetNumLines) {
+//  //      var newVariance = getVariance(widths, ff.lineBreaks);
+//  //      var newVariancePct = newVariance/tryBreakPoint*100;
+//  //      explanation.attempts.push({type: "Optimize try", tryBreakPoint: Math.round(tryBreakPoint), lineBreaks: ff.lineBreaks, totals: ff.totals,
+//  //          variance: Math.round(variance), newVariance: Math.round(newVariance), variancePct: Math.round(variancePct), newVariancePct: Math.round(newVariancePct)
+//  //      });
+//  //      if (newVariancePct < variancePct) {
+//  //          variancePct = newVariancePct;
+//  //          lineBreaks = ff.lineBreaks;
+//  //          failed = false;
+//  //      }
+//  //  } else {
+//  //      explanation.attempts.push({type: "Optimize try", explanation: "Exceeded number of lines." , tryBreakPoint: Math.round(tryBreakPoint), lineBreaks: ff.lineBreaks, totals: ff.totals, variance: variance, avg: avg, variancePct: variancePct});
+//  //  }
+//  //  tryBreakPoint -= TRY_INCREMENT;
+//  // }
 //
-// 	return { failed: failed, lineBreaks: lineBreaks, variance: variance };
+//  return { failed: failed, lineBreaks: lineBreaks, variance: variance };
 // }
 // function fixedNumLinesBreaks(widths, numLines, allowOver, allowableVariance) {
-// 	var idealLineBreak = widths.total / numLines;
-// 	// If all the measures had the same amount of stuff, then the ave would be correct.
-// 	// We will test all the combinations from one less to one more than the average.
-// 	var averageMeasuresPerLine = Math.round(widths.measureWidths.length / numLines);
-// 	var minMeasuresPerLine = Math.max(averageMeasuresPerLine - 1, 1);
-// 	var maxMeasuresPerLine = averageMeasuresPerLine + 1;
-// 	var tries = createLineTestArray(numLines, widths.measureWidths.length, maxMeasuresPerLine, minMeasuresPerLine);
-// 	console.log("fixedNumLinesBreaks tests ("+minMeasuresPerLine+'-'+maxMeasuresPerLine+")", numLines, tries.length)
+//  var idealLineBreak = widths.total / numLines;
+//  // If all the measures had the same amount of stuff, then the ave would be correct.
+//  // We will test all the combinations from one less to one more than the average.
+//  var averageMeasuresPerLine = Math.round(widths.measureWidths.length / numLines);
+//  var minMeasuresPerLine = Math.max(averageMeasuresPerLine - 1, 1);
+//  var maxMeasuresPerLine = averageMeasuresPerLine + 1;
+//  var tries = createLineTestArray(numLines, widths.measureWidths.length, maxMeasuresPerLine, minMeasuresPerLine);
+//  console.log("fixedNumLinesBreaks tests ("+minMeasuresPerLine+'-'+maxMeasuresPerLine+")", numLines, tries.length)
 //
-// 	// For each possible number of measures per line, see which has the closest spacing to the ideal.
-// 	var bestCase = -1;
-// 	var bestCaseVariance = 1000000;
-// 	for (var i = 0 ; i < tries.length; i++) {
-// 		var attempt = tries[i];
-// 		var variance = getVariance(attempt, idealLineBreak, widths.measureWidths, allowOver ? allowableVariance : 0);
-// 		if (variance !== null) {
-// 			if (variance < bestCaseVariance) {
-// 				bestCaseVariance = variance;
-// 				bestCase = i;
-// 			}
-// 		}
-// 	}
-// 	var failed = true;
-// 	// For debugging, recreate the line widths
-// 	var totals = [];
-// 	if (bestCase >= 0) {
-// 		failed = false;
-// 		var index = 0;
-// 		for (i = 0; i < tries[bestCase].length; i++) {
-// 			var total = 0;
-// 			for (var j = 0; j < tries[bestCase][i]; j++) {
-// 				total += widths.measureWidths[index++];
-// 			}
-// 			totals.push(Math.round(total));
-// 		}
-// 		// We now have an array that contains the number of measures per line, but we want to return the absolute measure number to break on.
-// 		if (tries[bestCase].length > 0) {
-// 			tries[bestCase][0]--; // The results should contain the last measure number on the line, zero-based.
-// 			for (i = 1; i < tries[bestCase].length; i++)
-// 				tries[bestCase][i] += tries[bestCase][i - 1]; // This sets the zero-based measure number
-// 			// The last line is implied and we don't need to return it
-// 			tries[bestCase].pop();
-// 		}
-// 	}
-// 	return { failed: failed, lineBreaks: tries[bestCase], bestCaseVariance: Math.round(bestCaseVariance), totals: totals };
+//  // For each possible number of measures per line, see which has the closest spacing to the ideal.
+//  var bestCase = -1;
+//  var bestCaseVariance = 1000000;
+//  for (var i = 0 ; i < tries.length; i++) {
+//      var attempt = tries[i];
+//      var variance = getVariance(attempt, idealLineBreak, widths.measureWidths, allowOver ? allowableVariance : 0);
+//      if (variance !== null) {
+//          if (variance < bestCaseVariance) {
+//              bestCaseVariance = variance;
+//              bestCase = i;
+//          }
+//      }
+//  }
+//  var failed = true;
+//  // For debugging, recreate the line widths
+//  var totals = [];
+//  if (bestCase >= 0) {
+//      failed = false;
+//      var index = 0;
+//      for (i = 0; i < tries[bestCase].length; i++) {
+//          var total = 0;
+//          for (var j = 0; j < tries[bestCase][i]; j++) {
+//              total += widths.measureWidths[index++];
+//          }
+//          totals.push(Math.round(total));
+//      }
+//      // We now have an array that contains the number of measures per line, but we want to return the absolute measure number to break on.
+//      if (tries[bestCase].length > 0) {
+//          tries[bestCase][0]--; // The results should contain the last measure number on the line, zero-based.
+//          for (i = 1; i < tries[bestCase].length; i++)
+//              tries[bestCase][i] += tries[bestCase][i - 1]; // This sets the zero-based measure number
+//          // The last line is implied and we don't need to return it
+//          tries[bestCase].pop();
+//      }
+//  }
+//  return { failed: failed, lineBreaks: tries[bestCase], bestCaseVariance: Math.round(bestCaseVariance), totals: totals };
 // }
 
 
@@ -13700,7 +13700,7 @@ function calcLineWraps(tune, widths, abcString, params, Parse, engraver_controll
   explanation.attempts.push({
     type: "heightCheck",
     height: newWidths.height
-  }); // 	if all of the lines are too sparse, make the width narrower.
+  }); //    if all of the lines are too sparse, make the width narrower.
   // TODO-PER: implement this case.
   // If one line and the spacing is > maxSpacing, make the width narrower.
 
@@ -13712,26 +13712,26 @@ function calcLineWraps(tune, widths, abcString, params, Parse, engraver_controll
     });
     gotTune = false;
   } // if (ret.lineBreaks.length === 0) {
-  // 	// Everything fits on one line, so see if there is TOO much space and the staff width needs to be shortened.
-  // 	if (minLineSize > 0 && ret.totalThisLine > 0 && ret.totalThisLine < minLineSize)
-  // 		staffWidth = staffWidth / (minLineSize / ret.totalThisLine);
+  //    // Everything fits on one line, so see if there is TOO much space and the staff width needs to be shortened.
+  //    if (minLineSize > 0 && ret.totalThisLine > 0 && ret.totalThisLine < minLineSize)
+  //        staffWidth = staffWidth / (minLineSize / ret.totalThisLine);
   // } else if (ret.totalThisLine < minLineSize) {
-  // 	// the last line is too short, so attempt to redistribute by changing the min.
-  // 	// We will try more and less space alternatively. The space can't be less than 1.0, and we'll try in 0.1 increments.
-  // 	var minTrys = [];
-  // 	if (minSpacing > 1.1)
-  // 		minTrys.push(minSpacing - 0.1);
-  // 	minTrys.push(minSpacing + 0.1);
-  // 	if (minSpacing > 1.2)
-  // 		minTrys.push(minSpacing - 0.2);
-  // 	minTrys.push(minSpacing + 0.2);
-  // 	if (minSpacing > 1.3)
-  // 		minTrys.push(minSpacing - 0.3);
-  // 	minTrys.push(minSpacing + 0.3);
-  // 	for (var i = 0; i < minTrys.length && ret.totalThisLine < minLineSize; i++) {
-  // 		lineBreakPoint = (params.staffwidth - widths.left) / minTrys[i] / scale;
-  // 		ret = calcLineBreaks(widths.measureWidths, lineBreakPoint);
-  // 	}
+  //    // the last line is too short, so attempt to redistribute by changing the min.
+  //    // We will try more and less space alternatively. The space can't be less than 1.0, and we'll try in 0.1 increments.
+  //    var minTrys = [];
+  //    if (minSpacing > 1.1)
+  //        minTrys.push(minSpacing - 0.1);
+  //    minTrys.push(minSpacing + 0.1);
+  //    if (minSpacing > 1.2)
+  //        minTrys.push(minSpacing - 0.2);
+  //    minTrys.push(minSpacing + 0.2);
+  //    if (minSpacing > 1.3)
+  //        minTrys.push(minSpacing - 0.3);
+  //    minTrys.push(minSpacing + 0.3);
+  //    for (var i = 0; i < minTrys.length && ret.totalThisLine < minLineSize; i++) {
+  //        lineBreakPoint = (params.staffwidth - widths.left) / minTrys[i] / scale;
+  //        ret = calcLineBreaks(widths.measureWidths, lineBreakPoint);
+  //    }
   // }
 
 
@@ -14801,7 +14801,7 @@ var getNote = function getNote(url, instrument, name, audioContext) {
         status: "cached"
       });
     } // if (this.debugCallback)
-    // 	this.debugCallback(`Loading sound: ${instrument} ${name}`);
+    //  this.debugCallback(`Loading sound: ${instrument} ${name}`);
 
 
     instrumentCache[name] = "pending"; // This can be called in parallel, so don't call it a second time before the first one has loaded.
@@ -14813,7 +14813,7 @@ var getNote = function getNote(url, instrument, name, audioContext) {
 
     function onSuccess(audioBuffer) {
       instrumentCache[name] = audioBuffer; // if (self.debugCallback)
-      // 	self.debugCallback(`Sound loaded: ${instrument} ${name} ${url}`);
+      //    self.debugCallback(`Sound loaded: ${instrument} ${name} ${url}`);
 
       resolve({
         instrument: instrument,
@@ -16742,14 +16742,14 @@ var AbstractEngraver;
     this.slursbyvoice = parseCommon.cloneHashOfHash(this.slursbyvoiceSave);
     this.tiesbyvoice = parseCommon.cloneHashOfArrayOfHash(this.tiesbyvoiceSave);
   }; // function writeMeasureWidth(voice) {
-  // 	var width = 0;
-  // 	for (var i = voice.children.length-1; i >= 0; i--) {
-  // 		var elem = voice.children[i];
-  // 		if (elem.abcelem.el_type === 'bar')
-  // 			break;
-  // 		width += elem.w;
-  // 	}
-  // 	return new RelativeElement(width.toFixed(2), -70, 0, undefined, {type:"debug"});
+  //    var width = 0;
+  //    for (var i = voice.children.length-1; i >= 0; i--) {
+  //        var elem = voice.children[i];
+  //        if (elem.abcelem.el_type === 'bar')
+  //            break;
+  //        width += elem.w;
+  //    }
+  //    return new RelativeElement(width.toFixed(2), -70, 0, undefined, {type:"debug"});
   // }
   // return an array of AbsoluteElement
 
@@ -16776,7 +16776,7 @@ var AbstractEngraver;
 
       case "bar":
         elemset[0] = this.createBarLine(voice, elem, isFirstStaff);
-        if (voice.duplicate && elemset.length > 0) elemset[0].invisible = true; //	  elemset[0].addChild(writeMeasureWidth(voice));
+        if (voice.duplicate && elemset.length > 0) elemset[0].invisible = true; //    elemset[0].addChild(writeMeasureWidth(voice));
 
         break;
 
@@ -19175,7 +19175,7 @@ var Decoration;
     yPos.above = Math.max(yPos.above, this.minTop);
     var hasOne = stackedDecoration(decoration, width, abselem, yPos, positioning.ornamentPosition, this.minTop, this.minBottom);
 
-    if (hasOne) {//			abselem.top = Math.max(yPos.above + 3, abselem.top); // TODO-PER: Not sure why we need this fudge factor.
+    if (hasOne) {//         abselem.top = Math.max(yPos.above + 3, abselem.top); // TODO-PER: Not sure why we need this fudge factor.
     }
 
     leftDecoration(decoration, abselem, roomtaken);
@@ -20489,9 +20489,9 @@ var RelativeElement = function RelativeElement(c, dx, w, pitch, opt) {
   if (opt.stemHeight) {
     if (opt.stemHeight > 0) this.top += opt.stemHeight;else this.bottom += opt.stemHeight;
   } //if (this.type === "symbol") {
-  //	var offset = glyphs.getYCorr(this.c);
-  //	this.top += offset;
-  //	this.bottom += offset;
+  //    var offset = glyphs.getYCorr(this.c);
+  //    this.top += offset;
+  //    this.bottom += offset;
   //}
 
 
@@ -21127,10 +21127,10 @@ Renderer.prototype.engraveTopText = function (width, abctune) {
 
 
     this.moveY(-6); //} else if (this.isPrint) {
-    //	// abcm2ps adds this space whether there is anything to write or not.
-    //	this.moveY(this.spacing.composer);
-    //	var space2 = this.getTextSize("M", 'composerfont', 'meta-top');
-    //	this.moveY(space2.height);
+    //  // abcm2ps adds this space whether there is anything to write or not.
+    //  this.moveY(this.spacing.composer);
+    //  var space2 = this.getTextSize("M", 'composerfont', 'meta-top');
+    //  this.moveY(space2.height);
   }
 
   if (abctune.metaText.author && abctune.metaText.author.length > 0) {
@@ -21702,7 +21702,7 @@ Renderer.prototype.getFontAndAttr = function (type, klass) {
     'font-weight': font.weight,
     'text-decoration': font.decoration,
     'class': this.addClasses(klass)
-  }; //attr.font = "";	// There is a spurious font definition that is put on all text elements. This overwrites it.
+  }; //attr.font = "";  // There is a spurious font definition that is put on all text elements. This overwrites it.
 
   return {
     font: font,
@@ -22442,7 +22442,7 @@ StaffGroupElement.prototype.draw = function (renderer) {
     // offset for starting the counting at middle C
 
     if (!this.voices[i].duplicate) {
-      //			renderer.moveY(spacing.STEP, staff.top);
+      //            renderer.moveY(spacing.STEP, staff.top);
       if (!topLine) topLine = renderer.calcY(10);
       bottomLine = renderer.calcY(2);
 
@@ -22468,8 +22468,8 @@ StaffGroupElement.prototype.draw = function (renderer) {
 
     if (!this.voices[i].duplicate) {
       bartop = renderer.calcY(2); // This connects the bar lines between two different staves.
-      //			if (staff.bottom < 0)
-      //				renderer.moveY(spacing.STEP, -staff.bottom);
+      //            if (staff.bottom < 0)
+      //                renderer.moveY(spacing.STEP, -staff.bottom);
     }
   }
 
@@ -22763,7 +22763,7 @@ module.exports = TempoElement;
 //    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 var TieElem = function TieElem(options) {
-  //	console.log("constructor", options.anchor1 ? options.anchor1.pitch : "N/A", options.anchor2 ? options.anchor2.pitch : "N/A", options.isTie, options.isGrace);
+  //    console.log("constructor", options.anchor1 ? options.anchor1.pitch : "N/A", options.anchor2 ? options.anchor2.pitch : "N/A", options.isTie, options.isGrace);
   this.anchor1 = options.anchor1; // must have a .x and a .pitch, and a .parent property or be null (means starts at the "beginning" of the line - after keysig)
 
   this.anchor2 = options.anchor2; // must have a .x and a .pitch property or be null (means ends at the end of the line)
@@ -22780,7 +22780,7 @@ TieElem.prototype.addInternalNote = function (note) {
 };
 
 TieElem.prototype.setEndAnchor = function (anchor2) {
-  //	console.log("end", this.anchor1 ? this.anchor1.pitch : "N/A", anchor2 ? anchor2.pitch : "N/A", this.isTie, this.isGrace);
+  //    console.log("end", this.anchor1 ? this.anchor1.pitch : "N/A", anchor2 ? anchor2.pitch : "N/A", this.isTie, this.isGrace);
   this.anchor2 = anchor2; // must have a .x and a .pitch property or be null (means ends at the end of the line)
 }; // If we encounter a repeat sign, then we don't want to extend either a tie or a slur past it, so these are called to be a limit.
 
@@ -22904,18 +22904,18 @@ TieElem.prototype.layout = function (lineStartX, lineEndX) {
   if (!this.anchor1 || !this.anchor2) this.isTie = true; // if the slur goes off the end of the line, then draw it like a tie
   else if (this.anchor1.pitch === this.anchor2.pitch && this.internalNotes.length === 0) this.isTie = true;else this.isTie = false; // TODO-PER: Not sure why this would be needed, but it would be better to figure out a way to have the anchors be immutable here anyway.
   // if (this.isTie) {
-  // 	if (this.anchor1) // this can happen if the tie comes from the previous line.
-  // 		this.anchor1.isTie = true;
-  // 	if (this.anchor2) // this can happen if the tie does not go to the next line.
-  // 		this.anchor2.isTie = true;
+  //    if (this.anchor1) // this can happen if the tie comes from the previous line.
+  //        this.anchor1.isTie = true;
+  //    if (this.anchor2) // this can happen if the tie does not go to the next line.
+  //        this.anchor2.isTie = true;
   // }
 
   if (this.isTie) {
     this.calcTieDirection(); // TODO-PER: Not sure why this would be needed, but it would be better to figure out a way to have the anchors be immutable here anyway.
     // if (this.anchor1) // this can happen if the tie comes from the previous line.
-    // 	this.anchor1.tieAbove = this.above;
+    //  this.anchor1.tieAbove = this.above;
     // if (this.anchor2) // this can happen if the tie goes to the next line.
-    // 	this.anchor2.tieAbove = this.above;
+    //  this.anchor2.tieAbove = this.above;
 
     this.calcX(lineStartX, lineEndX);
     this.calcTieY();
@@ -23521,12 +23521,12 @@ function getCoord(ev) {
   var y = ev.offsetY; // The target might be the SVG that we want, or it could be an item in the SVG (usually a path). If it is not the SVG then
   // add an offset to the coordinates.
   // if (ev.target.tagName.toLowerCase() !== 'svg') {
-  // 	var box = ev.target.getBBox();
-  // 	var absRect = ev.target.getBoundingClientRect();
-  // 	var offsetX = ev.clientX - absRect.left;
-  // 	var offsetY = ev.clientY - absRect.top;
-  // 	x = offsetX + box.x;
-  // 	y = offsetY + box.y;
+  //    var box = ev.target.getBBox();
+  //    var absRect = ev.target.getBoundingClientRect();
+  //    var offsetX = ev.clientX - absRect.left;
+  //    var offsetY = ev.clientY - absRect.top;
+  //    x = offsetX + box.x;
+  //    y = offsetY + box.y;
   // }
 
   return [x, y];
@@ -23784,7 +23784,7 @@ function rangeHighlight(start, end) {
         var elEnd = elems[elem].abcelem.endChar;
 
         if (end > elStart && start < elEnd || end === start && end === elEnd) {
-          //		if (elems[elem].abcelem.startChar>=start && elems[elem].abcelem.endChar<=end) {
+          //        if (elems[elem].abcelem.startChar>=start && elems[elem].abcelem.endChar<=end) {
           this.selected[this.selected.length] = elems[elem];
           elems[elem].highlight(undefined, this.selectionColor);
         }
@@ -23991,10 +23991,10 @@ Svg.prototype.setSize = function (w, h) {
   // Correct for IE problem in calculating height
   // var isIE = /*@cc_on!@*/false;//IE detector
   // if (isIE) {
-  // 	this.paper.canvas.parentNode.style.width = w + "px";
-  // 	this.paper.canvas.parentNode.style.height = "" + h + "px";
+  //    this.paper.canvas.parentNode.style.width = w + "px";
+  //    this.paper.canvas.parentNode.style.height = "" + h + "px";
   // } else
-  // 	this.paper.canvas.parentNode.setAttribute("style", "width:" + w + "px");
+  //    this.paper.canvas.parentNode.setAttribute("style", "width:" + w + "px");
 };
 
 Svg.prototype.setScale = function (scale) {
@@ -24018,7 +24018,7 @@ Svg.prototype.insertStyles = function (styles) {
   var el = document.createElementNS(svgNS, "style");
   el.textContent = styles;
   this.svg.insertBefore(el, this.svg.firstChild); // prepend is not available on older browsers.
-  //	this.svg.prepend(el);
+  //    this.svg.prepend(el);
 };
 
 Svg.prototype.setParentStyles = function (attr) {
@@ -24293,4 +24293,3 @@ module.exports = version;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=abcjs_basic_6.0.0-beta.9.js.map

@@ -1458,7 +1458,8 @@ function doDefaults(background)
     setDefaultSetting("allowMsgPinning", true);
     setDefaultSetting("allowMsgReaction", true);
     setDefaultSetting("useMarkdown", true);
-    setDefaultSetting("showToolbarIcons", true);
+    // default is a fewer features
+    //setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
     // most people dont want this
     //setDefaultSetting("enableRssFeeds", true);

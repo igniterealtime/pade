@@ -7020,7 +7020,7 @@ function pasteText()
 
 function copyText()
 {
-    if (confirm(bgWindow.pade.activeView.model.get("jid") + "\n\n" + chrome.i18n.getMessage("markdownConfirm")))
+    if (bgWindow && confirm(bgWindow.pade.activeView.model.get("jid") + "\n\n" + chrome.i18n.getMessage("markdownConfirm")))
     {
         chrome.runtime.sendMessage({"markdown": editor.codemirror.getValue()});
     }

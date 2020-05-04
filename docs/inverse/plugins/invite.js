@@ -5,7 +5,6 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
     var Strophe, $iq;
     var _converse = null;
 
@@ -117,70 +116,67 @@
 
     function findInvitations(keyword, inviteResults, model)
     {
-        if (bgWindow)
+        var meetings = {};
+        var encoded = window.localStorage["store.settings.savedMeetings"];
+        if (encoded) meetings = JSON.parse(atob(encoded));
+
+        var html = "<p/><p/><table style='margin-left: 15px'><tr><th>Meeting</th><th>Participants</th></tr>";
+        var saveMeetings = Object.getOwnPropertyNames(meetings);
+
+        console.debug("findInvitations", keyword, inviteResults, saveMeetings, meetings);
+
+        for (var i=0; i<saveMeetings.length; i++)
         {
-            var meetings = {};
-            var encoded = window.localStorage["store.settings.savedMeetings"];
-            if (encoded) meetings = JSON.parse(atob(encoded));
+            var meeting = meetings[saveMeetings[i]];
+            var participants = "";
 
-            var html = "<p/><p/><table style='margin-left: 15px'><tr><th>Meeting</th><th>Participants</th></tr>";
-            var saveMeetings = Object.getOwnPropertyNames(meetings);
+            for (var j=0; j<meeting.inviteList.length; j++)
+            {
+                participants = participants + meeting.inviteList[j] + "<br/>"
+            }
 
-            console.debug("findInvitations", keyword, inviteResults, saveMeetings, meetings);
+            var newItem = "<tr><td><a href='#' class='plugin-invite-jid' title='Invite participants to join this Meeting' id='" + meeting.room + "'>" + meeting.invite + "</a></td><td>" + participants + "</td></tr>";
+
+            if (keyword.length == 0 || newItem.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
+            {
+                html = html + newItem;
+            }
+        }
+
+        inviteResults.innerHTML = html;
+
+        setTimeout(function()
+        {
+            var saveMeetings = inviteResults.querySelectorAll(".plugin-invite-jid");
 
             for (var i=0; i<saveMeetings.length; i++)
             {
-                var meeting = meetings[saveMeetings[i]];
-                var participants = "";
-
-                for (var j=0; j<meeting.inviteList.length; j++)
+                saveMeetings[i].addEventListener("click", function(e)
                 {
-                    participants = participants + meeting.inviteList[j] + "<br/>"
-                }
+                    console.debug("findInvitations - click", e.target.id);
 
-                var newItem = "<tr><td><a href='#' class='plugin-invite-jid' title='Invite participants to join this Meeting' id='" + meeting.room + "'>" + meeting.invite + "</a></td><td>" + participants + "</td></tr>";
+                    e.stopPropagation();
 
-                if (keyword.length == 0 || newItem.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
-                {
-                    html = html + newItem;
-                }
+                    if (confirm(chrome.i18n ? chrome.i18n.getMessage("inviteConfirm") : "Are you sure?"))
+                    {
+                        var meeting = meetings[e.target.id];
+
+                        for (var j=0; j<meeting.inviteList.length; j++)
+                        {
+                            // make sure we have a jid entry and not blank line
+
+                            if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
+                            {
+                                model.directInvite(meeting.inviteList[j], meeting.invite);
+                            }
+                        }
+                        alert("Completed!!");
+                    }
+
+                }, false);
             }
 
-            inviteResults.innerHTML = html;
-
-            setTimeout(function()
-            {
-                var saveMeetings = inviteResults.querySelectorAll(".plugin-invite-jid");
-
-                for (var i=0; i<saveMeetings.length; i++)
-                {
-                    saveMeetings[i].addEventListener("click", function(e)
-                    {
-                        console.debug("findInvitations - click", e.target.id);
-
-                        e.stopPropagation();
-
-                        if (confirm(chrome.i18n ? chrome.i18n.getMessage("inviteConfirm") : "Are you sure?"))
-                        {
-                            var meeting = meetings[e.target.id];
-
-                            for (var j=0; j<meeting.inviteList.length; j++)
-                            {
-                                // make sure we have a jid entry and not blank line
-
-                                if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
-                                {
-                                    model.directInvite(meeting.inviteList[j], meeting.invite);
-                                }
-                            }
-                            alert("Completed!!");
-                        }
-
-                    }, false);
-                }
-
-            }, 1000);
-        }
+        }, 1000);
     }
 
 }));

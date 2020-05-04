@@ -182,7 +182,7 @@
 /******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/    // __webpack_public_path__
-/******/    __webpack_require__.p = "./dist/";
+/******/    __webpack_require__.p = "./dist/";  // BAO
 /******/
 /******/    // on error function for async loading
 /******/    __webpack_require__.oe = function(err) { console.error(err); throw err; };
@@ -56701,32 +56701,28 @@ converse_core.plugins.add('converse-chat', {
        * @private
        * @param {_converse.Message} message
        */
-      incrementUnreadMsgCounter(message) {
+      incrementUnreadMsgCounter(message) {  // BAO issue #119 (converse #1999)
         if (!message || !message.get('message')) {
           return;
         }
 
         if (converse_chat_utils.isNewMessage(message) && this.isHidden()) {
-          let first_unread = this.get('first_unread');  // BAO
-
-          if (this.get('num_unread') == 0) {    // BAO
-
-              if (first_unread)
-              {
-                  const msg = this.messages.where({'msgid': first_unread});
-                  if (msg.length > 0) msg[0].set("first_unread", false);
-              }
-
-              message.set("first_unread", true);
-              first_unread = message.get('msgid');
-          }
-
-          this.save({
-            'first_unread': first_unread,
-            'num_unread': this.get('num_unread') + 1
-          });
-
+           this.setFirstUnreadMsgId(message);
+           this.save({'num_unread': this.get('num_unread') + 1});
           _converse.incrementMsgCounter();
+        }
+      },
+
+      setFirstUnreadMsgId (message) { // BAO issue #119 (converse #1999)
+        if (this.get('num_unread') == 0) {
+            let first_unread_id = this.get('first_unread_id');
+
+            if (first_unread_id) {
+              const msg = this.messages.get(first_unread_id);
+              if (msg) msg.set("first_unread", false);
+            }
+            message.set("first_unread", true);
+            this.set({'first_unread_id': message.get('id')});
         }
       },
 
@@ -58398,11 +58394,16 @@ converse_core.plugins.add('converse-emoji', {
        */
 
       addMarkdown (text) {
-        var renderer = new marked.Renderer();
-        markedForms(renderer);
-        var markedText = marked(text.replace(/&gt;+/g, '>'), {renderer: renderer});
-        var checkText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
+        var markedText = text;
 
+        if (window.marked)
+        {
+            var renderer = new marked.Renderer();
+            markedForms(renderer);
+            markedText = marked(text.replace(/&gt;+/g, '>'), {renderer: renderer});
+        }
+
+        var checkText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
         //console.debug("addMarkdown", markedText, checkText, text);
 
         if (markedText.indexOf(checkText) > -1 || markedText.indexOf(text) > -1)
@@ -61012,23 +61013,8 @@ converse_core.plugins.add('converse-muc', {
         }
 
         if (utils_form.isNewMessage(message) && this.isHidden()) {
-          let first_unread = this.get('first_unread');  // BAO
-
-          if (this.get('num_unread_general') == 0) {    // BAO
-
-              if (first_unread)
-              {
-                  const msg = this.messages.where({'msgid': first_unread});
-                  if (msg.length > 0) msg[0].set("first_unread", false);
-              }
-              message.set("first_unread", true);
-              first_unread = message.get('msgid');
-          }
-
-          const settings = {
-            'first_unread': first_unread,   // BAO
-            'num_unread_general': this.get('num_unread_general') + 1
-          };
+          this.setFirstUnreadMsgId (message);
+          const settings = {'num_unread_general': this.get('num_unread_general') + 1};
 
           if (this.isUserMentioned(message)) {
             settings.num_unread = this.get('num_unread') + 1;

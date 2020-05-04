@@ -28,7 +28,7 @@
 
             chrome.runtime.onMessage.addListener(function(message)
             {
-                if (bgWindow.pade.activeView && message.markdown)
+                if (bgWindow && bgWindow.pade.activeView && message.markdown)
                 {
                     console.debug("chrome.runtime.onMessage", message);
                     submitMessage(bgWindow.pade.activeView, message.markdown);
