@@ -25,7 +25,7 @@
             _converse.api.listen.on('renderToolbar', function(view)
             {
                 var id = view.model.get("box_id");
-                const wgQueues = addToolbarItem(view, id, "pade-fastpath-" + id, '<a class="fas fa-headset" title="Fastpath: Workgroup Queues"></a>');
+                const wgQueues = padeapi.addToolbarItem(view, id, "pade-fastpath-" + id, '<a class="fas fa-headset" title="Fastpath: Workgroup Queues"></a>');
 
                 wgQueues.addEventListener('click', function(evt)
                 {
@@ -49,7 +49,7 @@
         return ele;
     }
 
-    function addToolbarItem (view, id, label, html)
+    function padeapi.addToolbarItem (view, id, label, html)
     {
         let placeHolder = view.el.querySelector('#place-holder');
 

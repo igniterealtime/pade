@@ -554,7 +554,7 @@
                     if (view.model.get('type') === "chatroom" && getSetting("moderatorTools", true))
                     {
                         html = '<a class="fa fa-wrench" title="Open Groupchat Moderator Tools GUI"></a>';
-                        var moderatorTools = addToolbarItem(view, id, "moderator-tools-" + id, html);
+                        var moderatorTools = padeapi.addToolbarItem(view, id, "moderator-tools-" + id, html);
 
                         if (moderatorTools) moderatorTools.addEventListener('click', function(evt)
                         {
@@ -567,7 +567,7 @@
                     if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
                     {
                         html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
-                        var geoLocButton = addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
+                        var geoLocButton = padeapi.addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
 
                         if (geoLocButton) geoLocButton.addEventListener('click', function(evt)
                         {
@@ -581,7 +581,7 @@
                     if (bgWindow.pade.ofmeetUrl)
                     {
                         html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
-                        var handleJitsiMeet = addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
+                        var handleJitsiMeet = padeapi.addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
 
                         if (handleJitsiMeet) handleJitsiMeet.addEventListener('click', function(evt)
                         {
@@ -604,7 +604,7 @@
                         if (domain == 'conference.' + _converse.connection.domain || domain == _converse.connection.domain)
                         {
                             html = '<a class="far fa-file-pdf" title="Save conversation to PDF"></a>';
-                            var savePDF = addToolbarItem(view, id, "webmeet-savepdf-" + id, html);
+                            var savePDF = padeapi.addToolbarItem(view, id, "webmeet-savepdf-" + id, html);
 
                             if (savePDF)
                             {
@@ -627,7 +627,7 @@
                         if (bgWindow.pade.activeH5p)
                         {
                             var html = '<a class="fa fa-h-square" title="Add H5P Content"></a>';
-                            var h5pButton = addToolbarItem(view, id, "h5p-" + id, html);
+                            var h5pButton = padeapi.addToolbarItem(view, id, "h5p-" + id, html);
 
                             if (h5pButton) h5pButton.addEventListener('click', function(evt)
                             {
@@ -644,7 +644,7 @@
                         if (getSetting("enableBlast", false))   // check for chat api plugin
                         {
                             html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
-                            var messageblast = addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
+                            var messageblast = padeapi.addToolbarItem(view, id, "webmeet-messageblast-" + id, html);
 
                             if (messageblast) messageblast.addEventListener('click', function(evt)
                             {
@@ -658,7 +658,7 @@
                     if (bgWindow.pade.activeUrl && getSetting("enableCollaboration", false))
                     {
                         var html = '<a class="fa fa-file" title="Add Collaborative Document"></a>';
-                        var oobButton = addToolbarItem(view, id, "oob-" + id, html);
+                        var oobButton = padeapi.addToolbarItem(view, id, "oob-" + id, html);
 
                         if (oobButton) oobButton.addEventListener('click', function(evt)
                         {
@@ -676,7 +676,7 @@
                     if (getSetting("webinarMode", false) && bgWindow.pade.ofmeetUrl)
                     {
                         html = '<a class="fa fa-file-powerpoint-o" title="Webinar. Make a web presentation to others"></a>';
-                        var handleWebinarPresenter = addToolbarItem(view, id, "webmeet-webinar-" + id, html);
+                        var handleWebinarPresenter = padeapi.addToolbarItem(view, id, "webmeet-webinar-" + id, html);
 
                         if (handleWebinarPresenter) handleWebinarPresenter.addEventListener('click', function(evt)
                         {
@@ -696,7 +696,7 @@
                     if (getSetting("enableTasksTool", false))
                     {
                         html = '<a class="fa fa-tasks" title="Tasks"></a>';
-                        var tasks = addToolbarItem(view, id, "webmeet-tasks-" + id, html);
+                        var tasks = padeapi.addToolbarItem(view, id, "webmeet-tasks-" + id, html);
 
                         if (tasks) tasks.addEventListener('click', function(evt)
                         {
@@ -711,7 +711,7 @@
                     if (getSetting("enableNotesTool", true))
                     {
                         html = '<a class="fa fa-pencil-alt" title="Notepad"></a>';
-                        var notepad = addToolbarItem(view, id, "webmeet-notepad-" + id, html);
+                        var notepad = padeapi.addToolbarItem(view, id, "webmeet-notepad-" + id, html);
 
                         if (notepad) notepad.addEventListener('click', function(evt)
                         {
@@ -723,7 +723,7 @@
                     }
 
                     html = '<a class="fas fa-desktop" title="ScreenCast. Click to start and stop"></a>';
-                    var screencast = addToolbarItem(view, id, "webmeet-screencast-" + id, html);
+                    var screencast = padeapi.addToolbarItem(view, id, "webmeet-screencast-" + id, html);
 
                     if (screencast) screencast.addEventListener('click', function(evt)
                     {

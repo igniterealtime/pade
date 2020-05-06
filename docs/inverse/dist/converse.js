@@ -37141,7 +37141,7 @@ __e(bm.get('jid')) +
 __e(bm.get('jid')) +
 '" title="' +
 __e(o.open_title) + // BAO
-'" href="#"><img class="room-avatar avatar" src="' + createAvatar(bm.get('jid')) + '" height="30" width="30">' +
+'" href="#"><img class="room-avatar avatar" src="' + padeapi.createAvatar(bm.get('jid')) + '" height="30" width="30">' +
 __e(bm.getDisplayName()) +
 '</a>\n            <a class="list-item-action remove-bookmark fa fa-bookmark align-self-center ';
  if (bm.get('bookmarked')) { ;
@@ -37977,7 +37977,7 @@ __p += ' title="' +
 __e(o.jid) +
 '" ';
  } ;
- __p += ' ><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="36" width="36">\n        '; // BAO begins
+ __p += ' ><img class="room-avatar avatar" src="' + padeapi.createAvatar(o.jid) + '" height="36" width="36">\n        '; // BAO begins
   if (o.name && o.name !== o.Strophe.getNodeFromJid(o.jid)) { ;
  __p += '\n            ' +
  __e( o.name ) +
@@ -38504,7 +38504,7 @@ __e(o.jid) +
 __e(o.name) +
 '"\n       title="' +
 __e(o.open_title) + // BAO
-'" href="#"><img class="room-avatar avatar" src="' + createAvatar(o.jid) + '" height="30" width="30">' +
+'" href="#"><img class="room-avatar avatar" src="' + padeapi.createAvatar(o.jid) + '" height="30" width="30">' +
 __e(o.name) +
 '</a>\n    <a class="right room-info icon-room-info"\n       data-room-jid="' +
 __e(o.jid) +
@@ -38946,7 +38946,7 @@ __p += '\n        <a class="list-item-link open-room available-room w-100"\n    
 __e(room.get('jid')) +
 '"\n            title="' +
 __e(o.open_title) + // BAO
-'" href="#"><img class="room-avatar avatar" src="' + createAvatar(room.get('jid')) + '" height="30" width="30">' +
+'" href="#"><img class="room-avatar avatar" src="' + padeapi.createAvatar(room.get('jid')) + '" height="30" width="30">' +
 __e(room.getDisplayName()) +
 '</a>\n\n        ';
  if (o.allow_bookmarks) { ;
@@ -54625,7 +54625,7 @@ converse_core_converse.initialize = async function (settings, callback) {
   // ----------------------
 
  // BAO
-    this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${converse_core_converse.VERSION_NAME}-${BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS}-${Math.floor(Math.random() * 139749528).toString()}`;
+    this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${converse_core_converse.VERSION_NAME}-${padeapi.getResource()}`;
 
   this.setConnectionStatus = function (connection_status, message) {
     converse_core_converse.connfeedback.set({
@@ -56477,10 +56477,10 @@ converse_core.plugins.add('converse-chat', {
         {
             const key = text.split("\n")[0];
 
-            if (__origins[key])
+            if (padeapi.origins[key])
             {
-                attach_to = __origins[key];
-                delete __origins[key];
+                attach_to = padeapi.origins[key];
+                delete padeapi.origins[key];
             }
         }
 
@@ -59605,10 +59605,10 @@ converse_core.plugins.add('converse-muc', {
         {
             const key = text.split("\n")[0];
 
-            if (__origins[key])
+            if (padeapi.origins[key])
             {
-                attach_to = __origins[key];
-                delete __origins[key];
+                attach_to = padeapi.origins[key];
+                delete padeapi.origins[key];
             }
         }
 
@@ -66958,7 +66958,7 @@ converse_core.plugins.add('converse-chatview', {
 
             const replyText = '> ' + prefix + replyMessage;
             this.insertIntoTextArea(replyText + "\n\n", false, false);
-            __origins[replyText] = msgId;
+            padeapi.origins[replyText] = msgId;
         }
       },
 

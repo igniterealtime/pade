@@ -95,24 +95,6 @@ window.addEvent("domready", function () {
 
         setDefaultPassword(settings);
 
-        if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
-        {
-            settings.manifest.status.element.innerHTML = 'Connecting, please wait....';
-            validateCredentials();
-        });
-
-        if (settings.manifest.register) settings.manifest.register.addEvent("action", function ()
-        {
-            settings.manifest.status.element.innerHTML = 'Registering, please wait....';
-            registerUser();
-        });
-
-        if (settings.manifest.changePassword) settings.manifest.changePassword.addEvent("action", function ()
-        {
-            settings.manifest.status.element.innerHTML = 'Changing password, please wait....';
-            changePassword();
-        });
-
         if (settings.manifest.remoteConnect) settings.manifest.remoteConnect.addEvent("action", function ()
         {
             var host = getSetting("server", null);
@@ -670,20 +652,6 @@ window.addEvent("domready", function () {
             settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
         }
 
-        if (settings.manifest.enableTouchPad) settings.manifest.enableTouchPad.addEvent("action", function ()
-        {
-            if (getSetting("enableTouchPad"))
-            {
-                background.addTouchPadMenu();
-
-            } else {
-               background.removeTouchPadMenu();
-               localStorage.removeItem("store.settings.apcWindow");
-            }
-
-            location.reload()
-        });
-
         if (settings.manifest.useSmartIdCard && chrome.tabs)
         {
             settings.manifest.useSmartIdCard.addEvent("action", function ()
@@ -805,11 +773,6 @@ window.addEvent("domready", function () {
             location.href = chrome.runtime.getManifest().homepage_url;
         });
 
-        if (settings.manifest.enableSip) settings.manifest.enableSip.addEvent("action", function ()
-        {
-            background.reloadApp();
-        });
-
         if (settings.manifest.useTotp) settings.manifest.useTotp.addEvent("action", function ()
         {
             background.reloadApp();
@@ -909,37 +872,6 @@ window.addEvent("domready", function () {
             }
         });
 
-        if (settings.manifest.enableAVCapture) settings.manifest.enableAVCapture.addEvent("action", function ()
-        {
-            if (getSetting("enableAVCapture"))
-            {
-                background.addAVCaptureMenu();
-
-            } else {
-               background.removeAVCaptureMenu();
-            }
-        });
-
-        if (settings.manifest.enableVerto) settings.manifest.enableVerto.addEvent("action", function ()
-        {
-            if (getSetting("enableVerto"))
-            {
-                background.addVertoMenu();
-
-            } else {
-               background.removeVertoMenu();
-            }
-        });
-
-        if (settings.manifest.showOnlyOnlineUsers) settings.manifest.showOnlyOnlineUsers.addEvent("action", function ()
-        {
-            background.reloadApp();
-        });
-
-        if (settings.manifest.useCredsMgrApi) settings.manifest.useCredsMgrApi.addEvent("action", function ()
-        {
-            background.reloadApp();
-        });
 
         if (settings.manifest.qrcode) settings.manifest.qrcode.addEvent("action", function ()
         {
@@ -1143,233 +1075,7 @@ window.addEvent("domready", function () {
                 }
             }
         });
-
-        function changePassword()
-        {
-            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.password"] && window.localStorage["store.settings.username"])
-            {
-                background.changePassword(function(status)
-                {
-                    settings.manifest.status.element.innerHTML = 'password changed ok';
-                    setTimeout(function() { background.reloadApp() }, 1000);
-
-                }, function (error) {
-                    settings.manifest.status.element.innerHTML = '<b style="color:red">change password error</b>';
-                });
-            }
-            else {
-                settings.manifest.status.element.innerHTML = '<b style="color:red">bad server, domain, username or password</b>';
-            }
-        }
-
-        function registerUser()
-        {
-            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.username"] && window.localStorage["store.settings.email"])
-            {
-                var lynks = {};
-
-                lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
-                lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
-                lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
-                lynks.avatar = background.createAvatar(lynks.username);
-                lynks.email = JSON.parse(window.localStorage["store.settings.email"]);
-
-                if (window.localStorage["store.settings.displayname"])
-                {
-                   lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
-                   lynks.avatar = background.createAvatar(lynks.displayname);
-                }
-
-                if (window.localStorage["store.settings.password"])
-                {
-                   lynks.password = JSON.parse(window.localStorage["store.settings.password"]);
-                }
-
-                lynks.connUrl = getSetting("boshUri", "https://" + lynks.server + "/http-bind/");
-
-                if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
-                {
-                    lynks.connUrl = getSetting("websocketUri", "wss://" + lynks.server + "/ws/");
-                }
-
-                var connection = background.getConnection(lynks.connUrl);
-
-                connection.addHandler(function(resp)
-                {
-                    var register = resp.querySelector('register');
-
-                    if (register && resp.getAttribute("type") == "result")
-                    {
-                        console.debug("registerUser: register responses", register);
-
-                        var error = register.getAttribute("error");
-
-                        if (error) settings.manifest.status.element.innerHTML = '<b style="color:red">' + error + '</b>';
-
-                        else {
-                            var password = register.getAttribute("password");
-                            if (password) setSetting("password", "token-" + btoa(password));
-
-                            setTimeout(function()
-                            {
-                                connection.disconnect();
-                                background.reloadApp();
-
-                            }, 5000);
-                        }
-                    }
-
-                    return true;
-
-                }, null, 'iq');
-
-                connection.connect(lynks.domain, "", function (status)
-                {
-                    console.debug("registerUser: register status", status);
-
-                    if (status === 5)
-                    {
-                        var attrs = {xmlns: "http://igniterealtime.org/ofchat/register", from: lynks.username + "@" + lynks.domain, email: lynks.email, name: lynks.displayname, avatar: lynks.avatar, subject: chrome.i18n.getMessage('registerSubject')};
-                        if (lynks.password && lynks.password != "") attrs.password = lynks.password;
-
-                        var request = background.$iq({to: connection.domain, type: "set"}).c("register", attrs).t(chrome.i18n.getMessage('registerBody'));
-                        connection.send(request);
-                    }
-                    else
-
-                    if (status === 4)
-                    {
-                        settings.manifest.status.element.innerHTML = '<b style="color:red">bad server or domain</b>';
-                        connection.disconnect();
-                    }
-                });
-
-                setTimeout(function()
-                {
-                    connection.disconnect();
-                    background.reloadApp();
-
-                }, 60000);
-
-
-            } else settings.manifest.status.element.innerHTML = '<b style="color:red">bad server, domain, username, display name or email</b>';
-
-        }
-
-        function validateCredentials()
-        {
-            if (window.localStorage["store.settings.server"] && window.localStorage["store.settings.domain"] && window.localStorage["store.settings.displayname"])
-            {
-                var lynks = {};
-
-                lynks.server = JSON.parse(window.localStorage["store.settings.server"]);
-                lynks.domain = JSON.parse(window.localStorage["store.settings.domain"]);
-                lynks.displayname = JSON.parse(window.localStorage["store.settings.displayname"]);
-                lynks.jid = lynks.domain;
-                lynks.password = null;
-
-                if (!getSetting("useAnonymous", false) && !getSetting("useBasicAuth", false))
-                {
-                    if (window.localStorage["store.settings.username"] && window.localStorage["store.settings.password"])
-                    {
-                        lynks.username = JSON.parse(window.localStorage["store.settings.username"]);
-                        lynks.password = getPassword(JSON.parse(window.localStorage["store.settings.password"]));
-
-                        if (lynks.username && lynks.password && lynks.username != "" && lynks.password != "")
-                        {
-                            lynks.jid = lynks.username + "@" + lynks.domain + "/" + lynks.displayname;
-                        }
-                        else {
-                            settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
-                            return;
-                        }
-                    }
-                    else {
-                        settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
-                        return;
-                    }
-                }
-
-                console.debug("validateCredentials", lynks);
-
-                if (lynks.server && lynks.domain)
-                {
-                    if (lynks.server.indexOf(":") == -1)
-                    {
-                        settings.manifest.status.element.innerHTML = '<b style="color:red">missing server port. use server:port or ipaddress:port</b>';
-                    }
-                    else
-
-                    if (isNumeric(lynks.server.substring(lynks.server.indexOf(":") + 1)))
-                    {
-                        var doConnect = function(creds)
-                        {
-                            var connUrl = getSetting("boshUri", "https://" + lynks.server + "/http-bind/");
-
-                            if (window.localStorage["store.settings.useWebsocket"] && JSON.parse(window.localStorage["store.settings.useWebsocket"]))
-                            {
-                                connUrl = getSetting("websocketUri", "wss://" + lynks.server + "/ws/");
-                            }
-                            var connection = background.getConnection(connUrl);
-
-                            connection.connect(creds.jid, creds.password, function (status)
-                            {
-                                console.debug("status", status, creds.jid, creds.displayname);
-
-                                if (status === 5)
-                                {
-                                    setTimeout(function() { background.reloadApp(); }, 1000);
-                                }
-                                else
-
-                                if (status === 4)
-                                {
-                                    setDefaultPassword(settings);
-                                    settings.manifest.status.element.innerHTML = '<b style="color:red">bad username or password</b>';
-                                }
-                            });
-                        }
-
-                        if (getSetting("useBasicAuth", false))
-                        {
-                            fetch("https://" + lynks.server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
-                            {
-                                lynks.username = token.username;
-                                lynks.password = token.password;
-                                lynks.jid = lynks.username + "@" + lynks.domain + "/" + lynks.displayname;
-
-                                doConnect(lynks);
-
-                            }).catch(function (err) {
-                                console.error('access denied error', err);
-                                settings.manifest.status.element.innerHTML = '<b style="color:red">Basic Auth Error ' + err + '</b>';
-                            });
-
-                        }
-                        else {
-
-                            if (window.localStorage["store.settings.useTotp"] && JSON.parse(window.localStorage["store.settings.useTotp"]))
-                            {
-                                var token = lynks.username + ":" + lynks.password;
-                                background.setupSasl(token);
-                            }
-
-                            doConnect(lynks);
-                        }
-
-                    } else {
-                        settings.manifest.status.element.innerHTML = '<b style="color:red" style="color:red">bad server port. use server:port or ipaddress:port</b>';
-                    }
-                }
-                else {
-                    if (!lynks.server) settings.manifest.status.element.innerHTML = '<b style="color:red">bad server</b>';
-                    if (!lynks.domain) settings.manifest.status.element.innerHTML = '<b style="color:red">bad domain</b>';
-                }
-
-            } else settings.manifest.status.element.innerHTML = '<b style="color:red">missing server, domain or display name</b>';
-        }
     });
-
 
 });
 
@@ -1398,11 +1104,9 @@ function doDefaults(background)
     // preferences
     setDefaultSetting("language", "en");
     setDefaultSetting("friendType", "xmpp");
-    setDefaultSetting("popupWindow", true);
     setDefaultSetting("enableLipSync", false);
     setDefaultSetting("enableCommunity", false);
     setDefaultSetting("audioOnly", false);
-    setDefaultSetting("enableSip", false);
     setDefaultSetting("enableBlog", false);
     setDefaultSetting("showSharedCursor", true);
     setDefaultSetting("idleTimeout", 300);
@@ -1428,9 +1132,6 @@ function doDefaults(background)
     // community
     setDefaultSetting("chatWithOnlineContacts", true);
     setDefaultSetting("notifyWhenMentioned", true);
-
-    // converse
-    setDefaultSetting("enableInverse", true);
 
     setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
@@ -1512,7 +1213,7 @@ function setDefaultServer()
                     }
                 }
 
-                if (getSetting("useWinSSO", false) || getSetting("useCredsMgrApi", false))
+                if (getSetting("useWinSSO", false))
                 {
                     setDefaultSetting("password", "__DEFAULT__WINSSO__");
                     chrome.extension.getBackgroundPage().reloadApp();

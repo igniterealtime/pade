@@ -57,7 +57,7 @@
                 if (!view.el.querySelector(".fa-microphone") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
-                    var vmsg = addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
+                    var vmsg = padeapi.addToolbarItem(view, id, "pade-vmsg-" + id, '<a class="fas fa-microphone" title="Voice Message. Click to create"></a>');
 
                     if (vmsg) vmsg.addEventListener('click', function(evt)
                     {

@@ -114,7 +114,7 @@
                 if (!view.el.querySelector(".fa-male") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
-                    addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
+                    padeapi.addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
 
                     var directory = document.getElementById("pade-directory-" + id);
 

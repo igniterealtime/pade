@@ -1,19 +1,11 @@
 var pade = {
-    participants: {},
-    presence: {},
     tasks: {},
-    sip: {},
     autoJoinRooms: {},
     autoJoinPrivateChats: {},
     gmailWindow: [],
     webAppsWindow: [],
     vcards: {},
-    questions: {},
-    collabDocs: {},
-    collabList: [],
     userProfiles: {},
-    fastpath: {},
-    geoloc: {},
     transferWise: {}
 }
 
@@ -178,14 +170,11 @@ window.addEventListener("unload", function ()
 
     if (pade.planner) clearInterval(pade.planner);
 
-    closeCredsWindow();
     closeChatWindow();
     closeVideoWindow();
-    closePhoneWindow();
+
     closeBlogWindow();
-    closeAVCaptureWindow();
     closeBlastWindow();
-    closeVertoWindow();
     closeApcWindow();
 
     console.log("pade unloading office365 accounts");
@@ -204,9 +193,6 @@ window.addEventListener("unload", function ()
             closeWebAppsWindow(webApps[i]);
         }
     }
-
-    etherlynk.disconnect();
-    if (pade.connection) pade.connection.disconnect();
 
     var gmailAccounts = getSetting("gmailAccounts", "").split(",");
 
@@ -373,22 +359,15 @@ window.addEventListener("load", function()
             if (status) pres.c("status").t(status);
         }
 
-        if (pade.connection)
+        if (pade.chatWindow)
         {
-            if (idleState == "active") publishUserLocation();   // republish location in case user has moved
+            var converse = chrome.extension.getViews({windowId: pade.chatWindow.id})[0];
 
-            if (pade.chatWindow)
+            if (converse)
             {
-                var model = chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model;
-
-                if (model)
-                {
-                    model.set("status", show ? show : "online");
-                    if (status) model.set("status_message", status);
-                }
-            }
-            else {
-                pade.connection.send(pres);
+                if (idleState == "active") converse.padeapi.publishUserLocation();   // republish location in case user has moved
+                converse.padeapi.myStatus("status", show ? show : "online");
+                if (status) converse.padeapi.myStatus("status_message", status);
             }
         }
     })
@@ -398,18 +377,12 @@ window.addEventListener("load", function()
         console.log("onStartup");
         pade.startUp = true;
 
-        setTimeout(function()   // wait for 3 secs before starting apps for background dependencies to be active and ready
+        setTimeout(function()   // wait for 3 secs before starting apps for O/S to be active and ready
         {
             reopenConverse();
 
             if (getSetting("enableCommunity", false) && getSetting("communityAutoStart", false))
                 openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), "minimized", 1024, 800);
-
-            if (getSetting("enableVerto", false) && getSetting("sipAutoStart", false))
-                openVertoWindow("minimized");
-
-            if (getSetting("enableTouchPad", false) && getSetting("touchPadAutoStart", false))
-                openApcWindow("minimized");
 
             if (getSetting("enableOffice365Business", false) && getSetting("of365AutoStart", false))
                 openOffice365Window(true, "minimized");
@@ -471,114 +444,10 @@ window.addEventListener("load", function()
         }
     });
 
-    // support ofmeet 0.3.x any domain screen share
-
-    chrome.runtime.onConnect.addListener(function(port)
-    {
-        console.debug("popup connect", port.sender.url);
-
-        if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
-        {
-            pade.popup = true;
-            pade.port = port;
-        }
-
-        var enableCommunity = getSetting("enableCommunity", false);
-        var enableInverse = getSetting("enableInverse", false);
-        var communitySidecar = getSetting("communitySidecar", false);
-        var embedCommunityChat = getSetting("embedCommunityChat", false);
-        var disableChatButton = getSetting("disableChatButton", false);
-        var communityUrl = getSetting("communityUrl", "");
-
-
-        if (port.sender.url.indexOf(communityUrl) > -1 && enableCommunity && embedCommunityChat && !enableInverse)
-        {
-            // converse as sidecar only available if main converse window is not enabled
-            port.postMessage({community: true, url: chrome.runtime.getURL(""), id: chrome.runtime.id, sidecar: communitySidecar, domain: pade.domain, server: pade.server, username: pade.username, password: pade.password, disableButton: disableChatButton, ofmeetUrl: pade.ofmeetUrl});
-        }
-
-        port.onMessage.addListener(function(message)
-        {
-            if (message.action == "pade.invite.contact")
-            {
-                inviteToConference(pade.activeContact.jid, pade.activeContact.room);
-            }
-            else
-
-            if (message.action == 'pade.management.credential.api')
-            {
-                console.debug("pade.management.credential.api", message);
-
-                if (message.creds)
-                {
-                    setSetting("username",  message.creds.username);
-                    setSetting("password", message.creds.secret);
-
-                    pade.username = message.creds.username;
-                    pade.password = message.creds.secret;
-
-                    var token = pade.username + ":" + pade.password;
-
-                    setTimeout(function() { setupSasl(token); })
-                }
-                else {
-                    console.error("pade.management.credential.api", message);
-                    doExtensionPage("options/index.html");
-                    closeCredsWindow();
-                }
-            }
-            else
-
-            if (message.event == "pade.popup.open")
-            {
-                stopTone();
-            }
-            else {  // desktop share backward compatiblity for openfire meetings 0.3.x
-
-                switch(message.type)
-                {
-                case 'ofmeetGetScreen':
-                    //server = message.server;
-                    //sendRemoteControl('action=' + message.type + '&resource=' + message.resource + '&server=' + message.server)
-
-                    var pending = chrome.desktopCapture.chooseDesktopMedia(message.options || ['screen', 'window'], port.sender.tab, function (streamid)
-                    {
-                        message.type = 'ofmeetGotScreen';
-                        message.sourceId = streamid;
-                        port.postMessage(message);
-                    });
-
-                    // Let the app know that it can cancel the timeout
-                    message.type = 'ofmeetGetScreenPending';
-                    message.request = pending;
-                    port.postMessage(message);
-                    break;
-
-                case 'ofmeetCancelGetScreen':
-                    chrome.desktopCapture.cancelChooseDesktopMedia(message.request);
-                    message.type = 'ofmeetCanceledGetScreen';
-                    port.postMessage(message);
-                    break;
-                }
-
-            }
-        });
-
-        port.onDisconnect.addListener(function()
-        {
-            console.debug("popup disconnect");
-
-            if (port.sender.url.indexOf("chrome-extension://") > -1 && port.sender.url.indexOf("/apc.html") > -1)
-            {
-                pade.popup = false;
-                pade.port = null;
-            }
-        });
-    });
 
     chrome.notifications.onClosed.addListener(function(notificationId, byUser)
     {
-        if (notificationId.startsWith("audioconf-")) etherlynk.leave(notificationId.substring(10));
+
     });
 
     chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex)
@@ -619,34 +488,14 @@ window.addEventListener("load", function()
 
     chrome.browserAction.onClicked.addListener(function()
     {
-        if (pade.connection && pade.connection.connected)
+        if (getSetting("server", null))
         {
-            if (getSetting("enableTouchPad", false))
+            if (getSetting("enableCommunity", false))
             {
-                if (getSetting("popupWindow", false))
-                {
-                    chrome.browserAction.setPopup({popup: ""});
-                    openApcWindow();
+                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
 
-                } else {
-                    chrome.browserAction.setPopup({popup: "popup.html"});
-                }
             } else {
-
-                if (getSetting("enableCommunity", false))
-                {
-                    openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
-
-                } else {
-
-                    if (getSetting("enableInverse", false))
-                    {
-                        openChatWindow("inverse/index.html");
-
-                    } else {
-                        doJitsiMeet();
-                    }
-                }
+                openChatWindow("inverse/index.html");
             }
 
         } else {
@@ -658,16 +507,8 @@ window.addEventListener("load", function()
     {
         console.debug('Command:', command);
 
-        if (command == "activate_chat" && getSetting("enableInverse", false)) openChatWindow("inverse/index.html");
-
-        if (command == "activate_blogger_communicator" && getSetting("enableTouchPad", false)) openApcWindow();
-        if (command == "activate_blogger_communicator" && !getSetting("enableTouchPad", false)) openBlogWindow();
-
-        if (command == "activate_phone" && getSetting("enableVerto", false)) openVertoWindow()
-        if (command == "activate_phone" && !getSetting("enableVerto", false)) openPhoneWindow(true)
-
-        if (command == "activate_meeting" && !getSetting("enableInverse", false)) openVideoWindow(pade.activeContact.room);
-        if (command == "activate_meeting" && getSetting("enableInverse", false)) openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
+        if (command == "activate_chat")     openChatWindow("inverse/index.html");
+        if (command == "activate_meeting")  openVideoWindow(pade.activeContact.room);
 
     });
 
@@ -695,12 +536,6 @@ window.addEventListener("load", function()
         }
         else
 
-        if (pade.apcWindow)
-        {
-            if (win == -1) pade.minimised = true;
-            if (win == pade.apcWindow.id) pade.minimised = false;
-        }
-
         console.debug("minimised", win, pade.minimised, pade.chatWindow);
     });
 
@@ -715,7 +550,7 @@ window.addEventListener("load", function()
 
         if (pade.chatWindow && win == pade.chatWindow.id)
         {
-            pade.chatWindow = null;
+            delete pade.chatWindow;
             pade.minimised = false;
 
             if (getSetting("saveAutoJoinRooms", false))
@@ -728,29 +563,7 @@ window.addEventListener("load", function()
                 setSetting("autoJoinPrivateChats", Object.getOwnPropertyNames(pade.autoJoinPrivateChats).join("\n"));
             }
 
-            if (pade.activeWorkgroup)
-            {
-                setupWorkgroup(); // needed because presence has reset status
-            }
-            else {
-                var show = getSetting("converseCloseState", "online");
-
-                if (pade.connection)
-                {
-                    if (show == "online")
-                    {
-                         pade.connection.send($pres());
-                    }
-                    else {
-                        pade.connection.send($pres().c("show").t(show).up());
-                    }
-                }
-            }
-        }
-
-        if (pade.sip.window && win == pade.sip.window.id)
-        {
-            pade.sip.window = null;
+            reloadApp();
         }
 
         if (pade.blogWindow && win == pade.blogWindow.id)
@@ -767,25 +580,11 @@ window.addEventListener("load", function()
             pade.blastWindow = null;
         }
 
-        if (pade.vertoWindow && win == pade.vertoWindow.id)
-        {
-            pade.vertoWindow = null;
-        }
-
         if (pade.videoWindow && win == pade.videoWindow.id)
         {
             sendToJabra("onhook");
 
             pade.videoWindow = null;
-            pade.minimised = false;
-           if (pade.connection) pade.connection.send($pres());  // needed because JitsiMeet send unavailable
-
-            etherlynk.stopRecorder();
-        }
-
-        if (pade.apcWindow && win == pade.apcWindow.id)
-        {
-            pade.apcWindow = null;
             pade.minimised = false;
         }
 
@@ -844,13 +643,6 @@ window.addEventListener("load", function()
 
     chrome.contextMenus.removeAll();
     chrome.contextMenus.create({id: "pade_dnd", type: "checkbox", title: "Do not disturb", contexts: ["browser_action"], onclick: dndCheckClick});
-
-    if (getSetting("enableInverse", false) == false)
-    {
-        chrome.contextMenus.create({id: "pade_conversations", title: "Conversations", contexts: ["browser_action"]});
-        chrome.contextMenus.create({id: "pade_rooms", title: "Meetings", contexts: ["browser_action"]});
-    }
-
     chrome.contextMenus.create({id: "pade_applications", title: "Applications", contexts: ["browser_action"]});
 
     chrome.contextMenus.create({parentId: "pade_applications", id: "pade_public_chat", type: "normal", title: "Public Chat", contexts: ["browser_action"],  onclick: function()
@@ -859,13 +651,9 @@ window.addEventListener("load", function()
     }});
 
     chrome.contextMenus.create({id: "pade_content", type: "normal", title: "Shared Documents", contexts: ["browser_action"]});
-
-    if (getSetting("enableInverse", false))
-    {
-        chrome.contextMenus.create({id: "pade_selection_reply", type: "normal", title: 'Reply to "%s"', contexts: ["selection", "editable"], onclick: handleRightClick});
-        chrome.contextMenus.create({id: "pade_selection_chat", type: "normal", title: "Chat with %s", contexts: ["selection", "editable"], onclick: handleRightClick});
-        chrome.contextMenus.create({id: "pade_selection_chatroom", type: "normal", title: "Enter Chatroom %s", contexts: ["selection", "editable"], onclick: handleRightClick});
-    }
+    chrome.contextMenus.create({id: "pade_selection_reply", type: "normal", title: 'Reply to "%s"', contexts: ["selection", "editable"], onclick: handleRightClick});
+    chrome.contextMenus.create({id: "pade_selection_chat", type: "normal", title: "Chat with %s", contexts: ["selection", "editable"], onclick: handleRightClick});
+    chrome.contextMenus.create({id: "pade_selection_chatroom", type: "normal", title: "Enter Chatroom %s", contexts: ["selection", "editable"], onclick: handleRightClick});
 
     chrome.contextMenus.create({id: "pade_selection_meet", type: "normal", title: "Meet in %s", contexts: ["selection", "editable"], onclick: handleRightClick});
 
@@ -884,18 +672,10 @@ window.addEventListener("load", function()
     addBlogMenu();
     addBlastMenu();
     addDrawIOMenu();
-    addAVCaptureMenu();
-    addVertoMenu();
-    addTouchPadMenu();
     addOffice365Business();
     addOffice365Personal();
     addWebApps();
     addGmail();
-
-    if (getSetting("enableCollaboration", false)) updateCollabUrlList();
-
-    chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
-    chrome.browserAction.setBadgeText({ text: 'off' });
 
     if (pade.server && pade.domain && ((!getSetting("useAnonymous", false) && !getSetting("useBasicAuth", false) && pade.password) || getSetting("useCredsMgrApi", false) || (getSetting("useAnonymous", false) || getSetting("useBasicAuth", false))))
     {
@@ -905,15 +685,7 @@ window.addEventListener("load", function()
             pade.displayName = getSetting("displayname", pade.username);
         }
 
-        // setup popup
-
-        if (getSetting("popupWindow", false))
-        {
-            chrome.browserAction.setPopup({popup: ""});
-
-        } else {
-            chrome.browserAction.setPopup({popup: "popup.html"});
-        }
+        chrome.browserAction.setPopup({popup: ""});
 
         // setup jabra speak
 
@@ -922,176 +694,8 @@ window.addEventListener("load", function()
             setupJabra();
         }
 
-        // setup SIP
-        pade.sip = {};
-        pade.enableSip = getSetting("enableSip", false);
-
-        doSetupStrophePlugins();
-
     } else doExtensionPage("options/index.html");
 });
-
-
-function handleContact(contact)
-{
-    console.debug("handleContact", contact);
-
-    if (contact.type == "url" && getSetting("enableCollaboration", false))
-    {
-        if (contact.id == 0)
-        {
-            chrome.contextMenus.create({id: "pade_h5p", type: "normal", title: "H5P Interactive Content", contexts: ["browser_action"]});
-            chrome.contextMenus.create({parentId: "pade_h5p", type: "normal", id: "pade_h5p_viewer", title: "H5P Content Viewer", contexts: ["browser_action"],  onclick: handleH5pViewerClick});
-        }
-
-        contact.created = true;
-        var urlMenu = null;
-
-        if (contact.url.indexOf("/h5p/") > -1)
-        {
-            urlMenu = {parentId: "pade_h5p", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleH5pClick};
-            if (!pade.activeH5p) pade.activeH5p = contact.url;
-            pade.collabDocs[contact.url] = contact.name;
-            chrome.contextMenus.create(urlMenu);
-
-        } else {
-
-            if (!pade.collabDocs[contact.url])
-            {
-                urlMenu = {parentId: "pade_content", type: "radio", id: contact.url, title: contact.name, contexts: ["browser_action"],  onclick: handleUrlClick};
-                if (!pade.activeUrl) pade.activeUrl = contact.url; // default
-                pade.collabDocs[contact.url] = contact.name;
-                chrome.contextMenus.create(urlMenu);
-            }
-        }
-    }
-    else
-
-    if (contact.type == "room")
-    {
-        if (!pade.activeContact)
-        {
-            setActiveContact(contact);
-        }
-
-        pade.participants[contact.jid] = contact;
-        contact.created = true;
-
-        if (getSetting("enableInverse", false) == false)
-        {
-            chrome.contextMenus.create({parentId: "pade_rooms", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleContactClick});
-        }
-    }
-    else
-
-    if (contact.type == "conversation")
-    {
-        if (!pade.activeContact)
-        {
-            setActiveContact(contact);
-        }
-
-        if (showUser(contact))
-        {
-            pade.participants[contact.jid] = contact;
-            contact.created = true;
-
-            if (getSetting("enableInverse", false) == false)
-            {
-                chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
-            }
-        }
-    }
-    else
-
-    if (contact.type == "workgroup")
-    {
-        if (!pade.activeWorkgroup)
-        {
-            chrome.contextMenus.create({id: "pade_workgroups", title: "Workgroups", contexts: ["browser_action"]});
-            setActiveWorkgroup(contact);
-        }
-
-        pade.participants[contact.jid] = contact;
-        contact.created = true;
-        chrome.contextMenus.create({parentId: "pade_workgroups", type: "radio", id: contact.jid, title: contact.name, contexts: ["browser_action"],  onclick: handleWorkgroupClick});
-    }
-}
-
-function setActiveContact(contact)
-{
-    pade.activeContact = contact;
-    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - " + pade.activeContact.name + " (" + pade.activeContact.type + ")"});
-}
-
-function setActiveWorkgroup(contact)
-{
-    if (pade.activeWorkgroup)
-    {
-        //pade.connection.send($pres({to: pade.activeWorkgroup.jid, type: "unavailable"}).c("status").t("Online").up().c("priority").t("1"));
-    }
-
-    pade.activeWorkgroup = contact;
-    setupWorkgroup();
-}
-
-function handleContactClick(info)
-{
-    console.debug("handleContactClick", info, pade.participants[info.menuItemId]);
-    setActiveContact(pade.participants[info.menuItemId]);
-    doJitsiMeet();
-}
-
-function doJitsiMeet()
-{
-    if (getSetting("popupWindow", false))
-    {
-        chrome.browserAction.setPopup({popup: ""});
-
-        if (pade.activeContact)
-        {
-            closeVideoWindow();
-
-            if (isAudioOnly())
-            {
-                joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
-
-            } else {
-                openVideoWindow(pade.activeContact.room);
-            }
-
-            if (pade.activeContact.type == "conversation")
-            {
-                inviteToConference(pade.activeContact.jid, pade.activeContact.room);
-            }
-
-        } else {
-            openVideoWindow();
-        }
-
-    } else {
-
-        if (isAudioOnly())
-        {
-            chrome.browserAction.setPopup({popup: ""});
-            joinAudioCall(pade.activeContact.name, pade.activeContact.jid, pade.activeContact.room)
-
-            if (pade.activeContact.type == "conversation")
-            {
-                inviteToConference(pade.activeContact.jid, pade.activeContact.room);
-            }
-
-        } else {
-            chrome.browserAction.setPopup({popup: "popup.html"});
-        }
-    }
-}
-
-function handleWorkgroupClick(info)
-{
-    console.debug("handleWorkgroupClick", info, pade.participants[info.menuItemId]);
-    setActiveWorkgroup(pade.participants[info.menuItemId]);
-}
 
 function handleUrlClick(info)
 {
@@ -1122,7 +726,7 @@ function openInverseChatWindow(jid)
         openChatWindow("inverse/index.html#converse/chat?jid=" + jid, true);
 
     } else {
-        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(jid);
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.openChat(jid);
         chrome.windows.update(pade.chatWindow.id, {focused: true});
     }
 }
@@ -1136,23 +740,9 @@ function openInverseGroupChatWindow(jid, message, nickname, userJid)
     {
         openChatWindow("inverse/index.html#converse/room?jid=" + jid, true);
     } else {
-        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, room, pade.displayName, null, message, nickname, userJid)
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.openGroupChat(jid, room, pade.displayName, null, message, nickname, userJid)
         chrome.windows.update(pade.chatWindow.id, {focused: true});
     }
-}
-
-function openPhoneCall(destination)
-{
-    var phone = getSetting("exten", null)
-
-    if (phone && phone != "" && pade.chatAPIAvailable)
-    {
-        makePhoneCall(phone, destination, function(err)
-        {
-            if (err) alert("Telephone call failed!!");
-        })
-
-    } else alert("Call control not configured!!");
 }
 
 function getSelectedChatBox()
@@ -1161,7 +751,7 @@ function getSelectedChatBox()
 
     if (pade.chatWindow)
     {
-        chatBox = chrome.extension.getViews({windowId: pade.chatWindow.id})[0].getSelectedChatBox();
+        chatBox = chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.getSelectedChatBox();
     }
 
     return chatBox;
@@ -1171,7 +761,7 @@ function replyInverseChat(text)
 {
     if (pade.chatWindow)
     {
-        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].replyInverseChat(text);
+        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.replyInverseChat(text);
     }
 }
 
@@ -1182,8 +772,7 @@ function dndCheckClick(info)
     if (!info.wasChecked && info.checked)
     {
         pade.busy = true;
-        if (pade.connection) pade.connection.send($pres().c("show").t("dnd").up());
-        if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "dnd");
+        if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.myStatus("status", "dnd");
 
         chrome.browserAction.setBadgeText({ text: "DND" });
         chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Do not Disturb"});
@@ -1193,13 +782,17 @@ function dndCheckClick(info)
     if (info.wasChecked && !info.checked)
     {
         pade.busy = false;
-        if (pade.connection) pade.connection.send($pres());
-        if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0]._inverse.xmppstatusview.model.set("status", "online");
+        if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.myStatus("status", "online");
 
         chrome.browserAction.setBadgeText({ text: "" });
         chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
     }
 
+}
+
+function publishUserLocation()
+{
+    if (pade.chatWindow) chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.publishUserLocation()
 }
 
 function handleRightClick(info)
@@ -1431,39 +1024,6 @@ function openOffice365Window(business, state)
     }
 }
 
-function closeApcWindow()
-{
-    if (pade.apcWindow != null)
-    {
-        chrome.windows.remove(pade.apcWindow.id);
-        pade.apcWindow = null;
-    }
-}
-
-function openApcWindow(state)
-{
-    var data = {url: chrome.runtime.getURL("apc.html"), type: "popup", focused: true};
-
-    if (state == "minimized" && getSetting("openWinMinimized", false))
-    {
-        delete data.focused;
-        data.state = state;
-    }
-
-    if (pade.apcWindow == null)
-    {
-        chrome.windows.create(data, function (win)
-        {
-            pade.apcWindow = win;
-            chrome.windows.update(pade.apcWindow.id, {width: 820, height: 640});
-            updateWindowCoordinates("apcWindow", pade.apcWindow.id, {width: 820, height: 640});
-        });
-
-    } else {
-        chrome.windows.update(pade.apcWindow.id, {focused: true});
-    }
-}
-
 function closeGmailWindow(window)
 {
     if (pade.gmailWindow[window] != null)
@@ -1538,47 +1098,12 @@ function openWebAppsWindow(url, state, width, height)
     }
 }
 
-function closePhoneWindow()
-{
-    if (pade.sip && pade.sip.window != null)
-    {
-        chrome.windows.remove(pade.sip.window.id);
-        pade.sip.window = null;
-    }
-}
-
-function openPhoneWindow(focus, state, url)
-{
-    console.debug("openPhoneWindow", focus, state);
-
-    var data = {url: chrome.runtime.getURL("phone/index-ext.html") + (url ? "?url=" + url: ""), type: "popup", focused: focus};
-
-    if (state == "minimized" && getSetting("openWinMinimized", false))
-    {
-        delete data.focused;
-        data.state = state;
-    }
-
-    if (pade.sip.window == null)
-    {
-        chrome.windows.create(data, function (win)
-        {
-            pade.sip.window = win;
-            chrome.windows.update(pade.sip.window.id, {width: 400, height: 780});
-            updateWindowCoordinates("phoneWindow", pade.sip.window.id, {width: 400, height: 780});
-        });
-
-    } else {
-        chrome.windows.update(pade.sip.window.id, {focused: focus5});
-    }
-}
-
 function closeChatWindow()
 {
     if (pade.chatWindow)
     {
         chrome.windows.remove(pade.chatWindow.id);
-        pade.chatWindow = null;
+        delete pade.chatWindow;
     }
 }
 
@@ -1728,32 +1253,6 @@ function openBlogWindow()
     }
 }
 
-function closeAVCaptureWindow()
-{
-    if (pade.avCaptureWindow != null)
-    {
-        try {
-            chrome.windows.remove(pade.avCaptureWindow.id);
-        } catch (e) {}
-    }
-}
-
-function openAVCaptureWindow()
-{
-    if (!pade.avCaptureWindow)
-    {
-        var url = chrome.runtime.getURL("webcam/index.html");
-
-        chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
-        {
-            pade.avCaptureWindow = win;
-            updateWindowCoordinates("avCaptureWindow", pade.avCaptureWindow.id, {width: 800, height: 640});
-        });
-    } else {
-        chrome.windows.update(pade.avCaptureWindow.id, {focused: true});
-    }
-}
-
 function closeBlastWindow()
 {
     if (pade.blastWindow != null)
@@ -1777,38 +1276,6 @@ function openBlastWindow()
         });
     } else {
         chrome.windows.update(pade.blastWindow.id, {focused: true});
-    }
-}
-
-function closeVertoWindow()
-{
-    if (pade.vertoWindow != null)
-    {
-        try {
-            chrome.windows.remove(pade.vertoWindow.id);
-        } catch (e) {}
-    }
-}
-
-function openVertoWindow(state)
-{
-    var data = {url: "https://" + pade.username + ":" + pade.password + "@" + pade.server + "/dashboard/verto", type: "popup", focused: true};
-
-    if (state == "minimized" && getSetting("openWinMinimized", false))
-    {
-        delete data.focused;
-        data.state = state;
-    }
-
-    if (!pade.vertoWindow)
-    {
-        chrome.windows.create(data, function (win)
-        {
-            pade.vertoWindow = win;
-            updateWindowCoordinates("vertoWindow", pade.vertoWindow.id, {width: 1024, height: 800});
-        });
-    } else {
-        chrome.windows.update(pade.vertoWindow.id, {focused: true});
     }
 }
 
@@ -1836,816 +1303,6 @@ function doExtensionPage(url)
     } else window.open(chrome.runtime.getURL(url), url);
 }
 
-function addHandlers()
-{
-    console.debug('addHandlers');
-
-    pade.connection.addHandler(function(iq)
-    {
-        console.debug('fastpath handler', iq);
-
-        var iq = $(iq);
-        var workgroupJid = iq.attr('from');
-
-        pade.connection.send($iq({type: 'result', to: iq.attr('from'), id: iq.attr('id')}));
-
-        iq.find('offer').each(function()
-        {
-            var id = $(this).attr('id');
-            var jid = $(this).attr('jid').toLowerCase();
-            var properties = {id: id, jid: jid, workgroupJid: workgroupJid};
-
-            iq.find('value').each(function()
-            {
-                var name = $(this).attr('name');
-                var value = $(this).text();
-                properties[name] = value;
-            });
-
-            console.debug("fastpath handler offer", properties, workgroupJid);
-
-            acceptRejectOffer(properties);
-        });
-
-        iq.find('offer-revoke').each(function()
-        {
-            id = $(this).attr('id');
-            jid = $(this).attr('jid').toLowerCase();
-
-            console.debug("fastpath handler offer-revoke", workgroupJid);
-        });
-
-        return true;
-
-    }, "http://jabber.org/protocol/workgroup", 'iq', 'set');
-
-    pade.connection.addHandler(function(presence)
-    {
-        var to = $(presence).attr('to');
-        var type = $(presence).attr('type');
-        var from = Strophe.getBareJidFromJid($(presence).attr('from'));
-        var statusMsg = null;
-        var pres = "online";
-
-        if (type) pres = type;
-        if (!pade.presence[from]) pade.presence[from] = {};
-
-        var contact = pade.participants[from];
-
-        console.debug("presence tracker", pres, from, to, type, contact, pade.presence[from], presence);
-
-        $(presence).find('show').each(function()
-        {
-            pres = $(this).text();
-
-            if (pade.isReady && pade.presence[from] && pade.presence[from].show != "online" && pres == "online" && getSetting("enablePresenceTracking", false) && contact)
-            {
-                var whiteList = getSetting("presNotifyWhitelist", null);
-                var validToSend = !!contact.name && (!whiteList || whiteList.indexOf(from) > -1);
-
-                if (validToSend) notifyText(contact.name, "Contact Tracker", from, [], null, from);
-            }
-
-            pade.presence[from].show = pres;
-        });
-
-        $(presence).find('status').each(function()
-        {
-            statusMsg = $(this).text();
-
-            if (pade.isReady && pade.presence[from] && pade.presence[from].status != statusMsg && getSetting("enablePresenceStatus", false) && contact)
-            {
-                var whiteList = getSetting("presNotifyWhitelist", null);
-                var validToSend = !!contact.name && (!whiteList || whiteList.indexOf(from) > -1);
-
-                if (validToSend) notifyText($(this).text(), contact.name + " " + from, from, [], null, from);
-            }
-
-            pade.presence[from].status = statusMsg;
-        });
-
-        if (contact && contact.type == "conversation" && getSetting("enableInverse", false) == false)
-        {
-            if (contact.created)
-            {
-                chrome.contextMenus.remove(from);
-            }
-
-            contact.created = false;
-            contact.presence = pres;
-
-            if (showUser(contact))
-            {
-                contact.created = true;
-                chrome.contextMenus.create({parentId: "pade_conversations", type: "radio", id: contact.jid, title: contact.name + " - " + contact.presence, contexts: ["browser_action"],  onclick: handleContactClick});
-            }
-         }
-
-        if ($(presence).find('agent-status').length > 0 || $(presence).find('notify-queue-details').length > 0 || $(presence).find('notify-queue').length > 0)
-        {
-            var from = $(presence).attr('from');
-            var maxChats;
-
-            $(presence).find('agent-status').each(function()
-            {
-                var free = true;
-
-                var workGroup = Strophe.getNodeFromJid($(this).attr('jid'));
-                if (!pade.fastpath[workGroup]) pade.fastpath[workGroup] = {conversations: {}};
-
-                $(presence).find('max-chats').each(function()
-                {
-                    pade.fastpath[workGroup].maxChats = $(this).text();
-                });
-
-                var agent = Strophe.getNodeFromJid(from);
-                if (!pade.fastpath[workGroup].conversations[agent]) pade.fastpath[workGroup].conversations[agent] = {};
-
-                pade.fastpath[workGroup].conversations[agent].agent = agent;
-
-                $(presence).find('show').each(function()
-                {
-                    pade.fastpath[workGroup].conversations[agent].show = $(this).text();
-                });
-
-                $(presence).find('chat').each(function()
-                {
-                    free = false;
-
-                    pade.fastpath[workGroup].conversations[agent].sessionID = $(this).attr('sessionID');
-                    pade.fastpath[workGroup].conversations[agent].sessionJid = pade.fastpath[workGroup].conversations[agent].sessionID + "@conference." + pade.connection.domain;
-
-                    pade.fastpath[workGroup].conversations[agent].userID = Strophe.getNodeFromJid($(this).attr('userID'));
-                    pade.fastpath[workGroup].conversations[agent].startTime = $(this).attr('startTime');
-                    pade.fastpath[workGroup].conversations[agent].question = $(this).attr('question');
-                    pade.fastpath[workGroup].conversations[agent].username = $(this).attr('username');
-                    pade.fastpath[workGroup].conversations[agent].email = $(this).attr('email');
-
-                    var text = pade.fastpath[workGroup].conversations[agent].userID + " talking with " + pade.fastpath[workGroup].conversations[agent].username + " about " + pade.fastpath[workGroup].conversations[agent].question;
-
-                    console.debug('agent-status message', pade.fastpath[workGroup].conversations[agent]);
-
-                    notifyText(workGroup, text, null, [{title: "Join", iconUrl: chrome.runtime.getURL("check-solid.svg")},{title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
-                    {
-                        if (buttonIndex == 0)
-                        {
-                            openInverseGroupChatWindow(pade.fastpath[workGroup].conversations[agent].sessionJid);
-                        }
-                    }, workGroup);
-                });
-
-                console.debug("agent-status", workGroup, agent, pade.fastpath[workGroup]);
-
-                if (free)
-                {
-                    console.debug("agent-status delete", workGroup, agent, pade.fastpath[workGroup]);
-
-                    clearNotification(workGroup);
-                    delete pade.fastpath[workGroup].conversations[agent];
-                }
-            });
-
-            $(presence).find('notify-queue-details').each(function()
-            {
-                var workGroup = Strophe.getNodeFromJid(from);
-                if (!pade.fastpath[workGroup]) pade.fastpath[workGroup] = {conversations: {}};
-
-                $(presence).find('user').each(function()
-                {
-                    var jid = $(this).attr('jid');
-                    var position, time, joinTime
-
-                    $(this).find('position').each(function()
-                    {
-                        pade.fastpath[workGroup].position = $(this).text() == "0" ? "first": jQuery(this).text();
-                    });
-
-                    $(this).find('time').each(function()
-                    {
-                        pade.fastpath[workGroup].time = $(this).text();
-                    });
-
-                    $(this).find('join-time').each(function()
-                    {
-                        pade.fastpath[workGroup].joinTime = $(this).text();
-                    });
-
-                    if (pade.fastpath[workGroup].position && pade.fastpath[workGroup].time && pade.fastpath[workGroup].joinTime)
-                    {
-                        var text = "A caller has been waiting for " + pade.fastpath[workGroup].time + " secconds";
-
-                        console.debug('notify-queue-details message  ' + text);
-
-                        if (getSetting("wgNotifications", false))
-                        {
-                            notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
-                        }
-                    }
-                });
-                console.debug("notify-queue-details", workGroup, pade.fastpath[workGroup]);
-            });
-
-            $(presence).find('notify-queue').each(function()
-            {
-                var workGroup = Strophe.getNodeFromJid(from);
-                if (!pade.fastpath[workGroup]) pade.fastpath[workGroup] = {conversations: {}};
-
-                var count, oldest, waitTime, status
-
-                $(presence).find('count').each(function()
-                {
-                    pade.fastpath[workGroup].count = jQuery(this).text();
-                });
-
-                $(presence).find('oldest').each(function()
-                {
-                    pade.fastpath[workGroup].oldest = jQuery(this).text();
-                });
-
-                $(presence).find('time').each(function()
-                {
-                    pade.fastpath[workGroup].waitTime = jQuery(this).text();
-                });
-
-                $(presence).find('status').each(function()
-                {
-                    pade.fastpath[workGroup].status = jQuery(this).text();
-                });
-
-                if (pade.fastpath[workGroup].count && pade.fastpath[workGroup].oldest && pade.fastpath[workGroup].waitTime && pade.fastpath[workGroup].status)
-                {
-                    var text = "There are " + count + " caller(s) waiting for as long as " + waitTime + " seconds";
-
-                    console.debug('notify-queue message ' + text);
-
-                    if (getSetting("wgNotifications", false))
-                    {
-                        notifyText(workGroup, text, null, [{title: "Ok", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex){}, workGroup);
-                    }
-                }
-
-                console.debug("notify-queue presence", workGroup, pade.fastpath[workGroup]);
-            });
-        }
-
-        $(presence).find('geoloc').each(function ()
-        {
-            var accuracy = this.querySelector('accuracy').innerHTML;
-            var lat = this.querySelector('lat').innerHTML;
-            var lon = this.querySelector('lon').innerHTML;
-
-            pade.geoloc[from] = {accuracy: accuracy, lat: lat, lon: lon};
-
-            console.debug("Geolocation", from, pade.geoloc[from]);
-        });
-
-        $(presence).find('json').each(function ()
-        {
-            var namespace = $(this).attr("xmlns");
-
-            if (namespace == "urn:xmpp:json:0")
-            {
-                var json = JSON.parse($(this).text());
-                console.debug("json", from, json);
-            }
-
-        });
-
-        return true;
-
-    }, null, 'presence');
-
-
-    pade.connection.addHandler(function(message)
-    {
-        var id = $(message).attr("from");
-        var from = $(message).attr("from");
-        var to = $(message).attr("to");
-        var reason = null;
-        var password = null;
-        var composing = false;
-        var offerer = Strophe.getBareJidFromJid(from);
-        var type = $(message).attr("type");
-        var room = null;
-        var autoaccept = null;
-
-        console.debug("message handler", from, to, message)
-
-        var encrypted = false;
-
-        $(message).find('encrypted').each(function ()
-        {
-            encrypted = true;
-        });
-
-        $(message).find('geoloc').each(function ()
-        {
-            var accuracy = this.querySelector('accuracy').innerHTML;
-            var lat = this.querySelector('lat').innerHTML;
-            var lon = this.querySelector('lon').innerHTML;
-
-            pade.geoloc[offerer] = {accuracy: accuracy, lat: lat, lon: lon};
-
-            console.debug("Geolocation", offerer, pade.geoloc[offerer]);
-        });
-
-        if (encrypted) return true; // ignore
-
-        $(message).find('notification').each(function ()
-        {
-            var namespace = $(this).attr("xmlns");
-
-            if (namespace == "http://igniterealtime.org/ofchat/notification")
-            {
-                var body = $(this).text();
-                var jid = $(this).attr('jid');
-                var nickname = $(this).attr('nickname');
-
-                if ((pade.chatWindow && !chrome.extension.getViews({windowId: pade.chatWindow.id})[0].getChatPanel(from)) || !pade.chatWindow)
-                {
-                    if (getSetting("notifyWhenClosed", true))
-                    {
-                        doNotification(body, jid + " " + from, jid, function()
-                        {
-                            openInverseGroupChatWindow(from, body, nickname, jid);
-                        });
-                    }
-                }
-            }
-        });
-
-        $(message).find('json').each(function ()
-        {
-            var namespace = $(this).attr("xmlns");
-
-            if (namespace == "urn:xmpp:json:0")
-            {
-                var json = JSON.parse($(this).text());
-            }
-        });
-
-        var history = message.querySelector('forwarded')
-
-        if (history) return true; // ignore historical notifications
-
-        $(message).find('body').each(function ()
-        {
-            var body = $(this).text();
-            var pos0 = body.indexOf("/webinar/")
-            var pos1 = body.indexOf("/jitsimeet/index.html?room=")
-            var pos2 = body.indexOf("https://" + pade.server);
-            var pos3 = body.indexOf(pade.ofmeetUrl);
-
-            console.debug("message handler body", body, offerer, pade.minimised);
-
-            if (!pade.messageCount) pade.messageCount = 0;
-
-            if (!pade.chatWindow)
-            {
-                pade.messageCount++;
-                chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
-                chrome.browserAction.setBadgeText({ text: pade.messageCount.toString() });
-            }
-
-            if ( pos0 > -1 && pos2 > -1 )
-            {
-                reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("webinarInvite", 'Please join webinar at');
-                room = body.substring(pos0 + 9);
-                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: true});
-            }
-            else
-
-            if (pos1 > -1 && pos2 > -1 )
-            {
-                reason = pos2 > 0 ? body.substring(0, pos2) : getSetting("ofmeetInvitation", 'Please join meeting at');
-                room = body.substring(pos1 + 27);
-                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
-            }
-            else
-
-            if (pos3 > -1)
-            {
-                reason = pos3 > 0 ? body.substring(0, pos3) : getSetting("ofmeetInvitation", 'Please join meeting at');
-                room = body.substring(pos3 + pade.ofmeetUrl.length);
-                handleInvitation({room: room, offerer: offerer, reason: reason, webinar: false});
-            }
-
-            else
-
-            if (!pade.chatWindow || getSetting("enableInverse", false) == false)
-            {
-                doNotification(body, offerer, offerer, function()
-                {
-                    if (!pade.chatWindow)
-                    {
-                        openChatWindow("inverse/index.html#converse/chat?jid=" + offerer, true);
-                    }
-
-                    else {
-                        chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(offerer);
-                    }
-                });
-            }
-        });
-
-        $(message).find('x').each(function ()
-        {
-            var namespace = $(this).attr("xmlns");
-
-            $(message).find('offer').each(function()
-            {
-                offerer = $(this).attr('jid');
-            });
-
-            if (namespace == "jabber:x:conference")
-            {
-                $(message).find('invite').each(function()
-                {
-                    offerer = $(this).attr('from');
-                });
-
-                id = $(this).attr('jid');
-                autoaccept = $(this).attr('autoaccept');
-                room = Strophe.getNodeFromJid(id);
-                reason = $(this).attr('reason');
-                password = $(this).attr('password');
-
-                if (!reason)
-                {
-                    $(message).find('reason').each(function()
-                    {
-                        reason = $(this).text();
-                    });
-                }
-
-                if (!password)
-                {
-                    $(message).find('password').each(function()
-                    {
-                        password = $(this).text();
-                    });
-                }
-
-                handleInvitation({room: room, offerer: offerer, autoaccept: autoaccept, id: id, reason: reason, webinar: false});
-            }
-        });
-
-        $(message).find('ofswitch').each(function ()
-        {
-            var json = JSON.parse($(this).text());
-            console.debug("ofswitch event", json);
-
-            var buttons = [];
-            var title = json.direction == "inbound" ? json.destination : json.source;
-            var callback0 = function(){};
-            var callback1 = function(){};
-
-            var doTelephoneAction = function(action, callId, destination)
-            {
-                var query = destination && destination != "" ? "?destination=" + destination : "";
-                var url =  "https://" + pade.server + "/rest/api/restapi/v1/meet/action/" + action + "/" + callId + query;
-                var options = {method: "POST", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
-
-                console.debug("doTelephoneAction", url, options);
-
-                fetch(url, options).then(function(response)
-                {
-                    console.debug("doTelephoneAction ok", response);
-
-                }).catch(function (err) {
-                    console.error('doTelephoneAction error', err);
-                });
-            }
-
-            if (json.state == "HANGUP")
-            {
-                chrome.notifications.clear(json.call_id, function(wasCleared)
-                {
-                    console.debug("CC Hangup", wasCleared);
-                });
-
-                pade.activeCallId = null;
-            }
-            else {
-
-                if (json.state == "ACTIVE")
-                {
-                    buttons = [{title: "Transfer", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Hangup", iconUrl: chrome.runtime.getURL("times-solid.svg")}];
-
-                    callback0 = function()
-                    {
-                        var currentChat = getSelectedChatBox();
-                        var defaultExten = undefined;
-
-                        if (currentChat)
-                        {
-                            var currentJid = currentChat.model.get("jid");
-                            var userprofile = pade.userProfiles[currentJid];
-                            if (userprofile) defaultExten = userprofile.caller_id_number;
-                        }
-
-                        var destination = prompt("Transfer To:", defaultExten);
-                        if (destination) doTelephoneAction("transfer", json.call_id, destination);
-                    };
-
-                    callback1 = function()
-                    {
-                        doTelephoneAction("clear", json.call_id);
-                        pade.activeCallId = null;
-                    };
-
-                    pade.activeCallId = json.call_id;
-                }
-                else
-
-                if (json.state == "HELD")
-                {
-                    buttons = [{title: "Unhold", iconUrl: chrome.runtime.getURL("check-solid.svg")}];
-
-                    callback0 = function()
-                    {
-                        doTelephoneAction("hold", json.call_id);
-                    };
-                }
-
-                else
-
-                if (json.state == "RINGING")
-                {
-                    buttons = [{title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}];
-
-                    callback0 = function()
-                    {
-                        doTelephoneAction("clear", json.call_id);
-                        pade.activeCallId = null;
-                    };
-                }
-
-                notifyText(title, "Telephone Call", null, buttons, function(notificationId, buttonIndex)
-                {
-                    if (buttonIndex == 0) callback0();
-                    if (buttonIndex == 1) callback1();
-
-                    if (buttonIndex == -1)
-                    {
-                        doTelephoneAction("clear", json.call_id);
-                        pade.activeCallId = null;
-                    }
-
-                }, json.call_id);
-            }
-        });
-
-        return true;
-
-    }, null, 'message');
-}
-
-function doNotification(body, label, offerer, callback)
-{
-    console.debug("doNotification", body, label, offerer)
-
-    notifyText(body, label, offerer, [{title: "View", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Ignore", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
-    {
-        if (buttonIndex == 0)   // accept
-        {
-            callback()
-        }
-    }, offerer);
-}
-
-function fetchContacts(callback)
-{
-    var urlCount = 0;
-    var roomCount = 0;
-    var contactCount = 0;
-    var workgroupCount = 0;
-
-    pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:private"}).c("storage", {xmlns: "storage:bookmarks"}).tree(), function(resp)
-    {
-        console.debug("get bookmarks", resp)
-
-        $(resp).find('conference').each(function()
-        {
-            var jid = $(this).attr("jid");
-            var room = Strophe.getNodeFromJid(jid);
-            var muc = Strophe.getDomainFromJid(jid);
-            var domain = muc.substring("conference.".length);           // ignore "conference."
-
-            console.debug('ofmeet.bookmark.conference.item', {name: $(this).attr("name"), jid: $(this).attr("jid"), autojoin: $(this).attr("autojoin")});
-
-            if (callback) callback(
-            {
-                id: roomCount++,
-                type: "room",
-                jid: jid,
-                presence: "room",
-                name: $(this).attr("name"),
-                pinned: $(this).attr("autojoin"),
-                open: $(this).attr("autojoin"),
-                room: room,
-                domain: domain
-            });
-        })
-
-        $(resp).find('url').each(function()
-        {
-            const name = $(this).attr("name");
-            const url = $(this).attr("url");
-
-            console.debug('ofmeet.bookmark.url.item', {name: name, url: url});
-
-            var ignore = name == "Video conferencing web client";
-
-            if (ignore)
-            {
-                if (!getSetting("ofmeetUrl", null))
-                {
-                    pade.ofmeetUrl = url + "/";
-                    setSetting("ofmeetUrl", pade.ofmeetUrl);
-                }
-            }
-            else
-
-            if ($(this).attr("rss"))
-            {
-                let rss = getSetting("rssAtomFeedUrls", "");
-
-                if (rss.indexOf(url) == -1)
-                {
-                    rss = rss + url + "\n";
-                    setSetting("rssAtomFeedUrls", rss);
-                    setSetting("enableRssFeeds", true);
-                }
-            }
-            else
-
-            if ($(this).attr("webapp"))
-            {
-                let webApps = getSetting("webApps", "");
-
-                if (webApps.indexOf(url) == -1)
-                {
-                    webApps = webApps + url + ",";
-                    setSetting("webApps", webApps);
-                    setSetting("enableWebApps", true);
-                }
-            }
-            else
-
-            if ($(this).attr("homepage"))
-            {
-                setSetting("homePage", url);
-            }
-            else {
-                if (callback) callback(
-                {
-                    id: urlCount++,
-                    type: "url",
-                    url: url,
-                    name: name
-                });
-            }
-        });
-
-    }, function (error) {
-        console.error(error);
-    });
-
-    pade.connection.sendIQ($iq({type: "get"}).c("query", {xmlns: "jabber:iq:roster"}).tree(), function(resp)
-    {
-        console.debug("get roster", resp)
-
-        $(resp).find('item').each(function()
-        {
-            var jid = $(this).attr("jid");
-            var node = Strophe.getNodeFromJid(jid);
-            var name = $(this).attr("name");
-            var domain = Strophe.getDomainFromJid(jid);
-
-            console.debug('ofmeet.roster.item',jid, name);
-
-            if (callback) callback(
-            {
-                id: contactCount++,
-                type: "conversation",
-                name: name,
-                room: makeRoomName(node),
-                node: node,
-                jid: jid,
-                presence: pade.presence[jid] ? pade.presence[jid].show : "unavailable",
-                open: "false",
-                active: false,
-                domain: domain
-            });
-
-        })
-
-
-    }, function (error) {
-        console.error(error);
-    });
-
-    if (getSetting("wgEnabled", false))
-    {
-        pade.connection.sendIQ($iq({type: 'get', to: "workgroup." + pade.connection.domain}).c('workgroups', {jid: pade.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"}).tree(), function(resp)
-        {
-            $(resp).find('workgroup').each(function()
-            {
-                var jid = $(this).attr('jid');
-                var name = Strophe.getNodeFromJid(jid);
-                var room = 'workgroup-' + name + "@conference." + pade.connection.domain;
-
-                console.debug("get workgroups", room, jid);
-
-                if (callback) callback(
-                {
-                    id: roomCount++,
-                    type: "room",
-                    jid: room,
-                    presence: "room",
-                    name: 'workgroup-' + name,
-                    pinned: true,
-                    open: true,
-                    room: 'workgroup-' + name,
-                    domain: pade.connection.domain
-                });
-
-                if (callback) callback(
-                {
-                    id: workgroupCount++,
-                    type: "workgroup",
-                    jid: jid,
-                    presence: "open",
-                    name: name,
-                    domain: pade.connection.domain
-                });
-            });
-
-        }, function (error) {
-            console.warn("Workgroups not available");
-        });
-    }
-
-    etherlynk.connect();
-
-    if (pade.enableSip)
-    {
-        pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).tree(), function(resp)
-        {
-            $(resp).find('jid').each(function()                 {pade.sip.jid = $(this).text();});
-            $(resp).find('username').each(function()            {pade.sip.username = $(this).text();});
-            $(resp).find('authUsername').each(function()        {pade.sip.authUsername = $(this).text();});
-            $(resp).find('displayPhoneNum').each(function()     {pade.sip.displayPhoneNum = $(this).text();});
-            $(resp).find('password').each(function()            {pade.sip.password = $(this).text();});
-            $(resp).find('server').each(function()              {pade.sip.server = $(this).text();});
-            $(resp).find('enabled').each(function()             {pade.sip.enabled = $(this).text();});
-            $(resp).find('outboundproxy').each(function()       {pade.sip.outboundproxy = $(this).text();});
-            $(resp).find('promptCredentials').each(function()   {pade.sip.promptCredentials = $(this).text();});
-
-            console.debug("get sip profile", pade.sip);
-
-            if (pade.sip.authUsername)
-            {
-                etherlynk.connectSIP();
-
-                chrome.contextMenus.create({parentId: "pade_applications", id: "pade_phone", type: "normal", title: "Phone", contexts: ["browser_action"],  onclick: function()
-                {
-                    openPhoneWindow(true);
-                }});
-            }
-
-        }, function (error) {
-            console.warn("SIP profile not available");
-            connectSIP();
-        });
-    }
-}
-
-function makePhoneCall(line, destination, callback)
-{
-    console.debug('makePhoneCall', destination, pade.activeCallId);
-
-    var url = "https://" + pade.server + "/rest/api/restapi/v1/meet/phone/" + line + "/" + destination;
-
-    if (pade.activeCallId)  // active call, transfer
-    {
-       url = "https://" + pade.server + "/rest/api/restapi/v1/meet/action/transfer/" + pade.activeCallId + "?destination=" + destination;
-    }
-
-    var options = {method: "POST", headers: {"authorization": "Basic " + btoa(pade.username + ":" + pade.password), "accept": "application/json"}};
-
-    console.debug("makePhoneCall", url, options);
-
-    fetch(url, options).then(function(response)
-    {
-        console.debug("getUserProperties ok", response);
-        if (callback) callback();
-
-    }).catch(function (err) {
-        if (callback) callback(err);
-    });
-}
 
 function findUsers(search, callback)
 {
@@ -2668,38 +1325,9 @@ function findUsers(search, callback)
         if (callback) callback(userList);
 
     }).catch(function (err) {           // no chat api, use XMMP search
-        findUsers2(search, callback)
+        if (callback) callback([]);
     });
 }
-
-function findUsers2(search, callback)
-{
-    console.debug('findUsers2', search);
-
-    var iq = $iq({type: 'set', to: "search." + pade.connection.domain}).c('query', {xmlns: 'jabber:iq:search'}).c('x').t(search).up().c('email').t(search).up().c('nick').t(search);
-
-    pade.connection.sendIQ(iq, function(response)
-    {
-        var users = [];
-
-        $(response).find('item').each(function()
-        {
-            var current = $(this);
-            var jid = current.attr('jid');
-            var username = Strophe.getNodeFromJid(jid);
-            var name = current.find('nick').text();
-            var email = current.find('email').text();
-
-            console.debug('findUsers2 response', username, name, email, jid);
-            users.push({username: username, name: name, email: email, jid: jid});
-        });
-
-        if (callback) callback(users);
-
-    }, function (error) {
-        console.error('findUsers2', error);
-    });
-};
 
 function inviteToConference(jid, room, invitation)
 {
@@ -2710,7 +1338,7 @@ function inviteToConference(jid, room, invitation)
     console.debug("inviteToConference", jid, room, url, roomJid, invite);
 
     try {
-        pade.connection.send($msg({type: "chat", to: jid}).c("body").t(invite));
+        //pade.connection.send($msg({type: "chat", to: jid}).c("body").t(invite));
     } catch (e) {
         console.error(e);
     }
@@ -2730,136 +1358,6 @@ function injectMessage(message, room, nickname)
         console.error(e);
     }
 }
-
-function handleInvitation(invite)
-{
-    console.debug("handleInvitation", invite);
-
-    var jid = Strophe.getBareJidFromJid(invite.offerer);
-
-    if (pade.participants[jid])
-    {
-        var participant = pade.participants[jid];
-        processInvitation(participant.name, participant.jid, invite.room, invite.autoaccept, invite.id, invite.reason, invite.webinar);
-    }
-    else
-
-    if (invite.offerer == pade.domain)
-    {
-        processInvitation("Administrator", "admin@"+pade.domain, invite.room, invite.autoaccept, invite.id, invite.reason, invite.webinar);
-    }
-    else {
-        var label = invite.offerer == Strophe.getBareJidFromJid(pade.connection.jid) ? pade.displayName : "Unknown User"
-        processInvitation(label, invite.offerer, invite.room, invite.autoaccept, invite.id, invite.reason, invite.webinar);
-    }
-
-    // inform touchpad
-
-    if (pade.port) pade.port.postMessage({event: "invited", id : invite.offerer, name: invite.room, jid: invite.id});
-}
-
-function processInvitation(title, label, room, autoaccept, id, reason, webinar)
-{
-    console.debug("processInvitation", title, label, room, id, reason, webinar);
-
-    if ((!autoaccept || autoaccept != "true") && !pade.questions[label])
-    {
-        startTone("Diggztone_Vibe");
-
-        notifyText(title + " - " + reason, label, label, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Hangup", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
-        {
-            console.debug("handleAction callback", notificationId, buttonIndex);
-
-            if (buttonIndex == 0)   // accept
-            {
-                stopTone();
-                acceptCall(title, label, room, id, webinar);
-            }
-            else
-
-            if (buttonIndex == 1)   // reject
-            {
-                stopTone();
-            }
-
-        }, room);
-
-        // jabra
-        pade.activeRoom = {title: title, label: label, room: room, id: id};
-        sendToJabra("ring");
-
-    } else {
-        acceptCall(title, label, room, id);
-    }
-}
-
-function acceptCall(title, label, room, id, webinar)
-{
-    console.debug("acceptCall", id, title, label, room, pade.questions[label], webinar);
-
-    if (isAudioOnly())
-    {
-        joinAudioCall(title, label, room);
-
-    } else {
-
-        if (!id || getSetting("enableInverse", false) == false)    // ofmeet
-        {
-            openVideoWindow(room, webinar ? "attendee" : null);
-
-        } else {
-
-            if (!pade.chatWindow)
-            {
-                openChatWindow("inverse/index.html#converse/room?jid=" + id, true);
-            } else {
-                chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(id, label || room, pade.displayName, pade.questions[label])
-                chrome.windows.update(pade.chatWindow.id, {focused: true});
-            }
-        }
-    }
-}
-
-function acceptRejectOffer(properties)
-{
-    if (pade.participants[properties.workgroupJid])
-    {
-        var question = properties.question;
-        if (!question) question = "Workgroups Ask";
-
-        var email = properties.email;
-        if (!email) email = Strophe.getBareJidFromJid(properties.jid);
-
-        pade.questions[properties.workgroupJid] = properties;
-
-        console.debug("acceptRejectOffer", question, email);
-
-        startTone("Diggztone_DigitalSanity");
-
-        notifyText(question, "Fastpath - " + email, null, [{title: "Accept", iconUrl: chrome.runtime.getURL("check-solid.svg")}, {title: "Reject", iconUrl: chrome.runtime.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
-        {
-            console.debug("handleAction callback", notificationId, buttonIndex);
-
-            if (buttonIndex == 0)   // accept
-            {
-                pade.connection.send($iq({type: 'set', to: properties.workgroupJid}).c('offer-accept', {xmlns: "http://jabber.org/protocol/workgroup", jid: properties.jid, id: properties.id}));
-                stopTone();
-            }
-            else
-
-            if (buttonIndex == 1)   // reject
-            {
-                pade.connection.send($iq({type: 'set', to: properties.workgroupJid}).c('offer-reject', {xmlns: "http://jabber.org/protocol/workgroup", jid: properties.jid, id: properties.id}));
-                stopTone();
-            }
-
-        }, properties.id);
-
-    } else {
-        console.warn("workgroup offer from unknown source", properties.workgroupJid);
-    }
-}
-
 
 function setupJabra()
 {
@@ -2905,55 +1403,24 @@ function handleJabraMessage(message)
     if (message == "Event: device detached") {
 
     }
-
     if (message == "Event: acceptcall")
     {
-        if (pade.activeRoom)
-        {
-            stopTone();
-            clearNotification(pade.activeRoom.room);
 
-            if (isAudioOnly())
-            {
-                joinAudioCall(pade.activeRoom.title, pade.activeRoom.label, pade.activeRoom.room);
-
-            } else {
-                openVideoWindow(pade.activeRoom.room);
-            }
-            pade.activeRoom = null;
-        }
     }
-
     if (message == "Event: endcall")
     {
-        if (isAudioOnly())
-        {
-            if (pade.activeRoom) clearNotification(pade.activeRoom.room);
 
-        } else {
-            closeVideoWindow();
-        }
     }
-
     if (message == "Event: reject")
     {
-        if (pade.activeRoom)
-        {
-            stopTone();
-            clearNotification(pade.activeRoom.room);
-            sendToJabra("onhook");
-            pade.activeRoom = null;
-        }
-    }
 
+    }
     if (message == "Event: flash") {
 
     }
-
     if (message.startsWith("Event: devices")) {
 
     }
-
     if (message.startsWith("Event: activedevice")) {
 
     }
@@ -2976,20 +1443,6 @@ function clearNotification(room)
     });
 }
 
-function joinAudioCall(title, label, room)
-{
-    etherlynk.join(room);
-    sendToJabra("offhook");
-
-    notifyText(title, label, null, [{title: "Clear Conversation?", iconUrl: chrome.runtime.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
-    {
-        if (buttonIndex == 0)   // terminate
-        {
-            etherlynk.leave(room);
-        }
-
-    }, room);
-}
 
 function removeSetting(name)
 {
@@ -3063,13 +1516,10 @@ function removeCommunityMenu()
 
 function addInverseMenu()
 {
-    if (getSetting("enableInverse", false))
+    chrome.contextMenus.create({parentId: "pade_applications", id: "pade_inverse", type: "normal", title: "Converse Client", contexts: ["browser_action"],  onclick: function()
     {
-        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_inverse", type: "normal", title: "Converse Client", contexts: ["browser_action"],  onclick: function()
-        {
-            openChatWindow("inverse/index.html");
-        }});
-    }
+        openChatWindow("inverse/index.html");
+    }});
 }
 
 function removeInverseMenu()
@@ -3085,23 +1535,6 @@ function addBlogMenu()
         chrome.contextMenus.create({parentId: "pade_applications", id: "pade_blog", type: "normal", title: "Blogger", contexts: ["browser_action"],  onclick: function()
         {
             openBlogWindow();
-        }});
-    }
-}
-
-function removeAVCaptureMenu()
-{
-    closeAVCaptureWindow();
-    chrome.contextMenus.remove("pade_avcapture");
-}
-
-function addAVCaptureMenu()
-{
-    if (getSetting("enableAVCapture", false))
-    {
-        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_avcapture", type: "normal", title: "Audio/Video Capture", contexts: ["browser_action"],  onclick: function()
-        {
-            openAVCaptureWindow();
         }});
     }
 }
@@ -3142,40 +1575,6 @@ function removeDrawIOMenu()
 {
     closeWebAppsWindow("https://" + pade.server + "/drawio");
     chrome.contextMenus.remove("pade_drawio");
-}
-
-function addVertoMenu()
-{
-    if (getSetting("enableVerto", false))
-    {
-        chrome.contextMenus.create({parentId: "pade_applications", id: "pade_verto", type: "normal", title: "Verto Communicator", contexts: ["browser_action"],  onclick: function()
-        {
-            openVertoWindow();
-        }});
-    }
-}
-
-function removeVertoMenu()
-{
-    closeVertoWindow();
-    chrome.contextMenus.remove("pade_verto");
-}
-
-function addTouchPadMenu()
-{
-    if (getSetting("enableTouchPad", false))
-    {
-        chrome.contextMenus.create({id: "pade_apc", type: "normal", title: "Communicator TouchPad", contexts: ["browser_action"],  onclick: function()
-        {
-            openApcWindow();
-        }});
-    }
-}
-
-function removeTouchPadMenu()
-{
-    closeApcWindow();
-    chrome.contextMenus.remove("pade_apc");
 }
 
 function addOffice365Business()
@@ -3277,11 +1676,6 @@ function isAudioOnly()
     return getSetting("audioOnly", false);
 }
 
-function showUser(contact)
-{
-    return getSetting("enableInverse", false) || !getSetting("showOnlyOnlineUsers", true) || (getSetting("showOnlyOnlineUsers", true) && contact.presence != "unavailable");
-}
-
 function makeRoomName(contact)
 {
     if (pade.username <= contact)
@@ -3289,17 +1683,6 @@ function makeRoomName(contact)
         return pade.username + "-" + contact;
     }
     else return contact + "-" + pade.username;
-}
-
-function setSipStatus(status)
-{
-    pade.connection.sendIQ($iq({type: 'get', to: "sipark." + pade.connection.domain}).c('registration', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/sipark"}).c('status').t(status).tree(), function(resp)
-    {
-        console.debug("setSipStatus", status);
-
-    }, function (error) {
-        console.error("setSipStatus", error);
-    });
 }
 
 function changePassword(callback, errorback)
@@ -3316,148 +1699,6 @@ function changePassword(callback, errorback)
         if (errorback) errorback(error);
     });
 }
-
-function logCall(target, direction, duration)
-{
-    if (direction == "dialed")
-    {
-        numA = pade.sip.username;
-        numB = target;
-    }
-    else {
-        numB = pade.sip.username;
-        numA = target;
-    }
-
-/*
-    pade.connection.sendIQ($iq({type: 'get', to: "logger." + pade.connection.domain}).c('logger', {jid: pade.connection.jid, xmlns: "http://www.jivesoftware.com/protocol/log"}).c('callLog').c('numA').t(numA).up().c('numB').t(numB).up().c('direction').t(direction).up().c('duration').t(duration).up().tree(), function(resp)
-    {
-        console.debug("logCall", numA, numB, direction, duration);
-
-    }, function (error) {
-        console.error("logCall", error);
-    });
-*/
-}
-
-function getVCard(jid, callback, errorback)
-{
-    jid = jid.trim();
-
-    if (pade.vcards[jid])
-    {
-       if (callback) callback(pade.vcards[jid]);
-
-    }
-    else
-
-    if (pade.connection && pade.connection.vCard)
-    {
-        pade.connection.vCard.get(jid, function(vCard)
-        {
-            pade.vcards[jid] = vCard;
-            if (callback) callback(vCard);
-
-        }, function(error) {
-            if (errorback) errorback(error);
-            console.error(error);
-        });
-
-    } else errorback();
-}
-
-function setVCard(vCard, callback, errorback)
-{
-    if (pade.connection.vCard) pade.connection.vCard.set(vCard, function(resp)
-    {
-        if (callback) callback(resp);
-
-    }, function(error) {
-        if (errorback) errorback(error);
-        console.error(error);
-    });
-}
-
-function updateVCard()
-{
-    console.debug("updateVCard");
-
-    var jid = pade.username + "@" + pade.domain;
-
-    getVCard(jid, function(vCard)
-    {
-        avatar = vCard.avatar;
-
-        if (!avatar || avatar == "")
-        {
-            avatar = createAvatar(pade.displayName);
-
-            if (getSetting("updateAvatar", false))
-            {
-                updateVCardAvatar(jid, avatar)
-            }
-
-            setSetting("avatar", avatar);
-        }
-
-    }, function(error) {
-        avatar = createAvatar(pade.displayName);
-        setSetting("avatar", avatar);
-
-        if (getSetting("updateAvatar", false))
-        {
-            updateVCardAvatar(jid, avatar)
-        }
-    });
-}
-
-function updateVCardAvatar(jid, avatar)
-{
-    console.debug("updateVCardAvatar", avatar);
-
-    var email = getSetting("email", "");
-    var phone = getSetting("phone", "");
-    var country = getSetting("country", "");
-    var url = getSetting("url", "");
-    var role = getSetting("role", (getSetting("useUport", false) ? "uport," : "") + chrome.i18n.getMessage('manifest_shortExtensionName'));
-
-    var avatarError = function (error)
-    {
-        console.error("uploadAvatar - error", error);
-    }
-
-    getVCard(jid, function(vCard)
-    {
-        vCard.name = pade.displayName;
-        vCard.nickname = pade.displayName;
-        vCard.email = email;
-        vCard.workPhone = phone;
-        vCard.country = country;
-        vCard.role = role;
-        vCard.url = url;
-
-        var sourceImage = new Image();
-
-        sourceImage.onload = function() {
-            var canvas = document.createElement("canvas");
-            canvas.width = 32;
-            canvas.height = 32;
-            canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
-
-            vCard.avatar = canvas.toDataURL();
-
-            setVCard(vCard, function(resp)
-            {
-                console.debug("uploadAvatar - set vcard", resp);
-
-            }, avatarError);
-        }
-
-        sourceImage.src = avatar;
-
-    }, avatarError);
-}
-
 
 function createAvatar(nickname, width, height, font, force)
 {
@@ -3863,10 +2104,10 @@ function doStreamDeckUrl(url, jid, label, key, groupChat)
 
         if (groupChat)
         {
-            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openGroupChat(jid, label, pade.displayName)
+            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.openGroupChat(jid, label, pade.displayName)
 
         } else {
-            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].openChat(jid);
+            chrome.extension.getViews({windowId: pade.chatWindow.id})[0].padeapi.openChat(jid);
         }
         chrome.windows.update(pade.chatWindow.id, {focused: true});
     }
@@ -3900,126 +2141,9 @@ function enableRemoteControl()
     }
 }
 
-function getConnection(connUrl)
-{
-    return new Strophe.Connection(connUrl);
-}
-
-function doPadeConnect()
-{
-    var resource = chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + chrome.runtime.getManifest().version + "-" + BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS + "-" + Math.random().toString(36).substr(2,9);
-    var connUrl = getSetting("boshUri", "https://" + pade.server + "/http-bind/");
-
-    if (getSetting("useWebsocket", false))
-    {
-        connUrl = getSetting("websocketUri", "wss://" + pade.server + "/ws/");
-    }
-
-    var connJid = pade.username + "@" + pade.domain  + "/" + resource;
-
-    pade.connection = getConnection(connUrl);
-
-    if (!getSetting("autoReconnect", true))
-    {
-        pade.connection.connectionmanager.disable();
-    }
-
-    var doXmppConnect = function()
-    {
-        pade.connection.connect(connJid, pade.password, function (status)
-        {
-            console.debug("pade.connection ===>", status, connUrl, connJid);
-
-            if (status === Strophe.Status.CONNECTED)
-            {
-                addHandlers();
-
-                pade.connection.send($pres());
-
-                chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
-                chrome.browserAction.setBadgeText({ text: "Wait.." });
-                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
-
-                setTimeout(function()
-                {
-                    if (!getSetting("useAnonymous", false))
-                    {
-                        fetchContacts(function(contact)
-                        {
-                            handleContact(contact);
-                        });
-
-                        updateVCard();
-                        setupStreamDeck();
-                        enableRemoteControl();
-                        runMeetingPlanner();
-                        publishUserLocation();
-                        setupUserPayment();
-                        //fetchTasks();
-                    }
-
-                    closeCredsWindow();
-
-                    if (getSetting("converseAutoReOpen", true)) reopenConverse();
-
-                    chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
-                    chrome.browserAction.setBadgeText({ text: "" });
-                    pade.isReady = true;
-
-                }, 3000);
-            }
-            else
-
-            if (status === Strophe.Status.DISCONNECTED)
-            {
-                chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
-                chrome.browserAction.setBadgeText({ text: "off" });
-                chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Disconnected"});
-            }
-            else
-
-            if (status === Strophe.Status.AUTHFAIL)
-            {
-               doExtensionPage("options/index.html");
-               closeCredsWindow();
-            }
-
-        });
-    }
-
-    if (getSetting("useAnonymous", false))
-    {
-        connJid = pade.domain;
-        pade.password = null;
-
-        doXmppConnect();
-    }
-    else
-
-    if (getSetting("useBasicAuth", false))
-    {
-        fetch("https://" + pade.server + "/dashboard/token.jsp", {method: "GET"}).then(function(response){ return response.json()}).then(function(token)
-        {
-            pade.username = token.username;
-            pade.password = token.password;
-            pade.jid = pade.username + "@" + pade.domain;
-            connJid = pade.username + "@" + pade.domain  + "/" + resource;
-
-            doXmppConnect();
-
-        }).catch(function (err) {
-            console.error('access denied error', err);
-            doExtensionPage("options/index.html");
-        });
-
-    }
-    else
-    doXmppConnect();
-}
-
 function reopenConverse()
 {
-    if (getSetting("enableInverse", false) && getSetting("converseAutoStart", false) && !pade.chatWindow)
+    if (getSetting("converseAutoStart", false) && !pade.chatWindow)
         openChatWindow("inverse/index.html", null, "minimized");
 }
 
@@ -4043,230 +2167,12 @@ function setupUserPayment()
 }
 
 
-function publishUserLocation()
-{
-    var showPosition = function (position)
-    {
-        console.debug("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude, position);
-
-        var stanza = $iq({type: 'set'}).c('pubsub', {xmlns: "http://jabber.org/protocol/pubsub"}).c('publish', {node: "http://jabber.org/protocol/geoloc"}).c('item').c('geoloc', {xmlns: "http://jabber.org/protocol/geoloc"}).c("accuracy").t(position.coords.accuracy).up().c("lat").t(position.coords.latitude).up().c("lon").t(position.coords.longitude).up();
-
-        pade.connection.sendIQ(stanza, function(iq)
-        {
-            console.log("User location publish ok");
-
-        }, function(error){
-            console.error("showPosition", error);
-        });
-
-        pade.connection.send($pres().c('geoloc', {xmlns: "http://jabber.org/protocol/geoloc"}).c("accuracy").t(position.coords.accuracy).up().c("lat").t(position.coords.latitude).up().c("lon").t(position.coords.longitude).up());
-    }
-
-    var showError = function (error) {
-        var errorMsg = "";
-        switch(error.code) {
-        case error.PERMISSION_DENIED:
-          errorMsg = "User denied the request for Geolocation."
-          break;
-        case error.POSITION_UNAVAILABLE:
-          errorMsg = "Location information is unavailable."
-          break;
-        case error.TIMEOUT:
-          errorMsg = "The request to get user location timed out."
-          break;
-        case error.UNKNOWN_ERROR:
-          errorMsg = "An unknown error occurred."
-          break;
-        }
-      console.error("Location - " + errorMsg, error);
-    }
-
-    if (getSetting("publishLocation", false))
-    {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    }
-}
-
-function doSetupStrophePlugins()
-{
-    // strophe SASL
-
-    if (getSetting("useClientCert", false))
-    {
-        console.log("useClientCert enabled");
-
-        Strophe.addConnectionPlugin('externalsasl',
-        {
-            init: function (connection)
-            {
-                Strophe.SASLExternal = function() {};
-                Strophe.SASLExternal.prototype = new Strophe.SASLMechanism("EXTERNAL", true, 2000);
-
-                Strophe.SASLExternal.test = function (connection)
-                {
-                    return connection.authcid !== null;
-                };
-
-                Strophe.SASLExternal.prototype.onChallenge = function(connection)
-                {
-                    return connection.authcid === connection.authzid ? '' : connection.authzid;
-                };
-
-                connection.mechanisms[Strophe.SASLExternal.prototype.name] = Strophe.SASLExternal;
-                console.log("strophe plugin: externalsasl enabled");
-            }
-        });
-
-        doPadeConnect();
-    }
-    else
-
-    if (getSetting("useTotp", false) || getSetting("useWinSSO", false)  || getSetting("useCredsMgrApi", false) || getSetting("useSmartIdCard", false))
-    {
-        if (getSetting("useWinSSO", false))
-        {
-            var server = getSetting("server", null);
-
-            console.debug("doSetupStrophePlugins - WinSSO", server);
-
-            if (server)
-            {
-                fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
-                {
-                    console.log("Strophe.SASLOFChat.WINSSO", accessToken);
-
-                    if (accessToken.indexOf(":") > -1 )
-                    {
-                        var userPass = accessToken.split(":");
-                        setSetting("username", userPass[0]);
-                        setSetting("password", userPass[1]);
-
-                        pade.username = userPass[0];
-                        pade.password = userPass[1];
-
-                        pade.jid = pade.username + "@" + pade.domain;
-                        pade.displayName = getSetting("displayname", pade.username);
-                        setDefaultSetting("displayname", pade.displayName);
-                    }
-
-                    setTimeout(function() { setupSasl(accessToken); })
-
-                }).catch(function (err) {
-                    console.error("Strophe.SASLOFChat.WINSSO", err);
-                    accessToken = "error:error";
-                    setTimeout(reloadApp, 10000);
-                });
-            }
-        }
-
-        else if (getSetting("useTotp", false) || getSetting("useSmartIdCard", false))
-        {
-            var username = getSetting("username", null);
-            var password = getSetting("password", null);
-            var token = username + ":" + password;
-
-            setTimeout(function() { setupSasl(token); })
-        }
-
-        else if(getSetting("useCredsMgrApi", false))
-        {
-            var screenWidth = screen.availWidth;
-            var screenHeight = screen.availHeight;
-            var width = 512;
-            var height = 384;
-
-            var server = getSetting("server", null);
-            var url = "https://" + server + "/apps/sso/credential-management.jsp?url=" + chrome.runtime.getURL("") + "&label=" + chrome.i18n.getMessage('manifest_shortExtensionName');
-
-            console.debug("doSetupStrophePlugins - CredsMgrApi", server, url);
-
-            chrome.windows.create({url: url, type: "popup"}, function (win)
-            {
-                pade.credWin = win;
-                chrome.windows.update(win.id, {width: width, height: height, left: Math.round((screenWidth-width)/2), top: Math.round((screenHeight-height)/2)});
-            });
-        }
-    }
-    else doPadeConnect();
-}
-
-
-function closeCredsWindow()
-{
-    if (pade.credWin)
-    {
-        chrome.windows.remove(pade.credWin.id);
-        pade.credWin = null;
-    }
-}
-function setupSasl(token)
-{
-    console.debug("setupSasl", token);
-
-    Strophe.addConnectionPlugin('ofchatsasl',
-    {
-        init: function (connection)
-        {
-            console.log("strophe plugin: ofchatsasl - init", token);
-
-            Strophe.SASLOFChat = function () { };
-            Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
-
-            Strophe.SASLOFChat.test = function (connection)
-            {
-                return getSetting("server", null) !== null;
-            };
-
-            Strophe.SASLOFChat.prototype.onChallenge = function (connection)
-            {
-                return token;
-            };
-
-            connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
-            console.log("strophe plugin: ofchatsasl enabled");
-        }
-    });
-
-    doPadeConnect();
-}
-
-function updateCollabUrlList()
-{
-    console.debug("updateCollabUrlList", getSetting("collabUrlList"));
-
-    for (var i=0; i<pade.collabList.length; i++)
-    {
-        if (pade.collabDocs[pade.collabList[i]])
-        {
-            console.debug("updateCollabUrlList - removing ", pade.collabList[i]);
-            chrome.contextMenus.remove(pade.collabList[i]);
-        }
-    }
-
-    pade.collabList = getSetting("collabUrlList", "").split("\n");
-
-    for (var i=0; i<pade.collabList.length; i++)
-    {
-        if (!pade.collabList[i] || pade.collabList[i] == "") continue;
-
-        if (i == 0)
-        {
-            if (!pade.activeUrl) pade.activeUrl = pade.collabList[i];
-        }
-
-        var urlMenu = {parentId: "pade_content", type: "radio", id: pade.collabList[i], title: pade.collabList[i], contexts: ["browser_action"],  onclick: handleUrlClick};
-        chrome.contextMenus.create(urlMenu);
-        pade.collabDocs[pade.collabList[i]] = pade.collabList[i];
-    }
-}
-
-
 function runMeetingPlanner()
 {
     if (getSetting("enableMeetingPlanner"))
     {
         var plannerCheck = getSetting("plannerCheck", 10) * 60000;
-        pade.planner = setInterval(executeMeetingPlanner, plannerCheck);
+        pade.planner = setInterval(executeMeetingPlanner, fCheck);
         executeMeetingPlanner();    // run immediatelty
     }
 }
@@ -4304,7 +2210,7 @@ function executeMeetingPlanner()
                 {
                     console.debug("Triggered meeting", title, start, now, plannerNotice, timeDiff, meeting);
 
-                    inviteToConference(pade.connection.jid, meeting.room, meeting.invite);
+                    inviteToConference(pade.jid, meeting.room, meeting.invite);
 
                     for (var j=0; j<meeting.inviteList.length; j++)
                     {
@@ -4335,45 +2241,7 @@ function checkForChatAPI()
     }
 }
 
-function setupWorkgroup()
-{
-    console.debug("setupWorkgroup", pade.activeWorkgroup);
 
-    var show = getSetting("converseCloseState", "online");
-
-    if (show == "online")
-    {
-         pade.connection.send($pres());
-    }
-    else {
-        pade.connection.send($pres().c("show").t(show).up());
-    }
-
-    pade.connection.send($pres({to: pade.activeWorkgroup.jid}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
-
-    var stanza = $iq({type: 'get', to: pade.activeWorkgroup.jid}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})
-
-    pade.connection.sendIQ(stanza, function(iq)
-    {
-        if (getSetting("wgStatusAlerts", false))
-        {
-            var list = [];
-
-            $(iq).find('agent').each(function()
-            {
-                var jid = $(this).attr('jid');
-                var name = Strophe.getNodeFromJid(jid);
-                console.debug('pade workgroup agent', jid);
-                list.push({title: name, message: jid});
-            });
-
-            notifyList("Available Agents", "Workgroups", list);
-        }
-
-    }, function(error){
-        console.error("agent-status-request error", error);
-    });
-}
 function searchConversations(keyword, callback)
 {
     var query = keyword && keyword != "" ? "?keywords=" + keyword : "";

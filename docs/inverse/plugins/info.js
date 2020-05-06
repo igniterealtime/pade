@@ -80,7 +80,7 @@
                     var jid = view.model.get("jid");
                     var id = view.model.get("box_id");
 
-                    addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
+                    padeapi.addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
 
                     var occupants = view.el.querySelector('.occupants');
 
