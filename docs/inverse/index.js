@@ -736,8 +736,15 @@ var padeapi = (function(api)
 
                     _converse.api.listen.on('chatRoomViewInitialized', function (view)
                     {
-                        const jid = view.model.get("jid");
                         console.debug("chatRoomViewInitialized", view);
+
+                        if (!getSetting("alwaysShowOccupants", false))
+                        {
+                            const chat_area = view.el.querySelector('.chat-area');
+                            const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
+                            chat_area.classList.add('full');
+                            occupants_area.classList.add('hiddenx');
+                        }
 
                         view.model.occupants.on('add', occupant =>
                         {
@@ -2333,6 +2340,7 @@ var padeapi = (function(api)
     };
 
     api.origins = {};
+    api.geoloc = paderoot.geoloc;
 
     return api;
 

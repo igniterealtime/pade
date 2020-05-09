@@ -441,16 +441,7 @@
             _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 const jid = view.model.get("jid");
-                const chat_area = view.el.querySelector('.chat-area');
-                const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
-
-                console.debug("chatRoomViewInitialized", jid, chat_area.classList, occupants_area.classList);
-
-                if (!getSetting("alwaysShowOccupants", false))
-                {
-                    chat_area.classList.add('full');
-                    occupants_area.classList.add('hiddenx');
-                }
+                console.debug("chatRoomViewInitialized", jid);
 
                 if (getSetting("enableThreading", false))
                 {
@@ -564,7 +555,7 @@
                         }, false);
                     }
 
-                    if (view.model.get('type') === "chatbox" && bgWindow.pade.geoloc[jid])
+                    if (view.model.get('type') === "chatbox" && padeapi.geoloc[jid])
                     {
                         html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
                         var geoLocButton = padeapi.addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
@@ -1146,13 +1137,13 @@
         {
             if (!geoLocationDialog)
             {
-                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({jid: jid, nick: nick, geoloc: bgWindow.pade.geoloc[jid], view: view}) });
+                geoLocationDialog = new GeoLocationDialog({'model': new converse.env.Backbone.Model({jid: jid, nick: nick, geoloc: padeapi.geoloc[jid], view: view}) });
             }
             else {
                geoLocationDialog.model.set("jid", jid);
                geoLocationDialog.model.set("nick", nick);
                geoLocationDialog.model.set("view", view);
-               geoLocationDialog.model.set("geoloc", bgWindow.pade.geoloc[jid]);
+               geoLocationDialog.model.set("geoloc", padeapi.geoloc[jid]);
             }
             geoLocationDialog.show();
         }
