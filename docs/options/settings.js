@@ -95,6 +95,12 @@ window.addEvent("domready", function () {
 
         setDefaultPassword(settings);
 
+        if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
+        {
+            background.openChatWindow("inverse/index.html");
+            window.close();
+        });
+
         if (settings.manifest.remoteConnect) settings.manifest.remoteConnect.addEvent("action", function ()
         {
             var host = getSetting("server", null);
