@@ -22,6 +22,8 @@ var padeapi = (function(api)
         transferWise: {}
     }
 
+    var doneIt = false;
+
     window.addEventListener("unload", function()
     {
         console.debug("inverse addListener unload");
@@ -295,6 +297,7 @@ var padeapi = (function(api)
     loadJS("plugins/libs/marked-forms.js");
     loadJS("plugins/libs/abcjs_basic.js");
     loadJS("plugins/libs/mermaid.min.js");
+    loadJS("plugins/libs/timeago.min.js");
 
     if (getSetting("showToolbarIcons", false))
     {
@@ -377,7 +380,6 @@ var padeapi = (function(api)
         loadCSS("plugins/css/custom.css");
 
         loadJS("plugins/libs/paste.js");
-        loadJS("plugins/libs/timeago.min.js");
         loadJS("plugins/libs/flatpickr.js");
         loadJS("plugins/libs/tgs-player.js");
         loadJS("plugins/libs/jspdf.debug.js");
@@ -588,6 +590,19 @@ var padeapi = (function(api)
                         var jid = view.model.get("jid");
                         var type = view.model.get("type");
                         var nick = view.model.getDisplayName();
+
+                        if (getSetting("converseTimeAgo", false) && !doneIt)
+                        {
+                            doneIt = true; // make sure we get called only once
+
+                            setInterval(function()
+                            {
+                                console.debug("timeago render");
+                                timeago.cancel();
+                                var locale = navigator.language.replace('-', '_');
+                                timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+                            }, 60000);
+                        }
 
                         var html = '<a class="fa fa-sync" title="Refresh"></a>';
                         var refresh = addToolbarItem(view, id, "webmeet-refresh-" + id, html);
@@ -1089,6 +1104,11 @@ var padeapi = (function(api)
                             }
 
                             await this.__super__.renderChatMessage.apply(this, arguments);
+
+                            if (getSetting("converseTimeAgo", false))
+                            {
+                                renderTimeAgoChatMessage(this);
+                            }
 
                             // hashtags and mentions transformation
 
@@ -2306,6 +2326,30 @@ var padeapi = (function(api)
         }, function (error) {
             console.error('findUsers2', error);
         });
+    }
+
+    function iso8601(date)
+    {
+        return date.getUTCFullYear()
+            + "-" + (date.getUTCMonth()+1)
+            + "-" + date.getUTCDate()
+            + "T" + date.getUTCHours()
+            + ":" + date.getUTCMinutes()
+            + ":" + date.getUTCSeconds() + "Z";
+    }
+
+    function renderTimeAgoChatMessage(chat)
+    {
+        var dayjs_time = dayjs(chat.model.get('time'));
+        var pretty_time = dayjs_time.format(_converse.time_format);
+
+        var timeEle = chat.el.querySelector('.chat-msg__time');
+        var timeAgo = timeago.format(chat.model.get('time'));
+
+        if (timeEle && timeEle.innerHTML)
+        {
+            timeEle.innerHTML = '<span class="chat-msg__time_span" title="' + pretty_time + '" datetime="' + iso8601(new Date(chat.model.get('time'))) + '">' + timeAgo + '</span>';
+        }
     }
 
     api.createAvatar = function(nickname, width, height, font, force, jid)

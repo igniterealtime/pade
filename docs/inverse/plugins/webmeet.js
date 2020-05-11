@@ -15,9 +15,7 @@
     // Commonly used utilities and variables can be found under the "env"
     // namespace of the "converse" global.
 
-    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
-
-     var doneIt = false;
+     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
      var bgWindow = chrome.extension ? chrome.extension.getBackgroundPage() : null;
      var _converse = null,  baseUrl = null, messageCount = 0, h5pViews = {}, pasteInputs = {}, videoRecorder = null, userProfiles = {};
      var ViewerDialog = null, viewerDialog = null, PreviewDialog = null, previewDialog = null, GeoLocationDialog = null, geoLocationDialog = null, NotepadDialog = null, notepadDialog = null, QRCodeDialog = null, qrcodeDialog = null, PDFDialog = null, pdfDialog = null;
@@ -520,19 +518,6 @@
                 var type = view.model.get("type");
                 var nick = view.model.getDisplayName();
 
-                if (getSetting("converseTimeAgo", false) && !doneIt)
-                {
-                    doneIt = true; // make sure we get called only once
-
-                    setInterval(function()
-                    {
-                        console.debug("timeago render");
-                        timeago.cancel();
-                        var locale = navigator.language.replace('-', '_');
-                        timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
-                    }, 60000);
-                }
-
                 if (getSetting("enablePasting", true))
                 {
                     setupPastingHandlers(view, id, jid, type);
@@ -951,13 +936,11 @@
                             }
                             else {
                                 await this.__super__.renderChatMessage.apply(this, arguments);
-                                renderTimeAgoChatMessage(this);
                             }
                         }
                         else {
                             if (nonCollab) {
                                 await this.__super__.renderChatMessage.apply(this, arguments);
-                                renderTimeAgoChatMessage(this);
                             }
                             else {
                                 setupContentHandler(this, oobUrl, oob_content, doOobSession, viewId, oobDesc);
@@ -1000,11 +983,9 @@
                         }
                         else {
                             await this.__super__.renderChatMessage.apply(this, arguments);
-                            renderTimeAgoChatMessage(this);
                         }
                     } else {
                         await this.__super__.renderChatMessage.apply(this, arguments);
-                        renderTimeAgoChatMessage(this);
                     }
                 }
             },
@@ -1232,33 +1213,6 @@
         }).on('blur', function(){
             //console.debug("paste - blur", id);
         });
-    }
-
-    var renderTimeAgoChatMessage = function(chat)
-    {
-        var iso8601 = function (date)
-        {
-            return date.getUTCFullYear()
-                + "-" + (date.getUTCMonth()+1)
-                + "-" + date.getUTCDate()
-                + "T" + date.getUTCHours()
-                + ":" + date.getUTCMinutes()
-                + ":" + date.getUTCSeconds() + "Z";
-        }
-
-        if (getSetting("converseTimeAgo", false))
-        {
-            var dayjs_time = dayjs(chat.model.get('time'));
-            var pretty_time = dayjs_time.format(_converse.time_format);
-
-            var timeEle = chat.el.querySelector('.chat-msg__time');
-            var timeAgo = timeago.format(chat.model.get('time'));
-
-            if (timeEle && timeEle.innerHTML)
-            {
-                timeEle.innerHTML = '<span class="chat-msg__time_span" title="' + pretty_time + '" datetime="' + iso8601(new Date(chat.model.get('time'))) + '">' + timeAgo + '</span>';
-            }
-        }
     }
 
     async function setupContentHandler(chat, avRoom, content, callback, chatId, title)
