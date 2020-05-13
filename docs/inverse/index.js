@@ -842,7 +842,6 @@ var padeapi = (function(api)
                             }
 
                             parent.pade.connection = _converse.connection;
-                            parent.addHandlers();
                             parent.publishUserLocation();
                             parent.setupUserPayment();
 
