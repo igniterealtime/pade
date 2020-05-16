@@ -376,6 +376,16 @@ var padeapi = (function(api)
             loadJS("plugins/muc-directory.js");
         }
 
+        if (getSetting("jingleCalls", false))
+        {
+            whitelistedPlugins.push("jinglecalls");
+            loadJS("plugins/jinglecalls.js");
+            loadJS("plugins/libs/strophe.bundle.js");
+            loadJS("plugins/libs/strophe.jingle.js");
+            loadJS("plugins/libs/sstrophe.jingle.session.js");
+            loadJS("plugins/libs/strophe.jingle.sdp.js");
+            loadJS("plugins/libs/strophe.jingle.adapter.js");
+        }
 
         loadCSS("plugins/css/custom.css");
 
@@ -1897,13 +1907,13 @@ var padeapi = (function(api)
 
         _converse.connection.addHandler(function(message)
         {
-            console.debug("listenForRoomActivityIndicators - message", message);
-
             message.querySelectorAll('activity').forEach(function(activity)
             {
                 if (activity && activity.getAttribute("xmlns") == "xmpp:prosody.im/protocol/rai") {
                     const jid = activity.innerHTML;
                     _converse.api.trigger('chatRoomActivityIndicators', jid);
+
+                    console.debug("listenForRoomActivityIndicators - message", jid);
 
                     if (_converse.api.settings.get("rai_notification"))
                     {
@@ -2371,6 +2381,7 @@ var padeapi = (function(api)
     api.getSelectedChatBox = getSelectedChatBox;
     api.replyInverseChat = replyInverseChat;
     api.addToolbarItem = addToolbarItem;
+    api.openChatbox = openChatbox;
 
     api.getResource = function()
     {

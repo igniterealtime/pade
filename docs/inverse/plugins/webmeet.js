@@ -1263,7 +1263,7 @@
                     if (!firstTime) // meeting closed and root url is loaded
                     {
                         view.close();
-                        setTimeout(function() { openChatbox(view) });
+                        setTimeout(function() { padeapi.openChatbox(view) });
                     }
 
                     if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
