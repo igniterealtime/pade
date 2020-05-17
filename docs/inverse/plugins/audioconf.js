@@ -153,15 +153,15 @@
                 toggleCall: function toggleCall(ev) {
                     ev.stopPropagation();
 
-                    if (!getSetting("enableSip", false) && confirm(window.click2Dial.text + "?"))
+                    if (this.model.get("type") == "chatroom" && confirm(window.click2Dial.text + "?"))
                     {
                         let room = Strophe.getNodeFromJid(this.model.get("jid")).toLowerCase();
-
+                        /*
                         if (this.model.get("type") == "chatbox")
                         {
                             room = makeRoomName(room);
                         }
-
+                        */
                         console.debug("toggleCall", room);
 
                         if (!voxbone.WebRTC.rtcSession.isEnded || voxbone.WebRTC.rtcSession.isEnded())

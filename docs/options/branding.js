@@ -39,7 +39,6 @@ var branding = {
     enableOnlyOffice        : {disable: true},
     enableRemoteControl     : {disable: true},
     enableRingtone          : {disable: true},
-    enableSip               : {disable: true},
     enableTouchPad          : {disable: true},
     enableWebApps           : {disable: true},
     factoryReset            : {disable: false},

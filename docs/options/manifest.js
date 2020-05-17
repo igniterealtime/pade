@@ -1164,6 +1164,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Private Chat"),
+            "name": "jingleCalls",
+            "type": "checkbox",
+            "label": i18n.get("Enable Jingle Audio/Video Calls")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Private Chat"),
             "name": "messageCarbons",
             "type": "checkbox",
             "label": i18n.get("Enable message carbons")

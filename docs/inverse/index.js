@@ -380,11 +380,6 @@ var padeapi = (function(api)
         {
             whitelistedPlugins.push("jinglecalls");
             loadJS("plugins/jinglecalls.js");
-            loadJS("plugins/libs/strophe.bundle.js");
-            loadJS("plugins/libs/strophe.jingle.js");
-            loadJS("plugins/libs/sstrophe.jingle.session.js");
-            loadJS("plugins/libs/strophe.jingle.sdp.js");
-            loadJS("plugins/libs/strophe.jingle.adapter.js");
         }
 
         loadCSS("plugins/css/custom.css");
@@ -554,7 +549,7 @@ var padeapi = (function(api)
               theme: 'concord',
               singleton: (autoJoinRooms && autoJoinRooms.length == 1),
               view_mode: viewMode,
-              visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", true) && getSetting("enableAudioConfWidget", false), 'clear': true },
+              visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", true) && (getSetting("enableAudioConfWidget", false) || getSetting("jingleCalls", false)), 'clear': true },
               webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
               webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
               websocket_url: connUrl,
@@ -2381,6 +2376,7 @@ var padeapi = (function(api)
     api.getSelectedChatBox = getSelectedChatBox;
     api.replyInverseChat = replyInverseChat;
     api.addToolbarItem = addToolbarItem;
+    api.__newElement = __newElement;
     api.openChatbox = openChatbox;
 
     api.getResource = function()

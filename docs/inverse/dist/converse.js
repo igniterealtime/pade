@@ -56708,6 +56708,7 @@ converse_core.plugins.add('converse-chat', {
 
         if (converse_chat_utils.isNewMessage(message) && this.isHidden()) {
            this.setFirstUnreadMsgId(message);
+           this.sendMarker(message.get('from'), message.get('msgid'), 'displayed');
            this.save({'num_unread': this.get('num_unread') + 1});
           _converse.incrementMsgCounter();
         }
@@ -56727,6 +56728,11 @@ converse_core.plugins.add('converse-chat', {
       },
 
       clearUnreadMsgCounter() {
+        if (this.get('num_unread') > 0) {
+            const msg = this.messages.last();
+            if (msg) this.sendMarker(msg.get('from'), msg.get('msgid'), 'acknowledged');
+        }
+
         converse_chat_u.safeSave(this, {
           'num_unread': 0
         });
@@ -61014,11 +61020,11 @@ converse_core.plugins.add('converse-muc', {
 
         if (utils_form.isNewMessage(message) && this.isHidden()) {
           this.setFirstUnreadMsgId (message);
+          this.sendMarker(message.get('from'), message.get('msgid'), 'displayed');
           const settings = {'num_unread_general': this.get('num_unread_general') + 1};
 
           if (this.isUserMentioned(message)) {
             settings.num_unread = this.get('num_unread') + 1;
-
             _converse.incrementMsgCounter();
           }
 
@@ -61026,7 +61032,25 @@ converse_core.plugins.add('converse-muc', {
         }
       },
 
+      setFirstUnreadMsgId (message) { // BAO issue #119 (converse #1999)
+        if (this.get('num_unread_general') == 0) {
+            let first_unread_id = this.get('first_unread_id');
+
+            if (first_unread_id) {
+              const msg = this.messages.get(first_unread_id);
+              if (msg) msg.set("first_unread", false);
+            }
+            message.set("first_unread", true);
+            this.set({'first_unread_id': message.get('id')});
+        }
+      },
+
       clearUnreadMsgCounter() {
+        if (this.get('num_unread_general') > 0) {
+            const msg = this.messages.last();
+            if (msg) this.sendMarker(msg.get('from'), msg.get('msgid'), 'acknowledged');
+        }
+
         utils_form.safeSave(this, {
           'num_unread': 0,
           'num_unread_general': 0

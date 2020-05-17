@@ -632,7 +632,11 @@ window.addEventListener("load", function()
     pade.avatar = getSetting("avatar", null);
     pade.ofmeetUrl = getSetting("ofmeetUrl", null);
 
-    if (!pade.ofmeetUrl) pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
+    if (!pade.ofmeetUrl)
+    {
+        pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
+        setSetting("ofmeetUrl", pade.ofmeetUrl);
+    }
 
     checkForChatAPI();
 
