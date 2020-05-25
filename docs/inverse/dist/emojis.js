@@ -283,98 +283,6 @@
                         "c": "animations"
                     },
                 },
-                "racoon": {
-                    /*
-                        author      = Corine Tea
-                        license     = CreativeCommon BY SA
-                        url
-                    */
-                    ":racoon:": {
-                        "sn": ":racoon:",
-                        "url": "./dist/custom_emojis/racoon/icon.png",
-                        "c": "racoon"
-                    },
-                    ":1f1b758ca110b016c962f260d2315fd3f7e81727:": {
-                        "sn": ":1f1b758ca110b016c962f260d2315fd3f7e81727:",
-                        "url": "./dist/custom_emojis/racoon/1f1b758ca110b016c962f260d2315fd3f7e81727.png",
-                        "c": "racoon"
-                    },
-                    ":3cd2c71f542ea65b7394c32211981c4f1b36d4d5:": {
-                        "sn": ":3cd2c71f542ea65b7394c32211981c4f1b36d4d5:",
-                        "url": "./dist/custom_emojis/racoon/3cd2c71f542ea65b7394c32211981c4f1b36d4d5.png",
-                        "c": "racoon"
-                    },
-                    ":3f287132e542e55492e5a909b2eedf83b3e6c475:": {
-                        "sn": ":3f287132e542e55492e5a909b2eedf83b3e6c475:",
-                        "url": "./dist/custom_emojis/racoon/3f287132e542e55492e5a909b2eedf83b3e6c475.png",
-                        "c": "racoon"
-                    },
-                    ":5cef0fdb9de8c7b4f4d4a61a836704b8ce8b91b8:": {
-                        "sn": ":5cef0fdb9de8c7b4f4d4a61a836704b8ce8b91b8:",
-                        "url": "./dist/custom_emojis/racoon/5cef0fdb9de8c7b4f4d4a61a836704b8ce8b91b8.png",
-                        "c": "racoon"
-                    },
-                    ":5d570350f5ff8f7e5f4c45b952895bdc65e490ed:": {
-                        "sn": ":5d570350f5ff8f7e5f4c45b952895bdc65e490ed:",
-                        "url": "./dist/custom_emojis/racoon/5d570350f5ff8f7e5f4c45b952895bdc65e490ed.png",
-                        "c": "racoon"
-                    },
-                    ":40ac00d6d3b3ad3c8711d9ad3d4913cda90a1e17:": {
-                        "sn": ":40ac00d6d3b3ad3c8711d9ad3d4913cda90a1e17:",
-                        "url": "./dist/custom_emojis/racoon/40ac00d6d3b3ad3c8711d9ad3d4913cda90a1e17.png",
-                        "c": "racoon"
-                    },
-                    ":42abeda5e5586d099c5e259887c0324c88cfe9f0:": {
-                        "sn": ":42abeda5e5586d099c5e259887c0324c88cfe9f0:",
-                        "url": "./dist/custom_emojis/racoon/42abeda5e5586d099c5e259887c0324c88cfe9f0.png",
-                        "c": "racoon"
-                    },
-                    ":066b6f96ac3b9c847bac3a73ef2bb353e245b398:": {
-                        "sn": ":066b6f96ac3b9c847bac3a73ef2bb353e245b398:",
-                        "url": "./dist/custom_emojis/racoon/066b6f96ac3b9c847bac3a73ef2bb353e245b398.png",
-                        "c": "racoon"
-                    },
-                    ":75bae75930e4d18004c3ae52dfbd126f8ffaf757:": {
-                        "sn": ":75bae75930e4d18004c3ae52dfbd126f8ffaf757:",
-                        "url": "./dist/custom_emojis/racoon/75bae75930e4d18004c3ae52dfbd126f8ffaf757.png",
-                        "c": "racoon"
-                    },
-                    ":131d0c376dc98b545d82a5f70b7df95ad079ffc7:": {
-                        "sn": ":131d0c376dc98b545d82a5f70b7df95ad079ffc7:",
-                        "url": "./dist/custom_emojis/racoon/131d0c376dc98b545d82a5f70b7df95ad079ffc7.png",
-                        "c": "racoon"
-                    },
-                    ":350d3713bf286f13c1ff247cd0322b3760e4f707:": {
-                        "sn": ":350d3713bf286f13c1ff247cd0322b3760e4f707:",
-                        "url": "./dist/custom_emojis/racoon/350d3713bf286f13c1ff247cd0322b3760e4f707.png",
-                        "c": "racoon"
-                    },
-                    ":898ece6768016790bdad3f5a81c96d24c5a4dad5:": {
-                        "sn": ":898ece6768016790bdad3f5a81c96d24c5a4dad5:",
-                        "url": "./dist/custom_emojis/racoon/898ece6768016790bdad3f5a81c96d24c5a4dad5.png",
-                        "c": "racoon"
-                    },
-                    ":25360adec7e13fe321fae5fecf307fafdccb1cc7:": {
-                        "sn": ":25360adec7e13fe321fae5fecf307fafdccb1cc7:",
-                        "url": "./dist/custom_emojis/racoon/25360adec7e13fe321fae5fecf307fafdccb1cc7.png",
-                        "c": "racoon"
-                    },
-                    ":c6f5b7e8e40cff8ede87a23d9d52c6cf05fc259d:": {
-                        "sn": ":c6f5b7e8e40cff8ede87a23d9d52c6cf05fc259d:",
-                        "url": "./dist/custom_emojis/racoon/c6f5b7e8e40cff8ede87a23d9d52c6cf05fc259d.png",
-                        "c": "racoon"
-                    },
-                    ":de2fabc34217d03ad8efa50afeedb22d3d3e9c40:": {
-                        "sn": ":de2fabc34217d03ad8efa50afeedb22d3d3e9c40:",
-                        "url": "./dist/custom_emojis/racoon/de2fabc34217d03ad8efa50afeedb22d3d3e9c40.png",
-                        "c": "racoon"
-                    },
-                    ":f7aa4efde0d916b2f18393cb60dc86f3c4e2e4bd:": {
-                        "sn": ":f7aa4efde0d916b2f18393cb60dc86f3c4e2e4bd:",
-                        "url": "./dist/custom_emojis/racoon/f7aa4efde0d916b2f18393cb60dc86f3c4e2e4bd.png",
-                        "c": "racoon"
-                    }
-                },
                 "mochi": {
                     /*
                         author      = Timothée Jaussoin
@@ -495,6 +403,91 @@
                         "sn": ":animals:",
                         "url": "./dist/custom_emojis/animals/icon.webp",
                         "c": "animals"
+                    },
+                    ":racoon:": {
+                        "sn": ":racoon:",
+                        "url": "./dist/custom_emojis/racoon/icon.png",
+                        "c": "racoon"
+                    },
+                    ":1f1b758ca110b016c962f260d2315fd3f7e81727:": {
+                        "sn": ":1f1b758ca110b016c962f260d2315fd3f7e81727:",
+                        "url": "./dist/custom_emojis/racoon/1f1b758ca110b016c962f260d2315fd3f7e81727.png",
+                        "c": "racoon"
+                    },
+                    ":3cd2c71f542ea65b7394c32211981c4f1b36d4d5:": {
+                        "sn": ":3cd2c71f542ea65b7394c32211981c4f1b36d4d5:",
+                        "url": "./dist/custom_emojis/racoon/3cd2c71f542ea65b7394c32211981c4f1b36d4d5.png",
+                        "c": "racoon"
+                    },
+                    ":3f287132e542e55492e5a909b2eedf83b3e6c475:": {
+                        "sn": ":3f287132e542e55492e5a909b2eedf83b3e6c475:",
+                        "url": "./dist/custom_emojis/racoon/3f287132e542e55492e5a909b2eedf83b3e6c475.png",
+                        "c": "racoon"
+                    },
+                    ":5cef0fdb9de8c7b4f4d4a61a836704b8ce8b91b8:": {
+                        "sn": ":5cef0fdb9de8c7b4f4d4a61a836704b8ce8b91b8:",
+                        "url": "./dist/custom_emojis/racoon/5cef0fdb9de8c7b4f4d4a61a836704b8ce8b91b8.png",
+                        "c": "racoon"
+                    },
+                    ":5d570350f5ff8f7e5f4c45b952895bdc65e490ed:": {
+                        "sn": ":5d570350f5ff8f7e5f4c45b952895bdc65e490ed:",
+                        "url": "./dist/custom_emojis/racoon/5d570350f5ff8f7e5f4c45b952895bdc65e490ed.png",
+                        "c": "racoon"
+                    },
+                    ":40ac00d6d3b3ad3c8711d9ad3d4913cda90a1e17:": {
+                        "sn": ":40ac00d6d3b3ad3c8711d9ad3d4913cda90a1e17:",
+                        "url": "./dist/custom_emojis/racoon/40ac00d6d3b3ad3c8711d9ad3d4913cda90a1e17.png",
+                        "c": "racoon"
+                    },
+                    ":42abeda5e5586d099c5e259887c0324c88cfe9f0:": {
+                        "sn": ":42abeda5e5586d099c5e259887c0324c88cfe9f0:",
+                        "url": "./dist/custom_emojis/racoon/42abeda5e5586d099c5e259887c0324c88cfe9f0.png",
+                        "c": "racoon"
+                    },
+                    ":066b6f96ac3b9c847bac3a73ef2bb353e245b398:": {
+                        "sn": ":066b6f96ac3b9c847bac3a73ef2bb353e245b398:",
+                        "url": "./dist/custom_emojis/racoon/066b6f96ac3b9c847bac3a73ef2bb353e245b398.png",
+                        "c": "racoon"
+                    },
+                    ":75bae75930e4d18004c3ae52dfbd126f8ffaf757:": {
+                        "sn": ":75bae75930e4d18004c3ae52dfbd126f8ffaf757:",
+                        "url": "./dist/custom_emojis/racoon/75bae75930e4d18004c3ae52dfbd126f8ffaf757.png",
+                        "c": "racoon"
+                    },
+                    ":131d0c376dc98b545d82a5f70b7df95ad079ffc7:": {
+                        "sn": ":131d0c376dc98b545d82a5f70b7df95ad079ffc7:",
+                        "url": "./dist/custom_emojis/racoon/131d0c376dc98b545d82a5f70b7df95ad079ffc7.png",
+                        "c": "racoon"
+                    },
+                    ":350d3713bf286f13c1ff247cd0322b3760e4f707:": {
+                        "sn": ":350d3713bf286f13c1ff247cd0322b3760e4f707:",
+                        "url": "./dist/custom_emojis/racoon/350d3713bf286f13c1ff247cd0322b3760e4f707.png",
+                        "c": "racoon"
+                    },
+                    ":898ece6768016790bdad3f5a81c96d24c5a4dad5:": {
+                        "sn": ":898ece6768016790bdad3f5a81c96d24c5a4dad5:",
+                        "url": "./dist/custom_emojis/racoon/898ece6768016790bdad3f5a81c96d24c5a4dad5.png",
+                        "c": "racoon"
+                    },
+                    ":25360adec7e13fe321fae5fecf307fafdccb1cc7:": {
+                        "sn": ":25360adec7e13fe321fae5fecf307fafdccb1cc7:",
+                        "url": "./dist/custom_emojis/racoon/25360adec7e13fe321fae5fecf307fafdccb1cc7.png",
+                        "c": "racoon"
+                    },
+                    ":c6f5b7e8e40cff8ede87a23d9d52c6cf05fc259d:": {
+                        "sn": ":c6f5b7e8e40cff8ede87a23d9d52c6cf05fc259d:",
+                        "url": "./dist/custom_emojis/racoon/c6f5b7e8e40cff8ede87a23d9d52c6cf05fc259d.png",
+                        "c": "racoon"
+                    },
+                    ":de2fabc34217d03ad8efa50afeedb22d3d3e9c40:": {
+                        "sn": ":de2fabc34217d03ad8efa50afeedb22d3d3e9c40:",
+                        "url": "./dist/custom_emojis/racoon/de2fabc34217d03ad8efa50afeedb22d3d3e9c40.png",
+                        "c": "racoon"
+                    },
+                    ":f7aa4efde0d916b2f18393cb60dc86f3c4e2e4bd:": {
+                        "sn": ":f7aa4efde0d916b2f18393cb60dc86f3c4e2e4bd:",
+                        "url": "./dist/custom_emojis/racoon/f7aa4efde0d916b2f18393cb60dc86f3c4e2e4bd.png",
+                        "c": "racoon"
                     },
                     ":CAADAgAD_AAD9HsZAAGAROatrwevYwI:": {
                         "sn": ":CAADAgAD_AAD9HsZAAGAROatrwevYwI:",

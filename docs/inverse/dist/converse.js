@@ -36546,9 +36546,6 @@ __e(o.sender) +
 ' ' +
 __e(o.is_me_message ? 'chat-msg__content--action' : '') +
 '">\n        ';
- if (o.first_unread) { // BAO
-__p += '<div class="message date-separator"><hr class="separator"><span class="separator-text">' + __e(o.__('unread messages')) + '</span></div>\n';
- };
 __p += '<span class="chat-msg__heading">\n            ';
  if (o.is_me_message) { ;
 __p += '<time timestamp="' +
@@ -36613,6 +36610,9 @@ __p += '\n                        <div class="chat-msg__subject">' +
 __e( o.subject ) +
 '</div>\n                    ';
  } ;
+ if (o.first_unread) { // BAO
+__p += '<div class="message unread-separator date-separator"><hr class="separator"><span class="separator-text">' + __e(o.__('unread messages')) + '</span></div>\n';
+ };
 __p += '\n                    <div class="chat-msg__text\n                        ';
  if (o.is_only_emojis) { ;
 __p += ' chat-msg__text--larger';
@@ -36622,6 +36622,8 @@ __p += '\n                        ';
 __p += ' spoiler collapsed';
  } ;
 __p += '"><!-- message gets added here via renderMessage --></div>\n                    <div class="chat-msg__media"></div>\n                ';
+// BAO
+__p += '<div class="chat-msg__reactions"></div>\n';
  } ;
 __p += '\n            </div>\n            ';
  if (o.received && !o.is_me_message && !o.is_groupchat_message) { ;
@@ -36645,6 +36647,10 @@ __p += '\n                    <button class="chat-msg__action chat-msg__action-r
 __e(o.__('Retract this message')) +
 '"></button>\n                ';
  } ;
+// BAO
+__p += '\n                    <button class="chat-msg__action chat-msg__action-react fa fa-smile" title="' +
+__e(o.__('React to this message')) +
+'"></button>\n                ';
 __p += '\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
@@ -53443,6 +53449,21 @@ const stanza_utils = {
     return {};
   },
 
+  // BAO
+
+  getReactionAttributes(stanza) {
+    const reaction = sizzle_default()("reactions[xmlns=\"".concat(stanza_Strophe.NS.REACTION, "\"]"), stanza).pop();
+
+    if (reaction) {
+      return {
+        'reaction_id': reaction.getAttribute('id'),
+        'reaction_emoji': Object(lodash["get"])(reaction.querySelector('reaction'), 'textContent')
+      };
+    }
+
+    return {};
+  },
+
   getOutOfBandAttributes(stanza) {
     const xform = sizzle_default()("x[xmlns=\"".concat(stanza_Strophe.NS.OUTOFBAND, "\"]"), stanza).pop();
 
@@ -53547,8 +53568,8 @@ const stanza_utils = {
       'subject': Object(lodash["propertyOf"])(stanza.querySelector('subject'))('textContent'),
       'thread': Object(lodash["propertyOf"])(stanza.querySelector('thread'))('textContent'),
       'time': delay ? dayjs_min_default()(delay.getAttribute('stamp')).toISOString() : new Date().toISOString(),
-      'type': stanza.getAttribute('type')
-    }, attrs, stanza_utils.getSenderAttributes(stanza, chatbox, _converse), stanza_utils.getOutOfBandAttributes(stanza), stanza_utils.getMsgAttachAttributes(stanza), stanza_utils.getSpoilerAttributes(stanza), stanza_utils.getCorrectionAttributes(stanza, original_stanza));
+      'type': stanza.getAttribute('type')   // BAO
+    }, attrs, stanza_utils.getSenderAttributes(stanza, chatbox, _converse), stanza_utils.getOutOfBandAttributes(stanza), stanza_utils.getReactionAttributes(stanza), stanza_utils.getMsgAttachAttributes(stanza), stanza_utils.getSpoilerAttributes(stanza), stanza_utils.getCorrectionAttributes(stanza, original_stanza));
     return attrs;
   }
 
@@ -53601,6 +53622,7 @@ converse_core_Strophe.addNamespace('MODERATE', 'urn:xmpp:message-moderate:0');
 converse_core_Strophe.addNamespace('NICK', 'http://jabber.org/protocol/nick');
 converse_core_Strophe.addNamespace('OMEMO', 'eu.siacs.conversations.axolotl');
 converse_core_Strophe.addNamespace('OUTOFBAND', 'jabber:x:oob');
+converse_core_Strophe.addNamespace('REACTION', 'urn:xmpp:reactions:0'); // BAO
 converse_core_Strophe.addNamespace('PUBSUB', 'http://jabber.org/protocol/pubsub');
 converse_core_Strophe.addNamespace('REGISTER', 'jabber:iq:register');
 converse_core_Strophe.addNamespace('RETRACT', 'urn:xmpp:message-retract:0');
@@ -55870,6 +55892,8 @@ converse_core.plugins.add('converse-chat', {
         } else if (!this.handleReceipt(stanza, from_jid, original_stanza) && !this.handleChatMarker(stanza, from_jid)) {
           const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
 
+          this.handleReaction(stanza, original_stanza, attrs);   // BAO issue #9
+
           if (this.handleRetraction(attrs)) {
             return;
           }
@@ -56098,6 +56122,28 @@ converse_core.plugins.add('converse-chat', {
         }
       },
 
+      // BAO issue #9
+
+      handleReaction(stanza, original_stanza, attrs) {
+        const message = this.messages.findWhere({
+            'origin_id': attrs.reaction_id
+        });
+
+        if (message) this.updateReactions(message, attrs.from, attrs.reaction_emoji);
+      },
+
+      // BAO issue #9
+
+      updateReactions(message, from, reaction_emoji) {
+        let reactions = message.get('reactions');
+        if (!reactions) reactions = {};
+        if (!reactions[reaction_emoji]) reactions[reaction_emoji] = [];
+        if (!reactions[reaction_emoji].includes(from)) reactions[reaction_emoji].push(from);
+
+        message.set('reactions', undefined);    // force change event
+        message.save('reactions', reactions);
+      },
+
       /**
        * Handles message retraction based on the passed in attributes.
        * @private
@@ -56294,6 +56340,7 @@ converse_core.plugins.add('converse-chat', {
 
       handleChatMarker(stanza, from_jid) {
         const to_bare_jid = converse_chat_Strophe.getBareJidFromJid(stanza.getAttribute('to'));
+        const from_bare_jid = converse_chat_Strophe.getBareJidFromJid(from_jid);
 
         if (to_bare_jid !== _converse.bare_jid) {
           return false;
@@ -56312,7 +56359,7 @@ converse_core.plugins.add('converse-chat', {
 
           if (marker.nodeName === 'markable') {
             if (this.contact && !converse_chat_u.isMAMMessage(stanza) && !converse_chat_u.isCarbonMessage(stanza)) {
-              this.sendMarker(from_jid, stanza.getAttribute('id'), 'received');
+              this.sendMarker(from_bare_jid, stanza.getAttribute('id'), 'received');
             }
 
             return false;
@@ -56428,6 +56475,14 @@ converse_core.plugins.add('converse-chat', {
                 'xmlns': "urn:xmpp:message-attaching:1",
                 'id': message.get('msg_attach_to')
             }).root();
+        }
+
+        if (message.get('reaction_emoji'))       // BAO
+        {
+            stanza.c("reactions", {
+                'xmlns': converse_chat_Strophe.NS.REACTION,
+                'id': message.get('reaction_id')
+            }).c('reaction').t(message.get('reaction_emoji')).root();
         }
 
         (message.get('references') || []).forEach(reference => {
@@ -56707,32 +56762,33 @@ converse_core.plugins.add('converse-chat', {
         }
 
         if (converse_chat_utils.isNewMessage(message) && this.isHidden()) {
-           this.setFirstUnreadMsgId(message);
-           this.sendMarker(message.get('from'), message.get('msgid'), 'displayed');
+           if (this.get('num_unread') == 0) {
+                this.setFirstUnreadMsgId(message);
+           }
            this.save({'num_unread': this.get('num_unread') + 1});
           _converse.incrementMsgCounter();
         }
       },
 
       setFirstUnreadMsgId (message) { // BAO issue #119 (converse #1999)
-        if (this.get('num_unread') == 0) {
-            let first_unread_id = this.get('first_unread_id');
+        let first_unread_id = this.get('first_unread_id');
 
-            if (first_unread_id) {
-              const msg = this.messages.get(first_unread_id);
-              if (msg) msg.set("first_unread", false);
-            }
-            message.set("first_unread", true);
-            this.set({'first_unread_id': message.get('id')});
+        if (first_unread_id) {
+          const msg = this.messages.get(first_unread_id);
+          if (msg) msg.set("first_unread", false);
         }
+        message.set("first_unread", true);
+        this.set({'first_unread_id': message.get('id')});
       },
 
       clearUnreadMsgCounter() {
         if (this.get('num_unread') > 0) {
             const msg = this.messages.last();
-            if (msg) this.sendMarker(msg.get('from'), msg.get('msgid'), 'acknowledged');
+            if (msg) {
+                const from_jid = converse_chat_Strophe.getBareJidFromJid(msg.get('from'));
+                this.sendMarker(from_jid, msg.get('msgid'), 'displayed');
+            }
         }
-
         converse_chat_u.safeSave(this, {
           'num_unread': 0
         });
@@ -58228,6 +58284,7 @@ converse_core.plugins.add('converse-emoji', {
     _converse.api.settings.update({
       'emoji_image_path': twemoji_esm.base,
       'emoji_categories': {
+        "recent": ":clock1:",       // BAO
         "smileys": ":grinning:",
         "people": ":thumbsup:",
         "activity": ":soccer:",
@@ -58237,12 +58294,11 @@ converse_core.plugins.add('converse-emoji', {
         "food": ":hotdog:",
         "symbols": ":musical_note:",
         "flags": ":flag_ac:",
-        "racoon": ":racoon:",    // BAO
+        "animals": ":animals:", // BAO
         "mochi": ":mochi:",
         "zemarmot": ":zemarmot:",
         "miho": ":miho:",
         "cuppy": ":cuppy:",
-        "animals": ":animals:",
         "animations": ":animations:",
         "dele": ":dele:",
       },
@@ -58253,6 +58309,7 @@ converse_core.plugins.add('converse-emoji', {
       // strings via converse.initialize, which is before __ is
       // available.
       'emoji_category_labels': {
+        "recent": ___("Recent"),    // BAO
         "smileys": ___("Smileys and emotions"),
         "people": ___("People"),
         "activity": ___("Activities"),
@@ -58262,12 +58319,11 @@ converse_core.plugins.add('converse-emoji', {
         "food": ___("Food and drink"),
         "symbols": ___("Symbols"),
         "flags": ___("Flags"),
-        "racoon": ___("Racoon"), // BAO
+        "animals": ___("Animals"), // BAO
         "mochi": ___("Mochi"),
         "zemarmot": ___("Zemarmot"),
         "miho": ___("Miho"),
         "cuppy": ___("Cuppy"),
-        "animals": ___("Animals"),
         "animations": ___("Animations"),
         "dele": ___("Dele"),
       }
@@ -60642,13 +60698,14 @@ converse_core.plugins.add('converse-muc', {
           this.updateMessage(message, original_stanza);
         }
 
+        const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
+        this.handleReaction(stanza, original_stanza, attrs);   // BAO issue #9
+
         if (message || utils_stanza.isReceipt(stanza) || utils_stanza.isChatMarker(stanza)) {
           return _converse.api.trigger('message', {
             'stanza': original_stanza
           });
         }
-
-        const attrs = await this.getMessageAttributesFromStanza(stanza, original_stanza);
 
         if (this.handleRetraction(attrs) || this.handleModeration(attrs) || this.subjectChangeHandled(attrs) || this.ignorableCSN(attrs)) {
           return _converse.api.trigger('message', {
@@ -61019,8 +61076,9 @@ converse_core.plugins.add('converse-muc', {
         }
 
         if (utils_form.isNewMessage(message) && this.isHidden()) {
-          this.setFirstUnreadMsgId (message);
-          this.sendMarker(message.get('from'), message.get('msgid'), 'displayed');
+          if (this.get('num_unread_general') == 0) {
+            this.setFirstUnreadMsgId(message);
+          }
           const settings = {'num_unread_general': this.get('num_unread_general') + 1};
 
           if (this.isUserMentioned(message)) {
@@ -61032,23 +61090,13 @@ converse_core.plugins.add('converse-muc', {
         }
       },
 
-      setFirstUnreadMsgId (message) { // BAO issue #119 (converse #1999)
-        if (this.get('num_unread_general') == 0) {
-            let first_unread_id = this.get('first_unread_id');
-
-            if (first_unread_id) {
-              const msg = this.messages.get(first_unread_id);
-              if (msg) msg.set("first_unread", false);
-            }
-            message.set("first_unread", true);
-            this.set({'first_unread_id': message.get('id')});
-        }
-      },
-
       clearUnreadMsgCounter() {
         if (this.get('num_unread_general') > 0) {
             const msg = this.messages.last();
-            if (msg) this.sendMarker(msg.get('from'), msg.get('msgid'), 'acknowledged');
+            if (msg) {
+                const from_jid = converse_chat_Strophe.getBareJidFromJid(msg.get('from'));
+                this.sendMarker(from_jid, msg.get('msgid'), 'displayed');
+            }
         }
 
         utils_form.safeSave(this, {
@@ -65317,6 +65365,10 @@ converse_core.plugins.add('converse-message-view', {
       },
 
       async render() {
+        if (this.model.get('reaction_id')) { // BAO issue #9
+          return this.el;
+        }
+
         const is_followup = converse_message_view_u.hasClass('chat-msg--followup', this.el);
 
         if (this.model.isOnlyChatStateNotification()) {
@@ -65351,7 +65403,7 @@ converse_core.plugins.add('converse-message-view', {
 
         const isValidChange = prop => Object.prototype.hasOwnProperty.call(this.model.changed, prop);
 
-        const props = ['moderated', 'retracted', 'correcting', 'message', 'type', 'upload', 'received', 'editable', 'first_unread'];    // BAO
+        const props = ['moderated', 'retracted', 'correcting', 'message', 'type', 'upload', 'received', 'editable', 'first_unread', 'reactions'];    // BAO issue #9
 
         if (props.filter(isValidChange).length) {
           await this.debouncedRender();
@@ -65403,6 +65455,20 @@ converse_core.plugins.add('converse-message-view', {
 
       transformOOBURL(url) {
         return converse_message_view_u.getOOBURLMarkup(_converse, url);
+      },
+
+      // BAO issue #9
+
+      transformReactions(reactions) {
+        let div = '<div>';
+
+        Object.getOwnPropertyNames(reactions).forEach(function(reaction) {
+            const count = reactions[reaction].length;
+            const emoji = converse_core.env.utils.shortnamesToEmojis(reaction);
+            div = div + '<span class="chat-msg__reaction">' + emoji + '&nbsp' + count + '</span>';
+        });
+        div = div + '</div>';
+        return div;
       },
 
       async transformBodyText(text) {
@@ -65474,9 +65540,17 @@ converse_core.plugins.add('converse-message-view', {
           'username': this.model.getDisplayName()
         })));
         const url = this.model.get('oob_url');
+        const url_div = msg.querySelector('.chat-msg__media');
 
-        if (url && msg.querySelector('.chat-msg__media')) { // BAO
-          msg.querySelector('.chat-msg__media').innerHTML = this.transformOOBURL(url);
+        if (url && url_div) { // BAO
+          url_div.innerHTML = this.transformOOBURL(url);
+        }
+
+        const reactions = this.model.get('reactions');      // BAO
+        const reactions_div = msg.querySelector('.chat-msg__reactions');
+
+        if (reactions && reactions_div) { // BAO
+          reactions_div.innerHTML = this.transformReactions(reactions);
         }
 
         if (!is_retracted) {
@@ -66213,6 +66287,7 @@ converse_core.plugins.add('converse-chatview', {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
         'click .chat-msg__action-retract': 'onMessageRetractButtonClicked',
+        'click .chat-msg__action-react': 'onMessageReactButtonClicked',         // BAO
         'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',         // BAO
         'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',     // BAO
         'click .chat-msg__action-pin': 'onMessagePinButtonClicked',             // BAO
@@ -67008,6 +67083,54 @@ converse_core.plugins.add('converse-chatview', {
         }
       },
 
+      // BAO
+
+      handleEmojiSelected(value, replace, position) {
+        const reaction = this.model.get('reaction');
+
+        if (reaction) {
+            const msgid = reaction.msgid;
+            const time = reaction.time;
+            this.model.set('reaction', undefined);
+            const message = this.model.messages.findWhere({msgid, time});
+
+            if (message)
+            {
+                if (message.get('type') == 'chat')
+                {
+                    this.model.updateReactions(message, this.model.get('from'), value);
+                }
+                const origin_id = message.get('origin_id');
+                let text = window.getSelection().toString();
+                if (!text || text == "") text = message.get('message');
+                const pos = text.indexOf("\n");
+                text = pos == -1 ? text : text.substring(0, pos);
+                const body = '/me ' + value + ' ' + text;
+
+                const attrs = this.model.getOutgoingMessageAttributes(body);
+                attrs.reaction_id = origin_id;
+                attrs.reaction_emoji = value;
+                this.model.setEditable(attrs, new Date().toISOString());
+                const new_message = this.model.messages.create(attrs);
+                _converse.api.send(this.model.createMessageStanza(new_message));
+           }
+
+        } else {
+            this.insertIntoTextArea(value, replace, false, position);
+        }
+      },
+
+      onMessageReactButtonClicked(ev) { // BAO
+        ev.preventDefault();
+
+        const msg_el = converse_chatview_u.ancestor(ev.target, '.message');
+        const msgid = msg_el.getAttribute('data-msgid');
+        const time = msg_el.getAttribute('data-isodate');
+
+        this.model.set('reaction', {msgid: msgid, time: time});
+        this.toggleEmojiMenu(ev);
+      },
+
       onMessageLikeButtonClicked(ev) { // BAO
         ev.preventDefault();
 
@@ -67022,9 +67145,15 @@ converse_core.plugins.add('converse-chatview', {
         if (message)
         {
             const type = message.get('type');
-            let text = message.get('message');
-            let pos = text.indexOf("\n");
-            text = pos == -1 ? text : text.substring(0, pos);
+
+            let text = window.getSelection().toString();
+
+            if (!text || text == "")
+            {
+                text = message.get('message');
+                let pos = text.indexOf("\n");
+                text = pos == -1 ? text : text.substring(0, pos);
+            }
             postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
 
             console.debug('onMessageLikeButtonClicked', msgId, from, type);
@@ -72970,20 +73099,22 @@ converse.plugins.add('converse-emoji-views', {
         this.emoji_dropdown.toggle();
       },
 
-      createEmojiPicker() {
+      async createEmojiPicker() {   // BAO
         if (this.emoji_picker_view) {
           this.insertEmojiPicker();
           return;
         }
 
         if (!_converse.emojipicker) {
+          _converse.emojis.json.recent = {}; // BAO
           const id = "converse.emoji-".concat(_converse.bare_jid);
           _converse.emojipicker = new _converse.EmojiPicker({
             'id': id
           });
           _converse.emojipicker.browserStorage = _converse.createStore(id);
-
-          _converse.emojipicker.fetch();
+          await _converse.emojipicker.fetch();                  // BAO
+          const recent = _converse.emojipicker.get('recent');
+          if (recent) _converse.emojis.json.recent = recent;
         }
 
         this.emoji_picker_view = new _converse.EmojiPickerView({
@@ -73004,6 +73135,7 @@ converse.plugins.add('converse-emoji-views', {
 
       async toggleEmojiMenu(ev) {
         ev.stopPropagation();
+        await this.emoji_picker_view.render();  // BAO
         await this.createEmojiDropdown();
         this.emoji_dropdown.toggle();
         this.emoji_picker_view.setScrollPosition();
@@ -73205,7 +73337,8 @@ converse.plugins.add('converse-emoji-views', {
           'autocompleting': null,
           'position': null
         });
-        this.chatview.insertIntoTextArea(value, replace, false, position);
+
+        this.chatview.handleEmojiSelected(target.getAttribute('data-emoji'), replace, position);
 
         if (this.chatview.emoji_dropdown) {
           this.chatview.emoji_dropdown.toggle();
@@ -73213,6 +73346,7 @@ converse.plugins.add('converse-emoji-views', {
 
         this.filter('', true);
         this.disableArrowNavigation();
+        this.saveEmoji(value);        // BAO
       },
 
       onEnterPressed(ev) {
@@ -73340,6 +73474,21 @@ converse.plugins.add('converse-emoji-views', {
         }
       },
 
+      // BAO
+
+      saveEmoji(value) {
+        const emoji = _converse.emojis_list.filter(e => _converse.FILTER_CONTAINS(e.sn, value));
+        const item = emoji[0];
+
+        if (item.c != 'recent')
+        {
+            item.c = 'recent';
+            _converse.emojis.json.recent[value] = item;
+            _converse.emojipicker.save('recent', _converse.emojis.json.recent);
+            this.render();
+        }
+      },
+
       insertEmoji(ev) {
         ev.preventDefault();
         ev.stopPropagation();
@@ -73350,9 +73499,12 @@ converse.plugins.add('converse-emoji-views', {
           'autocompleting': null,
           'position': null
         });
-        this.chatview.insertIntoTextArea(target.getAttribute('data-emoji'), replace, false, position);
-        this.chatview.emoji_dropdown.toggle();
+        this.chatview.handleEmojiSelected(target.getAttribute('data-emoji'), replace, position);
+        if (this.chatview.emoji_dropdown) {
+            this.chatview.emoji_dropdown.toggle();
+        }
         this.filter('', true);
+        this.saveEmoji(target.getAttribute('data-emoji'));  // BAO
       }
 
     });
@@ -75011,6 +75163,7 @@ converse_core.plugins.add('converse-muc-views', {
         'change input.fileupload': 'onFileSelection',
         'click .chat-msg__action-edit': 'onMessageEditButtonClicked',
         'click .chat-msg__action-retract': 'onMessageRetractButtonClicked',
+        'click .chat-msg__action-react': 'onMessageReactButtonClicked',         // BAO
         'click .chat-msg__action-reply': 'onMessageReplyButtonClicked',         // BAO
         'click .chat-msg__action-forward': 'onMessageForwardButtonClicked',     // BAO
         'click .chat-msg__action-pin': 'onMessagePinButtonClicked',             // BAO

@@ -113,6 +113,9 @@ if (!window.chrome || !window.chrome.extension)
             remove: function(id) {
 
             },
+            getCurrent: function(obj) {
+
+            }
         },
 
         extension : {
