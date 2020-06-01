@@ -1235,7 +1235,7 @@ var padeapi = (function(api)
                                     }, false);
                                 }
 
-                                // adding message reactions
+                                // adding message actions
 
                                 var messageActionButtons = this.el.querySelector('.chat-msg__actions');
 
@@ -1290,7 +1290,6 @@ var padeapi = (function(api)
                                         ele.title = "React negative to this message";
                                         messageActionButtons.appendChild(ele);
                                     }
-
                                 }
                             }
 
@@ -2378,6 +2377,8 @@ var padeapi = (function(api)
     api.addToolbarItem = addToolbarItem;
     api.__newElement = __newElement;
     api.openChatbox = openChatbox;
+    api.getSelectedChatBox = getSelectedChatBox;
+    api.notifyText = notifyText;
 
     api.getResource = function()
     {

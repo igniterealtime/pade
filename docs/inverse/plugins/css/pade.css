@@ -155,6 +155,10 @@
 }
 */
 
+.jinglecalls {
+    width: 30% !important;
+}
+
 .chat-msg-content {
     width: 100%;
 }

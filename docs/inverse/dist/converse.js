@@ -31867,12 +31867,12 @@ return __p
 var _ = {escape:__webpack_require__(1)};
 module.exports = function(o) {
 var __t, __p = '', __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/chatbox.html -->\n<div class="flyout box-flyout">\n    <div class="chat-body">\n        <div class="chat-content ';
+function print() { __p += __j.call(arguments, '') } // BAO
+__p += '<!-- src/templates/chatbox.html -->\n<div class="row"><div class="col chat-container"><div class="flyout box-flyout">\n    <div class="chat-body">\n        <div class="chat-content ';
  if (o.show_send_button) { ;
 __p += 'chat-content-sendbutton';
  } ;
-__p += '" aria-live="polite"></div>\n        <div class="bottom-panel">\n            <div class="emoji-picker__container dropup"></div>\n            <div class="message-form-container">\n        </div>\n    </div>\n</div>\n';
+__p += '" aria-live="polite"></div>\n        <div class="bottom-panel">\n            <div class="emoji-picker__container dropup"></div>\n            <div class="message-form-container">\n        </div>\n    </div>\n</div>\n</div></div><div class="col hiddenx jinglecalls"></div></div>';
 return __p
 };
 
@@ -56324,12 +56324,12 @@ converse_core.plugins.add('converse-chat', {
         return _converse.connection.send(msg);
       },
 
-      sendMarker(to_jid, id, type) {
+      sendMarker(to_jid, id, type, msg_type) {
         const stanza = converse_chat_$msg({
           'from': _converse.connection.jid,
           'id': converse_chat_u.getUniqueId(),
           'to': to_jid,
-          'type': 'chat'
+          'type': msg_type ? msg_type : 'chat'
         }).c(type, {
           'xmlns': converse_chat_Strophe.NS.MARKERS,
           'id': id
@@ -56771,14 +56771,17 @@ converse_core.plugins.add('converse-chat', {
       },
 
       setFirstUnreadMsgId (message) { // BAO issue #119 (converse #1999)
-        let first_unread_id = this.get('first_unread_id');
+        this.clearActiveFirstUnreadMsgId();
+        message.save("first_unread", true);
+        this.save({'first_unread_id': message.get('id')});
+      },
 
+      clearActiveFirstUnreadMsgId() {
+        const first_unread_id = this.get('first_unread_id');
         if (first_unread_id) {
           const msg = this.messages.get(first_unread_id);
-          if (msg) msg.set("first_unread", false);
+          if (msg) msg.save("first_unread", false);
         }
-        message.set("first_unread", true);
-        this.set({'first_unread_id': message.get('id')});
       },
 
       clearUnreadMsgCounter() {
@@ -56786,7 +56789,7 @@ converse_core.plugins.add('converse-chat', {
             const msg = this.messages.last();
             if (msg) {
                 const from_jid = converse_chat_Strophe.getBareJidFromJid(msg.get('from'));
-                this.sendMarker(from_jid, msg.get('msgid'), 'displayed');
+                this.sendMarker(from_jid, msg.get('msgid'), 'displayed', msg.get('type'));
             }
         }
         converse_chat_u.safeSave(this, {
@@ -61091,11 +61094,11 @@ converse_core.plugins.add('converse-muc', {
       },
 
       clearUnreadMsgCounter() {
-        if (this.get('num_unread_general') > 0) {
+        if (this.get('num_unread_general') > 0 || this.get('num_unread') > 0) {
             const msg = this.messages.last();
             if (msg) {
                 const from_jid = converse_chat_Strophe.getBareJidFromJid(msg.get('from'));
-                this.sendMarker(from_jid, msg.get('msgid'), 'displayed');
+                this.sendMarker(from_jid, msg.get('msgid'), 'displayed', msg.get('type'));
             }
         }
 
@@ -66873,6 +66876,7 @@ converse_core.plugins.add('converse-chatview', {
 
       async onFormSubmitted(ev) {
         ev.preventDefault();
+        this.model.clearActiveFirstUnreadMsgId();                                 // BAO
         const textarea = this.el.querySelector('.chat-textarea');
         const message_text = this.modifyChatBody(textarea.value.trim());    // BAO
 

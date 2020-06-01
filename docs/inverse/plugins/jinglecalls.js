@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse, localStream;
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse, localStream, callee;
 
     converse.plugins.add("jinglecalls", {
         dependencies: [],
@@ -29,13 +29,57 @@
                 jinglecalls_invitation: 'Incoming Call'
             });
 
+            _converse.api.listen.on('addClientFeatures', () => {
+              _converse.api.disco.own.features.add('urn:xmpp:jingle:1');
+              _converse.api.disco.own.features.add('urn:xmpp:jingle:transports:ice-udp:1');
+              _converse.api.disco.own.features.add('urn:xmpp:jingle:apps:rtp:1');
+              _converse.api.disco.own.features.add('urn:xmpp:jingle:apps:dtls:0');
+              _converse.api.disco.own.features.add('urn:xmpp:jingle:apps:rtp:audio');
+              _converse.api.disco.own.features.add('urn:xmpp:jingle:apps:rtp:video');
+            });
+
+            _converse.api.listen.on('chatBoxClosed', function (chatbox)
+            {
+                if (localStream) terminateCall();
+            });
+
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                const toolbar = view.el.querySelector('.toggle-call');
+
+                if (toolbar && view.model.get("type") == "chatroom" && !getSetting("enableAudioConfWidget", false)) {
+                   toolbar.style.display = 'none';
+                }
+                else
+
+                if (view.model.get("type") == "chatbox") {
+                    toolbar.style.display = 'none';
+                    const contact = _converse.presences.findWhere({'jid': view.model.get("jid")});
+
+                    if (contact && contact.resources.models.length > 0)
+                    {
+                        const jid = view.model.get("jid") + '/' + contact.resources.models[0].get('name');
+                        const stanza = $iq({'to': jid, 'type': 'get'}).c('query', {'xmlns': "http://jabber.org/protocol/disco#info"});
+
+                        _converse.connection.sendIQ(stanza, function(iq) {
+                            console.log("features", view.model.get("jid"), iq);
+                            const canJingle = iq.querySelector("feature[var='urn:xmpp:jingle:apps:rtp:video']");
+                            if (canJingle) toolbar.style.display = '';
+                        });
+                    }
+                }
+            });
+
             _converse.api.listen.on('connected', function()
             {
-                listenForJingleCalls();
+                Promise.all([_converse.api.waitUntil('controlBoxInitialized'), _converse.api.waitUntil('VCardsInitialized'), _converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('roomsPanelRendered'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
+                {
+                    _converse.connection.jingle.doListen();
+                    _converse.connection.jingle.getStunAndTurnCredentials();
+                });
             });
 
             setupJingle();
-
             console.log("jinglecalls plugin is ready");
         },
 
@@ -48,30 +92,23 @@
 
                     if (this.model.get("type") == "chatbox")
                     {
-                        var jingleConfirm = _converse.api.settings.get("jinglecalls_confirm");
-
-                        if (confirm(jingleConfirm))
+                        if (localStream)
                         {
-                            const peer = this.model.attributes.jid;
-                            console.debug("toggleCall", peer);
+                            terminateCall();
 
-                            var div = this.el.querySelector(".box-flyout");
+                        } else {
+                            var jingleConfirm = _converse.api.settings.get("jinglecalls_confirm");
 
-                            if (div && localStream)
+                            if (confirm(jingleConfirm))
                             {
-                                div.innerHTML  = "<div id='largevideocontainer' style='width:90%;top:10px;bottom:30px;left:10px;position:absolute;'> </div> <div id='minivideocontainer' style='width:160px;height:120px;position:absolute;right:10px;top:10px;'> <video id='minivideo' autoplay='autoplay' style='width:160px;height:120px;position:absolute;'></video> <div id='ownvolume' style='width:0px;height:5px;position:absolute;bottom:0px;background-color:#6ddffe;'></div> </div>";
+                                const jid = this.model.attributes.jid;
+                                const contact = _converse.presences.findWhere({'jid': jid});
 
-                                // mute video on firefox and recent canary
-                                $('#minivideo')[0].muted = true;
-                                $('#minivideo')[0].volume = 0;
-
-                                RTC.attachMediaStream($('#minivideo'), localStream);
-
-                                _converse.connection.send($pres({to:peer}));
-                                _converse.connection.jingle.initiate(peer, _converse.connection.jid);
-                            }
-                            else {
-                                console.error("Error. Unable to make call");
+                                if (contact && contact.resources.models.length > 0)
+                                {
+                                    getUserMediaWithConstraints(['audio', 'video'], jid, makeCall);
+                                }
+                                else alert('unable to call, ' + jid + ' not online');
                             }
                         }
                     }
@@ -80,79 +117,106 @@
         }
     });
 
-    function listenForJingleCalls()
+    function setupWebRTC(callState)
     {
-        console.debug("listenForJingleCalls");
+        if (localStream)
+        {
+            console.debug("setupWebRTC");
+            const view = padeapi.getSelectedChatBox();
 
-        window.RTC = setupRTC();
+            if (view)
+            {
+                const div = view.el.querySelector(".jinglecalls");
+                div.style.maxWidth = "40%";
+                div.classList.remove('hiddenx');
+                div.innerHTML = '<div class="row"><div class="col" style="vertical-align:top;min-width:100%;max-height:70%;margin-left:0px;padding-right:0px;" id="largevideocontainer"></div><div class="col" style="vertical-align:top;min-width:100%;max-height:30%;margin-left:0px;padding-right:0px;"><video style="vertical-align:bottom;min-width:100%;max-height:30%;margin-left:0px;padding-right:0px;" id="minivideo" autoplay="autoplay"/></div><div style="cursor:pointer;position: absolute; bottom: 5%; left: 10%; z-index: 100;"><span id="mute_audio_jingle"><svg style="fill:white;margin-left:4px" height="32" width="32" viewBox="0 0 32 32"><path d="M23.063 14.688h2.25c0 4.563-3.625 8.313-8 8.938v4.375h-2.625v-4.375c-4.375-.625-8-4.375-8-8.938h2.25c0 4 3.375 6.75 7.063 6.75s7.063-2.75 7.063-6.75zm-7.063 4c-2.188 0-4-1.813-4-4v-8c0-2.188 1.813-4 4-4s4 1.813 4 4v8c0 2.188-1.813 4-4 4z"></path></svg></span><span id="terminate_jingle"><svg style="fill:red;margin-left:4px" height="32" width="32" viewBox="0 0 32 32"><path d="M16 12c-2.125 0-4.188.313-6.125.938v4.125c0 .5-.313 1.063-.75 1.25a13.87 13.87 0 00-3.563 2.438c-.25.25-.563.375-.938.375s-.688-.125-.938-.375L.373 17.438c-.25-.25-.375-.563-.375-.938s.125-.688.375-.938c4.063-3.875 9.563-6.25 15.625-6.25s11.563 2.375 15.625 6.25c.25.25.375.563.375.938s-.125.688-.375.938l-3.313 3.313c-.25.25-.563.375-.938.375s-.688-.125-.938-.375a13.87 13.87 0 00-3.563-2.438c-.438-.188-.75-.625-.75-1.188V13c-1.938-.625-4-1-6.125-1z"></path></svg></span><span id="mute_video_jingle"><svg style="fill:white;margin-left:4px" height="32" width="32" viewBox="0 0 32 32"><path d="M22.688 14l5.313-5.313v14.625l-5.313-5.313v4.688c0 .75-.625 1.313-1.375 1.313h-16C4.563 24 4 23.437 4 22.687V9.312c0-.75.563-1.313 1.313-1.313h16c.75 0 1.375.563 1.375 1.313V14z"></path></svg></span></div></div>';
 
-        _converse.connection.jingle.ice_config = {iceServers: [{url: 'stun:stun.l.google.com:19302'}]};
+                $('#minivideo')[0].muted = true;
+                $('#minivideo')[0].volume = 0;
 
-        if (RTC) {
-            _converse.connection.jingle.pc_constraints = RTC.pc_constraints;
-        }
+                RTC.attachMediaStream($('#minivideo'), localStream);
+                view.showHelpMessages([callState + ' Call']);
 
-        $(document).bind('mediaready.jingle', onMediaReady);
-        $(document).bind('mediafailure.jingle', onMediaFailure);
-        $(document).bind('callincoming.jingle', onCallIncoming);
-        $(document).bind('callactive.jingle', onCallActive);
-        $(document).bind('callterminated.jingle', onCallTerminated);
+                view.el.querySelector("#mute_audio_jingle").addEventListener("click", function(evt)
+                {
+                    console.debug("setupWebRTC - mute audio");
+                    const disabled = '<svg style="fill:white;margin-left:4px" height="24" width="24" viewBox="0 0 32 32"><path d="M5.688 4l22.313 22.313-1.688 1.688-5.563-5.563c-1 .625-2.25 1-3.438 1.188v4.375h-2.625v-4.375c-4.375-.625-8-4.375-8-8.938h2.25c0 4 3.375 6.75 7.063 6.75 1.063 0 2.125-.25 3.063-.688l-2.188-2.188c-.25.063-.563.125-.875.125-2.188 0-4-1.813-4-4v-1l-8-8zM20 14.875l-8-7.938v-.25c0-2.188 1.813-4 4-4s4 1.813 4 4v8.188zm5.313-.187a8.824 8.824 0 01-1.188 4.375L22.5 17.375c.375-.813.563-1.688.563-2.688h2.25z"></path></svg>';
+                    const enabled = '<svg style="fill:white;margin-left:4px" height="32" width="32" viewBox="0 0 32 32"><path d="M23.063 14.688h2.25c0 4.563-3.625 8.313-8 8.938v4.375h-2.625v-4.375c-4.375-.625-8-4.375-8-8.938h2.25c0 4 3.375 6.75 7.063 6.75s7.063-2.75 7.063-6.75zm-7.063 4c-2.188 0-4-1.813-4-4v-8c0-2.188 1.813-4 4-4s4 1.813 4 4v8c0 2.188-1.813 4-4 4z"></path></svg>';
 
-        $(document).bind('remotestreamadded.jingle', onRemoteStreamAdded);
-        $(document).bind('remotestreamremoved.jingle', onRemoteStreamRemoved);
-        $(document).bind('iceconnectionstatechange.jingle', onIceConnectionStateChanged);
-        $(document).bind('nostuncandidates.jingle', noStunCandidates);
+                    const active = localStream.getAudioTracks()[0].enabled;
+                    localStream.getAudioTracks()[0].enabled =  !active;
+                    view.el.querySelector("#mute_audio_jingle").innerHTML = !active ? enabled : disabled;
+                });
 
-        $(document).bind('ack.jingle', function (event, sid, ack) {
-            console.debug('got stanza ack for ' + sid, ack);
-        });
-        $(document).bind('error.jingle', function (event, sid, err) {
-            console.debug('got stanza error for ' + sid, err);
-        });
-        $(document).bind('packetloss.jingle', function (event, sid, loss) {
-            console.debug('packetloss', sid, loss);
-        });
+                view.el.querySelector("#mute_video_jingle").addEventListener("click", function(evt)
+                {
+                    console.debug("setupWebRTC - mute video");
+                    const disabled = '<svg style="fill:white;margin-left:4px" height="24" width="24" viewBox="0 0 32 32"><path d="M4.375 2.688L28 26.313l-1.688 1.688-4.25-4.25c-.188.125-.5.25-.75.25h-16c-.75 0-1.313-.563-1.313-1.313V9.313c0-.75.563-1.313 1.313-1.313h1L2.687 4.375zm23.625 6v14.25L13.062 8h8.25c.75 0 1.375.563 1.375 1.313v4.688z"></path></svg>';
+                    const enabled = '<svg style="fill:white;margin-left:4px" height="32" width="32" viewBox="0 0 32 32"><path d="M22.688 14l5.313-5.313v14.625l-5.313-5.313v4.688c0 .75-.625 1.313-1.375 1.313h-16C4.563 24 4 23.437 4 22.687V9.312c0-.75.563-1.313 1.313-1.313h16c.75 0 1.375.563 1.375 1.313V14z"></path></svg>';
 
-        if (RTC !== null) {
-            RTCPeerconnection = RTC.peerconnection;
+                    const active = localStream.getVideoTracks()[0].enabled;
+                    localStream.getVideoTracks()[0].enabled =  !active;
+                    view.el.querySelector("#mute_video_jingle").innerHTML = !active ? enabled : disabled;
+                });
 
-            if (RTC.browser == 'firefox') {
-                _converse.connection.jingle.media_constraints.mandatory.MozDontOfferDataChannel = true;
+                view.el.querySelector("#terminate_jingle").addEventListener("click", function(evt)
+                {
+                    console.debug("setupWebRTC - terminate call");
+                    terminateCall();
+                });
             }
-
-            getUserMediaWithConstraints(['audio', 'video']);
-
-        } else {
-            console.error('webrtc capable browser required');
-        }
-
-        _converse.connection.jingle.getStunAndTurnCredentials();
-
-        if (_converse.connection.disco) {
-            _converse.connection.disco.addIdentity('client', 'pade');
-            _converse.connection.disco.addFeature(Strophe.NS.DISCO_INFO);
         }
     }
 
-    function onMediaReady(event, stream)
+    function terminateCall()
     {
-        localStream = stream;
-        _converse.connection.jingle.localStream = stream;
-
-        for (var i = 0; i < localStream.getAudioTracks().length; i++) {
-            console.debug('using audio device "' + localStream.getAudioTracks()[i].label + '"');
-        }
-        for (i = 0; i < localStream.getVideoTracks().length; i++) {
-            console.debug('using video device "' + localStream.getVideoTracks()[i].label + '"');
+        if (callee) {
+            _converse.connection.jingle.terminate(callee);
+        } else {
+            onCallTerminated();
         }
     }
 
-    function onMediaFailure() {
-        console.error('media failure');
+    function makeCall(error, jid)
+    {
+        if (!error)
+        {
+            setupWebRTC('Outgoing');
+
+            for (var i = 0; i < localStream.getAudioTracks().length; i++) {
+                console.debug('using audio device "' + localStream.getAudioTracks()[i].label + '"');
+            }
+            for (i = 0; i < localStream.getVideoTracks().length; i++) {
+                console.debug('using video device "' + localStream.getVideoTracks()[i].label + '"');
+            }
+            const id = Math.random().toString(36).substr(2, 12);
+
+            const propose = $msg({type: 'chat', to: jid})
+                .c('propose', {xmlns: 'urn:xmpp:jingle-message:0', id: id})
+                .c('description', {xmlns: 'urn:xmpp:jingle:apps:rtp:1', media: 'video'}).up()
+                .c('description', {xmlns: 'urn:xmpp:jingle:apps:rtp:1', media: 'audio'}).up().up()
+
+            _converse.connection.send(propose);
+        }
+        else alert('unable to make call, ' + jid + ' no mic or webcam available');
     }
+
+    function answerCall(error, caller)
+    {
+        if (!error)
+        {
+            setupWebRTC('Incoming');
+            const proceed = $msg({type: 'chat', to: caller.from}).c('proceed', {xmlns: 'urn:xmpp:jingle-message:0', id: caller.id});
+            _converse.connection.send(proceed);
+
+        }
+        else alert('unable to answer call, ' + jid + ' no mic or webcam available');
+    }
+
 
     function onCallIncoming(event, sid) {
         console.debug('incoming call' + sid);
+
         var sess = _converse.connection.jingle.sessions[sid];
         sess.sendAnswer();
         sess.accept();
@@ -164,13 +228,18 @@
 
     function onCallActive(event, videoelem, sid) {
         console.debug('call active ' + sid);
-        $(videoelem).appendTo('#largevideocontainer');
+        callee = sid;
+        //$(videoelem).appendTo('#largevideocontainer');
         _converse.connection.jingle.sessions[sid].getStats(1000);
     }
 
     function onCallTerminated(event, sid, reason) {
         console.debug('call terminated ' + sid + (reason ? (': ' + reason) : ''));
-        $('#largevideocontainer #largevideo_' + sid).remove();
+        if (localStream) localStream.getTracks().forEach(function (track) { track.stop(); });
+        $('#largevideocontainer #largevideo').remove();
+        document.getElementById('largevideocontainer').parentNode.parentNode.classList.add('hiddenx');
+        callee = null;
+        localStream = null;
     }
 
     function waitForRemoteVideo(selector, sid) {
@@ -186,16 +255,16 @@
     }
 
     function onRemoteStreamAdded(event, data, sid) {
-        setStatus('Remote stream for session ' + sid + ' added.');
-        if ($('#largevideo_' + sid).length !== 0) {
-            console.debug('ignoring duplicate onRemoteStreamAdded...'); // FF 20
-            return;
-        }
+        console.debug('Remote stream for session ' + sid + ' added.');
+        //if ($('#largevideo').length !== 0) {
+        //    console.debug('ignoring duplicate onRemoteStreamAdded...'); // FF 20
+        //    return;
+        //}
         // after remote stream has been added, wait for ice to become connected
         // old code for compat with FF22 beta
-        var el = $("<video autoplay='autoplay' style='display:none'/>").attr('id', 'largevideo_' + sid);
-        RTC.attachMediaStream(el, data.stream);
-        waitForRemoteVideo(el, sid);
+        //var el = $("<video autoplay='autoplay'/>").attr('id', 'largevideo');
+        //RTC.attachMediaStream(el, data.stream);
+        //waitForRemoteVideo(el, sid);
     }
 
     function onRemoteStreamRemoved(event, data, sid) {
@@ -203,16 +272,19 @@
     }
 
     function onIceConnectionStateChanged(event, sid, sess) {
-        console.debug('ice state for', sid, sess.peerconnection.iceConnectionState);
-        console.debug('sig state for', sid, sess.peerconnection.signalingState);
-        // works like charm, unfortunately only in chrome and FF nightly, not FF22 beta
-        /*
+        console.debug('ice state for', sid, sess.peerconnection.signalingState, sess.peerconnection.iceConnectionState, sess.remoteStream);
+
         if (sess.peerconnection.signalingState == 'stable' && sess.peerconnection.iceConnectionState == 'connected') {
-            var el = $("<video autoplay='autoplay' style='display:none'/>").attr('id', 'largevideo_' + sid);
-            $(document).trigger('callactive.jingle', [el, sid]);
-            RTC.attachMediaStream(el, sess.remoteStream); // moving this before the trigger doesn't work in FF?!
+            const view = padeapi.getSelectedChatBox();
+
+            if (view)
+            {
+                var el = $("<video style='vertical-align:bottom;min-width:100%;max-height:70%;' autoplay='autoplay'/>").attr('id', 'largevideo');
+                $(document).trigger('callactive.jingle', [el, sid]);
+                RTC.attachMediaStream(el, sess.remoteStream);
+                $(el).appendTo('#largevideocontainer');
+            }
         }
-        */
     }
 
     function noStunCandidates(event) {
@@ -221,6 +293,10 @@
 
     function setupJingle()
     {
+        console.debug('setupJingle');
+
+        window.RTC = setupRTC();
+
         Strophe.addConnectionPlugin('jingle', {
             connection: null,
             sessions: {},
@@ -237,27 +313,87 @@
             localStream: null,
 
             init: function (conn) {
+                console.debug('setupJingle - init', conn);
+
+                //this.ice_config.rtcpMuxPolicy = 'negotiate';        // BAO breaking change chrome M57
                 this.connection = conn;
-                if (this.connection.disco) {
-                    // http://xmpp.org/extensions/xep-0167.html#support
-                    // http://xmpp.org/extensions/xep-0176.html#support
-                    this.connection.disco.addFeature('urn:xmpp:jingle:1');
-                    this.connection.disco.addFeature('urn:xmpp:jingle:apps:rtp:1');
-                    this.connection.disco.addFeature('urn:xmpp:jingle:transports:ice-udp:1');
-                    this.connection.disco.addFeature('urn:xmpp:jingle:apps:rtp:audio');
-                    this.connection.disco.addFeature('urn:xmpp:jingle:apps:rtp:video');
+                this.connection.jingle.ice_config = {iceServers: [{url: 'stun:stun.l.google.com:19302'}]};
 
-
-                    // this is dealt with by SDP O/A so we don't need to annouce this
-                    //this.connection.disco.addFeature('urn:xmpp:jingle:apps:rtp:rtcp-fb:0'); // XEP-0293
-                    //this.connection.disco.addFeature('urn:xmpp:jingle:apps:rtp:rtp-hdrext:0'); // XEP-0294
-                    this.connection.disco.addFeature('urn:ietf:rfc:5761'); // rtcp-mux
-                    //this.connection.disco.addFeature('urn:ietf:rfc:5888'); // a=group, e.g. bundle
-                    //this.connection.disco.addFeature('urn:ietf:rfc:5576'); // a=ssrc
+                if (RTC) {
+                    this.connection.jingle.pc_constraints = RTC.pc_constraints;
                 }
-                this.connection.addHandler(this.onJingle.bind(this), 'urn:xmpp:jingle:1', 'iq', 'set', null, null);
+
+                $(document).bind('callincoming.jingle', onCallIncoming);
+                $(document).bind('callactive.jingle', onCallActive);
+                $(document).bind('callterminated.jingle', onCallTerminated);
+
+                $(document).bind('remotestreamadded.jingle', onRemoteStreamAdded);
+                $(document).bind('remotestreamremoved.jingle', onRemoteStreamRemoved);
+                $(document).bind('iceconnectionstatechange.jingle', onIceConnectionStateChanged);
+                $(document).bind('nostuncandidates.jingle', noStunCandidates);
+
+                $(document).bind('ack.jingle', function (event, sid, ack) {
+                    console.debug('setupJingle got stanza ack for ' + sid, ack);
+                });
+                $(document).bind('error.jingle', function (event, sid, err) {
+                    console.debug('setupJingle got stanza error for ' + sid, err);
+                });
+                $(document).bind('packetloss.jingle', function (event, sid, loss) {
+                    console.debug('setupJingle packetloss', sid, loss);
+                });
+
+                if (RTC !== null) {
+                    RTCPeerconnection = RTC.peerconnection;
+
+                    if (RTC.browser == 'firefox') {
+                        this.connection.jingle.media_constraints.mandatory.MozDontOfferDataChannel = true;
+                    }
+
+                } else {
+                    console.error('webrtc capable browser required');
+                }
             },
+            doListen: function () {
+                this.connection.addHandler(this.onJingleMessage.bind(this), 'urn:xmpp:jingle-message:0', 'message', 'chat');
+                this.connection.addHandler(this.onJingle.bind(this), 'urn:xmpp:jingle:1', 'iq', 'set');
+            },
+            onJingleMessage: function (msg) {
+                console.debug('setupJingle - onJingleMessage', msg);
+                const forwarded = msg.querySelector('forwarded');
+                if (forwarded) return true;
+
+                const propose = msg.querySelector('propose');
+                const proceed = msg.querySelector('proceed');
+                const from = msg.getAttribute('from');
+                const caller = Strophe.getBareJidFromJid(from);
+
+                if (propose)
+                {
+                    const id = propose.getAttribute('id');
+
+                    padeapi.notifyText("Audio/Video Call", caller, caller, [{title: "Accept Call?", iconUrl: chrome.extension.getURL("check-solid.svg")}], function(notificationId, buttonIndex)
+                    {
+                        if (buttonIndex == 0)
+                        {
+                            _converse.api.chats.open(caller);
+                            getUserMediaWithConstraints(['audio', 'video'], {id: id, from: from}, answerCall);
+                        }
+
+                    }, caller);
+                }
+                else
+
+                if (proceed)
+                {
+                    _converse.connection.send($pres({to: from}));
+                    _converse.connection.jingle.initiate(from, _converse.connection.jid);
+                }
+
+                return true;
+            },
+
             onJingle: function (iq) {
+                console.debug('setupJingle - onJingle', iq);
                 var sid = $(iq).find('jingle').attr('sid');
                 var action = $(iq).find('jingle').attr('action');
                 // send ack first
@@ -369,6 +505,7 @@
                 return true;
             },
             initiate: function (peerjid, myjid) { // initiate a new jinglesession to peerjid
+                console.debug('setupJingle - initiate', peerjid, myjid);
                 var sess = new JingleSession(myjid || this.connection.jid,
                                              Math.random().toString(36).substr(2, 12), // random string
                                              this.connection);
@@ -387,6 +524,7 @@
                 return sess;
             },
             terminate: function (sid, reason, text) { // terminate by sessionid (or all sessions)
+                console.debug('setupJingle - terminate', sid, reason, text);
                 if (sid === null || sid === undefined) {
                     for (sid in this.sessions) {
                         if (this.sessions[sid].state != 'ended') {
@@ -404,8 +542,12 @@
                     delete this.jid2session[this.sessions[sid].peerjid];
                     delete this.sessions[sid];
                 }
+
+                $(document).trigger('callterminated.jingle', [sid, 'gone']);
+
             },
             terminateByJid: function (jid) {
+                console.debug('setupJingle - terminateByJid', jid);
                 if (this.jid2session.hasOwnProperty(jid)) {
                     var sess = this.jid2session[jid];
                     if (sess) {
@@ -417,6 +559,7 @@
                 }
             },
             getStunAndTurnCredentials: function () {
+                console.debug('setupJingle - getStunAndTurnCredentials');
                 // get stun and turn configuration from server via xep-0215
                 // uses time-limited credentials as described in
                 // http://tools.ietf.org/html/draft-uberti-behave-turn-rest-00
@@ -433,6 +576,7 @@
                     $iq({type: 'get', to: this.connection.domain})
                         .c('services', {xmlns: 'urn:xmpp:extdisco:1'}).c('service', {host: 'turn.' + this.connection.domain}),
                     function (res) {
+                        console.debug('setupJingle - getStunAndTurnCredentials', res);
                         var iceservers = [];
                         $(res).find('>services>service').each(function (idx, el) {
                             el = $(el);
@@ -539,7 +683,7 @@
         this.initiator = isInitiator ? this.me : peerjid;
         this.responder = !isInitiator ? this.me : peerjid;
         this.peerjid = peerjid;
-        //console.log('create PeerConnection ' + JSON.stringify(this.ice_config));
+        console.debug('create PeerConnection ' + JSON.stringify(this.ice_config));
         try {
             this.peerconnection = new RTCPeerconnection(this.ice_config,
                                                          this.pc_constraints);
@@ -653,7 +797,7 @@
     JingleSession.prototype.terminate = function (reason) {
         this.state = 'ended';
         this.reason = reason;
-        this.peerconnection.close();
+        if (this.peerconnection) this.peerconnection.close();
         if (this.statsinterval !== null) {
             window.clearInterval(this.statsinterval);
             this.statsinterval = null;
@@ -925,7 +1069,8 @@
         if (this.peerconnection.signalingState == 'closed') {
             return;
         }
-        if (!this.peerconnection.remoteDescription && this.peerconnection.signalingState == 'have-local-offer') {
+
+       if (!this.peerconnection.remoteDescription && this.peerconnection.signalingState == 'have-local-offer') {
             console.log('trickle ice candidate arriving before session accept...');
             // create a PRANSWER for setRemoteDescription
             if (!this.remoteSDP) {
@@ -989,7 +1134,7 @@
             } else {
                 //console.log('not yet setting pranswer');
             }
-        }
+       }
         // operate on each content element
         elem.each(function () {
             // would love to deactivate this, but firefox still requires it
@@ -2454,8 +2599,13 @@
         return RTC;
     }
 
-    function getUserMediaWithConstraints(um, resolution, bandwidth, fps) {
+    function getUserMediaWithConstraints(um, jid, callback, resolution, bandwidth, fps) {
         var constraints = {audio: false, video: false};
+
+        if (localStream) {
+            localStream.getTracks().forEach(function (track) { track.stop(); });
+            localStream = null;
+        }
 
         if (um.indexOf('video') >= 0) {
             constraints.video = {mandatory: {}};// same behaviour as true
@@ -2536,15 +2686,17 @@
             RTC.getUserMedia(constraints,
                     function (stream) {
                         console.log('onUserMediaSuccess');
-                        $(document).trigger('mediaready.jingle', [stream]);
+                        localStream = stream;
+                        _converse.connection.jingle.localStream = stream;
+                        callback(null, jid);
                     },
                     function (error) {
                         console.warn('Failed to get access to local media. Error ', error);
-                        $(document).trigger('mediafailure.jingle');
+                        callback(error);
                     });
         } catch (e) {
             console.error('GUM failed: ', e);
-            $(document).trigger('mediafailure.jingle');
+            callback(e);
         }
     }
 }));
