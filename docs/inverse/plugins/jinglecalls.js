@@ -62,7 +62,7 @@
                         const stanza = $iq({'to': jid, 'type': 'get'}).c('query', {'xmlns': "http://jabber.org/protocol/disco#info"});
 
                         _converse.connection.sendIQ(stanza, function(iq) {
-                            console.log("features", view.model.get("jid"), iq);
+                            console.debug("features", view.model.get("jid"), iq);
                             const canJingle = iq.querySelector("feature[var='urn:xmpp:jingle:apps:rtp:video']");
                             if (canJingle) toolbar.style.display = '';
                         });
@@ -206,8 +206,11 @@
         if (!error)
         {
             setupWebRTC('Incoming');
+            const accept = $msg({type: 'chat', to: Strophe.getBareJidFromJid(_converse.connection.jid)}).c('accept', {xmlns: 'urn:xmpp:jingle-message:0', id: caller.id});
+            _converse.connection.send(accept);
             const proceed = $msg({type: 'chat', to: caller.from}).c('proceed', {xmlns: 'urn:xmpp:jingle-message:0', id: caller.id});
             _converse.connection.send(proceed);
+            _converse.connection.send($pres({to: caller.from}));
 
         }
         else alert('unable to answer call, ' + jid + ' no mic or webcam available');
@@ -385,7 +388,6 @@
 
                 if (proceed)
                 {
-                    _converse.connection.send($pres({to: from}));
                     _converse.connection.jingle.initiate(from, _converse.connection.jid);
                 }
 
@@ -741,7 +743,7 @@
         if (!pranswer || pranswer.type != 'pranswer') {
             return;
         }
-        console.log('going from pranswer to answer');
+        console.debug('going from pranswer to answer');
         if (this.usetrickle) {
             // remove candidates already sent from session-accept
             var lines = SDPUtil.find_lines(pranswer.sdp, 'a=candidate:');
@@ -785,7 +787,7 @@
         }
         this.peerconnection.setLocalDescription(new RTCSessionDescription({type: 'answer', sdp: sdp}),
             function () {
-                //console.log('setLocalDescription success');
+                //console.debug('setLocalDescription success');
                 $(document).trigger('setLocalDescription.jingle', [self.sid]);
             },
             function (e) {
@@ -827,12 +829,12 @@
 
             if(this.filter_candidates === null || jcand.type === this.filter_candidates) {
                 if (this.usetrickle) {
-                    console.log('sendIceCandidate using trickle');
+                    console.debug('sendIceCandidate using trickle');
                     if (this.usedrip) {
                         if (this.drip_container.length === 0) {
                             // start 20ms callout
                             window.setTimeout(function () {
-                                console.log('sending drip container');
+                                console.debug('sending drip container');
                                 if (self.drip_container.length === 0) return;
                                 self.sendIceCandidates(self.drip_container);
                                 self.drip_container = [];
@@ -842,15 +844,15 @@
                         this.drip_container.push(candidate);
                         return;
                     } else {
-                        console.log('sending single candidate');
+                        console.debug('sending single candidate');
                         self.sendIceCandidates([candidate]);
                     }
                 }
             }
         } else {
-            console.log('sendIceCandidate: last candidate...');
+            console.debug('sendIceCandidate: last candidate...');
             if (!this.usetrickle) {
-                console.log('should send full offer now...');
+                console.debug('should send full offer now...');
                 var init = $iq({to: this.peerjid,
                            type: 'set'})
                     .c('jingle', {xmlns: 'urn:xmpp:jingle:1',
@@ -865,10 +867,10 @@
                 }
                 this.localSDP = new SDP(this.peerconnection.localDescription.sdp);
                 this.localSDP.toJingle(init, this.initiator == this.me ? 'initiator' : 'responder');
-                console.log('try to send ack(offer)...');
+                console.debug('try to send ack(offer)...');
                 this.connection.sendIQ(init,
                     function () {
-                        console.log('Sent session initiate (ACK, offer)...');
+                        console.debug('Sent session initiate (ACK, offer)...');
                         var ack = {};
                         ack.source = 'offer';
                         $(document).trigger('ack.jingle', [self.sid, ack]);
@@ -886,18 +888,18 @@
                 10000);
             }
             this.lasticecandidate = true;
-            console.log('Have we encountered any srflx candidates? ' + this.hadstuncandidate);
-            console.log('Have we encountered any relay candidates? ' + this.hadturncandidate);
+            console.debug('Have we encountered any srflx candidates? ' + this.hadstuncandidate);
+            console.debug('Have we encountered any relay candidates? ' + this.hadturncandidate);
 
             if (!(this.hadstuncandidate || this.hadturncandidate) && this.peerconnection.signalingState != 'closed') {
-                console.log('no candidates found!');
+                console.debug('no candidates found!');
                 $(document).trigger('nostuncandidates.jingle', [this.sid]);
             }
         }
     };
 
     JingleSession.prototype.sendIceCandidates = function (candidates) {
-        console.log('sendIceCandidates', candidates);
+        console.debug('sendIceCandidates', candidates);
         var cand = $iq({to: this.peerjid, type: 'set'})
             .c('jingle', {xmlns: 'urn:xmpp:jingle:1',
                action: 'transport-info',
@@ -929,13 +931,13 @@
             }
         }
         // might merge last-candidate notification into this, but it is called alot later. See webrtc issue #2340
-        //console.log('was this the last candidate', this.lasticecandidate);
-        console.log('try to send ack(transportinfo)...');
+        //console.debug('was this the last candidate', this.lasticecandidate);
+        console.debug('try to send ack(transportinfo)...');
         this.connection.sendIQ(cand,
             function () {
                 var ack = {};
                 ack.source = 'transportinfo';
-                console.log('Sent session initiate (ACK, transportinfo)...');
+                console.debug('Sent session initiate (ACK, transportinfo)...');
                 $(document).trigger('ack.jingle', [this.sid, ack]);
             },
             function (stanza) {
@@ -951,7 +953,7 @@
 
 
     JingleSession.prototype.sendOffer = function () {
-        //console.log('sendOffer...');
+        //console.debug('sendOffer...');
         var self = this;
         this.peerconnection.createOffer(function (sdp) {
                 self.createdOffer(sdp);
@@ -964,7 +966,7 @@
     };
 
     JingleSession.prototype.createdOffer = function (sdp) {
-        //console.log('createdOffer', sdp);
+        //console.debug('createdOffer', sdp);
         var self = this;
         this.localSDP = new SDP(sdp.sdp);
         //this.localSDP.mangle();
@@ -1004,7 +1006,7 @@
         this.peerconnection.setLocalDescription(sdp,
             function () {
                 $(document).trigger('setLocalDescription.jingle', [self.sid]);
-                //console.log('setLocalDescription success');
+                //console.debug('setLocalDescription success');
             },
             function (e) {
                 console.error('setLocalDescription failed', e);
@@ -1022,11 +1024,11 @@
     };
 
     JingleSession.prototype.setRemoteDescription = function (elem, desctype) {
-        //console.log('setting remote description... ', desctype);
+        //console.debug('setting remote description... ', desctype);
         this.remoteSDP = new SDP('');
         this.remoteSDP.fromJingle(elem);
         if (this.peerconnection.remoteDescription !== null) {
-            console.log('setRemoteDescription when remote description is not null, should be pranswer', this.peerconnection.remoteDescription);
+            console.debug('setRemoteDescription when remote description is not null, should be pranswer', this.peerconnection.remoteDescription);
             if (this.peerconnection.remoteDescription.type == 'pranswer') {
                 var pranswer = new SDP(this.peerconnection.remoteDescription.sdp);
                 for (var i = 0; i < pranswer.media.length; i++) {
@@ -1056,7 +1058,7 @@
 
         this.peerconnection.setRemoteDescription(remotedesc,
             function () {
-                //console.log('setRemoteDescription success');
+                //console.debug('setRemoteDescription success');
             },
             function (e) {
                 console.error('setRemoteDescription error', e);
@@ -1071,7 +1073,7 @@
         }
 
        if (!this.peerconnection.remoteDescription && this.peerconnection.signalingState == 'have-local-offer') {
-            console.log('trickle ice candidate arriving before session accept...');
+            console.debug('trickle ice candidate arriving before session accept...');
             // create a PRANSWER for setRemoteDescription
             if (!this.remoteSDP) {
                 var cobbled = 'v=0\r\n' +
@@ -1102,7 +1104,7 @@
                             if (tmp.length) {
                                 self.remoteSDP.media[i] += 'a=fingerprint:' + tmp.attr('hash') + ' ' + tmp.text() + '\r\n';
                             } else {
-                                console.log('no dtls fingerprint (webrtc issue #1718?)');
+                                console.debug('no dtls fingerprint (webrtc issue #1718?)');
                                 self.remoteSDP.media[i] += 'a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:BAADBAADBAADBAADBAADBAADBAADBAADBAADBAAD\r\n';
                             }
                             break;
@@ -1120,19 +1122,19 @@
             }).length == this.remoteSDP.media.length;
 
             if (iscomplete) {
-                console.log('setting pranswer');
+                console.debug('setting pranswer');
                 try {
                     this.peerconnection.setRemoteDescription(new RTCSessionDescription({type: 'pranswer', sdp: this.remoteSDP.raw }),
                         function() {
                         },
                         function(e) {
-                            console.log('setRemoteDescription pranswer failed', e.toString());
+                            console.debug('setRemoteDescription pranswer failed', e.toString());
                         });
                 } catch (e) {
                     console.error('setting pranswer failed', e);
                 }
             } else {
-                //console.log('not yet setting pranswer');
+                //console.debug('not yet setting pranswer');
             }
        }
         // operate on each content element
@@ -1174,7 +1176,7 @@
     };
 
     JingleSession.prototype.sendAnswer = function (provisional) {
-        //console.log('createAnswer', provisional);
+        //console.debug('createAnswer', provisional);
         var self = this;
         this.peerconnection.createAnswer(
             function (sdp) {
@@ -1188,14 +1190,14 @@
     };
 
     JingleSession.prototype.createdAnswer = function (sdp, provisional) {
-        //console.log('createAnswer callback');
+        //console.debug('createAnswer callback');
         var self = this;
         this.localSDP = new SDP(sdp.sdp);
         //this.localSDP.mangle();
         this.usepranswer = provisional === true;
 
         if (this.startmuted) {
-            console.log('we got a request to start muted...');
+            console.debug('we got a request to start muted...');
             this.connection.jingle.localStream.getAudioTracks().forEach(function (track) {
                 track.enabled = false;
             });
@@ -1251,7 +1253,7 @@
         this.peerconnection.setLocalDescription(sdp,
             function () {
                 $(document).trigger('setLocalDescription.jingle', [self.sid]);
-                //console.log('setLocalDescription success');
+                //console.debug('setLocalDescription success');
             },
             function (e) {
                 console.error('setLocalDescription failed', e);
@@ -1308,14 +1310,14 @@
 
 
     JingleSession.prototype.addSource = function (elem) {
-        console.log('addssrc', new Date().getTime());
-        console.log('ice', this.peerconnection.iceConnectionState);
+        console.debug('addssrc', new Date().getTime());
+        console.debug('ice', this.peerconnection.iceConnectionState);
         var sdp = new SDP(this.peerconnection.remoteDescription.sdp);
 
         var self = this;
         $(elem).each(function (idx, content) {
             var name = $(content).attr('name');
-            console.log('SSRC NAME', name);
+            console.debug('SSRC NAME', name);
             var lines = '';
             tmp = $(content).find('>source[xmlns="urn:xmpp:jingle:apps:rtp:ssma:0"]');
             if(tmp.length === 0) {
@@ -1356,8 +1358,8 @@
     };
 
     JingleSession.prototype.removeSource = function (elem) {
-        console.log('removessrc', new Date().getTime());
-        console.log('ice', this.peerconnection.iceConnectionState);
+        console.debug('removessrc', new Date().getTime());
+        console.debug('ice', this.peerconnection.iceConnectionState);
         var sdp = new SDP(this.peerconnection.remoteDescription.sdp);
 
         var self = this;
@@ -1445,21 +1447,21 @@
 
                         self.peerconnection.setLocalDescription(modifiedAnswer,
                             function() {
-                                //console.log('modified setLocalDescription ok');
+                                //console.debug('modified setLocalDescription ok');
                                 $(document).trigger('setLocalDescription.jingle', [self.sid]);
                             },
                             function(error) {
-                                console.log('modified setLocalDescription failed');
+                                console.debug('modified setLocalDescription failed');
                             }
                         );
                     },
                     function(error) {
-                        console.log('modified answer failed');
+                        console.debug('modified answer failed');
                     }
                 );
             },
             function(error) {
-                console.log('modify failed');
+                console.debug('modify failed');
             }
         );
     };
@@ -1659,7 +1661,9 @@
                 }
                 for (j = 0; j < mline.fmt.length; j++) {
                     rtpmap = SDPUtil.find_line(this.media[i], 'a=rtpmap:' + mline.fmt[j]);
-                    elem.c('payload-type', SDPUtil.parse_rtpmap(rtpmap));
+                    const payload_type = SDPUtil.parse_rtpmap(rtpmap);
+
+                    elem.c('payload-type', payload_type);
                     // put any 'a=fmtp:' + mline.fmt[j] lines into <param name=foo value=bar/>
                     if (SDPUtil.find_line(this.media[i], 'a=fmtp:' + mline.fmt[j])) {
                         tmp = SDPUtil.parse_fmtp(SDPUtil.find_line(this.media[i], 'a=fmtp:' + mline.fmt[j]));
@@ -1670,6 +1674,7 @@
                     this.RtcpFbToJingle(i, elem, mline.fmt[j]); // XEP-0293 -- map a=rtcp-fb
 
                     elem.up();
+
                 }
                 if (SDPUtil.find_line(this.media[i], 'a=crypto:', this.session)) {
                     elem.c('encryption', {required: 1});
@@ -2138,7 +2143,7 @@
                     }
                     break;
                 default: // TODO
-                    console.log('parse_icecandidate not translating "' + elems[i] + '" = "' + elems[i + 1] + '"');
+                    console.debug('parse_icecandidate not translating "' + elems[i] + '" = "' + elems[i + 1] + '"');
                 }
             }
             candidate.network = '1';
@@ -2253,8 +2258,8 @@
             if (line.indexOf('candidate:') === 0) {
                 line = 'a=' + line;
             } else if (line.substring(0, 12) != 'a=candidate:') {
-                console.log('parseCandidate called with a line that is not a candidate line');
-                console.log(line);
+                console.debug('parseCandidate called with a line that is not a candidate line');
+                console.debug(line);
                 return null;
             }
             if (line.substring(line.length - 2) == '\r\n') // chomp it
@@ -2263,8 +2268,8 @@
                 elems = line.split(' '),
                 i;
             if (elems[6] != 'typ') {
-                console.log('did not find typ in the right place');
-                console.log(line);
+                console.debug('did not find typ in the right place');
+                console.debug(line);
                 return null;
             }
             candidate.foundation = elems[0].substring(12);
@@ -2292,7 +2297,7 @@
                     candidate.tcptype = elems[i + 1];
                     break;
                 default: // TODO
-                    console.log('not translating "' + elems[i] + '" = "' + elems[i + 1] + '"');
+                    console.debug('not translating "' + elems[i] + '" = "' + elems[i + 1] + '"');
                 }
             }
             candidate.network = '1';
@@ -2400,7 +2405,7 @@
                 self.peerconnection.getStats(function(stats) {
                     var results = stats.result();
                     for (var i = 0; i < results.length; ++i) {
-                        //console.log(results[i].type, results[i].id, results[i].names())
+                        //console.debug(results[i].type, results[i].id, results[i].names())
                         var now = new Date();
                         results[i].names().forEach(function (name) {
                             var id = results[i].id + '-' + name;
@@ -2563,7 +2568,7 @@
     function setupRTC() {
         var RTC = null;
         if (navigator.mozGetUserMedia && mozRTCPeerConnection) {
-            console.log('This appears to be Firefox');
+            console.debug('This appears to be Firefox');
             var version = navigator.userAgent.match(/Firefox/) ? parseInt(navigator.userAgent.match(/Firefox\/([0-9]+)\./)[1], 10) : 0;
             if (version >= 22) {
                 RTC = {
@@ -2580,7 +2585,7 @@
                 RTCIceCandidate = mozRTCIceCandidate;
             }
         } else if (navigator.webkitGetUserMedia) {
-            console.log('This appears to be Chrome');
+            console.debug('This appears to be Chrome');
             RTC = {
                 peerconnection: webkitRTCPeerConnection,
                 browser: 'chrome',
@@ -2594,7 +2599,7 @@
             };
         }
         if (RTC === null) {
-            try { console.log('Browser does not appear to be WebRTC-capable'); } catch (e) { }
+            try { console.debug('Browser does not appear to be WebRTC-capable'); } catch (e) { }
         }
         return RTC;
     }
@@ -2685,7 +2690,7 @@
         try {
             RTC.getUserMedia(constraints,
                     function (stream) {
-                        console.log('onUserMediaSuccess');
+                        console.debug('onUserMediaSuccess');
                         localStream = stream;
                         _converse.connection.jingle.localStream = stream;
                         callback(null, jid);

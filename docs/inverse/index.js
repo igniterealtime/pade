@@ -549,7 +549,7 @@ var padeapi = (function(api)
               theme: 'concord',
               singleton: (autoJoinRooms && autoJoinRooms.length == 1),
               view_mode: viewMode,
-              visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", true) && (getSetting("enableAudioConfWidget", false) || getSetting("jingleCalls", false)), 'clear': true },
+              visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", false) && (getSetting("enableAudioConfWidget", false) || getSetting("jingleCalls", false)), 'clear': true },
               webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
               webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
               websocket_url: connUrl,
@@ -1290,6 +1290,14 @@ var padeapi = (function(api)
                                         ele.title = "React negative to this message";
                                         messageActionButtons.appendChild(ele);
                                     }
+
+                                    if (!messageActionButtons.querySelector('.chat-msg__action-react'))
+                                    {
+                                        var ele = document.createElement("button");
+                                        ele.classList.add("chat-msg__action", "chat-msg__action-react", "fa", "fa-smile");
+                                        ele.title = "React to this message with emoji";
+                                        messageActionButtons.appendChild(ele);
+                                    }
                                 }
                             }
 
@@ -1766,7 +1774,7 @@ var padeapi = (function(api)
 
     function loadJS(name)
     {
-        console.log("loadJS", name);
+        console.debug("loadJS", name);
         var head  = document.getElementsByTagName('head')[0];
         var s1 = document.createElement('script');
         s1.src = name;
@@ -1776,7 +1784,7 @@ var padeapi = (function(api)
 
     function loadCSS(name)
     {
-        console.log("loadCSS", name);
+        console.debug("loadCSS", name);
         var head  = document.getElementsByTagName('head')[0];
         var link  = document.createElement('link');
         link.rel  = 'stylesheet';
@@ -2268,7 +2276,7 @@ var padeapi = (function(api)
 
             _converse.connection.sendIQ(stanza, function(iq)
             {
-                console.log("User location publish ok");
+                console.debug("User location publish ok");
 
             }, function(error){
                 console.error("showPosition", error);

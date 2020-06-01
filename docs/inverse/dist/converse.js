@@ -36647,10 +36647,6 @@ __p += '\n                    <button class="chat-msg__action chat-msg__action-r
 __e(o.__('Retract this message')) +
 '"></button>\n                ';
  } ;
-// BAO
-__p += '\n                    <button class="chat-msg__action chat-msg__action-react fa fa-smile" title="' +
-__e(o.__('React to this message')) +
-'"></button>\n                ';
 __p += '\n            </div>\n        </div>\n    </div>\n</div>\n';
 return __p
 };
@@ -54647,7 +54643,7 @@ converse_core_converse.initialize = async function (settings, callback) {
   // ----------------------
 
  // BAO
-    this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-converse-${converse_core_converse.VERSION_NAME}-${padeapi.getResource()}`;
+    this.generateResource = () => `/${chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase()}-${chrome.runtime.getManifest().version}-${converse_core_converse.VERSION_NAME}-${padeapi.getResource()}`;
 
   this.setConnectionStatus = function (connection_status, message) {
     converse_core_converse.connfeedback.set({
