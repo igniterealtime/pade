@@ -40,27 +40,17 @@ var padeapi = (function(api)
 
         if (getSetting("clearCacheOnConnect", false))
         {
-            const savedSettings = [];
+            const deleteList = [];
             console.debug("clearCacheOnConnect, old size", localStorage.length);
 
             for (var i = 0; i < localStorage.length; i++)
             {
-                if (localStorage.key(i).startsWith("store.settings."))
+                if (localStorage.key(i).includes("/converse.messages-"))
                 {
-                    const entry = {key: localStorage.key(i), value: localStorage.getItem(localStorage.key(i))}
-                    savedSettings.push(entry);
-                    //console.debug("clearCacheOnConnect, saving", entry);
+                    deleteList.push(localStorage.key(i));
                 }
             }
-
-            localStorage.clear();
-
-            for (var i=0; i<savedSettings.length; i++)
-            {
-                localStorage[savedSettings[i].key] = savedSettings[i].value;
-                //console.debug("clearCacheOnConnect, restoring", savedSettings[i]);
-            }
-
+            deleteList.forEach(function(key) {localStorage.removeItem(key)});
             console.debug("clearCacheOnConnect, new size", localStorage.length);
         }
 
