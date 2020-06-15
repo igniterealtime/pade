@@ -1183,7 +1183,7 @@ function getVideoWindowUrl(room, mode)
     params = params + (startWithAudioMuted != null ? "&config.startWithAudioMuted=" + startWithAudioMuted : "");
 
     const startWithVideoMuted = getSetting("startWithVideoMuted", null);
-    params = params + (startWithVideoMuted != null ? "&config.startWithVideoMuted=" + startWithAudioMuted : "");
+    params = params + (startWithVideoMuted != null ? "&config.startWithVideoMuted=" + startWithVideoMuted : "");
 
     const startScreenSharing = getSetting("startScreenSharing", null);
     params = params + (startScreenSharing != null ? "&config.startScreenSharing=" + startScreenSharing : "");
