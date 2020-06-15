@@ -1531,20 +1531,6 @@ this.manifest = {
             "label": i18n.get("Web Url"),
             "text": i18n.get("https://my_server/tiki"),
         },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Phone"),
-            "name": "sipAutoStart",
-            "type": "checkbox",
-            "label": i18n.get("Auto Start Phone")
-        },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Phone"),
-            "name": "enableVerto",
-            "type": "checkbox",
-            "label": i18n.get("Enable Verto Communicator.<b>The ofswitch plugin for Openfire is required for this</b>")
-        },
         {                                        // draw.io web apps
             "tab": i18n.get("Applications"),
             "group": i18n.get("DrawIO"),
