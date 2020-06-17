@@ -47,6 +47,9 @@ self.addEventListener('push', function (event) {
     var options = {
         body: data.message,
         icon: 'icon.png',
+        requireInteraction: true,
+        persistent: true,
+        sticky: true,
         vibrate: [100, 50, 100],
         data: data,
         actions: [
