@@ -693,10 +693,9 @@ window.addEventListener("load", function()
 
         // setup jabra speak
 
-        if (getSetting("useJabra", false))
-        {
-            setupJabra();
-        }
+        setupJabra();
+        enableRemoteControl();
+        runMeetingPlanner();
 
     } else doExtensionPage("options/index.html");
 });
@@ -843,6 +842,133 @@ function stopTone()
     }
 }
 
+function _getVCard(response)
+{
+    var name = response.querySelector('vCard FN').innerHTML;
+    var photo = response.querySelector('vCard PHOTO');
+
+    var avatar = "";
+
+    if (photo.querySelector('BINVAL').innerHTML != "" && photo.querySelector('TYPE').innerHTML != "")
+    avatar = 'data:' + photo.querySelector('TYPE').innerHTML + ';base64,' + photo.querySelector('BINVAL').innerHTML;
+
+    var family = response.querySelector('vCard N FAMILY') ? response.querySelector('vCard N FAMILY').innerHTML : "";
+    var middle = response.querySelector('vCard N MIDDLE') ? response.querySelector('vCard N MIDDLE').innerHTML : "";
+    var given = response.querySelector('vCard N GIVEN') ? response.querySelector('vCard N GIVEN').innerHTML : "";
+
+    var nickname = response.querySelector('vCard NICKNAME') ? response.querySelector('vCard NICKNAME').innerHTML : "";
+
+    var email = response.querySelector('vCard EMAIL USERID') ? response.querySelector('vCard EMAIL USERID').innerHTML : "";
+    var url = response.querySelector('vCard URL') ? response.querySelector('vCard URL').innerHTML : "";
+    var role = response.querySelector('vCard ROLE') ? response.querySelector('vCard ROLE').innerHTML : "";
+
+    var workPhone = "";
+    var homePhone = "";
+    var workMobile = "";
+    var homeMobile = "";
+
+    response.querySelectorAll('vCard TEL').forEach(function(item)
+    {
+        if (item.querySelector('VOICE').length > 0 && item.querySelector('WORK').length > 0)
+            workPhone = item.querySelector('NUMBER').innerHTML;
+
+        if (item.querySelector('VOICE').length > 0 && item.querySelector('HOME').length > 0)
+            homePhone = item.querySelector('NUMBER').innerHTML;
+
+        if (item.querySelector('CELL').length > 0 && item.querySelector('WORK').length > 0)
+            workMobile = item.querySelector('NUMBER').innerHTML;
+
+        if (item.querySelector('CELL').length > 0 && item.querySelector('HOME').length > 0)
+            homeMobile = item.querySelector('NUMBER').innerHTML;
+    });
+
+    var street = "";
+    var locality = "";
+    var region = "";
+    var pcode = "";
+    var country = "";
+
+    response.querySelectorAll('vCard ADR').forEach(function(item)
+    {
+        if (item.querySelector('WORK').length > 0)
+        {
+            street = item.querySelector('STREET').innerHTML;
+            locality = item.querySelector('LOCALITY').innerHTML;
+            region = item.querySelector('REGION').innerHTML;
+            pcode = item.querySelector('PCODE').innerHTML;
+            country = item.querySelector('CTRY').innerHTML;
+        }
+    });
+
+    var orgName = response.querySelector('vCard ORG ORGNAME') ? response.querySelector('vCard ORG ORGNAME').innerHTML : "";
+    var orgUnit = response.querySelector('vCard ORG ORGUNIT') ? response.querySelector('vCard ORG ORGUNIT').innerHTML : "";
+
+    var title = response.querySelector('vCard TITLE') ? response.querySelector('vCard TITLE').innerHTML : "";
+
+    var vcard =  {name: name, avatar: avatar, family: family, given: given, nickname: nickname, middle: middle, email: email, url: url, homePhone: homePhone, workPhone: workPhone, homeMobile: homeMobile, workMobile: workMobile, street: street, locality: locality, region: region, pcode: pcode, country: country, orgName: orgName, orgUnit: orgUnit, title: title, role: role};
+    return vcard;
+}
+
+function _setVCard(user)
+{
+    var avatar = user.avatar.split(";base64,");
+
+    var iq = $iq({to:  pade.connection.domain, type: 'set'}).c('vCard', {xmlns: 'vcard-temp'})
+
+    .c("FN").t(user.name).up()
+    .c("NICKNAME").t(user.nickname).up()
+    .c("URL").t(user.url).up()
+    .c("ROLE").t(user.role).up()
+    .c("EMAIL").c("INTERNET").up().c("PREF").up().c("USERID").t(user.email).up().up()
+    .c("PHOTO").c("TYPE").t(avatar[0].substring(5)).up().c("BINVAL").t(avatar[1]).up().up()
+    .c("TEL").c("VOICE").up().c("WORK").up().c("NUMBER").t(user.workPhone).up().up()
+    .c("ADR").c("WORK").up().c("STREET").t(user.street).up().c("LOCALITY").t(user.locality).up().c("REGION").t(user.region).up().c("PCODE").t(user.pcode).up().c("CTRY").t(user.country).up().up()
+/*
+    .c("TEL").c("PAGER").up().c("WORK").up().c("NUMBER").up().up()
+    .c("TEL").c("CELL").up().c("WORK").up().c("NUMBER").t(user.workMobile).up().up()
+
+    .c("TEL").c("FAX").up().c("WORK").up().c("NUMBER").up().up()
+    .c("TEL").c("PAGER").up().c("HOME").up().c("NUMBER").up().up()
+    .c("TEL").c("CELL").up().c("HOME").up().c("NUMBER").t(user.homeMobile).up().up()
+    .c("TEL").c("VOICE").up().c("HOME").up().c("NUMBER").t(user.homePhone).up().up()
+    .c("TEL").c("FAX").up().c("HOME").up().c("NUMBER").up().up()
+    .c("URL").t(user.url).up()
+    .c("ADR").c("HOME").up().c("STREET").up().c("LOCALITY").up().c("REGION").up().c("PCODE").up().c("CTRY").up().up()
+    .c("TITLE").t(user.title).up()
+*/
+    return iq;
+}
+
+function getVCard(jid, callback, errorback)
+{
+    console.log("getVCard", jid, pade.connection);
+
+    jid = jid.trim();
+
+    if (pade.vcards[jid])
+    {
+       if (callback) callback(pade.vcards[jid]);
+
+    }
+    else
+
+    if (pade.connection)
+    {
+        var stanza = $iq({type: 'get', to: jid}).c('vCard', {xmlns: 'vcard-temp'});
+
+        pade.connection.sendIQ(stanza, function(iq) {
+            var vCard = _getVCard(iq);
+            console.debug("getVCard", iq, vCard);
+            pade.vcards[jid] = vCard;
+            if (callback) callback(vCard);
+
+        }, function(error) {
+            if (errorback) errorback(error);
+            console.error(error);
+        });
+
+    } else if (errorback) errorback();
+}
 
 function notifyText(message, title, jid, buttons, callback, notifyId)
 {
@@ -1365,27 +1491,30 @@ function injectMessage(message, room, nickname)
 
 function setupJabra()
 {
-    pade.jabraPort = chrome.runtime.connectNative("pade.igniterealtime.org");
-
-    if (pade.jabraPort)
+    if (getSetting("useJabra", false))
     {
-        console.log("jabra connected");
+        pade.jabraPort = chrome.runtime.connectNative("pade.igniterealtime.org");
 
-        pade.jabraPort.onMessage.addListener(function(data)
+        if (pade.jabraPort)
         {
-            console.debug("jabra incoming", data);
-            handleJabraMessage(data.message);
-        });
+            console.log("jabra connected");
 
-        pade.jabraPort.onDisconnect.addListener(function()
-        {
-            console.debug("jabra disconnected");
-            pade.jabraPort = null;
-        });
+            pade.jabraPort.onMessage.addListener(function(data)
+            {
+                console.debug("jabra incoming", data);
+                handleJabraMessage(data.message);
+            });
 
-        pade.jabraPort.postMessage({ message: "getdevices" });
-        pade.jabraPort.postMessage({ message: "getactivedevice" });
-        pade.jabraPort.postMessage({ message: "onhook" });
+            pade.jabraPort.onDisconnect.addListener(function()
+            {
+                console.debug("jabra disconnected");
+                pade.jabraPort = null;
+            });
+
+            pade.jabraPort.postMessage({ message: "getdevices" });
+            pade.jabraPort.postMessage({ message: "getactivedevice" });
+            pade.jabraPort.postMessage({ message: "onhook" });
+        }
     }
 }
 

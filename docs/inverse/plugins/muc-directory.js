@@ -124,7 +124,7 @@
 
                 if (section)
                 {
-                    const mucButton = __newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>');
+                    const mucButton = padeapi.__newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>');
                     section.appendChild(mucButton);
 
                     mucButton.addEventListener('click', function(evt)
@@ -277,7 +277,7 @@
         console.debug("createPanel", room, chatgrid);
 
         const html = '<div data-room-jid="' + room.jid + '" data-room-name="' + room.label + '" data-room-desc="' + room.description + '" title="' + room.jid + '" class="pade-col-content"><span data-room-jid="' + room.jid + '" class="pade-col-badge" data-badge="' + room.occupants + '"><img style="width: 32px" data-room-jid="' + room.jid + '" class="avatar" src="' + room.avatar + '"/></span><h3 data-room-jid="' + room.jid + '">' + room.label + '</h3><p class="pade-col-desc" title="' + room.description + '">' + room.description + '</p></div>';
-        const panel = __newElement('div', room.jid, html, 'pade-col');
+        const panel = padeapi.__newElement('div', room.jid, html, 'pade-col');
 
         panel.addEventListener('click', function(evt)
         {

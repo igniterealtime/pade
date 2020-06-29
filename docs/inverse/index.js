@@ -1,5 +1,6 @@
 var padeapi = (function(api)
 {
+    var background = chrome.extension.getBackgroundPage();
     var nickColors = {}, anonRoster = {}, callbacks = {};
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse;
 
@@ -811,8 +812,21 @@ var padeapi = (function(api)
                         if (activeDiv) removeActiveConversation(chatbox, activeDiv);
                     });
 
-                    this._converse.api.listen.on('connected', function()
+                    _converse.api.listen.on('connected', function()
                     {
+                        console.debug("xmpp connected", _converse.connection);
+                        listenForPresence();
+                        publishUserLocation();
+
+                        background.Strophe = Strophe;
+                        background.$iq = $iq;
+                        background.$msg = $msg;
+                        background.$pres = $pres;
+
+                        background.pade.connection = _converse.connection;
+                        background.setupUserPayment();
+                        background.setupStreamDeck();
+
                         if (chrome.pade)    // browser mode
                         {
                             const id = Strophe.getBareJidFromJid(_converse.connection.jid);
@@ -835,10 +849,6 @@ var padeapi = (function(api)
                             {
                                 window.module = module; module = undefined;
                             }
-
-                            parent.pade.connection = _converse.connection;
-                            parent.publishUserLocation();
-                            parent.setupUserPayment();
 
                             window.addEventListener('focus', function(evt)
                             {
@@ -1893,6 +1903,42 @@ var padeapi = (function(api)
         }
     }
 
+    function listenForPresence()
+    {
+        console.debug("listenForPresence");
+
+        _converse.connection.addHandler(function(presence)
+        {
+            const from = Strophe.getBareJidFromJid(presence.getAttribute('from'));
+
+            presence.querySelectorAll('geoloc').forEach(function(item)
+            {
+                var accuracy = item.querySelector('accuracy').innerHTML;
+                var lat = item.querySelector('lat').innerHTML;
+                var lon = item.querySelector('lon').innerHTML;
+
+                paderoot.geoloc[from] = {accuracy: accuracy, lat: lat, lon: lon};
+                const webmeet = _converse.pluggable.plugins["webmeet"];
+                if (webmeet) webmeet.showGeolocationIcon(from);
+                console.debug("Geolocation", from, paderoot.geoloc[from]);
+            });
+
+            presence.querySelectorAll('json').forEach(function(item)
+            {
+                var namespace = item.getAttribute("xmlns");
+
+                if (namespace == "urn:xmpp:json:0")
+                {
+                    var json = JSON.parse(item.innerHTML);
+                    console.debug("json", from, json);
+                }
+            });
+
+            return true;
+
+        }, null, 'presence');
+    }
+
     function listenForRoomActivityIndicators()
     {
         console.debug("listenForRoomActivityIndicators");
@@ -2296,6 +2342,7 @@ var padeapi = (function(api)
 
         if (getSetting("publishLocation", false))
         {
+            console.debug('publishUserLocation');
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         }
     }

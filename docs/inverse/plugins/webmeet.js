@@ -540,18 +540,23 @@
                         }, false);
                     }
 
-                    if (view.model.get('type') === "chatbox" && padeapi.geoloc[jid])
+                    if (view.model.get('type') === "chatbox")
                     {
                         html = '<a class="fas fa-location-arrow" title="Geolocation"></a>';
-                        var geoLocButton = padeapi.addToolbarItem(view, id, "webmeet-geolocation-" + id, html);
+                        var geoLocButton = padeapi.addToolbarItem(view, id, "webmeet-geolocation-" + jid, html);
 
-                        if (geoLocButton) geoLocButton.addEventListener('click', function(evt)
+                        if (geoLocButton)
                         {
-                            evt.stopPropagation();
+                            geoLocButton.addEventListener('click', function(evt)
+                            {
+                                evt.stopPropagation();
 
-                            _converse.pluggable.plugins["webmeet"].showGeolocation(jid, nick, view);
+                                _converse.pluggable.plugins["webmeet"].showGeolocation(jid, nick, view);
 
-                        }, false);
+                            }, false);
+
+                            geoLocButton.style.display = padeapi.geoloc[jid] ? "" : "none";
+                        }
                     }
 
                     if (bgWindow.pade.ofmeetUrl)
@@ -1099,6 +1104,12 @@
                geoLocationDialog.model.set("geoloc", padeapi.geoloc[jid]);
             }
             geoLocationDialog.show();
+        },
+
+        showGeolocationIcon: function(jid)
+        {
+            const geoLocButton = document.getElementById("webmeet-geolocation-" + jid);
+            if (geoLocButton) geoLocButton.style.display = "";
         }
     });
 

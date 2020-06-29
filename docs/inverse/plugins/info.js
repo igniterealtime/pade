@@ -325,7 +325,7 @@
                 {
                     if (htmlArray[i].ele)
                     {
-                        var element = __newElement('div', null, htmlArray[i].html);
+                        var element = padeapi.__newElement('div', null, htmlArray[i].html);
                         htmlArray[i].ele.insertAdjacentElement('afterEnd', element);
 
                         element.addEventListener('click', function(evt)
@@ -379,7 +379,7 @@
                     console.debug('createBroadcastEndpoints', jid, name);
 
                     var html = '<li title="' + jid + '">' + name + '</li>';
-                    var element = __newElement('div', null, html);
+                    var element = padeapi.__newElement('div', null, html);
 
                     element.addEventListener('click', function(evt)
                     {
@@ -430,7 +430,7 @@
                         html += '<input id="info_active_workgroup-' + id + '" type="radio" ' + checked + ' value="' + jid + '"/>&nbsp;' + name + '<br/>';
                     }
 
-                    var element = __newElement('div', null, html);
+                    var element = padeapi.__newElement('div', null, html);
 
                     element.addEventListener('click', function(evt)
                     {
@@ -486,7 +486,7 @@
                     }
                     html += '</table>';
 
-                    queueDetail.insertAdjacentElement('afterEnd', __newElement('div', null, html));
+                    queueDetail.insertAdjacentElement('afterEnd', padeapi.__newElement('div', null, html));
                 }
 
                 var keys = Object.getOwnPropertyNames(fastpath.conversations);
@@ -505,7 +505,7 @@
                         console.debug("createWorkgroups conversation", conversation);
 
                         var html = '<li title="' + conversation.question + '">' + conversation.username + ' (' + conversation.agent + ')</li>';
-                        var element = __newElement('div', null, html);
+                        var element = padeapi.__newElement('div', null, html);
 
                         element.addEventListener('click', function(evt)
                         {
