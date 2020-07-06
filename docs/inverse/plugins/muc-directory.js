@@ -265,7 +265,7 @@
 
                 function (err)
                 {
-                    mucJids[room].avatar = createAvatar(mucJids[room].label);
+                    mucJids[room].avatar = padeapi.createAvatar(mucJids[room].label);
                     createPanel(mucJids[room], ele);
                 }
             );

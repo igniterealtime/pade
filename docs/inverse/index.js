@@ -364,6 +364,7 @@ var padeapi = (function(api)
         if (getSetting("enableMucDirectory", false))
         {
             whitelistedPlugins.push("muc-directory");
+            loadCSS("plugins/css/muc-directory.css");
             loadJS("plugins/muc-directory.js");
         }
 
