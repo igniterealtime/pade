@@ -5,28 +5,6 @@ window.addEventListener("load", function()
       console.log("Notification.requestPermission", result);
     });
 
-    // branding overrides
-
-    var overrides = Object.getOwnPropertyNames(branding);
-
-    console.debug("branding - start", overrides, branding);
-
-    for (var i=0; i<overrides.length; i++)
-    {
-        var setting = overrides[i];
-        var override = branding[setting];
-
-        if (override.value != null && override.value != undefined)
-        {
-            if (!window.localStorage["store.settings." + setting])  // override default value
-            {
-                window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
-            }
-        }
-
-        console.debug("branding - found", i, setting, override.value, override.disable, window.localStorage["store.settings." + setting]);
-    }
-
     document.getElementById("inverse").src="inverse/index.html" + location.hash;
     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " | " + chrome.runtime.getManifest().version;
 });

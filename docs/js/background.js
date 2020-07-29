@@ -175,7 +175,6 @@ window.addEventListener("unload", function ()
 
     closeBlogWindow();
     closeBlastWindow();
-    closeApcWindow();
 
     console.log("pade unloading office365 accounts");
 
@@ -206,6 +205,28 @@ window.addEventListener("unload", function ()
 
 window.addEventListener("load", function()
 {
+    // branding overrides
+
+    var overrides = Object.getOwnPropertyNames(branding);
+
+    console.debug("branding - start", overrides, branding);
+
+    for (var i=0; i<overrides.length; i++)
+    {
+        var setting = overrides[i];
+        var override = branding[setting];
+
+        if (override.value != null && override.value != undefined)
+        {
+            if (!window.localStorage["store.settings." + setting])  // override default value
+            {
+                window.localStorage["store.settings." + setting] = JSON.stringify(override.value);
+            }
+        }
+
+        console.debug("branding - found", i, setting, override.value, override.disable, window.localStorage["store.settings." + setting]);
+    }
+
     if (chrome.pade)    // browser mode
     {
         setDefaultSetting("useBasicAuth", false);
@@ -632,7 +653,7 @@ window.addEventListener("load", function()
     pade.avatar = getSetting("avatar", null);
     pade.ofmeetUrl = getSetting("ofmeetUrl", null);
 
-    if (!pade.ofmeetUrl)
+    if (!pade.ofmeetUrl && pade.server)
     {
         pade.ofmeetUrl = "https://" + pade.server + "/ofmeet/";
         setSetting("ofmeetUrl", pade.ofmeetUrl);
