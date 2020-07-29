@@ -23,7 +23,7 @@ All the web applications run from within a browser extension in native applicati
 To install, visit the [Chrome Web Store](https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba?hl=en) or [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/ckfiipkgbinakolndmobaflkeljfhecl).
 
 On your [Openfire] server, you may need the following plugins:
-1. [openfire-meetings](https://github.com/igniterealtime/pade/releases) plugins modified for Pade
+1. [openfire-meetings](https://github.com/igniterealtime/openfire-pade-plugin/releases) plugins modified for Pade
 2. [bookmarks](https://www.igniterealtime.org/projects/openfire/plugins/bookmarks.jar) for shared group-chat rooms and shared document urls. 
 3. [fastpath](https://igniterealtime.org/projects/openfire/plugins/4.4.5/fastpath.jar) if you want to be an agent
 4. [httpfileupload](https://igniterealtime.org/projects/openfire/plugins/1.1.3/httpfileupload.jar) to transfer/share files
