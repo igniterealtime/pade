@@ -1372,7 +1372,7 @@ function openVideoWindowUrl(url)
     chrome.windows.create({url: url, focused: true, type: "popup"}, function (win)
     {
         pade.videoWindow = win;
-        updateWindowCoordinates("videoWindow", pade.videoWindow.id, {width: 1920, height: 1080});
+        updateWindowCoordinates("videoWindow", pade.videoWindow.id, {width: 1900, height: 1020});
 
         sendToJabra("offhook");
     });

@@ -932,6 +932,11 @@ var padeapi = (function(api)
 
                                 console.debug("addControlFeatures", section);
 
+                                if (getSetting("converseSimpleView", false))
+                                {
+                                    handleActiveConversations();
+                                }
+
                                 const viewButton = __newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-navicon align-self-center" title="Change view"></a>');
                                 section.appendChild(viewButton);
 
@@ -943,10 +948,15 @@ var padeapi = (function(api)
                                 }, false);
 
 
-                                if (getSetting("converseSimpleView", false))
+                                const ofmeetButton = __newElement('a', null, '<a class="controlbox-heading__btn open-ofmeet fas fa-video align-self-center" title="Meet Now!!"></a>');
+                                section.appendChild(ofmeetButton);
+
+                                ofmeetButton.addEventListener('click', function(evt)
                                 {
-                                    handleActiveConversations();
-                                }
+                                    evt.stopPropagation();
+                                    background.openVideoWindow("", "normal");
+
+                                }, false);
 
                                 const prefButton = __newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>');
                                 section.appendChild(prefButton);
