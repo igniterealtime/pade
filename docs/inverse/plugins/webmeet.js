@@ -622,7 +622,7 @@
                             }, false);
                         }
 
-                        if (getSetting("enableBlast", false))   // check for chat api plugin
+                        if (getSetting("enableBlast", false))   // check for pade openfire plugin
                         {
                             html = '<a class="fas fa-bullhorn" title="Message Blast. Send same message to many people"></a>';
                             var messageblast = padeapi.addToolbarItem(view, id, "webmeet-messageblast-" + id, html);

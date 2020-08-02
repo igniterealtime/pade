@@ -175,7 +175,7 @@
         {
             if (!rssUrl || rssUrl == "") return;
 
-            // when pade.chat (pwa), use proxy servlet in chat api plugin to fetch feed URL contents and avoid CORS
+            // when pade.chat (pwa), use proxy servlet in pade openfire plugin to fetch feed URL contents and avoid CORS
 
             var feed = {
                 path: chrome.pade ? "https://" + getSetting("server") + "/pade/download?url=" + rssUrl : rssUrl

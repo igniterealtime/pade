@@ -100,7 +100,7 @@ this.manifest = {
             "group": i18n.get("Authentication"),
             "name": "useBasicAuth",
             "type": "checkbox",
-            "label": i18n.get("Use Basic Authentication <b>(requires chat api plugin)</b>")
+            "label": i18n.get("Use Basic Authentication <b>(requires openfire pade plugin)</b>")
         },
         {
             "tab": i18n.get("Connection"),
@@ -128,7 +128,7 @@ this.manifest = {
             "group": i18n.get("Authentication"),
             "name": "useSmartIdCardCert",
             "type": "checkbox",
-            "label": i18n.get("Use E-Residency Smart ID Client Certificate <b>(requires chat api plugin)</b>")
+            "label": i18n.get("Use E-Residency Smart ID Client Certificate <b>(requires openfire pade plugin)</b>")
         },
         {
             "tab": i18n.get("Connection"),
