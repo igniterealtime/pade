@@ -1,7 +1,6 @@
 if (!window.chrome || !window.chrome.extension)
 {
     var padeName = "pade";
-    var bcakground = parent;
     var appName = "Pade";
     var appVer = "1.6.4";
     var appLanguage = "en";
@@ -125,11 +124,11 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             getBackgroundPage: function() {
-                return bcakground;
+                return parent;
             },
 
             getViews: function(filter) {
-                return [bcakground.document.getElementById("inverse").contentWindow]
+                return [parent.document.getElementById("inverse").contentWindow]
             }
         },
 
@@ -218,13 +217,13 @@ if (!window.chrome || !window.chrome.extension)
             reload: function() {
                 if (localStorage["store.settings.server"])
                 {
-                    if (bcakground.opener)
+                    if (parent.opener)
                     {
-                        bcakground.opener.location.reload();
-                        bcakground.close();
+                        parent.opener.location.reload();
+                        parent.close();
                     }
                     else {
-                        bcakground.location.href = "/" + padeName + "/index.html";
+                        parent.location.href = "/" + padeName + "/index.html";
                     }
                 }
                 else {
@@ -255,7 +254,7 @@ if (!window.chrome || !window.chrome.extension)
             setBadgeText: function(data) {
               if (!data || !data.text) return;
 
-              var favicon = bcakground.document.getElementById('favicon');
+              var favicon = parent.document.getElementById('favicon');
               var faviconSize = 16;
 
               var canvas = document.createElement('canvas');

@@ -812,7 +812,7 @@ var padeapi = (function(api)
                         const id = Strophe.getNodeFromJid(_converse.connection.jid);
                         const password = _converse.connection.pass;
 
-                        if (webpush && webpush.registerServiceWorker) // register webpush service worker
+                        if (id && password && webpush && webpush.registerServiceWorker) // register webpush service worker
                         {
                             webpush.registerServiceWorker(getSetting("server"), username, password);
                         }
