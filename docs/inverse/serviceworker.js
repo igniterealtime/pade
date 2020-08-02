@@ -47,7 +47,7 @@ self.addEventListener('push', function (event) {
    const data = event.data.json();
    const pos = location.href.lastIndexOf('/') + 1;
 
-   data.url = location.href.substring(0, pos);
+   data.url = location.protocol + "//" + location.host + "/pade";
 
    console.debug('Push message', data);
 

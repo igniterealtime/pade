@@ -73105,7 +73105,7 @@ converse.plugins.add('converse-emoji-views', {
           return;
         }
 
-        if (!_converse.emojipicker) {
+        if (!_converse.emojipicker && _converse.emojis.json) {
           _converse.emojis.json.recent = {}; // BAO
           const id = "converse.emoji-".concat(_converse.bare_jid);
           _converse.emojipicker = new _converse.EmojiPicker({
