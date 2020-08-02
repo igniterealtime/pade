@@ -13,7 +13,7 @@ const channel = new BroadcastChannel('sw-notification');
 
 channel.addEventListener('message', event => {
   console.log('Received', event.data);
-  openChatWindow("index.html");
+  openChatWindow("inverse/index.html");
 });
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
