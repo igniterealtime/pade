@@ -805,8 +805,6 @@ var padeapi = (function(api)
                         background.$iq = $iq;
                         background.$msg = $msg;
                         background.$pres = $pres;
-
-                        if (!background.pade) background.pade = {};
                         background.pade.connection = _converse.connection;
                         background.setupUserPayment();
                         background.setupStreamDeck();
