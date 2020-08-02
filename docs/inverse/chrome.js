@@ -329,15 +329,6 @@ function getSetting(name, defaultValue)
 {
     var localStorage = window.localStorage
     //console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
-
-    if (window.pade)
-    {
-        if (name == "username") return window.pade.username;
-        if (name == "password") return window.pade.password;
-        if (name == "domain") return window.pade.domain;
-        if (name == "server") return window.pade.server;
-    }
-
     var value = defaultValue;
 
     if (localStorage["store.settings." + name])

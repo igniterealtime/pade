@@ -5,7 +5,15 @@ function getCredentials(username, password, callback)
         navigator.credentials.get({password: true, federated: {providers: [ 'https://accounts.google.com' ]}}).then(function(credential)
         {
             console.log("credential management api get", credential);
-            if (callback) callback(credential || {err: !credential, id: username, password: password, anonymous: !password});
+            const creds = {err: !credential, id: username, password: password, anonymous: !password};
+
+            if (credential)
+            {
+                creds.id = credential.id.split("@")[0];
+                creds.password = credential.password;
+            }
+
+            if (callback) callback(creds);
 
         }).catch(function(err){
             console.error ("credential management api get error", err);

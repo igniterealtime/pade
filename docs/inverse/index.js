@@ -95,27 +95,9 @@ var padeapi = (function(api)
 
             setDefaultSetting("server", location.host);
             setDefaultSetting("domain", location.hostname);
+        }
 
-            if (typeof parent.getCredentials == 'function')
-            {
-                parent.getCredentials(username, password, function(credential)
-                {
-                    if ((credential.id && credential.password) || credential.anonymous)
-                    {
-                        doConverse(server, credential.id, credential.password, credential.anonymous && anonUser);
-                    }
-                    else {
-                        doBasicAuth();
-                    }
-                });
-            } else {
-                anonUser = true;
-                doBasicAuth();
-            }
-        }
-        else {
-            doBasicAuth();
-        }
+        doBasicAuth();
     });
 
     window.addEventListener('message', function (event)
@@ -824,25 +806,26 @@ var padeapi = (function(api)
                         background.$msg = $msg;
                         background.$pres = $pres;
 
+                        if (!background.pade) background.pade = {};
                         background.pade.connection = _converse.connection;
                         background.setupUserPayment();
                         background.setupStreamDeck();
 
+                        const id = Strophe.getNodeFromJid(_converse.connection.jid);
+                        const password = _converse.connection.pass;
+
+                        if (webpush && webpush.registerServiceWorker) // register webpush service worker
+                        {
+                            webpush.registerServiceWorker(getSetting("server"), username, password);
+                        }
+
                         if (chrome.pade)    // browser mode
                         {
-                            const id = Strophe.getBareJidFromJid(_converse.connection.jid);
-                            const password = _converse.connection.pass;
-
                             if (id && password)
                             {
                                 if (parent.setCredentials)    // save new credentials
                                 {
                                     parent.setCredentials({id: id, password: password});
-                                }
-
-                                if (parent.webpush && parent.webpush.registerServiceWorker) // register webpush service worker
-                                {
-                                    parent.webpush.registerServiceWorker(getSetting("server"), username, password);
                                 }
                             }
 
@@ -1952,16 +1935,14 @@ var padeapi = (function(api)
 
     function listenForRoomActivityIndicators()
     {
-        console.debug("listenForRoomActivityIndicators");
-
         _converse.connection.addHandler(function(message)
         {
+            console.debug("listenForRoomActivityIndicators - message", message);
+
             message.querySelectorAll('activity').forEach(function(activity)
             {
-                if (activity && activity.getAttribute("xmlns") == "xmpp:prosody.im/protocol/rai") {
+                if (activity) {
                     const jid = activity.innerHTML;
-                    _converse.api.trigger('chatRoomActivityIndicators', jid);
-
                     console.debug("listenForRoomActivityIndicators - message", jid);
 
                     if (_converse.api.settings.get("rai_notification"))
@@ -1981,7 +1962,7 @@ var padeapi = (function(api)
 
             return true;
 
-        }, null, 'message', 'groupchat');
+        }, 'xmpp:prosody.im/protocol/rai', 'message');
     }
 
     function sendMarker(to_jid, id, type)
@@ -2263,7 +2244,7 @@ var padeapi = (function(api)
         var opt = {
           type: "basic",
           title: title,
-          iconUrl: chrome.runtime.getURL("image.png"),
+          iconUrl: chrome.runtime.getURL ? chrome.runtime.getURL("image.png") : "../image.png",
           message: message,
           buttons: buttons,
           contextMessage: chrome.i18n.getMessage('manifest_extensionName'),

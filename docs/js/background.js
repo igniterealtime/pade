@@ -1,4 +1,4 @@
-var pade = {
+window.pade = {
     tasks: {},
     autoJoinRooms: {},
     autoJoinPrivateChats: {},
@@ -8,6 +8,13 @@ var pade = {
     userProfiles: {},
     transferWise: {}
 }
+
+const channel = new BroadcastChannel('sw-notification');
+
+channel.addEventListener('message', event => {
+  console.log('Received', event.data);
+  openChatWindow("inverse/index.html");
+});
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
 pade.transferWiseUrl = "https://api.transferwise.com/v1";
@@ -717,9 +724,49 @@ window.addEventListener("load", function()
         setupJabra();
         enableRemoteControl();
         runMeetingPlanner();
+        doSetupStrophePlugins();
 
     } else doExtensionPage("options/index.html");
 });
+
+function doSetupStrophePlugins()
+{
+    var setupUserPass = function(username, password)
+    {
+        setSetting("username", username);
+        setSetting("password", password);
+
+        pade.username = username;
+        pade.password = password;
+
+        pade.jid = pade.username + "@" + pade.domain;
+        pade.displayName = getSetting("displayname", pade.username);
+    }
+
+    if (getSetting("useWinSSO", false))
+    {
+        var server = getSetting("server", null);
+
+        console.debug("doSetupStrophePlugins - WinSSO", server);
+
+        if (server)
+        {
+            fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
+            {
+                console.log("Strophe.SASLOFChat.WINSSO", accessToken);
+
+                if (accessToken.indexOf(":") > -1 )
+                {
+                    var userPass = accessToken.split(":");
+                    setupUserPass(userPass[0], userPass[1]);
+                }
+
+            }).catch(function (err) {
+                console.error("Strophe.SASLOFChat.WINSSO", err);
+            });
+        }
+    }
+}
 
 function handleUrlClick(info)
 {
