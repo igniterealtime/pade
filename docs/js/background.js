@@ -2553,6 +2553,10 @@ function setupBrowserMode(username, password)
     pade.jid = pade.username ? (pade.username + "@" + pade.domain) : pade.domain;
     pade.displayName = getSetting("displayname", (pade.username ? pade.username : "Anonymous"));
 
+    // TODO dont store password
+    setSetting("username", username);
+    setSetting("password", password);
+
     pade.chatWindow = {id: 1};
 
     pade.ofmeetUrl = getSetting("ofmeetUrl", null);
