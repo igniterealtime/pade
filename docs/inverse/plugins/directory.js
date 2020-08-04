@@ -25,7 +25,7 @@
                     this.model.on('change', this.render, this);
                 },
                 toHTML() {
-                  const box = getSelectedChatBox();
+                  const box =  padeapi.getSelectedChatBox();
                   let inviteButton = "";
 
                   if (box && box.model.get("type") == "chatroom")
@@ -88,7 +88,7 @@
                 doInvite() {
                     var invitees = this.el.querySelectorAll(".check-invitee");
 
-                    var chatRoom = getSelectedChatBox();
+                    var chatRoom =  padeapi.getSelectedChatBox();
 
                     if (chatRoom)
                     {
@@ -240,7 +240,7 @@
     {
         console.debug('displayUsers', userList);
 
-        var box = getSelectedChatBox();
+        var box =  padeapi.getSelectedChatBox();
         var inviteHdr = "";
         if (box && box.model.get("type") == "chatroom") inviteHdr = "<th>Invite</th>";
 
