@@ -636,6 +636,13 @@ this.manifest = {
         {
             "tab": i18n.get("Meetings"),
             "group": i18n.get("General Settings"),
+            "name": "enableStereoAudio",
+            "type": "checkbox",
+            "label": i18n.get("Enable Stereo Audio (No echo cancellation, use headphones)")
+        },
+        {
+            "tab": i18n.get("Meetings"),
+            "group": i18n.get("General Settings"),
             "name": "enableLipSync",
             "type": "checkbox",
             "label": i18n.get("Enable LipSync")

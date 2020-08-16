@@ -1042,7 +1042,6 @@ function openVideoWindow(room, mode)
 function getVideoWindowUrl(room, mode)
 {
     const url = getSetting("ofmeetUrl");
-
     let params = "#config.webinar=" + (mode != "attendee" ? "false" : "true");
 
     const minHDHeight = getSetting("minHDHeight");
@@ -1059,6 +1058,9 @@ function getVideoWindowUrl(room, mode)
 
     const enableLipSync = getSetting("enableLipSync", null);
     params = params + (enableLipSync != null ? "&config.enableLipSync=" + enableLipSync : "");
+
+    const enableStereoAudio = getSetting("enableStereoAudio", null);
+    params = params + (enableStereoAudio != null ? "&config.disableAP=true&config.disableAEC=true&config.disableNS=true&config.disableAGC=true&config.disableHPF=true&config.stereo=true&config.enableLipSync=false&config.opusMaxAverageBitrate=510000" : "");
 
     const startWithAudioMuted = getSetting("startWithAudioMuted", null);
     params = params + (startWithAudioMuted != null ? "&config.startWithAudioMuted=" + startWithAudioMuted : "");
