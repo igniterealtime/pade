@@ -274,11 +274,12 @@ var padeapi = (function(api)
 
     if (getSetting("showToolbarIcons", false))
     {
-        whitelistedPlugins = ["paderoot", "webmeet", "search", "directory", "invite", "vmsg", "payments"];
+        whitelistedPlugins = ["paderoot", "webmeet", "search", "directory", "invite", "vmsg", "payments", "ohun"];
         loadCSS("plugins/css/search.css");
         loadCSS("plugins/css/flatpickr.css");
 
         loadJS("plugins/libs/rss-library.js");
+        loadJS("plugins/libs/hark.js");
         loadJS("../js/jquery.js");
 
         loadJS("plugins/payments.js");
@@ -286,6 +287,7 @@ var padeapi = (function(api)
         loadJS("plugins/directory.js");
         loadJS("plugins/invite.js");
         loadJS("plugins/vmsg.js");
+        loadJS("plugins/ohun.js");
 
         loadJS("plugins/webmeet.js");
 
@@ -555,7 +557,7 @@ var padeapi = (function(api)
                     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + this._converse.VERSION_NAME;
 
                     _converse.api.settings.update({
-                        rai_muc_service: "conference." + _converse.domain,
+                        rai_muc_service: "conference." + getSetting("domain"),
                         rai_notification: true,
                         rai_notification_label: "Room Activity Indicator",
                         show_client_info: false
@@ -576,7 +578,7 @@ var padeapi = (function(api)
 
                             setInterval(function()
                             {
-                                console.debug("timeago render");
+                                //console.debug("timeago render");
                                 timeago.cancel();
                                 var locale = navigator.language.replace('-', '_');
                                 timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);

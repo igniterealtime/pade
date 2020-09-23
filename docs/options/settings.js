@@ -1177,6 +1177,7 @@ function doDefaults(background)
     setDefaultSetting("moderatorTools", true);
     setDefaultSetting("converseAutoCompleteFilter", "contains");
     setDefaultSetting("converseTimeAgo", true);
+    setDefaultSetting("enableVoiceChat", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com, messages.google.com");

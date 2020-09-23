@@ -1221,6 +1221,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Group Chat"),
+            "name": "enableVoiceChat",
+            "type": "checkbox",
+            "label": i18n.get("Enable Voice Chat")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "showGroupChatStatusMessages",
             "type": "checkbox",
             "label": i18n.get("Show GroupChat Status Messages")
