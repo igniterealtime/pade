@@ -6,7 +6,18 @@
     }
 }(this, function (converse) {
     let _converse, Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
-    let ohunEnabled = getSetting("enableVoiceChat", true), ohun = {};
+    let ohunEnabled = getSetting("enableVoiceChat", true), ohun = {}, ohunRoom, configuration;
+
+    window.addEventListener("unload", function()
+    {
+        const peers = Object.getOwnPropertyNames(ohun)
+
+        for (let i=0; i<peers.length; i++)
+        {
+           ohun[peers[i]].peer.close();
+           ohun[peers[i]].localStream.getTracks().forEach(track => track.stop());
+        }
+    });
 
     converse.plugins.add("ohun", {
         dependencies: [],
@@ -49,11 +60,18 @@
                         {
                             evt.stopPropagation();
                             const groupchat = _converse.chatboxes.get(evt.target.getAttribute("data-jid"));
-                            startVoiceChat(groupchat, this);
+                            if (configuration && groupchat) startVoiceChat(groupchat, this);
 
                         }, false);
                     }
                }
+            });
+
+            _converse.api.listen.on('chatBoxClosed', function (view)
+            {
+                const jid = view.model.get("jid");
+                console.debug("chatBoxClosed", jid);
+                disconnectKraken(view.model);
             });
 
             console.log("ohun plugin is ready");
@@ -65,7 +83,14 @@
                 renderChatMessage: async function renderChatMessage()
                 {
                     if (this.model.get("json_type")) {
-                        console.debug('ohun - renderChatMessage', this.model.get("json_jid"), this.model.get("json_payload"));
+                        const json = this.model.get("json_payload");
+                        console.debug('ohun - renderChatMessage', this.model.get("json_jid"), json);
+
+                        if (json.method == "publish" || json.method == "end")
+                        {
+                            this.model.set('message', '/me ' + (json.method == 'publish' ? 'starts' : 'stops') + ' ohun');
+                            await this.__super__.renderChatMessage.apply(this, arguments);
+                        }
                     } else {
                         await this.__super__.renderChatMessage.apply(this, arguments);
                     }
@@ -137,6 +162,13 @@
     {
         console.debug("listenForOhunEvents");
 
+        getStunTurn();
+        addXmppEventHandler();
+    }
+
+
+    function addXmppEventHandler()
+    {
         _converse.connection.addHandler(function (message)
         {
             const from = Strophe.getResourceFromJid(message.getAttribute("from"));
@@ -147,7 +179,7 @@
             const json_type = json_ele.getAttribute("type");
             if (json_type != "response") return true;
 
-            const room = decodeURIComponent(json.id);
+            const ohunRoom = room = decodeURIComponent(json.id);
             console.log("Ohun Message", from, json_type, json_jid, json.id, room, json);
 
             async function handleAnswer(json)
@@ -161,7 +193,7 @@
                     for (let i=0; i<ohun[room].candidates.length; i++)
                     {
                         console.log("handleAnswer - candidate", ohun[room].candidates[i]);
-                        const body = JSON.stringify({id: uuidv4(), method: 'trickle', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(ohun[room].candidates[i])]});
+                        const body = JSON.stringify({id: room, method: 'trickle', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(ohun[room].candidates[i])]});
                         _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
                     }
                 }
@@ -202,27 +234,15 @@
             return true;
 
         }, "urn:xmpp:json:0", 'message');
-
-       getStunTurn(function(configuration)
-       {
-            _converse.chatboxviews.forEach(view =>
-            {
-                const jid = view.model.get('jid');
-                const chatroom = view.model.get('type') === _converse.CHATROOMS_TYPE;
-
-                if (chatroom && jid.endsWith(_converse.connection.domain)) {
-                    setupKraken(jid, configuration);
-                }
-            });
-       });
     }
 
-    function getStunTurn(callback)
+    function getStunTurn()
     {
+        configuration = {iceServers: [], bundlePolicy: 'max-bundle',  rtcpMuxPolicy: 'require', sdpSemantics: 'unified-plan'};
+
         _converse.connection.sendIQ($iq({type: 'get', to: _converse.connection.domain}).c('services', {xmlns: 'urn:xmpp:extdisco:1'}).c('service', {host: 'turn.' + _converse.connection.domain}), function (res)
         {
             console.debug('ohun - getStunAndTurnCredentials', res);
-            const configuration = {iceServers: [], bundlePolicy: 'max-bundle',  rtcpMuxPolicy: 'require', sdpSemantics: 'unified-plan'};
 
             res.querySelectorAll('service').forEach(function (el)
             {
@@ -266,8 +286,6 @@
                 console.debug('getStunTurn - getStunAndTurnCredentials - config', configuration);
             }
 
-            callback(configuration);
-
         }, function (err) {
             console.warn('getting turn credentials failed', err);
         });
@@ -304,10 +322,10 @@
     function attachBadge(room, jid, flag, stream)
     {
         const chatbox = _converse.chatboxes.get(room);
-        const occupant = chatbox.occupants.findWhere({'jid': jid});
 
-        if (chatbox && occupant)
+        if (chatbox)
         {
+            const occupant = chatbox.occupants.findWhere({'jid': jid});
             const id = occupant.get('id');
             const element = document.getElementById(id);
 
@@ -322,6 +340,7 @@
                 if (ohunEle)
                 {
                     ohunEle.innerHTML = html;
+                    ohunEle.style.display = "";
                 }
                 else {
                     ohunEle = newElement('span', null, html, 'occupants-ohun');
@@ -334,30 +353,31 @@
 
                     }, false);
 
-                    const harker = hark(stream, {interval: 100, history: 4 });
-
-                    harker.on('speaking', function()
-                    {
-                        if (stream.getTracks()[0].enabled)
-                        {
-                            const icon = ohunEle.querySelector("a");
-                            console.debug("ohun speaking", jid, ohunEle, icon);
-                            changeIcon(icon, "fa-volume-up", "green", "on");
-                        }
-                    });
-
-                    harker.on('stopped_speaking', function()
-                    {
-                        if (stream.getTracks()[0].enabled)
-                        {
-                            const icon = ohunEle.querySelector("a");
-                            console.debug("ohun quiet", jid, ohunEle, icon);
-                            changeIcon(icon, "fa-volume-up", "#aaa", "off");
-                        }
-                    });
-
-                    ohun[room].icons[jid] = {icon: ohunEle, stream: stream, harker: harker};
                 }
+
+                const harker = hark(stream, {interval: 100, history: 4 });
+
+                harker.on('speaking', function()
+                {
+                    if (stream.getTracks()[0].enabled)
+                    {
+                        const icon = ohunEle.querySelector("a");
+                        //console.debug("ohun speaking", jid, ohunEle, icon);
+                        changeIcon(icon, "fa-volume-up", "green", "on");
+                    }
+                });
+
+                harker.on('stopped_speaking', function()
+                {
+                    if (stream.getTracks()[0].enabled)
+                    {
+                        const icon = ohunEle.querySelector("a");
+                        //console.debug("ohun quiet", jid, ohunEle, icon);
+                        changeIcon(icon, "fa-volume-up", "#aaa", "off");
+                    }
+                });
+
+                ohun[room].icons[jid] = {icon: ohunEle, stream: stream, harker: harker};
 
             }
         }
@@ -379,7 +399,7 @@
         if (ohunEle && stream)
         {
             const icon = ohunEle.querySelector("a");
-            console.debug("ohun quiet", jid, ohunEle, icon);
+            console.debug("ohun handleUserClick", jid, ohunEle, icon);
 
             if (!track.enabled) {
                 track.enabled = true;
@@ -402,11 +422,11 @@
         if (icon.getAttribute("data-status") == "off") {
             changeIcon(icon, "fa-volume-up", "green", "on");
             padeapi.getSelectedChatBox().showHelpMessages(['voice chat started']);
-            connectKraken(chat, icon);
+            connectKraken(chat);
         } else {
             changeIcon(icon, "fa-volume-up", "#aaa", "off");
             padeapi.getSelectedChatBox().showHelpMessages(['voice chat stopped']);
-            disconnectKraken(chat, icon);
+            disconnectKraken(chat);
         }
     }
 
@@ -420,28 +440,44 @@
         icon.setAttribute("data-status", status);
     }
 
-    function connectKraken(chat, icon)
+    function connectKraken(chat)
     {
         const room = chat.get("jid");
         console.debug("ohun connect kraken", room);
-        publishStream(room)
+
+        setupKraken(room);
     }
 
-    function disconnectKraken(chat, icon)
+    function disconnectKraken(chat)
     {
         const room = chat.get("jid");
-        console.debug("ohun disconnect kraken", room);
+        console.debug("ohun disconnect kraken", room, ohun[room]);
 
-        ohun[room].localStream.getTracks().forEach((track) => {
-            track.stop();
-        });
+        if (ohun[room])
+        {
+            ohun[room].localStream.getTracks().forEach((track) => { track.stop() });
+            ohun[room].peer.close();
 
-        const body = JSON.stringify({id: room, method: 'end', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid]})
-        _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+            const icons = Object.getOwnPropertyNames(ohun[room].icons)
 
+            for (let i=0; i<icons.length; i++)
+            {
+               ohun[room].icons[icons[i]].icon.style.display = "none";
+            }
+
+            const body = JSON.stringify({id: room, method: 'end', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid]})
+            _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+        }
     }
 
-    async function setupKraken(room, configuration)
+    function getRoom()
+    {
+        let room = ohunRoom;
+        if (!room) room = padeapi.getSelectedChatBox().model.get("jid");
+        return room;
+    }
+
+    async function setupKraken(room)
     {
         console.debug("ohun setup kraken", room);
         ohun[room] = {candidates: [], icons: {}};
@@ -453,12 +489,12 @@
         {
             if (candidate)
             {
+                const room = getRoom();
                 console.log("candidate", ohun[room].ucid, candidate, room);
 
                 if (ohun[room].ucid)
                 {
-                    ohun[room].candidates.push(candidate);
-                    const body = JSON.stringify({id: uuidv4(), method: 'trickle', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(candidate)]});
+                    const body = JSON.stringify({id: room, method: 'trickle', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(candidate)]});
                     _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
                 }
                 else {
@@ -470,8 +506,10 @@
         ohun[room].peer.ontrack = function(event)
         {
             const stream = event.streams[0];
-            const json_jid = decodeURIComponent(stream.id);
-            console.debug('ohun track event', json_jid, stream);
+            const uname = JSON.parse(atob(decodeURIComponent(stream.id)));
+            const room = uname.room;
+            const json_jid = uname.jid;
+            console.debug('ohun track event', room, json_jid, stream);
 
             if (json_jid == _converse.bare_jid)
             {
@@ -495,9 +533,9 @@
                     el.autoplay = true;
                     el.controls = false;
                     document.body.appendChild(el);
-
-                    attachBadge(room, json_jid, true, stream);
                 }
+
+                attachBadge(room, json_jid, true, stream);
             }
         }
 
@@ -509,6 +547,8 @@
             ohun[room].localStream.getTracks().forEach((track) => {
                 ohun[room].peer.addTrack(track, ohun[room].localStream);
             });
+
+            publishStream(room);
         } catch (err) {
             console.error(err);
         }
@@ -517,7 +557,7 @@
     async function publishStream(room)
     {
         ohun[room].rnameRPC = encodeURIComponent(Strophe.getNodeFromJid(room));
-        ohun[room].unameRPC = encodeURIComponent(_converse.bare_jid);
+        ohun[room].unameRPC = encodeURIComponent(btoa(JSON.stringify({room: room, jid: _converse.bare_jid, nick: _converse.nickname})));
 
         console.debug("ohun - publish", room, ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].peer);
 
