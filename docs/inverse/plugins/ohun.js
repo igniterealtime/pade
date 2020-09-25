@@ -47,31 +47,39 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                if (view.model.get("type") == "chatroom")
+                const id = view.model.get("box_id");
+                const jid = view.model.get("jid");
+
+                if (jid.endsWith(_converse.connection.domain) && ohunEnabled)
                 {
-                    const id = view.model.get("box_id");
-                    const jid = view.model.get("jid");
+                    ohun[jid] = {};
 
-                    if (jid.endsWith(_converse.connection.domain) && ohunEnabled)
+                    const voiceChat = padeapi.addToolbarItem(view, id, "ohun-voicechat-" + id, '<a data-status="off" data-jid="' + jid + '" class="fas fa-volume-up" title="Voice chat"></a>');
+
+                    voiceChat.addEventListener('click', function(evt)
                     {
-                        const voiceChat = padeapi.addToolbarItem(view, id, "ohun-voicechat-" + id, '<a data-status="off" data-jid="' + jid + '" class="fas fa-volume-up" title="Voice chat"></a>');
+                        evt.stopPropagation();
 
-                        voiceChat.addEventListener('click', function(evt)
+                        const jid = evt.target.getAttribute("data-jid");
+                        const chat = _converse.chatboxes.get(jid);
+
+                        if (configuration && chat)
                         {
-                            evt.stopPropagation();
-                            const groupchat = _converse.chatboxes.get(evt.target.getAttribute("data-jid"));
-                            if (configuration && groupchat) startVoiceChat(groupchat, this);
+                            const view = _converse.chatboxviews.views[chat.id];
+                            ohun[jid].view = view;
 
-                        }, false);
-                    }
-               }
+                            startVoiceChat(chat, this);
+                        }
+
+                    }, false);
+                }
             });
 
             _converse.api.listen.on('chatBoxClosed', function (view)
             {
                 const jid = view.model.get("jid");
                 console.debug("chatBoxClosed", jid);
-                disconnectKraken(view.model);
+                disconnectKraken(view.model, true);
             });
 
             console.log("ohun plugin is ready");
@@ -113,24 +121,29 @@
                     {
                         let jid = view.model.get("jid");
 
-                        if (this.model.get("type") == "chatroom")
+                        if (ohun[jid].localStream)
                         {
-                            if (!nick)
+                            if (this.model.get("type") == "chatroom")
                             {
-                                this.showHelpMessages(["Nickname required"]);
-                                return true;
+                                if (!nick)
+                                {
+                                    this.showHelpMessages(["Nickname required"]);
+                                    return true;
+                                }
+
+                                nick = nick.trim();
+                                if (nick.startsWith("@")) nick = nick.substring(1);
                             }
 
-                            nick = nick.trim();
-                            if (nick.startsWith("@")) nick = nick.substring(1);
-                        }
+                            const occupant = this.model.occupants.findWhere({'nick': nick});
 
-                        const occupant = this.model.occupants.findWhere({'nick': nick});
-
-                        if (occupant) {
-                            handleUserClick(jid, occupant.get('jid'));
+                            if (occupant) {
+                                handleUserClick(jid, occupant.get('jid'));
+                            } else {
+                                this.showHelpMessages(["Nickname not found"]);
+                            }
                         } else {
-                            this.showHelpMessages(["Nickname not found"]);
+                            this.showHelpMessages(["Ohun not yet started"]);
                         }
                         return true;
                     }
@@ -171,30 +184,84 @@
     {
         _converse.connection.addHandler(function (message)
         {
-            const from = Strophe.getResourceFromJid(message.getAttribute("from"));
+            const to = Strophe.getBareJidFromJid(message.getAttribute("to"));
+            const from = Strophe.getBareJidFromJid(message.getAttribute("from"));
             const json_ele = message.querySelector("json");
             const json = JSON.parse(json_ele.innerHTML);
 
+            const ohunRoom = room = decodeURIComponent(json.id);
+
             const json_jid = Strophe.getBareJidFromJid(json_ele.getAttribute("jid"));
             const json_type = json_ele.getAttribute("type");
-            if (json_type != "response") return true;
 
-            const ohunRoom = room = decodeURIComponent(json.id);
-            console.log("Ohun Message", from, json_type, json_jid, json.id, room, json);
+            async function handlePeerEnd(json)
+            {
+                console.log("handlePeerEnd", from, json);
+                const chat = _converse.chatboxes.get(room);
+                disconnectKraken(chat, false);
+            }
+
+            async function handlePeerTrickle(json)
+            {
+                console.log("handlePeerTrickle", from, json);
+
+                const data = JSON.parse(json.params[3]);
+                const candidate = new RTCIceCandidate(data);
+                await ohun[room].peer.addIceCandidate(candidate);
+            }
+
+            async function handlePeerAnswer(json)
+            {
+                console.log("handlePeerAnswer", from, json);
+
+                ohun[room].ucid = json.id;
+                const data = JSON.parse(json.params[2]);
+                await ohun[room].peer.setRemoteDescription(new RTCSessionDescription(data));
+                sendCandidates();
+            }
+
+            async function handlePeerPublish(json)
+            {
+                console.log("handlePublish", from, json);
+
+                padeapi.notifyText("Voice Chat?", from, from, [{title: "Accept Call?", iconUrl: chrome.extension.getURL("check-solid.svg")}, {title: "Reject Call?", iconUrl: chrome.extension.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
+                {
+                    if (buttonIndex == 0)
+                    {
+                        _converse.api.chats.open(from).then(chat =>
+                        {
+                            const room = chat.get("jid");
+                            const view = _converse.chatboxviews.views[chat.id];
+                            const icon = view.el.querySelector(".fa-volume-up");
+
+                            ohun[room].p2p = json;
+                            ohun[room].sfu = false;
+                            ohun[room].view = view;
+                            connectKraken(chat, icon);
+                        });
+                    }
+
+                }, from);
+            }
 
             async function handleAnswer(json)
             {
                 console.log("handleAnswer", from, json);
                 ohun[room].ucid = json.data.track;
                 await ohun[room].peer.setRemoteDescription(json.data.sdp);
+                sendCandidates();
+            }
+
+            function sendCandidates()
+            {
+                console.log("sendCandidates", room);
 
                 if (ohun[room].candidates)
                 {
                     for (let i=0; i<ohun[room].candidates.length; i++)
                     {
                         console.log("handleAnswer - candidate", ohun[room].candidates[i]);
-                        const body = JSON.stringify({id: room, method: 'trickle', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(ohun[room].candidates[i])]});
-                        _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+                        sendMessage('trickle', room, ohun[room].candidates[i]);
                     }
                 }
             }
@@ -202,8 +269,7 @@
             function subscribe()
             {
                 console.log("listenForOhunEvents - subscribe", room);
-                const body = JSON.stringify({id: room, method: 'subscribe', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid]})
-                _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+                sendMessage('subscribe', room);
             }
 
             async function handleOffer(json)
@@ -212,23 +278,38 @@
                 await ohun[room].peer.setRemoteDescription(json.data);
                 var sdp = await ohun[room].peer.createAnswer();
                 await ohun[room].peer.setLocalDescription(sdp);
-                const body = JSON.stringify({id: room, method: 'answer', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(sdp)]});
-                _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+                sendMessage('answer', room, sdp);
             }
 
-            if (json.data && json.data.sdp)
+            if (json_type == "response")
             {
-                if (json.data.sdp.type === 'answer')
-                {
-                    if (_converse.bare_jid == json_jid) handleAnswer(json);
-                    setTimeout(subscribe, 1000);
-                }
-                else
+                console.log("Ohun Response", from, json_jid, json.id, room, json);
 
-                if (json.data.type === 'offer' && _converse.bare_jid == json_jid)
+                if (json.data && json.data.sdp)
                 {
-                    handleOffer(json);
+                    if (json.data.sdp.type === 'answer')
+                    {
+                        if (_converse.bare_jid == json_jid) handleAnswer(json);
+                        setTimeout(subscribe, 1000);
+                    }
+                    else
+
+                    if (json.data.type === 'offer' && _converse.bare_jid == json_jid)
+                    {
+                        handleOffer(json);
+                    }
                 }
+            }
+            else
+
+            if (json_type == "peer" && _converse.bare_jid == to)
+            {
+                console.log("Ohun Request", to, from, json_jid, json.id, room, json);
+
+                if (json.method === 'publish')  handlePeerPublish(json);
+                if (json.method === 'answer')   handlePeerAnswer(json);
+                if (json.method === 'trickle')  handlePeerTrickle(json);
+                if (json.method === 'end')      handlePeerEnd(json);
             }
 
             return true;
@@ -420,13 +501,10 @@
         const icon = voiceChat.querySelector("a");
 
         if (icon.getAttribute("data-status") == "off") {
-            changeIcon(icon, "fa-volume-up", "green", "on");
-            padeapi.getSelectedChatBox().showHelpMessages(['voice chat started']);
-            connectKraken(chat);
+            connectKraken(chat, icon);
+
         } else {
-            changeIcon(icon, "fa-volume-up", "#aaa", "off");
-            padeapi.getSelectedChatBox().showHelpMessages(['voice chat stopped']);
-            disconnectKraken(chat);
+            disconnectKraken(chat, true);
         }
     }
 
@@ -440,15 +518,16 @@
         icon.setAttribute("data-status", status);
     }
 
-    function connectKraken(chat)
+    function connectKraken(chat, icon)
     {
         const room = chat.get("jid");
-        console.debug("ohun connect kraken", room);
+        const sfu = chat.get("type") == "chatroom";
+        console.debug("ohun connect kraken", room, sfu);
 
-        setupKraken(room);
+        setupKraken(room, sfu, icon);
     }
 
-    function disconnectKraken(chat)
+    function disconnectKraken(chat, send)
     {
         const room = chat.get("jid");
         console.debug("ohun disconnect kraken", room, ohun[room]);
@@ -465,9 +544,13 @@
                ohun[room].icons[icons[i]].icon.style.display = "none";
             }
 
-            const body = JSON.stringify({id: room, method: 'end', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid]})
-            _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+            if (send) sendMessage('end', room);
+
+            ohun[room].view.showHelpMessages(['voice chat stopped']);
+            changeIcon(ohun[room].icon, "fa-volume-up", "#aaa", "off");
         }
+
+        ohun[room] = {};
     }
 
     function getRoom()
@@ -477,10 +560,14 @@
         return room;
     }
 
-    async function setupKraken(room)
+    async function setupKraken(room, sfu, icon)
     {
-        console.debug("ohun setup kraken", room);
-        ohun[room] = {candidates: [], icons: {}};
+        console.debug("ohun setup kraken", room, sfu);
+
+        ohun[room].candidates = [];
+        ohun[room].icons= {};
+        ohun[room].icon = icon;
+        ohun[room].sfu = sfu;
 
         ohun[room].peer = new RTCPeerConnection(configuration);
         ohun[room].peer.createDataChannel('useless');
@@ -489,16 +576,15 @@
         {
             if (candidate)
             {
-                const room = getRoom();
-                console.log("candidate", ohun[room].ucid, candidate, room);
+                const chat = getRoom();
+                console.log("candidate", ohun[room].ucid, candidate, chat);
 
-                if (ohun[room].ucid)
+                if (ohun[chat].ucid)
                 {
-                    const body = JSON.stringify({id: room, method: 'trickle', params: [ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].ucid, JSON.stringify(candidate)]});
-                    _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+                    sendMessage('trickle', chat, candidate);
                 }
                 else {
-                    ohun[room].candidates.push(candidate);
+                    ohun[chat].candidates.push(candidate);
                 }
             }
         };
@@ -506,16 +592,10 @@
         ohun[room].peer.ontrack = function(event)
         {
             const stream = event.streams[0];
-            const uname = JSON.parse(atob(decodeURIComponent(stream.id)));
-            const room = uname.room;
-            const json_jid = uname.jid;
-            console.debug('ohun track event', room, json_jid, stream);
+            let chat = getRoom();
 
-            if (json_jid == _converse.bare_jid)
+            function createAudioElement()
             {
-                attachBadge(room, json_jid, true, ohun[room].localStream);
-            }
-            else {
                 event.track.onmute = function(event)
                 {
                   console.log("ohun onmute", event.target.id, event);
@@ -534,8 +614,36 @@
                     el.controls = false;
                     document.body.appendChild(el);
                 }
+            }
 
-                attachBadge(room, json_jid, true, stream);
+            function ohunReady()
+            {
+                changeIcon(ohun[chat].icon, "fa-volume-up", "red", "on");
+                ohun[chat].view.showHelpMessages(['voice chat started']);
+            }
+
+            if (!ohun[chat].sfu || ohun[chat].p2p)
+            {
+                console.debug('ohun track p2p data', stream);
+                createAudioElement();
+                ohunReady()
+
+            } else {
+                const uname = JSON.parse(atob(decodeURIComponent(stream.id)));
+                const json_jid = uname.jid;
+
+                chat = uname.room;
+                console.debug('ohun track sfu data', chat, json_jid, stream);
+
+                if (json_jid == _converse.bare_jid)
+                {
+                    attachBadge(chat, json_jid, true, ohun[chat].localStream);
+                    ohunReady();
+                }
+                else {
+                    createAudioElement();
+                    attachBadge(chat, json_jid, true, stream);
+                }
             }
         }
 
@@ -548,10 +656,29 @@
                 ohun[room].peer.addTrack(track, ohun[room].localStream);
             });
 
-            publishStream(room);
+            if (ohun[room].p2p) {
+                answerStream(room);
+            } else {
+                publishStream(room);
+            }
         } catch (err) {
             console.error(err);
         }
+    }
+
+    async function answerStream(room)
+    {
+        ohun[room].rnameRPC = encodeURIComponent(Strophe.getNodeFromJid(room));
+        ohun[room].unameRPC = encodeURIComponent(btoa(JSON.stringify({room: room, jid: _converse.bare_jid, nick: _converse.nickname})));
+
+        console.log("answerStream", room, ohun[room].p2p);
+
+        const data = JSON.parse(ohun[room].p2p.params[2]);
+
+        await ohun[room].peer.setRemoteDescription(new RTCSessionDescription(data));
+        var sdp = await ohun[room].peer.createAnswer();
+        await ohun[room].peer.setLocalDescription(sdp);
+        sendMessage('answer', room, sdp);
     }
 
     async function publishStream(room)
@@ -559,11 +686,30 @@
         ohun[room].rnameRPC = encodeURIComponent(Strophe.getNodeFromJid(room));
         ohun[room].unameRPC = encodeURIComponent(btoa(JSON.stringify({room: room, jid: _converse.bare_jid, nick: _converse.nickname})));
 
-        console.debug("ohun - publish", room, ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].peer);
-
         await ohun[room].peer.setLocalDescription(await ohun[room].peer.createOffer());
-        const body = JSON.stringify({id: room, method: 'publish', params: [ohun[room].rnameRPC, ohun[room].unameRPC, JSON.stringify(ohun[room].peer.localDescription)]})
-        _converse.connection.send($msg({type: 'groupchat', to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: "request"}).t(body));
+
+        console.debug("ohun - publish", room, ohun[room].rnameRPC, ohun[room].unameRPC, ohun[room].peer.localDescription);
+        sendMessage('publish', room, ohun[room].peer.localDescription);
+    }
+
+    function sendMessage(method, room, payload)
+    {
+        console.log("sendMessage", method, room, payload);
+
+        if (ohun[room])
+        {
+            const target = ohun[room].sfu ? room : _converse.bare_jid;
+            const json_type = ohun[room].sfu ? 'request' : 'peer';
+            const type = ohun[room].sfu ? 'groupchat' : 'chat';
+            let params = [ohun[room].rnameRPC, ohun[room].unameRPC];
+
+            if (ohun[room].ucid)    params.push(ohun[room].ucid);
+            if (payload)            params.push(JSON.stringify(payload));
+
+            const body = JSON.stringify({id: target, method: method, params: params});
+            _converse.connection.send($msg({type: type, to: room}).c("json",{xmlns: "urn:xmpp:json:0", type: json_type}).t(body));
+        }
+        else console.warn("sendMessage - voice chat not ready");
     }
 
     function uuidv4()
