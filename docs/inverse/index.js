@@ -328,11 +328,6 @@ var padeapi = (function(api)
             loadJS("plugins/canned.js");
         }
 
-        if (getSetting("enableIrma", false))
-        {
-            whitelistedPlugins.push("irma");
-        }
-
         if (getSetting("enableAudioConfWidget", false))
         {
            whitelistedPlugins.push("audioconf");
@@ -367,8 +362,6 @@ var padeapi = (function(api)
         loadJS("plugins/libs/jspdf.plugin.autotable.js");
         loadJS("plugins/libs/tokenizer.js");
         loadJS("plugins/libs/js-summarize.js");
-        loadJS("../irma/vendors~jwt.js");
-        loadJS("../irma/irma.js");
     }
 
     function doConverse(server, username, password, anonUser)
