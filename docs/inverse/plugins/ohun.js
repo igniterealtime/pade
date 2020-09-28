@@ -6,7 +6,7 @@
     }
 }(this, function (converse) {
     let _converse, Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs;
-    let ohunEnabled = getSetting("enableVoiceChat", true), ohun = {}, ohunRoom, configuration;
+    let ohunEnabled = getSetting("enableVoiceChat", true), ohun = padeapi.ohun, ohunRoom, configuration;
 
     window.addEventListener("unload", function()
     {
@@ -37,12 +37,15 @@
 
             _converse.api.listen.on('connected', function()
             {
-                getOhunStatus(function(supported)
+                if (ohunEnabled)
                 {
-                    console.debug("ohun discover", supported);
-                    ohunEnabled = supported;
-                    if (supported) listenForOhunEvents();
-                });
+                    getOhunStatus(function(supported)
+                    {
+                        console.debug("ohun discover", supported);
+                        ohunEnabled = supported;
+                        if (supported) listenForOhunEvents();
+                    });
+                }
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
@@ -60,16 +63,18 @@
                     {
                         evt.stopPropagation();
 
-                        const jid = evt.target.getAttribute("data-jid");
-                        const chat = _converse.chatboxes.get(jid);
-
-                        if (configuration && chat)
+                        if (ohunEnabled)
                         {
-                            const view = _converse.chatboxviews.views[chat.id];
-                            ohun[jid].view = view;
+                            const jid = evt.target.getAttribute("data-jid");
+                            const view = _converse.chatboxviews.get(jid);
 
-                            startVoiceChat(chat, this);
+                            if (configuration && view)
+                            {
+                                ohun[jid].view = view;
+                                startVoiceChat(view.model, this);
+                            }
                         }
+                        else alert("Ohun is not available");
 
                     }, false);
                 }
@@ -151,6 +156,12 @@
                     return false;
                 }
             }
+        },
+
+        closeKraken: function(chat)
+        {
+            console.debug("closeKraken", chat);
+            disconnectKraken(chat, true);
         }
     });
 
@@ -290,7 +301,7 @@
                     if (json.data.sdp.type === 'answer')
                     {
                         if (_converse.bare_jid == json_jid) handleAnswer(json);
-                        setTimeout(subscribe, 1000);
+                        if (ohun[room].peer) setTimeout(subscribe, 1000);
                     }
                     else
 
@@ -501,7 +512,8 @@
         const icon = voiceChat.querySelector("a");
 
         if (icon.getAttribute("data-status") == "off") {
-            connectKraken(chat, icon);
+
+            if (confirm("Ohun with " + chat.get("jid"))) connectKraken(chat, icon);
 
         } else {
             disconnectKraken(chat, true);
@@ -529,28 +541,47 @@
 
     function disconnectKraken(chat, send)
     {
-        const room = chat.get("jid");
-        console.debug("ohun disconnect kraken", room, ohun[room]);
-
-        if (ohun[room])
+        if (chat)
         {
-            ohun[room].localStream.getTracks().forEach((track) => { track.stop() });
-            ohun[room].peer.close();
-
-            const icons = Object.getOwnPropertyNames(ohun[room].icons)
-
-            for (let i=0; i<icons.length; i++)
-            {
-               ohun[room].icons[icons[i]].icon.style.display = "none";
-            }
+            const room = chat.get("jid");
+            console.debug("ohun disconnect kraken", room, ohun[room]);
 
             if (send) sendMessage('end', room);
 
-            ohun[room].view.showHelpMessages(['voice chat stopped']);
-            changeIcon(ohun[room].icon, "fa-volume-up", "#aaa", "off");
-        }
+            if (ohun[room] && ohun[room].icons && ohun[room].localStream && ohun[room].peer)
+            {
+                ohun[room].localStream.getTracks().forEach((track) => { track.stop() });
+                ohun[room].peer.close();
 
-        ohun[room] = {};
+                const icons = Object.getOwnPropertyNames(ohun[room].icons)
+
+                for (let i=0; i<icons.length; i++)
+                {
+                   ohun[room].icons[icons[i]].icon.style.display = "none";
+                }
+
+                updateOhunIcon(room, 'voice chat stopped', "#aaa", "off");
+            }
+
+            ohun[room] = {};
+        }
+    }
+
+    function updateOhunIcon(room, msg, color, status)
+    {
+        console.debug("updateOhunIcon", room, msg, color, status);
+
+        ohun[room].view.showHelpMessages([msg]);
+        changeIcon(ohun[room].icon, "fa-volume-up", color, status);
+
+        const id = ohun[room].view.model.get('box_id');
+        const item = document.getElementById('pade-active-conv-ohun-' + id);
+
+        if (item)
+        {
+            item.style.color = color;
+            item.style.visibility = (status == "off") ? "hidden" : "visible";
+        }
     }
 
     function getRoom()
@@ -616,17 +647,12 @@
                 }
             }
 
-            function ohunReady()
-            {
-                changeIcon(ohun[chat].icon, "fa-volume-up", "red", "on");
-                ohun[chat].view.showHelpMessages(['voice chat started']);
-            }
-
             if (!ohun[chat].sfu || ohun[chat].p2p)
             {
                 console.debug('ohun track p2p data', stream);
+
                 createAudioElement();
-                ohunReady()
+                updateOhunIcon(chat, 'voice chat started', "red", "on");
 
             } else {
                 const uname = JSON.parse(atob(decodeURIComponent(stream.id)));
@@ -638,7 +664,7 @@
                 if (json_jid == _converse.bare_jid)
                 {
                     attachBadge(chat, json_jid, true, ohun[chat].localStream);
-                    ohunReady();
+                    updateOhunIcon(chat, 'voice chat started', "red", "on");
                 }
                 else {
                     createAudioElement();
@@ -701,7 +727,7 @@
             const target = ohun[room].sfu ? room : _converse.bare_jid;
             const json_type = ohun[room].sfu ? 'request' : 'peer';
             const type = ohun[room].sfu ? 'groupchat' : 'chat';
-            let params = [ohun[room].rnameRPC, ohun[room].unameRPC];
+            const params = [ohun[room].rnameRPC, ohun[room].unameRPC];
 
             if (ohun[room].ucid)    params.push(ohun[room].ucid);
             if (payload)            params.push(JSON.stringify(payload));

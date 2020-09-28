@@ -198,8 +198,19 @@
     color: #151515 !important;      
 }
 
+.pade-active-conv:hover + .pade-active-conv-ohun {
+    visibility: visible;
+}
+
 .pade-active-conv:hover + .pade-active-conv-close {
     visibility: visible; 
+}
+
+
+.pade-active-conv-ohun {
+    float: right;
+    visibility: hidden;
+    padding-left: 5px !important;
 }
 
 .pade-active-conv-close {
@@ -207,9 +218,14 @@
     visibility: hidden;
 }
 
+.pade-active-conv-ohun:hover {
+    visibility: visible;
+}
+
 .pade-active-conv-close:hover {
     visibility: visible;
 }
+
 .pade-badge {
     position:relative;
 }
