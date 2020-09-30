@@ -572,28 +572,31 @@
 
             if (send) sendMessage('end', room);
 
-            if (ohun[room] && ohun[room].icons && ohun[room].localStream && ohun[room].peer)
+            if (ohun[room])
             {
-                ohun[room].localStream.getTracks().forEach((track) => { track.stop() });
-                ohun[room].peer.close();
-
-                const icons = Object.getOwnPropertyNames(ohun[room].icons)
-
-                for (let i=0; i<icons.length; i++)
+                if (ohun[room].icons && ohun[room].localStream && ohun[room].peer)
                 {
-                   ohun[room].icons[icons[i]].icon.style.display = "none";
+                    ohun[room].localStream.getTracks().forEach((track) => { track.stop() });
+                    ohun[room].peer.close();
+
+                    const icons = Object.getOwnPropertyNames(ohun[room].icons)
+
+                    for (let i=0; i<icons.length; i++)
+                    {
+                       ohun[room].icons[icons[i]].icon.style.display = "none";
+                    }
+
+                    updateOhunIcon(room, 'voice chat stopped', "#aaa", "off");
                 }
 
-                updateOhunIcon(room, 'voice chat stopped', "#aaa", "off");
-            }
+                if (ohun[room].recognitionActive && ohun[room].recognition)
+                {
+                    ohun[room].recognition.stop();
+                    ohun[room].recognitionActive = false;
+                }
 
-            if (ohun[room].recognitionActive && ohun[room].recognition)
-            {
-                ohun[room].recognition.stop();
-                ohun[room].recognitionActive = false;
+                ohun[room] = {};
             }
-
-            ohun[room] = {};
         }
     }
 
