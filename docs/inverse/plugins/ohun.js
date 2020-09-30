@@ -57,7 +57,7 @@
                 {
                     ohun[jid] = {};
 
-                    const voiceChat = padeapi.addToolbarItem(view, id, "ohun-voicechat-" + id, '<a data-status="off" data-jid="' + jid + '" class="fas fa-volume-up" title="Voice chat"></a>');
+                    const voiceChat = padeapi.addToolbarItem(view, id, "ohun-voicechat-" + id, '<a data-status="off" data-jid="' + jid + '" class="fas fa-volume-up" style="color:#aaa" title="Voice chat"></a>');
 
                     voiceChat.addEventListener('click', function(evt)
                     {
@@ -207,14 +207,14 @@
 
             async function handlePeerEnd(json)
             {
-                console.log("handlePeerEnd", from, json);
+                console.debug("handlePeerEnd", from, json);
                 const chat = _converse.chatboxes.get(room);
                 disconnectKraken(chat, false);
             }
 
             async function handlePeerTrickle(json)
             {
-                console.log("handlePeerTrickle", from, json);
+                console.debug("handlePeerTrickle", from, json);
 
                 const data = JSON.parse(json.params[3]);
                 const candidate = new RTCIceCandidate(data);
@@ -223,7 +223,7 @@
 
             async function handlePeerAnswer(json)
             {
-                console.log("handlePeerAnswer", from, json);
+                console.debug("handlePeerAnswer", from, json);
 
                 ohun[room].ucid = json.id;
                 const data = JSON.parse(json.params[2]);
@@ -233,7 +233,7 @@
 
             async function handlePeerPublish(json)
             {
-                console.log("handlePublish", from, json);
+                console.debug("handlePublish", from, json);
 
                 padeapi.notifyText("Voice Chat?", from, from, [{title: "Accept Call?", iconUrl: chrome.extension.getURL("check-solid.svg")}, {title: "Reject Call?", iconUrl: chrome.extension.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
                 {
@@ -257,7 +257,7 @@
 
             async function handleAnswer(json)
             {
-                console.log("handleAnswer", from, json);
+                console.debug("handleAnswer", from, json);
                 ohun[room].ucid = json.data.track;
                 await ohun[room].peer.setRemoteDescription(json.data.sdp);
                 sendCandidates();
@@ -265,13 +265,13 @@
 
             function sendCandidates()
             {
-                console.log("sendCandidates", room);
+                console.debug("sendCandidates", room);
 
                 if (ohun[room].candidates)
                 {
                     for (let i=0; i<ohun[room].candidates.length; i++)
                     {
-                        console.log("handleAnswer - candidate", ohun[room].candidates[i]);
+                        console.debug("handleAnswer - candidate", ohun[room].candidates[i]);
                         sendMessage('trickle', room, ohun[room].candidates[i]);
                     }
                 }
@@ -279,13 +279,13 @@
 
             function subscribe()
             {
-                console.log("listenForOhunEvents - subscribe", room);
+                console.debug("listenForOhunEvents - subscribe", room);
                 sendMessage('subscribe', room);
             }
 
             async function handleOffer(json)
             {
-                console.log("handleOffer", from, json);
+                console.debug("handleOffer", from, json);
                 await ohun[room].peer.setRemoteDescription(json.data);
                 var sdp = await ohun[room].peer.createAnswer();
                 await ohun[room].peer.setLocalDescription(sdp);
@@ -294,7 +294,7 @@
 
             if (json_type == "response")
             {
-                console.log("Ohun Response", from, json_jid, json.id, room, json);
+                console.debug("Ohun Response", from, json_jid, json.id, room, json);
 
                 if (json.data && json.data.sdp)
                 {
@@ -315,7 +315,7 @@
 
             if (json_type == "peer" && _converse.bare_jid == to)
             {
-                console.log("Ohun Request", to, from, json_jid, json.id, room, json);
+                console.debug("Ohun Request", to, from, json_jid, json.id, room, json);
 
                 if (json.method === 'publish')  handlePeerPublish(json);
                 if (json.method === 'answer')   handlePeerAnswer(json);
@@ -419,9 +419,10 @@
         {
             const occupant = chatbox.occupants.findWhere({'jid': jid});
             const id = occupant.get('id');
+            const nick = occupant.get('nick');
             const element = document.getElementById(id);
 
-            console.debug("ohun attachBadge", jid, id, flag, room, element, stream);
+            console.debug("ohun attachBadge", jid, nick, flag, room, element, stream);
 
             if (element)
             {
@@ -456,6 +457,7 @@
                         const icon = ohunEle.querySelector("a");
                         //console.debug("ohun speaking", jid, ohunEle, icon);
                         changeIcon(icon, "fa-volume-up", "green", "on");
+                        showStatusMessage(ohun[room].view, nick + ' is speaking');
                     }
                 });
 
@@ -466,11 +468,27 @@
                         const icon = ohunEle.querySelector("a");
                         //console.debug("ohun quiet", jid, ohunEle, icon);
                         changeIcon(icon, "fa-volume-up", "#aaa", "off");
+                        showStatusMessage(ohun[room].view, nick + ' stopped speaking');
                     }
                 });
 
-                ohun[room].icons[jid] = {icon: ohunEle, stream: stream, harker: harker};
+                ohun[room].icons[jid] = {icon: ohunEle, stream: stream, harker: harker, nick: nick};
 
+            }
+        }
+    }
+
+    function showStatusMessage(view, msg)
+    {
+        if (view && msg)
+        {
+            const div = view.el.querySelector(".message.chat-info");
+            //console.debug("showStatusMessage", div, msg);
+
+            if (div) {
+                div.innerHTML = msg
+            } else {
+                view.showHelpMessages([msg]);
             }
         }
     }
@@ -486,21 +504,22 @@
     {
         const ohunEle = ohun[room].icons[jid].icon;
         const stream = ohun[room].icons[jid].stream;
+        const nick = ohun[room].icons[jid].nick;
         const track = stream.getTracks()[0];
 
         if (ohunEle && stream)
         {
             const icon = ohunEle.querySelector("a");
-            console.debug("ohun handleUserClick", jid, ohunEle, icon);
+            console.debug("ohun handleUserClick", jid, nick, ohunEle, icon);
 
             if (!track.enabled) {
                 track.enabled = true;
                 changeIcon(icon, "fa-volume-up", "#aaa", "on");
-                padeapi.getSelectedChatBox().showHelpMessages([jid + ' is unmuted']);
+                showStatusMessage(ohun[room].view, nick + ' is unmuted');
             } else {
                 track.enabled = false;
                 changeIcon(icon, "fa-volume-up", "red", "off");
-                padeapi.getSelectedChatBox().showHelpMessages([jid + ' is muted']);
+                showStatusMessage(ohun[room].view, nick + ' is muted');
             }
         }
         else log.warn("No stream or icon found");
@@ -537,6 +556,11 @@
         console.debug("ohun connect kraken", room, sfu);
 
         setupKraken(room, sfu, icon);
+
+        if (getSetting("enableVoiceChatText", false))
+        {
+            setupSpeechRecognition(room);
+        }
     }
 
     function disconnectKraken(chat, send)
@@ -563,6 +587,12 @@
                 updateOhunIcon(room, 'voice chat stopped', "#aaa", "off");
             }
 
+            if (ohun[room].recognitionActive && ohun[room].recognition)
+            {
+                ohun[room].recognition.stop();
+                ohun[room].recognitionActive = false;
+            }
+
             ohun[room] = {};
         }
     }
@@ -571,7 +601,7 @@
     {
         console.debug("updateOhunIcon", room, msg, color, status);
 
-        ohun[room].view.showHelpMessages([msg]);
+        showStatusMessage(ohun[room].view, msg);
         changeIcon(ohun[room].icon, "fa-volume-up", color, status);
 
         const id = ohun[room].view.model.get('box_id');
@@ -608,7 +638,7 @@
             if (candidate)
             {
                 const chat = getRoom();
-                console.log("candidate", ohun[room].ucid, candidate, chat);
+                console.debug("candidate", ohun[room].ucid, candidate, chat);
 
                 if (ohun[chat].ucid)
                 {
@@ -629,7 +659,7 @@
             {
                 event.track.onmute = function(event)
                 {
-                  console.log("ohun onmute", event.target.id, event);
+                  console.debug("ohun onmute", event.target.id, event);
                 }
 
                 const aid = 'peer-audio-' + stream.id;
@@ -697,7 +727,7 @@
         ohun[room].rnameRPC = encodeURIComponent(Strophe.getNodeFromJid(room));
         ohun[room].unameRPC = encodeURIComponent(btoa(JSON.stringify({room: room, jid: _converse.bare_jid, nick: _converse.nickname})));
 
-        console.log("answerStream", room, ohun[room].p2p);
+        console.debug("answerStream", room, ohun[room].p2p);
 
         const data = JSON.parse(ohun[room].p2p.params[2]);
 
@@ -720,7 +750,7 @@
 
     function sendMessage(method, room, payload)
     {
-        console.log("sendMessage", method, room, payload);
+        console.debug("sendMessage", method, room, payload);
 
         if (ohun[room])
         {
@@ -744,5 +774,56 @@
           var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
           return v.toString(16);
         });
+    }
+
+    function setupSpeechRecognition(room)
+    {
+        console.debug("setupSpeechRecognition", room);
+
+        ohun[room].recognition = new webkitSpeechRecognition();
+        ohun[room].recognition.lang = getSetting("transcribeLanguage", "en-GB");
+        ohun[room].recognition.continuous = true;
+        ohun[room].recognition.interimResults = false;
+
+        ohun[room].recognition.onresult = function(event)
+        {
+            console.debug("Speech recog event", event)
+
+            if(event.results[event.resultIndex].isFinal==true)
+            {
+                const transcript = event.results[event.resultIndex][0].transcript;
+                console.debug("Speech recog transcript", transcript);
+                ohun[room].view.model.sendMessage(transcript);
+            }
+        }
+
+        ohun[room].recognition.onspeechend  = function(event)
+        {
+            console.debug("Speech recog onspeechend", event);
+        }
+
+        ohun[room].recognition.onstart = function(event)
+        {
+            console.debug("Speech to text started", event);
+            ohun[room].recognitionActive = true;
+        }
+
+        ohun[room].recognition.onend = function(event)
+        {
+            console.debug("Speech to text ended", event);
+
+            if (ohun[room].recognitionActive)
+            {
+                console.debug("Speech to text restarted");
+                setTimeout(function() {ohun[room].recognition.start()}, 1000);
+            }
+        }
+
+        ohun[room].recognition.onerror = function(event)
+        {
+            console.debug("Speech to text error", event);
+        }
+
+        ohun[room].recognition.start();
     }
 }));

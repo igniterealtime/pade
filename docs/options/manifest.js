@@ -879,6 +879,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
+            "name": "enableVoiceChatText",
+            "type": "checkbox",
+            "label": i18n.get("Enable Voice Chat to Text Transcription")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
             "name": "enableNotesTool",
             "type": "checkbox",
             "label": i18n.get("Enable Notes Tool")

@@ -1168,7 +1168,7 @@ function doDefaults(background)
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
-    // most people dont want this
+    // most people don't want this
     //setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 10);
     setDefaultSetting("beeFeedCheck", 10);
@@ -1178,6 +1178,8 @@ function doDefaults(background)
     setDefaultSetting("converseAutoCompleteFilter", "contains");
     setDefaultSetting("converseTimeAgo", true);
     setDefaultSetting("enableVoiceChat", true);
+    // most people won't want this
+    //setDefaultSetting("enableVoiceChatText", true);
 
     // web apps
     setDefaultSetting("webApps", "web.skype.com, web.whatsapp.com, web.telegram.org, www.messenger.com, messages.google.com");
