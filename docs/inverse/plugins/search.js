@@ -136,7 +136,13 @@
 
                     if (cloudData.length > 0)
                     {
-                        this.el.querySelector("#pade-search-results").innerHTML = "";
+                        const searchResults = this.el.querySelector("#pade-search-results");
+                        searchResults.innerHTML = "";
+
+                        searchResults.addEventListener("click", function(evt)
+                        {
+                            searchResults.requestFullscreen();
+                        });
 
                         makeWordCloud({
                             width: 700,
