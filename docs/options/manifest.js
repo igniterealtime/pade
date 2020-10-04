@@ -119,6 +119,13 @@ this.manifest = {
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
+            "name": "useGitea",
+            "type": "checkbox",
+            "label": i18n.get("Use Gitea authentication <b>(requires openfire gitea plugin)</b>")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
             "name": "useSmartIdCard",
             "type": "checkbox",
             "label": i18n.get("Use E-Residency Smart ID")

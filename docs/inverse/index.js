@@ -548,6 +548,31 @@ var padeapi = (function(api)
                     Backbone = converse.env.Backbone;
                     dayjs = converse.env.dayjs;
 
+                    if (getSetting("useGitea", false))
+                    {
+                        Strophe.addConnectionPlugin('giteasasl',
+                        {
+                            init: function (connection)
+                            {
+                                Strophe.SASLGitea = function () { };
+                                Strophe.SASLGitea.prototype = new Strophe.SASLMechanism("GITEA", true, 2000);
+
+                                Strophe.SASLGitea.test = function (connection)
+                                {
+                                    return getSetting("password", null) !== null;
+                                };
+
+                                Strophe.SASLGitea.prototype.onChallenge = function (connection)
+                                {
+                                    return getSetting("password");
+                                };
+
+                                connection.mechanisms[Strophe.SASLGitea.prototype.name] = Strophe.SASLGitea;
+                                console.log("Gitea SASL authentication enabled");
+                            }
+                        });
+                    }
+
                     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + this._converse.VERSION_NAME;
 
                     _converse.api.settings.update({
@@ -1006,22 +1031,22 @@ var padeapi = (function(api)
                         {
                             init: function (connection)
                             {
-                                Strophe.SASLOFChat = function () { };
-                                Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+                                Strophe.SASLGitea = function () { };
+                                Strophe.SASLGitea.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
 
-                                Strophe.SASLOFChat.test = function (connection)
+                                Strophe.SASLGitea.test = function (connection)
                                 {
                                     return getSetting("password", null) !== null;
                                 };
 
-                                Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+                                Strophe.SASLGitea.prototype.onChallenge = function (connection)
                                 {
                                     var token = getSetting("username", null) + ":" + getSetting("password", null);
-                                    console.debug("Strophe.SASLOFChat", token);
+                                    console.debug("Strophe.SASLGitea", token);
                                     return token;
                                 };
 
-                                connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
+                                connection.mechanisms[Strophe.SASLGitea.prototype.name] = Strophe.SASLGitea;
                                 console.debug("strophe plugin: ofchatsasl enabled");
                             }
                         });
