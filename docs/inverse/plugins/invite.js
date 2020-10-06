@@ -90,11 +90,9 @@
                 if (view.model.get("type") === "chatroom" && inviteAvailable && !view.el.querySelector(".fa-user-plus") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
-                    padeapi.addToolbarItem(view, id, "pade-invite-" + id, '<a class="fas fa-user-plus" title="Invite others to this chat with a saved invitation"></a>');
+                    var invite = padeapi.addToolbarItem(view, id, "pade-invite-" + id, '<a class="fas fa-user-plus" title="Invite others to this chat with a saved invitation"></a>');
 
-                    var invite = document.getElementById("pade-invite-" + id);
-
-                    if (invite) invite.addEventListener('click', function(evt)
+                    invite.addEventListener('click', function(evt)
                     {
                         evt.stopPropagation();
 

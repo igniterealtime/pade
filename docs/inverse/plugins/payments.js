@@ -87,7 +87,7 @@
 
             _converse.api.listen.on('renderToolbar', function(view)
             {
-                if (bgWindow)
+                if (bgWindow && bgWindow.pade)
                 {
                     var id = view.model.get("box_id");
                     var jid = view.model.get("jid");

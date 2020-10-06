@@ -564,7 +564,7 @@ var padeapi = (function(api)
 
                                 Strophe.SASLGitea.prototype.onChallenge = function (connection)
                                 {
-                                    return getSetting("password");
+                                    return btoa(Strophe.getNodeFromJid(connection.jid) + ":" + connection.pass);
                                 };
 
                                 connection.mechanisms[Strophe.SASLGitea.prototype.name] = Strophe.SASLGitea;
@@ -826,9 +826,13 @@ var padeapi = (function(api)
                         background.$iq = $iq;
                         background.$msg = $msg;
                         background.$pres = $pres;
-                        background.pade.connection = _converse.connection;
-                        background.setupUserPayment();
-                        background.setupStreamDeck();
+
+                        if (background.pade)
+                        {
+                            background.pade.connection = _converse.connection;
+                            background.setupUserPayment();
+                            background.setupStreamDeck();
+                        }
 
                         const id = Strophe.getNodeFromJid(_converse.connection.jid);
                         const password = _converse.connection.pass;

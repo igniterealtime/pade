@@ -79,16 +79,13 @@
                 {
                     var jid = view.model.get("jid");
                     var id = view.model.get("box_id");
-
-                    padeapi.addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
-
                     var occupants = view.el.querySelector('.occupants');
 
                     if (occupants)
                     {
-                        var infoButton = document.getElementById("pade-info-" + id);
+                        var infoButton = padeapi.addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info" title="Information"></a>');
 
-                        if (infoButton) infoButton.addEventListener('click', function(evt)
+                        infoButton.addEventListener('click', function(evt)
                         {
                             evt.stopPropagation();
                             toggleInfoBar(view, id, jid);

@@ -14,8 +14,8 @@
 
         for (let i=0; i<peers.length; i++)
         {
-           ohun[peers[i]].peer.close();
-           ohun[peers[i]].localStream.getTracks().forEach(track => track.stop());
+           if (ohun[peers[i]].peer)         ohun[peers[i]].peer.close();
+           if (ohun[peers[i]].localStream)  ohun[peers[i]].localStream.getTracks().forEach(track => track.stop());
         }
     });
 

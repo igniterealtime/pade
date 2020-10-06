@@ -114,11 +114,9 @@
                 if (!view.el.querySelector(".fa-male") && getSetting("showToolbarIcons", true))
                 {
                     var id = view.model.get("box_id");
-                    padeapi.addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
+                    var directory = padeapi.addToolbarItem(view, id, "pade-directory-" + id, '<a title="Search User Directory"><span class="fa fa-male"></span><span class="fa fa-female"></span></a>');
 
-                    var directory = document.getElementById("pade-directory-" + id);
-
-                    if (directory) directory.addEventListener('click', function(evt)
+                    directory.addEventListener('click', function(evt)
                     {
                         evt.stopPropagation();
 
@@ -165,7 +163,7 @@
 
     function findUsers(search, callback)
     {
-        if (bgWindow)
+        if (bgWindow && bgWindow.pade)
         {
             var url =  "https://" + bgWindow.pade.server + "/rest/api/restapi/v1/meet/profile/" + search;
             var options = {method: "GET", headers: {"authorization": "Basic " + btoa(bgWindow.pade.username + ":" + bgWindow.pade.password), "accept": "application/json"}};

@@ -559,7 +559,7 @@
                         }
                     }
 
-                    if (bgWindow.pade.ofmeetUrl)
+                    if (bgWindow.pade && bgWindow.pade.ofmeetUrl)
                     {
                         html = '<a class="fas fa-video" title="Audio/Video/Screenshare Conference"></a>';
                         var handleJitsiMeet = padeapi.addToolbarItem(view, id, "webmeet-jitsi-meet-" + id, html);
@@ -578,7 +578,7 @@
                         }, false);
                     }
 
-                    if (bgWindow.pade.chatAPIAvailable)
+                    if (bgWindow.pade && bgWindow.pade.chatAPIAvailable)
                     {
                         const domain = Strophe.getDomainFromJid(jid);
 
