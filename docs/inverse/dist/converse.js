@@ -27641,10 +27641,12 @@ var DriverSupport = {};
 var DefaultDrivers = {
     INDEXEDDB: asyncStorage,
     WEBSQL: webSQLStorage,
-    LOCALSTORAGE: localStorageWrapper
+    LOCALSTORAGE: localStorageWrapper,
+    webExtensionSyncStorage: webExtensionStorageDriver.sync,
+    webExtensionLocalStorage: webExtensionStorageDriver.local
 };
 
-var DefaultDriverOrder = [DefaultDrivers.INDEXEDDB._driver, DefaultDrivers.WEBSQL._driver, DefaultDrivers.LOCALSTORAGE._driver];
+var DefaultDriverOrder = [DefaultDrivers.INDEXEDDB._driver, DefaultDrivers.WEBSQL._driver, DefaultDrivers.LOCALSTORAGE._driver, DefaultDrivers.webExtensionLocalStorage._driver, DefaultDrivers.webExtensionSyncStorage._driver];
 
 var OptionalDriverMethods = ['dropInstance'];
 
@@ -51858,10 +51860,13 @@ class backbone_browserStorage_BrowserStorage {
                     options.success(data, options);
                 }
             } else {
+                options.success(null, options);
+/* BAO
                 errorMessage = errorMessage ? errorMessage : "Record Not Found";
                 if (options && options.error) {
                     options.error(errorMessage);
                 }
+*/
             }
         }
         localSync.__name__ = 'localSync';
@@ -53931,6 +53936,17 @@ function initPersistentStorage() {
   if (converse_core_converse.persistent_store === 'localStorage') {
     config['description'] = 'localStorage instance';
     config['driver'] = [backbone_browserStorage.localForage.LOCALSTORAGE];
+
+// BAO
+  } else if (converse_core_converse.persistent_store === 'BrowserSync') {
+    config['description'] = 'chrome.storage.sync instance';
+    config['driver'] = [backbone_browserStorage.localForage.webExtensionSyncStorage];
+
+// BAO
+  } else if (converse_core_converse.persistent_store === 'BrowserLocal') {
+    config['description'] = 'chrome.storage.local instance';
+    config['driver'] = [backbone_browserStorage.localForage.webExtensionLocalStorage];
+
   } else if (converse_core_converse.persistent_store === 'IndexedDB') {
     config['description'] = 'indexedDB instance';
     config['driver'] = [backbone_browserStorage.localForage.INDEXEDDB];
@@ -60756,7 +60772,7 @@ converse_core.plugins.add('converse-muc', {
           }
         }
 
-        _converse.api.trigger('message', {
+        return _converse.api.trigger('message', {
           'stanza': original_stanza,
           'chatbox': this
         });
@@ -76982,11 +76998,9 @@ converse_core.plugins.add('converse-muc-views', {
         }
 
         form.addEventListener('submit', this.inviteFormSubmitted.bind(this), false);
+        let list;   // BAO
 
-        const list = _converse.roster.map(i => ({
-          'label': i.getDisplayName(),
-          'value': i.get('jid')
-        }));
+        if (_converse.roster) list = _converse.roster.map(i => ({ 'label': i.getDisplayName(), 'value': i.get('jid')  }));
 
         const el = this.el.querySelector('.suggestion-box').parentElement;
 

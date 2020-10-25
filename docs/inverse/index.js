@@ -523,7 +523,8 @@ var padeapi = (function(api)
               webinar_invitation: getSetting("webinarInvite", 'Please join webinar at'),
               webmeet_invitation: getSetting("ofmeetInvitation", 'Please join meeting at'),
               websocket_url: connUrl,
-              persistent_store: getSetting("conversePersistentStore", 'localStorage'),
+              persistent_store: getSetting("conversePersistentStore", 'none'),
+              trusted: getSetting("conversePersistentStore", 'none') == 'none' ? 'off' : 'on',
               enable_smacks: getSetting("enableSmacks", false),
               whitelisted_plugins: whitelistedPlugins
             };

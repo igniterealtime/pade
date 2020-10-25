@@ -1031,8 +1031,11 @@ this.manifest = {
             "type": "popupButton",
             "label": i18n.get("Persistent Store"),
             "options": [
+                {"text": "No Storage", "value": "none"},
+                {"text": "Browser Extension Local", "value": "BrowserLocal"},
                 {"text": "Local Storage", "value": "localStorage"},
-                {"text": "IndexedDB", "value": "IndexedDB"}
+                {"text": "IndexedDB", "value": "IndexedDB"},
+                {"text": "Browser Extension Sync", "value": "BrowserSync"}
             ]
         },
         {
@@ -1484,27 +1487,6 @@ this.manifest = {
             "name": "communityAutoStart",
             "type": "checkbox",
             "label": i18n.get("Auto Start Community")
-        },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Community"),
-            "name": "embedCommunityChat",
-            "type": "checkbox",
-            "label": i18n.get("Embed Converse for Community chat")
-        },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Community"),
-            "name": "communitySidecar",
-            "type": "checkbox",
-            "label": i18n.get("Use a sidecar panel for Converse")
-        },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Community"),
-            "name": "disableChatButton",
-            "type": "checkbox",
-            "label": i18n.get("Disable chat button for Converse")
         },
 /*
         {

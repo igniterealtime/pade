@@ -823,6 +823,7 @@ window.addEvent("domready", function () {
                     }
                 }
 
+                sessionStorage.clear();
                 localStorage.clear();
                 chrome.storage.local.clear();
 
@@ -1140,6 +1141,7 @@ function doDefaults(background)
     setDefaultSetting("chatWithOnlineContacts", true);
     setDefaultSetting("notifyWhenMentioned", true);
 
+    setDefaultSetting("conversePersistentStore", 'none')
     setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
