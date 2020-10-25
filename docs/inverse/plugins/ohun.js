@@ -200,7 +200,8 @@
             const json_ele = message.querySelector("json");
             const json = JSON.parse(json_ele.innerHTML);
 
-            const ohunRoom = room = decodeURIComponent(json.id);
+            ohunRoom = decodeURIComponent(json.id);
+            const room = ohunRoom;
 
             const json_jid = Strophe.getBareJidFromJid(json_ele.getAttribute("jid"));
             const json_type = json_ele.getAttribute("type");

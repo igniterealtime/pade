@@ -207,34 +207,6 @@ window.addEventListener("load", function()
 
         if (pade.busy) return;  // no presence broadcast while I am busy
 
-        var pres = $pres(), show = null, status = null;
-
-        if (idleState == "locked")
-        {
-            show = "xa";
-            pres.c("show").t(show).up();
-
-            status = getSetting("idleLockedMessage");
-            if (status) pres.c("status").t(status);
-        }
-        else
-
-        if (idleState == "idle")
-        {
-            show = "away";
-            pres.c("show").t(show).up();
-
-            status = getSetting("idleMessage");
-            if (status) pres.c("status").t(status);
-        }
-        else
-
-        if (idleState == "active")
-        {
-            status = getSetting("idleActiveMessage");
-            if (status) pres.c("status").t(status);
-        }
-
         if (pade.chatWindow)
         {
             var converse = chrome.extension.getViews({windowId: pade.chatWindow.id})[0];
@@ -256,9 +228,6 @@ window.addEventListener("load", function()
         setTimeout(function()   // wait for 3 secs before starting apps for O/S to be active and ready
         {
             reopenConverse();
-
-            if (getSetting("enableCommunity", false) && getSetting("communityAutoStart", false))
-                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), "minimized", 1024, 800);
 
             if (getSetting("enableOffice365Business", false) && getSetting("of365AutoStart", false))
                 openOffice365Window(true, "minimized");
@@ -326,7 +295,7 @@ window.addEventListener("load", function()
         {
             if (getSetting("enableCommunity", false))
             {
-                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/tiki"), null, 1024, 800);
+                openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/"), null, 1024, 800);
 
             } else {
                 openChatWindow("inverse/index.html");
@@ -1391,7 +1360,7 @@ function addCommunityMenu()
 
 function removeCommunityMenu()
 {
-    closeWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/tiki");
+    closeWebAppsWindow(getSetting("communityUrl"), getSetting("server") + "/");
     chrome.contextMenus.remove("pade_community");
 }
 
@@ -2024,8 +1993,14 @@ function enableRemoteControl()
 
 function reopenConverse()
 {
-    if (getSetting("converseAutoStart", false) && !pade.chatWindow)
-        openChatWindow("inverse/index.html", null, "minimized");
+    if (getSetting("enableCommunity", false))
+    {
+        if (getSetting("communityAutoStart", false))
+            openWebAppsWindow(getSetting("communityUrl", getSetting("server") + "/"), "minimized", 1024, 800);
+    } else {
+        if (getSetting("converseAutoStart", false) && !pade.chatWindow)
+            openChatWindow("inverse/index.html", null, "minimized");
+    }
 }
 
 function setupUserPayment()
