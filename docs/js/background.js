@@ -207,6 +207,27 @@ window.addEventListener("load", function()
 
         if (pade.busy) return;  // no presence broadcast while I am busy
 
+        var show = null, status = null;
+
+        if (idleState == "locked")
+        {
+            show = "xa";
+            status = getSetting("idleLockedMessage");
+        }
+        else
+
+        if (idleState == "idle")
+        {
+            show = "away";
+            status = getSetting("idleMessage");
+        }
+        else
+
+        if (idleState == "active")
+        {
+            status = getSetting("idleActiveMessage");
+        }
+
         if (pade.chatWindow)
         {
             var converse = chrome.extension.getViews({windowId: pade.chatWindow.id})[0];
