@@ -11,9 +11,26 @@ window.pade = {
 
 const channel = new BroadcastChannel('sw-notification');
 
-channel.addEventListener('message', event => {
-  console.log('Received', event.data);
-  openChatWindow("inverse/index.html");
+channel.addEventListener('message', event =>
+{
+    console.debug('Received sw-notification', event.data);
+
+    if (event.data.reply && event.data.reply != "")
+    {
+        var url =  "https://" + getSetting("server") + "/rest/api/restapi/v1/meet/message";
+        var options = {method: "POST", headers: {"authorization": "Basic " + btoa(getSetting("username") + ":" + getSetting("password")), "accept": "application/json"}, body: JSON.stringify(event.data) };
+
+        fetch(url, options).then(function(response)
+        {
+            console.debug("sw-notification response", response);
+
+        }).catch(function (err) {
+            console.error("sw-notification error", err);
+        });
+    }
+    else {
+        openChatWindow("inverse/index.html");
+    }
 });
 
 //pade.transferWiseUrl = "https://api.sandbox.transferwise.tech/v1";
