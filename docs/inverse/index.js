@@ -587,6 +587,20 @@ var padeapi = (function(api)
                     {
                         console.debug('webmeet - renderToolbar', view.model);
 
+                        view.el.querySelector('.chat-textarea').addEventListener("focus", function(evt)
+                        {
+                            console.debug("renderToolbar focus", evt);
+                            chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                            chrome.browserAction.setBadgeText({ text: "" });
+                        });
+
+                        view.el.querySelector('.chat-textarea').addEventListener("blur", function(evt)
+                        {
+                            console.debug("renderToolbar blur", evt);
+                            chrome.browserAction.setBadgeBackgroundColor({ color: '#0000e1' });
+                            chrome.browserAction.setBadgeText({ text: "" });
+                        });
+
                         var id = view.model.get("box_id");
                         var jid = view.model.get("jid");
                         var type = view.model.get("type");

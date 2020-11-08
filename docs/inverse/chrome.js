@@ -6,6 +6,7 @@ if (!window.chrome || !window.chrome.extension)
     var appLanguage = "en";
     var badgeBackgroundColor = {color: '#ff0000'};
     var i18nMessages = {};
+    var favico = null;
 
     if (window.localStorage["store.settings.language"])
     {
@@ -252,10 +253,12 @@ if (!window.chrome || !window.chrome.extension)
             },
 
             setBadgeText: function(data) {
-              if (!data || !data.text) return;
+              //console.debug("setBadgeText", data);
 
               var favicon = parent.document.getElementById('favicon');
               var faviconSize = 16;
+
+              if (!favico) favico = favicon.href;
 
               var canvas = document.createElement('canvas');
               canvas.width = faviconSize;
@@ -263,28 +266,31 @@ if (!window.chrome || !window.chrome.extension)
 
               var context = canvas.getContext('2d');
               var img = document.createElement('img');
-              img.src = favicon.href;
 
               img.onload = () => {
                   // Draw Original Favicon as Background
                   context.drawImage(img, 0, 0, faviconSize, faviconSize);
 
-                  // Draw Notification Circle
-                  context.beginPath();
-                  context.arc( canvas.width - faviconSize / 3 , faviconSize / 3, faviconSize / 3, 0, 2*Math.PI);
-                  context.fillStyle = badgeBackgroundColor.color;
-                  context.fill();
+                  if (data.text != "")
+                  {
+                      // Draw Notification Circle
+                      context.beginPath();
+                      context.arc( canvas.width - faviconSize / 3 , faviconSize / 3, faviconSize / 3, 0, 2*Math.PI);
+                      context.fillStyle = badgeBackgroundColor.color;
+                      context.fill();
 
-                  // Draw Notification Number
-                  context.font = '10px "helvetica", sans-serif';
-                  context.textAlign = "center";
-                  context.textBaseline = "middle";
-                  context.fillStyle = '#FFFFFF';
-                  context.fillText(data.text, canvas.width - faviconSize / 3, faviconSize / 3);
+                      // Draw Notification Number
+                      context.font = '10px "helvetica", sans-serif';
+                      context.textAlign = "center";
+                      context.textBaseline = "middle";
+                      context.fillStyle = '#FFFFFF';
+                      context.fillText(data.text, canvas.width - faviconSize / 3, faviconSize / 3);
+                  }
 
                   // Replace favicon
                   favicon.href = canvas.toDataURL('image/png');
-                };
+              };
+              img.src = favico;
 
             },
             setTitle: function(data) {
