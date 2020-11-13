@@ -62,7 +62,7 @@ self.addEventListener('push', function (event) {
         ]
     };
     event.waitUntil(
-        self.registration.showNotification("Pade - " + data.msgFrom, options)
+        self.registration.showNotification("Pade - " + data.fullname, options)
     );
 });
 
