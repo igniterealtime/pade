@@ -53,7 +53,7 @@ self.addEventListener('push', function (event) {
 
    const options = {
         body: data.msgBody,
-        icon: '../icon.png',
+        icon: data.avatar ? data.avatar : '../icon.png',
         vibrate: [100, 50, 100],
         data: data,
         actions: [
@@ -65,6 +65,10 @@ self.addEventListener('push', function (event) {
         self.registration.showNotification("Pade - " + data.msgFrom, options)
     );
 });
+
+self.addEventListener('message', function (evt) {
+  console.log('service worker postMessage received', evt.data);
+})
 
 self.addEventListener("pushsubscriptionchange", function(e) {
     console.debug('pushsubscriptionchange', e);
