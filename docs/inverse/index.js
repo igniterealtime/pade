@@ -837,6 +837,9 @@ var padeapi = (function(api)
                         listenForPresence();
                         publishUserLocation();
 
+                        if (!getSetting("boshUri"))      setSetting("boshUri", _converse.api.settings.get("bosh_service_url"))
+                        if (!getSetting("websocketUri")) setSetting("websocketUri", _converse.api.settings.get("websocket_url"))
+
                         background.Strophe = Strophe;
                         background.$iq = $iq;
                         background.$msg = $msg;
