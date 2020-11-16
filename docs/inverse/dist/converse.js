@@ -21419,7 +21419,7 @@ module.exports = isObject;
   // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
   // Override this if you'd like to use a different library.
   Backbone.ajax = function() {
-    return Backbone.$.ajax.apply(Backbone.$, arguments);
+    return Backbone.$.ajax?.apply(Backbone.$, arguments);   // BAO
   };
 
   // Backbone.Router
