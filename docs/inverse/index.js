@@ -42,18 +42,42 @@ var padeapi = (function(api)
 
         if (getSetting("clearCacheOnConnect", false))
         {
-            const deleteList = [];
-            console.debug("clearCacheOnConnect, old size", localStorage.length);
-
-            for (var i = 0; i < localStorage.length; i++)
+            if (getSetting("conversePersistentStore", 'none') == "localStorage")
             {
-                if (localStorage.key(i).includes("/converse.messages-"))
+                const deleteList = [];
+                console.debug("clearCacheOnConnect, old size", localStorage.length);
+
+                for (var i = 0; i < localStorage.length; i++)
                 {
-                    deleteList.push(localStorage.key(i));
+                    if (localStorage.key(i).includes("/converse.messages-"))
+                    {
+                        deleteList.push(localStorage.key(i));
+                    }
                 }
+                deleteList.forEach(function(key) {localStorage.removeItem(key)});
+                console.debug("clearCacheOnConnect, new size", localStorage.length);
             }
-            deleteList.forEach(function(key) {localStorage.removeItem(key)});
-            console.debug("clearCacheOnConnect, new size", localStorage.length);
+            else
+
+            if (getSetting("conversePersistentStore", 'none') == "BrowserLocal")
+            {
+                chrome.storage.local.get(null, function (data)
+                {
+                    var entry = Object.getOwnPropertyNames(data);
+                    console.debug("clearCacheOnConnect, old size", entry.length);
+                    let size = 0;
+
+                    for (var i=0; i<entry.length; i++)
+                    {
+                        if (entry[i].includes("converse.messages-"))
+                        {
+                            size++;
+                            chrome.storage.local.remove(entry[i]);
+                        }
+                    }
+                    console.debug("clearCacheOnConnect, new size", entry.length - size);
+                });
+            }
         }
 
         BrowserDetect.init();
