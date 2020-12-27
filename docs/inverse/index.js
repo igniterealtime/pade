@@ -359,7 +359,7 @@ var padeapi = (function(api)
            loadJS("plugins/audioconf.js");
         }
 
-        if (chrome.pade && getSetting("wgEnabled", false))
+        if (getSetting("wgEnabled", false))
         {
             whitelistedPlugins.push("fastpath");
             loadJS("plugins/fastpath.js");

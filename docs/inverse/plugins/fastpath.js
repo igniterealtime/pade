@@ -149,7 +149,9 @@
                 _fastpath.agents[name] = {name: name, jid: jid};
             });
 
-            console.debug('setupWorkgroup', _fastpath);
+            const room = _fastpath.workgroups[_fastpath.workgroup].room;
+            console.debug('setupWorkgroup - open ', room);
+            _converse.api.rooms.open(room);
 
         }, function(error){
             console.error("setupWorkgroup error", error);
@@ -418,7 +420,7 @@
 
             console.debug("acceptRejectOffer", question, email);
 
-            notifyText(question, "Fastpath - " + email, properties.id, function(notificationId, buttonIndex)
+            padeapi.notifyText(question, "Fastpath - " + email, properties.id, [{title: "Accept Offer?", iconUrl: chrome.extension.getURL("check-solid.svg")}, {title: "Reject Offer?", iconUrl: chrome.extension.getURL("times-solid.svg")}], function(notificationId, buttonIndex)
             {
                 console.debug("handleAction callback", notificationId, buttonIndex);
 
