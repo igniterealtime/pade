@@ -1,5 +1,93 @@
 <h1 id="changelog">Changelog</h1>
 
+<p><b>1.6.13</b> -- <i>December 31, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/250">Fixed #250: Pàdé should be Fastpath aware</a></li>
+</ul
+
+<p><b>1.6.12</b> -- <i>November 30, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/openfire-pade-plugin/issues/87">Fixed #87: Add support for /.well-known/host.meta file</a></li>
+    <li><a href="https://github.com/igniterealtime/openfire-pade-plugin/issues/83">Fixed #83: Favicon icon not resetting when unread message count is zero</a></li>
+    <li><a href="https://github.com/igniterealtime/openfire-pade-plugin/issues/81">Fixed #81: Add support for web notification inline replies</a></li>
+</ul
+
+<p><b>1.6.11</b> -- <i>October 31, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/240">Fixed #240: Added support for using chrome.storage.local and chrome.storage.sync in Converse</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/241">Fixed #241: Auto presence is broken</a></li>
+    <li>Added support for user authentication using the Openfire gitea plugin</li>
+</ul>
+
+<p><b>1.6.10</b> -- <i>September 30, 2020</i></p>
+<ul>
+    <li>Added support for voice chats using the Openfire Ohun plugin</li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/236">Fixed #236: User Directory in Padé Chat does not work</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/237">Fixed #237: Wordchat windows is not large enough to display full chart</a></li>
+</ul>
+
+<p><b>1.6.9</b> -- <i>August 31, 2020</i></p>
+<ul>
+    <li>Added support for stereo to Openfire Meetings</li>
+</ul>
+
+<p><b>1.6.8</b> -- <i>July 31, 2020</i></p>
+<ul>
+    <li>Added Meet now button to Converse for direct access to Openfire Meetings</li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/224">Fixed #224: PWA app install on Android & Win10, does not suggest to install app</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/225">Fixed #225: Message notification on Android and Linux chrome</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/231">Fixed #231: Building custom chrom extension / problem with setting ofmeetUrl in branding.js</a></li>
+</ul>
+
+<p><b>1.6.7</b> -- <i>June 28, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/230">Fixed #230: Geolocalisation Icon does not show up in Bar</a></li>
+</ul>
+
+<p><b>1.6.6</b> -- <i>June 15, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/229">Fixed #229: Meetings: Start with Video Muted doesnt work</a></li>
+</ul>
+
+<p><b>1.6.5</b> -- <i>June 8, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/228">Fixed #228: Pade spamming PEP with eu.siacs.conversations.axolotl.bundles</a></li>
+</ul>
+
+<p><b>1.6.4</b> -- <i>June 1, 2020</i></p>
+<ul>
+    <li>Implement peer-to-peer Jingle video calls. Not yet compatible with Conversations</li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/220">Fixed #220: Consolidate jitsi-meet for browser extension, web and hosted versions</a></li>
+    <li>Refactor code. Remove background xmpp connection</li>
+    <li>Updated support for mermaid diagrams in chat conversations</li>
+</ul>
+
+<p><b>1.6.3</b> -- <i>April 10, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/219">Fixed #219: Group Chat directory</a></li>
+    <li><a href="https://github.com/igniterealtime/pade/issues/217">Fixed #217: Joined Groupchats do not appear in UI</a></li>
+    <li>Updated jitsi-meet to latest code</li>
+    <li>Set the default Converse homepage to help web page</li>
+    <li>Administrator can now set server-side URL bookmarks for homepage, rss feeds and webapps</li>
+</ul>
+
+<p><b>1.6.2</b> -- <i>March 16, 2020</i></p>
+<ul>
+    <li><a href="https://github.com/igniterealtime/pade/issues/216">Fixed #216: Trouble getting SSO to work</a></li>
+    <li>Improved UI for contact mentions</li>
+    <li>Added setting for audio-conf plugin. Default is disabled</li>
+    <li>Added /summary command using js-summarize.js</li>
+    <li>More animated custom emojis</li>
+    <li>Added PDF download to search</li>
+    <li>Upgraded hosted (pade.chat) to Converse 6.0</li>
+</ul>
+
+<p><b>1.6.1</b> -- <i>February 21, 2020</i></p>
+<ul>
+    <li>Cherry pick fixes to Converse 6.0.1</li>
+    <li>Fixed refresh issue with RSS feeds</li>
+</ul>
+
 <p><b>1.6.0</b> -- <i>February 11, 2020</i></p>
 <ul>
     <li>Upgraded to Converse 6.0.0</li>
