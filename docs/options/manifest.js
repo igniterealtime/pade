@@ -322,6 +322,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("General"),
+            "group": i18n.get("Directories"),
+            "name": "enableDirectorySearch",
+            "type": "checkbox",
+            "label": i18n.get("Enable directories to be searched")
+        },
+        {
+            "tab": i18n.get("General"),
             "group": i18n.get("Location"),
             "name": "userLocation",
             "type": "description",
@@ -1777,115 +1784,6 @@ this.manifest = {
             "label": i18n.get("Gmail"),
             "text": i18n.get("Enter list of email accounts"),
         },
-        {                                               // search
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Rooms Directory"),
-            "name": "roomsSearchString",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter the search text"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Rooms Directory"),
-            "name": "roomsSearch",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("search")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Rooms Directory"),
-            "name": "roomsSearchResults",
-            "text": i18n.get(""),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("User Directory"),
-            "name": "searchString",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter the partial name or email address"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("User Directory"),
-            "name": "search",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("search")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("User Directory"),
-            "name": "searchResults",
-            "text": i18n.get(""),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Invitation List"),
-            "name": "meetingName",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter a name for the meeting"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Invitation List"),
-            "name": "invitationList",
-            "type": "textarea",
-            "label": i18n.get(""),
-            "text": i18n.get("Edit the list of meeting invitees"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Invitation List"),
-            "name": "inviteToMeeting",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Meet Now")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Invitation List"),
-            "name": "saveMeeting",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Save for Later")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearchString",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter the keywords delimted by space"),
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearch",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("search")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convPdf",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Download PDF File")
-        },
-        {
-            "tab": i18n.get("Search"),
-            "group": i18n.get("Conversations"),
-            "name": "convSearchResults",
-            "text": i18n.get(""),
-            "type": "description"
-        },
         {
             "tab": i18n.get("Feeds"),
             "group": i18n.get("RSS/Atom"),
@@ -2123,6 +2021,120 @@ if (getSetting("enableFriendships", false))
     });
 }
 
+if (getSetting("enableDirectorySearch", true))
+{
+    this.manifest.settings.push(
+    {
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Rooms Directory"),
+        "name": "roomsSearchString",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the search text"),
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Rooms Directory"),
+        "name": "roomsSearch",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("search")
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Rooms Directory"),
+        "name": "roomsSearchResults",
+        "text": i18n.get(""),
+        "type": "description"
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("User Directory"),
+        "name": "searchString",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the partial name or email address"),
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("User Directory"),
+        "name": "search",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("search")
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("User Directory"),
+        "name": "searchResults",
+        "text": i18n.get(""),
+        "type": "description"
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Invitation List"),
+        "name": "meetingName",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter a name for the meeting"),
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Invitation List"),
+        "name": "invitationList",
+        "type": "textarea",
+        "label": i18n.get(""),
+        "text": i18n.get("Edit the list of meeting invitees"),
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Invitation List"),
+        "name": "inviteToMeeting",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("Meet Now")
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Invitation List"),
+        "name": "saveMeeting",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("Save for Later")
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Conversations"),
+        "name": "convSearchString",
+        "type": "text",
+        "label": i18n.get(""),
+        "text": i18n.get("Enter the keywords delimted by space"),
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Conversations"),
+        "name": "convSearch",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("search")
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Conversations"),
+        "name": "convPdf",
+        "type": "button",
+        "label": i18n.get(""),
+        "text": i18n.get("Download PDF File")
+    });
+    this.manifest.settings.push({
+        "tab": i18n.get("Search"),
+        "group": i18n.get("Conversations"),
+        "name": "convSearchResults",
+        "text": i18n.get(""),
+        "type": "description"
+    });
+
+}
 // TouchPad
 
 if (getSetting("useStreamDeck", false))

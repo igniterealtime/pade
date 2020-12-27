@@ -1170,6 +1170,7 @@ function doDefaults(background)
     setDefaultSetting("useMarkdown", true);
     setDefaultSetting("showToolbarIcons", true);
     setDefaultSetting("enableNotesTool", true);
+    setDefaultSetting("enableDirectorySearch", true);
     // most people don't want this
     //setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 10);

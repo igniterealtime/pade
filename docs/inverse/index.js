@@ -299,7 +299,7 @@ var padeapi = (function(api)
 
     if (getSetting("showToolbarIcons", false))
     {
-        whitelistedPlugins = ["paderoot", "webmeet", "search", "directory", "invite", "vmsg", "payments", "ohun"];
+        whitelistedPlugins = ["paderoot", "webmeet", "search", "invite", "vmsg", "payments", "ohun"];
         loadCSS("plugins/css/search.css");
         loadCSS("plugins/css/flatpickr.css");
 
@@ -309,12 +309,17 @@ var padeapi = (function(api)
 
         loadJS("plugins/payments.js");
         loadJS("plugins/search.js");
-        loadJS("plugins/directory.js");
         loadJS("plugins/invite.js");
         loadJS("plugins/vmsg.js");
         loadJS("plugins/ohun.js");
 
         loadJS("plugins/webmeet.js");
+
+        if (getSetting("enableDirectorySearch", true))
+        {
+            whitelistedPlugins.push("directory");
+            loadJS("plugins/directory.js");
+        }
 
         if (getSetting("showWordCloud", false))
         {
