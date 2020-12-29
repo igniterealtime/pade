@@ -14,6 +14,7 @@ var branding = {
     uportPermission         : {disable: true},
     useUport                : {disable: true},
 
+    enableDirectorySearch   : {disable: true, value: false},
     audioOnly               : {disable: true},
     blastDescription        : {disable: true},
     blogDescription         : {disable: true},
