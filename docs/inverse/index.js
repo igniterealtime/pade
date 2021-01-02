@@ -1113,7 +1113,7 @@ var padeapi = (function(api)
 
                             if (this.model.vcard)
                             {
-                                if (!this.model.get("fullname") && this.model.get("from").indexOf("\\40") > -1)
+                                if (!this.model.get("fullname") && this.model.get("from") && this.model.get("from").indexOf("\\40") > -1)
                                 {
                                     this.model.vcard.attributes.fullname = Strophe.unescapeNode(this.model.get("from").split("@")[0]);
                                 }
@@ -1461,7 +1461,7 @@ var padeapi = (function(api)
             if (!name)
             {
                 name = from.split("@")[0];
-                if (name.indexOf("sms-") == 0) name = name.substring(4);
+                if (name && name.indexOf("sms-") == 0) name = name.substring(4);
             }
 
             var contact = _inverse.roster.findWhere({'jid': from});
