@@ -1141,7 +1141,7 @@ function doDefaults(background)
     setDefaultSetting("chatWithOnlineContacts", true);
     setDefaultSetting("notifyWhenMentioned", true);
 
-    setDefaultSetting("conversePersistentStore", 'none')
+    setDefaultSetting("conversePersistentStore", 'localStorage')
     setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
