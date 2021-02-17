@@ -285,6 +285,21 @@ if (!window.chrome || !window.chrome.extension)
                       context.textBaseline = "middle";
                       context.fillStyle = '#FFFFFF';
                       context.fillText(data.text, canvas.width - faviconSize / 3, faviconSize / 3);
+
+                      if (navigator.setAppBadge)
+                      {
+                          navigator.setAppBadge(parseInt(data.text, 10)).catch((error) => {
+                            console.error("setBadgeText", error);
+                          });
+                      }
+                  }
+                  else {
+                      if (navigator.clearAppBadge)
+                      {
+                          navigator.clearAppBadge().catch((error) => {
+                            console.error("setBadgeText", error);
+                          });
+                      }
                   }
 
                   // Replace favicon
