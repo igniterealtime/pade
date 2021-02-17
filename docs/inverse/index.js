@@ -1759,9 +1759,9 @@ var padeapi = (function(api)
         if (!nickname) nickname = "Anonymous";
         nickname = nickname.toLowerCase();
 
-        if (!width) width = 32;
-        if (!height) height = 32;
-        if (!font) font = "16px Arial";
+        if (!width) width = 128;
+        if (!height) height = 128;
+        if (!font) font = "64px Arial";
 
         var canvas = document.createElement('canvas');
         canvas.style.display = 'none';
@@ -1777,23 +1777,34 @@ var padeapi = (function(api)
         var first, last, pos = nickname.indexOf("@");
         if (pos > 0) nickname = nickname.substring(0, pos);
 
-        var name = nickname.split(" ");
-        if (name.length == 1) name = nickname.split(".");
-        if (name.length == 1) name = nickname.split("-");
-        var l = name.length - 1;
+        console.debug("_createAvatar: " + nickname );
+        // try to split nickname into words at different symbols with preference
+        let words = nickname.split(/[, ]/); // "John W. Doe" -> "John "W." "Doe"  or  "Doe,John W." -> "Doe" "John" "W."
+        if (words.length == 1) words = nickname.split("."); // "John.Doe" -> "John" "Doe"  or  "John.W.Doe" -> "John" "W" "Doe"
+        if (words.length == 1) words = nickname.split("-"); // "John-Doe" -> "John" "Doe"  or  "John-W-Doe" -> "John" "W" "Doe"
 
-        if (name && name[0] && name.first != '')
+        if (words && words[0] && words.first != '')
         {
-            first = name[0][0];
-            last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
 
-            if (last) {
-                var initials = first + last;
-                context.fillText(initials.toUpperCase(), 3, 23);
-            } else {
-                var initials = first;
-                context.fillText(initials.toUpperCase(), 10, 23);
+            const firstInitial = words[0][0]; // first letter of first word
+            var lastInitial = null; // first letter of last word, if any
+
+            const lastWordIdx = words.length - 1; // index of last word
+            if (lastWordIdx > 0 && words[lastWordIdx] && words[lastWordIdx] != '')
+            {
+                lastInitial = words[lastWordIdx][0]; // first letter of last word
             }
+
+            // if nickname consist of more than one words, compose the initials as two letter
+            if (lastInitial) {
+                // if any comma is in the nickname, treat it to have the lastname in front, i.e. compose reversed
+                const initials = nickname.indexOf(",") == -1 ? firstInitial + lastInitial : lastInitial + firstInitial;
+                context.fillText(initials.toUpperCase(), 20, 88);
+            } else {
+                context.fillText(firstInitial.toUpperCase(), 44, 88);
+            }
+
+
             var data = canvas.toDataURL();
             document.body.removeChild(canvas);
         }
