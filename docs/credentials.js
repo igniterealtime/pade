@@ -27,6 +27,8 @@ function getCredentials(username, password, callback)
 
 function setCredentials(creds, webAuthn)
 {
+	setSetting("username", creds.id);
+	
     if (navigator.credentials)
     {
 		if (webAuthn && !localStorage.getItem("ofmeet.webauthn.username")) 
@@ -170,4 +172,9 @@ function bufferEncode(e)
 	let n = "";
 	for (const e of t) n += String.fromCharCode(e);
 	return btoa(n).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "")
+}
+
+function setSetting(name, value)
+{
+    window.localStorage["store.settings." + name] = JSON.stringify(value);
 }

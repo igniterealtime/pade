@@ -103,7 +103,8 @@ var padeapi = (function(api)
                     console.error('access denied error', err);
                     doConverse(server, username, password, true);
                 });
-            }				
+            
+			} else doConverse(server, username, password, anonUser);				
         }
 
         if (chrome.pade)    // browser mode
@@ -1080,7 +1081,7 @@ var padeapi = (function(api)
                         });
                     }
 
-                    if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useSmartIdCard", false) || getSetting("useWebAuthn", false))
+                    if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useSmartIdCard", false) || (getSetting("useWebAuthn", false) && localStorage.getItem("ofmeet.webauthn.username")))
                     {
                         Strophe.addConnectionPlugin('ofchatsasl',
                         {

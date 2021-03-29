@@ -11,6 +11,7 @@ if (!window.chrome || !window.chrome.extension)
     if (window.localStorage["store.settings.language"])
     {
         appLanguage = JSON.parse(window.localStorage["store.settings.language"]);
+		if (!appLanguage || appLanguage == "") appLanguage = "en";
     }
 
     fetch("https://" + location.host + "/" + padeName + "/_locales/" + appLanguage + "/messages.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(messages)
