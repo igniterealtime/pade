@@ -107,6 +107,74 @@ var padeapi = (function(api)
                 });
 
             }
+			else
+				
+			if (getSetting("useWebAuthn", false) && localStorage.getItem("ofmeet.webauthn.username") && !password)
+			{
+				const username = localStorage.getItem("ofmeet.webauthn.username");			
+		
+				let bufferDecode = function (e) {
+					const t = "==".slice(0, (4 - e.length % 4) % 4),
+						n = e.replace(/-/g, "+").replace(/_/g, "/") + t,
+						r = atob(n),
+						o = new ArrayBuffer(r.length),
+						c = new Uint8Array(o);
+					for (let e = 0; e < r.length; e++) c[e] = r.charCodeAt(e);
+					return o
+				}
+
+				let bufferEncode = function (e) {
+					const t = new Uint8Array(e);
+					let n = "";
+					for (const e of t) n += String.fromCharCode(e);
+					return btoa(n).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "")
+				}					
+
+				fetch(location.protocol + "//" + location.host + "/rest/api/restapi/v1/meet/webauthn/authenticate/start/" + username, {method: "POST"}).then(function(response){ return response.json()}).then((options) => 
+				{	
+					console.debug("/webauthn/authenticate/start", options);
+							
+					options.publicKeyCredentialRequestOptions.allowCredentials.forEach(function (listItem) 
+					{
+						listItem.id = bufferDecode(listItem.id)
+					});
+					
+					options.publicKeyCredentialRequestOptions.challenge = bufferDecode(options.publicKeyCredentialRequestOptions.challenge);						
+					return navigator.credentials.get({publicKey: options.publicKeyCredentialRequestOptions});
+				
+				}).then((assertion) => {
+					console.debug("/webauthn/authenticate/start - assertion", assertion, assertion.id, assertion.type);							
+					const credential = {};
+					credential.id =     assertion.id;
+					credential.type =   assertion.type;
+					credential.rawId =  bufferEncode(assertion.rawId);
+
+					if (assertion.response) {
+						const clientDataJSON = bufferEncode(assertion.response.clientDataJSON);
+						const authenticatorData = bufferEncode(assertion.response.authenticatorData);
+						const signature = bufferEncode(assertion.response.signature);
+						const userHandle = bufferEncode(assertion.response.userHandle);
+						credential.response = {clientDataJSON, authenticatorData,	signature, userHandle};
+						if (!credential.clientExtensionResults) credential.clientExtensionResults = {};						  
+					}
+					
+					fetch(location.protocol + "//" + location.host + "/rest/api/restapi/v1/meet/webauthn/authenticate/finish/" + username, {method: "POST", body: JSON.stringify(credential)}).then((success) => 
+					{
+						console.debug("webauthn/authenticate/finish ok");
+						setSetting("username", username);
+						setSetting("password", credential.id)	
+						doConverse(server, username, credential.id, anonUser);						
+						
+					}).catch((error) => {
+						console.error("webauthn/authenticate/finish error", error);							
+						doConverse(server, username, password, anonUser);
+					})
+					
+				}).catch((error) => {
+					console.error("webauthn/authenticate/start error", error);							
+					doConverse(server, username, password, anonUser);
+				})								
+			}			
             else {
                 doConverse(server, username, password, anonUser);
             }
@@ -895,7 +963,7 @@ var padeapi = (function(api)
                             {
                                 if (parent.setCredentials)    // save new credentials
                                 {
-                                    parent.setCredentials({id: id, password: password});
+                                    parent.setCredentials({id: id, password: password}, getSetting("useWebAuthn", false));
                                 }
                             }
 
@@ -1076,28 +1144,28 @@ var padeapi = (function(api)
                         });
                     }
 
-                    if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useSmartIdCard", false))
+                    if (getSetting("useTotp", false) || getSetting("useWinSSO", false) || getSetting("useSmartIdCard", false) || getSetting("useWebAuthn", false))
                     {
                         Strophe.addConnectionPlugin('ofchatsasl',
                         {
                             init: function (connection)
                             {
-                                Strophe.SASLGitea = function () { };
-                                Strophe.SASLGitea.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+                                Strophe.SASLOFChat = function () { };
+                                Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
 
-                                Strophe.SASLGitea.test = function (connection)
+                                Strophe.SASLOFChat.test = function (connection)
                                 {
-                                    return getSetting("password", null) !== null;
+                                    return getSetting("username", null) !== null;
                                 };
 
-                                Strophe.SASLGitea.prototype.onChallenge = function (connection)
+                                Strophe.SASLOFChat.prototype.onChallenge = function (connection)
                                 {
                                     var token = getSetting("username", null) + ":" + getSetting("password", null);
-                                    console.debug("Strophe.SASLGitea", token);
+                                    console.debug("Strophe.SASLOFChat", token);
                                     return token;
                                 };
 
-                                connection.mechanisms[Strophe.SASLGitea.prototype.name] = Strophe.SASLGitea;
+                                connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
                                 console.debug("strophe plugin: ofchatsasl enabled");
                             }
                         });

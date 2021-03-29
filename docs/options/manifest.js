@@ -98,10 +98,17 @@ this.manifest = {
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
+            "name": "useWebAuthn",
+            "type": "checkbox",
+            "label": i18n.get("Use Web Authentication <b>(requires openfire pade plugin)</b>")
+        },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Authentication"),
             "name": "useBasicAuth",
             "type": "checkbox",
             "label": i18n.get("Use Basic Authentication <b>(requires openfire pade plugin)</b>")
-        },
+        },		
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Authentication"),
@@ -114,7 +121,7 @@ this.manifest = {
             "group": i18n.get("Authentication"),
             "name": "useWinSSO",
             "type": "checkbox",
-            "label": i18n.get("Use Windows Single Sign On")
+            "label": i18n.get("Use Windows Single Sign On <b>(requires openfire pade plugin)</b>")
         },
         {
             "tab": i18n.get("Connection"),
