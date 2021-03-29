@@ -97,87 +97,13 @@ var padeapi = (function(api)
                 {
                     username = token.username;
                     password = token.password;
-
                     doConverse(server, username, password, false);
 
                 }).catch(function (err) {
                     console.error('access denied error', err);
-
                     doConverse(server, username, password, true);
                 });
-
-            }
-			else
-				
-			if (getSetting("useWebAuthn", false) && localStorage.getItem("ofmeet.webauthn.username") && !password)
-			{
-				const username = localStorage.getItem("ofmeet.webauthn.username");			
-		
-				let bufferDecode = function (e) {
-					const t = "==".slice(0, (4 - e.length % 4) % 4),
-						n = e.replace(/-/g, "+").replace(/_/g, "/") + t,
-						r = atob(n),
-						o = new ArrayBuffer(r.length),
-						c = new Uint8Array(o);
-					for (let e = 0; e < r.length; e++) c[e] = r.charCodeAt(e);
-					return o
-				}
-
-				let bufferEncode = function (e) {
-					const t = new Uint8Array(e);
-					let n = "";
-					for (const e of t) n += String.fromCharCode(e);
-					return btoa(n).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "")
-				}					
-
-				fetch(location.protocol + "//" + location.host + "/rest/api/restapi/v1/meet/webauthn/authenticate/start/" + username, {method: "POST"}).then(function(response){ return response.json()}).then((options) => 
-				{	
-					console.debug("/webauthn/authenticate/start", options);
-							
-					options.publicKeyCredentialRequestOptions.allowCredentials.forEach(function (listItem) 
-					{
-						listItem.id = bufferDecode(listItem.id)
-					});
-					
-					options.publicKeyCredentialRequestOptions.challenge = bufferDecode(options.publicKeyCredentialRequestOptions.challenge);						
-					return navigator.credentials.get({publicKey: options.publicKeyCredentialRequestOptions});
-				
-				}).then((assertion) => {
-					console.debug("/webauthn/authenticate/start - assertion", assertion, assertion.id, assertion.type);							
-					const credential = {};
-					credential.id =     assertion.id;
-					credential.type =   assertion.type;
-					credential.rawId =  bufferEncode(assertion.rawId);
-
-					if (assertion.response) {
-						const clientDataJSON = bufferEncode(assertion.response.clientDataJSON);
-						const authenticatorData = bufferEncode(assertion.response.authenticatorData);
-						const signature = bufferEncode(assertion.response.signature);
-						const userHandle = bufferEncode(assertion.response.userHandle);
-						credential.response = {clientDataJSON, authenticatorData,	signature, userHandle};
-						if (!credential.clientExtensionResults) credential.clientExtensionResults = {};						  
-					}
-					
-					fetch(location.protocol + "//" + location.host + "/rest/api/restapi/v1/meet/webauthn/authenticate/finish/" + username, {method: "POST", body: JSON.stringify(credential)}).then((success) => 
-					{
-						console.debug("webauthn/authenticate/finish ok");
-						setSetting("username", username);
-						setSetting("password", credential.id)	
-						doConverse(server, username, credential.id, anonUser);						
-						
-					}).catch((error) => {
-						console.error("webauthn/authenticate/finish error", error);							
-						doConverse(server, username, password, anonUser);
-					})
-					
-				}).catch((error) => {
-					console.error("webauthn/authenticate/start error", error);							
-					doConverse(server, username, password, anonUser);
-				})								
-			}			
-            else {
-                doConverse(server, username, password, anonUser);
-            }
+            }				
         }
 
         if (chrome.pade)    // browser mode
@@ -188,9 +114,19 @@ var padeapi = (function(api)
 
             setDefaultSetting("server", location.host);
             setDefaultSetting("domain", location.hostname);
+			
+			if (getSetting("useWebAuthn", false) && parent.registerWebAuthn && !password)
+			{
+				parent.authenticateWebAuth(function(user, pass)
+				{
+					if (user) setSetting("username", user);
+					if (pass) setSetting("password", pass)						
+					doConverse(server, user, pass, anonUser);
+				});
+			} 
+			else doBasicAuth();
         }
-
-        doBasicAuth();
+		else doBasicAuth();
     });
 
     window.addEventListener('message', function (event)
