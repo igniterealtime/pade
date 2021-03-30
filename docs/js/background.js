@@ -118,7 +118,7 @@ window.addEventListener("load", function()
             {
                 fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
                 {
-                    console.log("Strophe.SASLOFChat.WINSSO", accessToken);
+                    console.log("Strophe.SASLOFPade.WINSSO", accessToken);
 
                     if (accessToken.indexOf(":") > -1 )
                     {
@@ -136,7 +136,7 @@ window.addEventListener("load", function()
                     }
 
                 }).catch(function (err) {
-                    console.error("Strophe.SASLOFChat.WINSSO", err);
+                    console.error("Strophe.SASLOFPade.WINSSO", err);
                 });
             }
         }
@@ -566,7 +566,7 @@ function doSetupStrophePlugins()
         {
             fetch("https://" + server + "/sso/password", {method: "GET"}).then(function(response){ return response.text()}).then(function(accessToken)
             {
-                console.log("Strophe.SASLOFChat.WINSSO", accessToken);
+                console.log("Strophe.SASLOFPade.WINSSO", accessToken);
 
                 if (accessToken.indexOf(":") > -1 )
                 {
@@ -575,7 +575,7 @@ function doSetupStrophePlugins()
                 }
 
             }).catch(function (err) {
-                console.error("Strophe.SASLOFChat.WINSSO", err);
+                console.error("Strophe.SASLOFPade.WINSSO", err);
             });
         }
     }

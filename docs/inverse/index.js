@@ -1087,22 +1087,22 @@ var padeapi = (function(api)
                         {
                             init: function (connection)
                             {
-                                Strophe.SASLOFChat = function () { };
-                                Strophe.SASLOFChat.prototype = new Strophe.SASLMechanism("OFCHAT", true, 2000);
+                                Strophe.SASLOFPade = function () { };
+                                Strophe.SASLOFPade.prototype = new Strophe.SASLMechanism("PADE", true, 2000);
 
-                                Strophe.SASLOFChat.test = function (connection)
+                                Strophe.SASLOFPade.test = function (connection)
                                 {
                                     return getSetting("username", null) !== null;
                                 };
 
-                                Strophe.SASLOFChat.prototype.onChallenge = function (connection)
+                                Strophe.SASLOFPade.prototype.onChallenge = function (connection)
                                 {
                                     var token = getSetting("username", null) + ":" + getSetting("password", null);
-                                    console.debug("Strophe.SASLOFChat", token);
+                                    console.debug("Strophe.SASLOFPade", token);
                                     return token;
                                 };
 
-                                connection.mechanisms[Strophe.SASLOFChat.prototype.name] = Strophe.SASLOFChat;
+                                connection.mechanisms[Strophe.SASLOFPade.prototype.name] = Strophe.SASLOFPade;
                                 console.debug("strophe plugin: ofchatsasl enabled");
                             }
                         });
