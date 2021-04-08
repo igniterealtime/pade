@@ -1743,6 +1743,7 @@ var padeapi = (function(api)
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.font = font;
         context.fillStyle = "#fff";
+		context.textAlign = "center";		
 
         var first, last, pos = nickname.indexOf("@");
         if (pos > 0) nickname = nickname.substring(0, pos);
@@ -1766,14 +1767,14 @@ var padeapi = (function(api)
             }
 
             // if nickname consist of more than one words, compose the initials as two letter
+            var initials = firstInitial;
             if (lastInitial) {
                 // if any comma is in the nickname, treat it to have the lastname in front, i.e. compose reversed
-                const initials = nickname.indexOf(",") == -1 ? firstInitial + lastInitial : lastInitial + firstInitial;
-                context.fillText(initials.toUpperCase(), 20, 88);
-            } else {
-                context.fillText(firstInitial.toUpperCase(), 44, 88);
+                initials = nickname.indexOf(",") == -1 ? firstInitial + lastInitial : lastInitial + firstInitial;
             }
 
+            const metrics = context.measureText(initials.toUpperCase());
+            context.fillText(initials.toUpperCase(), width / 2, (height - metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2 + metrics.actualBoundingBoxAscent);
 
             var data = canvas.toDataURL();
             document.body.removeChild(canvas);
