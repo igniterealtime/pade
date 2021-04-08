@@ -2,7 +2,7 @@ if (!window.chrome || !window.chrome.extension)
 {
     var padeName = "pade";
     var appName = "Pade";
-    var appVer = "1.6.13";
+    var appVer = "1.6.14";
     var appLanguage = "en";
     var badgeBackgroundColor = {color: '#ff0000'};
     var i18nMessages = {};

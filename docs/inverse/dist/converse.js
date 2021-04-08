@@ -47601,7 +47601,7 @@ const Strophe = {
      *    A String containing the node.
      */
     getNodeFromJid: function (jid) {
-        if (jid.indexOf("@") < 0) { return null; }
+        if (!jid || jid.indexOf("@") < 0) { return ""; }
         return jid.split("@")[0];
     },
 
@@ -55572,7 +55572,7 @@ converse_core.plugins.add('converse-chat', {
       async setRosterContact(jid) {
         const contact = await _converse.api.contacts.get(jid);
 
-        if (contact) {
+        if (contact  && contact.get) {
           this.contact = contact;
           this.set('nickname', contact.get('nickname'));
           this.rosterContactAdded.resolve();
@@ -67177,6 +67177,14 @@ converse_core.plugins.add('converse-chatview', {
       onMessageLikeButtonClicked(ev) { // BAO
         ev.preventDefault();
 
+        const msg_el = converse_chatview_u.ancestor(ev.target, '.message');
+        const msgid = msg_el.getAttribute('data-msgid');
+        const time = msg_el.getAttribute('data-isodate');
+
+        this.model.set('reaction', {msgid: msgid, time: time});		
+		this.handleEmojiSelected(":thumbsup:");		
+
+/*
         const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
         const msgId = message_el.getAttribute('data-msgid');
         const message = this.model.messages.findWhere({'msgid': msgId});
@@ -67208,11 +67216,20 @@ converse_core.plugins.add('converse-chatview', {
                     .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
             }
         }
+*/		
       },
 
       onMessageDislikeButtonClicked(ev) { // BAO
         ev.preventDefault();
+		
+        const msg_el = converse_chatview_u.ancestor(ev.target, '.message');
+        const msgid = msg_el.getAttribute('data-msgid');
+        const time = msg_el.getAttribute('data-isodate');
 
+        this.model.set('reaction', {msgid: msgid, time: time});		
+		this.handleEmojiSelected(":thumbsdown:");			
+
+/*
         const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
         const msgId = message_el.getAttribute('data-msgid');
         const message = this.model.messages.findWhere({'msgid': msgId});
@@ -67238,6 +67255,7 @@ converse_core.plugins.add('converse-chatview', {
                     .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
             }
         }
+*/		
       },
 
       onMessagePinButtonClicked(ev) { // BAO
@@ -67860,7 +67878,7 @@ converse_core.plugins.add('converse-headlines', {
           _converse
         } = this.__super__;
 
-        if (attrs.type == _converse.HEADLINES_TYPE) {
+        if (attrs && attrs.type == _converse.HEADLINES_TYPE) {
           return new _converse.HeadlinesBox(attrs, options);
         } else {
           return this.__super__.model.apply(this, arguments);

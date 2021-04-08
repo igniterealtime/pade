@@ -608,7 +608,7 @@ var padeapi = (function(api)
                         });
                     }
 
-                    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + this._converse.VERSION_NAME;
+                    document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
 
                     _converse.api.settings.update({
                         rai_muc_service: "conference." + getSetting("domain"),
@@ -770,31 +770,6 @@ var padeapi = (function(api)
                             }
 
                             setActiveConversationsUread(chatbox, body.innerHTML);
-                        }
-
-                        if (!history && body && attachTo && (body.innerHTML.indexOf(":thumbsup:") > -1 || body.innerHTML.indexOf(":thumbsdown:") > -1))
-                        {
-                            const msgId = attachTo.getAttribute("id");
-                            const reaction = body.innerHTML.indexOf(":thumbsdown:") > -1 ? "dislike" : "like";
-
-                            console.debug("pade plugin - attach-to", msgId, reaction);
-
-                            if (chrome.storage && msgId)
-                            {
-                                chrome.storage.local.get(msgId, function(obj)
-                                {
-                                    if (!obj[msgId]) obj[msgId] = {};
-                                    if (!obj[msgId][reaction]) obj[msgId][reaction] = 0;
-
-                                    obj[msgId][reaction]++;
-
-                                    chrome.storage.local.set(obj, function() {
-                                      console.debug('set emoji reaction', obj);
-                                    });
-
-                                    displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
-                                });
-                            }
                         }
                     });
 
@@ -1369,16 +1344,6 @@ var padeapi = (function(api)
                                     }
                                 }
                             }
-
-                            // render message reaction totals
-
-                            if (chrome.storage) chrome.storage.local.get(msgId, function(obj)
-                            {
-                                if (obj[msgId])
-                                {
-                                    displayReactions(msgId, obj[msgId]["like"], obj[msgId]["dislike"]);
-                                }
-                            });
                         }
                     },
 
@@ -2312,32 +2277,6 @@ var padeapi = (function(api)
         var id = chatbox.get("box_id");
         var openBadge = document.getElementById("pade-badge-" + id);
         if (openBadge) openBadge.setAttribute("data-badge", "0");
-    }
-
-    function displayReactions(msgId, positives, negatives)
-    {
-        console.debug("displayReactions", positives, negatives);
-
-        const msgDiv = document.querySelector("#msg-" + msgId + " .chat-msg__text");
-
-        if (msgDiv)
-        {
-           let reactionDiv = document.querySelector("#msg-" + msgId + " .chat-msg__reactions");
-
-            if (!reactionDiv)
-            {
-                reactionDiv = document.createElement("div");
-                reactionDiv.classList.add("chat-msg__reactions");
-                msgDiv.insertAdjacentElement('afterEnd', reactionDiv);
-            }
-
-            let div =  '<table><tr>';
-            if (positives) div = div + '<td class="chat-msg__reaction far fa-thumbs-up"> ' + positives + '</td>';
-            if (negatives) div = div + '<td class="chat-msg__reaction far fa-thumbs-down"> ' + negatives + '</td>';
-            div = div + '</tr></table>';
-
-            reactionDiv.innerHTML = div;
-        }
     }
 
     function notifyText(message, title, jid, buttons, callback, notifyId)

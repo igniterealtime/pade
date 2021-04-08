@@ -5,7 +5,7 @@
   "short_name": "__MSG_manifest_shortExtensionName__",
   "name": "__MSG_manifest_extensionName__",
   "description": "__MSG_manifest_extensionDescription__",
-  "version": "1.6.13",
+  "version": "1.6.14",
   "homepage_url": "https://igniterealtime.github.io/pade/help",
 
   "options_ui": {
