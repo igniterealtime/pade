@@ -1275,7 +1275,9 @@
 
     var doVideo = function doVideo(view)
     {
-        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase() + "-" + Math.random().toString(36).substr(2,9);
+        var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase();
+		if (!padeapi.isMeeting(view.model.attributes.jid)) room = room + "-" + Math.random().toString(36).substr(2,9);
+		
         console.debug("doVideo", room, view);
 
         var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + bgWindow.pade.ofmeetUrl + room;

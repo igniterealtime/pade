@@ -1,7 +1,7 @@
 var padeapi = (function(api)
 {
     var background = chrome.extension.getBackgroundPage();
-    var nickColors = {}, anonRoster = {}, callbacks = {};
+    var nickColors = {}, anonRoster = {}, callbacks = {}, meetingRooms = {};
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse;
 
     var paderoot = {
@@ -775,7 +775,8 @@ var padeapi = (function(api)
 
                     _converse.api.listen.on('chatRoomViewInitialized', function (view)
                     {
-                        console.debug("chatRoomViewInitialized", view);
+						const jid = view.model.get("jid");						
+                        console.debug("chatRoomViewInitialized", jid);
 
                         if (!getSetting("alwaysShowOccupants", false))
                         {
@@ -787,6 +788,8 @@ var padeapi = (function(api)
 
                         view.model.occupants.on('add', occupant =>
                         {
+							if (occupant.get("nick") == 'focus') meetingRooms[jid] = true;
+							
                             if (occupant.get("jid"))
                             {
                                 //console.debug("chatbox.occupants added", occupant);
@@ -799,6 +802,7 @@ var padeapi = (function(api)
                         view.model.occupants.on('remove', occupant =>
                         {
                             //console.debug("chatbox.occupants removed", occupant);
+							if (occupant.get("nick") == 'focus') delete meetingRooms[jid];							
                             delete anonRoster[occupant.get("jid")];
                         });
                     });
@@ -2469,6 +2473,11 @@ var padeapi = (function(api)
     {
         _converse.xmppstatusview.model.set(attr, value)
     };
+	
+    api.isMeeting = function(jid)
+    {
+        return !!meetingRooms[jid];
+    };	
 
     api.origins = {};
     api.geoloc = paderoot.geoloc;
