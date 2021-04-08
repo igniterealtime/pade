@@ -67182,41 +67182,7 @@ converse_core.plugins.add('converse-chatview', {
         const time = msg_el.getAttribute('data-isodate');
 
         this.model.set('reaction', {msgid: msgid, time: time});		
-		this.handleEmojiSelected(":thumbsup:");		
-
-/*
-        const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
-        const msgId = message_el.getAttribute('data-msgid');
-        const message = this.model.messages.findWhere({'msgid': msgId});
-        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
-        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
-
-        let postfix = "";
-
-        if (message)
-        {
-            const type = message.get('type');
-
-            let text = window.getSelection().toString();
-
-            if (!text || text == "")
-            {
-                text = message.get('message');
-                let pos = text.indexOf("\n");
-                text = pos == -1 ? text : text.substring(0, pos);
-            }
-            postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
-
-            console.debug('onMessageLikeButtonClicked', msgId, from, type);
-
-            if (msgId && msgId.trim() != "")
-            {
-                _converse.connection.send($msg({type: type, 'to': from})
-                    .c("body").t(":thumbsup:" + postfix).up()
-                    .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
-            }
-        }
-*/		
+		this.handleEmojiSelected(":thumbsup:");				
       },
 
       onMessageDislikeButtonClicked(ev) { // BAO
@@ -67227,35 +67193,7 @@ converse_core.plugins.add('converse-chatview', {
         const time = msg_el.getAttribute('data-isodate');
 
         this.model.set('reaction', {msgid: msgid, time: time});		
-		this.handleEmojiSelected(":thumbsdown:");			
-
-/*
-        const message_el = converse_chatview_u.ancestor(ev.target, '.chat-msg');
-        const msgId = message_el.getAttribute('data-msgid');
-        const message = this.model.messages.findWhere({'msgid': msgId});
-        const from = Strophe.getBareJidFromJid(message_el.getAttribute('data-from'));
-        const nick = Strophe.getResourceFromJid(message_el.getAttribute('data-from'));
-
-        let postfix = "";
-
-        if (message)
-        {
-            const type = message.get('type');
-            let text = message.get('message');
-            let pos = text.indexOf("\n");
-            text = pos == -1 ? text : text.substring(0, pos);
-            postfix = " " + (type == "groupchat" ? nick : "") + ": " + text;
-
-            console.debug('onMessageDislikeButtonClicked', msgId, from);
-
-            if (msgId && msgId.trim() != "")
-            {
-                _converse.connection.send($msg({type: type, 'to': from})
-                    .c("body").t(":thumbsdown:" + postfix).up()
-                    .c("attach-to", {xmlns: "urn:xmpp:message-attaching:1", id: msgId}));
-            }
-        }
-*/		
+		this.handleEmojiSelected(":thumbsdown:");					
       },
 
       onMessagePinButtonClicked(ev) { // BAO
