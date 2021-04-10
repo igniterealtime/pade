@@ -1227,7 +1227,7 @@
 
     var openVideoWindow = function openVideoWindow(room, mode, view)
     {
-        if (getSetting("converseEmbedOfMeet", false) && bgWindow)
+        if ((getSetting("converseEmbedOfMeet", false) || padeapi.isMeeting(view.model.attributes.jid)) && bgWindow)
         {
             var url = bgWindow.getVideoWindowUrl(room, mode);
             var div = view.el.querySelector(".box-flyout");
@@ -1276,13 +1276,19 @@
     var doVideo = function doVideo(view)
     {
         var room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase();
-		if (!padeapi.isMeeting(view.model.attributes.jid)) room = room + "-" + Math.random().toString(36).substr(2,9);
-		
         console.debug("doVideo", room, view);
-
-        var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + bgWindow.pade.ofmeetUrl + room;
-        submitMessage(view, inviteMsg);
-        doAVConference(room, null, null, null, null, view);
+		
+		if (padeapi.isMeeting(view.model.attributes.jid))
+		{
+			doAVConference(room, null, null, null, null, view);	
+			view.model.leave();		
+			
+		} else {
+			room = room + "-" + Math.random().toString(36).substr(2,9);
+			var inviteMsg = _converse.api.settings.get("webmeet_invitation") + ' ' + bgWindow.pade.ofmeetUrl + room;
+			submitMessage(view, inviteMsg);
+			doAVConference(room, null, null, null, null, view);
+		}		
     }
 
     var doAVConference = function doAVConference(room, from, chatType, title, target, view)
