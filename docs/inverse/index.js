@@ -793,8 +793,8 @@ var padeapi = (function(api)
 								if (occupant.get("nick") == 'focus')
 								{
 									meetingRooms[jid] = true;
-									occupant.set("nick", "Jitsi Focus");	
 									setJitsiMeetNick(jid);
+									saveJitsiNick(occupant, "Jitsi Focus");									
 								}
 							
 								const nickName = nickNames[occupant.get("nick")];
@@ -802,7 +802,7 @@ var padeapi = (function(api)
 								
 								if (nickName)
 								{
-									occupant.set("nick", nickName);									
+									saveJitsiNick(occupant, nickName);										
 								}
 							}
 							
@@ -1993,6 +1993,15 @@ var padeapi = (function(api)
         }
     }
 	
+	function saveJitsiNick(occupant, nickName)
+	{
+		setTimeout(function()
+		{
+			occupant.save('nick', nickName);
+			
+		}, 1000);		
+	}
+	
 	function setJitsiMeetNick(jid)
 	{
         const nick = _converse.xmppstatus.getNickname() || _converse.xmppstatus.getFullname();					
@@ -2042,19 +2051,22 @@ var padeapi = (function(api)
 				console.debug("listenForPresence - nick", name, nick.innerHTML, nickNames);			
 				nickNames[name] = nick.innerHTML;
 				
-				_converse.chatboxviews.model.models.forEach(function(model)
-				{					
-					if (model.occupants)
-					{
-						const occupant = model.occupants.findWhere({'nick': name});	
-						
-						if (occupant)
+				setTimeout(function()
+				{
+					_converse.chatboxviews.model.models.forEach(function(model)
+					{					
+						if (model.occupants)
 						{
-							console.debug("listenForPresence - occupant", name, nick.innerHTML, occupant);							
-							occupant.set('nick', nick.innerHTML);
+							const occupant = model.occupants.findWhere({'nick': name});	
+							
+							if (occupant)
+							{
+								console.debug("listenForPresence - occupant", name, nick.innerHTML, occupant);	
+								saveJitsiNick(occupant, nick.innerHTML);
+							}
 						}
-					}
-				});					
+					});	
+				}, 1000);					
 			}
 
             return true;
