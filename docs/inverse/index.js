@@ -785,7 +785,7 @@ var padeapi = (function(api)
                             chat_area.classList.add('full');
                             occupants_area.classList.add('hiddenx');
                         }
-
+						
                         view.model.occupants.on('add', occupant =>
                         {
 							if (occupant.get("nick"))
@@ -793,7 +793,8 @@ var padeapi = (function(api)
 								if (occupant.get("nick") == 'focus')
 								{
 									meetingRooms[jid] = true;
-									occupant.set("nick", "Jitsi Focus");						
+									occupant.set("nick", "Jitsi Focus");	
+									setJitsiMeetNick(jid);
 								}
 							
 								const nickName = nickNames[occupant.get("nick")];
@@ -1991,6 +1992,15 @@ var padeapi = (function(api)
             if (callback) callback(false);
         }
     }
+	
+	function setJitsiMeetNick(jid)
+	{
+        const nick = _converse.xmppstatus.getNickname() || _converse.xmppstatus.getFullname();					
+        const stanza = converse.env.$pres({'from': _converse.connection.jid, 'to': jid}).c('nick', {'xmlns': converse.env.Strophe.NS.NICK}).t(nick).up();
+
+        _converse.api.send(stanza);	
+		console.debug("setJitsiMeetNick", jid, nick, stanza);
+	}
 
     function listenForPresence()
     {
