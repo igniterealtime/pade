@@ -1,7 +1,7 @@
 var padeapi = (function(api)
 {
     var background = chrome.extension.getBackgroundPage();
-    var nickColors = {}, anonRoster = {}, callbacks = {}, meetingRooms = {};
+    var nickColors = {}, anonRoster = {}, callbacks = {}, meetingRooms = {}, nickNames = {};
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse;
 
     var paderoot = {
@@ -607,7 +607,7 @@ var padeapi = (function(api)
                             }
                         });
                     }
-
+						
                     document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
 
                     _converse.api.settings.update({
@@ -788,7 +788,22 @@ var padeapi = (function(api)
 
                         view.model.occupants.on('add', occupant =>
                         {
-							if (occupant.get("nick") == 'focus') meetingRooms[jid] = true;
+							if (occupant.get("nick"))
+							{
+								if (occupant.get("nick") == 'focus')
+								{
+									meetingRooms[jid] = true;
+									occupant.set("nick", "Jitsi Focus");						
+								}
+							
+								const nickName = nickNames[occupant.get("nick")];
+                                console.debug("chatbox.occupants nick", nickName, occupant.get("nick"), nickNames);									
+								
+								if (nickName)
+								{
+									occupant.set("nick", nickName);									
+								}
+							}
 							
                             if (occupant.get("jid"))
                             {
@@ -844,10 +859,15 @@ var padeapi = (function(api)
                         if (activeDiv) removeActiveConversation(chatbox, activeDiv);
                     });
 
+                    _converse.api.listen.on('connectionInitialized', function ()
+                    {		
+					    console.debug("xmpp initialised", _converse.connection);					
+                    });					
+
                     _converse.api.listen.on('connected', function()
                     {
                         console.debug("xmpp connected", _converse.connection);
-                        listenForPresence();
+						listenForPresence();							
                         publishUserLocation();
 
                         if (!getSetting("boshUri"))      setSetting("boshUri", _converse.api.settings.get("bosh_service_url"))
@@ -1093,7 +1113,7 @@ var padeapi = (function(api)
 
                         renderChatMessage: async function renderChatMessage()
                         {
-                            //console.debug("renderChatMessage", this.model);
+                            console.debug("renderChatMessage", this.model);
 
                             if (this.model.vcard)
                             {
@@ -1113,6 +1133,8 @@ var padeapi = (function(api)
                                     this.model.vcard.attributes.image_type = "image/png";
                                 }
                             }
+							
+							if (nickNames[this.model.get("nick")]) this.model.set("nick", nickNames[this.model.get("nick")]);
 
                             const body = this.model.get('message');
 
@@ -1976,6 +1998,7 @@ var padeapi = (function(api)
 
         _converse.connection.addHandler(function(presence)
         {
+			console.debug("listenForPresence - presence", presence);			
             const from = Strophe.getBareJidFromJid(presence.getAttribute('from'));
 
             presence.querySelectorAll('geoloc').forEach(function(item)
@@ -2000,6 +2023,29 @@ var padeapi = (function(api)
                     console.debug("json", from, json);
                 }
             });
+			
+			const nick = presence.querySelector('nick');
+			
+			if (nick)
+			{
+				const name = Strophe.getResourceFromJid(presence.getAttribute('from'));					
+				console.debug("listenForPresence - nick", name, nick.innerHTML, nickNames);			
+				nickNames[name] = nick.innerHTML;
+				
+				_converse.chatboxviews.model.models.forEach(function(model)
+				{					
+					if (model.occupants)
+					{
+						const occupant = model.occupants.findWhere({'nick': name});	
+						
+						if (occupant)
+						{
+							console.debug("listenForPresence - occupant", name, nick.innerHTML, occupant);							
+							occupant.set('nick', nick.innerHTML);
+						}
+					}
+				});					
+			}
 
             return true;
 
