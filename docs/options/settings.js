@@ -1141,7 +1141,7 @@ function doDefaults(background)
     setDefaultSetting("chatWithOnlineContacts", true);
     setDefaultSetting("notifyWhenMentioned", true);
 
-    setDefaultSetting("conversePersistentStore", 'localStorage')
+    setDefaultSetting("conversePersistentStore", 'IndexedDB')
     setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
@@ -1154,7 +1154,6 @@ function doDefaults(background)
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", false);
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("conversePersistentStore", "localStorage");
     setDefaultSetting("homePage", chrome.runtime.getURL("help/index.html"));
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
