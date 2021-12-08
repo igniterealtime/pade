@@ -1,0 +1,220 @@
+{
+    "browserAction_title": {
+        "message": "Pade",
+        "description": "A pop-up title when user hovers on Browser Action button (browserAction_title)"
+    },
+    "manifest_extensionName": {
+        "message": "Pade - Unified Communications",
+        "description": "Extension name in the Manifest file (manifest_extensionName)"
+    },
+    "manifest_shortExtensionName": {
+        "message": "Pade",
+        "description": "Short extension name in the Manifest file (manifest_shortExtensionName)"
+    },
+    "manifest_extensionDescription": {
+        "message": "Pade is a web extension application for unified communications",
+        "description": "Extension description in the Manifest file (manifest_extensionDescription)"
+    },
+    "settings": {
+        "message": "Pade",
+        "description": "Title for settings"
+    },   
+    
+    "uport_client_id": {
+        "message": "2p1psGHt9J5NBdPDQejSVhpsECXLxLaVQSo",
+        "description": "uPort application id"
+    }, 
+    
+    "uport_permission": {
+        "message": "Wa1l7M9NoGwcxxdX",
+        "description": "uPort permission code"
+    }, 
+    "uport_ethereum_network": {
+        "message": "rinkeby",
+        "description": "Ethereum network name"
+    },    
+
+    "registerSubject": {
+        "message": "User Account Registration confirmation",
+        "description": "Title for email used in account registration"
+    },    
+    "registerBody": {
+        "message": "Please reply this email to confirm registration",
+        "description": "Body for email used in account registration"
+    },
+    
+    "webinarInvite": {
+        "message": "Please join webinar at",
+        "description": "Title to webinar invitation"
+    },    
+    "collaborateOn": {
+        "message": "Lets collaborate on",
+        "description": "Title to collaboration invitation"
+    },
+    
+    "plannerConfirm": {
+        "message": "Meeting Planner will be updated. Are you sure?",
+        "description": "Title to update local storage meeting planner"
+    },    
+    
+    "hp5Confirm": {
+        "message": "will be add to this conversation. Are you sure?",
+        "description": "Title for hp5 content injection"
+    },
+
+    "resetConfirm": {
+        "message": "This will reset Pade back to its original default settings. Are you sure?",
+        "description": "Title for factory reset confirmation"
+    },
+    
+    "keepConfirm": {
+        "message": "Your current settings will be kept. OK?",
+        "description": "Title for keeping settings confirmation with factory reset"
+    },
+    
+    "markdownConfirm": {
+        "message": "This text will be pasted into Converse. Are you sure?",
+        "description": "Title for markdown text injection"
+    },    
+    "webinarConfirm": {
+        "message": "Do you want to start a webinar conference?",
+        "description": "Title for confirming webinar with jitsi-meet"
+    },    
+    "jitsiConfirm": {
+        "message": "Do you want to start an audio/video conference?",
+        "description": "Title for confirming jistsi-meet"
+    },
+    "oobConfirm": {
+        "message": "Do you want to start a collaborative document session on",
+        "description": "Title for confirming collab doc session"
+    },   
+    "inviteConfirm": {
+        "message": "Do you want to invite the following participants to the meeting?",
+        "description": "Title for confirming invitation send out"
+    },     
+    "search": {
+        "message": "Search",
+        "description": "Title for search"
+    },    
+    "nothing_found": {
+        "message": "No matches were found.",
+        "description": "No matches were found."
+    },
+    "information": {
+        "message": "Information",
+        "description": "Information"
+    },
+    "ui": {
+        "message": "User Interface",
+        "description": "User Interface"
+    },
+    "intercom": {
+        "message": "Intercom",
+        "description": "Intercom"
+    },
+    "general": {
+        "message": "General",
+        "description": "General"
+    },
+    "login": {
+        "message": "Login",
+        "description": "Login"
+    },
+    "contact": {
+        "message": "Contact",
+        "description": "Contact details"
+    },   
+    "phone": {
+        "message": "Phone",
+        "description": "Contact telephone number"
+    }, 
+    "email": {
+        "message": "Email",
+        "description": "Contact email address"
+    }, 
+    "country": {
+        "message": "Country",
+        "description": "Contact country location"
+    },    
+    "url": {
+        "message": "Url",
+        "description": "Home Page UL"
+    },  
+    "connection": {
+        "message": "Connection",
+        "description": "Connection"
+    },    
+    "permission": {
+        "message": "Permission",
+        "description": "Access/permission key required for REST"
+    },
+    "username": {
+        "message": "Username:",
+        "description": "Username"
+    },
+    "displayname": {
+        "message": "Display Name:",
+        "description": "Display Name"
+    },
+    "server": {
+        "message": "Server",
+        "description": "Server"
+    },
+    "domain": {
+        "message": "Domain:",
+        "description": "Domain:"
+    },
+    "password": {
+        "message": "Password:",
+        "description": "Password"
+    },
+    "x_characters": {
+        "message": "6 - 12 characters",
+        "description": "Label for x characters"
+    },
+    "x_characters_pw": {
+        "message": "10 - 18 characters",
+        "description": "Label for 10 -18 characters"
+    },
+    "description": {
+        "message": "",
+        "description": ""
+    },
+    "logout": {
+        "message": "Logout",
+        "description": "Logout"
+    },
+    "enable": {
+        "message": "Enable",
+        "description": "Enable"
+    },
+    "connect": {
+        "message": "Connect:",
+        "description": "Connect"
+    },
+    "disconnect": {
+        "message": "Disconnect:",
+        "description": "Disconnect"
+    },
+    "ofmeet": {
+        "message": "Applications",
+        "description": "Label for application group including ofmeet, converse, blogger and phone"
+    },
+    "config": {
+        "message": "Meeting Settings",
+        "description": "Label for Meetings Configuration"
+    },
+    "ui": {
+        "message": "Meeting UI",
+        "description": "Label for Meetings User Interface"
+    },
+    
+    "upload_app": {
+        "message": "Upload a collaboration zip file or H5P interactive content ",
+        "description": "Label for uploading collaboration application"
+    },     
+    "TOTP": {
+        "message": "TOTP",
+        "description": "Time based One Time Password"
+    }      
+}

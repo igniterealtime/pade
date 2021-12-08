@@ -1,0 +1,4 @@
+#conversejs .message.chat-msg .chat-msg__text img.emoji {
+    height: 96px;
+    width: 96px;
+}

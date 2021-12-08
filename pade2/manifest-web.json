@@ -1,0 +1,30 @@
+{
+  "short_name": "Converse",
+  "name": "Converse Chat",
+  "description": "Messaging Freedom",
+  "version": "9.0.0",
+  "categories": ["social"],
+  "icons": [
+    {
+      "src": "dist/images/logo/conversejs-filled-512.png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "dist/images/logo/conversejs-filled-192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "dist/images/logo/conversejs-filled-192.svg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "dist/images/logo/conversejs-filled-512.svg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/fullscreen.html",
+  "background_color": "#397491",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#397491"
+}
