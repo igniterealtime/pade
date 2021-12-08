@@ -345,6 +345,12 @@ function createNotification(notifyId, opt, callback)
         event.preventDefault();
         if (callback) callback(notifyId, 0);
     }
+	
+    prompt.onclose = function(event)
+    {
+        event.preventDefault();
+        if (callback) callback(notifyId, 1);
+    }
 }
 
 function getSetting(name, defaultValue)
