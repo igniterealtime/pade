@@ -1,14 +1,46 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
-const nickColors = {};
+const nickColors = {}, pade = {webAppsWindow: {}};
 
 window.addEventListener("load", function()
 {
-	startConverse()
+	if (chrome.windows) 
+	{
+		chrome.windows.onCreated.addListener(function(window)
+		{
+			console.debug("opening window ", window);
+		});
+
+		chrome.windows.onRemoved.addListener(function(win)
+		{
+			console.debug("closing window ", win);
+			
+			var webApps = Object.getOwnPropertyNames(pade.webAppsWindow);
+
+			for (var i=0; i<webApps.length; i++)
+			{
+				if (pade.webAppsWindow[webApps[i]] && win == pade.webAppsWindow[webApps[i]].id)
+				{
+					delete pade.webAppsWindow[webApps[i]];
+				}
+			}
+		});
+	}
+	
+	startConverse();
 });
 
 window.addEventListener("unload", function()
 {
+    var webApps = Object.getOwnPropertyNames(pade.webAppsWindow);
 
+    for (var i=0; i<webApps.length; i++)
+    {
+        if (pade.webAppsWindow[webApps[i]])
+        {
+            console.log("pade unloading web app " + webApps[i]);
+            closeWebAppsWindow(webApps[i]);
+        }
+    }
 });
 	
 function startConverse() {
@@ -39,93 +71,50 @@ function startConverse() {
             __ = _converse.__;		
 
 			document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
-			
-			_converse.api.listen.on('VCardsInitialized', function(contact) {
-				console.debug("VCardsInitialized", _converse.vcards);
+						
+			_converse.api.waitUntil('VCardsInitialized').then(() => {
+				const vcards = _converse.vcards.models;							
+				for (let i=0; i < vcards.length; i++) setAvatar(vcards[i]);					
 				
-				for (let i=0; i<_converse.vcards.models.length; i++)
-				{	
-					const contact = _converse.vcards.models[i];
-					
-					if (_converse.DEFAULT_IMAGE == contact.get('image') && contact.get('jid')) {
-						let label = contact.get('jid');
-						
-						if (contact.get('fullname')) {
-							label = contact.get('fullname');
-						}
-						else
-							
-						if (contact.get('nickname')) {
-							label = contact.get('nickname');
-						}
-						else {
-							const pos = contact.get('jid').indexOf("/");
-															
-							if (pos > -1) {
-								label = contact.get('jid').substring(pos + 1);
-							}
-						}
-						
-						const dataUri = createAvatar(label);
-						const avatar = dataUri.split(";base64,");
+			}).catch(function (err) {
+				console.error('waiting for VCardsInitialized error', err);
+			});	
+			
+			_converse.api.waitUntil('controlBoxInitialized').then(() => {
 
-						contact.set("image", avatar[1]);
-						contact.set("image_type", "image/png");
-						console.debug("VCardsInitialized", label);
-					}	
-				}
-
-			});
-
-			_converse.api.listen.on('connected', function() {
-				if (_converse.api.waitUntil('controlBoxInitialized')) _converse.api.waitUntil('controlBoxInitialized').then(() => {
-
-					var addControlFeatures = function()
-					{
-						const section = document.body.querySelector('.controlbox-section.profile.d-flex');
-
-						if (!section)
-						{
-							setTimeout(addControlFeatures, 1000);
-							return;
-						}
-
-						console.debug("addControlFeatures", section);
-
-						const ofmeetButton = newElement('a', null, '<a class="controlbox-heading__btn open-ofmeet fas fa-video align-self-center" title="Meet Now!!"></a>');
-						section.appendChild(ofmeetButton);
-
-						ofmeetButton.addEventListener('click', function(evt)
-						{
-							evt.stopPropagation();
-							//background.openVideoWindow("", "normal");
-
-						}, false);
-
-						const prefButton = newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>');
-						section.appendChild(prefButton);
-
-						prefButton.addEventListener('click', function(evt)
-						{
-							evt.stopPropagation();
-							const url = chrome.extension.getURL("options/index.html");
-							//openWebAppsWindow(url, null, 1300, 950);
-
-						}, false);
-
-						// add self for testing
-						setTimeout(function() {
-							openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"], true)
-						});
-					}
-
-					addControlFeatures();
+				_converse.api.waitUntil('bookmarksInitialized').then(() => {
+					setupMUCAvatars();
+					addControlFeatures();					
 
 				}).catch(function (err) {
 					console.error('waiting for controlBoxInitialized error', err);
-				});
+				});			
+
+			}).catch(function (err) {
+				console.error('waiting for controlBoxInitialized error', err);
+			});		
+
+			_converse.api.listen.on('connected', function() {
+				if (getSetting("converseTimeAgo", false))
+				{				
+					setupTimeAgo();
+				}
+				addSelfBot();
+			});
+
+			_converse.api.listen.on('rosterContactInitialized', function(contact) {
+				setAvatar(contact);
 			});			
-		}			
+		},
+
+		overrides: {		
+			RosterFilterView: {
+
+			  shouldBeVisible() {
+				return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
+			  }
+			}			  
+		},
 	});	
 			
 	const config = {
@@ -153,15 +142,133 @@ function startConverse() {
 		auto_reconnect: true,
 		discover_connection_methods: false,		
 		bosh_service_url: location.protocol + '//' + server + '/http-bind/',
-		websocket_url: (location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/',
+		websocket_url: getSetting("useWebsocket", false) ? (location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,
 		message_archiving: 'always',
 		render_media: true,
+        roster_groups: getSetting("rosterGroups", false),	
+        muc_fetch_members: getSetting("fetchMembersList", false),		
         whitelisted_plugins: whitelistedPlugins		
 	}		
 	console.debug("startConverse", config);
 	converse.initialize(config);
 
 }
+
+function setupTimeAgo() {
+	
+	setInterval(() => {
+		//console.debug("timeago render");
+		timeago.cancel();
+		const locale = navigator.language.replace('-', '_');
+		
+		const elements = document.querySelectorAll('.chat-msg__time');
+		
+		for (let i=0; i < elements.length; i++)
+		{
+			if (!elements[i].querySelector('.chat-msg__time_span')) {
+				const timestamp = elements[i].getAttribute('timestamp');	
+				const pretty_time = elements[i].innerHTML;				
+				const timeAgo = timeago.format(new Date(pretty_time));
+				elements[i].innerHTML = '<span class="chat-msg__time_span" title="' + pretty_time + '" datetime="' + timestamp + '">' + timeAgo + '</span>';
+			}
+		}
+		
+		timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+
+		addControlFeatures();
+		setupMUCAvatars();		
+		
+	}, 10000);	
+}
+
+function setupMUCAvatars() {
+	const elements = document.querySelectorAll('.available-chatroom');	
+	//console.debug("setupMUCAvatars", elements);	
+		
+	for (let i=0; i < elements.length; i++)
+	{
+		if (!elements[i].querySelector('.pade-avatar')) {		
+			const jid = elements[i].getAttribute('data-room-jid');
+			console.debug("setupMUCAvatars", jid);		
+			
+			if (jid) {
+				const img = createAvatar(jid);
+				const avatar = newElement('span', null, '<img style="margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
+				elements[i].prepend(avatar);
+			}
+		}			
+	}			
+}
+
+
+function addControlFeatures() {
+	const section = document.body.querySelector('.controlbox-section.profile.d-flex');
+	if (!section) return;
+
+	//console.debug("addControlFeatures", section);
+
+	if (!section.querySelector('.pade-meet-now')) {	
+		const ofmeetButton = newElement('a', null, '<a class="controlbox-heading__btn open-ofmeet fas fa-video align-self-center" title="Meet Now!!"></a>', 'pade-meet-now');
+		section.appendChild(ofmeetButton);
+
+		ofmeetButton.addEventListener('click', function(evt)
+		{
+			evt.stopPropagation();
+			openVideoWindow("", "normal");
+
+		}, false);
+	}
+
+	if (!section.querySelector('.pade-settings')) {
+		const prefButton = newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>', 'pade-settings');
+		section.appendChild(prefButton);
+
+		prefButton.addEventListener('click', function(evt)
+		{
+			evt.stopPropagation();
+			const url = chrome.runtime.getURL("options/index.html");
+			openWebAppsWindow(url, null, 1300, 950);
+
+		}, false);
+	}
+}
+
+function addSelfBot() {
+	// add self for testing
+	setTimeout(function() {
+		openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"], true)
+	});	
+}
+				
+function setAvatar(contact) {
+				
+	if (_converse.DEFAULT_IMAGE == contact.get('image') && contact.get('jid')) {
+		let label = contact.get('jid');
+		
+		if (contact.get('fullname')) {
+			label = contact.get('fullname');
+		}
+		else
+			
+		if (contact.get('nickname')) {
+			label = contact.get('nickname');
+		}
+		else {
+			const pos = contact.get('jid').indexOf("/");
+											
+			if (pos > -1) {
+				label = contact.get('jid').substring(pos + 1);
+			}
+		}
+		
+		const dataUri = createAvatar(label);
+		const avatar = dataUri.split(";base64,");
+
+		contact.set("image", avatar[1]);
+		contact.set("image_type", "image/png");
+	}		
+}
+
 
 function getSetting(name, defaultValue) {
     const localStorage = window.localStorage
@@ -300,7 +407,6 @@ function createAvatar(nickname, width, height, font) {
 	var first, last, pos = nickname.indexOf("@");
 	if (pos > 0) nickname = nickname.substring(0, pos);
 
-	console.debug("_createAvatar: " + nickname );
 	// try to split nickname into words at different symbols with preference
 	let words = nickname.split(/[, ]/); // "John W. Doe" -> "John "W." "Doe"  or  "Doe,John W." -> "Doe" "John" "W."
 	if (words.length == 1) words = nickname.split("."); // "John.Doe" -> "John" "Doe"  or  "John.W.Doe" -> "John" "W" "Doe"
@@ -333,4 +439,110 @@ function createAvatar(nickname, width, height, font) {
 	}
 
 	return canvas.toDataURL();
+}
+
+function closeWebAppsWindow(window)
+{
+    if (pade.webAppsWindow[window] != null)
+    {
+        chrome.windows.remove(pade.webAppsWindow[window].id);
+        delete pade.webAppsWindow[window];
+    }
+}
+
+function openWebAppsWindow(url, state, width, height)
+{
+	if (chrome.windows)
+	{
+		if (!width) width = 1024;
+		if (!height) height = 768;
+
+		if (url.startsWith("_")) url = url.substring(1);
+		var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : "https://" + url.trim());
+		var data = {url: httpUrl, type: "popup", focused: true};
+
+		console.debug("openWebAppsWindow", data, state, width, height);
+
+		if (state == "minimized" && getSetting("openWinMinimized", false))
+		{
+			delete data.focused;
+			data.state = state;
+		}
+
+		if (pade.webAppsWindow[url] == null)
+		{
+			chrome.windows.create(data, function (win)
+			{
+				pade.webAppsWindow[url] = win;
+				updateWindowCoordinates(url, pade.webAppsWindow[url].id, {width: width, height: height});
+			});
+
+		} else {
+			chrome.windows.update(pade.webAppsWindow[url].id, {focused: true});
+		}
+	
+	} else open(url, url)
+}
+
+function openVideoWindow(room, mode)
+{
+    var url = getVideoWindowUrl(room, mode);
+    openWebAppsWindow(url);
+}
+
+function getVideoWindowUrl(room, mode)
+{
+    const url = getSetting("ofmeetUrl", "https://" + getSetting("server") + "/ofmeet/");
+    let params = "#config.webinar=" + (mode != "attendee" ? "false" : "true");
+
+    const minHDHeight = getSetting("minHDHeight");
+    params = params + (minHDHeight ? "&config.minHDHeight=" + minHDHeight : "");
+
+    const resolution = getSetting("resolution");
+    params = params + (resolution ? "&config.resolution=" + resolution : "");
+
+    const startBitrate = getSetting("startBitrate");
+    params = params + (startBitrate ? "&config.startBitrate=" + resolution : "");
+
+    const disableAudioLevels = getSetting("disableAudioLevels", null);
+    params = params + (disableAudioLevels != null ? "&config.disableAudioLevels=" + disableAudioLevels : "");
+
+    const enableLipSync = getSetting("enableLipSync", null);
+    params = params + (enableLipSync != null ? "&config.enableLipSync=" + enableLipSync : "");
+
+    const enableStereoAudio = getSetting("enableStereoAudio", null);
+    params = params + (enableStereoAudio != null ? "&config.disableAP=true&config.disableAEC=true&config.disableNS=true&config.disableAGC=true&config.disableHPF=true&config.stereo=true&config.enableLipSync=false&config.opusMaxAverageBitrate=510000" : "");
+
+    const startWithAudioMuted = getSetting("startWithAudioMuted", null);
+    params = params + (startWithAudioMuted != null ? "&config.startWithAudioMuted=" + startWithAudioMuted : "");
+
+    const startWithVideoMuted = getSetting("startWithVideoMuted", null);
+    params = params + (startWithVideoMuted != null ? "&config.startWithVideoMuted=" + startWithVideoMuted : "");
+
+    const startScreenSharing = getSetting("startScreenSharing", null);
+    params = params + (startScreenSharing != null ? "&config.startScreenSharing=" + startScreenSharing : "");
+
+    const recordMeeting = getSetting("recordMeeting", null);
+    params = params + (recordMeeting != null ? "&interfaceConfig.OFMEET_RECORD_CONFERENCE=" + recordMeeting : "");
+
+    const enableTranscription = getSetting("enableTranscription", null);
+    params = params + (enableTranscription != null ? "&interfaceConfig.OFMEET_ENABLE_TRANSCRIPTION=" + enableTranscription : "");
+
+    const showCaptions = getSetting("showCaptions", null);
+    params = params + (showCaptions != null ? "&interfaceConfig.OFMEET_SHOW_CAPTIONS=" + showCaptions : "");
+
+    const INITIAL_TOOLBAR_TIMEOUT = getSetting("INITIAL_TOOLBAR_TIMEOUT");
+    params = params + (INITIAL_TOOLBAR_TIMEOUT ? "&interfaceConfig.INITIAL_TOOLBAR_TIMEOUT=" + INITIAL_TOOLBAR_TIMEOUT : "");
+
+    const TOOLBAR_TIMEOUT = getSetting("TOOLBAR_TIMEOUT");
+    params = params + (TOOLBAR_TIMEOUT ? "&interfaceConfig.TOOLBAR_TIMEOUT=" + TOOLBAR_TIMEOUT : "");
+
+    const FILM_STRIP_MAX_HEIGHT = getSetting("FILM_STRIP_MAX_HEIGHT");
+    params = params + (FILM_STRIP_MAX_HEIGHT ? "&interfaceConfig.FILM_STRIP_MAX_HEIGHT=" + FILM_STRIP_MAX_HEIGHT : "");
+
+    const VERTICAL_FILMSTRIP = getSetting("VERTICAL_FILMSTRIP", null);
+    params = params + (VERTICAL_FILMSTRIP != null ? "&interfaceConfig.VERTICAL_FILMSTRIP=" + VERTICAL_FILMSTRIP : "");
+
+
+    return url + room + params;
 }

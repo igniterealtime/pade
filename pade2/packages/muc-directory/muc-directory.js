@@ -200,26 +200,26 @@
 
     async function getComponent(component)
     {
-        console.debug("getComponent", component);
+        //console.debug("getComponent", component);
         const jid = component.getAttribute("jid");
         const name = component.getAttribute("name");
         let isMuc = false;
 
-        console.debug("getComponent", jid, name);
+        //console.debug("getComponent", jid, name);
         const stanza = await _converse.api.disco.info(jid);
-        console.debug("getComponent", stanza);
+        //console.debug("getComponent", stanza);
 
         stanza.querySelectorAll('feature').forEach(function(feature)
         {
             const type = feature.getAttribute("var");
-            console.debug("getComponent", type);
+            //console.debug("getComponent", type);
             if (type == "http://jabber.org/protocol/muc") isMuc = true;
         });
 
         if (isMuc)
         {
             const stanza2 = await _converse.api.disco.items(jid);
-            console.debug("getComponent muc rooms", stanza2);
+            //console.debug("getComponent muc rooms", stanza2);
             stanza2.querySelectorAll('item').forEach(getRoom);
         }
     }
@@ -227,13 +227,13 @@
     function getRoom(item)
     {
         const room = item.getAttribute("jid");
-        console.debug("getRoom", room);
+        //console.debug("getRoom", room);
         mucJids[room] = {jid: room};
     }
 
     async function getRoomDetails(room, ele, filter)
     {
-        console.debug("getRoomDetails", room, filter);
+        //console.debug("getRoomDetails", room, filter);
 
         const stanza = await _converse.api.disco.info(room);
 

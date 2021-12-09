@@ -22,6 +22,10 @@
         }
     });
 
+	function unique(arr) {
+	  return [...new Set(arr)];
+	}
+	
     function setCustomEmojis()
     {
         if (!converse.emojis.json)
@@ -779,5 +783,7 @@
         converse.emojis.shortnames = converse.emojis.list.map(m => m.sn);
         const getShortNames = () => converse.emojis.shortnames.map(s => s.replace(/[+]/g, "\\$&")).join('|');
         converse.emojis.shortnames_regex = new RegExp(getShortNames(), "gi");
+		converse.emojis.toned = unique(Object.values(converse.emojis.json.people).filter(person => person.sn.includes('_tone')).map(person => person.sn.replace(/_tone[1-5]/, '')));
+		converse.emojis.initialized_promise.resolve();				
     }
 }));

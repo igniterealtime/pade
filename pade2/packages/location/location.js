@@ -92,8 +92,7 @@
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
             {
-				let url = "";
-                for (let i=0; i<text.length; i++) url = url + text[i];
+				let url = text;
 
                 if (url && url.indexOf("location/leaflet/index.html?accuracy=") > -1)
                 {

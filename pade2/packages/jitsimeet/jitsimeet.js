@@ -1,5 +1,3 @@
-var _inverse;
-
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(["converse"], factory);
@@ -20,7 +18,6 @@ var _inverse;
 
         initialize: function () {
             _converse = this._converse;
-			_inverse = _converse;
 
             Strophe = converse.env.Strophe;
             $iq = converse.env.$iq;
@@ -37,6 +34,7 @@ var _inverse;
 
             _converse.api.settings.update({
                 jitsimeet_start_option: MEET_START_OPTIONS.INTO_CHAT_WINDOW,
+                jitsimeet_head_display_toggle: false,
                 jitsimeet_modal: false,
                 jitsimeet_url: 'https://meet.jit.si',
             });
@@ -47,8 +45,8 @@ var _inverse;
 
             _converse.api.listen.on('messageNotification', function (data)
             {
-				console.debug("messageNotification", data);	
-					
+                console.debug("messageNotification", data);
+
                 var chatbox = data.chatbox;
                 var bodyElement = data.stanza.querySelector('body');
 
@@ -134,9 +132,8 @@ var _inverse;
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
                 console.debug("getToolbarButtons", toolbar_el.model.get("jid"));
-				
                 let color = "fill:var(--chat-toolbar-btn-color);";
-                if (toolbar_el.model.get("type") == "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
+                if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 
                 buttons.push(html`
                     <button class="plugin-jitsimeet" title="${__('Jitsi Meet')}" @click=${performVideo}/>
@@ -149,87 +146,83 @@ var _inverse;
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
             {
-				let body = "";
-                for (let i=0; i<text.length; i++) body = body + text[i];
+                const pos = text.indexOf("https://");
 
-                if (body != "")
-                {					
-                    const pos = body.indexOf("https://");
+                if (pos > -1 && text.indexOf(_converse.api.settings.get("jitsimeet_url")) > -1)
+                {
+                    console.debug("afterMessageBodyTransformed", text);
 
-                    if (pos > -1 && body.indexOf(_converse.api.settings.get("jitsimeet_url")) > -1)
-                    {
-                        console.debug("afterMessageBodyTransformed", body, text);
+                    const url = text.substring(pos);
+                    const link_room = url.substring(url.lastIndexOf("/") + 1);
+                    const link_label = jitsimeet_invitation;
+                    const tab_label = jitsimeet_tab_invitation;
 
-                        const url = body.substring(pos);
-                        const link_room = url.substring(url.lastIndexOf("/") + 1);
-                        const link_label = jitsimeet_invitation;
-                        const tab_label = jitsimeet_tab_invitation;
-                        const link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
-						
-                        text.references = [];
-                        text.addTemplateResult(0, body.length, html`<a 
-                            @click=${clickVideo} data-room="${link_room}" data-url="${url}" id="${link_id}"
-                            href="#">${link_label} ${link_room}</a><br/><a target="_blank" rel="noopener"
-                            href="${url}">${tab_label} ${url}</a>`);						
-                    }
+                    text.references = [];
+                    text.addTemplateResult(0, text.length, html`<a 
+                        @click=${clickVideo} data-room="${link_room}" data-url="${url}"
+                        href="#">${link_label} ${link_room}</a><br/><a target="_blank" rel="noopener noreferrer"
+                        href="${url}">${tab_label} ${url}</a>`);
                 }
-				
             });
 
             console.debug("jitsimeet plugin is ready");
         }
     });
 
+    function __confirm(msg, callback) {
+      if (confirm(jitsimeet_confirm)) {
+          callback();
+      }
+    }
+
+    function __displayError(error) {
+      alert(error);
+    }
+
+    function getChatViewFromElement($el) {
+        return $el.closest('converse-chat.chatbox') || $el.closest('converse-muc.chatbox');
+    }
+
     function performVideo(ev)
     {
         ev.stopPropagation();
         ev.preventDefault();
-		
-		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
-		const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));
 
-        if (confirm(jitsimeet_confirm))
-        {
-            doVideo(chatview);
-        }
+        const chatView = getChatViewFromElement(ev.currentTarget);
+        __confirm(jitsimeet_confirm, function() {
+            doVideo(chatView);
+        });
     }
 
     function clickVideo(ev)
-    {		
+    {
         ev.stopPropagation();
         ev.preventDefault();
-		
-		const content_el = converse.env.utils.ancestor(ev.target, 'converse-chat-content');	
-        const jid = content_el.getAttribute("jid");		
-        console.debug("clickVideo", jid);	
-		
-		const chatview = _converse.chatboxviews.get(jid);
 
         var url = ev.target.getAttribute("data-url");
         var room = ev.target.getAttribute("data-room");
 
-        if (chatview) doLocalVideo(chatview, room, url, jitsimeet_invitation);
+        if (ev.currentTarget) {
+          const chatView = getChatViewFromElement(ev.currentTarget);
+          doLocalVideo(chatView, room, url, jitsimeet_invitation);
+        }
     }
-	
+
     var doVideo = function doVideo(view)
     {
-		const label = jitsimeet_invitation;		
         const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
         const url = _converse.api.settings.get("jitsimeet_url") + '/' + room;
 
-		let type = 'chat';
-		if (view.model.get("type") == "chatroom") type = 'groupchat';			
-		_converse.api.send($msg({ to: view.model.get('jid'), from: _converse.connection.jid, type}).c('body').t(url).tree());		
-		
-        console.debug("doVideo", room, url, view);		
-        var startOption = _converse.api.settings.get("jitsimeet_start_option");
-		
+        console.debug("doVideo", room, url, view);
+
+        view.model.sendMessage({'body': url});
+        const startOption = _converse.api.settings.get("jitsimeet_start_option");
         if (startOption === MEET_START_OPTIONS.INTO_CHAT_WINDOW) {
-          doLocalVideo(view, room, url, label);
+          doLocalVideo(view, room, url, jitsimeet_invitation);
         } else if (startOption === MEET_START_OPTIONS.INTO_NEW_TAB) {
           doNewTabVideo(url);
         }
-    }	
+    }
 
     var doNewTabVideo = function doNewTabVideo(url)
     {
@@ -245,9 +238,10 @@ var _inverse;
 
     var doLocalVideo = function doLocalVideo(view, room, url, label)
     {
+        const chatModel = view.model;
         console.debug("doLocalVideo", view, room, url, label);
 
-        var modal = _converse.api.settings.get("jitsimeet_modal") == true;
+        var modal = _converse.api.settings.get("jitsimeet_modal") === true;
 
         if (modal)
         {
@@ -259,132 +253,124 @@ var _inverse;
             meetDialog.show();
         }
         else {
+
             const isOverlayedDisplay = _converse.api.settings.get("view_mode") === "overlayed";
-            var div = view.querySelector(isOverlayedDisplay ? ".chat-body" : ".box-flyout");
+            const headDisplayToggle = isOverlayedDisplay || _converse.api.settings.get("jitsimeet_head_display_toggle") === true;
+            const div = view.querySelector(headDisplayToggle ? ".chat-body" : ".box-flyout");
 
             if (div)
             {
+                const jid = view.getAttribute("jid");
+                if(Array.from(document.querySelectorAll("iframe.jitsimeet")).filter(f => f.__jid === jid).length > 0) {
+                  __displayError(__('A meet is already running into room'));
+                  return;
+                }
+                const toggleHandler = function() {
+                  jitsiFrame.toggleHideShow();
+                };
                 const dynamicDisplayManager = new function() {
-                  const __isActive = isOverlayedDisplay;
                   let __resizeHandler;
                   let __resizeWatchImpl;
-                  this.handle = function(meetIFrame) {
-                    if (__isActive) {
-                      const __anchor = document.querySelector('.converse-chatboxes');
-                      __resizeHandler = function() {
-                        let top = div.offsetTop;
-                        let left = div.offsetLeft;
-                        let width = div.offsetWidth;
-                        let height = div.offsetHeight;
-                        let current = div.offsetParent;
-                        while (current && current !== __anchor) {
-                          top += current.offsetTop;
-                          left += current.offsetLeft;
-                          current = current.offsetParent;
-                        }
-                        jitsiFrame.style.top = top + "px";
-                        jitsiFrame.style.left = left + "px";
-                        jitsiFrame.style.width = width + "px";
-                        jitsiFrame.style.height = height + "px";
-                      };
-                      if (typeof ResizeObserver === 'function') {
-                        __resizeWatchImpl = new function() {
-                          const resizeObserver = new ResizeObserver(entries => {
-                            if (entries.length > 0) {
-                              __resizeHandler();
-                            }
-                          });
-                          this.start = function() {
-                            resizeObserver.observe(div);
-                            resizeObserver.observe(__anchor);
-                          };
-                          this.close = function() {
-                            resizeObserver.disconnect();
-                          };
-                        };
-                      } else {
-                        __resizeWatchImpl = new function() {
-                          const __resizeWatchEvents = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
-                            'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized'];
-                          let __resizedElement;
-                          const __startResize = function(currentView) {
-                            if (!__resizedElement) {
-                              __resizedElement = currentView.el.querySelector('.box-flyout');
-                              __resizedElement.addEventListener('mousemove', __resizeHandler);
-                            }
-                          };
-                          const __endResize = function() {
-                            if (__resizedElement) {
-                              __resizedElement.removeEventListener('mousemove', __resizeHandler);
-                              __resizedElement = undefined;
-                            }
-                          };
-                          const __deferredResize = function() {
-                            setTimeout(__resizeHandler, 0);
-                          };
-                          this.start = function() {
-                            _converse.api.listen.on('startDiagonalResize', __startResize);
-                            _converse.api.listen.on('startHorizontalResize', __startResize);
-                            _converse.api.listen.on('startVerticalResize', __startResize);
-                            document.addEventListener('mouseup', __endResize);
-                            window.addEventListener('resize', __resizeHandler);
-                            __resizeWatchEvents.forEach(c => _converse.api.listen.on(c, __deferredResize));
-                          };
-                          this.close = function() {
-                            _converse.api.listen.not('startDiagonalResize', __startResize);
-                            _converse.api.listen.not('startHorizontalResize', __startResize);
-                            _converse.api.listen.not('startVerticalResize', __startResize);
-                            document.removeEventListener('mouseup', __endResize);
-                            window.removeEventListener('resize', __resizeHandler);
-                            __resizeWatchEvents.forEach(c => _converse.api.listen.not(c, __deferredResize));
-                          };
-                        };
+                  this.start = function() {
+                    const $chatBox = document.querySelector('.converse-chatboxes');
+                    const $anchor = document.querySelector('#conversejs.conversejs');
+                    __resizeHandler = function() {
+                      const currentView = _converse.chatboxviews.get(jid)
+                      if (currentView && headDisplayToggle) {
+                        const $head = currentView.querySelector(".chat-head");
+                        $head.removeEventListener('dblclick', toggleHandler);
+                        $head.addEventListener('dblclick', toggleHandler);
                       }
-                      meetIFrame.style.position = "absolute";
-                      __anchor.appendChild(meetIFrame);
-                      __resizeWatchImpl.start();
-                      _converse.api.listen.on('chatBoxClosed', closeJitsi);
-                      this.triggerChange();
-                    }
-                    return __isActive;
+                      const currentDiv = currentView && currentView.querySelector(headDisplayToggle ? ".chat-body" : ".box-flyout");
+                      let top = currentDiv ? currentDiv.offsetTop : 0;
+                      let left = currentDiv ? currentDiv.offsetLeft : 0;
+                      let width = currentDiv ? currentDiv.offsetWidth : 0;
+                      let height = currentDiv ? currentDiv.offsetHeight : 0;
+                      let current = currentDiv && currentDiv.offsetParent;
+                      while (current && current !== $anchor) {
+                        top += current.offsetTop;
+                        left += current.offsetLeft;
+                        current = current.offsetParent;
+                      }
+                      jitsiFrame.style.top = top + "px";
+                      jitsiFrame.style.left = left + "px";
+                      jitsiFrame.style.width = width + "px";
+                      jitsiFrame.style.height = height + "px";
+                    };
+                    __resizeWatchImpl = new function() {
+                      let __resizeObserver;
+                      if (isOverlayedDisplay && typeof ResizeObserver === 'function') {
+                        __resizeObserver = new ResizeObserver(function(entries) {
+                          if (entries.length > 0) {
+                            __resizeHandler();
+                          }
+                        });
+                      }
+                      const __resizeWatchEvents = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
+                        'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized',
+                        'chatBoxViewInitialized', 'chatRoomViewInitialized'];
+                      const __startResize = function() {
+                        jitsiFrame.style.pointerEvents = 'none';
+                        document.addEventListener('mousemove', __deferredResize);
+                      };
+                      const __endResize = function() {
+                        jitsiFrame.style.pointerEvents = '';
+                        document.removeEventListener('mousemove', __deferredResize);
+                      };
+                      let timeoutId;
+                      const __deferredResize = function() {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(__resizeHandler, 0);
+                      };
+                      this.start = function() {
+                        _converse.api.listen.on('startDiagonalResize', __startResize);
+                        _converse.api.listen.on('startHorizontalResize', __startResize);
+                        _converse.api.listen.on('startVerticalResize', __startResize);
+                        document.addEventListener('mouseup', __endResize);
+                        window.addEventListener('resize', __resizeHandler);
+                        __resizeWatchEvents.forEach(c => _converse.api.listen.on(c, __deferredResize));
+                        if (__resizeObserver) {
+                          __resizeObserver.observe(div);
+                          __resizeObserver.observe($anchor);
+                          __resizeObserver.observe($chatBox);
+                        }
+                      };
+                      this.close = function() {
+                        _converse.api.listen.not('startDiagonalResize', __startResize);
+                        _converse.api.listen.not('startHorizontalResize', __startResize);
+                        _converse.api.listen.not('startVerticalResize', __startResize);
+                        document.removeEventListener('mouseup', __endResize);
+                        window.removeEventListener('resize', __resizeHandler);
+                        __resizeWatchEvents.forEach(c => _converse.api.listen.not(c, __deferredResize));
+                        if (__resizeObserver) {
+                          __resizeObserver.disconnect();
+                        }
+                      };
+                    };
+                    jitsiFrame.style.position = "absolute";
+                    $anchor.appendChild(jitsiFrame);
+                    __resizeWatchImpl.start();
+                    _converse.api.listen.on('chatBoxClosed', closeJitsi);
+                    this.triggerChange();
                   };
                   this.triggerChange = function() {
-                    if (__isActive) {
-                      __resizeHandler();
-                    }
+                    __resizeHandler();
                   };
                   this.close = function() {
-                    if (__isActive) {
-                      __resizeWatchImpl.close();
-                      _converse.api.listen.not('chatBoxClosed', closeJitsi);
-                    }
+                    __resizeWatchImpl.close();
+                    _converse.api.listen.not('chatBoxClosed', closeJitsi);
                   };
                 };
-
-                const divChildElements = [].slice.call(div.children, 0).map(function(bloc) {
-                  const data = {
-                    el : bloc,
-                    previousDisplay : bloc.style.display
-                  }
-                  bloc.style.display = 'none';
-                  return data;
-                });
                 let jitsiFrame = document.createElement('iframe');
-
-                var firstTime = true;
-
-                let closeJitsi = function(currentView) {
+                let firstTime = true;
+                let closeJitsi = function(currentModel) {
                   dynamicDisplayManager.triggerChange();
-                  if (currentView && currentView !== view) {
+                  if (currentModel && currentModel.cid !== chatModel.cid) {
                     return;
                   }
                   dynamicDisplayManager.close();
                   jitsiFrame.remove();
-                  divChildElements.forEach(function(bloc) {
-                    bloc.el.style.display = bloc.previousDisplay;
-                  });
                 }
-
                 let jitsiIframeCloseHandler = function ()
                 {
                   console.debug("doVideo - load", this);
@@ -394,18 +380,30 @@ var _inverse;
                   }
                   if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
                 };
+                jitsiFrame.toggleHideShow = function() {
+                  if (jitsiFrame.style.display === 'none') {
+                    jitsiFrame.show();
+                  } else {
+                    jitsiFrame.hide();
+                  }
+                };
+                jitsiFrame.show = function() {
+                  jitsiFrame.style.display = '';
+                };
+                jitsiFrame.hide = function() {
+                  jitsiFrame.style.display = 'none';
+                };
+                jitsiFrame.__jid = jid;
                 jitsiFrame.addEventListener("load", jitsiIframeCloseHandler);
                 jitsiFrame.setAttribute("src", url);
-                jitsiFrame.setAttribute("id", "jitsimeet");
+                jitsiFrame.setAttribute("class", "jitsimeet");
                 jitsiFrame.setAttribute("allow", "microphone; camera;");
                 jitsiFrame.setAttribute("frameborder", "0");
                 jitsiFrame.setAttribute("seamless", "seamless");
                 jitsiFrame.setAttribute("allowfullscreen", "true");
                 jitsiFrame.setAttribute("scrolling", "no");
-                jitsiFrame.setAttribute("style", "z-index:2147483647;width:100%;height:100%;");
-                if (!dynamicDisplayManager.handle(jitsiFrame)) {
-                  div.appendChild(jitsiFrame);
-                }
+                jitsiFrame.setAttribute("style", "z-index:1049;width:100%;height:100%;");
+                dynamicDisplayManager.start();
                 jitsiFrame.contentWindow.addEventListener("message", function (event) {
                   if (_converse.api.settings.get("jitsimeet_url").indexOf(event.origin) === 0 && typeof event.data === 'string') {
                     let data = JSON.parse(event.data);

@@ -5,14 +5,14 @@
 // -------------------------------------------------------
 
 self.addEventListener('install', function(event) {
-    console.log('activate', event);
+    console.debug('activate', event);
 });
 self.addEventListener('activate', function (event) {
-    console.log('activate', event);
+    console.debug('activate', event);
 });
 
 self.addEventListener('message', function (event) {
-	console.log('message', event.data);
+	console.debug('message', event.data);
 })
 
 self.addEventListener('notificationclose', function(event) {
@@ -71,15 +71,15 @@ chrome.commands.onCommand.addListener((command) => {
 });	
 
 chrome.windows.onFocusChanged.addListener((win) => {
-	console.debug("onFocusChanged", win);	
+	//console.debug("onFocusChanged", win);	
 });	
 
 chrome.windows.onCreated.addListener((win) => {
-	console.debug("onCreated");
+	//console.debug("onCreated");
 });	
 
 chrome.windows.onRemoved.addListener((win) => {
-	console.debug("onRemoved");
+	//console.debug("onRemoved");
 	chrome.storage.local.remove(["pade_window"]);	
 });	
 

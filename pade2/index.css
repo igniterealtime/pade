@@ -1,0 +1,3 @@
+#conversejs #controlbox .controlbox-panes::-webkit-scrollbar {
+    display: none;
+}

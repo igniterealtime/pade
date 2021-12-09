@@ -15,10 +15,8 @@
             html = converse.env.html;
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
-            {
-				let body = "";
-                for (let i=0; i<text.length; i++) body = body + text[i];				
-				renderDiagram(body, text);
+            {				
+				renderDiagram(text);
             });
 
             mermaid.initialize({});
@@ -27,46 +25,46 @@
         }
     });
 
-    function renderDiagram(body, text)
+    function renderDiagram(text)
     {
 		const msgId = Math.random().toString(36).substr(2,9);
-        console.debug("doDiagram", body, text, msgId);
+        //console.debug("doDiagram", text, msgId);
 
-        if (body.length == 0) return;
+        if (text.length == 0) return;
 
-        if (body.startsWith("graph TD") ||
-            body.startsWith("graph TB") ||
-            body.startsWith("graph BT") ||
-            body.startsWith("graph RL") ||
-            body.startsWith("graph LR") ||
-            body.startsWith("pie") ||
-            body.startsWith("gantt") ||
-            body.startsWith("stateDiagram") ||
-            body.startsWith("classDiagram") ||
-            body.startsWith("sequenceDiagram") ||
-            body.startsWith("erDiagram")) {
+        if (text.startsWith("graph TD") ||
+            text.startsWith("graph TB") ||
+            text.startsWith("graph BT") ||
+            text.startsWith("graph RL") ||
+            text.startsWith("graph LR") ||
+            text.startsWith("pie") ||
+            text.startsWith("gantt") ||
+            text.startsWith("stateDiagram") ||
+            text.startsWith("classDiagram") ||
+            text.startsWith("sequenceDiagram") ||
+            text.startsWith("erDiagram")) {
 
-            text.addTemplateResult(0, body.length, html`<br/><div id="mermaid-${msgId}" class="mermaid">\n${body.replace(/<br>/g, '\n')}\n</div>`);
+            text.addTemplateResult(0, text.length, html`<br/><div id="mermaid-${msgId}" class="mermaid">\n${text.replace(/<br>/g, '\n')}\n</div>`);
 
             setTimeout(function()
             {
 				const ele = document.querySelector("#mermaid-" + msgId);
 				
 				if (ele) {
-					ele.innerHTML = body;
+					ele.innerHTML = text;
 					window.mermaid.init(ele);
 				}
             }, 500);
         }
         else
 
-        if (body.startsWith("X:1"))
+        if (text.startsWith("X:1"))
         {
-            text.addTemplateResult(0, body.length, html`<div id="abc-${msgId}"></div>`);
+            text.addTemplateResult(0, text.length, html`<div id="abc-${msgId}"></div>`);
 
             setTimeout(function()
             {
-                ABCJS.renderAbc("abc-" + msgId, body.replace(/<br>/g, '\n'));
+                ABCJS.renderAbc("abc-" + msgId, text.replace(/<br>/g, '\n'));
             }, 500);
         }
     }
