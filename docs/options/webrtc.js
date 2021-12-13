@@ -1,6 +1,6 @@
 window.addEventListener("load", function()
 {
-    console.debug(chrome.i18n.getMessage('manifest_shortExtensionName') + " is trying to get permissions to use your video/audio devices");
+    console.debug("Pade is trying to get permissions to use your video/audio devices");
 
     // webrtc permission for mic and webcam for first time log-in
 

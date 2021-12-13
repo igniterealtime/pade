@@ -8,23 +8,15 @@ window.addEventListener("load", function()
 window.addEventListener("unload", function ()
 {
     console.debug("options unloaded");
-
-    setSetting(location.href, {top: window.screenTop, left: window.screenLeft, width: window.outerWidth, height: window.outerHeight});
-
-    if (uportWin) chrome.windows.remove(uportWin.id);
-    if (credWin) chrome.windows.remove(credWin.id);
 });
 
 window.addEvent("domready", function () {
 
-    chrome.windows.onRemoved.addListener(function(win)
-    {
-        if (uportWin && win == uportWin.id) uportWin = null;
-        if (credWin && win == credWin.id) credWin = null;
-    });
-
-    var background = chrome.extension.getBackgroundPage();
-    document.getElementById("settings-label").innerHTML = chrome.i18n.getMessage('settings')
+    var background = chrome.extension?.getBackgroundPage();
+	
+	if (chrome.i18n) {
+		document.getElementById("settings-label").innerHTML = chrome.i18n.getMessage('settings')
+	}
 
     doDefaults(background);
 
@@ -37,12 +29,8 @@ window.addEvent("domready", function () {
             document.getElementById("avatar").innerHTML = "<img style='width: 64px;' src='" + avatar + "' />";
         }
 
-        if (chrome.pade)    // browser mode
+        if (chrome.i18n)
         {
-            //settings.manifest.server.element.parentElement.style.display = "none";
-            //settings.manifest.domain.element.parentElement.style.display = "none";
-            //settings.manifest.connect.element.parentElement.style.display = "none";
-
             document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " | Settings";
         }
 
@@ -97,8 +85,8 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
         {
-            background.closeChatWindow();
-            background.openChatWindow("inverse/index.html");
+            //background.closeChatWindow();
+            //background.openChatWindow("inverse/index.html");
             window.close();
         });
 
@@ -124,7 +112,7 @@ window.addEvent("domready", function () {
                 }
 
                 var url = "http://" + hostname + "/rdpdirect.html?gateway=" + hostname + "&server=" + getSetting("remoteHost", hostname) + "&domain=" + getSetting("remoteDomain") + "&color=16" + creds;
-                background.openWebAppsWindow(url, null, screen.availWidth, screen.availHeight);
+                //background.openWebAppsWindow(url, null, screen.availWidth, screen.availHeight);
             }
         });
 
@@ -138,7 +126,7 @@ window.addEvent("domready", function () {
             var setPublish = function()
             {
                 settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
-                background.publishUserLocation();
+                //background.publishUserLocation();
             }
 
             settings.manifest.publishLocation.addEvent("action", setPublish);
@@ -190,6 +178,7 @@ window.addEvent("domready", function () {
                 return;
             }
 
+/*
             background.pdfConversations(keywords, function(blob, error)
             {
                 if (!error) chrome.downloads.download({url: URL.createObjectURL(blob), filename: "conversations" + Math.random().toString(36).substr(2,9) + ".pdf"}, function(id)
@@ -197,7 +186,7 @@ window.addEvent("domready", function () {
                     console.debug("PDF downloaded", id);
                 });
             });
-
+*/
         });
 
         if (settings.manifest.convSearch) settings.manifest.convSearch.addEvent("action", function ()
@@ -209,7 +198,7 @@ window.addEvent("domready", function () {
                 settings.manifest.convSearchResults.element.innerHTML = i18n.get("Enter the keywords delimted by space");
                 return;
             }
-
+/*
             background.searchConversations(keywords, function(html, conversations)
             {
                 settings.manifest.convSearchResults.element.innerHTML = html;
@@ -238,6 +227,7 @@ window.addEvent("domready", function () {
                     }
                 }
             });
+*/			
         });
 
         if (settings.manifest.roomsSearch) settings.manifest.roomsSearch.addEvent("action", function ()
@@ -276,7 +266,7 @@ window.addEvent("domready", function () {
                 return true;
 
             }
-
+/*
             background.findRooms(function(items)
             {
                 console.debug("roomsSearch", items);
@@ -326,10 +316,12 @@ window.addEvent("domready", function () {
                 }
 
             });
+*/			
         });
 
         if (settings.manifest.search) settings.manifest.search.addEvent("action", function ()
         {
+/*			
             background.findUsers(settings.manifest.searchString.element.value, function(userList)
             {
                 console.debug("findUsers", userList);
@@ -451,6 +443,7 @@ window.addEvent("domready", function () {
                     });
                 });
             });
+*/			
         });
 
         if (settings.manifest.inviteToMeeting) settings.manifest.inviteToMeeting.addEvent("action", function ()
@@ -460,13 +453,14 @@ window.addEvent("domready", function () {
             var invite = getSetting("meetingName");
 
             console.debug("inviteToMeeting", inviteList, room);
-
+/*
             background.openVideoWindow(room);
 
             for (var i=0; i<inviteList.length; i++)
             {
                 background.inviteToConference(inviteList[i], room, invite);
             }
+*/			
         });
 
         if (settings.manifest.saveMeeting) settings.manifest.saveMeeting.addEvent("action", function ()
@@ -583,18 +577,18 @@ window.addEvent("domready", function () {
 
                             if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
                             {
-                                background.inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
+                                //background.inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
                             }
                         }
 
-                        background.openVideoWindow(meeting.room);
+                        //background.openVideoWindow(meeting.room);
 
                     }, false);
 
                     document.getElementById("join-" + saveMeetings[i]).addEventListener("click", function(e)
                     {
                         e.stopPropagation();
-                        background.openVideoWindow(e.target.id.substring(5));
+                        //background.openVideoWindow(e.target.id.substring(5));
 
                     }, false);
                 }
@@ -605,10 +599,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("popupWindow"))
             {
-                chrome.browserAction.setPopup({popup: ""});
+                //chrome.action.setPopup({popup: ""});
 
             } else {
-                chrome.browserAction.setPopup({popup: "popup.html"});
+                //chrome.action.setPopup({popup: "popup.html"});
             }
         });
 
@@ -616,10 +610,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableCommunity"))
             {
-                background.addCommunityMenu();
+                //background.addCommunityMenu();
 
             } else {
-               background.removeCommunityMenu();
+               //background.removeCommunityMenu();
             }
         });
 
@@ -627,14 +621,14 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableInverse"))
             {
-                background.addInverseMenu();
+                //background.addInverseMenu();
 
             } else {
-               background.removeInverseMenu();
+               //background.removeInverseMenu();
             }
 
             localStorage.removeItem("store.settings.chatWindow");
-            background.reloadApp();
+            //background.reloadApp();
         });
 
         if (settings.manifest.enableCannedResponses)
@@ -691,7 +685,7 @@ window.addEvent("domready", function () {
                     if (fullName) setSetting("displayname", fullName);
                     if (email) setSetting("email", email);
 
-                    background.reloadApp();
+                    //background.reloadApp();
 
                 }).catch(function (err) {
                     console.error("Smart-ID DATA", err);
@@ -704,16 +698,16 @@ window.addEvent("domready", function () {
         {
             if (getSetting("autoReconnect", true))
             {
-                background.pade.connection.connectionmanager.enable();
+                //background.pade.connection.connectionmanager.enable();
             }
             else {
-                background.pade.connection.connectionmanager.disable();
+                //background.pade.connection.connectionmanager.disable();
             }
         });
 
         if (settings.manifest.ofmeetUrl) settings.manifest.ofmeetUrl.addEvent("action", function ()
         {
-            background.pade.ofmeetUrl = getSetting("ofmeetUrl");
+            //background.pade.ofmeetUrl = getSetting("ofmeetUrl");
         });
 
         if (settings.manifest.enableFriendships) settings.manifest.enableFriendships.addEvent("action", function ()
@@ -730,10 +724,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableOffice365Business"))
             {
-                background.addOffice365Business();
+                //background.addOffice365Business();
 
             } else {
-               background.removeOffice365Business();
+               //background.removeOffice365Business();
             }
         });
 
@@ -741,10 +735,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableOffice365Personal"))
             {
-                background.addOffice365Personal();
+                //background.addOffice365Personal();
 
             } else {
-               background.removeOffice365Personal();
+               //background.removeOffice365Personal();
             }
         });
 
@@ -752,10 +746,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableWebApps"))
             {
-                background.addWebApps();
+                //background.addWebApps();
 
             } else {
-               background.removeWebApps();
+               //background.removeWebApps();
             }
         });
 
@@ -763,10 +757,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableGmail"))
             {
-                background.addGmail();
+                //background.addGmail();
 
             } else {
-               background.removeGmail();
+               //background.removeGmail();
             }
         });
 
@@ -777,23 +771,23 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.help) settings.manifest.help.addEvent("action", function ()
         {
-            location.href = chrome.runtime.getManifest().homepage_url;
+            location.href = chrome.runtime.getManifest ? chrome.runtime.getManifest().homepage_url : "";
         });
 
         if (settings.manifest.useTotp) settings.manifest.useTotp.addEvent("action", function ()
         {
-            background.reloadApp();
+            //background.reloadApp();
         });
 
         if (settings.manifest.useWinSSO) settings.manifest.useWinSSO.addEvent("action", function ()
         {
             setDefaultSetting("password", "__DEFAULT__WINSSO__")
-            background.reloadApp();
+            //background.reloadApp();
         });
 
         if (settings.manifest.enableRemoteControl) settings.manifest.enableRemoteControl.addEvent("action", function ()
         {
-            background.reloadApp();
+            //background.reloadApp();
         });
 
         if (settings.manifest.enableHomePage) settings.manifest.enableHomePage.addEvent("action", function ()
@@ -806,9 +800,9 @@ window.addEvent("domready", function () {
             let keepSettings = false;
             let savedSettings = JSON.parse(JSON.stringify(branding));
 
-            if (confirm(chrome.i18n.getMessage("resetConfirm")))
+            if (confirm("Reset?"))
             {
-                if (confirm(chrome.i18n.getMessage("keepConfirm"))) // save settings
+                if (confirm("Keep data?")) // save settings
                 {
                     keepSettings = true;
 
@@ -825,7 +819,7 @@ window.addEvent("domready", function () {
 
                 sessionStorage.clear();
                 localStorage.clear();
-                chrome.storage.local.clear();
+                if (chrome.storage) chrome.storage.local.clear();
 
                 if (keepSettings)   // restore settings
                 {
@@ -844,17 +838,17 @@ window.addEvent("domready", function () {
         if (settings.manifest.useClientCert) settings.manifest.useClientCert.addEvent("action", function ()
         {
             setDefaultPassword(settings);
-            background.reloadApp();
+            //background.reloadApp();
         });
 
         if (settings.manifest.enableBlog) settings.manifest.enableBlog.addEvent("action", function ()
         {
             if (getSetting("enableBlog"))
             {
-                background.addBlogMenu();
+                //background.addBlogMenu();
 
             } else {
-               background.removeBlogMenu();
+               //background.removeBlogMenu();
             }
         });
 
@@ -862,10 +856,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableBlast"))
             {
-                background.addBlastMenu();
+                //background.addBlastMenu();
 
             } else {
-               background.removeBlastMenu();
+               //background.removeBlastMenu();
             }
         });
 
@@ -873,17 +867,17 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableDrawIO"))
             {
-                background.addDrawIOMenu();
+                //background.addDrawIOMenu();
 
             } else {
-               background.removeDrawIOMenu();
+               //background.removeDrawIOMenu();
             }
         });
 
 
         if (settings.manifest.qrcode) settings.manifest.qrcode.addEvent("action", function ()
         {
-            if (window.localStorage["store.settings.server"])
+            if (window.localStorage["store.settings.server"] && chrome.windows)
             {
                 var host = JSON.parse(window.localStorage["store.settings.server"]);
                 var url = "https://" + host + "/dashboard/qrcode.jsp";
@@ -897,11 +891,11 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.updateCollabUrlList) settings.manifest.updateCollabUrlList.addEvent("action", function ()
         {
-            background.updateCollabUrlList();
+            //background.updateCollabUrlList();
         });
 
 
-        if (settings.manifest.registerUrlProtocols) settings.manifest.registerUrlProtocols.addEvent("action", function ()
+        if (settings.manifest.registerUrlProtocols && chrome.extension) settings.manifest.registerUrlProtocols.addEvent("action", function ()
         {
             if (getSetting("registerIMProtocol"))
             {
@@ -924,24 +918,7 @@ window.addEvent("domready", function () {
             }
         });
 
-        if (settings.manifest.uport) settings.manifest.uport.addEvent("action", function ()
-        {
-            if (getSetting("useUport") || getSetting("useIrma"))
-            {
-                if (uportWin) chrome.windows.remove(uportWin.id);
-
-                var url = "uport/index.html";
-                if (getSetting("useIrma")) url = "irma/index.html";
-
-                chrome.windows.create({url: chrome.extension.getURL(url), type: "popup"}, function (win)
-                {
-                    uportWin = win;
-                    chrome.windows.update(win.id, {drawAttention: true, focused: true, width: 680, height: 800});
-                });
-            }
-        });
-
-        if (settings.manifest.certificate) settings.manifest.certificate.addEvent("action", function ()
+        if (settings.manifest.certificate && chrome.downloads) settings.manifest.certificate.addEvent("action", function ()
         {
             if (window.localStorage["store.settings.server"])
             {
@@ -1093,7 +1070,7 @@ function isNumeric(n) {
 
 function doDefaults(background)
 {
-    if (chrome.pade)    // browser mode
+    if (!chrome.extension)    // browser mode
     {
         setDefaultSetting("server", location.host);
         setDefaultSetting("domain", location.hostname);
@@ -1106,7 +1083,6 @@ function doDefaults(background)
     }
 
     // connection
-    setDefaultSetting("uportPermission", chrome.i18n.getMessage("uport_permission"));
     setDefaultServer();
 
     // preferences
@@ -1154,7 +1130,7 @@ function doDefaults(background)
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", false);
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("homePage", chrome.runtime.getURL("help/index.html"));
+    setDefaultSetting("homePage", "");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("enableBookmarks", true);
@@ -1227,7 +1203,7 @@ function setDefaultServer()
                 if (getSetting("useWinSSO", false))
                 {
                     setDefaultSetting("password", "__DEFAULT__WINSSO__");
-                    chrome.extension.getBackgroundPage().reloadApp();
+                    //chrome.extension.getBackgroundPage().reloadApp();
                 }
 
                 window.location.reload();
@@ -1375,7 +1351,7 @@ function uploadApplication(event, settings, background)
 
                     setTimeout(function()
                     {
-                         background.reloadApp();
+                         //background.reloadApp();
 
                     }, 2000);
                   }
@@ -1422,10 +1398,12 @@ function exportPreferences(settings)
 
     const blob = new Blob([JSON.stringify(brandingExport)], {type: "application/json"});
 
-    chrome.downloads.download({url: URL.createObjectURL(blob), filename: "pade.json"}, function(id)
-    {
-        settings.manifest.importExportStatus.element.innerHTML = 'Exported....pade.json';
-    });
+	if (chrome.downloads) {
+		chrome.downloads.download({url: URL.createObjectURL(blob), filename: "pade.json"}, function(id)
+		{
+			settings.manifest.importExportStatus.element.innerHTML = 'Exported....pade.json';
+		});
+	}
 }
 
 
@@ -1476,7 +1454,7 @@ function uploadAvatar(event, settings)
     settings.manifest.uploadAvatarStatus.element.innerHTML = "Please wait...";
 
     var files = event.target.files;
-    var background = chrome.extension.getBackgroundPage();
+    //var background = chrome.extension.getBackgroundPage();
 
     var domain = JSON.parse(window.localStorage["store.settings.domain"]);
     var username = JSON.parse(window.localStorage["store.settings.username"]);
@@ -1502,7 +1480,7 @@ function uploadAvatar(event, settings)
                     canvas.width = 32;
                     canvas.height = 32;
                     canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
-
+/*
                     background.getVCard(jid, function(vCard)
                     {
                         console.debug("uploadAvatar - get vcard", vCard);
@@ -1516,6 +1494,7 @@ function uploadAvatar(event, settings)
                         }, avatarError);
 
                     }, avatarError);
+*/					
                 }
 
                 sourceImage.src = dataUri;
@@ -1538,7 +1517,7 @@ function reloadConverse(background)
 {
     console.log("reloadConverse", background);
 
-    if (background.pade.chatWindow)
+    if (background?.pade.chatWindow)
     {
         chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].location.reload();
     }

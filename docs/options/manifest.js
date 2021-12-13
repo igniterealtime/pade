@@ -1,5 +1,8 @@
+const padeName = chrome.i18n ? chrome.i18n.getMessage('manifest_extensionName') : "Pade Converse";
+const padeVersion = chrome.i18n ? chrome.runtime.getManifest().version : "2.0.0";
+
 this.manifest = {
-    "name": chrome.i18n.getMessage('manifest_extensionName') + " - " + chrome.runtime.getManifest().version,
+    "name": padeName + " | " + padeVersion,
     "icon": "../icon.png",
     "settings": [
         {
@@ -211,7 +214,7 @@ this.manifest = {
             "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "credits",
-            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + chrome.runtime.getManifest().version + " Ignite Realtime Community</a>"),
+            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + padeVersion + " Ignite Realtime Community</a>"),
             "type": "description"
         },
         {
@@ -987,7 +990,7 @@ this.manifest = {
             "name": "homePage",
             "type": "text",
             "label": i18n.get("Home Page"),
-            "text": chrome.runtime.getManifest().homepage_url
+            "text": ""
         },
         {
             "tab": i18n.get("Converse"),
