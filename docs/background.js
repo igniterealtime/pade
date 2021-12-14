@@ -80,7 +80,12 @@ chrome.windows.onCreated.addListener((win) => {
 
 chrome.windows.onRemoved.addListener((win) => {
 	//console.debug("onRemoved");
-	chrome.storage.local.remove(["pade_window"]);	
+	
+	chrome.storage.local.get(["pade_window"], (result) => {	
+		if (result.pade_window == win.id) {
+			chrome.storage.local.remove(["pade_window"]);
+		}
+	});		
 });	
 
 // -------------------------------------------------------
@@ -90,11 +95,11 @@ chrome.windows.onRemoved.addListener((win) => {
 // -------------------------------------------------------
 
 function openPadeConverseWindow() {
-	console.debug("openPadeConverseWindow");
 	
 	try {
 		chrome.storage.local.get(["pade_window"], (result) => {
-			
+			console.debug("openPadeConverseWindow", result);
+	
 			if (!result.pade_window) {
 				createPadeConverseWindow();	
 			
