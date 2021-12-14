@@ -1,6 +1,14 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
 const nickColors = {}, pade = {webAppsWindow: {}};
 
+window.addEventListener('focus', function(evt)
+{
+	if (chrome.action) {	
+		chrome.action.setBadgeBackgroundColor({ color: '#0000e1' });
+		chrome.action.setBadgeText({ text: "" });
+	}
+});
+							
 window.addEventListener("load", function()
 {
 	if (chrome.windows) 
@@ -80,7 +88,7 @@ function startConverse() {
 				
 			}).catch(function (err) {
 				console.error('waiting for VCardsInitialized error', err);
-			});	
+			});		
 			
 			_converse.api.waitUntil('controlBoxInitialized').then(() => {
 
@@ -106,7 +114,43 @@ function startConverse() {
 
 			_converse.api.listen.on('rosterContactInitialized', function(contact) {
 				setAvatar(contact);
-			});			
+			});	
+
+			_converse.api.listen.on('message', function(data) {
+				let count = 0;
+				if (!data.attrs.message) return;
+				
+				_converse.chatboxes.each((chat_box) =>
+				{
+					if (chat_box.get("type") == "chatbox")
+					{
+						count = count + chat_box.get("num_unread");
+					}
+					else
+
+					if (chat_box.get("type") == "chatroom")
+					{
+						count = count + chat_box.get("num_unread_general");
+					}
+				});
+				
+				//console.debug("message", data.attrs.message, count);				
+				
+				if (count > 0)
+				{
+					if (chrome.action) {
+						chrome.action.setBadgeBackgroundColor({ color: '#0000e1' });
+						chrome.action.setBadgeText({ text: count.toString() });
+					}
+
+					if (chrome.windows) {					
+						chrome.windows.getCurrent({populate: false, windowTypes: ["normal"]}, (win) =>
+						{
+							chrome.windows.update(win.id, {drawAttention: true});
+						});	
+					}						
+				}
+			});				
 		},
 
 		overrides: {		
@@ -191,7 +235,7 @@ function setupMUCAvatars() {
 	{
 		if (!elements[i].querySelector('.pade-avatar')) {		
 			const jid = elements[i].getAttribute('data-room-jid');
-			console.debug("setupMUCAvatars", jid);		
+			//console.debug("setupMUCAvatars", jid);		
 			
 			if (jid) {
 				const img = createAvatar(jid);
@@ -228,7 +272,9 @@ function addControlFeatures() {
 		prefButton.addEventListener('click', function(evt)
 		{
 			evt.stopPropagation();
-			openWebAppsWindow("options/index.html", null, 1300, 950);
+			let url = "options/index.html";
+			if (chrome.runtime?.getURL) url = chrome.runtime.getURL(url);
+			openWebAppsWindow(url, null, 1300, 950);
 
 		}, false);
 	}
@@ -458,7 +504,6 @@ function openWebAppsWindow(url, state, width, height)
 {
 	if (chrome.windows)
 	{
-		url = chrome.runtime.getURL(url);
 		if (!width) width = 1024;
 		if (!height) height = 768;
 
