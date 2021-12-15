@@ -27149,7 +27149,7 @@ function getURI(url) {
 function checkFileTypes(types, url) {
   const uri = getURI(url);
 
-  if (window.location.protocol !== 'chrome-extension:' && (uri === null || !checkTLS(uri))) {
+  if (uri === null || window.location.protocol !== 'chrome-extension:' && !checkTLS(uri)) {
     return false;
   }
 
