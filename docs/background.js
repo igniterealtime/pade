@@ -6,6 +6,7 @@
 
 self.addEventListener('install', function(event) {
     console.debug('activate', event);
+	chrome.storage.local.remove(["pade_window"]);	
 });
 self.addEventListener('activate', function (event) {
     console.debug('activate', event);
@@ -48,13 +49,12 @@ chrome.runtime.onInstalled.addListener((details) => {
 			doExtensionPage("changelog.html");
 		}
 	}
-	chrome.storage.local.remove(["pade_window"]);
-	openPadeConverseWindow();	
+	startPadeConverseWindow();
 });
 
 chrome.runtime.onStartup.addListener(() => {
 	console.debug("onStartup");	
-	openPadeConverseWindow();	
+	startPadeConverseWindow();
 });
 
 chrome.action.onClicked.addListener(() => {
@@ -79,11 +79,12 @@ chrome.windows.onCreated.addListener((win) => {
 });	
 
 chrome.windows.onRemoved.addListener((win) => {
-	//console.debug("onRemoved");
 	
 	chrome.storage.local.get(["pade_window"], (result) => {	
-		if (result.pade_window == win.id) {
+	
+		if (result.pade_window == win) {
 			chrome.storage.local.remove(["pade_window"]);
+			console.debug("onRemoved removed", win);			
 		}
 	});		
 });	
@@ -94,22 +95,28 @@ chrome.windows.onRemoved.addListener((win) => {
 //
 // -------------------------------------------------------
 
+function startPadeConverseWindow() {
+	chrome.storage.local.remove(["pade_window"], (result) => {	
+		createPadeConverseWindow();
+	});		
+}
+
+
 function openPadeConverseWindow() {
-	
-	try {
-		chrome.storage.local.get(["pade_window"], (result) => {
-			console.debug("openPadeConverseWindow", result);
-	
+	chrome.storage.local.get(["pade_window"], (result) => {
+		console.debug("openPadeConverseWindow", result);
+
+		try {	
 			if (!result.pade_window) {
 				createPadeConverseWindow();	
 			
 			} else {
 				chrome.windows.update(result.pade_window, {focused: true});			
 			}
-		});
-	} catch (e) {
-		createPadeConverseWindow();
-	}
+		} catch (e) {
+			createPadeConverseWindow();
+		}				
+	});
 }
 
 function createPadeConverseWindow() {
