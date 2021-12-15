@@ -1,17 +1,39 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
 const nickColors = {}, pade = {webAppsWindow: {}};
 
-window.addEventListener('focus', function(evt)
-{
+window.addEventListener('focus', function(evt) {
 	if (chrome.action) {	
 		chrome.action.setBadgeBackgroundColor({ color: '#0000e1' });
 		chrome.action.setBadgeText({ text: "" });
 	}
 });
 							
-window.addEventListener("load", function()
-{
-	if (chrome.windows) 
+window.addEventListener("load", function() {
+	setupChromeHandlers()
+	startConverse();
+});
+
+window.addEventListener("unload", function() {
+    var webApps = Object.getOwnPropertyNames(pade.webAppsWindow);
+
+    for (var i=0; i<webApps.length; i++)
+    {
+        if (pade.webAppsWindow[webApps[i]])
+        {
+            console.log("pade unloading web app " + webApps[i]);
+            closeWebAppsWindow(webApps[i]);
+        }
+    }
+});
+
+// -------------------------------------------------------
+//
+//  Setup
+//
+// -------------------------------------------------------	
+
+function setupChromeHandlers() {
+	if (chrome.windows && chrome.contextMenus && chrome.runtime) 
 	{
 		chrome.windows.onCreated.addListener(function(window)
 		{
@@ -32,25 +54,24 @@ window.addEventListener("load", function()
 				}
 			}
 		});
-	}
-	
-	startConverse();
-});
 
-window.addEventListener("unload", function()
-{
-    var webApps = Object.getOwnPropertyNames(pade.webAppsWindow);
+		chrome.contextMenus.onClicked.addListener((info, win) => {
+			console.debug("contextMenus", info, win);
+			
+			if (info.menuItemId == "pade_right_click") {
+				replyChat(info.selectionText);
+			}		
+		});
 
-    for (var i=0; i<webApps.length; i++)
-    {
-        if (pade.webAppsWindow[webApps[i]])
-        {
-            console.log("pade unloading web app " + webApps[i]);
-            closeWebAppsWindow(webApps[i]);
-        }
-    }
-});
-	
+		chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+			console.debug("onMessage", request, sender, sendResponse);
+
+		});
+		
+		chrome.contextMenus.create({id: "pade_right_click", type: "normal", title: "Reply %s", contexts: ["selection"]});		
+	}		
+}
+
 function startConverse() {
 	const domain = getSetting("domain", location.hostname);
 	const server = getSetting("server", location.host);
@@ -81,7 +102,12 @@ function startConverse() {
 			if (chrome.i18n) {
 				document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
 			}
-						
+				
+			_converse.api.listen.on('parseMessage', async (stanza, attrs) => {
+				console.debug('parseMessage', stanza, attrs);
+				return attrs;
+			});	
+				
 			_converse.api.waitUntil('VCardsInitialized').then(() => {
 				const vcards = _converse.vcards.models;							
 				for (let i=0; i < vcards.length; i++) setAvatar(vcards[i]);					
@@ -109,14 +135,26 @@ function startConverse() {
 				{				
 					setupTimeAgo();
 				}
-				addSelfBot();
+				addSelfBot();			
 			});
 
 			_converse.api.listen.on('rosterContactInitialized', function(contact) {
 				setAvatar(contact);
 			});	
+			
+			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
+		       buttons.push({
+		           'i18n_text': __('Reply'),
+		           'handler': ev => handleReplyAction(el.model),
+		           'button_class': 'chat-msg__action-reply',
+		           'icon_class': 'fas fa-arrow-left',
+		           'name': 'pade-reply'
+		       });
+		       return buttons;
+			});	
 
-			_converse.api.listen.on('message', function(data) {
+
+			_converse.api.listen.on('message', (data) => {
 				let count = 0;
 				if (!data.attrs.message) return;
 				
@@ -246,7 +284,6 @@ function setupMUCAvatars() {
 	}			
 }
 
-
 function addControlFeatures() {
 	const section = document.body.querySelector('.controlbox-section.profile.d-flex');
 	if (!section) return;
@@ -286,7 +323,51 @@ function addSelfBot() {
 		openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"], true)
 	});	
 }
-				
+
+// -------------------------------------------------------
+//
+//  Utility Functions
+//
+// -------------------------------------------------------	
+
+function handleReplyAction(model) {
+	console.debug('handleReplyAction', model)
+	
+	let selectedText = window.getSelection().toString();
+	const prefix = model.get('nick') || model.get('nickname');
+	
+	if (!selectedText || selectedText == '') selectedText = model.get('message');
+	replyChat(prefix + ': ' + selectedText);
+}
+function getSelectedChatBox() {
+	var models = _converse.chatboxes.models;
+	var view = null;
+
+	console.debug("getSelectedChatBox", models);
+
+	for (var i=0; i<models.length; i++)
+	{
+		if ((models[i].get('type') === "chatroom" || models[i].get('type') === "chatbox") && !models[i].get('hidden'))
+		{
+			view = _converse.chatboxviews.views[models[i].id];
+			break;
+		}
+	}
+	return view;
+}
+
+function replyChat(text) {
+	var box = getSelectedChatBox();
+
+	console.debug("replyChat", text, box);
+
+	if (box)
+	{
+		var textArea = box.querySelector('.chat-textarea');
+		if (textArea) textArea.value = ">" + text + "\n";
+	}
+}
+	
 function setAvatar(contact) {
 				
 	if (_converse.DEFAULT_IMAGE == contact.get('image') && contact.get('jid')) {
@@ -315,7 +396,6 @@ function setAvatar(contact) {
 		contact.set("image_type", "image/png");
 	}		
 }
-
 
 function getSetting(name, defaultValue) {
     const localStorage = window.localStorage
@@ -488,8 +568,7 @@ function createAvatar(nickname, width, height, font) {
 	return canvas.toDataURL();
 }
 
-function closeWebAppsWindow(window)
-{
+function closeWebAppsWindow(window) {
 	if (chrome.windows)
 	{	
 		if (pade.webAppsWindow[window] != null)
@@ -500,8 +579,7 @@ function closeWebAppsWindow(window)
 	}
 }
 
-function openWebAppsWindow(url, state, width, height)
-{
+function openWebAppsWindow(url, state, width, height) {
 	if (chrome.windows)
 	{
 		if (!width) width = 1024;
@@ -534,14 +612,12 @@ function openWebAppsWindow(url, state, width, height)
 	} else open(url, url)
 }
 
-function openVideoWindow(room, mode)
-{
+function openVideoWindow(room, mode) {
     var url = getVideoWindowUrl(room, mode);
     openWebAppsWindow(url);
 }
 
-function getVideoWindowUrl(room, mode)
-{
+function getVideoWindowUrl(room, mode) {
     const url = getSetting("ofmeetUrl", "https://" + getSetting("server") + "/ofmeet/");
     let params = "#config.webinar=" + (mode != "attendee" ? "false" : "true");
 
