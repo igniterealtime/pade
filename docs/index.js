@@ -56,19 +56,13 @@ function setupChromeHandlers() {
 		});
 
 		chrome.contextMenus.onClicked.addListener((info, win) => {
-			console.debug("contextMenus", info, win);
-			
-			if (info.menuItemId == "pade_right_click") {
-				replyChat(info.selectionText);
-			}		
+			console.debug("contextMenus", info, win);		
 		});
 
 		chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			console.debug("onMessage", request, sender, sendResponse);
 
-		});
-		
-		chrome.contextMenus.create({id: "pade_right_click", type: "normal", title: "Reply %s", contexts: ["selection"]});		
+		});	
 	}		
 }
 
@@ -339,6 +333,7 @@ function handleReplyAction(model) {
 	if (!selectedText || selectedText == '') selectedText = model.get('message');
 	replyChat(prefix + ': ' + selectedText);
 }
+
 function getSelectedChatBox() {
 	var models = _converse.chatboxes.models;
 	var view = null;
