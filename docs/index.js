@@ -284,7 +284,7 @@ function renderReactions() {
 				
 				if (reactionId) 
 				{
-					console.debug("renderReactions", model.get('id'), reactionId, reactionEmoji);
+					//console.debug("renderReactions", model.get('id'), reactionId, reactionEmoji);
 					
 					if (!msgReactions.has(reactionId)) {
 						msgReactions.set(reactionId, {emojis: new Map(), reactionId});
@@ -303,7 +303,7 @@ function renderReactions() {
 	}
 
 	for (const reaction of msgReactions.values()) {
-		console.debug("rections item", reaction);		
+		//console.debug("rections item", reaction);		
 		const el = document.querySelector('[data-msgid="' + reaction.reactionId + '"]');	
 		
 		if (el) {			
@@ -318,7 +318,7 @@ function renderReactions() {
 			let div = "";
 			
 			for (const emoji of reaction.emojis.values()) {	
-				console.debug("rections emoji", emoji);	
+				//console.debug("rections emoji", emoji);	
 				div = div + '<span class="chat-msg__reaction">' + emoji.code + '&nbsp' + emoji.count + '</span>';
 			}
 			
@@ -398,7 +398,7 @@ function parseStanza(stanza, attrs) {
     if (reactions) {
 		attrs.reaction_id = reactions.getAttribute('id');
 		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
-		console.log("parseStanza", attrs);		
+		console.log("parseStanza", stanza, attrs);		
     }
 	return attrs;
 }
@@ -422,9 +422,16 @@ function handleReactionAction(model, emoji) {
 	
 	if (msgId) {
 		model.save('reaction_id', msgId);
-		model.save('reaction_emoji', emoji);		
-		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji));			
+		model.save('reaction_emoji', emoji);
+		const originId = uuidv4();
+		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));			
 	}
+}
+
+function uuidv4() {
+	return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+	);
 }
 
 function getSelectedChatBox() {
