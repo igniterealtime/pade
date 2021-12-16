@@ -417,14 +417,19 @@ function handleReactionAction(model, emoji) {
 	console.debug('handleReactionAction', model, emoji);	
 	const msgId = model.get('msgid');
 	const type = model.get("type");	
+	
 	let target = model.get('jid');
 	if (type == "groupchat") target = model.get('from_muc');
+	
+	let message = model.get('message');
+	const pos = message.indexOf('\n');
+	if (pos > -1) message = message(0, pos);
 	
 	if (msgId) {
 		model.save('reaction_id', msgId);
 		model.save('reaction_emoji', emoji);
 		const originId = uuidv4();
-		const body = "/me " + emoji + model.get('message');
+		const body = "/me " + emoji + message;
 		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));			
 	}
 }
