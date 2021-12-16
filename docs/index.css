@@ -12,3 +12,7 @@
 .conversejs .chat-msg__reaction {
 	padding-right: 5px;	
 }
+
+.conversejs.theme-concord {
+	--avatar-border-radius: 100%;
+}

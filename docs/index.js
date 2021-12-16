@@ -339,7 +339,7 @@ function setupMUCAvatars() {
 			
 			if (jid) {
 				const img = createAvatar(jid);
-				const avatar = newElement('span', null, '<img style="margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
+				const avatar = newElement('span', null, '<img style="border-radius: 100%; margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
 				elements[i].prepend(avatar);
 			}
 		}			
@@ -410,7 +410,7 @@ function handleReplyAction(model) {
 	const prefix = model.get('nick') || model.get('nickname');
 	
 	if (!selectedText || selectedText == '') selectedText = model.get('message');
-	replyChat(prefix + ': ' + selectedText);
+	replyChat(prefix + ' : ' + selectedText);
 }
 
 function handleReactionAction(model, emoji) {
@@ -430,7 +430,7 @@ function handleReactionAction(model, emoji) {
 		model.save('reaction_emoji', emoji);
 		const nick = model.get('nickname') || model.get('nick') || Strophe.getNodeFromJid(model.get('from'));
 		const originId = uuidv4();
-		const body = ">" + nick + ": " + message + '\n' + emoji;
+		const body = ">" + nick + " : " + message + '\n' + emoji;
 		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));				
 	}
 }
