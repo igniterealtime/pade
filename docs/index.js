@@ -111,7 +111,6 @@ function startConverse() {
 			});	
 
 			_converse.api.waitUntil('chatBoxesFetched').then(() => {
-				//renderReactions();
 				
 			}).catch(function (err) {
 				console.error('waiting for chatBoxesFetched error', err);
@@ -245,7 +244,7 @@ function setupTimer() {
 	setupTimeAgo();
 	addControlFeatures();
 	setupMUCAvatars();	
-	/*if (!document.querySelector('.pade-reaction')) renderReactions();	*/
+	renderReactions();
 	setTimeout(setupTimer, 10000);	
 }
 
@@ -398,10 +397,8 @@ function parseStanza(stanza, attrs) {
 
     if (reactions) {
 		attrs.reaction_id = reactions.getAttribute('id');
-		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;
-		
+		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
 		console.log("parseStanza", attrs);		
-		setTimeout(renderReactions, 1000);
     }
 	return attrs;
 }
@@ -424,7 +421,9 @@ function handleReactionAction(model, emoji) {
 	if (type == "groupchat") target = model.get('from_muc');
 	
 	if (msgId) {
-		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji));			
+		model.save('reaction_id', msgId);
+		model.save('reaction_emoji', emoji);		
+		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji));			
 	}
 }
 
