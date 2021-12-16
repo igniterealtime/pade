@@ -426,8 +426,10 @@ function handleReactionAction(model, emoji) {
 	if (pos > -1) message = message.substring(0, pos);
 	
 	if (msgId) {
-		model.save('reaction_id', msgId);
-		model.save('reaction_emoji', emoji);
+		if (type == "chat") {
+			model.save('reaction_id', msgId);
+			model.save('reaction_emoji', emoji);
+		}
 		const nick = model.get('nickname') || model.get('nick') || Strophe.getNodeFromJid(model.get('from'));
 		const originId = uuidv4();
 		const body = ">" + nick + " : " + message + '\n' + emoji;
