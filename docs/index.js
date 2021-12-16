@@ -397,14 +397,11 @@ function parseStanza(stanza, attrs) {
     const reactions = stanza.querySelector('reactions');
 
     if (reactions) {
-		setTimeout(renderReactions, 3000);		
+		attrs.reaction_id = reactions.getAttribute('id');
+		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;
 		
-		return Object.assign(attrs, {
-			'reaction_id': reactions.getAttribute('id'),
-			'reaction_emoji': reactions.querySelector('reaction').innerHTML
-		});		
 		console.log("parseStanza", attrs);		
-
+		setTimeout(renderReactions, 1000);
     }
 	return attrs;
 }
