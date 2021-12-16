@@ -270,7 +270,7 @@ function setupTimeAgo() {
 
 function renderReactions() {
 	const models = _converse.chatboxes.models;	
-	console.debug("rections render", models);
+	//console.debug("rections render", models);
 	const msgReactions = new Map();
 
 	for (model of models)
@@ -429,8 +429,8 @@ function handleReactionAction(model, emoji) {
 		model.save('reaction_id', msgId);
 		model.save('reaction_emoji', emoji);
 		const originId = uuidv4();
-		const body = "/me " + emoji + message;
-		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));			
+		const body = "/me " + emoji + " " + message;
+		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));				
 	}
 }
 

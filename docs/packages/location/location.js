@@ -77,7 +77,6 @@
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
-                console.debug("getToolbarButtons", toolbar_el.model.get("jid"));
                 let color = "fill:var(--chat-toolbar-btn-color);";
                 if (toolbar_el.model.get("type") == "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 

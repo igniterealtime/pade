@@ -17,8 +17,6 @@
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
-                console.debug("getToolbarButtons", toolbar_el.model.get("jid"));
-
                 buttons.push(html`
                     <button class="toolbar-utilities-scroll" title="${__('Scroll to the bottom')}" @click=${scrollToBottom}/>
                         <converse-icon class="fa fa-angle-double-down" size="1em"></converse-icon>
