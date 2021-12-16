@@ -420,11 +420,11 @@ function handleReactionAction(model, emoji) {
 	console.debug('handleReactionAction', model, emoji);	
 	const msgId = model.get('msgid');
 	const type = model.get("type");	
-	let from = model.get('from');
-	if (type == "groupchat") from = Strophe.getBareJidFromJid(from);
+	let target = model.get('jid');
+	if (type == "groupchat") target = model.get('from_muc');
 	
 	if (msgId) {
-		_converse.api.send($msg({to: from, from: _converse.connection.jid, type}).c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji));			
+		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji));			
 	}
 }
 
