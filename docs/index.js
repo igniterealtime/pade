@@ -33,6 +33,7 @@ window.addEventListener("unload", function() {
 // -------------------------------------------------------	
 
 function setupChromeHandlers() {
+
 	if (chrome.windows && chrome.contextMenus && chrome.runtime) 
 	{
 		chrome.windows.onCreated.addListener(function(window)
@@ -96,11 +97,25 @@ function startConverse() {
 			if (chrome.i18n) {
 				document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
 			}
-				
+
+            _converse.api.listen.on('afterMessageBodyTransformed', function(text) {				
+
+            });
+			
 			_converse.api.listen.on('parseMessage', async (stanza, attrs) => {
-				console.debug('parseMessage', stanza, attrs);
-				return attrs;
+				return parseStanza(stanza, attrs);
 			});	
+			
+			_converse.api.listen.on('parseMUCMessage', async (stanza, attrs) => {
+				return parseStanza(stanza, attrs);
+			});	
+
+			_converse.api.waitUntil('chatBoxesFetched').then(() => {
+				//renderReactions();
+				
+			}).catch(function (err) {
+				console.error('waiting for chatBoxesFetched error', err);
+			});				
 				
 			_converse.api.waitUntil('VCardsInitialized').then(() => {
 				const vcards = _converse.vcards.models;							
@@ -125,10 +140,7 @@ function startConverse() {
 			});		
 
 			_converse.api.listen.on('connected', function() {
-				if (getSetting("converseTimeAgo", false))
-				{				
-					setupTimeAgo();
-				}
+				if (getSetting("converseTimeAgo", false)) setupTimer();
 				addSelfBot();			
 			});
 
@@ -137,13 +149,9 @@ function startConverse() {
 			});	
 			
 			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
-		       buttons.push({
-		           'i18n_text': __('Reply'),
-		           'handler': ev => handleReplyAction(el.model),
-		           'button_class': 'chat-msg__action-reply',
-		           'icon_class': 'fas fa-arrow-left',
-		           'name': 'pade-reply'
-		       });
+		       buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el.model),                    'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
+		       buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':thumbsup:'),   'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   'name': 'pade-thumbsup'});	
+		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':thumbsdown:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 'name': 'pade-thumbsdown'});			   
 		       return buttons;
 			});	
 
@@ -232,31 +240,92 @@ function startConverse() {
 
 }
 
+function setupTimer() {	
+	//console.debug("setupTimer render");
+	setupTimeAgo();
+	addControlFeatures();
+	setupMUCAvatars();	
+	/*if (!document.querySelector('.pade-reaction')) renderReactions();	*/
+	setTimeout(setupTimer, 10000);	
+}
+
 function setupTimeAgo() {
+	//console.debug("timeago render");
+	timeago.cancel();
+	const locale = navigator.language.replace('-', '_');
 	
-	setInterval(() => {
-		//console.debug("timeago render");
-		timeago.cancel();
-		const locale = navigator.language.replace('-', '_');
-		
-		const elements = document.querySelectorAll('.chat-msg__time');
-		
-		for (let i=0; i < elements.length; i++)
+	const elements = document.querySelectorAll('.chat-msg__time');
+	
+	for (let i=0; i < elements.length; i++)
+	{
+		if (!elements[i].querySelector('.chat-msg__time_span')) {
+			const timestamp = elements[i].getAttribute('timestamp');	
+			const pretty_time = elements[i].innerHTML;				
+			const timeAgo = timeago.format(new Date(pretty_time));
+			elements[i].innerHTML = '<span class="chat-msg__time_span" title="' + pretty_time + '" datetime="' + timestamp + '">' + timeAgo + '</span>';
+		}
+	}
+	
+	timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+}
+
+function renderReactions() {
+	const models = _converse.chatboxes.models;	
+	console.debug("rections render", models);
+	const msgReactions = new Map();
+
+	for (model of models)
+	{
+		if (model.messages) 
 		{
-			if (!elements[i].querySelector('.chat-msg__time_span')) {
-				const timestamp = elements[i].getAttribute('timestamp');	
-				const pretty_time = elements[i].innerHTML;				
-				const timeAgo = timeago.format(new Date(pretty_time));
-				elements[i].innerHTML = '<span class="chat-msg__time_span" title="' + pretty_time + '" datetime="' + timestamp + '">' + timeAgo + '</span>';
+			for (message of model.messages.models)
+			{
+				const reactionId = message.get('reaction_id');	
+				const reactionEmoji = message.get('reaction_emoji');
+				
+				if (reactionId) 
+				{
+					console.debug("renderReactions", model.get('id'), reactionId, reactionEmoji);
+					
+					if (!msgReactions.has(reactionId)) {
+						msgReactions.set(reactionId, {emojis: new Map(), reactionId});
+					}
+					
+					const emojis = msgReactions.get(reactionId).emojis;
+					
+					if (!emojis.has(reactionEmoji)) {
+						emojis.set(reactionEmoji, {count: 0, code: converse.env.utils.shortnamesToEmojis(reactionEmoji)});
+					}					
+					
+					emojis.get(reactionEmoji).count++;						
+				}
 			}
 		}
-		
-		timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
+	}
 
-		addControlFeatures();
-		setupMUCAvatars();		
+	for (const reaction of msgReactions.values()) {
+		console.debug("rections item", reaction);		
+		const el = document.querySelector('[data-msgid="' + reaction.reactionId + '"]');	
 		
-	}, 10000);	
+		if (el) {			
+			let reactionDiv = el.querySelector('.pade-reaction');
+			
+			if (!reactionDiv) {
+				const msgText = el.querySelector('.chat-msg__text');
+				reactionDiv = newElement('div', null, null, 'pade-reaction');	
+				msgText.insertAdjacentElement('afterEnd', reactionDiv);
+			}			
+				
+			let div = "";
+			
+			for (const emoji of reaction.emojis.values()) {	
+				console.debug("rections emoji", emoji);	
+				div = div + '<span class="chat-msg__reaction">' + emoji.code + '&nbsp' + emoji.count + '</span>';
+			}
+			
+			reactionDiv.innerHTML = div;	
+		}
+	}
 }
 
 function setupMUCAvatars() {
@@ -324,6 +393,22 @@ function addSelfBot() {
 //
 // -------------------------------------------------------	
 
+function parseStanza(stanza, attrs) {
+    const reactions = stanza.querySelector('reactions');
+
+    if (reactions) {
+		setTimeout(renderReactions, 3000);		
+		
+		return Object.assign(attrs, {
+			'reaction_id': reactions.getAttribute('id'),
+			'reaction_emoji': reactions.querySelector('reaction').innerHTML
+		});		
+		console.log("parseStanza", attrs);		
+
+    }
+	return attrs;
+}
+
 function handleReplyAction(model) {
 	console.debug('handleReplyAction', model)
 	
@@ -332,6 +417,17 @@ function handleReplyAction(model) {
 	
 	if (!selectedText || selectedText == '') selectedText = model.get('message');
 	replyChat(prefix + ': ' + selectedText);
+}
+
+function handleReactionAction(model, emoji) {
+	console.debug('handleReactionAction', model, emoji);	
+	const msgId = model.get('msgid');
+	const type = model.get("type");	
+	const from = Strophe.getBareJidFromJid(model.get('from'));
+	
+	if (msgId) {
+		_converse.api.send($msg({ to: from, from: _converse.connection.jid, type}).c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji));			
+	}
 }
 
 function getSelectedChatBox() {
