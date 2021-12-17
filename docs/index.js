@@ -1,6 +1,26 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
 const nickColors = {}, pade = {webAppsWindow: {}};
 
+var paderoot = {
+	participants: {},
+	presence: {},
+	tasks: {},
+	sip: {},
+	autoJoinRooms: {},
+	autoJoinPrivateChats: {},
+	gmailWindow: [],
+	webAppsWindow: {},
+	vcards: {},
+	questions: {},
+	collabDocs: {},
+	collabList: [],
+	userProfiles: {},
+	fastpath: {},
+	geoloc: {},
+	ohun: {},
+	transferWise: {}
+}
+	
 window.addEventListener('focus', function(evt) {
 	if (chrome.action) {	
 		chrome.action.setBadgeBackgroundColor({ color: '#0000e1' });
@@ -134,7 +154,12 @@ function startConverse() {
 
 				_converse.api.waitUntil('bookmarksInitialized').then(() => {
 					setupMUCAvatars();
-					addControlFeatures();					
+					addControlFeatures();	
+
+					if (getSetting("converseSimpleView", false))
+					{
+						handleActiveConversations();
+					}					
 
 				}).catch(function (err) {
 					console.error('waiting for controlBoxInitialized error', err);
@@ -144,6 +169,14 @@ function startConverse() {
 				console.error('waiting for controlBoxInitialized error', err);
 			});		
 
+			_converse.api.listen.on('chatBoxClosed', function (chatbox)
+			{
+				console.debug("chatBoxClosed", chatbox);
+
+				const activeDiv = document.getElementById("active-conversations");
+				if (activeDiv) removeActiveConversation(chatbox, activeDiv);
+			});
+					
 			_converse.api.listen.on('connected', function() {
 				if (getSetting("converseTimeAgo", false)) setupTimer();
 				addSelfBot();			
@@ -161,25 +194,30 @@ function startConverse() {
 			});	
 
 
-			_converse.api.listen.on('message', (data) => {
+			_converse.api.listen.on('message', (data) => {			
 				let count = 0;
 				if (!data.attrs.message) return;
 				
 				_converse.chatboxes.each((chat_box) =>
-				{
+				{					
+					const newMessage = (data.attrs.from_muc || data.attrs.from) == chat_box.get("jid") ? data.attrs.message : null;
+					
 					if (chat_box.get("type") == "chatbox")
 					{
-						count = count + chat_box.get("num_unread");
+						const value = chat_box.get("num_unread");
+						setActiveConversationsBadge(chat_box, value, newMessage);							
+						count = count + value;
 					}
 					else
 
 					if (chat_box.get("type") == "chatroom")
 					{
-						count = count + chat_box.get("num_unread_general");
+						const value = chat_box.get("num_unread_general");
+						setActiveConversationsBadge(chat_box, value, newMessage);						
+						count = count + value;
 					}
-				});
-				
-				//console.debug("message", data.attrs.message, count);				
+									
+				});			
 				
 				if (count > 0)
 				{
@@ -334,13 +372,13 @@ function renderReactions() {
 }
 
 function setupMUCAvatars() {
-	const elements = document.querySelectorAll('.available-chatroom');	
+	const elements = document.querySelectorAll('.list-item.controlbox-padded');	
 	//console.debug("setupMUCAvatars", elements);	
 		
 	for (let i=0; i < elements.length; i++)
 	{
 		if (!elements[i].querySelector('.pade-avatar')) {		
-			const jid = elements[i].getAttribute('data-room-jid');
+			const jid = elements[i].getAttribute('data-room-jid') || elements[i].getAttribute('data-headline-jid');
 			//console.debug("setupMUCAvatars", jid);		
 			
 			if (jid) {
@@ -357,7 +395,19 @@ function addControlFeatures() {
 	if (!section) return;
 
 	//console.debug("addControlFeatures", section);
+	
+	if (!section.querySelector('.pade-active-conversations')) {		
+		const viewButton = newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-list-ul align-self-center" title="Change view"></a>', 'pade-active-conversations');
+		section.appendChild(viewButton);
 
+		viewButton.addEventListener('click', function(evt)
+		{
+			evt.stopPropagation();
+			handleActiveConversations();
+
+		}, false);	
+	}
+	
 	if (!section.querySelector('.pade-meet-now')) {	
 		const ofmeetButton = newElement('a', null, '<a class="controlbox-heading__btn open-ofmeet fas fa-video align-self-center" title="Meet Now!!"></a>', 'pade-meet-now');
 		section.appendChild(ofmeetButton);
@@ -369,6 +419,7 @@ function addControlFeatures() {
 
 		}, false);
 	}
+
 
 	if (!section.querySelector('.pade-settings')) {
 		const prefButton = newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>', 'pade-settings');
@@ -382,6 +433,238 @@ function addControlFeatures() {
 	}
 }
 
+function handleActiveConversations() {
+	console.debug("handleActiveConversations");
+
+	const announceDiv = document.getElementById("headline");
+	const roomDiv = document.getElementById("chatrooms");
+	const chatDiv = document.getElementById("converse-roster");
+	let activeDiv = document.getElementById("active-conversations");
+
+	if (roomDiv && _converse)
+	{
+		let display = roomDiv.style.display;
+
+		if (display != "none")
+		{
+			roomDiv.style.display = "none";
+			if (chatDiv) chatDiv.style.display = "none";
+			if (announceDiv) announceDiv.style.display = "none";			
+
+			if (!activeDiv)
+			{
+				activeDiv = document.createElement("div");
+				activeDiv.id = "active-conversations";
+				activeDiv.classList.add("controlbox-section");
+				roomDiv.parentElement.appendChild(activeDiv);
+			}
+
+			var compare = function ( x, y )
+			{
+				const one = x.get("name");
+				const two = y.get("name");
+				const a = one ? one.toLowerCase() : "";
+				const b = two ? two.toLowerCase() : "";
+
+				if ( a < b ) return -1;
+				if ( a > b ) return 1;
+				return 0;
+			}
+
+			_converse.chatboxes.models.sort(compare).forEach(function (chatbox)
+			{
+				addActiveConversation(chatbox, activeDiv);
+			});
+
+		} else {
+			roomDiv.style.display = "";
+			if (chatDiv) chatDiv.style.display = "";
+			if (announceDiv) announceDiv.style.display = "";				
+			if (activeDiv) roomDiv.parentElement.removeChild(activeDiv);
+		}
+	}
+}
+
+function removeActiveConversation(chatbox, activeDiv) {
+	//console.debug("removeActiveConversation", chatbox, activeDiv);
+
+	if (chatbox && activeDiv)
+	{
+		const openButton = document.getElementById("pade-active-" + chatbox.get('box_id'));
+
+		if (openButton)
+		{
+			activeDiv.removeChild(openButton.parentElement);
+		}
+	}
+}
+
+function addActiveConversation(chatbox, activeDiv, newMessage) {
+	//console.debug("addActiveConversation", chatbox, activeDiv, newMessage);
+	
+	if (_converse && chatbox.vcard) 	
+	{
+		const panel = document.getElementById("pade-active-" + chatbox.get('box_id'));
+
+		if (panel)
+		{
+			activeDiv.removeChild(panel.parentElement);
+		}
+
+		if (!newMessage) newMessage = "";
+
+		const status = chatbox.get("status") ? chatbox.get("status") : "";
+		const chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
+		const numUnread = chatType == "chat" ? chatbox.get("num_unread") : chatbox.get("num_unread_general");
+		const id = chatbox.get('box_id');
+		const jid = chatbox.get('jid');
+
+		const msg_content = document.createElement("div");
+		msg_content.classList.add("pade-active-panel");
+
+		let display_name = chatbox.getDisplayName();
+		if (!display_name || display_name.trim() == "") display_name = jid;
+		if (display_name.indexOf("@") > -1) display_name = display_name.split("@")[0];
+
+		let dataUri = "data:" + chatbox.vcard.attributes.image_type + ";base64," + chatbox.vcard.attributes.image;
+
+		if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image)
+		{
+			dataUri = api.createAvatar(display_name, null, null, null, null);
+		}
+
+		// ohun status
+
+		msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="border-radius: 100%; width: 22px; width: 22px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fa fa-times"></a><a href="#" id="pade-active-conv-ohun-' + id +'" data-jid="' + jid + '" class="pade-active-conv-ohun fas fa-volume-up"></a>';
+		activeDiv.appendChild(msg_content);
+
+		const item = document.getElementById('pade-active-conv-ohun-' + id);
+
+		if (item && paderoot.ohun[jid] && paderoot.ohun[jid].peer)
+		{
+			item.style.color =  "red";
+			item.style.visibility = "visible";
+		}
+
+		// handlers for mouse click and badge status
+
+		const openButton = document.getElementById("pade-active-" + id);
+		const openBadge = document.getElementById("pade-badge-" + id);
+
+		if (openButton)
+		{
+			openButton.addEventListener('click', function(evt)
+			{
+				evt.stopPropagation();
+	
+				let jid = evt.target.getAttribute("data-jid");
+				let type = evt.target.getAttribute("data-type");
+				let label = evt.target.getAttribute("data-label");
+
+				console.debug("addActiveConversation - open", jid, type, label);
+
+				if (jid)
+				{
+					if (type == "chat") _converse.api.chats.open(jid, {'bring_to_foreground': true}, true);
+					else
+					if (type == "groupchat") _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
+				}
+
+				_converse.chatboxes.each(function (chatbox)
+				{
+					const itemId = chatbox.get('box_id');
+					const itemLabel = document.getElementById("pade-active-" + itemId);
+					if (itemLabel) itemLabel.style.fontWeight = "normal";
+				});
+
+				this.innerHTML = label;
+				this.style.fontWeight = "bold";
+
+				if (openBadge) openBadge.setAttribute("data-badge", "0");
+
+			}, false);
+		}
+
+		const closeButton = document.getElementById("pade-active-conv-close-" + id);
+
+		if (closeButton)
+		{
+			closeButton.addEventListener('click', function(evt)
+			{
+				evt.stopPropagation();
+
+				const jid = evt.target.getAttribute("data-jid");
+				const view = _converse.chatboxviews.get(jid);
+				
+				console.debug("addActiveConversation - close", jid, view);				
+
+				if (view)
+				{
+					const ohun = _converse.pluggable.plugins["ohun"];
+					if (ohun) ohun.closeKraken(view.model);
+					view.close();
+				}
+
+			}, false);
+		}
+	}
+}
+
+function setActiveConversationsRead(chatbox) {
+	console.debug("setActiveConversationsRead", chatbox);
+
+	var id = chatbox.get("box_id");
+	var openBadge = document.getElementById("pade-badge-" + id);
+	if (openBadge) openBadge.setAttribute("data-badge", "0");
+}
+	
+function setActiveConversationsUread(chatbox, newMessage) {
+	// active conversations, add unread indicator
+
+	var id = chatbox.get("box_id");
+	var numUnreadBox = chatbox.get("num_unread");
+	var numUnreadRoom = chatbox.get("num_unread_general");
+	var chatType = chatbox.get("type") == "chatbox" ? "chat" : "groupchat";
+	var openButton = document.getElementById("pade-active-" + id);
+	var openBadge = document.getElementById("pade-badge-" + id);
+
+	var jid = chatbox.get("jid");
+	var display_name = chatbox.getDisplayName().trim();
+	if (!display_name || display_name == "") display_name = jid;
+
+	if (openBadge && openButton)
+	{
+		if (chatType == "chat")
+		{
+			openBadge.setAttribute("data-badge", numUnreadBox);
+		}
+		else
+
+		if (chatType == "groupchat")
+		{
+			openBadge.setAttribute("data-badge", numUnreadRoom);
+		}
+
+		if (newMessage) openButton.title = newMessage;
+
+	} else {
+		const activeDiv = document.getElementById("active-conversations");
+		if (activeDiv) addActiveConversation(chatbox, activeDiv, newMessage);
+	}
+}
+	
+function setActiveConversationsBadge(chatbox, value, newMessage) {
+	var id = chatbox.get("box_id");
+    var openButton = document.getElementById("pade-active-" + id);
+	var openBadge = document.getElementById("pade-badge-" + id);
+	
+	if (openBadge && newMessage) {
+		console.debug("setActiveConversationsBadge", value, chatbox.get("jid"), newMessage);		
+		openBadge.setAttribute("data-badge", value);
+		if (openButton) openButton.title = newMessage;		
+	}
+}
+	
 function addSelfBot() {
 	// add self for testing
 	setTimeout(function() {

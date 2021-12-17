@@ -16,3 +16,73 @@
 .conversejs.theme-concord {
 	--avatar-border-radius: 100%;
 }
+
+
+.pade-active-conv {
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;   
+    width: 100%;
+}
+
+.pade-active-panel {
+  display: inline-flex;
+  width: 100%;
+  flex-direction: row;
+  /*overflow: auto;*/
+  padding: 0.125rem 1rem !important; 
+}
+  
+.pade-active-panel:hover {
+    background-color: #E5E5E5 !important;  
+    color: #151515 !important;      
+}
+
+.pade-active-conv:hover + .pade-active-conv-ohun {
+    visibility: visible;
+}
+
+.pade-active-conv:hover + .pade-active-conv-close {
+    visibility: visible; 
+}
+
+
+.pade-active-conv-ohun {
+    float: right;
+    visibility: hidden;
+    padding-left: 5px !important;
+}
+
+.pade-active-conv-close {
+    float: right;
+    visibility: hidden;
+}
+
+.pade-active-conv-ohun:hover {
+    visibility: visible;
+}
+
+.pade-active-conv-close:hover {
+    visibility: visible;
+}
+
+.pade-badge {
+    position:relative;
+}
+.pade-badge[data-badge]:after {
+    content:attr(data-badge);
+    position:absolute;
+    top:-4px;
+    right:28px;
+    font-size:.7em;
+    background:red;
+    color:white;
+    width:18px;height:18px;
+    text-align:center;
+    line-height:18px;
+    border-radius:50%;
+    box-shadow:0 0 1px #333;
+}
+.pade-badge[data-badge="0"]:after {
+    content: none;
+}
