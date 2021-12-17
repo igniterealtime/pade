@@ -5,8 +5,7 @@
 // -------------------------------------------------------
 
 self.addEventListener('install', function(event) {
-    console.debug('activate', event);
-	chrome.storage.local.remove(["pade_window"]);	
+    console.debug('install', event);
 });
 self.addEventListener('activate', function (event) {
     console.debug('activate', event);
@@ -49,12 +48,12 @@ chrome.runtime.onInstalled.addListener((details) => {
 			doExtensionPage("changelog.html");
 		}
 	}
-	startPadeConverseWindow();
+	openPadeConverseWindow();	
 });
 
 chrome.runtime.onStartup.addListener(() => {
 	console.debug("onStartup");	
-	//startPadeConverseWindow();
+	openPadeConverseWindow();
 });
 
 chrome.action.onClicked.addListener(() => {
@@ -79,14 +78,7 @@ chrome.windows.onCreated.addListener((win) => {
 });	
 
 chrome.windows.onRemoved.addListener((win) => {
-	
-	chrome.storage.local.get(["pade_window"], (result) => {	
-	
-		if (result.pade_window == win) {
-			chrome.storage.local.remove(["pade_window"]);
-			console.debug("onRemoved removed", win);			
-		}
-	});		
+	//console.debug("onRemoved", win);	
 });	
 
 // -------------------------------------------------------
@@ -95,35 +87,28 @@ chrome.windows.onRemoved.addListener((win) => {
 //
 // -------------------------------------------------------
 
-function startPadeConverseWindow() {
-	chrome.storage.local.remove(["pade_window"], (result) => {	
-		createPadeConverseWindow();
+function openPadeConverseWindow() {		
+	chrome.windows.getAll((windows) => {
+		let window = null;
+
+		for (let win of windows) {
+			if (win.type == "popup") window = win;
+		}
+		
+		if (!window) {
+			createPadeConverseWindow();	
+		
+		} else {
+			chrome.windows.update(window.id, {focused: true});			
+		}		
 	});		
 }
 
-
-function openPadeConverseWindow() {
-	chrome.storage.local.get(["pade_window"], (result) => {
-		console.debug("openPadeConverseWindow", result);
-
-		try {	
-			if (!result.pade_window) {
-				createPadeConverseWindow();	
-			
-			} else {
-				chrome.windows.update(result.pade_window, {focused: true});			
-			}
-		} catch (e) {
-			createPadeConverseWindow();
-		}				
-	});
-}
-
 function createPadeConverseWindow() {
+	console.debug("createPadeConverseWindow");		
 	const data = {url: chrome.runtime.getURL("index.html"), type: "popup"};
 	
 	chrome.windows.create(data, (win) => {
-		chrome.storage.local.set({pade_window: win.id});
 		chrome.windows.update(win.id, {width: 1300, height: 900});
 	});	
 }
