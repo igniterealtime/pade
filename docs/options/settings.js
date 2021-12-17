@@ -3,6 +3,11 @@ var uportWin = null, credWin = null, message_handler;
 window.addEventListener("load", function()
 {
     console.debug("options loaded");
+	
+	document.getElementById("avatar").addEventListener("click", () => {
+		location.href= "./../index.html";
+	});
+	
 })
 
 window.addEventListener("unload", function ()
