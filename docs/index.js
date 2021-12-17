@@ -248,6 +248,7 @@ function startConverse() {
 			
 	const config = {
 		allow_logout: false,
+		allow_non_roster_messaging: true,
 		show_client_info: false,
 		allow_adhoc_commands: false,
         auto_login: username || anonUser,		
@@ -704,7 +705,7 @@ function handleReactionAction(model, emoji) {
 	const msgId = model.get('msgid');
 	const type = model.get("type");	
 	
-	let target = model.get('jid');
+	let target = model.get('from');	
 	if (type == "groupchat") target = model.get('from_muc');
 	
 	let message = window.getSelection().toString();	
