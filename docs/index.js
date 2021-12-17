@@ -685,7 +685,7 @@ function parseStanza(stanza, attrs) {
     if (reactions) {
 		attrs.reaction_id = reactions.getAttribute('id');
 		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
-		console.log("parseStanza", stanza, attrs);		
+		//console.log("parseStanza", stanza, attrs);		
     }
 	return attrs;
 }
@@ -705,8 +705,15 @@ function handleReactionAction(model, emoji) {
 	const msgId = model.get('msgid');
 	const type = model.get("type");	
 	
-	let target = model.get('from');	
-	if (type == "groupchat") target = model.get('from_muc');
+	let target = model.get('from_muc');
+	
+	if (type == "chat")  {
+		target = model.get('jid');
+
+		if (model.get('sender') == 'them') {
+			target = model.get('from');
+		}		
+	}
 	
 	let message = window.getSelection().toString();	
 	
