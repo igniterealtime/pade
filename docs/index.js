@@ -377,7 +377,7 @@ function addControlFeatures() {
 		prefButton.addEventListener('click', function(evt)
 		{
 			evt.stopPropagation();
-			location.href = chrome.runtime.getURL("options/index.html");
+			location.href = "./options/index.html")
 		}, false);
 	}
 }
