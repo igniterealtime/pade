@@ -54,7 +54,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 chrome.runtime.onStartup.addListener(() => {
 	console.debug("onStartup");	
-	startPadeConverseWindow();
+	//startPadeConverseWindow();
 });
 
 chrome.action.onClicked.addListener(() => {

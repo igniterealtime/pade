@@ -85,9 +85,7 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
         {
-            //background.closeChatWindow();
-            //background.openChatWindow("inverse/index.html");
-            window.close();
+			location.href = "./../index.html";
         });
 
         if (settings.manifest.remoteConnect) settings.manifest.remoteConnect.addEvent("action", function ()

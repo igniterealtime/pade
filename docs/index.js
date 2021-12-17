@@ -71,8 +71,14 @@ function startConverse() {
 	const domain = getSetting("domain", location.hostname);
 	const server = getSetting("server", location.host);
 	const anonUser = getSetting("useAnonymous", false);
+	
 	const username = getSetting("username");
 	const password = getSetting("password");
+	
+	if (!username || !password || username == "" || password == "") {
+		location.href = "./options/index.html";
+	}
+	
     const displayname = getSetting("displayname", username);
     const whitelistedPlugins = ["paderoot", "toolbar-utilities", "stickers", "jitsimeet", "vmsg", "screencast", "search", "directory", "muc-directory", "diagrams", "location"];	
  
@@ -371,10 +377,7 @@ function addControlFeatures() {
 		prefButton.addEventListener('click', function(evt)
 		{
 			evt.stopPropagation();
-			let url = "options/index.html";
-			if (chrome.runtime?.getURL) url = chrome.runtime.getURL(url);
-			openWebAppsWindow(url, null, 1300, 950);
-
+			location.href = chrome.runtime.getURL("options/index.html");
 		}, false);
 	}
 }
@@ -421,9 +424,13 @@ function handleReactionAction(model, emoji) {
 	let target = model.get('jid');
 	if (type == "groupchat") target = model.get('from_muc');
 	
-	let message = model.get('message');
-	const pos = message.indexOf('\n');
-	if (pos > -1) message = message.substring(0, pos);
+	let message = window.getSelection().toString();	
+	
+	if (!message || message == '') {
+		message = model.get('message');	
+		const pos = message.indexOf('\n');
+		if (pos > -1) message = message.substring(0, pos);
+	}
 	
 	if (msgId) {
 		if (type == "chat") {
