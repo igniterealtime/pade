@@ -618,7 +618,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage) {
 
 		// ohun status
 
-		msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="border-radius: 100%; width: 22px; width: 22px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fa fa-times"></a><a href="#" id="pade-active-conv-ohun-' + id +'" data-jid="' + jid + '" class="pade-active-conv-ohun fas fa-volume-up"></a>';
+		msg_content.innerHTML = '<span id="pade-badge-' + id + '" class="pade-badge" data-badge="' + numUnread + '"><img class="avatar" src="' + dataUri + '" style="border-radius: var(--avatar-border-radius); width: 22px; width: 22px; height: 100%; margin-right: 10px;"/></span><span title="' + newMessage + '" data-label="' + display_name + '" data-jid="' + jid + '" data-type="' + chatType + '" id="pade-active-' + id +'" class="pade-active-conv">' + display_name + '</span><a href="#" id="pade-active-conv-close-' + id +'" data-jid="' + jid + '" class="pade-active-conv-close fa fa-times"></a><a href="#" id="pade-active-conv-ohun-' + id +'" data-jid="' + jid + '" class="pade-active-conv-ohun fas fa-volume-up"></a>';
 		activeDiv.appendChild(msg_content);
 
 		const item = document.getElementById('pade-active-conv-ohun-' + id);
