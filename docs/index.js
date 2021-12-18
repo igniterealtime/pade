@@ -88,6 +88,8 @@ function setupChromeHandlers() {
 }
 
 function startConverse() {
+	setupPadeRoot();
+	
 	const domain = getSetting("domain", location.hostname);
 	const server = getSetting("server", location.host);
 	const anonUser = getSetting("useAnonymous", false);
@@ -100,8 +102,125 @@ function startConverse() {
 	}
 	
     const displayname = getSetting("displayname", username);
+	let autoJoinRooms = undefined;
+	let autoJoinPrivateChats = undefined;
+
+	const tempRooms = getSetting("autoJoinRooms", "").split("\n");
+
+	if (tempRooms.length > 0)
+	{
+		autoJoinRooms = [];
+
+		for (let i=0; i<tempRooms.length; i++)
+		{
+			if (tempRooms[i])
+			{
+				autoJoinRooms.push({jid: tempRooms[i].indexOf("@") == -1 ? tempRooms[i].trim() + "@conference." + domain : tempRooms[i], nick: displayname});
+			}
+		}
+	}
+
+	const tempJids = getSetting("autoJoinPrivateChats", "").split("\n");
+
+	if (tempJids.length > 0)
+	{
+		autoJoinPrivateChats = [];
+
+		for (let i=0; i<tempJids.length; i++)
+		{
+			if (tempJids[i]) autoJoinPrivateChats.push(tempJids[i].indexOf("@") == -1 ? tempJids[i].trim() + "@" + domain : tempJids[i].trim());
+		}
+	}
+	if (location.hash != "" && anonUser)
+	{
+		const pos1 = location.hash.indexOf("converse/room?jid=");
+		if (pos1 != -1) autoJoinRooms = [{jid: location.hash.substring(pos1 + 18), nick: displayname}];
+
+		const pos2 = location.hash.indexOf("converse/chat?jid=");
+		if (pos2 != -1) autoJoinPrivateChats = [location.hash.substring(pos2 + 18)];
+	}
+
+	const autoAway = getSetting("idleTimeout", 300);
+	const autoXa = autoAway * 3;			
     const whitelistedPlugins = ["paderoot", "toolbar-utilities", "stickers", "jitsimeet", "vmsg", "screencast", "search", "directory", "muc-directory", "diagrams", "location"];	
- 
+ 			
+	const config = {
+		allow_bookmarks: true,
+		allow_chat_pending_contacts: true,		
+		allow_adhoc_commands: false,
+		allow_logout: false,
+		allow_message_corrections: 'all',
+		allow_muc_invitations: true,		
+		allow_non_roster_messaging: true,
+		allow_registration: false,
+		assets_path: "./dist/",
+		allow_public_bookmarks: true,
+		archived_messages_page_size: getSetting("archivedMessagesPageSize", 51),		
+		authentication: 'login',
+		auto_away: autoAway,
+		auto_join_on_invite: getSetting("autoJoinOnInvite", false),
+		auto_join_private_chats: autoJoinPrivateChats,
+		auto_join_rooms: autoJoinRooms,
+		auto_list_rooms: getSetting("autoListRooms", true),
+		auto_login: username || anonUser,		  
+		auto_reconnect: getSetting("autoReconnectConverse", true),
+		auto_subscribe: getSetting("autoSubscribe", false),
+		auto_xa:  autoXa,
+		bosh_service_url: getSetting("boshUri", "https://" + server + "/http-bind/"),
+		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
+		default_domain: domain,
+		default_state: getSetting("converseOpenState", "online"),		
+		discover_connection_methods: false,		
+		domain_placeholder: domain,
+		enable_smacks: getSetting("enableSmacks", false),
+		fullname: displayname,
+		hide_offline_users: getSetting("hideOfflineUsers", false),	
+		hide_open_bookmarks: true,			  
+		i18n: getSetting("language", "en"),	
+		jid : anonUser ? domain : (username ? username + "@" + domain : undefined),				  
+		locked_domain: domain,
+		loglevel: getSetting("converseDebug", false) ? "debug" : "info",
+		message_archiving: 'always',
+		message_carbons: getSetting("messageCarbons", true),
+		muc_domain: "conference." + getSetting("domain", null),
+		muc_fetch_members: getSetting("fetchMembersList", false),
+		muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
+		muc_mention_autocomplete_filter: getSetting("converseAutoCompleteFilter", "starts_with"),
+		muc_nickname_from_jid: getSetting("autoCreateNickname", false),
+		muc_show_join_leave: getSetting("showGroupChatStatusMessages", false),
+		muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", false),
+		muc_show_room_info: getSetting("showGroupChatStatusMessages", false),
+		nickname: displayname,		
+		notification_icon: './image.png',
+		notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
+		password: anonUser ? undefined : password,
+		persistent_store: getSetting("conversePersistentStore", 'none'),
+		play_sounds: getSetting("conversePlaySounds", false),
+		priority: 0,
+		roster_groups: getSetting("rosterGroups", false),
+		show_chatstate_notifications: true,
+		show_controlbox_by_default: true,
+		show_desktop_notifications: true,
+		show_message_load_animation: true,
+		show_send_button: getSetting("showSendButton", true),
+		singleton: (autoJoinRooms && autoJoinRooms.length == 1),			  
+		render_media: true,
+		show_client_info: false,
+		sounds_path: "./dist/sounds/",
+		theme: getSetting('converseTheme', 'concord'),			
+		trusted: getSetting("conversePersistentStore", 'none') == 'none' ? 'off' : 'on',			  
+		view_mode: "fullscreen",
+		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", false) && (getSetting("enableAudioConfWidget", false) || getSetting("jingleCalls", false)), 'clear': true },
+		websocket_url: getSetting("useWebsocket", false) ? (location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,		
+		whitelisted_plugins: whitelistedPlugins		
+	}
+	
+	console.debug("startConverse", config);
+	converse.initialize(config);
+
+}
+
+function setupPadeRoot() {
 	converse.plugins.add("paderoot", {
 		dependencies: [],
 
@@ -244,44 +363,7 @@ function startConverse() {
 			  }
 			}			  
 		},
-	});	
-			
-	const config = {
-		allow_logout: false,
-		allow_non_roster_messaging: true,
-		show_client_info: false,
-		allow_adhoc_commands: false,
-        auto_login: username || anonUser,		
-        password: anonUser ? undefined : password,	
-        fullname: displayname,	
-        nickname: displayname,		
-        jid : anonUser ? domain : (username ? username + "@" + domain : undefined),		
-		authentication: 'login',
-        theme: getSetting('converseTheme', 'concord'),
-        default_domain: domain,		
-		locked_domain: domain,
-		domain_placeholder: domain,
-		notification_icon: "./dist/images/logo/conversejs-filled.svg",
-		allow_registration: false,
-		sounds_path: "./dist/sounds/",
-		loglevel: "info",
-		view_mode: "fullscreen",
-		assets_path: "./dist/",
-		i18n: "en",		
-		auto_away: 300,
-		auto_reconnect: true,
-		discover_connection_methods: false,		
-		bosh_service_url: location.protocol + '//' + server + '/http-bind/',
-		websocket_url: getSetting("useWebsocket", false) ? (location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,
-		message_archiving: 'always',
-		render_media: true,
-        roster_groups: getSetting("rosterGroups", false),	
-        muc_fetch_members: getSetting("fetchMembersList", false),		
-        whitelisted_plugins: whitelistedPlugins		
-	}		
-	console.debug("startConverse", config);
-	converse.initialize(config);
-
+	});		
 }
 
 function setupTimer() {	
@@ -384,7 +466,7 @@ function setupMUCAvatars() {
 			
 			if (jid) {
 				const img = createAvatar(jid);
-				const avatar = newElement('span', null, '<img style="border-radius: 100%; margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
+				const avatar = newElement('span', null, '<img style="border-radius: var(--avatar-border-radius); margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
 				elements[i].prepend(avatar);
 			}
 		}			
