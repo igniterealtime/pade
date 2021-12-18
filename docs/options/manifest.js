@@ -1140,9 +1140,8 @@ this.manifest = {
             "label": i18n.get("UI Theme"),
             "options": [
                 {"text": "Plain Simple", "value": "plainsimple"},
-                {"text": "Fly Concord", "value": "concord"},
+                {"text": "Concord Flight", "value": "concord"},
                 {"text": "Paper White", "value": "paperwhite"},
-                {"text": "Hand Write", "value": "handwrite"},
                 {"text": "Red Pill", "value": "redpill"},
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}

@@ -187,9 +187,9 @@ function startConverse() {
 			});	
 			
 			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
-		       buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el.model),                    'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
-		       buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':thumbsup:'),   'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   'name': 'pade-thumbsup'});	
-		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':thumbsdown:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 'name': 'pade-thumbsdown'});			   
+		       buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el.model),                    	'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
+		       buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':smiley:'),   	'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   'name': 'pade-thumbsup'});	
+		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 'name': 'pade-thumbsdown'});			   
 		       return buttons;
 			});	
 
@@ -257,7 +257,7 @@ function startConverse() {
         nickname: displayname,		
         jid : anonUser ? domain : (username ? username + "@" + domain : undefined),		
 		authentication: 'login',
-        theme: 'concord',		
+        theme: getSetting('converseTheme', 'concord'),
         default_domain: domain,		
 		locked_domain: domain,
 		domain_placeholder: domain,
