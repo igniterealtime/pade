@@ -1,5 +1,6 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
 const nickColors = {}, pade = {webAppsWindow: {}};
+const whitelistedPlugins = ["paderoot", "stickers"];
 
 var paderoot = {
 	participants: {},
@@ -20,6 +21,8 @@ var paderoot = {
 	ohun: {},
 	transferWise: {}
 }
+
+loadPlugins();
 	
 window.addEventListener('focus', function(evt) {
 	if (chrome.action) {	
@@ -51,6 +54,58 @@ window.addEventListener("unload", function() {
 //  Setup
 //
 // -------------------------------------------------------	
+
+function loadPlugins() {
+    if (getSetting("showToolbarIcons", false))
+    {	
+		whitelistedPlugins.push("toolbar-utilities");
+		loadJS("./packages/toolbar-utilities/toolbar-utilities.js");
+
+		whitelistedPlugins.push("jitsimeet");
+		loadJS("./packages/jitsimeet/jitsimeet.js");
+		
+		whitelistedPlugins.push("search");
+		loadCSS("./packages/search/search.css");
+		loadJS("./packages/search/jspdf.debug.js");		
+		loadJS("./packages/search/jspdf.plugin.autotable.js");
+		loadJS("./packages/search/search.js");			
+
+		whitelistedPlugins.push("vmsg");	
+		loadJS("./packages/vmsg/vmsg.js");
+		
+		whitelistedPlugins.push("screencast");	
+		loadJS("./packages/screencast/screencast.js");
+			
+		if (getSetting("enableDirectorySearch", false))
+		{
+			whitelistedPlugins.push("directory");
+			loadCSS("./packages/directory/directory.css");		
+			loadJS("./packages/directory/directory.js");			
+		}	
+
+        if (getSetting("enableMucDirectory", false))
+        {			
+			whitelistedPlugins.push("muc-directory");
+			loadCSS("./packages/muc-directory/muc-directory.css");		
+			loadJS("./packages/muc-directory/muc-directory.js");
+		}
+
+        if (getSetting("publishLocation", false))
+		{
+			whitelistedPlugins.push("location");
+			loadCSS("./packages/location/location.css");		
+			loadJS("./packages/location/location.js");
+		}			
+
+        if (getSetting("embedDiagrams", false))
+		{
+			whitelistedPlugins.push("diagrams");	
+			loadJS("./packages/diagrams/mermaid.min.js");
+			loadJS("./packages/diagrams/diagrams.js");
+			loadJS("./packages/diagrams/abcjs.js");					
+		}	
+	}
+}
 
 function setupChromeHandlers() {
 
@@ -87,9 +142,7 @@ function setupChromeHandlers() {
 	}		
 }
 
-function startConverse() {
-	setupPadeRoot();
-	
+function startConverse() {	
 	const domain = getSetting("domain", location.hostname);
 	const server = getSetting("server", location.host);
 	const anonUser = getSetting("useAnonymous", false);
@@ -141,9 +194,7 @@ function startConverse() {
 	}
 
 	const autoAway = getSetting("idleTimeout", 300);
-	const autoXa = autoAway * 3;			
-    const whitelistedPlugins = ["paderoot", "toolbar-utilities", "stickers", "jitsimeet", "vmsg", "screencast", "search", "directory", "muc-directory", "diagrams", "location"];	
- 			
+	const autoXa = autoAway * 3;			 			
 	const config = {
 		allow_bookmarks: true,
 		allow_chat_pending_contacts: true,		
@@ -215,6 +266,8 @@ function startConverse() {
 		whitelisted_plugins: whitelistedPlugins		
 	}
 	
+	setupPadeRoot();
+
 	console.debug("startConverse", config);
 	converse.initialize(config);
 
@@ -761,6 +814,25 @@ function addSelfBot() {
 //
 // -------------------------------------------------------	
 
+function loadJS(name) {
+	console.debug("loadJS", name);
+	var head  = document.getElementsByTagName('head')[0];
+	var s1 = document.createElement('script');
+	s1.src = name;
+	s1.async = false;
+	head.appendChild(s1);
+}
+
+function loadCSS(name) {
+	console.debug("loadCSS", name);
+	var head  = document.getElementsByTagName('head')[0];
+	var link  = document.createElement('link');
+	link.rel  = 'stylesheet';
+	link.type = 'text/css';
+	link.href = name;
+	head.appendChild(link);
+}
+	
 function parseStanza(stanza, attrs) {
     const reactions = stanza.querySelector('reactions');
 

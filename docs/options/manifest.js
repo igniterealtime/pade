@@ -1072,6 +1072,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "embedDiagrams",
+            "type": "checkbox",
+            "label": i18n.get("Embed Diagrams in chat")
+        },		
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "rosterGroups",
             "type": "checkbox",
             "label": i18n.get("Show Roster groups")
