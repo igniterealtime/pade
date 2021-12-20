@@ -70,13 +70,6 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("Login"),
-            "name": "connect",
-            "type": "button",
-            "text": i18n.get("login")
-        },
-        {
-            "tab": i18n.get("Connection"),
             "group": i18n.get("URIs"),
             "name": "boshUri",
             "type": "text",
@@ -1058,6 +1051,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "showToolbarIcons",
+            "type": "checkbox",
+            "label": i18n.get("Show Advanced toolbar icons")
+        },		
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "converseSimpleView",
             "type": "checkbox",
             "label": i18n.get("Use simple conversations view")
@@ -1082,13 +1082,6 @@ this.manifest = {
             "name": "rosterGroups",
             "type": "checkbox",
             "label": i18n.get("Show Roster groups")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
-            "name": "showToolbarIcons",
-            "type": "checkbox",
-            "label": i18n.get("Show Advanced toolbar icons")
         },
         {
             "tab": i18n.get("Converse"),

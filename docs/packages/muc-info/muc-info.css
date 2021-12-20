@@ -1,0 +1,45 @@
+
+.plugin-infobox,  .occupants-pade-info {
+    width: 100%;   
+    /*overflow: hidden !important;   */
+    overflow-y: auto;  
+	background-color: var(--occupants-background-color);
+}
+
+.plugin-infobox h3 {
+    font-weight: bold !important; 
+    padding: 8px !important;      
+}
+
+.plugin-infobox details {
+    padding: 6px !important;  
+    border: none !important;
+    text-align: left;
+    outline: none;
+    font-size: 15px !important;
+    cursor: pointer;
+}
+
+.plugin-infobox details td{
+    font-size: 12px !important;
+}
+
+.plugin-infobox summary {
+  outline:none;
+}
+
+.mediaItem {
+  max-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mediaItem:hover {
+    background-color: var(--text-color);
+    color: var(--occupants-background-color);
+}
+
+.plugin-infobox li {
+    height: 18px !important;
+}

@@ -103,7 +103,21 @@ function loadPlugins() {
 			loadJS("./packages/diagrams/mermaid.min.js");
 			loadJS("./packages/diagrams/diagrams.js");
 			loadJS("./packages/diagrams/abcjs.js");					
-		}	
+		}
+
+        if (getSetting("enableInfoPanel", false))
+		{
+			whitelistedPlugins.push("muc-info");	
+			loadCSS("./packages/muc-info/muc-info.css");	
+			loadJS("./packages/muc-info/muc-info.js");				
+		}
+
+        if (getSetting("wgEnabled", false))
+        {
+            whitelistedPlugins.push("fastpath");
+            loadJS("./packages/fastpath/fastpath.js");
+        }
+		
 	}
 }
 
@@ -1033,7 +1047,7 @@ function openChat(from, name, groups, closed) {
 		  });
 		}
 
-		if (!closed) _converse.api.chats.open(from);
+		if (!closed) _converse.api.chats.open(from, {'bring_to_foreground': true}, true);
 
 		if (_converse.connection.injectMessage)
 		{
