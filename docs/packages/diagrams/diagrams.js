@@ -44,7 +44,7 @@
             text.startsWith("sequenceDiagram") ||
             text.startsWith("erDiagram")) {
 
-            text.addTemplateResult(0, text.length, html`<br/><div id="mermaid-${msgId}" class="mermaid">\n${text.replace(/<br>/g, '\n')}\n</div>`);
+            text.addTemplateResult(0, text.length, html([`<br/><div id="mermaid-${msgId}" class="mermaid">\n${text.replace(/<br>/g, '\n')}\n</div>`], msgId));
 
             setTimeout(function()
             {
@@ -60,7 +60,7 @@
 
         if (text.startsWith("X:1"))
         {
-            text.addTemplateResult(0, text.length, html`<div id="abc-${msgId}"></div>`);
+            text.addTemplateResult(0, text.length, html([`<div id="abc-${msgId}"></div>`], msgId));
 
             setTimeout(function()
             {
