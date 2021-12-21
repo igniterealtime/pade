@@ -118,6 +118,13 @@ function loadPlugins() {
             loadJS("./packages/fastpath/fastpath.js");
         }
 		
+        if (getSetting("enableRssFeeds", false))
+        {
+            whitelistedPlugins.push("gateway");
+			loadJS("./packages/gateway/rss-library.js");
+			loadJS("./packages/gateway/plugins/libs/hark.js");			
+            loadJS("./packages/gateway/gateway.js");
+        }		
 	}
 }
 
@@ -847,7 +854,7 @@ function loadCSS(name) {
 	head.appendChild(link);
 }
 	
-function parseStanza(stanza, attrs) {
+async function parseStanza(stanza, attrs) {
     const reactions = stanza.querySelector('reactions');
 
     if (reactions) {
