@@ -158,7 +158,7 @@
             // when pade.chat (pwa), use proxy servlet in pade openfire plugin to fetch feed URL contents and avoid CORS
 
             var feed = {
-                path: !chrome.windows ? "https://" + getSetting("server") + "/pade/download?url=" + rssUrl : rssUrl
+                path: true ? "https://" + getSetting("server") + "/pade/download?url=" + rssUrl : rssUrl
             }
 
             fetch(feed.path).then(function(response)
