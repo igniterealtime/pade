@@ -859,7 +859,7 @@ async function parseStanza(stanza, attrs) {
     if (reactions) {
 		attrs.reaction_id = reactions.getAttribute('id');
 		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
-		console.log("parseStanza", stanza, attrs);		
+		//console.log("parseStanza", stanza, attrs);		
     }
 	return attrs;
 }

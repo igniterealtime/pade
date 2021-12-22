@@ -34,7 +34,7 @@
             return;
         }
 
-        converse.emojis.json.custom =  {
+        converse.emojis.json.custom =  {			
             /*
                 author      = Minseung Song
                 license     = CreativeCommon
@@ -774,7 +774,141 @@
                 "sn": ":CAADAgAEAQAC9HsZAAH0ZLAK5J-OegI:",
                 "url": "./packages/stickers/animals/CAADAgAEAQAC9HsZAAH0ZLAK5J-OegI.webp",
                 "c": "custom"
-            }
+            },
+			/*
+				author      = memoji likeness of dele olajide
+				license     =
+			*/
+			":dele:": {
+				"sn": ":dele:",
+				"url": "./packages/stickers/dele/dele_is_happy.webp",
+				"c": "dele"
+			},
+			":dele_blows_kiss:": {
+				"sn": ":dele_blows_kiss:",
+				"url": "./packages/stickers/dele/dele_blows_kiss.webp",
+				"c": "dele"
+			},
+			":dele_cant_believe_it:": {
+				"sn": ":dele_cant_believe_it:",
+				"url": "./packages/stickers/dele/dele_cant_believe_it.webp",
+				"c": "dele"
+			},
+			":dele_excited:": {
+				"sn": ":dele_excited:",
+				"url": "./packages/stickers/dele/dele_excited.webp",
+				"c": "dele"
+			},
+			":dele_feeling_cool:": {
+				"sn": ":dele_feeling_cool:",
+				"url": "./packages/stickers/dele/dele_feeling_cool.webp",
+				"c": "dele"
+			},
+			":dele_feeling_loved:": {
+				"sn": ":dele_feeling_loved:",
+				"url": "./packages/stickers/dele/dele_feeling_loved.webp",
+				"c": "dele"
+			},
+			":dele_feels_the_pain:": {
+				"sn": ":dele_feels_the_pain:",
+				"url": "./packages/stickers/dele/dele_feels_the_pain.webp",
+				"c": "dele"
+			},
+			":dele_has_stars_in_eyes:": {
+				"sn": ":dele_has_stars_in_eyes:",
+				"url": "./packages/stickers/dele/dele_has_stars_in_eyes.webp",
+				"c": "dele"
+			},
+			":dele_is_enjoying_this:": {
+				"sn": ":dele_is_enjoying_this:",
+				"url": "./packages/stickers/dele/dele_is_enjoying_this.webp",
+				"c": "dele"
+			},
+			":dele_is_relieved:": {
+				"sn": ":dele_is_relieved:",
+				"url": "./packages/stickers/dele/dele_is_relieved.webp",
+				"c": "dele"
+			},
+			":dele_lapping_it_up:": {
+				"sn": ":dele_lapping_it_up:",
+				"url": "./packages/stickers/dele/dele_lapping_it_up.webp",
+				"c": "dele"
+			},
+			":dele_laughs:": {
+				"sn": ":dele_laughs:",
+				"url": "./packages/stickers/dele/dele_laughs.webp",
+				"c": "dele"
+			},
+			":dele_loving_it:": {
+				"sn": ":dele_loving_it:",
+				"url": "./packages/stickers/dele/dele_loving_it.webp",
+				"c": "dele"
+			},
+			":dele_rolling_with_laughter:": {
+				"sn": ":dele_rolling_with_laughter:",
+				"url": "./packages/stickers/dele/dele_rolling_with_laughter.webp",
+				"c": "dele"
+			},
+			":dele_seals_lips:": {
+				"sn": ":dele_seals_lips:",
+				"url": "./packages/stickers/dele/dele_seals_lips.webp",
+				"c": "dele"
+			},
+			":dele_sheds_a_tear:": {
+				"sn": ":dele_sheds_a_tear:",
+				"url": "./packages/stickers/dele/dele_sheds_a_tear.webp",
+				"c": "dele"
+			},
+			":dele_smacks_lips:": {
+				"sn": ":dele_smacks_lips:",
+				"url": "./packages/stickers/dele/dele_smacks_lips.webp",
+				"c": "dele"
+			},
+			":dele_sobbing:": {
+				"sn": ":dele_sobbing:",
+				"url": "./packages/stickers/dele/dele_sobbing.webp",
+				"c": "dele"
+			},
+			":dele_sticks_out_tongue:": {
+				"sn": ":dele_sticks_out_tongue:",
+				"url": "./packages/stickers/dele/dele_sticks_out_tongue.webp",
+				"c": "dele"
+			},
+			":dele_wants_more:": {
+				"sn": ":dele_wants_more:",
+				"url": "./packages/stickers/dele/dele_wants_more.webp",
+				"c": "dele"
+			},
+			":dele_winks:": {
+				"sn": ":dele_winks:",
+				"url": "./packages/stickers/dele/dele_winks.webp",
+				"c": "dele"
+			},
+			":dele_says_amen:": {
+				"sn": ":dele_says_amen:",
+				"url": "./packages/stickers/dele/dele_says_amen.webp",
+				"c": "dele"
+			},
+			":dele_says_thank_you:": {
+				"sn": ":dele_says_thank_you:",
+				"url": "./packages/stickers/dele/dele_says_thank_you.webp",
+				"c": "dele"
+			},
+			":dele_celebrates:": {
+				"sn": ":dele_celebrates:",
+				"url": "./packages/stickers/dele/dele_celebrates.webp",
+				"c": "dele"
+			},
+			":dele_says_really:": {
+				"sn": ":dele_says_really:",
+				"url": "./packages/stickers/dele/dele_says_really.webp",
+				"c": "dele"
+			},
+			":dele_says_duh:": {
+				"sn": ":dele_says_duh:",
+				"url": "./packages/stickers/dele/dele_says_duh.webp",
+				"c": "dele"
+			}			
         }
 
         converse.emojis.by_sn = Object.keys(converse.emojis.json).reduce((result, cat) => Object.assign(result, converse.emojis.json[cat]), {});
