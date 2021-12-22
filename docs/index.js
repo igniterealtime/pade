@@ -121,8 +121,7 @@ function loadPlugins() {
         if (getSetting("enableRssFeeds", false))
         {
             whitelistedPlugins.push("gateway");
-			loadJS("./packages/gateway/rss-library.js");
-			loadJS("./packages/gateway/plugins/libs/hark.js");			
+			loadJS("./packages/gateway/rss-library.js");		
             loadJS("./packages/gateway/gateway.js");
         }		
 	}
@@ -435,8 +434,8 @@ function setupPadeRoot() {
 			  shouldBeVisible() {
 				return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
 			  }
-			}			  
-		},
+			}
+		}
 	});		
 }
 
@@ -860,7 +859,7 @@ async function parseStanza(stanza, attrs) {
     if (reactions) {
 		attrs.reaction_id = reactions.getAttribute('id');
 		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
-		//console.log("parseStanza", stanza, attrs);		
+		console.log("parseStanza", stanza, attrs);		
     }
 	return attrs;
 }

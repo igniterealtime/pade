@@ -32,7 +32,7 @@
                 id: "plugin-muc-info-modal",			   
                 initialize() {
                     BootstrapModal.prototype.initialize.apply(this, arguments);
-                    this.listenTo(this.model, 'change', this.render);					
+                    this.listenTo(view.model, 'change', this.render);					
                 },
                 toHTML() {
                   return html`<div class="modal-dialog modal-xl"> <div class="modal-content">
@@ -42,14 +42,14 @@
                          </div> </div>`;
                 },
                 afterRender() {
-                    const url = this.model.get("url");
+                    const url = view.model.get("url");
 					
                     this.el.addEventListener('shown.bs.modal', () => 
 					{		
-						if (this.model.get("type") == "image") {
+						if (view.model.get("type") == "image") {
 							this.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + url + '"/>';
 						}
-						else if (this.model.get("type") == "video") {
+						else if (view.model.get("type") == "video") {
 							if (url.endsWith(".tgs")) {
 								this.el.querySelector('.modal-body').innerHTML = '<tgs-player style="height: 512px; width: 512px;" autoplay controls loop mode="normal" src="' + url + '"></tgs-player>';
 
@@ -59,11 +59,11 @@
 								this.el.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + url + '"/>';
 							}
 						}
-						else if (this.model.get("type") == "audio") {
+						else if (view.model.get("type") == "audio") {
 							this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + url + '"/>';
 						}
 
-						this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
+						this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + view.model.get("from") + " - " + view.model.get("timestamp");
 
                     }, false);					
                  }
@@ -81,7 +81,13 @@
 						</button>
 					`);
 				}
-
+				
+				let form = chatview.getMessageForm();
+				
+				if (form) form.parseMessageForCommands = (text) => {
+					return parseMessageForCommands(chatview, text);
+				}
+				
                 return buttons;
             });
 
@@ -1032,5 +1038,112 @@
         el.classList.remove(className);
       }
       return el;
-    }	
+    }
+
+	function parseMessageForCommands(view, text) {
+		console.debug('parseMessageForCommands', view, text);
+
+		const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
+		const command = match[1].toLowerCase();
+
+		if (command === "subject" || command === "topic")
+		{
+			var id = view.model.get("box_id");
+			var jid = view.model.get("jid");
+
+			console.debug("new threaded conversation", match[2]);
+
+		}
+		else
+
+		if (command === "info")
+		{
+			var id = view.model.get("box_id");
+			var jid = view.model.get("jid");
+			toggleInfoBar(view, id, jid);
+			return true;
+		}
+		else
+
+		if (command === "feed" && view.model.get("type") == "chatroom")
+		{
+			if (!match[2])
+			{
+				view.showHelpMessages(["Missing Feed URL", "Try /feed http://feeds.bbci.co.uk/news/rss.xml"]);
+				return true;
+			}
+
+			const id = view.model.get("box_id");
+			const feedId = 'feed-' + id;
+
+			chrome.storage.local.get(feedId, function(data)
+			{
+				if (!data) data = {};
+				if (!data[feedId]) data[feedId] = {};
+
+				var feed = {path: match[2], url: chrome.windows ? "https://" + getSetting("server") + "/pade/download?url=" + match[2] : match[2]};
+
+				fetch(feed.url).then(function(response)
+				{
+					if (response.ok)
+					{
+						return response.text().then(function(body)
+						{
+							var parser = new RSSParser(feed);
+							parser.setResult(body);
+
+							parser.parse(function(parser)
+							{
+								data[feedId][feed.path] = {url: feed.path, title: feed.title};
+
+								chrome.storage.local.set(data, function(data)
+								{
+									console.debug("feed stored ok", feedId, data);
+									alert("stored feed " + feed.title);
+								});
+							});
+						});
+					} else {
+						alert("Bad Feed URL \n" + feed.path);
+						console.error("RSSParser", response)
+					}
+				}).catch(function (err) {
+					alert("Cannot fetch Feed URL \n" + feed.path);
+					console.error("RSSParser", err)
+				});
+			});
+
+			return true;
+		}
+		else
+
+		if (command === "clearpins")
+		{
+			var id = view.model.get("box_id");
+			var jid = view.model.get("jid");
+
+			chrome.storage.local.get('pinned', function(data)
+			{
+				console.debug('chrome.storage get', data);
+
+				let pinned = {};
+				if (data && data.pinned) pinned = data.pinned;
+				const keys = Object.getOwnPropertyNames(pinned);
+
+				for (var i=0; i<keys.length; i++)
+				{
+					const item = pinned[keys[i]];
+					if (item.from == jid) delete pinned[keys[i]];
+				}
+
+				chrome.storage.local.set({pinned: pinned}, function() {
+				  console.debug('chrome.storage is set for pinned', pinned);
+				});
+			});
+
+			return true;
+		}
+
+		return false;
+	}	
 }));

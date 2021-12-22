@@ -22,6 +22,11 @@
 					text.addTemplateResult(0, text.length, html([text.substr(4)]));
 				}
             });
+
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
+            {
+				rssGroupChatCheck(view)
+			});
 			
             _converse.api.listen.on('chatBoxViewInitialized', function (view)
             {
@@ -29,7 +34,7 @@
                 {
                     var jid = view.model.get("jid");
                     var type = view.model.get("type");
-                    console.debug("gateway chatBoxInsertedIntoDOM", jid, type);
+                    console.debug("chatBoxViewInitialized", jid, type);
 
                     if (jid === "rss@pade." + _converse.connection.domain)
                     {
@@ -40,12 +45,6 @@
                             view.querySelector('.bottom-panel').style.display = "none";
                         }
                         rssChatCheck();
-                    }
-                    else
-
-                    if (type == "chatroom")
-                    {
-                        setTimeout(function() {rssGroupChatCheck(view)}, 10000);
                     }
                 }
             });
@@ -99,7 +98,7 @@
     {
         rssChatCheck();
 
-        _converse.chatboxviews.forEach(function(model)
+        _converse.chatboxes.models.forEach(function(model)
         {
             if (model.get('type') === "chatroom")
             {
@@ -115,10 +114,8 @@
         var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
         console.debug("rssChatCheck", rssUrls, summary, from);
 
-        rssCheckEach(false, rssUrls, "rss-feed-", async(msgId, html, title, delay) =>  {	
-			const json = {msgId, html, title, delay, jid: from};
-			const message = 'RSS:' + html;
-			
+        rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay) =>  {	
+			const message = 'RSS:' + html;			
 			const attrs = {message, body: message, id: msgId, msgId, type: 'chat', from};  
 			chatbox = await _converse.api.chats.get(from, {}, true);
 			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
@@ -129,8 +126,10 @@
     {
 		const summary = getSetting("showRssSummary");		
         const id = view.model.get("box_id");
-        const jid = view.model.get("jid")
+        const from = view.model.get("jid")
         const feedId = 'feed-' + id;
+
+        console.debug("rssGroupChatCheck", feedId, from, summary, view.model);
 
         chrome.storage.local.get(feedId, function(data)
         {
@@ -139,15 +138,12 @@
                 const rssUrls = Object.getOwnPropertyNames(data[feedId]);
                 console.debug("rssGroupChatCheck", feedId, rssUrls, summary);
 
-                rssCheckEach(true, rssUrls, "rss-feed-" + id + "-", async (msgId, html, title, delay) => {
-					const json = {msgId, html, title, delay, id, jid, summary};
-					const message = 'RSS:' + html;
-					const from =  jid + '/' + title;
-					
-					const attrs = {message, body: message, id: msgId, msgId, type: 'groupchat', from};  
+                rssCheckEach(true, rssUrls, "rss-feed-muc-", async (msgId, html, title, delay) => {
+					const message = 'RSS:' + html;					
+					const attrs = {message, body: message, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title};  
 					chatbox = await _converse.api.rooms.get(from, {}, true);
-					await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
-					console.log("parseStanza", chatbox, attrs);						
+					//console.debug("rssGroupChatCheck", chatbox, attrs);
+					await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));					
                 });
             }
         });
@@ -167,7 +163,7 @@
 
             fetch(feed.path).then(function(response)
             {
-                console.debug("RSSParser", feed, response)
+                //console.debug("RSSParser", feed, response)
 
                 if (response.ok)
                 {
@@ -180,9 +176,9 @@
                         {
                             parser.posts.forEach(function(post)
                             {
-                                console.debug("rssCheckEach pre", post.title, post);
+                                //console.debug("rssCheckEach pre", post.title, post);
 
-                                var stamp = " - " + dayjs(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
+                                var stamp = dayjs(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
                                 var delay = "";
 
                                 if (getSetting("useRssDate", false) == false)
@@ -195,7 +191,7 @@
 
                                 if (post.title && post.title.trim() != "")
                                 {
-                                    let htmlTemp = (groupChat ? stamp : feed.title + stamp) + "<br/><b><a target='_blank' href='" + post.link + "'>" + post.title + "</a></b>";
+                                    let htmlTemp = (groupChat ? stamp : feed.title + " - " + stamp) + "<br/><b><a target='_blank' href='" + post.link + "'>" + post.title + "</a></b>";
 
                                     if (getSetting("showRssSummary", false))
                                     {
@@ -203,7 +199,7 @@
                                     }
                                     htmlTemp = htmlTemp + "<p/>";
 
-                                    console.debug("rssCheckEach post", htmlTemp);
+                                    //console.debug("rssCheckEach post", htmlTemp);
 
                                     if (callback)
                                     {
