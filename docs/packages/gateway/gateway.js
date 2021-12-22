@@ -116,7 +116,7 @@
 
         rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay) =>  {	
 			const message = 'RSS:' + html;			
-			const attrs = {message, body: message, id: msgId, msgId, type: 'chat', from};  
+			const attrs = {message, body: message, id: msgId, msgId, type: 'chat', from, time: delay};  
 			chatbox = await _converse.api.chats.get(from, {}, true);
 			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
         });
@@ -140,7 +140,7 @@
 
                 rssCheckEach(true, rssUrls, "rss-feed-muc-", async (msgId, html, title, delay) => {
 					const message = 'RSS:' + html;					
-					const attrs = {message, body: message, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title};  
+					const attrs = {message, body: message, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title, time: delay};  
 					chatbox = await _converse.api.rooms.get(from, {}, true);
 					//console.debug("rssGroupChatCheck", chatbox, attrs);
 					await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));					
@@ -179,13 +179,7 @@
                                 //console.debug("rssCheckEach pre", post.title, post);
 
                                 var stamp = dayjs(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
-                                var delay = "";
-
-                                if (getSetting("useRssDate", false) == false)
-                                {
-                                    delay = dayjs(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');
-                                    stamp = "";
-                                }
+                                var delay = dayjs(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');;
 
                                 var msgId = prefix + btoa(post.guid);
 

@@ -1811,13 +1811,6 @@ this.manifest = {
         {
             "tab": i18n.get("Feeds"),
             "group": i18n.get("RSS/Atom"),
-            "name": "useRssDate",
-            "type": "checkbox",
-            "label": i18n.get("Replace published timestamp with fetch timestamp")
-        },
-        {
-            "tab": i18n.get("Feeds"),
-            "group": i18n.get("RSS/Atom"),
             "name": "showRssToolbar",
             "type": "checkbox",
             "label": i18n.get("Show Chatbox Toolbar")
