@@ -45,6 +45,10 @@ if (!window.chrome?.extension)
             create: function(data) {
                 console.debug("create menu", data);
             },
+            onClicked: {
+                addListener: function(notificationId)  {
+                }
+            },			
         },
 
         storage: {
