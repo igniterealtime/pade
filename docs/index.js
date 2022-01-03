@@ -545,7 +545,7 @@ function renderReactions() {
 }
 
 function setupMUCAvatars() {
-	const elements = document.querySelectorAll('.list-item.controlbox-padded');	
+	let elements = document.querySelectorAll('.list-item.controlbox-padded');	
 	//console.debug("setupMUCAvatars", elements);	
 		
 	for (let i=0; i < elements.length; i++)
@@ -560,7 +560,23 @@ function setupMUCAvatars() {
 				elements[i].prepend(avatar);
 			}
 		}			
-	}			
+	}
+
+	elements = document.querySelectorAll('.chat-head-chatroom .chatbox-title__text');	
+		
+	for (let i=0; i < elements.length; i++)
+	{
+		if (!elements[i].querySelector('.pade-avatar')) {		
+			const jid = elements[i].getAttribute('title');
+			//console.debug("setupMUCAvatars", jid);		
+			
+			if (jid) {
+				const img = createAvatar(jid);
+				const avatar = newElement('span', null, '<img style="border-radius: var(--avatar-border-radius); margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
+				elements[i].prepend(avatar);
+			}
+		}			
+	}	
 }
 
 function addControlFeatures() {

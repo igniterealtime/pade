@@ -32,7 +32,7 @@
                 id: "plugin-muc-info-modal",			   
                 initialize() {
                     BootstrapModal.prototype.initialize.apply(this, arguments);
-                    this.listenTo(view.model, 'change', this.render);					
+                    this.listenTo(this.model, 'change', this.render);					
                 },
                 toHTML() {
                   return html`<div class="modal-dialog modal-xl"> <div class="modal-content">
@@ -42,14 +42,14 @@
                          </div> </div>`;
                 },
                 afterRender() {
-                    const url = view.model.get("url");
+                    const url = this.model.get("url");
 					
                     this.el.addEventListener('shown.bs.modal', () => 
 					{		
-						if (view.model.get("type") == "image") {
+						if (this.model.get("type") == "image") {
 							this.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + url + '"/>';
 						}
-						else if (view.model.get("type") == "video") {
+						else if (this.model.get("type") == "video") {
 							if (url.endsWith(".tgs")) {
 								this.el.querySelector('.modal-body').innerHTML = '<tgs-player style="height: 512px; width: 512px;" autoplay controls loop mode="normal" src="' + url + '"></tgs-player>';
 
@@ -59,11 +59,11 @@
 								this.el.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + url + '"/>';
 							}
 						}
-						else if (view.model.get("type") == "audio") {
+						else if (this.model.get("type") == "audio") {
 							this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + url + '"/>';
 						}
 
-						this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + view.model.get("from") + " - " + view.model.get("timestamp");
+						this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
 
                     }, false);					
                  }
