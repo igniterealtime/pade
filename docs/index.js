@@ -312,6 +312,23 @@ function setupPadeRoot() {
             _ = converse.env._;
             __ = _converse.__;		
 
+			class PadeBrandLogo extends _converse.CustomElement 
+			{
+				render () {
+					const is_fullscreen = _converse.api.settings.get('view_mode') === 'fullscreen';
+					return html
+`
+            <a class="brand-heading" href="https://github.com/igniterealtime/pade" target="_blank" rel="noopener">
+                <span class="brand-name-wrapper ${is_fullscreen ? 'brand-name-wrapper--fullscreen' : ''}">
+					<img heigth="64px" width="64px" src="./icon.png" />&nbsp;Pade Converse
+                </span>	
+			</a>
+`
+				}		
+			}
+			
+			_converse.api.elements.define('converse-brand-logo', PadeBrandLogo);
+			
 			if (chrome.i18n) {
 				document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
 			}
@@ -686,7 +703,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage) {
 
 		if (_converse.DEFAULT_IMAGE == chatbox.vcard.attributes.image)
 		{
-			dataUri = api.createAvatar(display_name, null, null, null, null);
+			dataUri = createAvatar(display_name, null, null, null, null);
 		}
 
 		// ohun status
