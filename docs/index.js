@@ -318,11 +318,11 @@ function setupPadeRoot() {
 					const is_fullscreen = _converse.api.settings.get('view_mode') === 'fullscreen';
 					return html
 `
-            <a class="brand-heading" href="https://github.com/igniterealtime/pade" target="_blank" rel="noopener">
-                <span class="brand-name-wrapper ${is_fullscreen ? 'brand-name-wrapper--fullscreen' : ''}">
-					<img heigth="64px" width="64px" src="./icon.png" />&nbsp;Pade Converse
-                </span>	
-			</a>
+						<a class="brand-heading" href="https://github.com/igniterealtime/pade" target="_blank" rel="noopener">
+							<span class="brand-name-wrapper ${is_fullscreen ? 'brand-name-wrapper--fullscreen' : ''}">
+								<img style="height:40px;width:40px;" src="./icon.png" />&nbsp;Pade Converse
+							</span>	
+						</a>
 `
 				}		
 			}
@@ -346,6 +346,7 @@ function setupPadeRoot() {
 			});	
 
 			_converse.api.waitUntil('chatBoxesFetched').then(() => {
+				// do nothing
 				
 			}).catch(function (err) {
 				console.error('waiting for chatBoxesFetched error', err);
