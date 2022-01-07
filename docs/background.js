@@ -92,7 +92,7 @@ function openPadeConverseWindow() {
 		let window = null;
 
 		for (let win of windows) {
-			if (win.type == "popup") window = win;
+			if (win.type == "popup" && win.width == 1300 && win.height == 900) window = win;
 		}
 		
 		if (!window) {
