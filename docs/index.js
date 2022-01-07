@@ -129,6 +129,13 @@ function loadPlugins() {
 
 function setupChromeHandlers() {
 
+	if (chrome.identity) 
+	{
+		chrome.identity.getProfileUserInfo((info) => {
+			console.log("Browser logged in user", info);
+		});
+	}
+	
 	if (chrome.windows && chrome.contextMenus && chrome.runtime) 
 	{
 		chrome.windows.onCreated.addListener(function(window)
@@ -905,7 +912,7 @@ function handleReplyAction(model) {
 	const prefix = model.get('nick') || model.get('nickname');
 	
 	if (!selectedText || selectedText == '') selectedText = model.get('message');
-	replyChat(prefix + ' : ' + selectedText);
+	replyChat(model, prefix + ' : ' + selectedText);
 }
 
 function handleReactionAction(model, emoji) {
@@ -913,16 +920,7 @@ function handleReactionAction(model, emoji) {
 	const msgId = model.get('msgid');
 	const type = model.get("type");	
 	
-	let target = model.get('from_muc');
-	
-	if (type == "chat")  {
-		target = model.get('jid');
-
-		if (model.get('sender') == 'them') {
-			target = model.get('from');
-		}		
-	}
-	
+	let target = getTargetJidFromMessageModel(model);	
 	let message = window.getSelection().toString();	
 	
 	if (!message || message == '') {
@@ -966,16 +964,35 @@ function getSelectedChatBox() {
 	return view;
 }
 
-function replyChat(text) {
-	var box = getSelectedChatBox();
-
-	console.debug("replyChat", text, box);
+function replyChat(model, text) {
+	console.debug("replyChat", model, text);
+	
+	const box = getChatBoxFromMessageModel(model);
 
 	if (box)
 	{
 		var textArea = box.querySelector('.chat-textarea');
 		if (textArea) textArea.value = ">" + text + "\n";
 	}
+}
+
+function getTargetJidFromMessageModel(model) {
+	const type = model.get("type");	
+	let target = model.get('from_muc');
+	
+	if (type === "chat")  {
+		target = model.get('jid');
+		if (model.get('sender') === 'them') {
+			target = model.get('from');
+		}		
+	}
+	return target;
+}
+	
+function getChatBoxFromMessageModel(model) {
+	const view = _converse.chatboxviews.get(getTargetJidFromMessageModel(model));
+	console.debug("getChatBoxFromMessageModel", view);
+	return view;
 }
 	
 function setAvatar(contact) {
@@ -1212,7 +1229,7 @@ function openWebAppsWindow(url, state, width, height) {
 			chrome.windows.create(data, function (win)
 			{
 				pade.webAppsWindow[url] = win;
-				updateWindowCoordinates(url, pade.webAppsWindow[url].id, {width: width, height: height});
+				chrome.windows.update(pade.webAppsWindow[url].id, {focused: true});				
 			});
 
 		} else {
