@@ -10,6 +10,7 @@
         "identity",	
 		"identity.email",
         "storage",
+		"downloads",		
 		"contextMenus",
 		"unlimitedStorage",    
 		"notifications",	

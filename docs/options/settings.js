@@ -1392,7 +1392,9 @@ function exportPreferences(settings)
             const key = localStorage.key(i).substring(15);
             settings.manifest.importExportStatus.element.innerHTML = 'Processing....' + localStorage.key(i);
 
-            if (!brandingExport[key]) brandingExport[key] = {disable: false};
+            if (!brandingExport[key] || brandingExport[key] == false || brandingExport[key] == "false" ) {
+				brandingExport[key] = {disable: false};
+			}
             brandingExport[key].value = localStorage.getItem(localStorage.key(i));
         }
     }

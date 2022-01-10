@@ -207,7 +207,7 @@ this.manifest = {
             "tab": i18n.get("Connection"),
             "group": i18n.get("About"),
             "name": "credits",
-            "text": i18n.get("<a href='https://igniterealtime.org' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + padeVersion + " Ignite Realtime Community</a>"),
+            "text": i18n.get("<a href='https://igniterealtime.org/projects/pade/' target='_blank' style='font-size: 14px;'>P&agrave;d&eacute; ver " + padeVersion + " Ignite Realtime Community</a>"),
             "type": "description"
         },
         {
@@ -1904,7 +1904,6 @@ this.manifest = {
         [   "beeKeeperTitle", "beeKeeperUrl"],
         [
             "server",
-            "uportPermission",
             "domain"
         ],
         [
