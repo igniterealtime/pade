@@ -6,10 +6,6 @@ var branding = {
     beeFeedCheck            : {disable: true},
     beeKeeperPageSize       : {disable: true},
 	
-    name                    : {disable: false, value: "pade"},
-    server                  : {disable: false, value: "pade.chat:5443"},
-    domain                  : {disable: false, value: "pade.chat"},
-
     enableDirectorySearch   : {disable: true, value: false},
     audioOnly               : {disable: true},
     blastDescription        : {disable: true},
@@ -65,11 +61,13 @@ var branding = {
     useStreamDeck           : {disable: true},
     useTotp                 : {disable: true},
     useSmartIdCard          : {disable: true},
-    useWebsocket            : {disable: true, value: true},
     useWinSSO               : {disable: true, value: false},
 
 	// connection
-	
+    name                    : {disable: false, value: "pade"},
+    server                  : {disable: false, value: "pade.chat:5443"},
+    domain                  : {disable: false, value: "pade.chat"},
+	useWebsocket            : {disable: false, value: true},
 	useWebAuthn				: {disable: true},
 	useBasicAuth			: {disable: true},
 	useAnonymous			: {disable: true},

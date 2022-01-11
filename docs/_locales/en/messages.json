@@ -204,11 +204,7 @@
         "message": "Meeting Settings",
         "description": "Label for Meetings Configuration"
     },
-    "ui": {
-        "message": "Meeting UI",
-        "description": "Label for Meetings User Interface"
-    },
-    
+   
     "upload_app": {
         "message": "Upload a collaboration zip file or H5P interactive content ",
         "description": "Label for uploading collaboration application"

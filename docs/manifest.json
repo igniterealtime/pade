@@ -1,5 +1,5 @@
 {
-    "minimum_chrome_version": "34",  	
+    "minimum_chrome_version": "90",  	
 	"short_name": "__MSG_manifest_shortExtensionName__",
 	"name": "__MSG_manifest_extensionName__",
 	"description": "__MSG_manifest_extensionDescription__",	

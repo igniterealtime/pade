@@ -16,6 +16,25 @@
             Strophe = converse.env.Strophe;
             dayjs = converse.env.dayjs;
 
+            _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
+            {
+				const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));					
+				let form = chatview.getMessageForm();
+				
+				if (form) {
+					form.onFormSubmitted = async (ev) => {
+						ev.stopPropagation();
+						const textarea = form.querySelector('.chat-textarea');
+						const message_text = textarea.value.trim();
+						textarea.value = '';					
+						textarea.focus();
+						console.log("gateway - typed text " + message_text);
+					}
+				}
+				
+                return buttons;
+            });
+			
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {	
 				if (text.startsWith("RSS:")) {					
@@ -100,9 +119,11 @@
 
         _converse.chatboxes.models.forEach(function(model)
         {
-            if (model.get('type') === "chatroom")
+			const view = _converse.chatboxviews.views[model.id];
+			
+            if (model.get('type') === "chatroom" && view)
             {
-                rssGroupChatCheck(_converse.chatboxviews.views[model.id]);
+                rssGroupChatCheck(view);
             }
         });
     }
