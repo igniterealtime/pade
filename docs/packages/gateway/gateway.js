@@ -18,17 +18,20 @@
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
-				const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));					
-				let form = chatview.getMessageForm();
-				
-				if (form) {
-					form.onFormSubmitted = async (ev) => {
-						ev.stopPropagation();
-						const textarea = form.querySelector('.chat-textarea');
-						const message_text = textarea.value.trim();
-						textarea.value = '';					
-						textarea.focus();
-						console.log("gateway - typed text " + message_text);
+				const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));	
+
+				if (chatview && chatview.model.get("type") === "chatbox" && chatview.model.get("jid") == "rss@pade." + _converse.connection.domain) {				
+					let form = chatview.getMessageForm();
+					
+					if (form) {
+						form.onFormSubmitted = async (ev) => {
+							ev.stopPropagation();
+							const textarea = form.querySelector('.chat-textarea');
+							const message_text = textarea.value.trim();
+							textarea.value = '';					
+							textarea.focus();
+							console.log("gateway - typed text " + message_text);
+						}
 					}
 				}
 				

@@ -84,8 +84,13 @@
 				
 				let form = chatview.getMessageForm();
 				
-				if (form) form.parseMessageForCommands = (text) => {
-					return parseMessageForCommands(chatview, text);
+				if (form) {
+					form.oldParseMessageForCommands = form.parseMessageForCommands;
+					
+					form.parseMessageForCommands = (text) => {
+						parseMessageForCommands(chatview, text);
+						return form.oldParseMessageForCommands(text);
+					}
 				}
 				
                 return buttons;
@@ -1045,16 +1050,6 @@
 
 		const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
 		const command = match[1].toLowerCase();
-
-		if (command === "subject" || command === "topic")
-		{
-			var id = view.model.get("box_id");
-			var jid = view.model.get("jid");
-
-			console.debug("new threaded conversation", match[2]);
-
-		}
-		else
 
 		if (command === "info")
 		{
