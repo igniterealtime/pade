@@ -88,8 +88,9 @@
 					form.oldParseMessageForCommands = form.parseMessageForCommands;
 					
 					form.parseMessageForCommands = (text) => {
-						parseMessageForCommands(chatview, text);
-						return form.oldParseMessageForCommands(text);
+						let handled = parseMessageForCommands(chatview, text);
+						if (!handled) handled = form.oldParseMessageForCommands(text);
+						return handled;
 					}
 				}
 				
@@ -593,7 +594,7 @@
 
         item.ele = document.createElement(el);
         item.ele.name = item.msgId;
-        item.ele.title = item.nick + " says " + item.message;
+        item.ele.title = item.message;
         item.ele.innerHTML = item.message;
         item.ele.classList.add(className);
         document.body.appendChild(item.ele);
@@ -602,8 +603,8 @@
         {
             evt.stopPropagation();
             console.debug("pinned item clicked", evt.target.name, evt.target.title);
-
-            var elmnt = document.getElementById("msg-" + evt.target.name);
+			
+			const elmnt = document.querySelector('[data-msgid="' + evt.target.name + '"]');			
             if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
         });
 
@@ -1060,6 +1061,44 @@
 		}
 		else
 
+        if (command == "?" || command == "wiki")
+        {
+            if (match[2])
+            {
+                fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + match[2], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
+                {
+                    console.debug('wikipedia ok', json);
+					const msgId = 'wiki-' + Math.random().toString(36).substr(2,9);
+                    const type = view.model.get("type") == "chatbox" ? "chat" : "groupchat";
+					const title = 'Wikipedia';
+                    const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
+                    const from = view.model.get("jid");
+					let attrs = {message: body, body, id: msgId, msgId, type, from}; 
+					
+					if (type == "groupchat") {
+						attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+					}
+					
+					view.model.queueMessage(attrs);	
+					
+                    if (json.type == "standard")
+                    {
+                        navigator.clipboard.writeText(body).then(function() {
+                            console.debug('wikipedia clipboard ok');
+                        }, function(err) {
+                            console.error('wikipedia clipboard error', err);
+                        });
+                    }
+
+                }).catch(function (err) {
+                    console.error('wikipedia error', err);
+                });
+
+                return true;
+            }
+        }
+		else
+			
 		if (command === "feed" && view.model.get("type") == "chatroom")
 		{
 			if (!match[2])
@@ -1112,8 +1151,7 @@
 		}
 		else
 
-		if (command === "clearpins")
-		{
+		if (command === "clearpins") {
 			var id = view.model.get("box_id");
 			var jid = view.model.get("jid");
 

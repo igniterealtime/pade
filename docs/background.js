@@ -4,6 +4,8 @@
 //
 // -------------------------------------------------------
 
+let converseWin = 0;
+
 self.addEventListener('install', function(event) {
     console.debug('install', event);
 });
@@ -78,7 +80,8 @@ chrome.windows.onCreated.addListener((win) => {
 });	
 
 chrome.windows.onRemoved.addListener((win) => {
-	//console.debug("onRemoved", win);	
+	//console.debug("onRemoved", win);
+	if (win == converseWin) converseWin = 0;
 });	
 
 // -------------------------------------------------------
@@ -92,7 +95,7 @@ function openPadeConverseWindow() {
 		let window = null;
 
 		for (let win of windows) {
-			if (win.type == "popup" && win.width == 1300 && win.height == 900) window = win;
+			if (converseWin == win.id || (win.type == "popup" && win.width == 1300 && win.height == 900)) window = win;
 		}
 		
 		if (!window) {
@@ -110,6 +113,7 @@ function createPadeConverseWindow() {
 	
 	chrome.windows.create(data, (win) => {
 		chrome.windows.update(win.id, {width: 1300, height: 900});
+		converseWin = win.id;
 	});	
 }
 

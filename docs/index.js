@@ -244,8 +244,9 @@ function startConverse() {
 		auto_reconnect: getSetting("autoReconnectConverse", true),
 		auto_subscribe: getSetting("autoSubscribe", false),
 		auto_xa:  autoXa,
-		bosh_service_url: getSetting("boshUri", "https://" + server + "/http-bind/"),
+		bosh_service_url: getSetting("boshUri", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/"),
 		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
+		connection_options: { 'worker': "./pade-connection-worker.js" },
 		default_domain: domain,
 		default_state: getSetting("converseOpenState", "online"),		
 		discover_connection_methods: false,		
@@ -288,8 +289,9 @@ function startConverse() {
 		theme: getSetting('converseTheme', 'concord'),			
 		trusted: getSetting("conversePersistentStore", 'none') == 'none' ? 'off' : 'on',			  
 		view_mode: "fullscreen",
+		jitsimeet_url: getSetting("ofmeetUrl", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/ofmeet/"),
 		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", false) && (getSetting("enableAudioConfWidget", false) || getSetting("jingleCalls", false)), 'clear': true },
-		websocket_url: getSetting("useWebsocket", false) ? (location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,		
+		websocket_url: getSetting("useWebsocket", false) ? (getSetting("domain") == "localhost" || location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
 	
@@ -339,11 +341,7 @@ function setupPadeRoot() {
 			if (chrome.i18n) {
 				document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
 			}
-
-            _converse.api.listen.on('afterMessageBodyTransformed', function(text) {				
-
-            });
-			
+		
 			_converse.api.listen.on('parseMessage', async (stanza, attrs) => {
 				return parseStanza(stanza, attrs);
 			});	
@@ -404,9 +402,10 @@ function setupPadeRoot() {
 			});	
 			
 			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
-		       buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el.model),                    	'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
-		       buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':smiley:'),   	'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   'name': 'pade-thumbsup'});	
-		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 'name': 'pade-thumbsdown'});			   
+		       buttons.push({'i18n_text': __('Pin'),   	 'handler': ev => handlePinAction(el), 								'button_class': 'chat-msg__action-pin',         'icon_class': 'fa fa-paperclip',   'name': 'pade-pin'});			   
+		       buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el),                    	'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
+		       buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':smiley:'),   	'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   		'name': 'pade-thumbsup'});	
+		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 		'name': 'pade-thumbsdown'});			   
 		       return buttons;
 			});	
 
@@ -905,14 +904,42 @@ async function parseStanza(stanza, attrs) {
 	return attrs;
 }
 
-function handleReplyAction(model) {
-	console.debug('handleReplyAction', model)
+function handleReplyAction(el) {
+	console.debug('handleReplyAction', el.model)
 	
 	let selectedText = window.getSelection().toString();
-	const prefix = model.get('nick') || model.get('nickname');
+	const prefix = el.model.get('nick') || el.model.get('nickname');
 	
-	if (!selectedText || selectedText == '') selectedText = model.get('message');
-	replyChat(model, prefix + ' : ' + selectedText);
+	if (!selectedText || selectedText == '') selectedText = el.model.get('message');
+	replyChat(el.model, prefix + ' : ' + selectedText);
+}
+
+function handlePinAction(el) {
+	const msgId = el.model.get('msgid');
+	const message = el.model.get('message');
+	const type = el.model.get('type');
+	const nick = el.model.get('nick');
+	const from = Strophe.getBareJidFromJid(el.model.get('from'));	
+	const prefix = (type == "groupchat") ? nick + ": " : "";
+	const pos = message.indexOf("\n");	
+	const pinnedMessage = prefix + (pos == -1 ? message : message.substring(0, pos));	
+	console.debug('handlePinAction', msgId, message, type, from, pinnedMessage, el.model);
+
+	if (chrome.storage)
+	{
+		let pinned = {};
+
+		chrome.storage.local.get('pinned', function(data) {
+			if (data && data.pinned) pinned = data.pinned;
+			pinned[from + "-" + msgId] = {from: from, msgId: msgId, message: pinnedMessage, nick: nick};
+
+			chrome.storage.local.set({pinned: pinned}, function() {
+			  console.debug('chrome.storage is set for pinned', pinned);
+				const elmnt = document.querySelector('[data-msgid="' + msgId + '"]');	
+				if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});					  
+			});
+		});
+	}
 }
 
 function handleReactionAction(model, emoji) {
@@ -1213,7 +1240,7 @@ function openWebAppsWindow(url, state, width, height) {
 		if (!height) height = 768;
 
 		if (url.startsWith("_")) url = url.substring(1);
-		var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : "https://" + url.trim());
+		var httpUrl = url.startsWith("http") ? url.trim() : ( url.startsWith("chrome-extension") ? url : (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + url.trim());
 		var data = {url: httpUrl, type: "popup", focused: true};
 
 		console.debug("openWebAppsWindow", data, state, width, height);
@@ -1245,7 +1272,7 @@ function openVideoWindow(room, mode) {
 }
 
 function getVideoWindowUrl(room, mode) {
-    const url = getSetting("ofmeetUrl", "https://" + getSetting("server") + "/ofmeet/");
+    const url = getSetting("ofmeetUrl", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/ofmeet/");
     let params = "#config.webinar=" + (mode != "attendee" ? "false" : "true");
 
     const minHDHeight = getSetting("minHDHeight");
