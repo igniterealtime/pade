@@ -75,7 +75,17 @@ function loadPlugins() {
 		
 		whitelistedPlugins.push("screencast");	
 		loadJS("./packages/screencast/screencast.js");
-			
+
+        if (getSetting("enableVoiceChat", false))
+        {
+            whitelistedPlugins.push("voicechat");
+			loadCSS("./packages/voicechat/voicechat.css");	
+			loadJS("./packages/voicechat/hark.js");
+			loadJS("./packages/voicechat/jquery-3.5.1.min.js");			
+			loadJS("./packages/voicechat/lib-jitsi-meet.min.js");		
+            loadJS("./packages/voicechat/voicechat.js");
+        }
+		
 		if (getSetting("enableDirectorySearch", false))
 		{
 			whitelistedPlugins.push("directory");
@@ -123,7 +133,7 @@ function loadPlugins() {
             whitelistedPlugins.push("gateway");
 			loadJS("./packages/gateway/rss-library.js");		
             loadJS("./packages/gateway/gateway.js");
-        }		
+        }			
 	}
 }
 
@@ -290,7 +300,7 @@ function startConverse() {
 		trusted: getSetting("conversePersistentStore", 'none') == 'none' ? 'off' : 'on',			  
 		view_mode: "fullscreen",
 		jitsimeet_url: getSetting("ofmeetUrl", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/ofmeet/"),
-		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("showToolbarIcons", false) && (getSetting("enableAudioConfWidget", false) || getSetting("jingleCalls", false)), 'clear': true },
+		visible_toolbar_buttons: {'emoji': true, 'call': false, 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? (getSetting("domain") == "localhost" || location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}

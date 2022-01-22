@@ -891,7 +891,7 @@ this.manifest = {
             "group": i18n.get("General"),
             "name": "enableVoiceChat",
             "type": "checkbox",
-            "label": i18n.get("Enable Voice Chat (Ohun)")
+            "label": i18n.get("Enable Voice Chat")
         },
         {
             "tab": i18n.get("Converse"),

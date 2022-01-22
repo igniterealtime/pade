@@ -85,11 +85,11 @@
 				let form = chatview.getMessageForm();
 				
 				if (form) {
-					form.oldParseMessageForCommands = form.parseMessageForCommands;
+					form.oldParseMessageForCommands = form.parseMessageForCommands.bind({});
 					
 					form.parseMessageForCommands = (text) => {
 						let handled = parseMessageForCommands(chatview, text);
-						if (!handled) handled = form.oldParseMessageForCommands(text);
+						//if (!handled) handled = form.oldParseMessageForCommands(text);
 						return handled;
 					}
 				}

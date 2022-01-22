@@ -834,7 +834,7 @@ window.addEvent("domready", function () {
                     }
                 }
 
-                background.reloadApp();
+                if (chrome.runtime.reload) chrome.runtime.reload();
             }
         });
 
@@ -1158,8 +1158,9 @@ function doDefaults(background)
     setDefaultSetting("moderatorTools", true);
     setDefaultSetting("converseAutoCompleteFilter", "contains");
     setDefaultSetting("converseTimeAgo", true);
-    setDefaultSetting("enableVoiceChat", true);
+
     // most people won't want this
+    //setDefaultSetting("enableVoiceChat", false);	
     //setDefaultSetting("enableVoiceChatText", true);
 
     // web apps
@@ -1521,11 +1522,7 @@ function uploadAvatar(event, settings)
 function reloadConverse(background)
 {
     console.log("reloadConverse", background);
-
-    if (background?.pade.chatWindow)
-    {
-        chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].location.reload();
-    }
+	location.reload()
 }
 
 function avatarError(error)
