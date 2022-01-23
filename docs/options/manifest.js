@@ -899,7 +899,7 @@ this.manifest = {
             "name": "enableVoiceChatText",
             "type": "checkbox",
             "label": i18n.get("Enable Voice Chat to Text Transcription")
-        },
+        },			
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
@@ -976,7 +976,15 @@ this.manifest = {
             "name": "enableHomePage",
             "type": "checkbox",
             "label": i18n.get("Enable Home Page")
-        },
+        },	
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "voiceChatPrefix",
+            "type": "text",
+            "label": i18n.get("Voice Chat Prefix"),
+            "text": "Enter a prefix code like vc-xxxx-"
+        },			
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
@@ -984,7 +992,7 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("Home Page"),
             "text": ""
-        },
+        },		
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),

@@ -254,7 +254,7 @@ function startConverse() {
 		auto_reconnect: getSetting("autoReconnectConverse", true),
 		auto_subscribe: getSetting("autoSubscribe", false),
 		auto_xa:  autoXa,
-		bosh_service_url: getSetting("boshUri", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/"),
+		bosh_service_url: getSetting("boshUri", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/"),
 		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
 		connection_options: { 'worker': "./pade-connection-worker.js" },
 		default_domain: domain,
@@ -271,7 +271,7 @@ function startConverse() {
 		loglevel: getSetting("converseDebug", false) ? "debug" : "info",
 		message_archiving: 'always',
 		message_carbons: getSetting("messageCarbons", true),
-		muc_domain: "conference." + getSetting("domain", null),
+		muc_domain: "conference." + domain,
 		muc_fetch_members: getSetting("fetchMembersList", false),
 		muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
 		muc_mention_autocomplete_filter: getSetting("converseAutoCompleteFilter", "starts_with"),
@@ -299,9 +299,19 @@ function startConverse() {
 		theme: getSetting('converseTheme', 'concord'),			
 		trusted: getSetting("conversePersistentStore", 'none') == 'none' ? 'off' : 'on',			  
 		view_mode: "fullscreen",
-		jitsimeet_url: getSetting("ofmeetUrl", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/ofmeet/"),
+		voicechat: {
+			hosts: {
+				domain: domain,
+				muc: 'conference.' + domain,
+			},					
+			serviceUrl: (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/',
+			prefix: getSetting("voiceChatPrefix", "vc-"),
+			transcribe: getSetting("enableVoiceChatText"),
+			transcribeLanguage: getSetting("transcribeLanguage", "en-GB")
+		},		
+		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet/"),
 		visible_toolbar_buttons: {'emoji': true, 'call': false, 'clear': true },
-		websocket_url: getSetting("useWebsocket", false) ? (getSetting("domain") == "localhost" || location.protocol == "http:" ? "ws:" : "wss:") + '//' + server + '/ws/' : undefined,		
+		websocket_url: getSetting("useWebsocket", false) ? (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/' : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
 	

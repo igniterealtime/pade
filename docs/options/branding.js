@@ -84,7 +84,7 @@ var branding = {
 	// general
 	openWinMinimized	    : {disable: false},
 	publishLocation			: {disable: false},
-    language                : {disable: true},
+    language                : {disable: false},
     phone                   : {disable: true},
     url                     : {disable: true},
 	country                 : {disable: true},

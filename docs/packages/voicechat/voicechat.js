@@ -18,10 +18,11 @@
 			_converse.api.settings.update({
 				voicechat: {
 					hosts: {
-						domain: 'localhost',
-						muc: 'conference.localhost'
+						domain: 'meet.jit.si',
+						muc: 'conference.meet.jit.si'
 					},					
-					serviceUrl: 'ws://localhost:7070/ws/',
+					serviceUrl: 'wss://meet.jit.si/xmpp-websocket',
+					prefix: 'voicechat-',					
 					transcribe: true,
 					transcribeLanguage: 'en-GB'
 				}
@@ -40,7 +41,7 @@
 			
 			_converse.api.listen.on('message', (data) => {			
 				if (!data.attrs.json) return;
-				console.log("voicechat", data.attrs.json);
+				console.debug("voicechat", data.attrs.json);
 			});
 			
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
@@ -50,7 +51,7 @@
 
                 buttons.push(html`
                     <button class="plugin-voicechat" title="${voicechat_start}" @click=${performAudio}/>
-						<svg style="width:18px; height:18px; ${color}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g><path d="M 14,25.808L 14,30 L 11,30 C 10.448,30, 10,30.448, 10,31C 10,31.552, 10.448,32, 11,32l 4.98,0 L 16.020,32 l 4.98,0 c 0.552,0, 1-0.448, 1-1c0-0.552-0.448-1-1-1L 18,30 l0-4.204 c 4.166-0.822, 8-4.194, 8-9.796L 26,13 C 26,12.448, 25.552,12, 25,12 S 24,12.448, 24,13L 24,16 c0,5.252-4.026,8-8,8c-3.854,0-8-2.504-8-8L 8,13 C 8,12.448, 7.552,12, 7,12S 6,12.448, 6,13L 6,16 C 6,21.68, 9.766,25.012, 14,25.808zM 16,22c 3.308,0, 6-2.692, 6-6L 22,6 c0-3.308-2.692-6-6-6C 12.692,0, 10,2.692, 10,6l0,10 C 10,19.308, 12.692,22, 16,22z M 12,6 c0-2.21, 1.79-4, 4-4s 4,1.79, 4,4l0,10 c0,2.21-1.79,4-4,4S 12,18.21, 12,16L 12,6 z"></path></g></svg>					
+						<svg style="width:18px; height:18px; ${color}" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="headset" class="svg-inline--fa fa-headset fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M192 208c0-17.67-14.33-32-32-32h-16c-35.35 0-64 28.65-64 64v48c0 35.35 28.65 64 64 64h16c17.67 0 32-14.33 32-32V208zm176 144c35.35 0 64-28.65 64-64v-48c0-35.35-28.65-64-64-64h-16c-17.67 0-32 14.33-32 32v112c0 17.67 14.33 32 32 32h16zM256 0C113.18 0 4.58 118.83 0 256v16c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16v-16c0-114.69 93.31-208 208-208s208 93.31 208 208h-.12c.08 2.43.12 165.72.12 165.72 0 23.35-18.93 42.28-42.28 42.28H320c0-26.51-21.49-48-48-48h-32c-26.51 0-48 21.49-48 48s21.49 48 48 48h181.72c49.86 0 90.28-40.42 90.28-90.28V256C507.42 118.83 398.82 0 256 0z"></path></svg>					
                     </button>
                 `);
 
@@ -83,18 +84,17 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
-		const view = _converse.chatboxviews.get(toolbar_el.model.get('jid'));		
-		model = view.model;
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');	
+		model = toolbar_el.model;
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';				
 		const target = model.get('jid');				
 		
 		const myself = converse.env.Strophe.getNodeFromJid(_converse.connection.jid);
 		const yourself = converse.env.Strophe.getNodeFromJid(target);								
-		room = (model.get('type') == 'chatroom') ? myself : (myself < target ? myself + yourself : yourself + myself);
+		room = _converse.api.settings.get('voicechat').prefix + ((model.get('type') == 'chatroom') ? yourself : (myself < target ? myself + yourself : yourself + myself));
 		button = toolbar_el.querySelector('.plugin-voicechat');
 
-		console.log("voicechat is clicked", room, button);
+		console.debug("voicechat is clicked", model, room, button);
 
 		if (button.classList.contains('blink_me')) {
 			stopVoiceChat(model);						
@@ -106,9 +106,11 @@
 	function sendVoiceChatState(state) {
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';
 		const target = model.get('jid');
+		const nick = model.get('nick');
+		const nickname = model.get('nickname');
 		const url = _converse.api.settings.get('voicechat').serviceUrl;
-		const json = {url, room, state};
-		console.log("sendVoiceChatState", json);
+		const json = {url, room, state, type, nickname, nick};
+		console.debug("sendVoiceChatState", json);
 		
 		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c("json", {'xmlns': 'urn:xmpp:json:0'}).t(JSON.stringify(json)));						
 	}
@@ -135,8 +137,8 @@
 		if (voiceChatAudio) voiceChatAudio.innerHTML = "";	
 		
 		if (button) {
-			button.classList.remove('blink_me');	
-			sendVoiceChatState('stopVoiceChat');			
+			button.classList.remove('blink_me');
+			button.title = voicechat_start;					
 		}
 		
 		if (recognitionActive && recognition)
@@ -151,7 +153,7 @@
 	}
 	
 	function startVoiceChat() {	
-		console.log("startVoiceChat", room);
+		console.debug("startVoiceChat", room);
 		
 		if (!localTracks) {		
 			JitsiMeetJS.init({disableAudioLevels: true});
@@ -166,7 +168,7 @@
 	
 	function goConnect() {
 		const options = _converse.api.settings.get('voicechat');			
-		console.log("goConnect", room, localTracks, options);		
+		console.debug("goConnect", room, localTracks, options);		
 		connection = new JitsiMeetJS.JitsiConnection(null, null, options);
 		connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,  onConnectionSuccess);
 		connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_FAILED,       onConnectionFailed);
@@ -182,7 +184,7 @@
 	
 	function onLocalTracks(tracks) {
 		localTracks = tracks;		
-		console.log("onLocalTracks", room, localTracks);
+		console.debug("onLocalTracks", room, localTracks);
 		
 		let voiceChatAudio = document.getElementById('voicechat-audio');
 		if (!voiceChatAudio) voiceChatAudio = newElement('div', 'voicechat-audio');
@@ -190,10 +192,10 @@
 		for (let i = 0; i < localTracks.length; i++) 
 		{
 			if (localTracks[i].getType() === 'audio') {			
-				localTracks[i].addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,	audioLevel => console.log(`Audio Level local: ${audioLevel}`));
-				localTracks[i].addEventListener(JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('local track muted'));
-				localTracks[i].addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,() => console.log('local track stoped'));
-				localTracks[i].addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED, deviceId => {console.log(`local track audio output device was changed to ${deviceId}`)	});
+				localTracks[i].addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,	audioLevel => console.debug(`Audio Level local: ${audioLevel}`));
+				localTracks[i].addEventListener(JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.debug('local track muted'));
+				localTracks[i].addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,() => console.debug('local track stoped'));
+				localTracks[i].addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED, deviceId => {console.debug(`local track audio output device was changed to ${deviceId}`)	});
 
 				const localAudio = newElement('span', `local-audio-${i}`, `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
 				voiceChatAudio.append(localAudio);
@@ -209,13 +211,21 @@
 				harker = hark(localTracks[i].stream, {interval: 100, history: 4 });
 
 				harker.on('speaking', () => {
-					sendVoiceChatState('startSpeaking');
-					if (model) model.setChatState(_converse.COMPOSING);						
+					
+					if (_converse.api.settings.get('voicechat').transcribe && model) {					
+						model.setChatState(_converse.COMPOSING);						
+					} else {
+						sendVoiceChatState('voice');						
+					}
 				});
 
 				harker.on('stopped_speaking', () =>  {
-					sendVoiceChatState('stopSpeaking');
-					if (model) model.setChatState(_converse.PAUSED);							
+					
+					if (_converse.api.settings.get('voicechat').transcribe && model) {						
+						model.setChatState(_converse.PAUSED);							
+					} else {
+						sendVoiceChatState('mute');						
+					}
 				});						
 			}
 		}
@@ -234,12 +244,12 @@
 			remoteTracks[participant] = [];
 		}
 		const idx = remoteTracks[participant].push(track);
-		console.log("onRemoteTrack", room, remoteTracks);
+		console.debug("onRemoteTrack", room, remoteTracks);
 		
-		track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,	audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
-		track.addEventListener(JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,	() => console.log('remote track muted'));
-		track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED, () => console.log('remote track stoped'));
-		track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,	deviceId =>	console.log(`remote track audio output device was changed to ${deviceId}`));
+		track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,	audioLevel => console.debug(`Audio Level remote: ${audioLevel}`));
+		track.addEventListener(JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,	() => console.debug('remote track muted'));
+		track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED, () => console.debug('remote track stoped'));
+		track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,	deviceId =>	console.debug(`remote track audio output device was changed to ${deviceId}`));
 
 		const id = participant + track.getType() + idx;
 		const localAudio = newElement('span', `remote-audio-${participant}-${idx}`, `<audio autoplay='1' id='${participant}audio${idx}' />`);
@@ -252,18 +262,18 @@
 	}
 	
 	function onConnectionSuccess() {
-		console.log("onConnectionSuccess", room);		
+		console.debug("onConnectionSuccess", room);		
 		
 		jitsiRoom = connection.initJitsiConference(room, {});	
 		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
-		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_REMOVED, track => {console.log(`track removed!!!${track}`)	});
+		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_REMOVED, track => {console.debug(`track removed!!!${track}`)	});
 		jitsiRoom.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
-		jitsiRoom.on(JitsiMeetJS.events.conference.USER_JOINED, id => {console.log('user join'); remoteTracks[id] = []	});
+		jitsiRoom.on(JitsiMeetJS.events.conference.USER_JOINED, id => {console.debug('user join'); remoteTracks[id] = []	});
 		jitsiRoom.on(JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
-		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, track => {console.log(`${track.getType()} - ${track.isMuted()}`)	});
-		jitsiRoom.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, (userID, displayName) => console.log(`${userID} - ${displayName}`));
-		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, (userID, audioLevel) => console.log(`${userID} - ${audioLevel}`));
-		jitsiRoom.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, () => console.log(`${jitsiRoom.getPhoneNumber()} - ${jitsiRoom.getPhonePin()}`));
+		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, track => {console.debug(`${track.getType()} - ${track.isMuted()}`)	});
+		jitsiRoom.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, (userID, displayName) => console.debug(`${userID} - ${displayName}`));
+		jitsiRoom.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, (userID, audioLevel) => console.debug(`${userID} - ${audioLevel}`));
+		jitsiRoom.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, () => console.debug(`${jitsiRoom.getPhoneNumber()} - ${jitsiRoom.getPhonePin()}`));
 		
 		jitsiRoom.join();
 	}
@@ -273,14 +283,14 @@
 	}
 
 	function onConnectionDisconnected() {
-		console.log('onConnectionDisconnected!');
+		console.debug('onConnectionDisconnected!');
 		connection.removeEventListener(JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,  onConnectionSuccess);
 		connection.removeEventListener(JitsiMeetJS.events.connection.CONNECTION_FAILED,       onConnectionFailed);
 		connection.removeEventListener(JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED, onConnectionDisconnected);
 	}
 
 	function onConferenceJoined() {
-		console.log('onConferenceJoined!', jitsiRoom, localTracks);
+		console.debug('onConferenceJoined!', jitsiRoom, localTracks);
 		
 		for (let i = 0; i < localTracks.length; i++) {
 			jitsiRoom.addTrack(localTracks[i]);
@@ -288,12 +298,12 @@
 		
 		if (button) {
 			button.classList.add('blink_me');	
-			sendVoiceChatState('startVoiceChat');			
+			button.title = voicechat_stop;		
 		}					
 	}
 
 	function onUserLeft(id) {
-		console.log('onUserLeft', id);
+		console.debug('onUserLeft', id);
 		
 		if (!remoteTracks[id]) {
 			return;
@@ -319,7 +329,9 @@
 
 		if (json) {
 			attrs.json = JSON.parse(json.innerHTML);		
-			console.log("parseStanza", stanza, attrs);		
+			console.debug("parseStanza", attrs);
+			const nick = attrs.json.nick || attrs.json.nickname;
+			model.updateNotifications([nick], attrs.json.state);
 		}
 		return attrs;
 	}
