@@ -305,8 +305,8 @@ function startConverse() {
 				muc: 'conference.' + domain,
 			},					
 			serviceUrl: (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/',
-			prefix: getSetting("voiceChatPrefix", "vc-"),
-			transcribe: getSetting("enableVoiceChatText"),
+			prefix: getSetting("voiceChatPrefix", "VC"),
+			transcribe: getSetting("enableVoiceChatText", false),
 			transcribeLanguage: getSetting("transcribeLanguage", "en-GB")
 		},		
 		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet/"),
