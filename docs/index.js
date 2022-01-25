@@ -230,6 +230,11 @@ function startConverse() {
 		if (pos2 != -1) autoJoinPrivateChats = [location.hash.substring(pos2 + 18)];
 	}
 
+	if (getSetting("enableHomePage", false) && !location.hash)
+	{
+		document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url);
+	}
+			
 	const autoAway = getSetting("idleTimeout", 300);
 	const autoXa = autoAway * 3;			 			
 	const config = {
@@ -308,8 +313,11 @@ function startConverse() {
 			prefix: getSetting("voiceChatPrefix", "VC"),
 			transcribe: getSetting("enableVoiceChatText", false),
 			transcribeLanguage: getSetting("transcribeLanguage", "en-GB")
-		},		
-		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet/"),
+		},	
+		jitsimeet_start_option: getSetting("ofmeetDisplayOptions", "into_chat_window"),
+		jitsimeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),
+		jitsimeet_modal: !getSetting("converseEmbedOfMeet", true),		
+		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
 		visible_toolbar_buttons: {'emoji': true, 'call': false, 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/' : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
@@ -384,6 +392,55 @@ function setupPadeRoot() {
 			}).catch(function (err) {
 				console.error('waiting for VCardsInitialized error', err);
 			});		
+
+			_converse.api.waitUntil('bookmarksInitialized').then((initPade) => {
+				const myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
+				
+				var bookmarkRoom = function bookmarkRoom(json)
+				{
+					console.debug("bookmarkRoom", json);					
+					
+					let bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
+
+					if (!bookmark)
+					{
+						_converse.bookmarks.create({
+							'jid': json.jid,
+							'name': json.name,
+							'autojoin': json.autojoin,
+							'nick': myNick
+						});
+					}
+					bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
+					_converse.bookmarks.markRoomAsBookmarked(bookmark);
+				}
+
+				if (getSetting("enableBookmarks", true))
+				{
+					const stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });					
+					_converse.connection.sendIQ(stanza, function(iq) {
+
+						iq.querySelectorAll('conference').forEach(function(conf)
+						{
+							var jid = conf.getAttribute("jid");
+							var name = conf.getAttribute("name");
+							var avatar_uri = conf.getAttribute("avatar_uri");
+							if (!name) name = Strophe.getNodeFromJid(jid);
+							var autojoin = conf.getAttribute('autojoin') === 'true' || conf.getAttribute('autojoin') === '1';
+							var json = {name, jid, autojoin, avatar_uri};
+
+							console.debug('server bookmarks received', myNick, json);
+							if (_converse.bookmarks) bookmarkRoom(json);
+
+						});
+
+					}, function(error){
+						console.error("bookmarks error", error);
+					});
+				}
+			}).catch(function (err) {
+				console.error('waiting for bookmarksInitialized error', err);
+			});
 			
 			_converse.api.waitUntil('controlBoxInitialized').then(() => {
 
@@ -428,8 +485,7 @@ function setupPadeRoot() {
 		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 		'name': 'pade-thumbsdown'});			   
 		       return buttons;
 			});	
-
-
+			
 			_converse.api.listen.on('message', (data) => {			
 				let count = 0;
 				if (!data.attrs.message) return;
@@ -1292,7 +1348,7 @@ function openVideoWindow(room, mode) {
 }
 
 function getVideoWindowUrl(room, mode) {
-    const url = getSetting("ofmeetUrl", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/ofmeet/");
+    const url = getSetting("ofmeetUrl", (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/ofmeet");
     let params = "#config.webinar=" + (mode != "attendee" ? "false" : "true");
 
     const minHDHeight = getSetting("minHDHeight");
@@ -1344,5 +1400,5 @@ function getVideoWindowUrl(room, mode) {
     params = params + (VERTICAL_FILMSTRIP != null ? "&interfaceConfig.VERTICAL_FILMSTRIP=" + VERTICAL_FILMSTRIP : "");
 
 
-    return url + room + params;
+    return url + '/' + room + params;
 }

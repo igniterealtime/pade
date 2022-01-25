@@ -882,13 +882,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "enableAudioConfWidget",
-            "type": "checkbox",
-            "label": i18n.get("Enable Audio Conferencing Widget")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "enableVoiceChat",
             "type": "checkbox",
             "label": i18n.get("Enable Voice Chat")
@@ -900,20 +893,6 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Enable Voice Chat to Text Transcription")
         },			
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "enableNotesTool",
-            "type": "checkbox",
-            "label": i18n.get("Enable Notes Tool")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "enableTasksTool",
-            "type": "checkbox",
-            "label": i18n.get("Enable Tasks Tool")
-        },
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
@@ -966,13 +945,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "enablePasting",
-            "type": "checkbox",
-            "label": i18n.get("Enable Clipboard pasting of URLs and images")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "enableHomePage",
             "type": "checkbox",
             "label": i18n.get("Enable Home Page")
@@ -988,34 +960,9 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
-            "name": "homePageView",
-            "type": "popupButton",
-            "label": i18n.get("Home Page View Mode"),
-            "options": [
-                {"text": "Full Screen", "value": "fullscreen"},
-                {"text": "Overlayed", "value": "overlayed"}
-            ]
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
             "name": "converseOpenState",
             "type": "popupButton",
             "label": i18n.get("Window Open presence state"),
-            "options": [
-                {"text": "I am online", "value": "online"},
-                {"text": "I am free to chat", "value": "chat"},
-                {"text": "I am busy", "value": "dnd"},
-                {"text": "I am away", "value": "away"},
-                {"text": "I am away for an extended period", "value": "xa"}
-            ]
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "converseCloseState",
-            "type": "popupButton",
-            "label": i18n.get("Window Close presence state"),
             "options": [
                 {"text": "I am online", "value": "online"},
                 {"text": "I am free to chat", "value": "chat"},
@@ -1061,14 +1008,7 @@ this.manifest = {
             "name": "converseSimpleView",
             "type": "checkbox",
             "label": i18n.get("Use simple conversations view")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
-            "name": "converseEmbedOfMeet",
-            "type": "checkbox",
-            "label": i18n.get("Embed Openfire Meetings in Converse")
-        },
+        },	
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
@@ -1147,18 +1087,43 @@ this.manifest = {
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"}
             ]
-        },
+        },		
         {
             "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
+            "group": i18n.get("User Interface"),			
             "name": "converseAutoCompleteFilter",
             "type": "popupButton",
-            "label": i18n.get("AutoComplete Filter"),
+            "label": i18n.get("AutoComplete Filter"),			
             "options": [
                 {"text": "Start With", "value": "starts_with"},
                 {"text": "Contains", "value": "contains"}
             ]
         },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "converseEmbedOfMeet",
+            "type": "checkbox",
+            "label": i18n.get("Embed Openfire Meetings in Converse")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "ofMeetHeadDisplayToggle",
+            "type": "checkbox",
+            "label": i18n.get("Show Converse Heading")
+        },			
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "ofmeetDisplayOptions",
+            "type": "popupButton",
+            "label": i18n.get("Display Options"),
+            "options": [
+                {"text": "Into Chat Window", "value": "into_chat_window"},
+                {"text": "Into New Tab", "value": "into_new_tab"}
+            ]		
+        },		
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Message Threading"),

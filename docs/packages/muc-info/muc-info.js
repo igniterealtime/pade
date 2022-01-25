@@ -7,7 +7,7 @@
 }(this, function (converse) {
     let __, html, _converse;
     let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,dayjs, Model, BootstrapModal;		
-	let PreviewDialog = null, previewDialog = null, pade = {}, fastpath = {};	
+	let PreviewDialog = null, previewDialog = null, pade = {}, fastpath = {}, translations = {};	
 
     converse.plugins.add("muc-info", {
         'dependencies': [],
@@ -69,7 +69,84 @@
                  }
             });
 
+            _converse.on('message', function (data)
+            {
+                var message = data.stanza;
+                var chatbox = data.chatbox;
+                var attachTo = data.stanza.querySelector('attach-to');
+                var body = message.querySelector('body');
+                var history = message.querySelector('forwarded');
 
+                //console.debug("message", history, body, chatbox, message);
+
+                if (!history && body && chatbox)
+                {
+                    // add translation
+
+                    var id = chatbox.get("box_id");
+
+                    if (getSetting("enableTranslation", false) && body.innerHTML.indexOf("--") != 0)
+                    {
+                        const tronId = 'translate-' + id;
+
+                        chrome.storage.local.get(tronId, function(obj)
+                        {
+                            if (obj && obj[tronId])
+                            {
+                                fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].target + "&tl=" + obj[tronId].source + "&dt=t&q=" + body.innerHTML).then(function(response){ return response.json()}).then(function(json)
+                                {
+                                    console.debug('translation ok', json[0][0][0]);
+									const title = 'translate ' + obj[tronId].source + ' to ' + obj[tronId].target;
+									const msgId = 'translate-' + Math.random().toString(36).substr(2,9);			
+                                    const type = message.getAttribute("type");
+                                    const from = message.getAttribute("from");
+                                    const body = "*" + json[0][0][0] + "*";									
+									let attrs = {message: body, body, id: msgId, msgId, type, from}; 
+									
+									if (type == "groupchat") {
+										attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+									}
+									
+									chatbox.queueMessage(attrs);										
+
+                                }).catch(function (err) {
+                                    console.error('translation error', err);
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+            _converse.api.listen.on('sendMessage', function(data)
+            {
+				//console.debug("sendMessage", data);
+				
+                const id = data.chatbox.get("box_id");
+                const body = data.message.get("message");
+
+                if (getSetting("enableTranslation", false) && body && !body.startsWith("/") && !body.startsWith("--"))
+                {
+                    const tronId = 'translate-' + id;
+
+                    chrome.storage.local.get(tronId, function(obj)
+                    {
+                        if (obj && obj[tronId])
+                        {
+                            fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + obj[tronId].source + "&tl=" + obj[tronId].target + "&dt=t&q=" + body).then(function(response){ return response.json()}).then(function(json)
+                            {
+                                console.debug('translation ok', json[0][0][0]);
+                                data.chatbox.sendMessage({body: "--*" + json[0][0][0] + "*--"});
+
+                            }).catch(function (err) {
+                                console.error('translation error', err);
+                            });
+                        }
+                    });
+                }				
+			});
+			
+			
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
 				const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));	
@@ -89,7 +166,7 @@
 					
 					form.parseMessageForCommands = (text) => {
 						let handled = parseMessageForCommands(chatview, text);
-						//if (!handled) handled = form.oldParseMessageForCommands(text);
+						if (!handled &&  form.model) handled = form.oldParseMessageForCommands(text);
 						return handled;
 					}
 				}
@@ -1047,11 +1124,17 @@
     }
 
 	function parseMessageForCommands(view, text) {
-		console.debug('parseMessageForCommands', view, text);
+		text = text.replace(/^\s*/, '');
+		const command = (text.match(/^\/([a-zA-Z]*) ?/) || ['']).pop().toLowerCase();
 
-		const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
-		const command = match[1].toLowerCase();
+		if (!command) {
+			return false;
+		}
 
+		const args = text.slice(('/' + command).length + 1).trim().split(' ').filter(s => s) || [];
+
+		console.debug('parseMessageForCommands', command, args);
+		
 		if (command === "info")
 		{
 			var id = view.model.get("box_id");
@@ -1061,18 +1144,18 @@
 		}
 		else
 
-        if (command == "?" || command == "wiki")
-        {
-            if (match[2])
-            {
-                fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + match[2], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
-                {
-                    console.debug('wikipedia ok', json);
+		if (command == "?" || command == "wiki")
+		{
+			if (match[2])
+			{
+				fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + match[2], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
+				{
+					console.debug('wikipedia ok', json);
 					const msgId = 'wiki-' + Math.random().toString(36).substr(2,9);
-                    const type = view.model.get("type") == "chatbox" ? "chat" : "groupchat";
+					const type = view.model.get("type") == "chatbox" ? "chat" : "groupchat";
 					const title = 'Wikipedia';
-                    const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
-                    const from = view.model.get("jid");
+					const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
+					const from = view.model.get("jid");
 					let attrs = {message: body, body, id: msgId, msgId, type, from}; 
 					
 					if (type == "groupchat") {
@@ -1081,22 +1164,22 @@
 					
 					view.model.queueMessage(attrs);	
 					
-                    if (json.type == "standard")
-                    {
-                        navigator.clipboard.writeText(body).then(function() {
-                            console.debug('wikipedia clipboard ok');
-                        }, function(err) {
-                            console.error('wikipedia clipboard error', err);
-                        });
-                    }
+					if (json.type == "standard")
+					{
+						navigator.clipboard.writeText(body).then(function() {
+							console.debug('wikipedia clipboard ok');
+						}, function(err) {
+							console.error('wikipedia clipboard error', err);
+						});
+					}
 
-                }).catch(function (err) {
-                    console.error('wikipedia error', err);
-                });
+				}).catch(function (err) {
+					console.error('wikipedia error', err);
+				});
 
-                return true;
-            }
-        }
+				return true;
+			}
+		}
 		else
 			
 		if (command === "feed" && view.model.get("type") == "chatroom")
@@ -1176,6 +1259,46 @@
 
 			return true;
 		}
+		else
+
+		if (command === "troff" && getSetting("enableTranslation", false))
+		{
+			const id = view.model.get("box_id");
+			const tronId = 'translate-' + id;
+
+			chrome.storage.local.remove(tronId, function(obj)
+			{
+				console.debug("translation removed ok", obj);
+				alert("Translation disabled");
+			});
+			return true;
+		}
+		else
+			
+		if (command === "tron" && getSetting("enableTranslation", false))
+		{
+			const id = view.model.get("box_id");
+			const tronId = 'translate-' + id;
+
+			if (args.length < 2)
+			{
+				alert("Use as /tron <source> <target>\n\n<source> and <target> can be a valid language code like any of these en, de, es, fr, it, nl, pt, ja, ko, zh-CN");
+				return true;
+			}
+
+			let data = {};
+			data[tronId] = {source: args[0], target: args[1]};
+
+			chrome.storage.local.set(data, function(obj)
+			{
+				console.debug("translation saved ok", obj);
+
+				alert("Translation enabled for " + args[0] + " to " + args[1]);
+			});
+
+			return true;
+
+		}		
 
 		return false;
 	}	
