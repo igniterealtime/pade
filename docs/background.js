@@ -4,8 +4,6 @@
 //
 // -------------------------------------------------------
 
-let converseWin = 0;
-
 self.addEventListener('install', function(event) {
     console.debug('install', event);
 });
@@ -81,7 +79,7 @@ chrome.windows.onCreated.addListener((win) => {
 
 chrome.windows.onRemoved.addListener((win) => {
 	//console.debug("onRemoved", win);
-	if (win == converseWin) converseWin = 0;
+	chrome.storage.local.remove('converseWin');
 });	
 
 // -------------------------------------------------------
@@ -90,20 +88,26 @@ chrome.windows.onRemoved.addListener((win) => {
 //
 // -------------------------------------------------------
 
-function openPadeConverseWindow() {		
-	chrome.windows.getAll((windows) => {
-		let window = null;
+function openPadeConverseWindow() {	
 
-		for (let win of windows) {
-			if (converseWin == win.id || (win.type == "popup" && win.width == 1300 && win.height == 900)) window = win;
-		}
-		
-		if (!window) {
-			createPadeConverseWindow();	
-		
+	chrome.storage.local.get('converseWin', (data) => {	
+		if (data.converseWin) {
+			chrome.windows.getAll((windows) => {
+				let window = null;
+
+				for (let win of windows) {
+					if (data.converseWin == win.id || (win.type == "popup" && win.width == 1300 && win.height == 900)) window = win;
+				}
+				
+				if (window) {
+					chrome.windows.update(window.id, {focused: true});			
+				} else {
+					createPadeConverseWindow();
+				}					
+			});	
 		} else {
-			chrome.windows.update(window.id, {focused: true});			
-		}		
+			createPadeConverseWindow();
+		}
 	});		
 }
 
@@ -113,7 +117,7 @@ function createPadeConverseWindow() {
 	
 	chrome.windows.create(data, (win) => {
 		chrome.windows.update(win.id, {width: 1300, height: 900});
-		converseWin = win.id;
+		chrome.storage.local.set({converseWin: win.id});
 	});	
 }
 
