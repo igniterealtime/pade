@@ -934,7 +934,7 @@ this.manifest = {
             "name": "autoSubscribe",
             "type": "checkbox",
             "label": i18n.get("Automatically subscribe back to any contact requests")
-        },
+        },	
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("General"),
@@ -983,16 +983,26 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("General"),
+            "name": "pruneMessagesSize",
+            "type": "slider",
+            "label": i18n.get("Chat History Messages Size"),
+            "max": 1000,
+            "min": 0,
+            "step": 50
+        },		
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("Storage"),
             "name": "conversePersistentStore",
             "type": "popupButton",
             "label": i18n.get("Persistent Store"),
             "options": [
-                {"text": "No Storage", "value": "none"},
-                {"text": "Browser Extension Local", "value": "BrowserLocal"},
+                {"text": "No Storage (session)", "value": "sessionStorage"},
+                {"text": "Browser Extension Local", "value": "BrowserExtLocal"},
                 {"text": "Local Storage", "value": "localStorage"},
                 {"text": "IndexedDB", "value": "IndexedDB"},
-                {"text": "Browser Extension Sync", "value": "BrowserSync"}
+                {"text": "Browser Extension Sync", "value": "BrowserExtSync"}
             ]
         },
         {
@@ -1005,10 +1015,17 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
+            "name": "renderMedia",
+            "type": "checkbox",
+            "label": i18n.get("Render media urls (images, audio, video)")
+        },	
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
             "name": "converseSimpleView",
             "type": "checkbox",
             "label": i18n.get("Use simple conversations view")
-        },	
+        },			
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
@@ -1191,6 +1208,13 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Group Chat"),
+            "name": "autoRegisterMucNick",
+            "type": "checkbox",
+            "label": i18n.get("Automatically register nickname in groupchat")
+        },			
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Group Chat"),
             "name": "enableInfoPanel",
             "type": "checkbox",
             "label": i18n.get("Enable Information Panel")
@@ -1297,10 +1321,24 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),
+            "name": "notifyAllMessages",
+            "type": "checkbox",
+            "label": i18n.get("Notify on all messages")
+        },		
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
             "name": "notifyAllRoomMessages",
             "type": "checkbox",
             "label": i18n.get("Notify on all new groupchat messages")
         },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Notifications"),
+            "name": "notifyChatState",
+            "type": "checkbox",
+            "label": i18n.get("Notify when chat state (online, dnd, away) changes")
+        },		
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Notifications"),

@@ -26,7 +26,24 @@
             BootstrapModal = converse.env.BootstrapModal;			
             _ = converse.env._;
             __ = _converse.__;			
-            dayjs = converse.env.dayjs;			
+            dayjs = converse.env.dayjs;	
+
+			Function.prototype.clone = function() {
+				var cloneObj = this;
+				if(this.__isClone) {
+				  cloneObj = this.__clonedFrom;
+				}
+
+				var temp = function() { return cloneObj.apply(this, arguments); };
+				for(var key in this) {
+					temp[key] = this[key];
+				}
+
+				temp.__isClone = true;
+				temp.__clonedFrom = cloneObj;
+
+				return temp;
+			};			
 
             PreviewDialog = BootstrapModal.extend({
                 id: "plugin-muc-info-modal",			   
@@ -161,12 +178,17 @@
 				
 				let form = chatview.getMessageForm();
 				
-				if (form) {
-					form.oldParseMessageForCommands = form.parseMessageForCommands.bind({});
-					
+				if (form) {					
 					form.parseMessageForCommands = (text) => {
 						let handled = parseMessageForCommands(chatview, text);
-						if (!handled &&  form.model) handled = form.oldParseMessageForCommands(text);
+						
+						if (!handled) {
+							if (chatview.model.get("type") === "chatroom") {
+								handled = parseMessageForMUCCommands(chatview.model, text);
+							} else {
+								handled = parseChatMessageForCommands(chatview.model, text);								
+							}
+						}
 						return handled;
 					}
 				}
@@ -176,7 +198,7 @@
 
             console.log("info plugin is ready");
         }
-    });
+    })
 
     function doInfo(ev) {
         ev.stopPropagation();
@@ -190,7 +212,7 @@
 		const id = toolbar_el.model.get("box_id");
 		const occupants = chatview.querySelector('.occupants');	
 
-		console.debug("doInfo", jid, id, occupants);
+		console.debug("doInfo", jid, id, occupants);	
 		toggleInfoBar(chatview, id, jid);
     }
 	
@@ -213,6 +235,7 @@
 
         if (occupants_area.style.display != "none")
         {
+			view.model.save({'hidden_occupants': true});			
             occupants_area.style.display = "none";
 
             info_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
@@ -226,6 +249,7 @@
 
 
         } else {
+			view.model.save({'hidden_occupants': false});	
             occupants_area.style.display = "";
             info_area.style.display = "none";
         }
@@ -762,7 +786,7 @@
                 if (delay) timestamp = delay.getAttribute('stamp');
                 var stamp = dayjs(timestamp).format('MMM DD YYYY HH:mm:ss');
 
-                console.debug("archived msg", i, from, body, msgId);
+                //console.debug("archived msg", i, from, body, msgId);
 
                 if (body)
                 {
@@ -1057,7 +1081,7 @@
     }
 
     function validateUrl(url, callback) {
-        console.debug("validateUrl check", url);
+        //console.debug("validateUrl check", url);
 
         fetch(url.url).then(function(response)
         {

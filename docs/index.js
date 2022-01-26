@@ -234,6 +234,34 @@ function startConverse() {
 	{
 		document.getElementById("pade-home-page").src = getSetting("homePage", chrome.runtime.getManifest().homepage_url);
 	}
+
+	const MUC_AFFILIATION_CHANGES_LIST = ['owner', 'admin', 'member', 'exowner', 'exadmin', 'exmember', 'exoutcast']
+	const MUC_ROLE_CHANGES_LIST = ['op', 'deop', 'voice', 'mute'];
+	const MUC_TRAFFIC_STATES_LIST = ['entered', 'exited'];
+
+	const MUC_INFO_CODES = {
+		'visibility_changes': ['100', '102', '103', '172', '173', '174'],
+		'self': ['110'],
+		'non_privacy_changes': ['104', '201'],
+		'muc_logging_changes': ['170', '171'],
+		'nickname_changes': ['210', '303'],
+		'disconnect_messages': ['301', '307', '321', '322', '332', '333'],
+		'affiliation_changes': [MUC_AFFILIATION_CHANGES_LIST],
+		'join_leave_events': [MUC_TRAFFIC_STATES_LIST],
+		'role_changes': [MUC_ROLE_CHANGES_LIST],
+	};
+
+	const mucShowInfoMessages = [
+		MUC_INFO_CODES.visibility_changes,
+		MUC_INFO_CODES.self,
+		MUC_INFO_CODES.non_privacy_changes,
+		MUC_INFO_CODES.muc_logging_changes,
+		MUC_INFO_CODES.nickname_changes,
+		MUC_INFO_CODES.disconnect_messages,
+		MUC_INFO_CODES.affiliation_changes,
+		MUC_INFO_CODES.join_leave_events,
+		MUC_INFO_CODES.role_changes,
+	]
 			
 	const autoAway = getSetting("idleTimeout", 300);
 	const autoXa = autoAway * 3;			 			
@@ -242,10 +270,10 @@ function startConverse() {
 		allow_chat_pending_contacts: true,		
 		allow_adhoc_commands: false,
 		allow_logout: false,
-		allow_message_corrections: 'all',
+		allow_message_corrections: getSetting("useUpDownCursorKeys") ? 'all' : false,
 		allow_muc_invitations: true,		
 		allow_non_roster_messaging: true,
-		allow_registration: false,
+		allow_registration: true,
 		assets_path: "./dist/",
 		allow_public_bookmarks: true,
 		archived_messages_page_size: getSetting("archivedMessagesPageSize", 51),		
@@ -258,8 +286,10 @@ function startConverse() {
 		auto_login: username || anonUser,		  
 		auto_reconnect: getSetting("autoReconnectConverse", true),
 		auto_subscribe: getSetting("autoSubscribe", false),
+		auto_register_muc_nickname: getSetting("autoRegisterMucNick", false),
 		auto_xa:  autoXa,
 		bosh_service_url: getSetting("boshUri", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/"),
+		clear_cache_on_logout: getSetting("clearCacheOnConnect", false),
 		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
 		connection_options: { 'worker': "./pade-connection-worker.js" },
 		default_domain: domain,
@@ -269,10 +299,12 @@ function startConverse() {
 		enable_smacks: getSetting("enableSmacks", false),
 		fullname: displayname,
 		hide_offline_users: getSetting("hideOfflineUsers", false),	
-		hide_open_bookmarks: true,			  
+		hide_open_bookmarks: true,	
+		//hide_muc_participants: !getSetting("alwaysShowOccupants", false),
 		i18n: getSetting("language", "en"),	
 		jid : anonUser ? domain : (username ? username + "@" + domain : undefined),				  
 		locked_domain: domain,
+		locked_muc_nickname: displayname,
 		loglevel: getSetting("converseDebug", false) ? "debug" : "info",
 		message_archiving: 'always',
 		message_carbons: getSetting("messageCarbons", true),
@@ -281,28 +313,31 @@ function startConverse() {
 		muc_history_max_stanzas: getSetting("archivedMessagesPageSize", 51),
 		muc_mention_autocomplete_filter: getSetting("converseAutoCompleteFilter", "starts_with"),
 		muc_nickname_from_jid: getSetting("autoCreateNickname", false),
-		muc_show_join_leave: getSetting("showGroupChatStatusMessages", false),
-		muc_show_join_leave_status: getSetting("showGroupChatStatusMessages", false),
-		muc_show_room_info: getSetting("showGroupChatStatusMessages", false),
+		muc_show_info_messages: getSetting("showGroupChatStatusMessages", false) ? mucShowInfoMessages : [],
+		muc_show_logs_before_join: true,
+		muc_subscribe_to_rai: true,
 		nickname: displayname,		
 		notification_icon: './image.png',
 		notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
+		notify_nicknames_without_references: true,
 		password: anonUser ? undefined : password,
 		persistent_store: getSetting("conversePersistentStore", 'none'),
 		play_sounds: getSetting("conversePlaySounds", false),
 		priority: 0,
+		prune_messages_above: getSetting("pruneMessagesSize", 0),
+		registration_domain: domain,
+		render_media: getSetting("renderMedia", true),
 		roster_groups: getSetting("rosterGroups", false),
-		show_chatstate_notifications: true,
 		show_controlbox_by_default: true,
-		show_desktop_notifications: true,
-		show_message_load_animation: true,
+		show_message_load_animation: true,		
+		show_desktop_notifications: getSetting("notifyAllMessages", true),
 		show_send_button: getSetting("showSendButton", true),
-		singleton: (autoJoinRooms && autoJoinRooms.length == 1),			  
-		render_media: true,
 		show_client_info: false,
+		show_images_inline: getSetting("renderMedia", true),
+		show_chat_state_notifications: getSetting("notifyChatState", false),		
+		singleton: (autoJoinRooms && autoJoinRooms.length == 1),			  
 		sounds_path: "./dist/sounds/",
-		theme: getSetting('converseTheme', 'concord'),			
-		trusted: getSetting("conversePersistentStore", 'none') == 'none' ? 'off' : 'on',			  
+		theme: getSetting('converseTheme', 'concord'),					  
 		view_mode: "fullscreen",
 		voicechat: {
 			hosts: {
@@ -398,7 +433,7 @@ function setupPadeRoot() {
 				
 				var bookmarkRoom = function bookmarkRoom(json)
 				{
-					console.debug("bookmarkRoom", json);					
+					//console.debug("bookmarkRoom", json);					
 					
 					let bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
 
@@ -429,7 +464,7 @@ function setupPadeRoot() {
 							var autojoin = conf.getAttribute('autojoin') === 'true' || conf.getAttribute('autojoin') === '1';
 							var json = {name, jid, autojoin, avatar_uri};
 
-							console.debug('server bookmarks received', myNick, json);
+							//console.debug('server bookmarks received', myNick, json);
 							if (_converse.bookmarks) bookmarkRoom(json);
 
 						});

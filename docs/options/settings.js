@@ -1097,6 +1097,9 @@ function doDefaults(background)
     setDefaultSetting("enableBlog", false);
     setDefaultSetting("showSharedCursor", true);
     setDefaultSetting("idleTimeout", 300);
+	setDefaultSetting("pruneMessagesSize", 0);
+	setDefaultSetting("renderMedia", true);
+	setDefaultSetting("notifyAllMessages", true);
 
     // config
     setDefaultSetting("startBitrate", 800);

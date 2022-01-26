@@ -49461,7 +49461,8 @@ async function clearMessages(chat) {
     await chat.clearMessages();
   }
 }
-function parseMessageForCommands(chat, text) {
+// BAO
+window.parseMessageForCommands = function parseMessageForCommands(chat, text) {
   const match = text.replace(/^\s*/, '').match(/^\/(.*)\s*$/);
 
   if (match) {
@@ -54350,7 +54351,8 @@ function showOccupantModal(ev, occupant) {
     'model': occupant
   }, ev);
 }
-function parseMessageForMUCCommands(muc, text) {
+// BAO
+window.parseMessageForMUCCommands = function parseMessageForMUCCommands(muc, text) {
   if (api.settings.get('muc_disable_slash_commands') && !Array.isArray(api.settings.get('muc_disable_slash_commands'))) {
     return parseMessageForCommands(muc, text);
   }
