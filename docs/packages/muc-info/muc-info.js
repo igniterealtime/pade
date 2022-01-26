@@ -175,25 +175,12 @@
 						</button>
 					`);
 				}
-				
-				let form = chatview.getMessageForm();
-				
-				if (form) {					
-					form.parseMessageForCommands = (text) => {
-						let handled = parseMessageForCommands(chatview, text);
-						
-						if (!handled) {
-							if (chatview.model.get("type") === "chatroom") {
-								handled = parseMessageForMUCCommands(chatview.model, text);
-							} else {
-								handled = parseMessageForCommands(chatview.model, text);								
-							}
-						}
-						return handled;
-					}
-				}
-				
-                return buttons;
+				return buttons;
+			});
+
+            _converse.api.listen.on('parseMessageForCommands', function(model, text)
+            {
+				return parseMessageForCommands(model, text);
             });
 
             console.log("info plugin is ready");
@@ -1082,7 +1069,7 @@
 
     function validateUrl(url, callback) {
         //console.debug("validateUrl check", url);
-
+/*
         fetch(url.url).then(function(response)
         {
             if (response.ok)
@@ -1095,6 +1082,8 @@
         }).catch(function (err) {
             callback();
         });
+*/
+        callback(url);		
     }
 
     function renderMeeting(id, meetings) {
@@ -1147,7 +1136,7 @@
       return el;
     }
 
-	function parseMessageForCommands(view, text) {
+	function parseMessageForCommands(model, text) {
 		text = text.replace(/^\s*/, '');
 		const command = (text.match(/^\/([a-zA-Z]*) ?/) || ['']).pop().toLowerCase();
 
@@ -1156,37 +1145,27 @@
 		}
 
 		const args = text.slice(('/' + command).length + 1).trim().split(' ').filter(s => s) || [];
-
-		console.debug('parseMessageForCommands', command, args);
+		//console.debug('parseMessageForCommands', command, args);
 		
-		if (command === "info")
-		{
-			var id = view.model.get("box_id");
-			var jid = view.model.get("jid");
-			toggleInfoBar(view, id, jid);
-			return true;
-		}
-		else
-
 		if (command == "?" || command == "wiki")
 		{
-			if (match[2])
+			if (args.length == 1)
 			{
-				fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + match[2], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
+				fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + args[0], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
 				{
 					console.debug('wikipedia ok', json);
 					const msgId = 'wiki-' + Math.random().toString(36).substr(2,9);
-					const type = view.model.get("type") == "chatbox" ? "chat" : "groupchat";
+					const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
 					const title = 'Wikipedia';
 					const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
-					const from = view.model.get("jid");
+					const from = model.get("jid");
 					let attrs = {message: body, body, id: msgId, msgId, type, from}; 
 					
 					if (type == "groupchat") {
 						attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
 					}
 					
-					view.model.queueMessage(attrs);	
+					model.queueMessage(attrs);	
 					
 					if (json.type == "standard")
 					{
@@ -1206,15 +1185,15 @@
 		}
 		else
 			
-		if (command === "feed" && view.model.get("type") == "chatroom")
+		if (command === "feed" && model.get("type") == "chatroom")
 		{
-			if (!match[2])
+			if (args.length != 1)
 			{
-				view.showHelpMessages(["Missing Feed URL", "Try /feed http://feeds.bbci.co.uk/news/rss.xml"]);
+				alert("Missing Feed URL", "Try /feed http://feeds.bbci.co.uk/news/rss.xml");
 				return true;
 			}
 
-			const id = view.model.get("box_id");
+			const id = model.get("box_id");
 			const feedId = 'feed-' + id;
 
 			chrome.storage.local.get(feedId, function(data)
@@ -1222,7 +1201,7 @@
 				if (!data) data = {};
 				if (!data[feedId]) data[feedId] = {};
 
-				var feed = {path: match[2], url: true ? "https://" + getSetting("server") + "/pade/download?url=" + match[2] : match[2]};
+				var feed = {path: args[0], url: true ? "https://" + getSetting("server") + "/pade/download?url=" + args[0] : args[0]};
 
 				fetch(feed.url).then(function(response)
 				{
@@ -1259,8 +1238,8 @@
 		else
 
 		if (command === "clearpins") {
-			var id = view.model.get("box_id");
-			var jid = view.model.get("jid");
+			var id = model.get("box_id");
+			var jid = model.get("jid");
 
 			chrome.storage.local.get('pinned', function(data)
 			{
@@ -1287,7 +1266,7 @@
 
 		if (command === "troff" && getSetting("enableTranslation", false))
 		{
-			const id = view.model.get("box_id");
+			const id = model.get("box_id");
 			const tronId = 'translate-' + id;
 
 			chrome.storage.local.remove(tronId, function(obj)
@@ -1301,7 +1280,7 @@
 			
 		if (command === "tron" && getSetting("enableTranslation", false))
 		{
-			const id = view.model.get("box_id");
+			const id = model.get("box_id");
 			const tronId = 'translate-' + id;
 
 			if (args.length < 2)
