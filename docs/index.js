@@ -347,7 +347,11 @@ function startConverse() {
 			serviceUrl: (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/',
 			prefix: getSetting("voiceChatPrefix", "VC"),
 			transcribe: getSetting("enableVoiceChatText", false),
-			transcribeLanguage: getSetting("transcribeLanguage", "en-GB")
+			transcribeLanguage: getSetting("transcribeLanguage", "en-GB"),
+			start:  'Start Voice Chat',
+			stop: 'Stop Voice Chat',
+			started: 'has started speaking',
+			stopped: 'has stopped speaking'				
 		},	
 		jitsimeet_start_option: getSetting("ofmeetDisplayOptions", "into_chat_window"),
 		jitsimeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),

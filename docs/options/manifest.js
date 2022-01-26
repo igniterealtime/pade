@@ -878,20 +878,6 @@ this.manifest = {
             "name": "enableSmacks",
             "type": "checkbox",
             "label": i18n.get("Enable Stream Management")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "enableVoiceChat",
-            "type": "checkbox",
-            "label": i18n.get("Enable Voice Chat")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("General"),
-            "name": "enableVoiceChatText",
-            "type": "checkbox",
-            "label": i18n.get("Enable Voice Chat to Text Transcription")
         },			
         {
             "tab": i18n.get("Converse"),
@@ -990,6 +976,45 @@ this.manifest = {
             "max": 1000,
             "min": 0,
             "step": 50
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Voice Chat"),
+            "name": "enableVoiceChat",
+            "type": "checkbox",
+            "label": i18n.get("Enable Voice Chat")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Voice Chat"),
+            "name": "enableVoiceChatText",
+            "type": "checkbox",
+            "label": i18n.get("Enable Voice Chat to Text Transcription")
+        },	
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "converseEmbedOfMeet",
+            "type": "checkbox",
+            "label": i18n.get("Embed Openfire Meetings in Converse")
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "ofMeetHeadDisplayToggle",
+            "type": "checkbox",
+            "label": i18n.get("Show Converse Heading")
+        },			
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Meetings"),
+            "name": "ofmeetDisplayOptions",
+            "type": "popupButton",
+            "label": i18n.get("Display Options"),
+            "options": [
+                {"text": "Into Chat Window", "value": "into_chat_window"},
+                {"text": "Into New Tab", "value": "into_new_tab"}
+            ]		
         },		
         {
             "tab": i18n.get("Converse"),
@@ -1115,31 +1140,6 @@ this.manifest = {
                 {"text": "Start With", "value": "starts_with"},
                 {"text": "Contains", "value": "contains"}
             ]
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Meetings"),
-            "name": "converseEmbedOfMeet",
-            "type": "checkbox",
-            "label": i18n.get("Embed Openfire Meetings in Converse")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Meetings"),
-            "name": "ofMeetHeadDisplayToggle",
-            "type": "checkbox",
-            "label": i18n.get("Show Converse Heading")
-        },			
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("Meetings"),
-            "name": "ofmeetDisplayOptions",
-            "type": "popupButton",
-            "label": i18n.get("Display Options"),
-            "options": [
-                {"text": "Into Chat Window", "value": "into_chat_window"},
-                {"text": "Into New Tab", "value": "into_new_tab"}
-            ]		
         },		
         {
             "tab": i18n.get("Converse"),

@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    let _converse, html, __, model, harker, connection, button, room, jitsiRoom, localTracks, remoteTracks = {}, voicechat_start, voicechat_stop, recognition, recognitionActive;
+    let _converse, html, __, model, harker, connection, button, room, jitsiRoom, localTracks, remoteTracks = {}, recognition, recognitionActive;
 
 	converse.plugins.add("voicechat", {
 		dependencies: [],
@@ -24,21 +24,14 @@
 					serviceUrl: 'https://beta.meet.jit.si/http-bind',
 					prefix: 'VC',					
 					transcribe: false,
-					transcribeLanguage: 'en-GB'
+					transcribeLanguage: 'en-GB',
+					start:  __('Start Voice Chat'),
+					stop: __('Stop Voice Chat'),
+					started: __('has started speaking'),
+					stopped: __('has stopped speaking')					
 				}
 			});
-
-            voicechat_start  = __('Start Voice Chat');
-            voicechat_stop  = __('Stop Voice Chat');			
-			
-			_converse.api.listen.on('parseMessage', async (stanza, attrs) => {
-				return parseStanza(stanza, attrs);
-			});	
-			
-			_converse.api.listen.on('parseMUCMessage', async (stanza, attrs) => {
-				return parseStanza(stanza, attrs);
-			});
-			
+					
 			_converse.api.listen.on('message', (data) => {			
 				if (!data.attrs.json) return;
 				console.debug("voicechat", data.attrs.json);
@@ -50,7 +43,7 @@
                 if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 
                 buttons.push(html`
-                    <button class="plugin-voicechat" title="${voicechat_start}" @click=${performAudio}/>
+                    <button class="plugin-voicechat" title="${_converse.api.settings.get('voicechat').start}" @click=${performAudio}/>
 						<svg style="width:18px; height:18px; ${color}" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="volume-up" class="svg-inline--fa fa-volume-up fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zm233.32-51.08c-11.17-7.33-26.18-4.24-33.51 6.95-7.34 11.17-4.22 26.18 6.95 33.51 66.27 43.49 105.82 116.6 105.82 195.58 0 78.98-39.55 152.09-105.82 195.58-11.17 7.32-14.29 22.34-6.95 33.5 7.04 10.71 21.93 14.56 33.51 6.95C528.27 439.58 576 351.33 576 256S528.27 72.43 448.35 19.97zM480 256c0-63.53-32.06-121.94-85.77-156.24-11.19-7.14-26.03-3.82-33.12 7.46s-3.78 26.21 7.41 33.36C408.27 165.97 432 209.11 432 256s-23.73 90.03-63.48 115.42c-11.19 7.14-14.5 22.07-7.41 33.36 6.51 10.36 21.12 15.14 33.12 7.46C447.94 377.94 480 319.54 480 256zm-141.77-76.87c-11.58-6.33-26.19-2.16-32.61 9.45-6.39 11.61-2.16 26.2 9.45 32.61C327.98 228.28 336 241.63 336 256c0 14.38-8.02 27.72-20.92 34.81-11.61 6.41-15.84 21-9.45 32.61 6.43 11.66 21.05 15.8 32.61 9.45 28.23-15.55 45.77-45 45.77-76.88s-17.54-61.32-45.78-76.86z"></path></svg>					
                     </button>
                 `);
@@ -77,7 +70,7 @@
             });			
 			
 			console.log("voicechat plugin is ready");
-		} // 
+		}
 	});
 
 	function cyrb53(str, seed = 0) {
@@ -99,9 +92,10 @@
 		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');	
 		model = toolbar_el.model;
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';				
-		const target = model.get('jid');				
+		const target = model.get('jid');
+		const myself = Strophe.getBareJidFromJid(_converse.connection.jid);
 										
-		room = _converse.api.settings.get('voicechat').prefix.toLocaleLowerCase() + cyrb53((model.get('type') == 'chatroom') ? target : (_converse.connection.jid < target ? _converse.connection.jid + target : target + _converse.connection.jid));
+		room = _converse.api.settings.get('voicechat').prefix.toLocaleLowerCase() + cyrb53((model.get('type') == 'chatroom') ? target : (myself < target ? myself + target : target + myself));
 		button = toolbar_el.querySelector('.plugin-voicechat');
 
 		console.debug("voicechat is clicked", model, room, button);
@@ -112,27 +106,15 @@
 			startVoiceChat();						
 		}				
 	}
-			
-	function sendVoiceChatState(state) {
-		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';
-		const target = model.get('jid');
-		const nick = model.get('nick');
-		const nickname = model.get('nickname');
-		const url = _converse.api.settings.get('voicechat').serviceUrl;
-		const json = {url, room, state, type, nickname, nick};
-		console.debug("sendVoiceChatState", json);
-		
-		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c("json", {'xmlns': 'urn:xmpp:json:0'}).t(JSON.stringify(json)));						
-	}
 
-	function stopVoiceChat() {	
+	function stopVoiceChat() {			
 		if (localTracks){
 			for (let i = 0; i < localTracks.length; i++) {
 				try {				
 					localTracks[i].dispose();
 				} catch (e) {};
 			}
-			localTracks = null;
+			localTracks = null;			
 		}
 		
 		if (jitsiRoom) {
@@ -146,9 +128,10 @@
 		let voiceChatAudio = document.getElementById('voicechat-audio');
 		if (voiceChatAudio) voiceChatAudio.innerHTML = "";	
 		
-		if (button) {
+		if (button && button.classList.contains('blink_me')) {
 			button.classList.remove('blink_me');
-			button.title = voicechat_start;					
+			button.title = _converse.api.settings.get('voicechat').start;
+			model.sendMessage({body: '/me ' + _converse.api.settings.get('voicechat').stopped});			
 		}
 		
 		if (recognitionActive && recognition)
@@ -162,9 +145,7 @@
 		}
 	}
 	
-	function startVoiceChat() {	
-		console.debug("startVoiceChat", room);
-		
+	function startVoiceChat() {			
 		if (!localTracks) {		
 			JitsiMeetJS.init({disableAudioLevels: true});
 			
@@ -223,18 +204,14 @@
 				harker.on('speaking', () => {
 					
 					if (_converse.api.settings.get('voicechat').transcribe && model) {					
-						model.setChatState(_converse.COMPOSING);						
-					} else {
-						sendVoiceChatState('voice');						
+						model.setChatState(_converse.COMPOSING);											
 					}
 				});
 
 				harker.on('stopped_speaking', () =>  {
 					
 					if (_converse.api.settings.get('voicechat').transcribe && model) {						
-						model.setChatState(_converse.PAUSED);							
-					} else {
-						sendVoiceChatState('mute');						
+						model.setChatState(_converse.PAUSED);												
 					}
 				});						
 			}
@@ -308,7 +285,8 @@
 		
 		if (button) {
 			button.classList.add('blink_me');	
-			button.title = voicechat_stop;		
+			button.title = _converse.api.settings.get('voicechat').stop;
+			model.sendMessage({body: '/me ' + _converse.api.settings.get('voicechat').started});			
 		}					
 	}
 
@@ -332,18 +310,6 @@
 		if (className) ele.classList.add(className);
 		document.body.appendChild(ele);
 		return ele;
-	}
-	
-	async function parseStanza(stanza, attrs) {
-		const json = stanza.querySelector('json');
-
-		if (json) {
-			attrs.json = JSON.parse(json.innerHTML);		
-			console.debug("parseStanza", attrs);
-			const nick = attrs.json.nick || attrs.json.nickname;
-			model.updateNotifications([nick], attrs.json.state);
-		}
-		return attrs;
 	}
 	
     function setupSpeechRecognition() {
