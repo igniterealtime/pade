@@ -186,7 +186,7 @@
 							if (chatview.model.get("type") === "chatroom") {
 								handled = parseMessageForMUCCommands(chatview.model, text);
 							} else {
-								handled = parseChatMessageForCommands(chatview.model, text);								
+								handled = parseMessageForCommands(chatview.model, text);								
 							}
 						}
 						return handled;
