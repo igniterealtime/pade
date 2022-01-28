@@ -1124,15 +1124,14 @@ function doDefaults(background)
     setDefaultSetting("notifyWhenMentioned", true);
 
     setDefaultSetting("conversePersistentStore", 'IndexedDB')
-    setDefaultSetting("clearCacheOnConnect", true);
+    //setDefaultSetting("clearCacheOnConnect", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
     setDefaultSetting("autoReconnect", true);
     setDefaultSetting("autoReconnectConverse", true);
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
-    // most people do want this
-    //setDefaultSetting("showGroupChatStatusMessages", true);
+    setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", false);
     setDefaultSetting("homePageView", "fullscreen");

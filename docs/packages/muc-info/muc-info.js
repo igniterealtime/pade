@@ -178,9 +178,11 @@
 				return buttons;
 			});
 
-            _converse.api.listen.on('parseMessageForCommands', function(model, text)
+            _converse.api.listen.on('parseMessageForCommands', function(data, handled)
             {
-				return parseMessageForCommands(model, text);
+				console.debug('parseMessageForCommands', data, handled);
+				if (!handled) handled = parseMessageForCommands(data.model, data.text);
+				return handled;
             });
 
             console.log("info plugin is ready");
@@ -1159,7 +1161,7 @@
 					const title = 'Wikipedia';
 					const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
 					const from = model.get("jid");
-					let attrs = {message: body, body, id: msgId, msgId, type, from}; 
+					let attrs = {message: body, body, id: msgId, msgId, type, from: _converse.jid}; 
 					
 					if (type == "groupchat") {
 						attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
@@ -1179,9 +1181,11 @@
 				}).catch(function (err) {
 					console.error('wikipedia error', err);
 				});
-
-				return true;
+			} else {
+				alert("Missing topic or subject", "Try /wiki xmpp");				
 			}
+			
+			return true;			
 		}
 		else
 			

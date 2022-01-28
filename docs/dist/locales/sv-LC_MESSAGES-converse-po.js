@@ -1,6 +1,9 @@
-(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([[8859],{
+(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([["locales/sv-LC_MESSAGES-converse-po"],{
 
-/***/ 3147:
+/***/ "./src/i18n/sv/LC_MESSAGES/converse.po":
+/*!*********************************************!*\
+  !*** ./src/i18n/sv/LC_MESSAGES/converse.po ***!
+  \*********************************************/
 /***/ ((module) => {
 
 "use strict";

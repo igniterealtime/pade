@@ -1,9 +1,12 @@
-(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([[5818],{
+(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([["locales/dayjs/gl-js"],{
 
-/***/ 229:
+/***/ "./node_modules/dayjs/locale/gl.js":
+/*!*****************************************!*\
+  !*** ./node_modules/dayjs/locale/gl.js ***!
+  \*****************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-!function(e,o){ true?module.exports=o(__webpack_require__(7484)):0}(this,(function(e){"use strict";function o(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var _=o(e),t={name:"gl",weekdays:"domingo_luns_martes_mércores_xoves_venres_sábado".split("_"),months:"xaneiro_febreiro_marzo_abril_maio_xuño_xullo_agosto_setembro_outubro_novembro_decembro".split("_"),weekStart:1,weekdaysShort:"dom._lun._mar._mér._xov._ven._sáb.".split("_"),monthsShort:"xan._feb._mar._abr._mai._xuñ._xul._ago._set._out._nov._dec.".split("_"),weekdaysMin:"do_lu_ma_mé_xo_ve_sá".split("_"),ordinal:function(e){return e},formats:{LT:"H:mm",LTS:"H:mm:ss",L:"DD/MM/YYYY",LL:"D [de] MMMM [de] YYYY",LLL:"D [de] MMMM [de] YYYY H:mm",LLLL:"dddd, D [de] MMMM [de] YYYY H:mm"}};return _.default.locale(t,null,!0),t}));
+!function(e,o){ true?module.exports=o(__webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js")):0}(this,(function(e){"use strict";function o(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var _=o(e),t={name:"gl",weekdays:"domingo_luns_martes_mércores_xoves_venres_sábado".split("_"),months:"xaneiro_febreiro_marzo_abril_maio_xuño_xullo_agosto_setembro_outubro_novembro_decembro".split("_"),weekStart:1,weekdaysShort:"dom._lun._mar._mér._xov._ven._sáb.".split("_"),monthsShort:"xan._feb._mar._abr._mai._xuñ._xul._ago._set._out._nov._dec.".split("_"),weekdaysMin:"do_lu_ma_mé_xo_ve_sá".split("_"),ordinal:function(e){return e},formats:{LT:"H:mm",LTS:"H:mm:ss",L:"DD/MM/YYYY",LL:"D [de] MMMM [de] YYYY",LLL:"D [de] MMMM [de] YYYY H:mm",LLLL:"dddd, D [de] MMMM [de] YYYY H:mm"}};return _.default.locale(t,null,!0),t}));
 
 /***/ })
 

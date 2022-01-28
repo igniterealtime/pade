@@ -1,6 +1,9 @@
-(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([[4610],{
+(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([["emojis"],{
 
-/***/ 7530:
+/***/ "./src/headless/plugins/emoji/emoji.json":
+/*!***********************************************!*\
+  !*** ./src/headless/plugins/emoji/emoji.json ***!
+  \***********************************************/
 /***/ ((module) => {
 
 "use strict";
