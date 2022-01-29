@@ -20,7 +20,7 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("domain"),
             "text": "example.com"
-        },
+        },		
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Connection"),
@@ -28,6 +28,13 @@ this.manifest = {
             "type": "checkbox",
             "label": i18n.get("Use a websocket connection to server")
         },
+        {
+            "tab": i18n.get("Connection"),
+            "group": i18n.get("Connection"),
+            "name": "useWebworker",
+            "type": "checkbox",
+            "label": i18n.get("Use a web worker for the connection")
+        },		
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Connection"),
@@ -1105,7 +1112,7 @@ this.manifest = {
             "group": i18n.get("User Interface"),
             "name": "showWordCloud",
             "type": "checkbox",
-            "label": i18n.get("Show Word Cloud in Chat Search")
+            "label": i18n.get("Enable Word Cloud in Chat Search")
         },
         {
             "tab": i18n.get("Converse"),

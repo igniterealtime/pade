@@ -33,6 +33,7 @@
                          </div>
                          <div class="modal-footer">
                          <button type="button" class="btn btn-success btn-pdf">PDF</button>
+						 <button type="button" class="btn btn-success btn-word-cloud">Word Cloud</button>						 
                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>
                          </div>
                          </div> </div>`;
@@ -54,6 +55,7 @@
                 },
                 events: {
                     'click .btn-pdf': 'doPDF',
+                    'click .btn-word-cloud': 'doWordCloud',					
                     'keyup #pade-search-keywords': 'keyUp'
                 },
 
@@ -65,6 +67,48 @@
                         this.doSearch();
                     }
                 },
+                doWordCloud() {
+					if (!getSetting("showWordCloud", false)) {					
+						alert('Enable word cloud and reload application');
+						return;
+					}
+                    let cloudData = "";
+                    const conv = this.model.get("pdf_body") || [];
+
+                    conv.forEach(function(line)
+                    {
+                        cloudData = cloudData + line[1] + ' ' + line[2] + ' ';
+                    });
+
+                    if (cloudData.length > 0)
+                    {
+                        const searchResults = this.el.querySelector("#pade-search-results");
+                        searchResults.innerHTML = "";
+                        searchResults.style.cursor = "pointer";
+
+                        searchResults.addEventListener("click", function(evt)
+                        {
+                            searchResults.requestFullscreen();
+                            searchResults.innerHTML = "";
+
+                            makeWordCloud({
+                                width: screen.availWidth - 50,
+                                height: screen.availHeight - 50,
+                                font: "Helvetica",
+                                container: {element: this.el, selector: "#pade-search-results"},
+                                words: processData(cloudData)
+                            });
+                        });
+
+                        makeWordCloud({
+                            width: 700,
+                            height: 500,
+                            font: "Helvetica",
+                            container: {element: this.el, selector: "#pade-search-results"},
+                            words: processData(cloudData)
+                        });
+                    }
+                },				
                 doPDF() {
                     const margins = {
                       top: 70,
@@ -179,29 +223,14 @@
                 return buttons;
             });
 
+            _converse.api.listen.on('parseMessageForCommands', function(data, handled)
+            {
+				//console.debug('parseMessageForCommands', data, handled);
+				if (!handled) handled = parseMessageForCommands(data.model, data.text);
+				return handled;
+            });
+			
             console.debug("search plugin is ready");
-        },
-
-        'overrides': {
-            ChatBoxView: {
-                parseMessageForCommands: function(text) {
-                    console.debug('search - parseMessageForCommands', text);
-
-                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
-                    const command = match[1].toLowerCase();
-
-                    if (command === "search" && match[2])
-                    {
-                        searchDialog = new SearchDialog({ 'model': new converse.env.Model({view: this, keyword: match[2]}) });
-                        searchDialog.model.set("keyword", match[2]);
-                        searchDialog.show();
-                        return true;
-                    }
-                    else
-
-                    return this.__super__.parseMessageForCommands.apply(this, arguments);
-                }
-            }
         }
     });
 
@@ -230,5 +259,161 @@
         }
         return html;
     }
+    function processData(strings)
+    {
+        if(!strings) return;
 
+        // strip stringified objects, common words and punctuations from the string
+        strings = strings.removeStopWords().toLowerCase().replace(/object Object/g, '').replace(/[\+\.,\/#!$%\^&\*{}=_`~]/g,'');
+
+        // convert the str back in an array
+        strings = strings.split(' ');
+
+        // Count frequency of word occurance
+        var wordCount = {};
+
+        for(var i = 0; i < strings.length; i++) {
+            if(!wordCount[strings[i]])
+                wordCount[strings[i]] = 0;
+
+            wordCount[strings[i]]++; // {'hi': 12, 'foo': 2 ...}
+        }
+
+        console.debug("processData", strings, wordCount);
+
+        var wordCountArr = [];
+
+        for(var prop in wordCount) {
+            wordCountArr.push({text: prop, size: wordCount[prop] * 10});
+        }
+
+        return wordCountArr;
+    }
+
+    function makeWordCloud(options)
+    {
+        if(options == undefined) options = {}
+        if(options.width == undefined) options.width = 300
+        if(options.height == undefined) options.height = 300
+        if(options.font == undefined) options.font = "Arial"
+        if(options.container == undefined) options.container = "body"
+        if(options.words == undefined) options.words = [{text: "This", size: 40}, {text: "is", size: 40}, {text: "an", size: 40}, {text: "Example", size: 40}]
+
+        var fill = d3.scale.category20();
+
+        d3.layout.cloud().size([options.width, options.height])
+        .words(options.words)
+        .rotate(function(d) { return ~~(Math.random() * 3) * 45 - 45; })
+        .font(options.font)
+        .fontSize(function(d) { return d.size; })
+        .on("end", function(words) {
+            d3.select(options.container.selector, options.container.element).append("svg")
+            .attr("width", options.width)
+            .attr("height", options.height)
+            .append("g")
+            .attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")")
+            .selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", function(d) { return d.size + "px"; })
+            .style("font-family", options.font)
+            .style("fill", function(d, i) { return fill(i); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) { return d.text; });
+        })
+        .start();
+    }
+
+    function isInViewport (elem) {
+        var distance = elem.getBoundingClientRect();
+        return (
+            distance.top >= 0 &&
+            distance.left >= 0 &&
+            distance.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            distance.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+	function injectMessage(model, title, body) {
+		const msgId = 'inject-' + Math.random().toString(36).substr(2,9);
+		const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
+		const from = model.get("jid");
+
+		let attrs = {message: body, body, id: msgId, msgId, type, from: _converse.jid}; 
+		
+		if (type == "groupchat") {
+			attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+		}
+		
+		model.queueMessage(attrs);		
+	}
+	
+	function parseMessageForCommands(model, text) {
+		text = text.replace(/^\s*/, '');
+		const command = (text.match(/^\/([a-zA-Z]*) ?/) || ['']).pop().toLowerCase();
+
+		if (!command) {
+			return false;
+		}
+
+		const args = text.slice(('/' + command).length + 1).trim().split(' ').filter(s => s) || [];
+		//console.debug('parseMessageForCommands', command, args);
+
+		if (command === "search" && args.length == 1)
+		{
+			const view = _converse.chatboxviews.get(model.get('jid'));			
+			searchDialog = new SearchDialog({ 'model': new converse.env.Model({view: view, keyword: args[0]}) });
+			searchDialog.model.set("keyword", args[0]);
+			searchDialog.show();
+			return true;
+		}
+		else
+			
+		if (command == "summary")
+		{	
+			const title = model.getDisplayName() + " - Summary";
+			const messages = model.messages.models;
+			let firstMsg = 0;
+			
+			console.debug('parseMessageForCommands - summary', title, messages, args);			
+
+			if (args.length == 0 || args[0] != 'all') 
+			{
+				for (let i=0; i<messages.length; i++)
+				{
+					const msg = document.querySelector('[data-msgid="' + messages[i].get("msgid") + '"]');
+
+					if (msg && isInViewport(msg))
+					{
+						console.debug("first message in view", msg);
+						firstMsg = i;
+						break;
+					}
+				}
+			}
+
+			let detail = "";
+
+			for (var i=firstMsg; i<messages.length; i++)
+			{
+				const body = messages[i].get('message');
+				const from = messages[i].get('from');
+				const pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
+
+				if (body && !body.startsWith('>')) {
+					detail = detail + "*" + pretty_from + "* says " + body + "\n";
+				}
+			}
+
+			const summarizer = new JsSummarize();
+			const summary = summarizer.summarize('', detail);
+			injectMessage(model, title, summary.join('\n'));
+			return true;	
+		}		
+
+		return false;
+	}		
 }));

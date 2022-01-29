@@ -1153,7 +1153,7 @@ function doDefaults(background)
     setDefaultSetting("enableDirectorySearch", true);
     // most people don't want this
     //setDefaultSetting("enableRssFeeds", true);
-    setDefaultSetting("rssFeedCheck", 10);
+    setDefaultSetting("rssFeedCheck", 30);
     setDefaultSetting("beeFeedCheck", 10);
     setDefaultSetting("beeKeeperPageSize", 25);
     setDefaultSetting("alwaysShowOccupants", true);

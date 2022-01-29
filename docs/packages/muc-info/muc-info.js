@@ -1137,6 +1137,20 @@
       }
       return el;
     }
+	
+	function injectMessage(model, title, body) {
+		const msgId = 'inject-' + Math.random().toString(36).substr(2,9);
+		const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
+		const from = model.get("jid");
+
+		let attrs = {message: body, body, id: msgId, msgId, type, from: _converse.jid}; 
+		
+		if (type == "groupchat") {
+			attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+		}
+		
+		model.queueMessage(attrs);		
+	}
 
 	function parseMessageForCommands(model, text) {
 		text = text.replace(/^\s*/, '');
@@ -1156,18 +1170,8 @@
 				fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + args[0], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
 				{
 					console.debug('wikipedia ok', json);
-					const msgId = 'wiki-' + Math.random().toString(36).substr(2,9);
-					const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
-					const title = 'Wikipedia';
-					const body = "## " + json.displaytitle + '\n ' + (json.thumbnail ? json.thumbnail.source : "") + ' \n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page
-					const from = model.get("jid");
-					let attrs = {message: body, body, id: msgId, msgId, type, from: _converse.jid}; 
-					
-					if (type == "groupchat") {
-						attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
-					}
-					
-					model.queueMessage(attrs);	
+					const body = "## " + json.displaytitle + '\n' + (json.thumbnail ? json.thumbnail.source : "") + '\n\n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page;					
+					injectMessage(model, 'Wikipedia', body);
 					
 					if (json.type == "standard")
 					{

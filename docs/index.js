@@ -68,6 +68,8 @@ function loadPlugins() {
 		loadCSS("./packages/search/search.css");
 		loadJS("./packages/search/jspdf.debug.js");		
 		loadJS("./packages/search/jspdf.plugin.autotable.js");
+        loadJS("./packages/search/tokenizer.js");
+        loadJS("./packages/search/js-summarize.js");		
 		loadJS("./packages/search/search.js");			
 
 		whitelistedPlugins.push("vmsg");	
@@ -133,7 +135,22 @@ function loadPlugins() {
             whitelistedPlugins.push("gateway");
 			loadJS("./packages/gateway/rss-library.js");		
             loadJS("./packages/gateway/gateway.js");
-        }			
+        }
+		
+        if (getSetting("useMarkdown", true))
+        {
+            whitelistedPlugins.push("marked");
+            loadCSS("./packages/marked/marked.css");			
+			loadJS("./packages/marked/marked.min.js");		
+            loadJS("./packages/marked/marked.js");			
+        }
+
+        if (getSetting("showWordCloud", false))
+        {
+            loadJS("./packages/search/d3.js");
+            loadJS("./packages/search/d3.layout.cloud.js");
+            loadJS("./packages/search/stopwords.js");
+        }		
 	}
 }
 
@@ -291,7 +308,7 @@ function startConverse() {
 		bosh_service_url: getSetting("boshUri", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/"),
 		clear_cache_on_logout: getSetting("clearCacheOnConnect", false),
 		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
-		connection_options: { 'worker': "./pade-connection-worker.js" },
+		connection_options: { 'worker': getSetting("useWebworker", false) ? "./pade-connection-worker.js" : undefined },
 		default_domain: domain,
 		default_state: getSetting("converseOpenState", "online"),		
 		discover_connection_methods: false,		
@@ -300,7 +317,7 @@ function startConverse() {
 		fullname: displayname,
 		hide_offline_users: getSetting("hideOfflineUsers", false),	
 		hide_open_bookmarks: true,	
-		//hide_muc_participants: !getSetting("alwaysShowOccupants", false),
+		hide_muc_participants: !getSetting("alwaysShowOccupants", false),
 		i18n: getSetting("language", "en"),	
 		jid : anonUser ? domain : (username ? username + "@" + domain : undefined),				  
 		locked_domain: domain,
@@ -1280,6 +1297,11 @@ function createAvatar(nickname, width, height, font) {
 
 		if (vcard && vcard.get('image') && _converse.DEFAULT_IMAGE != vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
 	}
+
+    if (getSetting("converseRandomAvatars", false))
+    {
+        return "https://" + getSetting("server") + "/randomavatar/" + nickname
+    }	
 
 	if (!nickname) nickname = "Anonymous";
 	nickname = nickname.toLowerCase();

@@ -44558,11 +44558,6 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     }
   }
 
-  async parseMessageForCommands(text) {
-    // Wrap util so that we can override in the MUC message-form component
-    return await (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.parseMessageForCommands)(this.model, text);
-  }
-
   async onFormSubmitted(ev) {
     var _ev$preventDefault, _this$querySelector3;
 
@@ -44593,7 +44588,7 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     u.addClass('disabled', textarea);
     textarea.setAttribute('disabled', 'disabled');
     (_this$querySelector3 = this.querySelector('converse-emoji-dropdown')) === null || _this$querySelector3 === void 0 ? void 0 : _this$querySelector3.hideMenu();
-    const is_command = await this.parseMessageForCommands(message_text);
+    const is_command = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.parseMessageForCommands)(this.model, message_text);
     const message = is_command ? null : await this.model.sendMessage({
       'body': message_text,
       spoiler_hint
@@ -44903,24 +44898,25 @@ async function clearMessages(chat) {
   }
 }
 async function parseMessageForCommands(chat, text) {
-  /**
-   * *Hook* which allows plugins to add more commands to a chat's textbox.
-   * Data provided is the chatbox model and the text typed - {model, text}.
-   * Check `handled` to see if the hook was already handled.
-   * @event _converse#parseMessageForCommands
-   * @example
-   *  api.listen.on('parseMessageForCommands', (data, handled) {
-   *      if (!handled) {
-   *         const command = (data.text.match(/^\/([a-zA-Z]*) ?/) || ['']).pop().toLowerCase();
-   *         // custom code comes here
-   *      }
-   *      return handled;
-   *  }
-   */
   const match = text.replace(/^\s*/, '').match(/^\/(.*)\s*$/);
 
   if (match) {
     let handled = false;
+    /**
+     * *Hook* which allows plugins to add more commands to a chat's textbox.
+     * Data provided is the chatbox model and the text typed - {model, text}.
+     * Check `handled` to see if the hook was already handled.
+     * @event _converse#parseMessageForCommands
+     * @example
+     *  api.listen.on('parseMessageForCommands', (data, handled) {
+     *      if (!handled) {
+     *         const command = (data.text.match(/^\/([a-zA-Z]*) ?/) || ['']).pop().toLowerCase();
+     *         // custom code comes here
+     *      }
+     *      return handled;
+     *  }
+     */
+
     handled = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.hook('parseMessageForCommands', {
       model: chat,
       text
@@ -49125,6 +49121,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class MUCMessageForm extends plugins_chatview_message_form_js__WEBPACK_IMPORTED_MODULE_0__.default {
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.model.initialized;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_3__.parseMessageForMUCCommands);
+  }
+
   toHTML() {
     var _this$querySelector, _this$querySelector2;
 
@@ -49165,14 +49167,6 @@ class MUCMessageForm extends plugins_chatview_message_form_js__WEBPACK_IMPORTED_
       'item': _utils_js__WEBPACK_IMPORTED_MODULE_3__.getAutoCompleteListItem
     });
     this.mention_auto_complete.on('suggestion-box-selectcomplete', () => this.auto_completing = false);
-  }
-  /**
-   * @async
-   */
-
-
-  parseMessageForCommands(text) {
-    return (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.parseMessageForMUCCommands)(this.model, text);
   }
 
   getAutoCompleteList() {
@@ -51879,11 +51873,12 @@ function showOccupantModal(ev, occupant) {
     'model': occupant
   }, ev);
 }
-function parseMessageForMUCCommands(muc, text) {
-  if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands') && !Array.isArray(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands'))) {
-    return (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_7__.parseMessageForCommands)(muc, text);
+function parseMessageForMUCCommands(data, handled) {
+  if (handled || _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands') && !Array.isArray(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands'))) {
+    return handled;
   }
 
+  let text = data.text;
   text = text.replace(/^\s*/, '');
   const command = (text.match(/^\/([a-zA-Z]*) ?/) || ['']).pop().toLowerCase();
 
@@ -51891,154 +51886,104 @@ function parseMessageForMUCCommands(muc, text) {
     return false;
   }
 
+  const model = data.model;
   const args = text.slice(('/' + command).length + 1).trim();
+  const allowed_commands = model.getAllowedCommands() ?? [];
 
-  if (!muc.getAllowedCommands().includes(command)) {
-    //return false;
-  }
+  if (command === 'admin' && allowed_commands.includes(command)) {
+    verifyAndSetAffiliation(model, command, args, ['owner']);
+    return true;
+  } else if (command === 'ban' && allowed_commands.includes(command)) {
+    verifyAndSetAffiliation(model, command, args, ['admin', 'owner']);
+    return true;
+  } else if (command === 'modtools' && allowed_commands.includes(command)) {
+    showModeratorToolsModal(model, args);
+    return true;
+  } else if (command === 'deop' && allowed_commands.includes(command)) {
+    // FIXME: /deop only applies to setting a moderators
+    // role to "participant" (which only admin/owner can
+    // do). Moderators can however set non-moderator's role
+    // to participant (e.g. visitor => participant).
+    // Currently we don't distinguish between these two
+    // cases.
+    setRole(model, command, args, ['admin', 'owner']);
+    return true;
+  } else if (command === 'destroy' && allowed_commands.includes(command)) {
+    if (!model.verifyAffiliations(['owner'])) {
+      return true;
+    }
 
-  switch (command) {
-    case 'admin':
-      {
-        verifyAndSetAffiliation(muc, command, args, ['owner']);
-        break;
-      }
+    destroyMUC(model).catch(e => model.onCommandError(e));
+    return true;
+  } else if (command === 'help' && allowed_commands.includes(command)) {
+    model.set({
+      'show_help_messages': false
+    }, {
+      'silent': true
+    });
+    model.set({
+      'show_help_messages': true
+    });
+    return true;
+  } else if (command === 'kick' && allowed_commands.includes(command)) {
+    setRole(model, command, args, [], ['moderator']);
+    return true;
+  } else if (command === 'mute' && allowed_commands.includes(command)) {
+    setRole(model, command, args, [], ['moderator']);
+    return true;
+  } else if (command === 'member' && allowed_commands.includes(command)) {
+    verifyAndSetAffiliation(model, command, args, ['admin', 'owner']);
+    return true;
+  } else if (command === 'nick' && allowed_commands.includes(command)) {
+    if (!model.verifyRoles(['visitor', 'participant', 'moderator'])) {
+      return true;
+    } else if (args.length === 0) {
+      // e.g. Your nickname is "coolguy69"
+      const message = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Your nickname is "%1$s"', model.get('nick'));
 
-    case 'ban':
-      {
-        verifyAndSetAffiliation(muc, command, args, ['admin', 'owner']);
-        break;
-      }
+      model.createMessage({
+        message,
+        'type': 'error'
+      });
+    } else {
+      model.setNickname(args);
+    }
 
-    case 'modtools':
-      {
-        showModeratorToolsModal(muc, args);
-        break;
-      }
-
-    case 'deop':
-      {
-        // FIXME: /deop only applies to setting a moderators
-        // role to "participant" (which only admin/owner can
-        // do). Moderators can however set non-moderator's role
-        // to participant (e.g. visitor => participant).
-        // Currently we don't distinguish between these two
-        // cases.
-        setRole(muc, command, args, ['admin', 'owner']);
-        break;
-      }
-
-    case 'destroy':
-      {
-        if (!muc.verifyAffiliations(['owner'])) {
-          break;
-        }
-
-        destroyMUC(muc).catch(e => muc.onCommandError(e));
-        break;
-      }
-
-    case 'help':
-      {
-        muc.set({
-          'show_help_messages': false
-        }, {
-          'silent': true
+    return true;
+  } else if (command === 'owner' && allowed_commands.includes(command)) {
+    verifyAndSetAffiliation(model, command, args, ['owner']);
+    return true;
+  } else if (command === 'op' && allowed_commands.includes(command)) {
+    setRole(model, command, args, ['admin', 'owner']);
+    return true;
+  } else if (command === 'register' && allowed_commands.includes(command)) {
+    if (args.length > 1) {
+      model.createMessage({
+        'message': (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Error: invalid number of arguments'),
+        'type': 'error'
+      });
+    } else {
+      model.registerNickname().then(err_msg => {
+        err_msg && model.createMessage({
+          'message': err_msg,
+          'type': 'error'
         });
-        muc.set({
-          'show_help_messages': true
-        });
-        break;
-      }
+      });
+    }
 
-    case 'kick':
-      {
-        setRole(muc, command, args, [], ['moderator']);
-        break;
-      }
-
-    case 'mute':
-      {
-        setRole(muc, command, args, [], ['moderator']);
-        break;
-      }
-
-    case 'member':
-      {
-        verifyAndSetAffiliation(muc, command, args, ['admin', 'owner']);
-        break;
-      }
-
-    case 'nick':
-      {
-        if (!muc.verifyRoles(['visitor', 'participant', 'moderator'])) {
-          break;
-        } else if (args.length === 0) {
-          // e.g. Your nickname is "coolguy69"
-          const message = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Your nickname is "%1$s"', muc.get('nick'));
-
-          muc.createMessage({
-            message,
-            'type': 'error'
-          });
-        } else {
-          muc.setNickname(args);
-        }
-
-        break;
-      }
-
-    case 'owner':
-      verifyAndSetAffiliation(muc, command, args, ['owner']);
-      break;
-
-    case 'op':
-      {
-        setRole(muc, command, args, ['admin', 'owner']);
-        break;
-      }
-
-    case 'register':
-      {
-        if (args.length > 1) {
-          muc.createMessage({
-            'message': (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Error: invalid number of arguments'),
-            'type': 'error'
-          });
-        } else {
-          muc.registerNickname().then(err_msg => {
-            err_msg && muc.createMessage({
-              'message': err_msg,
-              'type': 'error'
-            });
-          });
-        }
-
-        break;
-      }
-
-    case 'revoke':
-      {
-        verifyAndSetAffiliation(muc, command, args, ['admin', 'owner']);
-        break;
-      }
-
-    case 'topic':
-    case 'subject':
-      muc.setSubject(args);
-      break;
-
-    case 'voice':
-      {
-        setRole(muc, command, args, [], ['moderator']);
-        break;
-      }
-
-    default:
-      return (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_7__.parseMessageForCommands)(muc, text);
+    return true;
+  } else if (command === 'revoke' && allowed_commands.includes(command)) {
+    verifyAndSetAffiliation(model, command, args, ['admin', 'owner']);
+    return true;
+  } else if (command === 'topic' && allowed_commands.includes(command) || command === 'subject' && allowed_commands.includes(command)) {
+    model.setSubject(args);
+    return true;
+  } else if (command === 'voice' && allowed_commands.includes(command)) {
+    setRole(model, command, args, [], ['moderator']);
+    return true;
+  } else {
+    return false;
   }
-
-  return true;
 }
 
 /***/ }),
