@@ -28,7 +28,9 @@
 			});			
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
-            {	
+            {
+				//console.log("afterMessageBodyTransformed", text);
+				
 				if (text.indexOf('\n') != text.lastIndexOf('\n')) {	// apply only to paragraphs of text
 					const parsed = marked.parse(text.toString());
 					text.addTemplateResult(0, text.length, html([parsed]));
