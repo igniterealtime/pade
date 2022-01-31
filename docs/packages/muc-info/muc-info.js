@@ -94,7 +94,7 @@
                 var body = message.querySelector('body');
                 var history = message.querySelector('forwarded');
 
-                //console.debug("message", history, body, chatbox, message);
+                //console.debug("message", data);
 
                 if (!history && body && chatbox)
                 {
@@ -1071,21 +1071,25 @@
 
     function validateUrl(url, callback) {
         //console.debug("validateUrl check", url);
-/*
-        fetch(url.url).then(function(response)
-        {
-            if (response.ok)
-            {
-                callback(url);
-                console.debug("validateUrl check ok", url);
-            } else {
-                callback();
-            }
-        }).catch(function (err) {
-            callback();
-        });
-*/
-        callback(url);		
+
+		try {
+			fetch(url.url).then(function(response)
+			{
+				if (response.ok)
+				{
+					callback(url);
+					console.debug("validateUrl check ok", url);
+				} else {
+					callback();
+				}
+			}).catch(function (err) {
+				//console.error("validateUrl err", err);				
+				callback();
+			});
+		} catch (e) {
+			//console.error("validateUrl err", e);				
+			callback();			
+		}	
     }
 
     function renderMeeting(id, meetings) {
@@ -1139,14 +1143,14 @@
     }
 	
 	function injectMessage(model, title, body) {
-		const msgId = 'inject-' + Math.random().toString(36).substr(2,9);
+		const msgid = 'inject-' + Math.random().toString(36).substr(2,9);
 		const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
 		const from = model.get("jid");
 
-		let attrs = {message: body, id: msgId, msgId, type, from: _converse.jid}; 
+		let attrs = {message: body, id: msgid, origin_id: msgid, msgid, type, from: _converse.jid, is_unstyled: false, references: []}; 
 		
 		if (type == "groupchat") {
-			attrs = {message: body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+			attrs = {message: body, id: msgid, origin_id: msgid, msgid, type, from_muc: from, from: from + '/' + title, nick: title, is_unstyled: false, references: []};  
 		}
 		
 		model.queueMessage(attrs);		
@@ -1312,5 +1316,28 @@
 		}		
 
 		return false;
+	}	
+	
+	function getSetting(name, defaultValue) {
+		const localStorage = window.localStorage
+		let value = defaultValue;
+		//console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
+		
+		if (localStorage["store.settings." + name])
+		{
+			try {
+				value = JSON.parse(localStorage["store.settings." + name]);
+				if (name == "password") value = getPassword(value, localStorage);
+			} catch (e) {
+				console.error(e);
+			}
+		}
+
+		return value;
+	}
+
+	function setSetting(name, value) {
+		//console.debug("setSetting", name, value);
+		window.localStorage["store.settings." + name] = JSON.stringify(value);
 	}	
 }));

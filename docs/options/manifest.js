@@ -1082,13 +1082,6 @@ this.manifest = {
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),
-            "name": "converseRandomAvatars",
-            "type": "checkbox",
-            "label": i18n.get("Use Random Avatars. <b>(requires randomavatar plugin for openfire)</b>")
-        },
-        {
-            "tab": i18n.get("Converse"),
-            "group": i18n.get("User Interface"),
             "name": "converseRosterFilter",
             "type": "checkbox",
             "label": i18n.get("Enable Contacts Filter")

@@ -17,6 +17,9 @@
 		"background",
 		"tabs"
     ],
+	"host_permissions": [
+	  "*://*/*"
+	],	
 	"options_ui": {
 	"page": "options/index.html",
 	"open_in_tab": true

@@ -1174,12 +1174,12 @@ function setAvatar(contact) {
 				label = contact.get('jid').substring(pos + 1);
 			}
 		}
-		
+
 		const dataUri = createAvatar(label);
 		const avatar = dataUri.split(";base64,");
 
 		contact.set("image", avatar[1]);
-		contact.set("image_type", "image/png");
+		contact.set("image_type", "image/png");			
 	}		
 }
 
@@ -1296,12 +1296,7 @@ function createAvatar(nickname, width, height, font) {
 		if (!vcard) vcard = _converse.vcards.findWhere({'nickname': nickname});
 
 		if (vcard && vcard.get('image') && _converse.DEFAULT_IMAGE != vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
-	}
-
-    if (getSetting("converseRandomAvatars", false))
-    {
-        return "https://" + getSetting("server") + "/randomavatar/" + nickname
-    }	
+	}	
 
 	if (!nickname) nickname = "Anonymous";
 	nickname = nickname.toLowerCase();
