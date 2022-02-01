@@ -17,21 +17,24 @@
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
+                let color = "fill:var(--chat-toolbar-btn-color);";
+                if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
+				
                 buttons.push(html`
                     <button class="toolbar-utilities-scroll" title="${__('Scroll to the bottom')}" @click=${scrollToBottom}/>
-                        <converse-icon class="fa fa-angle-double-down" size="1em"></converse-icon>
+                        <converse-icon style="width:18px; height:18px; ${color}" class="fa fa-angle-double-down" size="1em"></converse-icon>
                     </button>
                 `);
 
                 buttons.push(html`
                     <button class="toolbar-utilities-thrash" title="${__('Trash chat history')}" @click=${trashHistory}/>
-                        <converse-icon class="far fa-trash-alt" size="1em"></converse-icon>
+                        <converse-icon style="width:18px; height:18px; ${color}" class="far fa-trash-alt" size="1em"></converse-icon>
                     </button>
                 `);
 
                 buttons.push(html`
                     <button class="toolbar-utilities-refresh" title="${__('Refresh chat history')}" @click=${refreshHistory}/>
-                        <converse-icon class="fa fa-sync" size="1em"></converse-icon>
+                        <converse-icon style="width:18px; height:18px; ${color}" class="fa fa-sync" size="1em"></converse-icon>
                     </button>
                 `);
 

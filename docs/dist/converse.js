@@ -38043,7 +38043,7 @@ const {
    * @namespace _converse.api.vcard
    * @memberOf _converse.api
    */
-  'vcard': {
+  vcard: {
     /**
      * Enables setting new values for a VCard.
      *
@@ -38107,8 +38107,9 @@ const {
      *     chat or chatroom occupant).
      *
      * @example
-     * _converse.api.waitUntil('rosterContactsFetched').then(() => {
-     *     _converse.api.vcard.get('someone@example.org').then(
+     * const { api } = _converse;
+     * api.waitUntil('rosterContactsFetched').then(() => {
+     *     api.vcard.get('someone@example.org').then(
      *         (vcard) => {
      *             // Do something with the vcard...
      *         }
@@ -38117,15 +38118,20 @@ const {
      */
     get(model, force) {
       if (typeof model === 'string') {
-        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.getVCard)(_core_js__WEBPACK_IMPORTED_MODULE_1__._converse, model);
-      } else if (force || !model.get('vcard_updated') || !dayjs(model.get('vcard_error')).isSame(new Date(), "day")) {
+        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.getVCard)(model);
+      }
+
+      const error_date = model.get('vcard_error');
+      const already_tried_today = error_date && dayjs(error_date).isSame(new Date(), "day");
+
+      if (force || !model.get('vcard_updated') && !already_tried_today) {
         const jid = model.get('jid');
 
         if (!jid) {
           _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__.default.error("No JID to get vcard for");
         }
 
-        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.getVCard)(_core_js__WEBPACK_IMPORTED_MODULE_1__._converse, jid);
+        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.getVCard)(jid);
       } else {
         return Promise.resolve({});
       }
@@ -38142,9 +38148,10 @@ const {
      *     fetched again even if it's been fetched before.
      * @returns {promise} A promise which resolves once the update has completed.
      * @example
-     * _converse.api.waitUntil('rosterContactsFetched').then(async () => {
-     *     const chatbox = await _converse.chatboxes.getChatBox('someone@example.org');
-     *     _converse.api.vcard.update(chatbox);
+     * const { api } = _converse;
+     * api.waitUntil('rosterContactsFetched').then(async () => {
+     *     const chatbox = await api.chats.get('someone@example.org');
+     *     api.vcard.update(chatbox);
      * });
      */
     async update(model, force) {
@@ -38479,16 +38486,16 @@ function clearVCardsSession() {
     }
   }
 }
-async function getVCard(_converse, jid) {
-  const to = Strophe.getBareJidFromJid(jid) === _converse.bare_jid ? null : jid;
+async function getVCard(jid) {
+  const to = Strophe.getBareJidFromJid(jid) === _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid ? null : jid;
   let iq;
 
   try {
     iq = await _core_js__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(createStanza("get", to));
   } catch (iq) {
     return {
+      jid,
       'stanza': iq,
-      'jid': jid,
       'vcard_error': new Date().toISOString()
     };
   }
@@ -38619,7 +38626,7 @@ const _converse = {
    * @constant
    * @type { integer }
    */
-  STANZA_TIMEOUT: 10000,
+  STANZA_TIMEOUT: 20000,
   SUCCESS: 'success',
   FAILURE: 'failure',
   // Generated from css/images/user.svg
@@ -42219,8 +42226,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
 /* harmony import */ var _templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/muc-details.js */ "./src/modals/templates/muc-details.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.extend({
@@ -42235,12 +42240,7 @@ __webpack_require__.r(__webpack_exports__);
   },
 
   toHTML() {
-    return (0,_templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__.default)(Object.assign(this.model.toJSON(), {
-      'config': this.model.config.toJSON(),
-      'display_name': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat info for %1$s', this.model.getDisplayName()),
-      'features': this.model.features.toJSON(),
-      'num_occupants': this.model.occupants.length
-    }));
+    return (0,_templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__.default)(this.model);
   }
 
 }));
@@ -42573,7 +42573,15 @@ const subject = o => {
     `;
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => {
+  const o = model.toJSON();
+  const config = model.config.toJSON();
+
+  const display_name = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Groupchat info for %1$s', model.getDisplayName());
+
+  const features = model.features.toJSON();
+  const num_occupants = model.occupants.filter(o => o.get('show') !== 'offline').length;
+
   const i18n_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Groupchat XMPP address');
 
   const i18n_archiving = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Message archiving');
@@ -42638,7 +42646,7 @@ const subject = o => {
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="muc-details-modal-label">${o.display_name}</h5>
+                    <h5 class="modal-title" id="muc-details-modal-label">${display_name}</h5>
                     ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
                 </div>
                 <div class="modal-body">
@@ -42646,25 +42654,25 @@ const subject = o => {
                     <div class="room-info">
                         <p class="room-info"><strong>${i18n_name}</strong>: ${o.name}</p>
                         <p class="room-info"><strong>${i18n_address}</strong>: ${o.jid}</p>
-                        <p class="room-info"><strong>${i18n_desc}</strong>: ${o.config.description}</p>
+                        <p class="room-info"><strong>${i18n_desc}</strong>: ${config.description}</p>
                         ${o.subject ? subject(o) : ''}
-                        <p class="room-info"><strong>${i18n_online_users}</strong>: ${o.num_occupants}</p>
+                        <p class="room-info"><strong>${i18n_online_users}</strong>: ${num_occupants}</p>
                         <p class="room-info"><strong>${i18n_features}</strong>:
                             <div class="chatroom-features">
                             <ul class="features-list">
-                                ${o.features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-lock"></span>${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
-                                ${o.features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-unlock"></span>${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
-                                ${o.features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-eye-slash"></span>${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
-                                ${o.features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-eye"></span>${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
-                                ${o.features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-address-book"></span>${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
-                                ${o.features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-globe"></span>${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
-                                ${o.features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-save"></span>${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
-                                ${o.features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-snowflake-o"></span>${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
-                                ${o.features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-id-card"></span>${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
-                                ${o.features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-user-secret"></span>${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
-                                ${o.features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-gavel"></span>${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
-                                ${o.features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-info-circle"></span>${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
-                                ${o.features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><span class="fa fa-database"></span>${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
+                                ${features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon size="1em">${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
+                                ${features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon size="1em">${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
+                                ${features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon size="1em">${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
+                                ${features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon size="1em">${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
+                                ${features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon size="1em">${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
+                                ${features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon size="1em">${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
+                                ${features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon size="1em">${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
+                                ${features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake-o"></converse-icon size="1em">${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
+                                ${features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon size="1em">${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
+                                ${features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon size="1em">${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
+                                ${features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon size="1em">${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
+                                ${features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon size="1em">${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
+                                ${features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon size="1em">${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
                             </ul>
                             </div>
                         </p>
@@ -42845,7 +42853,12 @@ const remove_button = o => {
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <button type="button" @click="${o.removeContact}" class="btn btn-danger remove-contact">
-            <i class="far fa-trash-alt"></i>${i18n_remove_contact}
+            <converse-icon
+                class="fas fa-trash-alt"
+                color="var(--text-color-lighten-15-percent)"
+                size="1em"
+            ></converse-icon>
+            ${i18n_remove_contact}
         </button>
     `;
 };
@@ -43746,8 +43759,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('conve
     // configuration settings.
 
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.extend({
-      'animate': true,
-      'theme': 'default'
+      'animate': true
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews = new _container_js__WEBPACK_IMPORTED_MODULE_2__.default();
     /************************ BEGIN Event Handlers ************************/
@@ -51360,7 +51372,7 @@ __webpack_require__.r(__webpack_exports__);
   return lit__WEBPACK_IMPORTED_MODULE_0__.html`
         <div class="occupants-header">
             <i class="hide-occupants" @click=${o.closeSidebar}>
-                <converse-icon color="var(--text-color)" class="fa fa-times" size="1em"></converse-icon>
+                <converse-icon color="var(--subdued-color)" class="fa fa-times" size="1em"></converse-icon>
             </i>
             <div class="occupants-header--title">
                 <span class="occupants-heading">${i18n_participants}</span>
@@ -54650,7 +54662,11 @@ function getOMEMOToolbarButton(toolbar_el, buttons) {
   let color;
 
   if (model.get('omemo_supported')) {
-    color = model.get('omemo_active') ? `var(--info-color)` : `var(--error-color)`;
+    if (model.get('omemo_active')) {
+      color = is_muc ? `var(--muc-color)` : `var(--chat-toolbar-btn-color)`;
+    } else {
+      color = `var(--error-color)`;
+    }
   } else {
     color = `var(--muc-toolbar-btn-disabled-color)`;
   }
@@ -55108,32 +55124,32 @@ __webpack_require__.r(__webpack_exports__);
                             <input ?checked=${o.status === 'online'}
                                 type="radio" id="radio-online" value="online" name="chat_status" class="custom-control-input"/>
                             <label class="custom-control-label" for="radio-online">
-                                <span class="fa fa-circle chat-status chat-status--online"></span>${o.label_online}</label>
+                                <converse-icon size="1em" class="fa fa-circle chat-status chat-status--online"></converse-icon>${o.label_online}</label>
                         </div>
                         <div class="custom-control custom-radio">
                             <input ?checked=${o.status === 'busy'}
                                 type="radio" id="radio-busy" value="dnd" name="chat_status" class="custom-control-input"/>
                             <label class="custom-control-label" for="radio-busy">
-                                <span class="fa fa-minus-circle  chat-status chat-status--busy"></span>${o.label_busy}</label>
+                                <converse-icon size="1em" class="fa fa-minus-circle  chat-status chat-status--busy"></converse-icon>${o.label_busy}</label>
                         </div>
                         <div class="custom-control custom-radio">
                             <input ?checked=${o.status === 'away'}
                                 type="radio" id="radio-away" value="away" name="chat_status" class="custom-control-input"/>
                             <label class="custom-control-label" for="radio-away">
-                                <span class="fa fa-circle chat-status chat-status--away"></span>${o.label_away}</label>
+                                <converse-icon size="1em" class="fa fa-circle chat-status chat-status--away"></converse-icon>${o.label_away}</label>
                         </div>
                         <div class="custom-control custom-radio">
                             <input ?checked=${o.status === 'xa'}
                                 type="radio" id="radio-xa" value="xa" name="chat_status" class="custom-control-input"/>
                             <label class="custom-control-label" for="radio-xa">
-                                <span class="far fa-circle chat-status chat-status--xa"></span>${o.label_xa}</label>
+                                <converse-icon size="1em" class="far fa-circle chat-status chat-status--xa"></converse-icon>${o.label_xa}</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="btn-group w-100">
                             <input name="status_message" type="text" class="form-control"
                                 value="${o.status_message || ''}" placeholder="${o.placeholder_status_message}"/>
-                            <span class="clear-input fa fa-times ${o.status_message ? '' : 'hidden'}"></span>
+                            <converse-icon size="1em" class="fa fa-times clear-input ${o.status_message ? '' : 'hidden'}"></converse-icon>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">${o.label_save}</button>
@@ -55171,7 +55187,7 @@ function tpl_signout(o) {
   const i18n_logout = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Log out');
 
   return lit__WEBPACK_IMPORTED_MODULE_4__.html`<a class="controlbox-heading__btn logout align-self-center" title="${i18n_logout}" @click=${o.logout}>
-        <converse-icon color="var(--subdued-color)" class="fa fa-sign-out-alt" size="1em"></converse-icon>
+        <converse-icon class="fa fa-sign-out-alt" size="1em"></converse-icon>
     </a>`;
 }
 
@@ -55179,7 +55195,7 @@ function tpl_user_settings_button(o) {
   const i18n_details = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show details about this chat client');
 
   return lit__WEBPACK_IMPORTED_MODULE_4__.html`<a class="controlbox-heading__btn show-client-info align-self-center" title="${i18n_details}" @click=${o.showUserSettingsModal}>
-        <converse-icon color="var(--subdued-color)" class="fa fa-cog" size="1em"></converse-icon>
+        <converse-icon class="fa fa-cog" size="1em"></converse-icon>
     </a>`;
 }
 
@@ -56597,14 +56613,14 @@ const room_item = o => {
     'model': o.model
   }, ev)}
                 title="${i18n_title_list_rooms}" data-toggle="modal" data-target="#muc-list-modal">
-                    <converse-icon class="fa fa-list-ul right" color="var(--subdued-color)" path-prefix="/dist" size="1em"></converse-icon>
+                    <converse-icon class="fa fa-list-ul right" path-prefix="/dist" size="1em"></converse-icon>
             </a>
             <a class="controlbox-heading__btn show-add-muc-modal"
                 @click=${ev => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(plugins_muc_views_modals_add_muc_js__WEBPACK_IMPORTED_MODULE_0__.default, {
     'model': o.model
   }, ev)}
                 title="${i18n_title_new_room}" data-toggle="modal" data-target="#add-chatrooms-modal">
-                    <converse-icon class="fa fa-plus right" color="var(--subdued-color)" path-prefix="/dist" size="1em"></converse-icon>
+                    <converse-icon class="fa fa-plus right" path-prefix="/dist" size="1em"></converse-icon>
             </a>
         </div>
 
@@ -56790,8 +56806,14 @@ __webpack_require__.r(__webpack_exports__);
 
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('converse-rootview', {
   initialize() {
+    // Configuration values for this plugin
+    // ====================================
+    // Refer to docs/source/configuration.rst for explanations of these
+    // configuration settings.
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.extend({
-      'auto_insert': true
+      'auto_insert': true,
+      'theme': 'classic',
+      'dark_theme': 'dracula'
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('chatBoxesInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_2__.ensureElement); // Only define the element now, otherwise it it's already in the DOM
     // before `converse.initialized` has been called it will render too
@@ -56819,7 +56841,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var _converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/shared/settings/utils.js */ "./src/headless/shared/settings/utils.js");
-/* harmony import */ var _styles_root_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/root.scss */ "./src/plugins/rootview/styles/root.scss");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/rootview/utils.js");
+/* harmony import */ var _styles_root_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/root.scss */ "./src/plugins/rootview/styles/root.scss");
+
 
 
 
@@ -56845,13 +56869,15 @@ class ConverseRoot extends shared_components_element_js__WEBPACK_IMPORTED_MODULE
     const settings = (0,_converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_3__.getAppSettings)();
     this.listenTo(settings, 'change:view_mode', () => this.setClasses());
     this.listenTo(settings, 'change:singleton', () => this.setClasses());
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(() => this.setClasses());
+    window.matchMedia('(prefers-color-scheme: light)').addListener(() => this.setClasses());
   }
 
   setClasses() {
     this.className = "";
     this.classList.add('conversejs');
     this.classList.add(`converse-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('view_mode')}`);
-    this.classList.add(`theme-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('theme')}`);
+    this.classList.add(`theme-${(0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.getTheme)()}`);
     this.requestUpdate();
   }
 
@@ -56897,10 +56923,18 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getTheme": () => (/* binding */ getTheme),
 /* harmony export */   "ensureElement": () => (/* binding */ ensureElement)
 /* harmony export */ });
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
+function getTheme() {
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('dark_theme');
+  } else {
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('theme');
+  }
+}
 function ensureElement() {
   if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_insert')) {
     return;
@@ -57105,12 +57139,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RosterFilter": () => (/* binding */ RosterFilter),
 /* harmony export */   "RosterFilterView": () => (/* binding */ RosterFilterView)
 /* harmony export */ });
-/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
+/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
 /* harmony import */ var _templates_roster_filter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/roster_filter.js */ "./src/plugins/rosterview/templates/roster_filter.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var utils_html_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! utils/html.js */ "./src/utils/html.js");
+/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
+
 
 
 
@@ -57131,10 +57167,10 @@ class RosterFilterView extends shared_components_element_js__WEBPACK_IMPORTED_MO
   initialize() {
     const model = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.RosterFilter();
     model.id = `_converse.rosterfilter-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid}`;
-    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_4__.initStorage)(model, model.id);
+    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.initStorage)(model, model.id);
     this.model = model;
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster_filter = model;
-    this.liveFilter = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__.default)(() => {
+    this.liveFilter = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_6__.default)(() => {
       this.model.save({
         'filter_text': this.querySelector('.roster-filter').value
       });
@@ -57174,8 +57210,10 @@ class RosterFilterView extends shared_components_element_js__WEBPACK_IMPORTED_MO
   }
 
   changeTypeFilter(ev) {
+    var _ancestor;
+
     ev && ev.preventDefault();
-    const type = ev.target.dataset.type;
+    const type = ((_ancestor = (0,utils_html_js__WEBPACK_IMPORTED_MODULE_4__.ancestor)(ev.target, 'converse-icon')) === null || _ancestor === void 0 ? void 0 : _ancestor.dataset.type) || 'contacts';
 
     if (type === 'state') {
       this.model.save({
@@ -57593,7 +57631,7 @@ function populateContactsMap(contacts_map, contact) {
         <div class="d-flex controlbox-padded">
             <span class="w-100 controlbox-heading controlbox-heading--contacts">${i18n_heading_contacts}</span>
             <a class="controlbox-heading__btn sync-contacts" @click=${ev => el.syncContacts(ev)} title="${i18n_title_sync_contacts}">
-                <converse-icon class="fa fa-sync right ${el.syncing_contacts ? 'fa-spin' : ''}" color="var(--subdued-color)" path-prefix="/dist" size="1em"></converse-icon>
+                <converse-icon class="fa fa-sync right ${el.syncing_contacts ? 'fa-spin' : ''}" size="1em"></converse-icon>
             </a>
             ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_contact_requests') ? lit__WEBPACK_IMPORTED_MODULE_4__.html`
                 <a class="controlbox-heading__btn add-contact"
@@ -57601,7 +57639,7 @@ function populateContactsMap(contacts_map, contact) {
                     title="${i18n_title_add_contact}"
                     data-toggle="modal"
                     data-target="#add-contact-modal">
-                    <converse-icon class="fa fa-user-plus right" color="var(--subdued-color)" path-prefix="/dist" size="1.25em"></converse-icon>
+                    <converse-icon class="fa fa-user-plus right" size="1.25em"></converse-icon>
                 </a>` : ''}
         </div>
         <converse-roster-filter></converse-roster-filter>
@@ -57670,18 +57708,18 @@ __webpack_require__.r(__webpack_exports__);
             @submit=${o.submitFilter}>
             <div class="form-inline flex-nowrap">
                 <div class="filter-by d-flex flex-nowrap">
-                    <span @click=${o.changeTypeFilter} class="fa fa-user ${o.filter_type === 'contacts' ? 'selected' : ''}" data-type="contacts" title="${title_contact_filter}"></span>
-                    <span @click=${o.changeTypeFilter} class="fa fa-users ${o.filter_type === 'groups' ? 'selected' : ''}" data-type="groups" title="${title_group_filter}"></span>
-                    <span @click=${o.changeTypeFilter} class="fa fa-circle ${o.filter_type === 'state' ? 'selected' : ''}" data-type="state" title="${title_status_filter}"></span>
+                    <converse-icon size="1em" @click=${o.changeTypeFilter} class="fa fa-user clickable ${o.filter_type === 'contacts' ? 'selected' : ''}" data-type="contacts" title="${title_contact_filter}"></converse-icon>
+                    <converse-icon size="1em" @click=${o.changeTypeFilter} class="fa fa-users clickable ${o.filter_type === 'groups' ? 'selected' : ''}" data-type="groups" title="${title_group_filter}"></converse-icon>
+                    <converse-icon size="1em" @click=${o.changeTypeFilter} class="fa fa-circle clickable ${o.filter_type === 'state' ? 'selected' : ''}" data-type="state" title="${title_status_filter}"></converse-icon>
                 </div>
                 <div class="btn-group">
                     <input .value="${o.filter_text || ''}"
                         @keydown=${o.liveFilter}
                         class="roster-filter form-control ${o.filter_type === 'state' ? 'hidden' : ''}"
                         placeholder="${i18n_placeholder}"/>
-                    <span class="clear-input fa fa-times ${!o.filter_text || o.filter_type === 'state' ? 'hidden' : ''}"
+                    <converse-icon size="1em" class="fa fa-times clear-input ${!o.filter_text || o.filter_type === 'state' ? 'hidden' : ''}"
                         @click=${o.clearFilter}>
-                    </span>
+                    </converse-icon>
                 </div>
                 <select class="form-control state-type ${o.filter_type !== 'state' ? 'hidden' : ''}"
                         @change=${o.changeChatStateFilter}>
@@ -57712,12 +57750,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants.js */ "./src/plugins/rosterview/constants.js");
 
 
 
+
+
+const tpl_remove_link = (el, item) => {
+  const display_name = item.getDisplayName();
+
+  const i18n_remove = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to remove %1$s as a contact', display_name);
+
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+      <a class="list-item-action remove-xmpp-contact" @click=${el.removeContact} title="${i18n_remove}" href="#">
+         <converse-icon class="fa fa-trash-alt" size="1.5em"></converse-icon>
+      </a>
+   `;
+};
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, item) => {
   var _el$model$vcard, _el$model$vcard2;
@@ -57735,13 +57786,11 @@ __webpack_require__.r(__webpack_exports__);
     [classes, color] = ['fa fa-circle', 'subdued-color'];
   }
 
-  const display_name = item.getDisplayName();
   const desc_status = _constants_js__WEBPACK_IMPORTED_MODULE_3__.STATUSES[show];
   const num_unread = item.get('num_unread') || 0;
+  const display_name = item.getDisplayName();
 
   const i18n_chat = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to chat with %1$s (XMPP address: %2$s)', display_name, el.model.get('jid'));
-
-  const i18n_remove = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to remove %1$s as a contact', display_name);
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
    <a class="list-item-link cbox-list-item open-chat ${num_unread ? 'unread-msgs' : ''}" title="${i18n_chat}" href="#" @click=${el.openChat}>
@@ -57760,7 +57809,7 @@ __webpack_require__.r(__webpack_exports__);
       ${num_unread ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="msgs-indicator">${num_unread}</span>` : ''}
       <span class="contact-name contact-name--${el.show} ${num_unread ? 'unread-msgs' : ''}">${display_name}</span>
    </a>
-   ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_contact_removal') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<a class="list-item-action remove-xmpp-contact far fa-trash-alt" @click=${el.removeContact} title="${i18n_remove}" href="#"></a>` : ''}`;
+   ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_contact_removal') ? tpl_remove_link(el, item) : ''}`;
 });
 
 /***/ }),
@@ -58836,18 +58885,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ ChatContent)
 /* harmony export */ });
 /* harmony import */ var _message_history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./message-history */ "./src/shared/chat/message-history.js");
-/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/shared/chat/utils.js");
-/* harmony import */ var _styles_chat_content_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/chat-content.scss */ "./src/shared/chat/styles/chat-content.scss");
+/* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/shared/chat/utils.js");
+/* harmony import */ var _styles_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/chat-content.scss */ "./src/shared/chat/styles/chat-content.scss");
 
 
 
 
 
 
-class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.CustomElement {
+
+class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
   static get properties() {
     return {
       jid: {
@@ -58858,7 +58909,7 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener('scroll', _utils_js__WEBPACK_IMPORTED_MODULE_4__.markScrolled);
+    this.removeEventListener('scroll', _utils_js__WEBPACK_IMPORTED_MODULE_5__.markScrolled);
   }
 
   async initialize() {
@@ -58877,11 +58928,11 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       this.listenTo(this.model.occupants, 'change', this.requestUpdate);
     }
 
-    this.addEventListener('scroll', _utils_js__WEBPACK_IMPORTED_MODULE_4__.markScrolled);
+    this.addEventListener('scroll', _utils_js__WEBPACK_IMPORTED_MODULE_5__.markScrolled);
   }
 
   async setModels() {
-    this.model = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.chatboxes.get(this.jid);
+    this.model = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.chatboxes.get(this.jid);
     await this.model.initialized;
     this.requestUpdate();
   }
@@ -58895,13 +58946,13 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     // shown in reverse order.
 
 
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+    return lit__WEBPACK_IMPORTED_MODULE_4__.html`
             <div class="chat-content__notifications">${this.model.getNotificationsText()}</div>
             <converse-message-history
                 .model=${this.model}
                 .messages=${[...this.model.messages.models]}>
             </converse-message-history>
-            ${(_this$model$ui = this.model.ui) !== null && _this$model$ui !== void 0 && _this$model$ui.get('chat-content-spinner-top') ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<span class="spinner fa fa-spinner centered"></span>` : ''}
+            ${(_this$model$ui = this.model.ui) !== null && _this$model$ui !== void 0 && _this$model$ui.get('chat-content-spinner-top') ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__.default)() : ''}
         `;
   }
 
@@ -58928,13 +58979,13 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
      */
 
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('chatBoxScrolledDown', {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.trigger('chatBoxScrolledDown', {
       'chatbox': this.model
     });
   }
 
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-chat-content', ChatContent);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-chat-content', ChatContent);
 
 /***/ }),
 
@@ -59002,6 +59053,9 @@ class EmojiDropdown extends shared_components_dropdown_js__WEBPACK_IMPORTED_MODU
   }
 
   render() {
+    const is_groupchat = this.chatview.model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CHATROOMS_TYPE;
+
+    const color = is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
     return lit__WEBPACK_IMPORTED_MODULE_3__.html`
             <div class="dropup">
                 <button class="toggle-emojis"
@@ -59010,6 +59064,7 @@ class EmojiDropdown extends shared_components_dropdown_js__WEBPACK_IMPORTED_MODU
                         aria-haspopup="true"
                         aria-expanded="false">
                     <converse-icon
+                        color="var(${color})"
                         class="fa fa-smile "
                         path-prefix="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('assets_path')}"
                         size="1em"></converse-icon>
@@ -59690,7 +59745,6 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
             <button class="chat-msg__action ${o.button_class}" @click=${o.handler}>
                 <converse-icon
                     class="${o.icon_class}"
-                    path-prefix="${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('assets_path')}"
                     color="var(--text-color-lighten-15-percent)"
                     size="1em"
                 ></converse-icon>
@@ -60599,7 +60653,6 @@ const tpl_emoji_picker = o => {
                 query="${o.query}"></converse-emoji-picker-content>` : ''}
 
         <div class="emoji-skintone-picker">
-            <label>Skin tone</label>
             <ul>${skintones.map(skintone => skintone_emoji(Object.assign({
     skintone
   }, o)))}</ul>
@@ -60836,7 +60889,7 @@ __webpack_require__.r(__webpack_exports__);
                         <span class="chat-msg__author"><a class="show-msg-author-modal" @click=${el.showUserModal}>${o.username}</a></span>
                         ${o.hats.map(h => lit__WEBPACK_IMPORTED_MODULE_3__.html`<span class="badge badge-secondary">${h.title}</span>`)}
                         <time timestamp="${el.model.get('edited') || el.model.get('time')}" class="chat-msg__time">${o.pretty_time}</time>
-                        ${o.is_encrypted ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<span class="fa fa-lock"></span>` : ''}
+                        ${o.is_encrypted ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-icon class="fa fa-lock" size="1.1em"></converse-icon>` : ''}
                     </span>` : ''}
 
                 <div class="chat-msg__body chat-msg__body--${o.message_type} ${o.received ? 'chat-msg__body--received' : ''} ${o.is_delayed ? 'chat-msg__body--delayed' : ''}">
@@ -61107,11 +61160,13 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }
 
     if (this.show_call_button) {
+      const color = this.is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
+
       const i18n_start_call = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Start a call');
 
       buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`
                 <button class="toggle-call" @click=${this.toggleCall} title="${i18n_start_call}">
-                    <converse-icon class="fa fa-phone" path-prefix="/dist" size="1em"></converse-icon>
+                    <converse-icon color="var(${color})" class="fa fa-phone" size="1em"></converse-icon>
                 </button>`);
     }
 
@@ -61139,8 +61194,10 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
                 <button class="toggle_occupants right"
                         title="${this.hidden_occupants ? i18n_show_occupants : i18n_hide_occupants}"
                         @click=${this.toggleOccupants}>
-                    <converse-icon class="fa ${this.hidden_occupants ? `fa-angle-double-left` : `fa-angle-double-right`}"
-                             path-prefix="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('assets_path')}" size="1em"></converse-icon>
+                    <converse-icon
+                        color="var(--muc-toolbar-btn-color)"
+                        class="fa ${this.hidden_occupants ? `fa-angle-double-left` : `fa-angle-double-right`}"
+                        size="1em"></converse-icon>
                 </button>`);
     }
     /**
@@ -61163,10 +61220,12 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     if (is_supported) {
       const i18n_choose_file = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Choose a file to send');
 
+      const color = this.is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
       return lit__WEBPACK_IMPORTED_MODULE_6__.html`
                 <button title="${i18n_choose_file}" @click=${this.toggleFileUpload}>
-                    <converse-icon class="fa fa-paperclip"
-                        path-prefix="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('assets_path')}"
+                    <converse-icon
+                        color="var(${color})"
+                        class="fa fa-paperclip"
                         size="1em"></converse-icon>
                 </button>
                 <input type="file" @change=${this.onFileSelection} class="fileupload" multiple="" style="display:none"/>`;
@@ -61192,13 +61251,15 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       i18n_toggle_spoiler = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Click to write your message as a spoiler");
     }
 
+    const color = this.is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
     const markup = lit__WEBPACK_IMPORTED_MODULE_6__.html`
             <button class="toggle-compose-spoiler"
                     title="${i18n_toggle_spoiler}"
                     @click=${this.toggleComposeSpoilerMessage}>
-                <converse-icon class="fa ${this.composing_spoiler ? 'fa-eye-slash' : 'fa-eye'}"
-                         path-prefix="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('assets_path')}"
-                         size="1em"></converse-icon>
+                <converse-icon
+                    color="var(${color})"
+                    class="fa ${this.composing_spoiler ? 'fa-eye-slash' : 'fa-eye'}"
+                    size="1em"></converse-icon>
             </button>`;
 
     if (this.is_groupchat) {
@@ -65407,9 +65468,9 @@ __webpack_require__.r(__webpack_exports__);
   var _o$classes;
 
   if ((_o$classes = o.classes) !== null && _o$classes !== void 0 && _o$classes.includes('hor_centered')) {
-    return lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="spinner__container"><span class="spinner fa fa-spinner centered ${o.classes || ''}"/></div>`;
+    return lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="spinner__container"><converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon></div>`;
   } else {
-    return lit__WEBPACK_IMPORTED_MODULE_0__.html`<span class="spinner fa fa-spinner centered ${o.classes || ''}"/>`;
+    return lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon>`;
   }
 });
 
@@ -65535,6 +65596,7 @@ const MIMETYPES_MAP = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getOOBURLMarkup": () => (/* binding */ getOOBURLMarkup),
+/* harmony export */   "ancestor": () => (/* binding */ ancestor),
 /* harmony export */   "getHyperlinkTemplate": () => (/* binding */ getHyperlinkTemplate),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -65773,7 +65835,7 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default.hideElement = functio
   return el;
 };
 
-_headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default.ancestor = function (el, selector) {
+function ancestor(el, selector) {
   let parent = el;
 
   while (parent !== null && !sizzle.matchesSelector(parent, selector)) {
@@ -65781,7 +65843,7 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default.ancestor = function (
   }
 
   return parent;
-};
+}
 /**
  * Return the element's siblings until one matches the selector.
  * @private
@@ -65789,7 +65851,6 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default.ancestor = function (
  * @param { HTMLElement } el
  * @param { String } selector
  */
-
 
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default.nextUntil = function (el, selector) {
   const matches = [];
@@ -66127,7 +66188,8 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default.xForm2TemplateResult 
 };
 
 Object.assign(_headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default, {
-  getOOBURLMarkup
+  getOOBURLMarkup,
+  ancestor
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_headless_utils_core__WEBPACK_IMPORTED_MODULE_13__.default);
 
