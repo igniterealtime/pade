@@ -31,11 +31,6 @@
 					stopped: __('has stopped speaking')					
 				}
 			});
-					
-			_converse.api.listen.on('message', (data) => {			
-				if (!data.attrs.json) return;
-				console.debug("voicechat", data.attrs.json);
-			});
 			
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {

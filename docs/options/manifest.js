@@ -986,6 +986,20 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Converse"),
+            "group": i18n.get("Adaptive Cards"),
+            "name": "enableAdaptiveCardDesign",
+            "type": "checkbox",
+            "label": i18n.get("Enable Adaptive Cards Design")
+        },	
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Adaptive Cards"),
+            "name": "enableAdaptiveCardViewer",
+            "type": "checkbox",
+            "label": i18n.get("Enable Adaptive Cards Viewer")
+        },		
+        {
+            "tab": i18n.get("Converse"),
             "group": i18n.get("Voice Chat"),
             "name": "enableVoiceChat",
             "type": "checkbox",

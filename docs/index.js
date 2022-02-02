@@ -104,8 +104,7 @@ function loadPlugins() {
 
         if (getSetting("publishLocation", false))
 		{
-			whitelistedPlugins.push("location");
-			loadCSS("./packages/location/location.css");		
+			whitelistedPlugins.push("location");	
 			loadJS("./packages/location/location.js");
 		}			
 
@@ -150,7 +149,16 @@ function loadPlugins() {
             loadJS("./packages/search/d3.js");
             loadJS("./packages/search/d3.layout.cloud.js");
             loadJS("./packages/search/stopwords.js");
-        }		
+        }
+		
+        if (getSetting("enableAdaptiveCardDesign", false) || getSetting("enableAdaptiveCardViewer", false))
+        {
+            whitelistedPlugins.push("adaptive-cards");			
+            loadCSS("./packages/adaptive-cards/adaptivecards.css");
+            loadJS("./packages/adaptive-cards/adaptivecards.min.js");			
+            loadJS("./packages/adaptive-cards/markdown-it.min.js");				
+            loadJS("./packages/adaptive-cards/adaptive-cards.js");				
+		}			
 	}
 }
 
