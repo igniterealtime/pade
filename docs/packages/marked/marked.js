@@ -15,30 +15,37 @@
 
 			var renderer = new marked.Renderer();
 
-			renderer.em = function(text) {
-				return '*' + text + '*';
-			};	
-
-			renderer.blockquote = function(quote) {
-				return '';
-			};			
+			renderer.link = function(href, title, text) {
+				return renderImage(href, title, text);
+			}
+			
+			renderer.image = function(href, title, text) {
+				return renderImage(href, title, text);
+			}
 			
 			marked.setOptions({
 			  renderer: renderer
 			});			
 		
-            _converse.api.listen.on('afterMessageBodyTransformed', function(text)
+            _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {
-				//console.debug("afterMessageBodyTransformed", text);
+				//console.debug("beforeMessageBodyTransformed", text);
 								
 				if (text.indexOf('\n') != text.lastIndexOf('\n')) {	// apply only to paragraphs of text
 					const parsed = marked.parse(text.toString());
-					text.addTemplateResult(0, text.length, html([parsed]));
+					text.render_styling = false;
+					text.references = [{begin: 0,  end: text.length,  template: html([parsed]) }];					
 				}
             });
 			
            console.debug("marked plugin is ready");
         }
     });
-
+	
+	function renderImage(href, title, text) {
+		if (!title) title = href;
+		const types = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg'];
+		const image = !!types.filter(ext => href.endsWith(ext)).length;	
+		return `<a title=${title} href=${href}>` + (image ? `<img src=${href}>` : text) + `</a>`;
+	}
 }));
