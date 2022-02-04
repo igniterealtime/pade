@@ -1,6 +1,6 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
 const nickColors = {}, pade = {webAppsWindow: {}};
-const whitelistedPlugins = ["paderoot", "stickers"];
+const whitelistedPlugins = [];
 
 var paderoot = {
 	participants: {},
@@ -58,6 +58,9 @@ window.addEventListener("unload", function() {
 function loadPlugins() {
     if (getSetting("showToolbarIcons", false))
     {	
+		whitelistedPlugins.push("paderoot");
+		whitelistedPlugins.push("stickers");
+		
 		whitelistedPlugins.push("toolbar-utilities");
 		loadJS("./packages/toolbar-utilities/toolbar-utilities.js");
 
@@ -386,8 +389,10 @@ function startConverse() {
 		websocket_url: getSetting("useWebsocket", false) ? (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/' : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
-	
-	setupPadeRoot();
+
+    if (getSetting("showToolbarIcons", false))  {	
+		setupPadeRoot();
+	}
 
 	console.debug("startConverse", config);
 	converse.initialize(config);
@@ -509,13 +514,16 @@ function setupPadeRoot() {
 			_converse.api.waitUntil('controlBoxInitialized').then(() => {
 
 				_converse.api.waitUntil('bookmarksInitialized').then(() => {
-					setupMUCAvatars();
-					addControlFeatures();	
 
-					if (getSetting("converseSimpleView", false))
-					{
-						handleActiveConversations();
-					}					
+					if (!getSetting("disablePadeStyling", false)) {						
+						setupMUCAvatars();
+						addControlFeatures();	
+
+						if (getSetting("converseSimpleView", false))
+						{
+							handleActiveConversations();
+						}	
+					}						
 
 				}).catch(function (err) {
 					console.error('waiting for controlBoxInitialized error', err);
@@ -534,8 +542,10 @@ function setupPadeRoot() {
 			});
 					
 			_converse.api.listen.on('connected', function() {
-				if (getSetting("converseTimeAgo", false)) setupTimer();
-				addSelfBot();			
+				if (!getSetting("disablePadeStyling", false)) {				
+					setupTimer();
+					addSelfBot();	
+				}					
 			});
 
 			_converse.api.listen.on('rosterContactInitialized', function(contact) {
@@ -543,11 +553,14 @@ function setupPadeRoot() {
 			});	
 			
 			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
-		       buttons.push({'i18n_text': __('Pin'),   	 'handler': ev => handlePinAction(el), 								'button_class': 'chat-msg__action-pin',         'icon_class': 'fa fa-paperclip',   'name': 'pade-pin'});			   
-		       buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el),                    	'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
-		       buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':smiley:'),   	'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   		'name': 'pade-thumbsup'});	
-		       buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 		'name': 'pade-thumbsdown'});			   
-		       return buttons;
+				
+				if (el.model.get('body')) {
+				   buttons.push({'i18n_text': __('Pin'),   	 'handler': ev => handlePinAction(el), 								'button_class': 'chat-msg__action-pin',         'icon_class': 'fa fa-paperclip',   'name': 'pade-pin'});			   
+				   buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el),                    		'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
+				   buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':smiley:'),   	'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   		'name': 'pade-thumbsup'});	
+				   buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 		'name': 'pade-thumbsdown'});			   
+				}
+				return buttons;
 			});	
 			
 			_converse.api.listen.on('message', (data) => {			
@@ -605,10 +618,12 @@ function setupPadeRoot() {
 
 function setupTimer() {	
 	//console.debug("setupTimer render");
-	setupTimeAgo();
+	if (getSetting("converseTimeAgo", false)) setupTimeAgo();
+	
 	addControlFeatures();
 	setupMUCAvatars();	
 	renderReactions();
+
 	setTimeout(setupTimer, 10000);	
 }
 

@@ -146,18 +146,15 @@
 			}
 			
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
-            {	
-				console.log("beforeMessageBodyTransformed", text.parentNode);
-		
-				if (text.startsWith('ADAPTIVE-CARD') && text.length > 13) {	
-					const json = text.substring(13);
+            {			
+				if (text.startsWith('ADAPTIVE-CARD:') && text.length > 14) {	
+					const json = text.substring(14);
 					adaptiveCard.parse(JSON.parse(json));
 					const renderedCard = adaptiveCard.render();
 					console.debug("Adapative card", text);
 					text.render_styling = false;
 					text.references = [{begin: 0,  end: text.length,  template: renderedCard }];
-				}
-				
+				}				
             });	
 
 			_converse.api.listen.on('parseMessage', async (stanza, attrs) => {
@@ -174,12 +171,12 @@
 
 	function resultsSaved(resp, title) {
 		console.debug("resultsSaved", title, resp);
-		alert("Saved results OK for " + title);
+		getSelectedChatBox().model.createMessage({ 'message': 'Saved results OK for ' + title,  'type': 'info' });
 	}
 
 	function resultsError(err, title) {
 		console.error("resultsError", title, err);
-		alert("Saved results ERROR for " + title);		
+		getSelectedChatBox().model.createMessage({ 'message': 'Saved results ERROR for ' + title,  'type': 'info' });
 	}
 	
 	async function parseStanza(stanza, attrs) {
@@ -189,7 +186,7 @@
 			const card = JSON.parse(json.innerHTML);
 			
 			if (card.type == 'AdaptiveCard') {
-				attrs.message = 'ADAPTIVE-CARD' + json.innerHTML;		
+				attrs.message = 'ADAPTIVE-CARD:' + json.innerHTML;		
 			}				
 		}
 		return attrs;

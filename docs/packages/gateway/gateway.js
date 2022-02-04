@@ -73,26 +73,6 @@
 
             _converse.api.listen.on('connected', function()
             {
-                _converse.connection.injectedMessage = function(element)
-                {
-                    console.debug("gateway injected message", element);
-
-                    const id = element.getAttribute("id");
-                    const xmlns = element.getAttribute("xmlns");
-                    const to = element.getAttribute("to");
-                    const query = element.querySelector("query");
-
-                    if (query && query.getAttribute("xmlns") == "urn:xmpp:mam:2")
-                    {
-                        _converse.connection.injectMessage(`<iq type="result" id="${id}" to="${_converse.connection.jid}"/><fin xmlns="urn:xmpp:mam:2"><set xmlns="http://jabber.org/protocol/rsm"></set></fin>`);
-                    }
-
-                    if (to == "rss@pade." + _converse.connection.domain)
-                    {
-
-                    }
-                }
-
                 _converse.api.waitUntil('rosterContactsFetched').then(() => {
 
                     if (getSetting("enableRssFeeds", false))
@@ -138,9 +118,9 @@
         var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
         console.debug("rssChatCheck", rssUrls, summary, from);
 
-        rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay) =>  {	
+        rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay, json) =>  {	
 			const message = 'RSS:' + html;			
-			const attrs = {message, body: message, id: msgId, msgId, type: 'chat', from, time: delay};  
+			const attrs = {json, message, id: msgId, msgId, type: 'chat', from, time: delay};  
 			chatbox = await _converse.api.chats.get(from, {}, true);
 			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
         });
@@ -153,18 +133,18 @@
         const from = view.model.get("jid")
         const feedId = 'feed-' + id;
 
-        console.debug("rssGroupChatCheck", feedId, from, summary, view.model);
+        //console.debug("rssGroupChatCheck", feedId, from, summary, view.model);
 
         chrome.storage.local.get(feedId, function(data)
         {
             if (data && data[feedId])
             {
                 const rssUrls = Object.getOwnPropertyNames(data[feedId]);
-                console.debug("rssGroupChatCheck", feedId, rssUrls, summary);
+                //console.debug("rssGroupChatCheck", feedId, rssUrls, summary);
 
-                rssCheckEach(true, rssUrls, "rss-feed-muc-", async (msgId, html, title, delay) => {
+                rssCheckEach(true, rssUrls, "rss-feed-muc-", async (msgId, html, title, delay, json) => {
 					const message = 'RSS:' + html;					
-					const attrs = {message, body: message, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title, time: delay};  
+					const attrs = {json, message, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title, time: delay};  
 					chatbox = await _converse.api.rooms.get(from, {}, true);
 					//console.debug("rssGroupChatCheck", chatbox, attrs);
 					await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));					
@@ -221,7 +201,7 @@
 
                                     if (callback)
                                     {
-                                        callback(msgId, htmlTemp, feed.title, delay);									
+                                        callback(msgId, htmlTemp, feed.title, delay, post);									
                                     }
                                 }
                             });

@@ -1142,15 +1142,15 @@
       return el;
     }
 	
-	function injectMessage(model, title, body) {
+	function injectMessage(model, title, body, json) {
 		const msgid = 'inject-' + Math.random().toString(36).substr(2,9);
 		const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
 		const from = model.get("jid");
 
-		let attrs = {message: body, id: msgid, origin_id: msgid, msgid, type, from: _converse.jid, is_unstyled: false, references: []}; 
+		let attrs = {json, message: body, id: msgid, origin_id: msgid, msgid, type, from: _converse.jid, is_unstyled: false, references: []}; 
 		
 		if (type == "groupchat") {
-			attrs = {message: body, id: msgid, origin_id: msgid, msgid, type, from_muc: from, from: from + '/' + title, nick: title, is_unstyled: false, references: []};  
+			attrs = {json, message: body, id: msgid, origin_id: msgid, msgid, type, from_muc: from, from: from + '/' + title, nick: title, is_unstyled: false, references: []};  
 		}
 		
 		model.queueMessage(attrs);		
@@ -1175,7 +1175,7 @@
 				{
 					console.debug('wikipedia ok', json);
 					const body = "## " + json.displaytitle + '\n' + (json.thumbnail ? json.thumbnail.source : "") + '\n\n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page;					
-					injectMessage(model, 'Wikipedia', body);
+					injectMessage(model, 'Wikipedia', body, json);
 					
 					if (json.type == "standard")
 					{

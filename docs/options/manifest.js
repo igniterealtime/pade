@@ -1057,7 +1057,14 @@ this.manifest = {
             "name": "showToolbarIcons",
             "type": "checkbox",
             "label": i18n.get("Show Advanced toolbar icons")
-        },		
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("User Interface"),
+            "name": "disablePadeStyling",
+            "type": "checkbox",
+            "label": i18n.get("Disable Pade Styling")
+        },			
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("User Interface"),

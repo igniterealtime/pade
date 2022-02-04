@@ -30,6 +30,10 @@
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {
 				//console.debug("beforeMessageBodyTransformed", text);
+				
+				if (text.startsWith("RSS:") || text.startsWith("ADAPTIVE-CARD:")) {	
+					return;
+				}
 								
 				if (text.indexOf('\n') != text.lastIndexOf('\n')) {	// apply only to paragraphs of text
 					const parsed = marked.parse(text.toString());

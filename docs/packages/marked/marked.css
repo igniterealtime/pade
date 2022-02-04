@@ -39,8 +39,6 @@
     padding-left: 40px !important;    
 }
 .chat-msg__text blockquote {
-  margin-left: 50px !important;
-  padding-left: 15px !important;
   background-color: #F5F5F5 !important;  
   border-left: 3px solid #ccc !important;
 } 
