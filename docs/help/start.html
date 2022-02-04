@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <title>Pàdé Docs</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="body-orange">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon"><img src="favicon.ico" width="32px"/></span>
+                            <span class="text-highlight">Pàdé</span>
+                        </a>
+                    </h1>
+                </div><!--//branding-->
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Quick Start</li>
+                </ol>
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><i class="icon fa fa-paper-plane"></i> Quick Start</h1>
+                    <div class="meta"><i class="fa fa-clock-o"></i> Last updated: Sept 11th, 2018</div>
+                </div><!--//doc-header-->
+                <div class="doc-body">
+                    <div class="doc-content">
+                        <div class="content-inner">
+
+                            <section id="download-section" class="doc-section">
+                                <h2 class="section-title">Download</h2>
+                                <div class="section-block">
+                                    <p>Normally, Pàdé is <a href="https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba">installed from a web browser vendor App Store like Google Chrome.</a>However, it is possible that corporate compliance and network policies can prevent direct access to the web vendor app store. When this happens, the web extension file can be downloaded from GitHub and installed manually.
+                                    </p>
+                                    <a href="https://github.com/igniterealtime/Pade/raw/master/extension.crx" class="btn btn-orange" target="_blank"><i class="fa fa-download"></i> Download Pàdé</a>
+                                </div>
+                            </section><!--//doc-section-->
+
+                            <section id="installation-section" class="doc-section">
+                                <h2 class="section-title">Installation</h2>
+                                <div id="step1"  class="section-block">
+                                    <h3 class="block-title">Step One</h3>
+                                    <p>Go to your web vendor's extensions app store and search for Pàdé. Currently, Pàdé is only available from Google Chrome app store. Install from <a href="https://chrome.google.com/webstore/detail/pade-openfire-meetings/fohfnhgabmicpkjcpjpjongpijcffaba">here</a>
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_1.png"><img class="img-responsive" src="assets/images/screen_1.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_1.png"></a>
+                                    </div>
+                                </div><!--//section-block-->
+                                <div id="step2"  class="section-block">
+                                    <h3 class="block-title">Step Two</h3>
+                                    <p>Click on the blue <b>Add to Chrome</b> button
+                                    </p>
+                                </div><!--//section-block-->
+                                <div id="step3"  class="section-block">
+                                    <h3 class="block-title">Step Three</h3>
+                                    <p>Right click on the application icon and select <b>Options</b> to start configuring Pàdé
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_2.png"><img class="img-responsive" src="assets/images/screen_2.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_2.png"></a>
+                                    </div>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                            <section id="configure-section" class="doc-section">
+                                <h2 class="section-title">Configure</h2>
+                                <div id="connection"  class="section-block">
+                                    <h3 class="block-title">Connection Details</h3>
+                                    <p>First enter the connection details for your Openfire server as provided by your system administrator. The server is the FQDN of the server with an optional http port number. For example, myserver:7443.
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_3_1.png"><img class="img-responsive" src="assets/images/screen_3_1.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_3_1.png"></a>
+                                    </div>
+                                </div><!--//section-block-->
+                                <div id="login"  class="section-block">
+                                    <h3 class="block-title">Login Details</h3>
+                                    <p>Next enter the login details for your user account as provisioned by the system administrator. Click on the <b>login</b> button to login.
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_3_2.png"><img class="img-responsive" src="assets/images/screen_3_2.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_3_2.png"></a>
+                                    </div>
+                                    <p>If your connection and login details have been entered correctly and your account has also been setup correctly, then the <b>off</b> badge on the application should disappear indicating that you have successfully logged in.
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_3.png"><img class="img-responsive" src="assets/images/screen_3.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_3.png"></a>
+                                    </div>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                            <section id="meeting-section" class="doc-section">
+                                <h2 class="section-title">Joining a Meeting</h2>
+                                <div class="section-block">
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_4.png"><img class="img-responsive" src="assets/images/screen_4.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_4.png"></a>
+                                    </div>
+                                    <p>To join a meeting, right click on the application icon. Click on <b>Meetings</b> and then select the meeting room required. The Meeting application window should open.
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_5.png"><img class="img-responsive" src="assets/images/screen_5.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_5.png"></a>
+                                    </div>
+                                    <p>If the name of the room required is missing from the list then contact your system administrator.<br/>
+                                    This is now your active meeting. To join the meeting again, just click on the application icon directly.<br/>
+                                    See Features for more details on how to use the meeting application.
+                                    </p>
+                                </div>
+
+                            </section><!--//doc-section-->
+
+                            <section id="conversation-section" class="doc-section">
+                                <h2 class="section-title">Having a Conversation</h2>
+                                <div class="section-block">
+                                   <div class="screenshot-holder">
+                                        <a href="assets/images/screen_6.png"><img class="img-responsive" src="assets/images/screen_6.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_6.png"></a>
+                                    </div>
+                                    <p>To initiate a conversation with a colleague, right click on the application icon. Click on <b>Conversations</b> and then select the person required. The Meeting application window should open just as it did with joining a meeting.</p>
+                                    <p>The person you are calling will receive a notification from you inviting them to join a conversation with you.</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/screen_7.png"><img class="img-responsive" src="assets/images/screen_7.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_7.png"></a>
+                                    </div>
+                                    <p>If the name of the person required is a team member and is missing from the list then contact your system administrator. Otherwise use the Chat application to add the person to your contact list. See the <a href="features.html#contacts-section">contacts section in features</a> for more details.</p>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                            <section id="groupchat-section" class="doc-section">
+                                <h2 class="section-title">Joining a Group Chat</h2>
+                                <div id="converse-screen" class="section-block">
+                                   <div class="screenshot-holder">
+                                        <a href="assets/images/screen_8.png"><img class="img-responsive" src="assets/images/screen_8.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_8.png"></a>
+                                    </div>
+                                    <p>To join a groupchat, right click on the application icon. Click on <b>Applications</b> and select <b>Converse.</b> This will open the Converse messaging application window. Select the required chatroom for the group chat.</b></p>
+                                   <div class="screenshot-holder">
+                                        <a href="assets/images/screen_9.png"><img class="img-responsive" src="assets/images/screen_9.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_9.png"></a>
+                                    </div>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                            <section id="chat-section" class="doc-section">
+                                <h2 class="section-title">Having a Chat</h2>
+                                <div class="section-block">
+                                    <p>To have a chat with a contact, right click on the application icon. Click on <b>Applications</b> and select <b>Converse.</b> This will open the Converse messaging application window. Select the required contact for the one-to-one chat.</b>
+                                    </p>
+                                   <div class="screenshot-holder">
+                                        <a href="assets/images/screen_9_1.png"><img class="img-responsive" src="assets/images/screen_9_1.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_9_1.png"></a>
+                                    </div>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                            <section id="videoconf-section" class="doc-section">
+                                <h2 class="section-title">Joining a SIP Video Conference</h2>
+                                <div class="section-block">
+                                    <p>If your chat or groupchat escalates into a video-conference, first make sure that your SIP phone is configured by your system administrator and enabled as <a href="#phone-section">shown above</a>.</p>
+                                    <p>Next, click on the telephone icon in the chat or groupchat conversation toolbar to join.</p>
+                                   <div class="screenshot-holder">
+                                        <a href="assets/images/screen_15.png"><img class="img-responsive" src="assets/images/screen_15.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_15.png"></a>
+                                   </div>
+                                    <p>This will open the SIP VideoConference application window. Click on the green telephone icon whenever you are ready to join.</p>
+                                   <div class="screenshot-holder">
+                                        <a href="assets/images/screen_14.png"><img class="img-responsive" src="assets/images/screen_14.png" alt="screenshot" /></a>
+                                        <a class="mask" href="assets/images/screen_14.png"></a>
+                                   </div>
+                                    <p>Click on microphone or videocam icons to toggle muting your voice and webcam respectively. Click on the red cross to leave the conference.</p>
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar hidden-xs">
+                        <nav id="doc-nav">
+                            <ul id="doc-menu" class="nav doc-menu" data-spy="affix">
+                                <li><a class="scrollto" href="#download-section">Download</a></li>
+                                <li>
+                                    <a class="scrollto" href="#installation-section">Installation</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#step1">Step One</a></li>
+                                        <li><a class="scrollto" href="#step2">Step Two</a></li>
+                                        <li><a class="scrollto" href="#step3">Step Three</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li>
+                                    <a class="scrollto" href="#configure-section">Configure</a>
+                                    <ul class="nav doc-sub-menu">
+                                        <li><a class="scrollto" href="#connection">Connection</a></li>
+                                        <li><a class="scrollto" href="#login">Login</a></li>
+                                    </ul><!--//nav-->
+                                </li>
+                                <li><a class="scrollto" href="#meeting-section">Joining a Meeting</a></li>
+                                <li><a class="scrollto" href="#conversation-section">Having a Conversation</a></li>
+                                <li><a class="scrollto" href="#groupchat-section">Joining a Group Chat</a></li>
+                                <li><a class="scrollto" href="#chat-section">Having a Chat</a></li>
+                                <li><a class="scrollto" href="#videoconf-section">Joining a SIP Video Conference</a></li>
+                            </ul><!--//doc-menu-->
+                        </nav>
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->
+
+    </div><!--//page-wrapper-->
+
+    <footer id="footer" class="footer text-center">
+        <div class="container">
+            <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
+            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com/" targe="_blank">Xiaoying Riley</a> for developers</small>
+
+        </div><!--//container-->
+    </footer><!--//footer-->
+
+
+    <!-- Main Javascript -->
+    <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-match-height/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+
+</body>
+</html>
