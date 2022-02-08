@@ -49,11 +49,11 @@
 
                 var chatbox = data.chatbox;
                 var bodyElement = data.stanza.querySelector('body');
+                var url = _converse.api.settings.get("jitsimeet_url");				
 
-                if (bodyElement)
+                if (bodyElement && url)
                 {
                     var body = bodyElement.innerHTML;
-                    var url = _converse.api.settings.get("jitsimeet_url");
                     var pos = body.indexOf(url + "/");
 
                     if (pos > -1)
