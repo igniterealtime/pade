@@ -78,8 +78,12 @@ chrome.windows.onCreated.addListener((win) => {
 });	
 
 chrome.windows.onRemoved.addListener((win) => {
-	//console.debug("onRemoved", win);
-	chrome.storage.local.remove('converseWin');
+	//console.debug("onRemoved", win);	
+	chrome.storage.local.get('converseWin', (data) => {	
+		if (data.converseWin && data.converseWin == win) {	
+			chrome.storage.local.remove('converseWin');	
+		}
+	});	
 });	
 
 // -------------------------------------------------------
@@ -96,7 +100,7 @@ function openPadeConverseWindow() {
 				let window = null;
 
 				for (let win of windows) {
-					if (data.converseWin == win.id || (win.type == "popup" && win.width == 1300 && win.height == 900)) window = win;
+					if (data.converseWin == win.id) window = win;
 				}
 				
 				if (window) {
