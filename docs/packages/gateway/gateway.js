@@ -189,7 +189,7 @@
 
                                 if (post.title && post.title.trim() != "")
                                 {
-                                    let htmlTemp = (groupChat ? stamp : feed.title + " - " + stamp) + "<br/><b><a target='_blank' href='" + post.link + "'>" + post.title + "</a></b>";
+                                    let htmlTemp = (groupChat ? stamp : "" + feed.title.toUpperCase() + " - " + stamp) + "<br/><b><a target='_blank' href='" + post.link + "'>" + post.title + "</a></b>";
 
                                     if (getSetting("showRssSummary", false))
                                     {
