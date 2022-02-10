@@ -6,7 +6,7 @@ var branding = {
     beeFeedCheck            : {disable: true},
     beeKeeperPageSize       : {disable: true},
 	
-    enableDirectorySearch   : {disable: true, value: false},
+    enableDirectorySearch   : {disable: false, value: false},
     audioOnly               : {disable: true},
     blastDescription        : {disable: true},
     blogDescription         : {disable: true},
