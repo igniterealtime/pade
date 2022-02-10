@@ -1011,7 +1011,23 @@ this.manifest = {
             "name": "enableVoiceChatText",
             "type": "checkbox",
             "label": i18n.get("Enable Voice Chat to Text Transcription")
-        },	
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Voice Chat"),
+            "name": "voiceChatDomain",
+            "type": "text",
+            "label": i18n.get("Domain"),
+            "text": "example.com"
+        },
+        {
+            "tab": i18n.get("Converse"),
+            "group": i18n.get("Voice Chat"),
+            "name": "voiceChatUri",
+            "type": "text",
+            "label": i18n.get("Service Uri"),
+            "text": "wss://example.com:7443/ws/"
+        },		
         {
             "tab": i18n.get("Converse"),
             "group": i18n.get("Meetings"),
@@ -1971,7 +1987,11 @@ this.manifest = {
         ],
         [
             "homePage"
-        ]
+        ],
+		[
+			"voiceChatDomain",
+			"voiceChatUri"
+		]
     ]
 };
 

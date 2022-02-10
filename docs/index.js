@@ -370,10 +370,10 @@ function startConverse() {
 		view_mode: "fullscreen",
 		voicechat: {
 			hosts: {
-				domain: domain,
-				muc: 'conference.' + domain,
+				domain: getSetting("voiceChatDomain", domain),
+				muc: 'conference.' + getSetting("voiceChatDomain", domain),
 			},					
-			serviceUrl: (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/',
+			serviceUrl: getSetting("voiceChatUri", (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/'),
 			prefix: getSetting("voiceChatPrefix", "VC"),
 			transcribe: getSetting("enableVoiceChatText", false),
 			transcribeLanguage: getSetting("transcribeLanguage", "en-GB"),
