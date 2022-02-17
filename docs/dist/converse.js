@@ -25958,15 +25958,14 @@ const MessageMixin = {
 
     this.initialized = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_4__.getOpenPromise)();
 
-    if (this.get('type') === 'chat') {
-      _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.prototype.initialize.apply(this, arguments);
-      this.setRosterContact(Strophe.getBareJidFromJid(this.get('from')));
-    }
-
     if (this.get('file')) {
-      this.on('change:put', this.uploadFile, this);
-    }
+      this.on('change:put', () => this.uploadFile());
+    } // If `type` changes from `error` to `chat`, we want to set the contact. See #2733
 
+
+    this.on('change:type', () => this.setContact());
+    this.on('change:is_ephemeral', () => this.setTimerForEphemeralMessage());
+    await this.setContact();
     this.setTimerForEphemeralMessage();
     /**
      * Triggered once a {@link _converse.Message} has been created and initialized.
@@ -25981,24 +25980,25 @@ const MessageMixin = {
     this.initialized.resolve();
   },
 
+  setContact() {
+    if (this.get('type') === 'chat') {
+      _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.prototype.initialize.apply(this, arguments);
+      this.setRosterContact(Strophe.getBareJidFromJid(this.get('from')));
+    }
+  },
+
   /**
    * Sets an auto-destruct timer for this message, if it's is_ephemeral.
    * @private
    * @method _converse.Message#setTimerForEphemeralMessage
-   * @returns { Boolean } - Indicates whether the message is
-   *   ephemeral or not, and therefore whether the timer was set or not.
    */
   setTimerForEphemeralMessage() {
-    const setTimer = () => {
-      this.ephemeral_timer = window.setTimeout(this.safeDestroy.bind(this), 10000);
-    };
+    if (this.ephemeral_timer) {
+      clearTimeout(this.ephemeral_timer);
+    }
 
     if (this.isEphemeral()) {
-      setTimer();
-      return true;
-    } else {
-      this.on('change:is_ephemeral', () => this.isEphemeral() ? setTimer() : clearTimeout(this.ephemeral_timer));
-      return false;
+      this.ephemeral_timer = window.setTimeout(() => this.safeDestroy(), 10000);
     }
   },
 
@@ -26803,12 +26803,24 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
   },
 
   getUpdatedMessageAttributes(message, attrs) {
-    // Filter the attrs object, restricting it to only the `is_archived` key.
-    return (({
-      is_archived
-    }) => ({
-      is_archived
-    }))(attrs);
+    if (!attrs.error_type && message.get('error_type') === 'Decryption') {
+      // Looks like we have a failed decrypted message stored, and now
+      // we have a properly decrypted version of the same message.
+      // See issue: https://github.com/conversejs/converse.js/issues/2733#issuecomment-1035493594
+      return Object.assign({}, attrs, {
+        error_condition: undefined,
+        error_message: undefined,
+        error_text: undefined,
+        error_type: undefined,
+        is_archived: attrs.is_archived,
+        is_ephemeral: false,
+        is_error: false
+      });
+    } else {
+      return {
+        is_archived: attrs.is_archived
+      };
+    }
   },
 
   updateMessage(message, attrs) {
@@ -31541,19 +31553,20 @@ const ChatRoomMessageMixin = {
     }
 
     if (this.get('file')) {
-      this.on('change:put', this.uploadFile, this);
-    }
+      this.on('change:put', () => this.uploadFile());
+    } // If `type` changes from `error` to `groupchat`, we want to set the occupant. See #2733
 
-    if (!this.setTimerForEphemeralMessage()) {
-      this.setOccupant();
-    }
+
+    this.on('change:type', () => this.setOccupant());
+    this.on('change:is_ephemeral', () => this.setTimerForEphemeralMessage());
+    this.setTimerForEphemeralMessage();
+    this.setOccupant();
     /**
      * Triggered once a {@link _converse.ChatRoomMessageInitialized} has been created and initialized.
      * @event _converse#chatRoomMessageInitialized
      * @type { _converse.ChatRoomMessages}
      * @example _converse.api.listen.on('chatRoomMessageInitialized', model => { ... });
      */
-
 
     _core_js__WEBPACK_IMPORTED_MODULE_2__.api.trigger('chatRoomMessageInitialized', this);
   },
@@ -31629,7 +31642,7 @@ const ChatRoomMessageMixin = {
   setOccupant() {
     var _this$collection3;
 
-    if (this.get('type') !== 'groupchat') {
+    if (this.get('type') !== 'groupchat' || this.isEphemeral() || this.occupant) {
       return;
     }
 
@@ -31819,9 +31832,13 @@ const ChatRoomMixin = {
   async restoreFromCache() {
     if (this.isEntered() && (await this.isJoined())) {
       // We've restored the room from cache and we're still joined.
-      await new Promise(resolve => this.features.fetch({
-        'success': resolve,
-        'error': resolve
+      await new Promise(r => this.features.fetch({
+        'success': r,
+        'error': r
+      }));
+      await new Promise(r => this.config.fetch({
+        'success': r,
+        'error': r
       }));
       await this.fetchOccupants().catch(e => _log__WEBPACK_IMPORTED_MODULE_0__.default.error(e));
       await this.fetchMessages().catch(e => _log__WEBPACK_IMPORTED_MODULE_0__.default.error(e));
@@ -32080,8 +32097,10 @@ const ChatRoomMixin = {
     }, (0,lodash_es_zipObject__WEBPACK_IMPORTED_MODULE_15__.default)(_core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOM_FEATURES, _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOM_FEATURES.map(() => false))));
     this.features.browserStorage = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.createStore(id, 'session');
     this.features.listenTo(_core_js__WEBPACK_IMPORTED_MODULE_6__._converse, 'beforeLogout', () => this.features.browserStorage.flush());
-    id = `converse.muc-config-{_converse.bare_jid}-${this.get('jid')}`;
-    this.config = new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_4__.Model();
+    id = `converse.muc-config-${_core_js__WEBPACK_IMPORTED_MODULE_6__._converse.bare_jid}-${this.get('jid')}`;
+    this.config = new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_4__.Model({
+      id
+    });
     this.config.browserStorage = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.createStore(id, 'session');
     this.config.listenTo(_core_js__WEBPACK_IMPORTED_MODULE_6__._converse, 'beforeLogout', () => this.config.browserStorage.flush());
   },
@@ -32870,7 +32889,7 @@ const ChatRoomMixin = {
     const config = fields.reduce((config, f) => {
       const name = f.get('var');
 
-      if (name && name.startsWith('muc#roominfo_')) {
+      if (name !== null && name !== void 0 && name.startsWith('muc#roominfo_')) {
         config[name.replace('muc#roominfo_', '')] = f.get('value');
       }
 
@@ -39617,7 +39636,7 @@ function getOpenGraphMetadata(stanza) {
 
   return {};
 }
-function getMediaURLsMetadata(text) {
+function getMediaURLsMetadata(text, offset = 0) {
   const objs = [];
 
   if (!text) {
@@ -39638,8 +39657,8 @@ function getMediaURLsMetadata(text) {
 
       objs.push({
         url,
-        start,
-        end
+        'start': start + offset,
+        'end': end + offset
       });
       return url;
     }, _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_5__.URL_PARSE_OPTIONS);
@@ -42237,190 +42256,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/modals/muc-details.js":
-/*!***********************************!*\
-  !*** ./src/modals/muc-details.js ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/muc-details.js */ "./src/modals/templates/muc-details.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.extend({
-  id: "muc-details-modal",
-
-  initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-    this.listenTo(this.model.features, 'change', this.render);
-    this.listenTo(this.model.occupants, 'add', this.render);
-    this.listenTo(this.model.occupants, 'change', this.render);
-  },
-
-  toHTML() {
-    return (0,_templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__.default)(this.model);
-  }
-
-}));
-
-/***/ }),
-
-/***/ "./src/modals/muc-invite.js":
-/*!**********************************!*\
-  !*** ./src/modals/muc-invite.js ***!
-  \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var shared_autocomplete_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/autocomplete/index.js */ "./src/shared/autocomplete/index.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/muc-invite.js */ "./src/modals/templates/muc-invite.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-
-
-
-
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.utils;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__.default.extend({
-  id: "muc-invite-modal",
-
-  initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__.default.prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-    this.initInviteWidget();
-  },
-
-  toHTML() {
-    return (0,_templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__.default)(Object.assign(this.model.toJSON(), {
-      'submitInviteForm': ev => this.submitInviteForm(ev)
-    }));
-  },
-
-  initInviteWidget() {
-    if (this.invite_auto_complete) {
-      this.invite_auto_complete.destroy();
-    }
-
-    const list = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.map(i => ({
-      'label': i.getDisplayName(),
-      'value': i.get('jid')
-    }));
-
-    const el = this.el.querySelector('.suggestion-box').parentElement;
-    this.invite_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.AutoComplete(el, {
-      'min_chars': 1,
-      'list': list
-    });
-  },
-
-  submitInviteForm(ev) {
-    ev.preventDefault(); // TODO: Add support for sending an invite to multiple JIDs
-
-    const data = new FormData(ev.target);
-    const jid = data.get('invitee_jids');
-    const reason = data.get('reason');
-
-    if (u.isValidJID(jid)) {
-      // TODO: Create and use API here
-      this.chatroomview.model.directInvite(jid, reason);
-      this.modal.hide();
-    } else {
-      this.model.set({
-        'invalid_invite_jid': true
-      });
-    }
-  }
-
-}));
-
-/***/ }),
-
-/***/ "./src/modals/occupant.js":
-/*!********************************!*\
-  !*** ./src/modals/occupant.js ***!
-  \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/occupant.js */ "./src/modals/templates/occupant.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _modals_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals.scss */ "./src/modals/modals.scss");
-
-
-
-
-const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.extend({
-  id: "muc-occupant",
-
-  initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.prototype.initialize.apply(this, arguments);
-
-    if (this.model) {
-      this.listenTo(this.model, 'change', this.render);
-    }
-    /**
-     * Triggered once the OccupantModal has been initialized
-     * @event _converse#occupantModalInitialized
-     * @type { Object }
-     * @example _converse.api.listen.on('occupantModalInitialized', data);
-     */
-
-
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('occupantModalInitialized', {
-      'model': this.model,
-      'message': this.message
-    });
-  },
-
-  toHTML() {
-    var _this$model, _this$model2, _this$model3, _this$model3$get;
-
-    const model = this.model ?? this.message;
-    const jid = model === null || model === void 0 ? void 0 : model.get('jid');
-
-    const vcard = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.vcards.findWhere({
-      jid
-    });
-
-    const display_name = model === null || model === void 0 ? void 0 : model.getDisplayName();
-    const nick = model.get('nick');
-    const occupant_id = model.get('occupant_id');
-    const role = (_this$model = this.model) === null || _this$model === void 0 ? void 0 : _this$model.get('role');
-    const affiliation = (_this$model2 = this.model) === null || _this$model2 === void 0 ? void 0 : _this$model2.get('affiliation');
-    const hats = (_this$model3 = this.model) !== null && _this$model3 !== void 0 && (_this$model3$get = _this$model3.get('hats')) !== null && _this$model3$get !== void 0 && _this$model3$get.length ? this.model.get('hats') : null;
-    return (0,_templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__.default)({
-      jid,
-      vcard,
-      display_name,
-      nick,
-      occupant_id,
-      role,
-      affiliation,
-      hats
-    });
-  }
-
-});
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.OccupantModal = OccupantModal;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OccupantModal);
-
-/***/ }),
-
 /***/ "./src/modals/templates/add-contact.js":
 /*!*********************************************!*\
   !*** ./src/modals/templates/add-contact.js ***!
@@ -42568,290 +42403,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/modals/templates/muc-details.js":
-/*!*********************************************!*\
-  !*** ./src/modals/templates/muc-details.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-
-const subject = o => {
-  const i18n_topic = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Topic');
-
-  const i18n_topic_author = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Topic author');
-
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <p class="room-info"><strong>${i18n_topic}</strong>: ${o.subject.text}</p>
-        <p class="room-info"><strong>${i18n_topic_author}</strong>: ${o.subject && o.subject.author}</p>
-    `;
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => {
-  const o = model.toJSON();
-  const config = model.config.toJSON();
-
-  const display_name = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Groupchat info for %1$s', model.getDisplayName());
-
-  const features = model.features.toJSON();
-  const num_occupants = model.occupants.filter(o => o.get('show') !== 'offline').length;
-
-  const i18n_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Groupchat XMPP address');
-
-  const i18n_archiving = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Message archiving');
-
-  const i18n_archiving_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Messages are archived on the server');
-
-  const i18n_desc = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Description');
-
-  const i18n_features = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Features');
-
-  const i18n_hidden = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Hidden');
-
-  const i18n_hidden_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat is not publicly searchable');
-
-  const i18n_members_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat is restricted to members only');
-
-  const i18n_members_only = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Members only');
-
-  const i18n_moderated = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moderated');
-
-  const i18n_moderated_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Participants entering this groupchat need to request permission to write');
-
-  const i18n_name = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Name');
-
-  const i18n_no_pass_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat does not require a password upon entry');
-
-  const i18n_no_password_required = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No password required');
-
-  const i18n_not_anonymous = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Not anonymous');
-
-  const i18n_not_anonymous_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('All other groupchat participants can see your XMPP address');
-
-  const i18n_not_moderated = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Not moderated');
-
-  const i18n_not_moderated_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Participants entering this groupchat can write right away');
-
-  const i18n_online_users = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Online users');
-
-  const i18n_open = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Open');
-
-  const i18n_open_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Anyone can join this groupchat');
-
-  const i18n_password_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat requires a password before entry');
-
-  const i18n_password_protected = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password protected');
-
-  const i18n_persistent = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Persistent');
-
-  const i18n_persistent_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat persists even if it\'s unoccupied');
-
-  const i18n_public = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Public');
-
-  const i18n_semi_anon = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semi-anonymous');
-
-  const i18n_semi_anon_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Only moderators can see your XMPP address');
-
-  const i18n_temporary = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Temporary');
-
-  const i18n_temporary_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat will disappear once the last person leaves');
-
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="muc-details-modal-label">${display_name}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body">
-                    <span class="modal-alert"></span>
-                    <div class="room-info">
-                        <p class="room-info"><strong>${i18n_name}</strong>: ${o.name}</p>
-                        <p class="room-info"><strong>${i18n_address}</strong>: ${o.jid}</p>
-                        <p class="room-info"><strong>${i18n_desc}</strong>: ${config.description}</p>
-                        ${o.subject ? subject(o) : ''}
-                        <p class="room-info"><strong>${i18n_online_users}</strong>: ${num_occupants}</p>
-                        <p class="room-info"><strong>${i18n_features}</strong>:
-                            <div class="chatroom-features">
-                            <ul class="features-list">
-                                ${features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon size="1em">${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
-                                ${features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon size="1em">${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
-                                ${features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon size="1em">${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
-                                ${features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon size="1em">${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
-                                ${features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon size="1em">${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
-                                ${features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon size="1em">${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
-                                ${features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon size="1em">${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
-                                ${features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake-o"></converse-icon size="1em">${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
-                                ${features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon size="1em">${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
-                                ${features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon size="1em">${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
-                                ${features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon size="1em">${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
-                                ${features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon size="1em">${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
-                                ${features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon size="1em">${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
-                            </ul>
-                            </div>
-                        </p>
-                    </div>
-                </div>
-                <div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>
-            </div>
-        </div>
-    `;
-});
-
-/***/ }),
-
-/***/ "./src/modals/templates/muc-invite.js":
-/*!********************************************!*\
-  !*** ./src/modals/templates/muc-invite.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_invite = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Invite');
-
-  const i18n_invite_heading = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Invite someone to this groupchat');
-
-  const i18n_jid_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('user@example.org');
-
-  const i18n_error_message = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Please enter a valid XMPP address');
-
-  const i18n_invite_label = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address');
-
-  const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Optional reason for the invitation');
-
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-chatroom-modal-label">${i18n_invite_heading}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body">
-                    <span class="modal-alert"></span>
-                    <div class="suggestion-box room-invite">
-                        <form @submit=${o.submitInviteForm}>
-                            <div class="form-group">
-                                <label class="clearfix" for="invitee_jids">${i18n_invite_label}:</label>
-                                ${o.invalid_invite_jid ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="error error-feedback">${i18n_error_message}</div>` : ''}
-                                <input class="form-control suggestion-box__input"
-                                    required="required"
-                                    name="invitee_jids"
-                                    id="invitee_jids"
-                                    placeholder="${i18n_jid_placeholder}"
-                                    type="text"/>
-                                <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
-                                <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>
-                            </div>
-                            <div class="form-group">
-                                <label>${i18n_reason}:</label>
-                                <textarea class="form-control" name="reason"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">${i18n_invite}</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-});
-
-/***/ }),
-
-/***/ "./src/modals/templates/occupant.js":
-/*!******************************************!*\
-  !*** ./src/modals/templates/occupant.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var shared_avatar_avatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/avatar/avatar.js */ "./src/shared/avatar/avatar.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  var _o$vcard, _o$vcard2;
-
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="user-details-modal-label">${o.display_name}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
-                </div>
-                <div class="modal-body" class="d-flex">
-                    <div class="row">
-                        <div class="col-auto">
-                            <converse-avatar
-                                class="avatar modal-avatar"
-                                .data=${(_o$vcard = o.vcard) === null || _o$vcard === void 0 ? void 0 : _o$vcard.attributes}
-                                nonce=${(_o$vcard2 = o.vcard) === null || _o$vcard2 === void 0 ? void 0 : _o$vcard2.get('vcard_updated')}
-                                height="120" width="120"></converse-avatar>
-                        </div>
-                        <div class="col">
-                            <ul class="occupant-details">
-                                <li>
-                                    ${o.nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${o.nick}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${o.jid}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${o.affiliation}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${o.role}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${o.hats}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${o.occupant_id}</div>` : ''}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}
-                </div>
-            </div>
-        </div>
-    `;
-});
-
-/***/ }),
-
 /***/ "./src/modals/templates/user-details.js":
 /*!**********************************************!*\
   !*** ./src/modals/templates/user-details.js ***!
@@ -42930,7 +42481,13 @@ const remove_button = o => {
                 </div>
                 <div class="modal-footer">
                     ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}
-                    <button type="button" class="btn btn-info refresh-contact"><i class="fa fa-refresh"> </i>${i18n_refresh}</button>
+                    <button type="button" class="btn btn-info refresh-contact">
+                        <converse-icon
+                            class="fa fa-refresh"
+                            color="var(--text-color-lighten-15-percent)"
+                            size="1em"
+                        ></converse-icon>
+                        ${i18n_refresh}</button>
                     ${o.allow_contact_removal && o.is_roster_contact ? remove_button(o) : ''}
 
                 </div>
@@ -44523,6 +44080,7 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(this.getAttribute('jid'));
     await this.model.initialized;
     this.listenTo(this.model.messages, 'change:correcting', this.onMessageCorrecting);
+    this.listenTo(this.model, 'change:composing_spoiler', () => this.render());
     this.render();
   }
 
@@ -48902,9 +48460,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ MUCHeading)
 /* harmony export */ });
 /* harmony import */ var _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/skeletor/src/element.js */ "./node_modules/@converse/skeletor/src/element.js");
-/* harmony import */ var modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modals/muc-invite.js */ "./src/modals/muc-invite.js");
+/* harmony import */ var _modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/muc-invite.js */ "./src/plugins/muc-views/modals/muc-invite.js");
 /* harmony import */ var _modals_nickname_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modals/nickname.js */ "./src/plugins/muc-views/modals/nickname.js");
-/* harmony import */ var modals_muc_details_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modals/muc-details.js */ "./src/modals/muc-details.js");
+/* harmony import */ var _modals_muc_details_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals/muc-details.js */ "./src/plugins/muc-views/modals/muc-details.js");
 /* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
 /* harmony import */ var _templates_muc_head_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/muc-head.js */ "./src/plugins/muc-views/templates/muc-head.js");
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
@@ -48962,14 +48520,14 @@ class MUCHeading extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MOD
 
   showRoomDetailsModal(ev) {
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(modals_muc_details_js__WEBPACK_IMPORTED_MODULE_3__.default, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(_modals_muc_details_js__WEBPACK_IMPORTED_MODULE_3__.default, {
       'model': this.model
     }, ev);
   }
 
   showInviteModal(ev) {
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_1__.default, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(_modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_1__.default, {
       'model': new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_5__.Model(),
       'chatroomview': this
     }, ev);
@@ -49228,6 +48786,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
         (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.clearHistory)(model.get('jid'));
       }
     });
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_5__.parseMessageForMUCCommands);
   }
 
 });
@@ -49257,7 +48816,6 @@ class MUCMessageForm extends plugins_chatview_message_form_js__WEBPACK_IMPORTED_
   async connectedCallback() {
     super.connectedCallback();
     await this.model.initialized;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_3__.parseMessageForMUCCommands);
   }
 
   toHTML() {
@@ -49492,6 +49050,116 @@ const ModeratorToolsModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__.d
 
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModeratorToolsModal);
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/modals/muc-details.js":
+/*!*****************************************************!*\
+  !*** ./src/plugins/muc-views/modals/muc-details.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var _templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/muc-details.js */ "./src/plugins/muc-views/modals/templates/muc-details.js");
+/* harmony import */ var _styles_muc_details_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/muc-details.scss */ "./src/plugins/muc-views/styles/muc-details.scss");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.extend({
+  id: "muc-details-modal",
+
+  initialize() {
+    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.prototype.initialize.apply(this, arguments);
+    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model.features, 'change', this.render);
+    this.listenTo(this.model.occupants, 'add', this.render);
+    this.listenTo(this.model.occupants, 'change', this.render);
+  },
+
+  toHTML() {
+    return (0,_templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__.default)(this.model);
+  }
+
+}));
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/modals/muc-invite.js":
+/*!****************************************************!*\
+  !*** ./src/plugins/muc-views/modals/muc-invite.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var shared_autocomplete_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/autocomplete/index.js */ "./src/shared/autocomplete/index.js");
+/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var _templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/muc-invite.js */ "./src/plugins/muc-views/modals/templates/muc-invite.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+
+const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.utils;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__.default.extend({
+  id: "muc-invite-modal",
+
+  initialize() {
+    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__.default.prototype.initialize.apply(this, arguments);
+    this.listenTo(this.model, 'change', this.render);
+    this.initInviteWidget();
+  },
+
+  toHTML() {
+    return (0,_templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__.default)(Object.assign(this.model.toJSON(), {
+      'submitInviteForm': ev => this.submitInviteForm(ev)
+    }));
+  },
+
+  initInviteWidget() {
+    if (this.invite_auto_complete) {
+      this.invite_auto_complete.destroy();
+    }
+
+    const list = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.map(i => ({
+      'label': i.getDisplayName(),
+      'value': i.get('jid')
+    }));
+
+    const el = this.el.querySelector('.suggestion-box').parentElement;
+    this.invite_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.AutoComplete(el, {
+      'min_chars': 1,
+      'list': list
+    });
+  },
+
+  submitInviteForm(ev) {
+    ev.preventDefault(); // TODO: Add support for sending an invite to multiple JIDs
+
+    const data = new FormData(ev.target);
+    const jid = data.get('invitee_jids');
+    const reason = data.get('reason');
+
+    if (u.isValidJID(jid)) {
+      // TODO: Create and use API here
+      this.chatroomview.model.directInvite(jid, reason);
+      this.modal.hide();
+    } else {
+      this.model.set({
+        'invalid_invite_jid': true
+      });
+    }
+  }
+
+}));
 
 /***/ }),
 
@@ -49730,6 +49398,80 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/plugins/muc-views/modals/occupant.js":
+/*!**************************************************!*\
+  !*** ./src/plugins/muc-views/modals/occupant.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var _templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/occupant.js */ "./src/plugins/muc-views/modals/templates/occupant.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.extend({
+  id: "muc-occupant",
+
+  initialize() {
+    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__.default.prototype.initialize.apply(this, arguments);
+
+    if (this.model) {
+      this.listenTo(this.model, 'change', this.render);
+    }
+    /**
+     * Triggered once the OccupantModal has been initialized
+     * @event _converse#occupantModalInitialized
+     * @type { Object }
+     * @example _converse.api.listen.on('occupantModalInitialized', data);
+     */
+
+
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('occupantModalInitialized', {
+      'model': this.model,
+      'message': this.message
+    });
+  },
+
+  toHTML() {
+    var _this$model, _this$model2, _this$model3, _this$model3$get;
+
+    const model = this.model ?? this.message;
+    const jid = model === null || model === void 0 ? void 0 : model.get('jid');
+
+    const vcard = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.vcards.findWhere({
+      jid
+    });
+
+    const display_name = model === null || model === void 0 ? void 0 : model.getDisplayName();
+    const nick = model.get('nick');
+    const occupant_id = model.get('occupant_id');
+    const role = (_this$model = this.model) === null || _this$model === void 0 ? void 0 : _this$model.get('role');
+    const affiliation = (_this$model2 = this.model) === null || _this$model2 === void 0 ? void 0 : _this$model2.get('affiliation');
+    const hats = (_this$model3 = this.model) !== null && _this$model3 !== void 0 && (_this$model3$get = _this$model3.get('hats')) !== null && _this$model3$get !== void 0 && _this$model3$get.length ? this.model.get('hats') : null;
+    return (0,_templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__.default)({
+      jid,
+      vcard,
+      display_name,
+      nick,
+      occupant_id,
+      role,
+      affiliation,
+      hats
+    });
+  }
+
+});
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.OccupantModal = OccupantModal;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OccupantModal);
+
+/***/ }),
+
 /***/ "./src/plugins/muc-views/modals/templates/moderator-tools.js":
 /*!*******************************************************************!*\
   !*** ./src/plugins/muc-views/modals/templates/moderator-tools.js ***!
@@ -49762,6 +49504,218 @@ __webpack_require__.r(__webpack_exports__);
                 </div>
             </div>
         </div>`;
+});
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/modals/templates/muc-details.js":
+/*!***************************************************************!*\
+  !*** ./src/plugins/muc-views/modals/templates/muc-details.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
+
+
+
+
+const subject = o => {
+  const i18n_topic = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Topic');
+
+  const i18n_topic_author = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Topic author');
+
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+        <p class="room-info"><strong>${i18n_topic}</strong>: <converse-rich-text text=${o.subject.text} render_styling></converse-rich-text></p>
+        <p class="room-info"><strong>${i18n_topic_author}</strong>: ${o.subject && o.subject.author}</p>
+    `;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => {
+  const o = model.toJSON();
+  const config = model.config.toJSON();
+
+  const display_name = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Groupchat info for %1$s', model.getDisplayName());
+
+  const features = model.features.toJSON();
+  const num_occupants = model.occupants.filter(o => o.get('show') !== 'offline').length;
+
+  const i18n_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('XMPP address');
+
+  const i18n_archiving = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Message archiving');
+
+  const i18n_archiving_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Messages are archived on the server');
+
+  const i18n_desc = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Description');
+
+  const i18n_features = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Features');
+
+  const i18n_hidden = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Hidden');
+
+  const i18n_hidden_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat is not publicly searchable');
+
+  const i18n_members_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat is restricted to members only');
+
+  const i18n_members_only = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Members only');
+
+  const i18n_moderated = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moderated');
+
+  const i18n_moderated_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Participants entering this groupchat need to request permission to write');
+
+  const i18n_name = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Name');
+
+  const i18n_no_pass_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat does not require a password upon entry');
+
+  const i18n_no_password_required = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No password required');
+
+  const i18n_not_anonymous = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Not anonymous');
+
+  const i18n_not_anonymous_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('All other groupchat participants can see your XMPP address');
+
+  const i18n_not_moderated = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Not moderated');
+
+  const i18n_not_moderated_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Participants entering this groupchat can write right away');
+
+  const i18n_online_users = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Online users');
+
+  const i18n_open = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Open');
+
+  const i18n_open_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Anyone can join this groupchat');
+
+  const i18n_password_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat requires a password before entry');
+
+  const i18n_password_protected = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password protected');
+
+  const i18n_persistent = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Persistent');
+
+  const i18n_persistent_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat persists even if it\'s unoccupied');
+
+  const i18n_public = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Public');
+
+  const i18n_semi_anon = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semi-anonymous');
+
+  const i18n_semi_anon_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Only moderators can see your XMPP address');
+
+  const i18n_temporary = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Temporary');
+
+  const i18n_temporary_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat will disappear once the last person leaves');
+
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="muc-details-modal-label">${display_name}</h5>
+                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
+                </div>
+                <div class="modal-body">
+                    <span class="modal-alert"></span>
+                    <div class="room-info">
+                        <p class="room-info"><strong>${i18n_name}</strong>: ${o.name}</p>
+                        <p class="room-info"><strong>${i18n_address}</strong>: <converse-rich-text text="xmpp:${o.jid}?join"></converse-rich-text></p>
+                        <p class="room-info"><strong>${i18n_desc}</strong>: <converse-rich-text text="${config.description}" render_styling></converse-rich-text></p>
+                        ${o.subject ? subject(o) : ''}
+                        <p class="room-info"><strong>${i18n_online_users}</strong>: ${num_occupants}</p>
+                        <p class="room-info"><strong>${i18n_features}</strong>:
+                            <div class="chatroom-features">
+                            <ul class="features-list">
+                                ${features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon>${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
+                                ${features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon>${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
+                                ${features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon>${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
+                                ${features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon>${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
+                                ${features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon>${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
+                                ${features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon>${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
+                                ${features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon>${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
+                                ${features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake-o"></converse-icon>${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
+                                ${features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon>${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
+                                ${features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon>${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
+                                ${features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon>${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
+                                ${features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon>${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
+                                ${features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon>${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
+                            </ul>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>
+            </div>
+        </div>
+    `;
+});
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/modals/templates/muc-invite.js":
+/*!**************************************************************!*\
+  !*** ./src/plugins/muc-views/modals/templates/muc-invite.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
+  const i18n_invite = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Invite');
+
+  const i18n_invite_heading = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Invite someone to this groupchat');
+
+  const i18n_jid_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('user@example.org');
+
+  const i18n_error_message = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Please enter a valid XMPP address');
+
+  const i18n_invite_label = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address');
+
+  const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Optional reason for the invitation');
+
+  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-chatroom-modal-label">${i18n_invite_heading}</h5>
+                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
+                </div>
+                <div class="modal-body">
+                    <span class="modal-alert"></span>
+                    <div class="suggestion-box room-invite">
+                        <form @submit=${o.submitInviteForm}>
+                            <div class="form-group">
+                                <label class="clearfix" for="invitee_jids">${i18n_invite_label}:</label>
+                                ${o.invalid_invite_jid ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="error error-feedback">${i18n_error_message}</div>` : ''}
+                                <input class="form-control suggestion-box__input"
+                                    required="required"
+                                    name="invitee_jids"
+                                    id="invitee_jids"
+                                    placeholder="${i18n_jid_placeholder}"
+                                    type="text"/>
+                                <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
+                                <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>
+                            </div>
+                            <div class="form-group">
+                                <label>${i18n_reason}:</label>
+                                <textarea class="form-control" name="reason"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">${i18n_invite}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 });
 
 /***/ }),
@@ -49801,6 +49755,78 @@ __webpack_require__.r(__webpack_exports__);
                 </div>
             </div>
         </div>`;
+});
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/modals/templates/occupant.js":
+/*!************************************************************!*\
+  !*** ./src/plugins/muc-views/modals/templates/occupant.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var shared_avatar_avatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/avatar/avatar.js */ "./src/shared/avatar/avatar.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
+  var _o$vcard, _o$vcard2;
+
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="user-details-modal-label">${o.display_name}</h5>
+                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
+                </div>
+                <div class="modal-body" class="d-flex">
+                    <div class="row">
+                        <div class="col-auto">
+                            <converse-avatar
+                                class="avatar modal-avatar"
+                                .data=${(_o$vcard = o.vcard) === null || _o$vcard === void 0 ? void 0 : _o$vcard.attributes}
+                                nonce=${(_o$vcard2 = o.vcard) === null || _o$vcard2 === void 0 ? void 0 : _o$vcard2.get('vcard_updated')}
+                                height="120" width="120"></converse-avatar>
+                        </div>
+                        <div class="col">
+                            <ul class="occupant-details">
+                                <li>
+                                    ${o.nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${o.nick}</div>` : ''}
+                                </li>
+                                <li>
+                                    ${o.jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${o.jid}</div>` : ''}
+                                </li>
+                                <li>
+                                    ${o.affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${o.affiliation}</div>` : ''}
+                                </li>
+                                <li>
+                                    ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${o.role}</div>` : ''}
+                                </li>
+                                <li>
+                                    ${o.hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${o.hats}</div>` : ''}
+                                </li>
+                                <li>
+                                    ${o.occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${o.occupant_id}</div>` : ''}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}
+                </div>
+            </div>
+        </div>
+    `;
 });
 
 /***/ }),
@@ -51012,7 +51038,6 @@ const tpl_can_edit = o => {
             <converse-chat-toolbar
                 class="chat-toolbar no-text-select"
                 .model=${o.model}
-                ?composing_spoiler="${o.model.get('composing_spoiler')}"
                 ?hidden_occupants="${o.model.get('hidden_occupants')}"
                 ?is_groupchat="${o.is_groupchat}"
                 ?show_call_button="${show_call_button}"
@@ -51580,11 +51605,11 @@ __webpack_require__.r(__webpack_exports__);
 
   return lit__WEBPACK_IMPORTED_MODULE_0__.html`
         <div class="occupants-header">
-            <i class="hide-occupants" @click=${o.closeSidebar}>
-                <converse-icon color="var(--subdued-color)" class="fa fa-times" size="1em"></converse-icon>
-            </i>
             <div class="occupants-header--title">
                 <span class="occupants-heading">${i18n_participants}</span>
+                <i class="hide-occupants" @click=${o.closeSidebar}>
+                    <converse-icon class="fa fa-times" size="1em"></converse-icon>
+                </i>
             </div>
         </div>
         <div class="dragresize dragresize-occupants-left"></div>
@@ -51769,15 +51794,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "parseMessageForMUCCommands": () => (/* binding */ parseMessageForMUCCommands)
 /* harmony export */ });
 /* harmony import */ var _modals_moderator_tools_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/moderator-tools.js */ "./src/plugins/muc-views/modals/moderator-tools.js");
-/* harmony import */ var modals_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modals/occupant.js */ "./src/modals/occupant.js");
+/* harmony import */ var _modals_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/occupant.js */ "./src/plugins/muc-views/modals/occupant.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! plugins/chatview/utils.js */ "./src/plugins/chatview/utils.js");
-/* harmony import */ var _converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/plugins/muc/affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
-
+/* harmony import */ var _converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/headless/plugins/muc/affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
 
 
 
@@ -52065,7 +52088,7 @@ function verifyAndSetAffiliation(muc, command, args, required_affiliations) {
     attrs['nick'] = occupant.get('nick');
   }
 
-  (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_8__.setAffiliation)(affiliation, muc.get('jid'), [attrs]).then(() => muc.occupants.fetchMembers()).catch(err => muc.onCommandError(err));
+  (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_7__.setAffiliation)(affiliation, muc.get('jid'), [attrs]).then(() => muc.occupants.fetchMembers()).catch(err => muc.onCommandError(err));
 }
 
 function showModeratorToolsModal(muc, affiliation) {
@@ -52088,12 +52111,14 @@ function showModeratorToolsModal(muc, affiliation) {
   modal.show();
 }
 function showOccupantModal(ev, occupant) {
-  _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show(modals_occupant_js__WEBPACK_IMPORTED_MODULE_1__.default, {
+  _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show(_modals_occupant_js__WEBPACK_IMPORTED_MODULE_1__.default, {
     'model': occupant
   }, ev);
 }
 function parseMessageForMUCCommands(data, handled) {
-  if (handled || _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands') && !Array.isArray(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands'))) {
+  const model = data.model;
+
+  if (handled || model.get('type') !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.CHATROOMS_TYPE || _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands') && !Array.isArray(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_disable_slash_commands'))) {
     return handled;
   }
 
@@ -52105,7 +52130,6 @@ function parseMessageForMUCCommands(data, handled) {
     return false;
   }
 
-  const model = data.model;
   const args = text.slice(('/' + command).length + 1).trim();
   const allowed_commands = model.getAllowedCommands() ?? [];
 
@@ -56860,7 +56884,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RoomsList": () => (/* binding */ RoomsList)
 /* harmony export */ });
-/* harmony import */ var modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modals/muc-details.js */ "./src/modals/muc-details.js");
+/* harmony import */ var plugins_muc_views_modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/muc-views/modals/muc-details.js */ "./src/plugins/muc-views/modals/muc-details.js");
 /* harmony import */ var _model_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./model.js */ "./src/plugins/roomslist/model.js");
 /* harmony import */ var _templates_roomslist_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/roomslist.js */ "./src/plugins/roomslist/templates/roomslist.js");
 /* harmony import */ var _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/element.js */ "./node_modules/@converse/skeletor/src/element.js");
@@ -56934,7 +56958,7 @@ class RoomsList extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODU
     const room = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxes.get(jid);
 
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show(modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__.default, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show(plugins_muc_views_modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__.default, {
       'model': room
     }, ev);
   }
@@ -60477,7 +60501,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_registry__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/registry */ "./src/shared/registry.js");
 /* harmony import */ var _templates_file_progress_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/file-progress.js */ "./src/shared/chat/templates/file-progress.js");
 /* harmony import */ var modals_message_versions_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modals/message-versions.js */ "./src/modals/message-versions.js");
-/* harmony import */ var modals_occupant_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! modals/occupant.js */ "./src/modals/occupant.js");
+/* harmony import */ var plugins_muc_views_modals_occupant_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! plugins/muc-views/modals/occupant.js */ "./src/plugins/muc-views/modals/occupant.js");
 /* harmony import */ var modals_user_details_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! modals/user-details.js */ "./src/modals/user-details.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var _templates_info_message_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./templates/info-message.js */ "./src/shared/chat/templates/info-message.js");
@@ -60716,7 +60740,7 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
       }, ev);
     } else if (this.model.get('type') === 'groupchat') {
       ev.preventDefault();
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show(modals_occupant_js__WEBPACK_IMPORTED_MODULE_6__.default, {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show(plugins_muc_views_modals_occupant_js__WEBPACK_IMPORTED_MODULE_6__.default, {
         'model': this.model.occupant,
         'message': this.model
       }, ev);
@@ -61021,7 +61045,7 @@ const tpl_edited_icon = el => {
         <div class="chat-msg__spoiler-hint">
             <span class="spoiler-hint">${el.model.get('spoiler_hint')}</span>
             <a class="badge badge-info spoiler-toggle" href="#" @click=${el.toggleSpoilerMessage}>
-                <i class="fa ${el.model.get('is_spoiler_visible') ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                <converse-icon size="1em" color="var(--background)" class="fa ${el.model.get('is_spoiler_visible') ? 'fa-eye-slash' : 'fa-eye'}"></converse-icon>
                 ${el.model.get('is_spoiler_visible') ? i18n_show_less : i18n_show}
             </a>
         </div>
@@ -61311,9 +61335,6 @@ const Strophe = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.en
 class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__.CustomElement {
   static get properties() {
     return {
-      composing_spoiler: {
-        type: Boolean
-      },
       hidden_occupants: {
         type: Boolean
       },
@@ -61343,7 +61364,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
 
   connectedCallback() {
     super.connectedCallback();
-    this.listenTo(this.model, 'change:composing_spoiler', this.requestUpdate);
+    this.listenTo(this.model, 'change:composing_spoiler', () => this.requestUpdate());
   }
 
   render() {
@@ -61457,7 +61478,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
 
     let i18n_toggle_spoiler;
 
-    if (this.composing_spoiler) {
+    if (model.get('composing_spoiler')) {
       i18n_toggle_spoiler = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Click to write as a normal (non-spoiler) message");
     } else {
       i18n_toggle_spoiler = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Click to write your message as a spoiler");
@@ -61470,7 +61491,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
                     @click=${this.toggleComposeSpoilerMessage}>
                 <converse-icon
                     color="var(${color})"
-                    class="fa ${this.composing_spoiler ? 'fa-eye-slash' : 'fa-eye'}"
+                    class="fa ${model.get('composing_spoiler') ? 'fa-eye-slash' : 'fa-eye'}"
                     size="1em"></converse-icon>
             </button>`;
 
@@ -64484,7 +64505,7 @@ class RichText extends String {
 
   addHyperlinks(text, local_offset) {
     const full_offset = local_offset + this.offset;
-    const urls_meta = this.media_urls || (0,_converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_8__.getMediaURLsMetadata)(text).media_urls || [];
+    const urls_meta = this.media_urls || (0,_converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_8__.getMediaURLsMetadata)(text, local_offset).media_urls || [];
     const media_urls = (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_7__.getMediaURLs)(urls_meta, text, full_offset);
     media_urls.filter(o => !o.is_encrypted).forEach(url_obj => {
       const url_text = url_obj.url;
@@ -65210,6 +65231,9 @@ __webpack_require__.r(__webpack_exports__);
     <symbol id="icon-wrench" viewBox="0 0 512 512">
         <path d="M507.73 109.1c-2.24-9.03-13.54-12.09-20.12-5.51l-74.36 74.36-67.88-11.31-11.31-67.88 74.36-74.36c6.62-6.62 3.43-17.9-5.66-20.16-47.38-11.74-99.55.91-136.58 37.93-39.64 39.64-50.55 97.1-34.05 147.2L18.74 402.76c-24.99 24.99-24.99 65.51 0 90.5 24.99 24.99 65.51 24.99 90.5 0l213.21-213.21c50.12 16.71 107.47 5.68 147.37-34.22 37.07-37.07 49.7-89.32 37.91-136.73zM64 472c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"></path>
     </symbol>
+    <symbol id="icon-refresh" viewBox="0 0 512 512">
+        <path d="M464 16c-17.67 0-32 14.31-32 32v74.09C392.1 66.52 327.4 32 256 32C161.5 32 78.59 92.34 49.58 182.2c-5.438 16.81 3.797 34.88 20.61 40.28c16.89 5.5 34.88-3.812 40.3-20.59C130.9 138.5 189.4 96 256 96c50.5 0 96.26 24.55 124.4 64H336c-17.67 0-32 14.31-32 32s14.33 32 32 32h128c17.67 0 32-14.31 32-32V48C496 30.31 481.7 16 464 16zM441.8 289.6c-16.92-5.438-34.88 3.812-40.3 20.59C381.1 373.5 322.6 416 256 416c-50.5 0-96.25-24.55-124.4-64H176c17.67 0 32-14.31 32-32s-14.33-32-32-32h-128c-17.67 0-32 14.31-32 32v144c0 17.69 14.33 32 32 32s32-14.31 32-32v-74.09C119.9 445.5 184.6 480 255.1 480c94.45 0 177.4-60.34 206.4-150.2C467.9 313 458.6 294.1 441.8 289.6z"></path>
+    </symbol>
     </svg>
 `);
 
@@ -65598,44 +65622,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 
 
 function onClickXMPPURI(ev) {
   ev.preventDefault();
-  _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.rooms.open(ev.target.href);
+  _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.rooms.open(ev.target.href);
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((uri, url_text) => {
-  let normalized_url;
+  let href_text = uri.normalizePath().toString();
 
-  try {
-    normalized_url = uri.normalize()._string;
-  } catch (e) {
-    _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
-    return url_text;
-  }
-
-  const pretty_url = uri._parts.urn ? normalized_url : uri.readable();
-  const visible_url = url_text || pretty_url;
-
-  if (!uri._parts.protocol && !normalized_url.startsWith('http://') && !normalized_url.startsWith('https://')) {
-    normalized_url = 'http://' + normalized_url;
+  if (!uri._parts.protocol && !url_text.startsWith('http://') && !url_text.startsWith('https://')) {
+    href_text = 'http://' + href_text;
   }
 
   if (uri._parts.protocol === 'xmpp' && uri._parts.query === 'join') {
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+    return lit__WEBPACK_IMPORTED_MODULE_1__.html`
             <a target="_blank"
                rel="noopener"
                @click=${onClickXMPPURI}
-               href="${normalized_url}">${visible_url}</a>`;
+               href="${href_text}">${url_text}</a>`;
   }
 
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<a target="_blank" rel="noopener" href="${normalized_url}">${visible_url}</a>`;
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<a target="_blank" rel="noopener" href="${href_text}">${url_text}</a>`;
 });
 
 /***/ }),
@@ -70701,33 +70713,6 @@ for (var i = 0; i < DOMIterables.length; i++) {
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/modals/modals.scss":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/modals/modals.scss ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss ***!
@@ -71056,6 +71041,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss ***!
   \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -95717,61 +95729,6 @@ if ( true ) {
 
 /***/ }),
 
-/***/ "./src/modals/modals.scss":
-/*!********************************!*\
-  !*** ./src/modals/modals.scss ***!
-  \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modals_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../node_modules/postcss-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../node_modules/mini-css-extract-plugin/dist/loader.js!../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../node_modules/postcss-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./modals.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/modals/modals.scss");
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var options = {};
-
-options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
-options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
-options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
-options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modals_scss__WEBPACK_IMPORTED_MODULE_6__.default, options);
-
-
-
-
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modals_scss__WEBPACK_IMPORTED_MODULE_6__.default && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modals_scss__WEBPACK_IMPORTED_MODULE_6__.default.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modals_scss__WEBPACK_IMPORTED_MODULE_6__.default.locals : undefined);
-
-
-/***/ }),
-
 /***/ "./src/plugins/bookmark-views/styles/bookmarks.scss":
 /*!**********************************************************!*\
   !*** ./src/plugins/bookmark-views/styles/bookmarks.scss ***!
@@ -96483,6 +96440,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__.default && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__.default.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__.default.locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/styles/muc-details.scss":
+/*!*******************************************************!*\
+  !*** ./src/plugins/muc-views/styles/muc-details.scss ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-details.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__.default, options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__.default && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__.default.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__.default.locals : undefined);
 
 
 /***/ }),
