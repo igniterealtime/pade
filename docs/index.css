@@ -370,6 +370,57 @@ body {
      background: #474747 !important;
      color: white;
 }
+
+/* prosody */
+
+.conversejs.theme-prosody {
+	position: absolute !important;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: block;
+	height: 100%;
+	width: 100%;
+	/* Some colors to fit into the Prosody style */
+	--chatroom-head-bg-color: #6197d6;
+	--primary-color: #6197d6;
+	--muc-toolbar-btn-color: #6197d6;
+	--primary-color-dark: #000080;
+	--message-input-color: #e49200;
+}
+
+.conversejs.theme-prosody .chat-head-chatroom {
+	background-image: linear-gradient(to right, var(--primary-color-dark), var(--chatroom-head-bg-color));
+	border-bottom: 1em solid var(--message-input-color) !important;
+	border-radius: none;
+}
+
+.conversejs.theme-prosody converse-muc-heading[jid="prosody@conference.prosody.im"] .chatbox-title .chatbox-title__text {
+	background-image: url("//prosody.im/prosody.svg");
+	background-repeat: no-repeat;
+	background-size: 1em 1em;
+	background-position: 0 0;
+	padding-left: 1.1em;
+}
+
+.conversejs.theme-prosody .chat-head {
+	padding: 0;
+}
+
+.conversejs.theme-prosody .chatbox.chatroom {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.conversejs.theme-prosody .converse-chatboxes .chatbox .box-flyout {
+	padding: 0;
+	margin: 0;
+}
+
+.conversejs.theme-prosody .chatroom-form-container {
+	border-top: 1px solid var(--chatroom-head-bg-color) !important;
+}
+
  
  /* Blackboard */
  
