@@ -25997,8 +25997,11 @@ const MessageMixin = {
       clearTimeout(this.ephemeral_timer);
     }
 
-    if (this.isEphemeral()) {
-      this.ephemeral_timer = window.setTimeout(() => this.safeDestroy(), 10000);
+    const is_ephemeral = this.isEphemeral();
+
+    if (is_ephemeral) {
+      const timeout = typeof is_ephemeral === "number" ? is_ephemeral : 10000;
+      this.ephemeral_timer = window.setTimeout(() => this.safeDestroy(), timeout);
     }
   },
 
@@ -26727,7 +26730,8 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
       const msg = await this.createMessage({
         'type': 'error',
         'message': error.message,
-        'retry_event_id': error.retry_event_id
+        'retry_event_id': error.retry_event_id,
+        'is_ephemeral': 30000
       });
       msg.error = error;
     }
@@ -30267,7 +30271,8 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.util
       }, NS.MAM);
 
       let error;
-      const iq_result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(stanza, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_archiving_timeout'), false);
+      const timeout = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_archiving_timeout');
+      const iq_result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(stanza, timeout, false);
 
       if (iq_result === null) {
         const {
@@ -31883,7 +31888,7 @@ const ChatRoomMixin = {
       return this;
     }
 
-    _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(await this.constructPresence(password));
+    _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(await this.constructJoinPresence(password));
     return this;
   },
 
@@ -31899,7 +31904,7 @@ const ChatRoomMixin = {
     return this.join();
   },
 
-  async constructPresence(password) {
+  async constructJoinPresence(password) {
     let stanza = (0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.$pres)({
       'id': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_11__.getUniqueId)(),
       'from': _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.connection.jid,
@@ -31913,6 +31918,20 @@ const ChatRoomMixin = {
 
     if (password) {
       stanza.cnode(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.xmlElement('password', [], password));
+    }
+
+    stanza.up(); // Go one level up, out of the `x` element.
+
+    const status = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.xmppstatus.get('status');
+
+    if (['away', 'chat', 'dnd', 'xa'].includes(status)) {
+      stanza.c('show').t(status).up();
+    }
+
+    const status_message = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.xmppstatus.get('status_message');
+
+    if (status_message) {
+      stanza.c('status').t(status_message).up();
     }
 
     stanza = await _core_js__WEBPACK_IMPORTED_MODULE_6__.api.hook('constructedMUCPresence', null, stanza);
@@ -31985,11 +32004,8 @@ const ChatRoomMixin = {
 
     if (this.get('hidden')) {
       if (conn_status === roomstatus.ENTERED && _core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_subscribe_to_rai') && this.getOwnAffiliation() !== 'none') {
-        if (conn_status !== roomstatus.DISCONNECTED && conn_status !== roomstatus.CLOSING) {
-          this.sendMarkerForLastMessage('received', true);
-          await this.leave();
-        }
-
+        this.sendMarkerForLastMessage('received', true);
+        await this.leave();
         this.enableRAI();
       }
     } else {
@@ -32588,7 +32604,7 @@ const ChatRoomMixin = {
     if (this.features) {
       await new Promise(resolve => this.features.destroy({
         'success': resolve,
-        'error': (m, e) => {
+        'error': (_, e) => {
           _log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
           resolve();
         }
@@ -32601,7 +32617,7 @@ const ChatRoomMixin = {
     if (disco_entity) {
       await new Promise(resolve => disco_entity.destroy({
         'success': resolve,
-        'error': (m, e) => {
+        'error': (_, e) => {
           _log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
           resolve();
         }
@@ -32629,7 +32645,7 @@ const ChatRoomMixin = {
 
     await new Promise(resolve => this.session.destroy({
       'success': resolve,
-      'error': (m, e) => {
+      'error': (_, e) => {
         _log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
         resolve();
       }
@@ -33208,7 +33224,8 @@ const ChatRoomMixin = {
 
       this.createMessage({
         message,
-        'type': 'error'
+        'type': 'error',
+        'is_ephemeral': 20000
       });
     }
 
@@ -33272,7 +33289,8 @@ const ChatRoomMixin = {
 
         this.createMessage({
           message,
-          'type': 'error'
+          'type': 'error',
+          'is_ephemeral': true
         });
         this.set({
           'nick': old_nick
@@ -33684,7 +33702,8 @@ const ChatRoomMixin = {
           this.createMessage({
             message,
             'nick': attrs.nick,
-            'type': 'info'
+            'type': 'info',
+            'is_ephemeral': true
           });
         }
 
@@ -33798,14 +33817,19 @@ const ChatRoomMixin = {
   },
 
   /**
-   * When sending a status update presence (i.e. based on the `<show>`
-   * element), we need to first make sure that the MUC is connected,
-   * otherwise we will get an error from the MUC service.
+   * Sends a status update presence (i.e. based on the `<show>` element)
    * @method _converse.ChatRoom#sendStatusPresence
+   * @param { String } type
+   * @param { String } [status] - An optional status message
+   * @param { Element[]|Strophe.Builder[]|Element|Strophe.Builder } [child_nodes]
+   *  Nodes(s) to be added as child nodes of the `presence` XML element.
    */
-  async sendStatusPresence(presence) {
-    await this.rejoinIfNecessary();
-    _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(presence);
+  async sendStatusPresence(type, status, child_nodes) {
+    if (this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.ENTERED) {
+      const presence = await _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.xmppstatus.constructPresence(type, this.getRoomJIDAndNick(), status);
+      child_nodes === null || child_nodes === void 0 ? void 0 : child_nodes.map(c => (c === null || c === void 0 ? void 0 : c.tree()) ?? c).forEach(c => presence.cnode(c).up());
+      _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(presence);
+    }
   },
 
   /**
@@ -37569,13 +37593,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (['away', 'chat', 'dnd', 'online', 'xa', undefined].includes(type)) {
         const mucs = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.rooms.get();
-        mucs.forEach(async muc => {
-          var _child_nodes2;
-
-          const presence = await model.constructPresence(type, muc.getRoomJIDAndNick(), status);
-          (_child_nodes2 = child_nodes) === null || _child_nodes2 === void 0 ? void 0 : _child_nodes2.map(c => (c === null || c === void 0 ? void 0 : c.tree()) ?? c).forEach(c => presence.cnode(c).up());
-          muc.sendStatusPresence(presence);
-        });
+        mucs.forEach(muc => muc.sendStatusPresence(type, status, child_nodes));
       }
     }
 
@@ -45461,7 +45479,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (jid => {
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`<i class="fa fa-arrow-left" @click=${() => (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.navigateToControlBox)(jid)}></i>`;
+  return lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-icon size="1em" class="fa fa-arrow-left" @click=${() => (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.navigateToControlBox)(jid)}></converse-icon>`;
 });
 
 /***/ }),
@@ -45715,8 +45733,12 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('conve
     });
     Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ChatBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__.default);
     Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ChatRoomView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__.default);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ControlBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__.default);
+
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ControlBoxView) {
+      Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ControlBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__.default);
+    }
     /************************ BEGIN Event Handlers ************************/
+
 
     function registerGlobalEventHandlers() {
       document.addEventListener('mousemove', _utils_js__WEBPACK_IMPORTED_MODULE_3__.onMouseMove);
@@ -46732,9 +46754,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const {
-  dayjs
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('converse-minimize', {
   /* Optional dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
@@ -46761,21 +46780,6 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
     //
     // New functions which don't exist yet can also be added.
     ChatBox: {
-      initialize() {
-        this.__super__.initialize.apply(this, arguments);
-
-        this.on('change:hidden', m => !m.get('hidden') && (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.maximize)(this), this);
-
-        if (this.get('id') === 'controlbox') {
-          return;
-        }
-
-        this.save({
-          'minimized': this.get('minimized') || false,
-          'time_minimized': this.get('time_minimized') || dayjs()
-        });
-      },
-
       maybeShow(force) {
         if (!force && this.get('minimized')) {
           // Must return the chatbox
@@ -46823,6 +46827,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
     };
 
     function onChatInitialized(model) {
+      (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.initializeChat)(model);
       model.on('change:minimized', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.onMinimizedChanged)(model));
     }
 
@@ -46942,6 +46947,7 @@ const MinimizedChatsToggle = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_M
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "initializeChat": () => (/* binding */ initializeChat),
 /* harmony export */   "trimChats": () => (/* binding */ trimChats),
 /* harmony export */   "addMinimizeButtonToChat": () => (/* binding */ addMinimizeButtonToChat),
 /* harmony export */   "addMinimizeButtonToMUC": () => (/* binding */ addMinimizeButtonToMUC),
@@ -46953,7 +46959,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 
 
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.env.utils;
+const {
+  dayjs,
+  u
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.env;
+function initializeChat(chat) {
+  chat.on('change:hidden', m => !m.get('hidden') && maximize(chat), chat);
+
+  if (chat.get('id') === 'controlbox') {
+    return;
+  }
+
+  chat.save({
+    'minimized': chat.get('minimized') || false,
+    'time_minimized': chat.get('time_minimized') || dayjs()
+  });
+}
 
 function getChatBoxWidth(view) {
   if (view.model.get('id') === 'controlbox') {
@@ -51379,9 +51400,11 @@ const tpl_standalone_btns = o => o.standalone_btns.reverse().map(b => (0,lit_dir
   const show_subject = subject && !o.subject_hidden;
   return lit__WEBPACK_IMPORTED_MODULE_4__.html`
         <div class="chatbox-title ${show_subject ? '' : "chatbox-title--no-desc"}">
-            ${!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.api.settings.get("singleton") ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
-            <div class="chatbox-title__text" title="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_domain') !== 'hidden' ? o.jid : ''}">${o.title}
-                ${o.bookmarked ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<i class="fa fa-bookmark chatbox-title__text--bookmarked" title="${i18n_bookmarked}"></i>` : ''}
+            <div class="chatbox-title--row">
+                ${!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.api.settings.get("singleton") ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
+                <div class="chatbox-title__text" title="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_domain') !== 'hidden' ? o.jid : ''}">${o.title}
+                    ${o.bookmarked ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<i class="fa fa-bookmark chatbox-title__text--bookmarked" title="${i18n_bookmarked}"></i>` : ''}
+                </div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
                 ${o.standalone_btns.length ? tpl_standalone_btns(o) : ''}
@@ -57727,7 +57750,7 @@ function renderContact(contact) {
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
         <div class="roster-group" data-group="${o.name}">
             <a href="#" class="list-toggle group-toggle controlbox-padded" title="${i18n_title}" @click=${ev => (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.toggleGroup)(ev, o.name)}>
-                <converse-icon color="var(--chat-head-color)" size="1em" class="fa ${collapsed.includes(o.name) ? 'fa-caret-right' : 'fa-caret-down'}"></converse-icon> ${o.name}
+                <converse-icon color="var(--chat-head-color-dark)" size="1em" class="fa ${collapsed.includes(o.name) ? 'fa-caret-right' : 'fa-caret-down'}"></converse-icon> ${o.name}
             </a>
             <ul class="items-list roster-group-contacts ${collapsed.includes(o.name) ? 'collapsed' : ''}" data-group="${o.name}">
                 ${o.contacts.map(renderContact)}
@@ -58172,9 +58195,6 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
   },
 
   initialize() {
-    /* The initialize function gets called as soon as the plugin is
-     * loaded by converse.js's plugin machinery.
-     */
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.extend({
       'allow_logout': false,
       // No point in logging out when we have auto_login as true.
@@ -58183,12 +58203,18 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
       // roster contacts can be invited
       'hide_muc_server': true
     });
+    const auto_join_rooms = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_rooms');
+    const auto_join_private_chats = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_private_chats');
 
-    if (!Array.isArray(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_rooms')) && !Array.isArray(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_private_chats'))) {
+    if (!Array.isArray(auto_join_rooms) && !Array.isArray(auto_join_private_chats)) {
       throw new Error("converse-singleton: auto_join_rooms must be an Array");
     }
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_rooms').length > 1 || _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_private_chats').length > 1) {
+    if (auto_join_rooms.length === 0 && auto_join_private_chats.length === 0) {
+      throw new Error("If you set singleton set to true, you need " + "to specify auto_join_rooms or auto_join_private_chats");
+    }
+
+    if (auto_join_rooms.length > 0 && auto_join_private_chats.length > 0) {
       throw new Error("It doesn't make sense to have singleton set to true and " + "auto_join_rooms or auto_join_private_chats set to more then one, " + "since only one chat room may be open at any time.");
     }
   }
