@@ -387,7 +387,7 @@ function startConverse() {
 		jitsimeet_modal: !getSetting("converseEmbedOfMeet", true),		
 		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
 		visible_toolbar_buttons: {'emoji': true, 'call': false, 'clear': true },
-		websocket_url: getSetting("useWebsocket", false) ? (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/' : undefined,		
+		websocket_url: getSetting("useWebsocket", false) ? getSetting('websocketUri', ((domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/')) : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
 
