@@ -23711,30 +23711,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/shared/i18n */ "./src/headless/shared/i18n.js");
-/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
-/* harmony import */ var lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lodash-es/isFunction */ "./node_modules/lodash-es/isFunction.js");
+/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
+/* harmony import */ var lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lodash-es/isFunction */ "./node_modules/lodash-es/isFunction.js");
 /* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
 /* harmony import */ var pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! pluggable.js/src/pluggable.js */ "./node_modules/pluggable.js/src/pluggable.js");
-/* harmony import */ var _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/headless/shared/settings/api.js */ "./src/headless/shared/settings/api.js");
-/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
-/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
-/* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
-/* harmony import */ var _converse_headless_shared_connection_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/shared/connection.js */ "./src/headless/shared/connection.js");
-/* harmony import */ var _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/skeletor/src/events.js */ "./node_modules/@converse/skeletor/src/events.js");
+/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
+/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
+/* harmony import */ var _converse_headless_shared_connection_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/shared/connection.js */ "./src/headless/shared/connection.js");
+/* harmony import */ var _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/skeletor/src/events.js */ "./node_modules/@converse/skeletor/src/events.js");
+/* harmony import */ var _shared_constants_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./shared/constants.js */ "./src/headless/shared/constants.js");
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
 /* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
 /* harmony import */ var _converse_headless_shared_errors__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @converse/headless/shared/errors */ "./src/headless/shared/errors.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var _converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @converse/headless/shared/settings/utils.js */ "./src/headless/shared/settings/utils.js");
-/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! sprintf-js */ "./node_modules/sprintf-js/src/sprintf.js");
-/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(sprintf_js__WEBPACK_IMPORTED_MODULE_19__);
-/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./utils/init.js */ "./src/headless/utils/init.js");
+/* harmony import */ var _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @converse/headless/shared/settings/api.js */ "./src/headless/shared/settings/api.js");
+/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! sprintf-js */ "./node_modules/sprintf-js/src/sprintf.js");
+/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(sprintf_js__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./utils/init.js */ "./src/headless/utils/init.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
+
 
 
 
@@ -23799,7 +23801,7 @@ strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARD
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XFORM', 'jabber:x:data');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
 _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.VERSION_NAME = "v9.0.0";
-Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default, _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_12__.Events); // Make converse pluggable
+Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default, _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_11__.Events); // Make converse pluggable
 
 pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_6__.default.enable(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default, '_converse', 'pluggable');
 /**
@@ -23954,7 +23956,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
    * @memberOf _converse.api
    */
   user: {
-    settings: _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_7__.user_settings_api,
+    settings: _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__.user_settings_api,
 
     /**
      * @method _converse.api.user.jid
@@ -23987,7 +23989,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
 
       jid = jid || api.settings.get('jid');
 
-      if (!((_converse$connection3 = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.connection) !== null && _converse$connection3 !== void 0 && _converse$connection3.jid) || jid && !_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.default.isSameDomain(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.connection.jid, jid)) {
+      if (!((_converse$connection3 = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.connection) !== null && _converse$connection3 !== void 0 && _converse$connection3.jid) || jid && !_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.default.isSameDomain(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.connection.jid, jid)) {
         await _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.initConnection();
       }
 
@@ -23996,7 +23998,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
       }
 
       if (jid) {
-        jid = await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.setUserJID)(jid);
+        jid = await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.setUserJID)(jid);
       } // See whether there is a BOSH session to re-attach to
 
 
@@ -24015,7 +24017,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
         jid,
         password
       } : null;
-      (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.attemptNonPreboundSession)(credentials, automatic);
+      (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.attemptNonPreboundSession)(credentials, automatic);
     },
 
     /**
@@ -24035,7 +24037,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
 
       const complete = () => {
         // Recreate all the promises
-        Object.keys(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.promises).forEach(_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.replacePromise);
+        Object.keys(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.promises).forEach(_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.replacePromise);
         delete _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.jid;
         /**
          * Triggered once the user has logged out.
@@ -24060,7 +24062,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
     }
 
   },
-  settings: _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_7__.settings_api,
+  settings: _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__.settings_api,
 
   /**
    * Converse and its plugins trigger various events which you can listen to via the
@@ -24166,7 +24168,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
      * @param {function} handler The callback method to be called when the stanza appears
      */
     stanza(name, options, handler) {
-      if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_21__.default)(options)) {
+      if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__.default)(options)) {
         handler = options;
         options = {};
       } else {
@@ -24187,8 +24189,8 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
    * @returns {Promise}
    */
   waitUntil(condition) {
-    if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_21__.default)(condition)) {
-      return _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.default.waitUntil(condition);
+    if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__.default)(condition)) {
+      return _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.default.waitUntil(condition);
     } else {
       const promise = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.promises[condition];
 
@@ -24223,7 +24225,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
     }
 
     if (typeof stanza === 'string') {
-      stanza = _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.default.toStanza(stanza);
+      stanza = _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.default.toStanza(stanza);
     } else if ((_stanza = stanza) !== null && _stanza !== void 0 && _stanza.nodeTree) {
       stanza = stanza.nodeTree;
     }
@@ -24310,7 +24312,7 @@ _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.initConn
   }
 
   let connection_url = '';
-  const XMPPConnection = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.isTestEnv() ? _converse_headless_shared_connection_js__WEBPACK_IMPORTED_MODULE_11__.MockConnection : _converse_headless_shared_connection_js__WEBPACK_IMPORTED_MODULE_11__.Connection;
+  const XMPPConnection = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.isTestEnv() ? _converse_headless_shared_connection_js__WEBPACK_IMPORTED_MODULE_10__.MockConnection : _converse_headless_shared_connection_js__WEBPACK_IMPORTED_MODULE_10__.Connection;
 
   if (('WebSocket' in window || 'MozWebSocket' in window) && api.settings.get("websocket_url")) {
     connection_url = api.settings.get('websocket_url');
@@ -24412,23 +24414,8 @@ const converse = window.converse || {};
  */
 
 Object.assign(converse, {
-  CHAT_STATES: ['active', 'composing', 'gone', 'inactive', 'paused'],
-  keycodes: {
-    TAB: 9,
-    ENTER: 13,
-    SHIFT: 16,
-    CTRL: 17,
-    ALT: 18,
-    ESCAPE: 27,
-    LEFT_ARROW: 37,
-    UP_ARROW: 38,
-    RIGHT_ARROW: 39,
-    DOWN_ARROW: 40,
-    FORWARD_SLASH: 47,
-    AT: 50,
-    META: 91,
-    META_RIGHT: 93
-  },
+  CHAT_STATES: _shared_constants_js__WEBPACK_IMPORTED_MODULE_12__.CHAT_STATES,
+  keycodes: _shared_constants_js__WEBPACK_IMPORTED_MODULE_12__.KEYCODES,
 
   /**
    * Public API method which initializes Converse.
@@ -24453,8 +24440,8 @@ Object.assign(converse, {
   async initialize(settings) {
     var _api$elements;
 
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.cleanup)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
-    (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.setUnloadEvent)();
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.cleanup)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
+    (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.setUnloadEvent)();
     (0,_converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_18__.initAppSettings)(settings);
     _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.strict_plugin_dependencies = settings.strict_plugin_dependencies; // Needed by pluggable.js
 
@@ -24478,15 +24465,15 @@ Object.assign(converse, {
      */
 
     _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.send_initial_presence = true;
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.initSessionStorage)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.initClientConfig)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initSessionStorage)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initClientConfig)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
     await _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_4__.default.initialize();
-    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.initPlugins)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default); // Register all custom elements
+    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initPlugins)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default); // Register all custom elements
     // XXX: api.elements is defined in the UI part of Converse, outside of @converse/headless.
     // This line should probably be moved to the UI code as part of a larger refactoring.
 
     (_api$elements = api.elements) === null || _api$elements === void 0 ? void 0 : _api$elements.register();
-    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_20__.registerGlobalEventHandlers)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
+    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.registerGlobalEventHandlers)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default);
 
     try {
       !History.started && _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.router.history.start();
@@ -24500,7 +24487,7 @@ Object.assign(converse, {
 
     const plugins = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.default.pluggable.plugins;
 
-    if (api.settings.get("auto_login") || api.settings.get("keepalive") && (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_22__.default)(plugins['converse-bosh'], 'enabled')) {
+    if (api.settings.get("auto_login") || api.settings.get("keepalive") && (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_23__.default)(plugins['converse-bosh'], 'enabled')) {
       await api.user.login(null, null, true);
     }
     /**
@@ -24578,8 +24565,8 @@ Object.assign(converse, {
     $iq: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$iq,
     $msg: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$msg,
     $pres: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$pres,
-    'utils': _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.default,
-    Collection: _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_10__.Collection,
+    'utils': _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.default,
+    Collection: _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_9__.Collection,
     Model: _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__.Model,
     Promise,
     Strophe: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe,
@@ -24587,9 +24574,9 @@ Object.assign(converse, {
     dayjs: (dayjs__WEBPACK_IMPORTED_MODULE_3___default()),
     html: lit__WEBPACK_IMPORTED_MODULE_17__.html,
     log: _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_5__.default,
-    sizzle: (sizzle__WEBPACK_IMPORTED_MODULE_8___default()),
-    sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_19__.sprintf,
-    u: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.default
+    sizzle: (sizzle__WEBPACK_IMPORTED_MODULE_7___default()),
+    sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_20__.sprintf,
+    u: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_8__.default
   }
 });
 
@@ -39357,7 +39344,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "BOSH_WAIT": () => (/* binding */ BOSH_WAIT),
 /* harmony export */   "CONNECTION_STATUS": () => (/* binding */ CONNECTION_STATUS),
 /* harmony export */   "CORE_PLUGINS": () => (/* binding */ CORE_PLUGINS),
-/* harmony export */   "URL_PARSE_OPTIONS": () => (/* binding */ URL_PARSE_OPTIONS)
+/* harmony export */   "URL_PARSE_OPTIONS": () => (/* binding */ URL_PARSE_OPTIONS),
+/* harmony export */   "CHAT_STATES": () => (/* binding */ CHAT_STATES),
+/* harmony export */   "KEYCODES": () => (/* binding */ KEYCODES)
 /* harmony export */ });
 /* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
 
@@ -39380,6 +39369,23 @@ CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.St
 const CORE_PLUGINS = ['converse-adhoc', 'converse-bookmarks', 'converse-bosh', 'converse-caps', 'converse-carbons', 'converse-chat', 'converse-chatboxes', 'converse-disco', 'converse-emoji', 'converse-headlines', 'converse-mam', 'converse-muc', 'converse-ping', 'converse-pubsub', 'converse-roster', 'converse-smacks', 'converse-status', 'converse-vcard'];
 const URL_PARSE_OPTIONS = {
   'start': /(\b|_)(?:([a-z][a-z0-9.+-]*:\/\/)|xmpp:|mailto:|www\.)/gi
+};
+const CHAT_STATES = ['active', 'composing', 'gone', 'inactive', 'paused'];
+const KEYCODES = {
+  TAB: 9,
+  ENTER: 13,
+  SHIFT: 16,
+  CTRL: 17,
+  ALT: 18,
+  ESCAPE: 27,
+  LEFT_ARROW: 37,
+  UP_ARROW: 38,
+  RIGHT_ARROW: 39,
+  DOWN_ARROW: 40,
+  FORWARD_SLASH: 47,
+  AT: 50,
+  META: 91,
+  META_RIGHT: 93
 };
 
 /***/ }),
@@ -44099,7 +44105,18 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     await this.model.initialized;
     this.listenTo(this.model.messages, 'change:correcting', this.onMessageCorrecting);
     this.listenTo(this.model, 'change:composing_spoiler', () => this.render());
+
+    this.handleEmojiSelection = ({
+      detail
+    }) => this.insertIntoTextArea(detail.value, detail.autocompleting, false, detail.ac_position);
+
+    document.addEventListener("emojiSelected", this.handleEmojiSelection);
     this.render();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("emojiSelected", this.handleEmojiSelection);
   }
 
   toHTML() {
@@ -44176,15 +44193,14 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
   }
 
   onEscapePressed(ev) {
-    ev.preventDefault();
     const idx = this.model.messages.findLastIndex('correcting');
     const message = idx >= 0 ? this.model.messages.at(idx) : null;
 
     if (message) {
+      ev.preventDefault();
       message.save('correcting', false);
+      this.insertIntoTextArea('', true, false);
     }
-
-    this.insertIntoTextArea('', true, false);
   }
 
   onPaste(ev) {
@@ -59336,6 +59352,7 @@ class EmojiDropdown extends shared_components_dropdown_js__WEBPACK_IMPORTED_MODU
                         <converse-emoji-picker
                                 .chatview=${this.chatview}
                                 .model=${this.model}
+                                @emojiSelected=${() => this.hideMenu()}
                                 ?render_emojis=${this.render_emojis}
                                 current_category="${this.model.get('current_category') || ''}"
                                 current_skintone="${this.model.get('current_skintone') || ''}"
@@ -59541,11 +59558,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _emoji_picker_content_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./emoji-picker-content.js */ "./src/shared/chat/emoji-picker-content.js");
 /* harmony import */ var _emoji_dropdown_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./emoji-dropdown.js */ "./src/shared/chat/emoji-dropdown.js");
 /* harmony import */ var shared_dom_navigator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/dom-navigator */ "./src/shared/dom-navigator.js");
-/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
+/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _templates_emoji_picker_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./templates/emoji-picker.js */ "./src/shared/chat/templates/emoji-picker.js");
-/* harmony import */ var _styles_emoji_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/emoji.scss */ "./src/shared/chat/styles/emoji.scss");
+/* harmony import */ var _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/shared/constants.js */ "./src/headless/shared/constants.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _templates_emoji_picker_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./templates/emoji-picker.js */ "./src/shared/chat/templates/emoji-picker.js");
+/* harmony import */ var _styles_emoji_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles/emoji.scss */ "./src/shared/chat/styles/emoji.scss");
 
 
 
@@ -59554,7 +59572,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
+
+const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.env.utils;
 class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__.CustomElement {
   static get properties() {
     return {
@@ -59593,7 +59612,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     super();
     this.query = '';
     this._search_results = [];
-    this.debouncedFilter = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_7__.default)(input => this.model.set({
+    this.debouncedFilter = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_8__.default)(input => this.model.set({
       'query': input.value
     }), 250);
   }
@@ -59608,7 +59627,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   }
 
   render() {
-    return (0,_templates_emoji_picker_js__WEBPACK_IMPORTED_MODULE_5__.tpl_emoji_picker)({
+    return (0,_templates_emoji_picker_js__WEBPACK_IMPORTED_MODULE_6__.tpl_emoji_picker)({
       'chatview': this.chatview,
       'current_category': this.current_category,
       'current_skintone': this.current_skintone,
@@ -59616,7 +59635,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       'onCategoryPicked': ev => this.chooseCategory(ev),
       'onSearchInputBlurred': ev => this.chatview.emitFocused(ev),
       'onSearchInputFocus': ev => this.onSearchInputFocus(ev),
-      'onSearchInputKeyDown': ev => this.onKeyDown(ev),
+      'onSearchInputKeyDown': ev => this.onSearchInputKeyDown(ev),
       'onSkintonePicked': ev => this.chooseSkinTone(ev),
       'query': this.query,
       'search_results': this.search_results,
@@ -59653,7 +59672,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
 
   updateSearchResults(changed) {
     const old_query = changed.get('query');
-    const contains = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_CONTAINS;
+    const contains = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.FILTER_CONTAINS;
 
     if (this.query) {
       if (this.query === old_query) {
@@ -59661,7 +59680,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       } else if (old_query && this.query.includes(old_query)) {
         this.search_results = this.search_results.filter(e => contains(e.sn, this.query));
       } else {
-        this.search_results = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.emojis.list.filter(e => contains(e.sn, this.query));
+        this.search_results = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.emojis.list.filter(e => contains(e.sn, this.query));
       }
     } else if (this.search_results.length) {
       // Avoid re-rendering by only setting to new empty array if it wasn't empty before
@@ -59684,6 +59703,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   disconnectedCallback() {
     const body = document.querySelector('body');
     body.removeEventListener('keydown', this.onGlobalKeyDown);
+    this.disableArrowNavigation();
     super.disconnectedCallback();
   }
 
@@ -59692,10 +59712,13 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       return;
     }
 
-    if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.ENTER && this.navigator.selected && u.isVisible(this)) {
+    if (ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.ENTER && u.isVisible(this)) {
       this.onEnterPressed(ev);
-    } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.DOWN_ARROW && !this.navigator.enabled && u.isVisible(this)) {
+    } else if (ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.DOWN_ARROW && !this.navigator.enabled && u.isVisible(this)) {
       this.enableArrowNavigation(ev);
+    } else if (ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.ESCAPE) {
+      this.disableArrowNavigation();
+      setTimeout(() => this.chatview.querySelector('.chat-textarea').focus(), 50);
     }
   }
 
@@ -59713,12 +59736,21 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   insertIntoTextArea(value) {
     const autocompleting = this.model.get('autocompleting');
     const ac_position = this.model.get('ac_position');
-    this.chatview.getMessageForm().insertIntoTextArea(value, autocompleting, false, ac_position);
     this.model.set({
       'autocompleting': null,
       'query': '',
       'ac_position': null
     });
+    this.disableArrowNavigation();
+    const options = {
+      'bubbles': true,
+      'detail': {
+        value,
+        autocompleting,
+        ac_position
+      }
+    };
+    this.dispatchEvent(new CustomEvent("emojiSelected", options));
   }
 
   chooseSkinTone(ev) {
@@ -59747,43 +59779,29 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     !this.navigator.enabled && this.navigator.enable();
   }
 
-  onKeyDown(ev) {
-    if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.TAB) {
+  onSearchInputKeyDown(ev) {
+    if (ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.TAB) {
       if (ev.target.value) {
         ev.preventDefault();
-        const match = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.emojis.shortnames.find(sn => _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_CONTAINS(sn, ev.target.value));
+        const match = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.emojis.shortnames.find(sn => _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.FILTER_CONTAINS(sn, ev.target.value));
         match && this.model.set({
           'query': match
         });
       } else if (!this.navigator.enabled) {
         this.enableArrowNavigation(ev);
       }
-    } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.DOWN_ARROW && !this.navigator.enabled) {
+    } else if (ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.DOWN_ARROW && !this.navigator.enabled) {
       this.enableArrowNavigation(ev);
-    } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.ENTER) {
-      this.onEnterPressed(ev);
-    } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.ESCAPE) {
-      u.ancestor(this, 'converse-emoji-dropdown').hideMenu();
-      this.chatview.el.querySelector('.chat-textarea').focus();
-      ev.stopPropagation();
-      ev.preventDefault();
-    } else if (ev.keyCode !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.ENTER && ev.keyCode !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.keycodes.DOWN_ARROW) {
+    } else if (ev.keyCode !== _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.ENTER && ev.keyCode !== _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_4__.KEYCODES.DOWN_ARROW) {
       this.debouncedFilter(ev.target);
     }
   }
 
   onEnterPressed(ev) {
-    if (ev.emoji_keypress_handled) {
-      // Prevent the emoji from being inserted a 2nd time due to this
-      // method being called by two event handlers: onKeyDown and _onGlobalKeyDown
-      return;
-    }
-
     ev.preventDefault();
     ev.stopPropagation();
-    ev.emoji_keypress_handled = true;
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.emojis.shortnames.includes(ev.target.value)) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.emojis.shortnames.includes(ev.target.value)) {
       this.insertIntoTextArea(ev.target.value);
     } else if (this.search_results.length === 1) {
       this.insertIntoTextArea(this.search_results[0].sn);
@@ -59802,7 +59820,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   }
 
   getTonedShortname(shortname) {
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.emojis.toned.includes(shortname) && this.current_skintone) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.emojis.toned.includes(shortname) && this.current_skintone) {
       return `${shortname.slice(0, shortname.length - 1)}_${this.current_skintone}:`;
     }
 
@@ -59837,7 +59855,9 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   }
 
   disableArrowNavigation() {
-    this.navigator.disable();
+    var _this$navigator;
+
+    (_this$navigator = this.navigator) === null || _this$navigator === void 0 ? void 0 : _this$navigator.disable();
   }
 
   enableArrowNavigation(ev) {
@@ -59851,7 +59871,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   }
 
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-emoji-picker', EmojiPicker);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.elements.define('converse-emoji-picker', EmojiPicker);
 
 /***/ }),
 
@@ -61940,11 +61960,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var shared_components_icons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/components/icons.js */ "./src/shared/components/icons.js");
 /* harmony import */ var shared_dom_navigator_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/dom-navigator.js */ "./src/shared/dom-navigator.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
-/* harmony import */ var shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! shared/components/dropdownbase.js */ "./src/shared/components/dropdownbase.js");
-/* harmony import */ var _styles_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/dropdown.scss */ "./src/shared/components/styles/dropdown.scss");
+/* harmony import */ var shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/dropdownbase.js */ "./src/shared/components/dropdownbase.js");
+/* harmony import */ var _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/shared/constants.js */ "./src/headless/shared/constants.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
+/* harmony import */ var _styles_dropdown_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles/dropdown.scss */ "./src/shared/components/styles/dropdown.scss");
 
 
 
@@ -61952,7 +61973,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODULE_5__.default {
+
+class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODULE_2__.default {
   static get properties() {
     return {
       'icon_classes': {
@@ -61974,12 +61996,12 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
   }
 
   render() {
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+    return lit__WEBPACK_IMPORTED_MODULE_5__.html`
             <button type="button" class="btn btn--transparent btn--standalone" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <converse-icon color="${this.color}" size="1em" class="${this.icon_classes}">
             </button>
             <div class="dropdown-menu">
-                ${this.items.map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(b, ''))}
+                ${this.items.map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)(b, ''))}
             </div>
         `;
   }
@@ -61987,6 +62009,19 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
   firstUpdated() {
     super.firstUpdated();
     this.initArrowNavigation();
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.hideOnEscape = ev => ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_3__.KEYCODES.ESCAPE && this.hideMenu();
+
+    document.addEventListener('keydown', this.hideOnEscape);
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this.hideOnEscape);
+    super.disconnectedCallback();
   }
 
   hideMenu() {
@@ -62019,13 +62054,13 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
   handleKeyUp(ev) {
     super.handleKeyUp(ev);
 
-    if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.keycodes.DOWN_ARROW && !this.navigator.enabled) {
+    if (ev.keyCode === _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_3__.KEYCODES.DOWN_ARROW && !this.navigator.enabled) {
       this.enableArrowNavigation(ev);
     }
   }
 
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-dropdown', Dropdown);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-dropdown', Dropdown);
 
 /***/ }),
 
