@@ -20,7 +20,7 @@
             {
 				const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));	
 
-				if (chatview && chatview.model.get("type") === "chatbox" && chatview.model.get("jid") == "rss@pade." + _converse.connection.domain) {				
+				if (chatview && chatview.model.get("type") === "chatbox" && chatview.model.get("jid") == "pade-rss@" + _converse.connection.domain) {				
 					let form = chatview.getMessageForm();
 					
 					if (form) {
@@ -58,7 +58,7 @@
                     var type = view.model.get("type");
                     console.debug("chatBoxViewInitialized", jid, type);
 
-                    if (jid === "rss@pade." + _converse.connection.domain)
+                    if (jid === "pade-rss@" + _converse.connection.domain)
                     {
                         if (getSetting("showRssToolbar", false)) {
 							const textarea = view.querySelector('.chat-textarea')
@@ -87,7 +87,7 @@
                         var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
                         rssInterval = setInterval(rssRefresh, rssFeedCheck);
 
-                        openChat("rss@pade." + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);
+                        openChat("pade-rss@" + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);
                     }
                 });
             });
@@ -113,7 +113,7 @@
 
     function rssChatCheck()
     {
-		const from = "rss@pade." + _converse.connection.domain;
+		const from = "pade-rss@" + _converse.connection.domain;
 		const summary = getSetting("showRssSummary");
         var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
         console.debug("rssChatCheck", rssUrls, summary, from);
