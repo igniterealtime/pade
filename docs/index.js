@@ -218,6 +218,14 @@ function startConverse() {
 	if (!username || !password || username == "" || password == "") {
 		location.href = "./options/index.html";
 	}
+
+	const defaultBoshServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/";
+	let boshServiceUrl = getSetting("boshUri", defaultBoshServiceUrl);
+	if (boshServiceUrl.trim() == "") boshServiceUrl = defaultBoshServiceUrl;
+	
+	const defaultWSServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/';
+	let wsServiceUrl = getSetting('websocketUri', defaultWSServiceUrl);	
+	if (wsServiceUrl.trim() == "") wsServiceUrl = defaultBoshServiceUrl;
 	
     const displayname = getSetting("displayname", username);
 	let autoJoinRooms = undefined;
@@ -316,7 +324,7 @@ function startConverse() {
 		auto_subscribe: getSetting("autoSubscribe", false),
 		auto_register_muc_nickname: getSetting("autoRegisterMucNick", false),
 		auto_xa:  autoXa,
-		bosh_service_url: getSetting("boshUri", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/"),
+		bosh_service_url: boshServiceUrl,
 		clear_cache_on_logout: getSetting("clearCacheOnConnect", false),
 		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
 		connection_options: { 'worker': getSetting("useWebworker", false) ? "./pade-connection-worker.js" : undefined },
@@ -387,7 +395,7 @@ function startConverse() {
 		jitsimeet_modal: !getSetting("converseEmbedOfMeet", true),		
 		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
 		visible_toolbar_buttons: {'emoji': true, 'call': false, 'clear': true },
-		websocket_url: getSetting("useWebsocket", false) ? getSetting('websocketUri', ((domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/')) : undefined,		
+		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
 
