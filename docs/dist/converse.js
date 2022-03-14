@@ -28628,8 +28628,8 @@ const {
 
       await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.waitUntil('discoInitialized');
       let entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.get(jid, true);
-      entity = await entity.waitUntilFeaturesDiscovered;
-      return entity.fields;
+      entity = await entity?.waitUntilFeaturesDiscovered;	// BAO
+      return entity?.fields;	// BAO
     },
 
     /**
@@ -28673,7 +28673,7 @@ const {
         return;
       }
 
-      return e.getIdentity(category, type);
+      return e?.getIdentity(category, type);	// BAO
     }
 
   }

@@ -225,7 +225,7 @@ function startConverse() {
 	
 	const defaultWSServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/';
 	let wsServiceUrl = getSetting('websocketUri', defaultWSServiceUrl);	
-	if (wsServiceUrl.trim() == "") wsServiceUrl = defaultBoshServiceUrl;
+	if (wsServiceUrl.trim() == "") wsServiceUrl = defaultWSServiceUrl;
 	
     const displayname = getSetting("displayname", username);
 	let autoJoinRooms = undefined;
