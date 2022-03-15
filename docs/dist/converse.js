@@ -6861,15 +6861,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var mergebounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mergebounce */ "./node_modules/mergebounce/mergebounce.js");
+/* harmony import */ var localforage_driver_memory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! localforage-driver-memory */ "./node_modules/localforage-driver-memory/_bundle/umd.js");
+/* harmony import */ var localforage_driver_memory__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(localforage_driver_memory__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash_es_cloneDeep_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash-es/cloneDeep.js */ "./node_modules/lodash-es/cloneDeep.js");
+/* harmony import */ var lodash_es_isString_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash-es/isString.js */ "./node_modules/lodash-es/isString.js");
 /* harmony import */ var localforage_src_localforage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! localforage/src/localforage */ "./node_modules/localforage/src/localforage.js");
-/* harmony import */ var localforage_driver_memory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! localforage-driver-memory */ "./node_modules/localforage-driver-memory/_bundle/umd.js");
-/* harmony import */ var localforage_driver_memory__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(localforage_driver_memory__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lodash_es_cloneDeep_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash-es/cloneDeep.js */ "./node_modules/lodash-es/cloneDeep.js");
-/* harmony import */ var lodash_es_isString_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash-es/isString.js */ "./node_modules/lodash-es/isString.js");
+/* harmony import */ var mergebounce__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mergebounce */ "./node_modules/mergebounce/mergebounce.js");
 /* harmony import */ var _drivers_sessionStorage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./drivers/sessionStorage.js */ "./node_modules/@converse/skeletor/src/drivers/sessionStorage.js");
 /* harmony import */ var localforage_setitems__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! localforage-setitems */ "./node_modules/localforage-setitems/dist/localforage-setitems.js");
 /* harmony import */ var localforage_setitems__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(localforage_setitems__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var localforage_getitems__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! localforage-getitems */ "./node_modules/localforage-getitems/dist/localforage-getitems.js");
+/* harmony import */ var localforage_getitems__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(localforage_getitems__WEBPACK_IMPORTED_MODULE_5__);
 /**
  * IndexedDB, localStorage and sessionStorage adapter
  */
@@ -6880,9 +6882,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const IN_MEMORY = localforage_driver_memory__WEBPACK_IMPORTED_MODULE_2__._driver;
-localforage_src_localforage__WEBPACK_IMPORTED_MODULE_1__.default.defineDriver(localforage_driver_memory__WEBPACK_IMPORTED_MODULE_2__);
+
+const IN_MEMORY = localforage_driver_memory__WEBPACK_IMPORTED_MODULE_0__._driver;
+localforage_src_localforage__WEBPACK_IMPORTED_MODULE_1__.default.defineDriver(localforage_driver_memory__WEBPACK_IMPORTED_MODULE_0__);
 (0,localforage_setitems__WEBPACK_IMPORTED_MODULE_4__.extendPrototype)(localforage_src_localforage__WEBPACK_IMPORTED_MODULE_1__.default);
+(0,localforage_getitems__WEBPACK_IMPORTED_MODULE_5__.extendPrototype)(localforage_src_localforage__WEBPACK_IMPORTED_MODULE_1__.default);
 
 function S4() {
   // Generate four random hex digits.
@@ -6902,13 +6906,13 @@ class Storage {
       throw new Error("Skeletor.storage: Environment does not support sessionStorage.");
     }
 
-    if ((0,lodash_es_isString_js__WEBPACK_IMPORTED_MODULE_5__.default)(type)) {
+    if ((0,lodash_es_isString_js__WEBPACK_IMPORTED_MODULE_6__.default)(type)) {
       this.storeInitialized = this.initStore(type, batchedWrites);
     } else {
       this.store = type;
 
       if (batchedWrites) {
-        this.store.debouncedSetItems = (0,mergebounce__WEBPACK_IMPORTED_MODULE_0__.default)(items => this.store.setItems(items), 50, {
+        this.store.debouncedSetItems = (0,mergebounce__WEBPACK_IMPORTED_MODULE_2__.default)(items => this.store.setItems(items), 50, {
           'promise': true
         });
       }
@@ -6937,7 +6941,7 @@ class Storage {
     this.store = localforage_src_localforage__WEBPACK_IMPORTED_MODULE_1__.default;
 
     if (batchedWrites) {
-      this.store.debouncedSetItems = (0,mergebounce__WEBPACK_IMPORTED_MODULE_0__.default)(items => this.store.setItems(items), 50, {
+      this.store.debouncedSetItems = (0,mergebounce__WEBPACK_IMPORTED_MODULE_2__.default)(items => this.store.setItems(items), 50, {
         'promise': true
       });
     }
@@ -6957,7 +6961,7 @@ class Storage {
     await Promise.all(removed_keys.map(k => this.store.removeItem(k).catch(e => console.error(e))));
   }
 
-  sync(name) {
+  sync() {
     const that = this;
 
     async function localSync(method, model, options) {
@@ -6969,7 +6973,7 @@ class Storage {
       const collection = model.collection;
 
       if (['patch', 'update'].includes(method)) {
-        new_attributes = (0,lodash_es_cloneDeep_js__WEBPACK_IMPORTED_MODULE_6__.default)(model.attributes);
+        new_attributes = (0,lodash_es_cloneDeep_js__WEBPACK_IMPORTED_MODULE_7__.default)(model.attributes);
       }
 
       await that.storeInitialized;
@@ -7129,10 +7133,11 @@ class Storage {
   async findAll() {
     /* Return the array of all models currently in storage.
      */
-    const data = await this.store.getItem(this.name);
+    const keys = await this.store.getItem(this.name);
 
-    if (data && data.length) {
-      return Promise.all(data.map(item => this.store.getItem(item)));
+    if (keys !== null && keys !== void 0 && keys.length) {
+      const items = await this.store.getItems(keys);
+      return Object.values(items);
     }
 
     return [];
@@ -23938,12 +23943,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__.defa
       // Create a chain of promises, with each one feeding its output to
       // the next. The first input is a promise with the original data
       // sent to this hook.
-      const o = events.reduce((o, e) => o.then(d => e.callback(context, d)), Promise.resolve(data));
-      o.catch(e => {
-        _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_5__.default.error(e);
-        throw e;
-      });
-      return o;
+      return events.reduce((o, e) => o.then(d => e.callback(context, d)), Promise.resolve(data));
     } else {
       return data;
     }
@@ -26082,15 +26082,16 @@ const MessageMixin = {
   },
 
   getMessageText() {
-    const {
-      __
-    } = _core_js__WEBPACK_IMPORTED_MODULE_3__._converse;
-
     if (this.get('is_encrypted')) {
+      const {
+        __
+      } = _core_js__WEBPACK_IMPORTED_MODULE_3__._converse;
       return this.get('plaintext') || this.get('body') || __('Undecryptable OMEMO message');
+    } else if (['groupchat', 'chat'].includes(this.get('type'))) {
+      return this.get('body');
+    } else {
+      return this.get('message');
     }
-
-    return this.get('message');
   },
 
   /**
@@ -26571,7 +26572,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
   async onMessageUploadChanged(message) {
     if (message.get('upload') === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.SUCCESS) {
       const attrs = {
-        'body': message.get('message'),
+        'body': message.get('body'),
         'spoiler_hint': message.get('spoiler_hint'),
         'oob_url': message.get('oob_url')
       };
@@ -26683,7 +26684,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
 
   pruneHistoryWhenScrolledDown() {
     if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('prune_messages_above') && _core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('pruning_behavior') === 'unscrolled' && !this.ui.get('scrolled')) {
-      (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_5__.pruneHistory)(this);
+      (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_5__.debouncedPruneHistory)(this);
     }
   },
 
@@ -26994,9 +26995,9 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
     } else {
       // This is a correction of an earlier message we already received
       if (Object.keys(older_versions).length) {
-        older_versions[message.get('edited')] = message.get('message');
+        older_versions[message.get('edited')] = message.getMessageText();
       } else {
-        older_versions[message.get('time')] = message.get('message');
+        older_versions[message.get('time')] = message.getMessageText();
       }
 
       attrs = Object.assign(attrs, {
@@ -27208,13 +27209,13 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
    * @method _converse.ChatBox#createMessageStanza
    * @param { _converse.Message } message - The message object
    */
-  createMessageStanza(message) {
+  async createMessageStanza(message) {
     const stanza = $msg({
       'from': _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid,
       'to': this.get('jid'),
       'type': this.get('message_type'),
       'id': message.get('edited') && u.getUniqueId() || message.get('msgid')
-    }).c('body').t(message.get('message')).up().c(_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.ACTIVE, {
+    }).c('body').t(message.get('body')).up().c(_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.ACTIVE, {
       'xmlns': Strophe.NS.CHATSTATES
     }).root();
 
@@ -27224,37 +27225,39 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
       }).root();
     }
 
-    if (message.get('is_spoiler')) {
-      if (message.get('spoiler_hint')) {
-        stanza.c('spoiler', {
-          'xmlns': Strophe.NS.SPOILER
-        }, message.get('spoiler_hint')).root();
-      } else {
-        stanza.c('spoiler', {
-          'xmlns': Strophe.NS.SPOILER
-        }).root();
-      }
-    }
-
-    (message.get('references') || []).forEach(reference => {
-      const attrs = {
-        'xmlns': Strophe.NS.REFERENCE,
-        'begin': reference.begin,
-        'end': reference.end,
-        'type': reference.type
-      };
-
-      if (reference.uri) {
-        attrs.uri = reference.uri;
+    if (!message.get('is_encrypted')) {
+      if (message.get('is_spoiler')) {
+        if (message.get('spoiler_hint')) {
+          stanza.c('spoiler', {
+            'xmlns': Strophe.NS.SPOILER
+          }, message.get('spoiler_hint')).root();
+        } else {
+          stanza.c('spoiler', {
+            'xmlns': Strophe.NS.SPOILER
+          }).root();
+        }
       }
 
-      stanza.c('reference', attrs).root();
-    });
+      (message.get('references') || []).forEach(reference => {
+        const attrs = {
+          'xmlns': Strophe.NS.REFERENCE,
+          'begin': reference.begin,
+          'end': reference.end,
+          'type': reference.type
+        };
 
-    if (message.get('oob_url')) {
-      stanza.c('x', {
-        'xmlns': Strophe.NS.OUTOFBAND
-      }).c('url').t(message.get('oob_url')).root();
+        if (reference.uri) {
+          attrs.uri = reference.uri;
+        }
+
+        stanza.c('reference', attrs).root();
+      });
+
+      if (message.get('oob_url')) {
+        stanza.c('x', {
+          'xmlns': Strophe.NS.OUTOFBAND
+        }).c('url').t(message.get('oob_url')).root();
+      }
     }
 
     if (message.get('edited')) {
@@ -27271,15 +27274,36 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
       }).root();
     }
 
-    return stanza;
+    stanza.root();
+    /**
+     * *Hook* which allows plugins to update an outgoing message stanza
+     * @event _converse#createMessageStanza
+     * @param { _converse.ChatBox | _converse.ChatRoom } - The chat from
+     *      which this message stanza is being sent.
+     * @param { Object } data - Message data
+     * @param { _converse.Message | _converse.ChatRoomMessage } data.message
+     *      The message object from which the stanza is created and which gets persisted to storage.
+     * @param { Strophe.Builder } data.stanza
+     *      The stanza that will be sent out, as a Strophe.Builder object.
+     *      You can use the Strophe.Builder functions to extend the stanza.
+     *      See http://strophe.im/strophejs/doc/1.4.3/files/strophe-umd-js.html#Strophe.Builder.Functions
+     */
+
+    const data = await _core_js__WEBPACK_IMPORTED_MODULE_4__.api.hook('createMessageStanza', this, {
+      message,
+      stanza
+    });
+    return data.stanza;
   },
 
-  getOutgoingMessageAttributes(attrs) {
+  async getOutgoingMessageAttributes(attrs) {
+    var _attrs;
+
     const is_spoiler = !!this.get('composing_spoiler');
     const origin_id = u.getUniqueId();
-    const text = attrs === null || attrs === void 0 ? void 0 : attrs.body;
+    const text = (_attrs = attrs) === null || _attrs === void 0 ? void 0 : _attrs.body;
     const body = text ? u.httpToGeoUri(u.shortnamesToUnicode(text), _core_js__WEBPACK_IMPORTED_MODULE_4__._converse) : undefined;
-    return Object.assign({}, attrs, {
+    attrs = Object.assign({}, attrs, {
       'from': _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid,
       'fullname': _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.get('fullname'),
       'id': origin_id,
@@ -27295,6 +27319,19 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
       is_spoiler,
       origin_id
     }, (0,_converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_6__.getMediaURLsMetadata)(text));
+    /**
+     * *Hook* which allows plugins to update the attributes of an outgoing message.
+     * These attributes get set on the { @link _converse.Message } or
+     * { @link _converse.ChatRoomMessage } and persisted to storage.
+     * @event _converse#getOutgoingMessageAttributes
+     * @param { _converse.ChatBox | _converse.ChatRoom } chat
+     *      The chat from which this message will be sent.
+     * @param { MessageAttributes } attrs
+     *      The message attributes, from which the stanza will be created.
+     */
+
+    attrs = await _core_js__WEBPACK_IMPORTED_MODULE_4__.api.hook('getOutgoingMessageAttributes', this, attrs);
+    return attrs;
   },
 
   /**
@@ -27359,28 +27396,39 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
    * chat.sendMessage({'body': 'hello world'});
    */
   async sendMessage(attrs) {
-    attrs = this.getOutgoingMessageAttributes(attrs);
+    attrs = await this.getOutgoingMessageAttributes(attrs);
     let message = this.messages.findWhere('correcting');
 
     if (message) {
       const older_versions = message.get('older_versions') || {};
-      older_versions[message.get('time')] = message.get('message');
+      const edited_time = message.get('edited') || message.get('time');
+      older_versions[edited_time] = message.getMessageText();
+      const plaintext = attrs.is_encrypted ? attrs.message : undefined;
       message.save({
+        'body': attrs.body,
+        'message': attrs.body,
         'correcting': false,
         'edited': new Date().toISOString(),
-        'message': attrs.message,
-        'older_versions': older_versions,
-        'references': attrs.references,
         'is_only_emojis': attrs.is_only_emojis,
         'origin_id': u.getUniqueId(),
-        'received': undefined
+        'received': undefined,
+        'references': attrs.references,
+        older_versions,
+        plaintext
       });
     } else {
       this.setEditable(attrs, new Date().toISOString());
       message = await this.createMessage(attrs);
     }
 
-    _core_js__WEBPACK_IMPORTED_MODULE_4__.api.send(this.createMessageStanza(message));
+    try {
+      const stanza = await this.createMessageStanza(message);
+      _core_js__WEBPACK_IMPORTED_MODULE_4__.api.send(stanza);
+    } catch (e) {
+      message.destroy();
+      _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__.default.error(e);
+      return;
+    }
     /**
      * Triggered when a message is being sent out
      * @event _converse#sendMessage
@@ -27389,6 +27437,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
      * @property { (_converse.ChatBox | _converse.ChatRoom) } data.chatbox
      * @property { (_converse.Message | _converse.ChatRoomMessage) } data.message
      */
+
 
     _core_js__WEBPACK_IMPORTED_MODULE_4__.api.trigger('sendMessage', {
       'chatbox': this,
@@ -27466,6 +27515,10 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
        * *Hook* which allows plugins to transform files before they'll be
        * uploaded. The main use-case is to encrypt the files.
        * @event _converse#beforeFileUpload
+       * @param { _converse.ChatBox | _converse.ChatRoom } chat
+       *      The chat from which this file will be uploaded.
+       * @param { File } file
+       *      The file that will be uploaded
        */
       file = await _core_js__WEBPACK_IMPORTED_MODULE_4__.api.hook('beforeFileUpload', this, file);
 
@@ -27476,7 +27529,8 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__.default.exte
           'is_ephemeral': true
         });
       } else {
-        const attrs = Object.assign(this.getOutgoingMessageAttributes(), {
+        const initial_attrs = await this.getOutgoingMessageAttributes();
+        const attrs = Object.assign(initial_attrs, {
           'file': true,
           'progress': 0,
           'slot_request_url': slot_request_url
@@ -28628,8 +28682,8 @@ const {
 
       await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.waitUntil('discoInitialized');
       let entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.get(jid, true);
-      entity = await entity?.waitUntilFeaturesDiscovered;	// BAO
-      return entity?.fields;	// BAO
+      entity = await entity.waitUntilFeaturesDiscovered;
+      return entity.fields;
     },
 
     /**
@@ -28673,7 +28727,7 @@ const {
         return;
       }
 
-      return e?.getIdentity(category, type);	// BAO
+      return e.getIdentity(category, type);
     }
 
   }
@@ -32722,18 +32776,20 @@ const ChatRoomMixin = {
     return [updated_message, updated_references];
   },
 
-  getOutgoingMessageAttributes(attrs) {
+  async getOutgoingMessageAttributes(attrs) {
+    var _attrs;
+
     const is_spoiler = this.get('composing_spoiler');
     let text = '',
         references;
 
-    if (attrs !== null && attrs !== void 0 && attrs.body) {
+    if ((_attrs = attrs) !== null && _attrs !== void 0 && _attrs.body) {
       [text, references] = this.parseTextForReferences(attrs.body);
     }
 
     const origin_id = (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_11__.getUniqueId)();
     const body = text ? _utils_form__WEBPACK_IMPORTED_MODULE_3__.default.httpToGeoUri(_utils_form__WEBPACK_IMPORTED_MODULE_3__.default.shortnamesToUnicode(text), _core_js__WEBPACK_IMPORTED_MODULE_6__._converse) : undefined;
-    return Object.assign({}, attrs, {
+    attrs = Object.assign({}, attrs, {
       body,
       is_spoiler,
       origin_id,
@@ -32748,6 +32804,14 @@ const ChatRoomMixin = {
       'sender': 'me',
       'type': 'groupchat'
     }, (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_10__.getMediaURLsMetadata)(text));
+    /**
+     * *Hook* which allows plugins to update the attributes of an outgoing
+     * message.
+     * @event _converse#getOutgoingMessageAttributes
+     */
+
+    attrs = await _core_js__WEBPACK_IMPORTED_MODULE_6__.api.hook('getOutgoingMessageAttributes', this, attrs);
+    return attrs;
   },
 
   /**
@@ -34156,7 +34220,7 @@ const ChatRoomMixin = {
     if (message) {
       message.get('type') === 'groupchat' && this.updateMessage(message, attrs);
       return;
-    } else if (attrs.is_valid_receipt_request || attrs.is_marker || this.ignorableCSN(attrs)) {
+    } else if (attrs.receipt_id || attrs.is_marker || this.ignorableCSN(attrs)) {
       return;
     }
 
@@ -34634,7 +34698,7 @@ const ChatRoomMixin = {
       const mentions = message.get('references').filter(ref => ref.type === 'mention').map(ref => ref.value);
       return mentions.includes(nick);
     } else {
-      return new RegExp(`\\b${nick}\\b`).test(message.get('message'));
+      return new RegExp(`\\b${nick}\\b`).test(message.get('body'));
     }
   },
 
@@ -38752,6 +38816,8 @@ function pruneHistory(model) {
 
   if (max_history && typeof max_history === 'number') {
     if (model.messages.length > max_history) {
+      model.messages.sort(); // Explicitly call sort() to avoid race-conditions
+
       const non_empty_messages = model.messages.filter(m => !u.isEmptyMessage(m));
 
       if (non_empty_messages.length > max_history) {
@@ -38807,7 +38873,7 @@ function getMediaURLs(arr, text, offset = 0) {
     });
   }).filter(o => o);
 }
-const debouncedPruneHistory = (0,lodash_es_debounce_js__WEBPACK_IMPORTED_MODULE_1__.default)(pruneHistory, 250);
+const debouncedPruneHistory = (0,lodash_es_debounce_js__WEBPACK_IMPORTED_MODULE_1__.default)(pruneHistory, 500);
 
 /***/ }),
 
@@ -40540,6 +40606,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isEmptyMessage": () => (/* binding */ isEmptyMessage),
 /* harmony export */   "isUniView": () => (/* binding */ isUniView),
 /* harmony export */   "tearDown": () => (/* binding */ tearDown),
+/* harmony export */   "prefixMentions": () => (/* binding */ prefixMentions),
 /* harmony export */   "safeSave": () => (/* binding */ safeSave),
 /* harmony export */   "getUniqueId": () => (/* binding */ getUniqueId),
 /* harmony export */   "setUnloadEvent": () => (/* binding */ setUnloadEvent),
@@ -40661,17 +40728,19 @@ u.getLongestSubstring = function (string, candidates) {
 
   return candidates.reduce(reducer, '');
 };
+/**
+ * Given a message object, return its text with @ chars
+ * inserted before the mentioned nicknames.
+ */
 
-u.prefixMentions = function (message) {
-  /* Given a message object, return its text with @ chars
-   * inserted before the mentioned nicknames.
-   */
-  let text = message.get('message');
+
+function prefixMentions(message) {
+  let text = message.getMessageText();
   (message.get('references') || []).sort((a, b) => b.begin - a.begin).forEach(ref => {
     text = `${text.slice(0, ref.begin)}@${text.slice(ref.begin)}`;
   });
   return text;
-};
+}
 
 u.isValidJID = function (jid) {
   if (typeof jid === 'string') {
@@ -41163,6 +41232,7 @@ function decodeHTMLEntities(str) {
   return str;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Object.assign({
+  prefixMentions,
   isEmptyMessage,
   getUniqueId
 }, u));
@@ -44088,8 +44158,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_message_form_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/message-form.js */ "./src/plugins/chatview/templates/message-form.js");
 /* harmony import */ var _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/skeletor/src/element.js */ "./node_modules/@converse/skeletor/src/element.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/chatview/utils.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+
 
 
 
@@ -44097,11 +44169,11 @@ __webpack_require__.r(__webpack_exports__);
 
 const {
   u
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.env;
 class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_1__.ElementView {
   async connectedCallback() {
     super.connectedCallback();
-    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(this.getAttribute('jid'));
+    this.model = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(this.getAttribute('jid'));
     await this.model.initialized;
     this.listenTo(this.model.messages, 'change:correcting', this.onMessageCorrecting);
     this.listenTo(this.model, 'change:composing_spoiler', () => this.render());
@@ -44180,12 +44252,12 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
 
   onMessageCorrecting(message) {
     if (message.get('correcting')) {
-      this.insertIntoTextArea(u.prefixMentions(message), true, true);
+      this.insertIntoTextArea((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__.prefixMentions)(message), true, true);
     } else {
       const currently_correcting = this.model.messages.findWhere('correcting');
 
       if (currently_correcting && currently_correcting !== message) {
-        this.insertIntoTextArea(u.prefixMentions(message), true, true);
+        this.insertIntoTextArea((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__.prefixMentions)(message), true, true);
       } else {
         this.insertIntoTextArea('', true, false);
       }
@@ -44234,7 +44306,7 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     }
 
     if (!ev.shiftKey && !ev.altKey && !ev.metaKey) {
-      if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.TAB) {
+      if (ev.keyCode === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.TAB) {
         const value = u.getCurrentWord(ev.target, null, /(:.*?:)/g);
 
         if (value.startsWith(':')) {
@@ -44242,32 +44314,32 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
           ev.stopPropagation();
           this.model.trigger('emoji-picker-autocomplete', ev.target, value);
         }
-      } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.FORWARD_SLASH) {
+      } else if (ev.keyCode === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.FORWARD_SLASH) {
         // Forward slash is used to run commands. Nothing to do here.
         return;
-      } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ESCAPE) {
+      } else if (ev.keyCode === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ESCAPE) {
         return this.onEscapePressed(ev, this);
-      } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ENTER) {
+      } else if (ev.keyCode === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ENTER) {
         return this.onFormSubmitted(ev);
-      } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.UP_ARROW && !ev.target.selectionEnd) {
+      } else if (ev.keyCode === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.UP_ARROW && !ev.target.selectionEnd) {
         const textarea = this.querySelector('.chat-textarea');
 
         if (!textarea.value || u.hasClass('correcting', textarea)) {
           return this.model.editEarlierMessage();
         }
-      } else if (ev.keyCode === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length && u.hasClass('correcting', this.querySelector('.chat-textarea'))) {
+      } else if (ev.keyCode === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.DOWN_ARROW && ev.target.selectionEnd === ev.target.value.length && u.hasClass('correcting', this.querySelector('.chat-textarea'))) {
         return this.model.editLaterMessage();
       }
     }
 
-    if ([_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.SHIFT, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.META, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.META_RIGHT, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ESCAPE, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ALT].includes(ev.keyCode)) {
+    if ([_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.SHIFT, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.META, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.META_RIGHT, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ESCAPE, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.keycodes.ALT].includes(ev.keyCode)) {
       return;
     }
 
-    if (this.model.get('chat_state') !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.COMPOSING) {
+    if (this.model.get('chat_state') !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.COMPOSING) {
       // Set chat state to composing if keyCode is not a forward-slash
       // (which would imply an internal command and not a message).
-      this.model.setChatState(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.COMPOSING);
+      this.model.setChatState(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.COMPOSING);
     }
   }
 
@@ -44278,15 +44350,15 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     const textarea = this.querySelector('.chat-textarea');
     const message_text = textarea.value.trim();
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_limit') && message_text.length > _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_limit') || !message_text.replace(/\s/g, '').length) {
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_limit') && message_text.length > _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_limit') || !message_text.replace(/\s/g, '').length) {
       return;
     }
 
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection.authenticated) {
+    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.connection.authenticated) {
       const err_msg = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Sorry, the connection has been lost, and your message could not be sent');
 
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Error'), err_msg);
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.connection.reconnect();
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Error'), err_msg);
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.connection.reconnect();
       return;
     }
 
@@ -44317,10 +44389,10 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
       });
     }
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'overlayed') {
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'overlayed') {
       // XXX: Chrome flexbug workaround. The .chat-content area
       // doesn't resize when the textarea is resized to its original size.
-      const chatview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'));
+      const chatview = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'));
 
       const msgs_container = chatview.querySelector('.chat-content__messages');
       msgs_container.parentElement.style.display = 'none';
@@ -44329,9 +44401,9 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     textarea.removeAttribute('disabled');
     u.removeClass('disabled', textarea);
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'overlayed') {
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'overlayed') {
       // XXX: Chrome flexbug workaround.
-      const chatview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'));
+      const chatview = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'));
 
       const msgs_container = chatview.querySelector('.chat-content__messages');
       msgs_container.parentElement.style.display = '';
@@ -44339,14 +44411,14 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     // immediately after the message, causing rate-limiting issues.
 
 
-    this.model.setChatState(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ACTIVE, {
+    this.model.setChatState(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.ACTIVE, {
       'silent': true
     });
     textarea.focus();
   }
 
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-message-form', MessageForm);
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-message-form', MessageForm);
 
 /***/ }),
 
@@ -52744,6 +52816,31 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
+     * The "devicelists" namespace groups methods related to OMEMO device lists
+     *
+     * @namespace _converse.api.omemo.devicelists
+     * @memberOf _converse.api.omemo
+     */
+    'devicelists': {
+      /**
+       * Returns the {@link _converse.DeviceList} for a particular JID.
+       * The device list will be created if it doesn't exist already.
+       * @method _converse.api.omemo.devicelists.get
+       * @param { String } jid - The Jabber ID for which the device list will be returned.
+       * @param { bool } create=false - Set to `true` if the device list
+       *      should be created if it cannot be found.
+       */
+      async get(jid, create = false) {
+        const list = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.devicelists.get(jid) || (create ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.devicelists.create({
+          jid
+        }) : null);
+        await (list === null || list === void 0 ? void 0 : list.initialized);
+        return list;
+      }
+
+    },
+
+    /**
      * The "bundle" namespace groups methods relevant to the user's
      * OMEMO bundle.
      *
@@ -52760,7 +52857,7 @@ __webpack_require__.r(__webpack_exports__);
       'generate': async () => {
         await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.waitUntil('OMEMOInitialized'); // Remove current device
 
-        const devicelist = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.bare_jid);
+        const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.bare_jid);
 
         const device_id = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.omemo_store.get('device_id');
 
@@ -52969,7 +53066,7 @@ const DeviceList = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
 
   async onDevicesFound(collection) {
     if (collection.length === 0) {
-      let ids;
+      let ids = [];
 
       try {
         ids = await this.fetchDevicesFromServer();
@@ -52985,7 +53082,7 @@ const DeviceList = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
       }
 
       if (this.get('jid') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bare_jid) {
-        await this.publishCurrentDevice(ids);
+        this.publishCurrentDevice(ids);
       }
     }
   },
@@ -53049,24 +53146,16 @@ const DeviceList = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
     }).c('items', {
       'node': Strophe.NS.OMEMO_DEVICELIST
     });
-    let iq;
-
-    try {
-      iq = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.sendIQ(stanza);
-    } catch (e) {
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
-      return [];
-    }
-
+    const iq = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.sendIQ(stanza);
     const selector = `list[xmlns="${Strophe.NS.OMEMO}"] device`;
     const device_ids = sizzle(selector, iq).map(d => d.getAttribute('id'));
-    await Promise.all(device_ids.map(id => this.devices.create({
+    const jid = this.get('jid');
+    return Promise.all(device_ids.map(id => this.devices.create({
       id,
-      'jid': this.get('jid')
+      jid
     }, {
       'promise': true
     })));
-    return device_ids;
   },
 
   /**
@@ -53131,22 +53220,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 const DeviceLists = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_1__.Collection.extend({
-  model: _devicelist_js__WEBPACK_IMPORTED_MODULE_0__.default,
-
-  /**
-   * Returns the {@link _converse.DeviceList} for a particular JID.
-   * The device list will be created if it doesn't exist already.
-   * @method _converse.DeviceLists#getDeviceList
-   * @param { String } jid - The Jabber ID for which the device list will be returned.
-   */
-  async getDeviceList(jid) {
-    const list = this.get(jid) || this.create({
-      'jid': jid
-    });
-    await list.initialized;
-    return list;
-  }
-
+  model: _devicelist_js__WEBPACK_IMPORTED_MODULE_0__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DeviceLists);
 
@@ -53222,7 +53296,7 @@ class Fingerprints extends shared_components_element_js__WEBPACK_IMPORTED_MODULE
   }
 
   async initialize() {
-    this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.devicelists.getDeviceList(this.jid);
+    this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.omemo.devicelists.get(this.jid, true);
     this.listenTo(this.devicelist.devices, 'change:bundle', this.requestUpdate);
     this.listenTo(this.devicelist.devices, 'change:trusted', this.requestUpdate);
     this.listenTo(this.devicelist.devices, 'remove', this.requestUpdate);
@@ -53258,18 +53332,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile.js */ "./src/plugins/omemo/profile.js");
 /* harmony import */ var modals_user_details_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! modals/user-details.js */ "./src/modals/user-details.js");
 /* harmony import */ var plugins_profile_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/profile/index.js */ "./src/plugins/profile/index.js");
-/* harmony import */ var _overrides_chatbox_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./overrides/chatbox.js */ "./src/plugins/omemo/overrides/chatbox.js");
-/* harmony import */ var _mixins_converse_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./mixins/converse.js */ "./src/plugins/omemo/mixins/converse.js");
-/* harmony import */ var _device_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./device.js */ "./src/plugins/omemo/device.js");
-/* harmony import */ var _devicelist_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./devicelist.js */ "./src/plugins/omemo/devicelist.js");
-/* harmony import */ var _devicelists_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./devicelists.js */ "./src/plugins/omemo/devicelists.js");
-/* harmony import */ var _devices_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./devices.js */ "./src/plugins/omemo/devices.js");
-/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./store.js */ "./src/plugins/omemo/store.js");
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./api.js */ "./src/plugins/omemo/api.js");
-/* harmony import */ var _mixins_chatbox_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./mixins/chatbox.js */ "./src/plugins/omemo/mixins/chatbox.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
+/* harmony import */ var _mixins_converse_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mixins/converse.js */ "./src/plugins/omemo/mixins/converse.js");
+/* harmony import */ var _device_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./device.js */ "./src/plugins/omemo/device.js");
+/* harmony import */ var _devicelist_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./devicelist.js */ "./src/plugins/omemo/devicelist.js");
+/* harmony import */ var _devicelists_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./devicelists.js */ "./src/plugins/omemo/devicelists.js");
+/* harmony import */ var _devices_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./devices.js */ "./src/plugins/omemo/devices.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store.js */ "./src/plugins/omemo/store.js");
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./api.js */ "./src/plugins/omemo/api.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -53288,141 +53360,79 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
 const {
   Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.converse.env;
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.converse.env.omemo = _utils_js__WEBPACK_IMPORTED_MODULE_15__.omemo;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.converse.env;
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.converse.env.omemo = _utils_js__WEBPACK_IMPORTED_MODULE_13__.omemo;
 Strophe.addNamespace('OMEMO_DEVICELIST', Strophe.NS.OMEMO + '.devicelist');
 Strophe.addNamespace('OMEMO_VERIFICATION', Strophe.NS.OMEMO + '.verification');
 Strophe.addNamespace('OMEMO_WHITELISTED', Strophe.NS.OMEMO + '.whitelisted');
 Strophe.addNamespace('OMEMO_BUNDLES', Strophe.NS.OMEMO + '.bundles');
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.converse.plugins.add('converse-omemo', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.converse.plugins.add('converse-omemo', {
   enabled(_converse) {
-    return window.libsignal && _converse.config.get('trusted') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get('blacklisted_plugins').includes('converse-omemo');
+    return window.libsignal && _converse.config.get('trusted') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get('blacklisted_plugins').includes('converse-omemo');
   },
 
   dependencies: ['converse-chatview', 'converse-pubsub'],
-  overrides: {
-    ChatBox: _overrides_chatbox_js__WEBPACK_IMPORTED_MODULE_4__.default
-  },
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.settings.extend({
       'omemo_default': false
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.promises.add(['OMEMOInitialized']);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.NUM_PREKEYS = 100; // Set here so that tests can override
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.promises.add(['OMEMOInitialized']);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.NUM_PREKEYS = 100; // Set here so that tests can override
 
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.ChatBox.prototype, _mixins_chatbox_js__WEBPACK_IMPORTED_MODULE_13__.OMEMOEnabledChatBox);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse, _mixins_converse_js__WEBPACK_IMPORTED_MODULE_5__.default);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_12__.default);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.OMEMOStore = _store_js__WEBPACK_IMPORTED_MODULE_10__.default;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.Device = _device_js__WEBPACK_IMPORTED_MODULE_6__.default;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.Devices = _devices_js__WEBPACK_IMPORTED_MODULE_9__.default;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.DeviceList = _devicelist_js__WEBPACK_IMPORTED_MODULE_7__.default;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.DeviceLists = _devicelists_js__WEBPACK_IMPORTED_MODULE_8__.default;
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse, _mixins_converse_js__WEBPACK_IMPORTED_MODULE_4__.default);
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_11__.default);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.OMEMOStore = _store_js__WEBPACK_IMPORTED_MODULE_9__.default;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.Device = _device_js__WEBPACK_IMPORTED_MODULE_5__.default;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.Devices = _devices_js__WEBPACK_IMPORTED_MODULE_8__.default;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.DeviceList = _devicelist_js__WEBPACK_IMPORTED_MODULE_6__.default;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.DeviceLists = _devicelists_js__WEBPACK_IMPORTED_MODULE_7__.default;
     /******************** Event Handlers ********************/
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.waitUntil('chatBoxesInitialized').then(_utils_js__WEBPACK_IMPORTED_MODULE_15__.onChatBoxesInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('afterFileUploaded', (msg, attrs) => msg.file.xep454_ivkey ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_15__.setEncryptedFileURL)(msg, attrs) : attrs);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('beforeFileUpload', (chat, file) => chat.get('omemo_active') ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_15__.encryptFile)(file) : file);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('parseMessage', _utils_js__WEBPACK_IMPORTED_MODULE_15__.parseEncryptedMessage);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('parseMUCMessage', _utils_js__WEBPACK_IMPORTED_MODULE_15__.parseEncryptedMessage);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('chatBoxViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_15__.onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('chatRoomViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_15__.onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_15__.registerPEPPushHandler);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('getToolbarButtons', _utils_js__WEBPACK_IMPORTED_MODULE_15__.getOMEMOToolbarButton);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_15__.initOMEMO);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('addClientFeatures', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.disco.own.features.add(`${Strophe.NS.OMEMO_DEVICELIST}+notify`));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('afterMessageBodyTransformed', _utils_js__WEBPACK_IMPORTED_MODULE_15__.handleEncryptedFiles);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('userDetailsModalInitialized', contact => {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.waitUntil('chatBoxesInitialized').then(_utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatBoxesInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('getOutgoingMessageAttributes', _utils_js__WEBPACK_IMPORTED_MODULE_13__.getOutgoingMessageAttributes);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('createMessageStanza', async (chat, data) => {
+      try {
+        data = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.createOMEMOMessageStanza)(chat, data);
+      } catch (e) {
+        (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.handleMessageSendError)(e, chat);
+      }
+
+      return data;
+    });
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('afterFileUploaded', (msg, attrs) => msg.file.xep454_ivkey ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.setEncryptedFileURL)(msg, attrs) : attrs);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('beforeFileUpload', (chat, file) => chat.get('omemo_active') ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.encryptFile)(file) : file);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('parseMessage', _utils_js__WEBPACK_IMPORTED_MODULE_13__.parseEncryptedMessage);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('parseMUCMessage', _utils_js__WEBPACK_IMPORTED_MODULE_13__.parseEncryptedMessage);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('chatBoxViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('chatRoomViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_13__.registerPEPPushHandler);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('getToolbarButtons', _utils_js__WEBPACK_IMPORTED_MODULE_13__.getOMEMOToolbarButton);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.initOMEMO);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('addClientFeatures', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.disco.own.features.add(`${Strophe.NS.OMEMO_DEVICELIST}+notify`));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('afterMessageBodyTransformed', _utils_js__WEBPACK_IMPORTED_MODULE_13__.handleEncryptedFiles);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('userDetailsModalInitialized', contact => {
       const jid = contact.get('jid');
 
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.generateFingerprints(jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_11__.default.error(e));
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.generateFingerprints(jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_10__.default.error(e));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('profileModalInitialized', () => {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.generateFingerprints(_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.bare_jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_11__.default.error(e));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('profileModalInitialized', () => {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.generateFingerprints(_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.bare_jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_10__.default.error(e));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__.api.listen.on('clearSession', () => {
-      delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.omemo_store;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('clearSession', () => {
+      delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.omemo_store;
 
-      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.shouldClearCache() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.devicelists) {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.devicelists.clearStore();
+      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.shouldClearCache() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.devicelists) {
+        _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.devicelists.clearStore();
 
-        delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_14__._converse.devicelists;
+        delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.devicelists;
       }
     });
   }
 
 });
-
-/***/ }),
-
-/***/ "./src/plugins/omemo/mixins/chatbox.js":
-/*!*********************************************!*\
-  !*** ./src/plugins/omemo/mixins/chatbox.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "OMEMOEnabledChatBox": () => (/* binding */ OMEMOEnabledChatBox)
-/* harmony export */ });
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/omemo/utils.js");
-
-
-
-
-const {
-  Strophe,
-  sizzle
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env;
-/**
- * Mixin object that contains OMEMO-related methods for
- * {@link _converse.ChatBox} or {@link _converse.ChatRoom} objects.
- *
- * @typedef {Object} OMEMOEnabledChatBox
- */
-
-const OMEMOEnabledChatBox = {
-  encryptKey(plaintext, device) {
-    return (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.getSessionCipher)(device.get('jid'), device.get('id')).encrypt(plaintext).then(payload => ({
-      'payload': payload,
-      'device': device
-    }));
-  },
-
-  handleMessageSendError(e) {
-    if (e.name === 'IQError') {
-      this.save('omemo_supported', false);
-      const err_msgs = [];
-
-      if (sizzle(`presence-subscription-required[xmlns="${Strophe.NS.PUBSUB_ERROR}"]`, e.iq).length) {
-        err_msgs.push((0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Sorry, we're unable to send an encrypted message because %1$s " + 'requires you to be subscribed to their presence in order to see their OMEMO information', e.iq.getAttribute('from')));
-      } else if (sizzle(`remote-server-not-found[xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"]`, e.iq).length) {
-        err_msgs.push((0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Sorry, we're unable to send an encrypted message because the remote server for %1$s could not be found", e.iq.getAttribute('from')));
-      } else {
-        err_msgs.push((0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unable to send an encrypted message due to an unexpected error.'));
-        err_msgs.push(e.iq.outerHTML);
-      }
-
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Error'), err_msgs);
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
-    } else if (e.user_facing) {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Error'), [e.message]);
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__.default.error(e);
-    } else {
-      throw e;
-    }
-  }
-
-};
 
 /***/ }),
 
@@ -53457,56 +53467,6 @@ const ConverseMixins = {
 
 /***/ }),
 
-/***/ "./src/plugins/omemo/overrides/chatbox.js":
-/*!************************************************!*\
-  !*** ./src/plugins/omemo/overrides/chatbox.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/omemo/utils.js");
-
-
-const ChatBox = {
-  async sendMessage(attrs) {
-    var _attrs;
-
-    if (this.get('omemo_active') && (_attrs = attrs) !== null && _attrs !== void 0 && _attrs.body) {
-      var _attrs2;
-
-      const plaintext = (_attrs2 = attrs) === null || _attrs2 === void 0 ? void 0 : _attrs2.body;
-      attrs = this.getOutgoingMessageAttributes(attrs);
-      attrs['is_encrypted'] = true;
-      attrs['plaintext'] = plaintext;
-      let message, stanza;
-
-      try {
-        const devices = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.getBundlesAndBuildSessions)(this);
-        message = await this.createMessage(attrs);
-        stanza = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.createOMEMOMessageStanza)(this, message, devices);
-      } catch (e) {
-        this.handleMessageSendError(e);
-        return null;
-      }
-
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.api.send(stanza);
-
-      return message;
-    } else {
-      return this.__super__.sendMessage.apply(this, arguments);
-    }
-  }
-
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatBox);
-
-/***/ }),
-
 /***/ "./src/plugins/omemo/profile.js":
 /*!**************************************!*\
   !*** ./src/plugins/omemo/profile.js ***!
@@ -53535,7 +53495,7 @@ const {
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
 class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
   async initialize() {
-    this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.devicelists.getDeviceList(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid);
+    this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid, true);
     await this.setAttributes();
     this.listenTo(this.devicelist.devices, 'change:bundle', () => this.requestUpdate());
     this.listenTo(this.devicelist.devices, 'reset', () => this.requestUpdate());
@@ -53824,9 +53784,7 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
       'id': k.keyId,
       'key': u.arrayBufferToBase64(k.pubKey)
     }));
-
-    const devicelist = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid);
-
+    const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid);
     const device = devicelist.devices.get(this.get('device_id'));
     const bundle = await device.getBundle();
     device.save('bundle', Object.assign(bundle, {
@@ -53847,7 +53805,7 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
     const identity_keypair = await libsignal.KeyHelper.generateIdentityKeyPair();
     const bundle = {};
     const identity_key = u.arrayBufferToBase64(identity_keypair.pubKey);
-    const device_id = (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.generateDeviceID)();
+    const device_id = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.generateDeviceID)();
     bundle['identity_key'] = identity_key;
     bundle['device_id'] = device_id;
     this.save({
@@ -53867,9 +53825,7 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
     };
     const keys = await Promise.all((0,lodash_es_range__WEBPACK_IMPORTED_MODULE_7__.default)(0, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.NUM_PREKEYS).map(id => libsignal.KeyHelper.generatePreKey(id)));
     keys.forEach(k => this.storePreKey(k.keyId, k.keyPair));
-
-    const devicelist = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid);
-
+    const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid);
     const device = await devicelist.devices.create({
       'id': bundle.device_id,
       'jid': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid
@@ -54095,6 +54051,8 @@ const device_list = el => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "formatFingerprint": () => (/* binding */ formatFingerprint),
+/* harmony export */   "handleMessageSendError": () => (/* binding */ handleMessageSendError),
+/* harmony export */   "getOutgoingMessageAttributes": () => (/* binding */ getOutgoingMessageAttributes),
 /* harmony export */   "encryptFile": () => (/* binding */ encryptFile),
 /* harmony export */   "setEncryptedFileURL": () => (/* binding */ setEncryptedFileURL),
 /* harmony export */   "handleEncryptedFiles": () => (/* binding */ handleEncryptedFiles),
@@ -54112,7 +54070,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "restoreOMEMOSession": () => (/* binding */ restoreOMEMOSession),
 /* harmony export */   "initOMEMO": () => (/* binding */ initOMEMO),
 /* harmony export */   "getOMEMOToolbarButton": () => (/* binding */ getOMEMOToolbarButton),
-/* harmony export */   "getBundlesAndBuildSessions": () => (/* binding */ getBundlesAndBuildSessions),
 /* harmony export */   "createOMEMOMessageStanza": () => (/* binding */ createOMEMOMessageStanza),
 /* harmony export */   "omemo": () => (/* binding */ omemo)
 /* harmony export */ });
@@ -54150,7 +54107,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const {
-  $msg,
   Strophe,
   URI,
   sizzle,
@@ -54165,6 +54121,36 @@ function formatFingerprint(fp) {
   }
 
   return fp;
+}
+function handleMessageSendError(e, chat) {
+  if (e.name === 'IQError') {
+    chat.save('omemo_supported', false);
+    const err_msgs = [];
+
+    if (sizzle(`presence-subscription-required[xmlns="${Strophe.NS.PUBSUB_ERROR}"]`, e.iq).length) {
+      err_msgs.push((0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)("Sorry, we're unable to send an encrypted message because %1$s " + 'requires you to be subscribed to their presence in order to see their OMEMO information', e.iq.getAttribute('from')));
+    } else if (sizzle(`remote-server-not-found[xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"]`, e.iq).length) {
+      err_msgs.push((0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)("Sorry, we're unable to send an encrypted message because the remote server for %1$s could not be found", e.iq.getAttribute('from')));
+    } else {
+      err_msgs.push((0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Unable to send an encrypted message due to an unexpected error.'));
+      err_msgs.push(e.iq.outerHTML);
+    }
+
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Error'), err_msgs);
+  } else if (e.user_facing) {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Error'), [e.message]);
+  }
+
+  throw e;
+}
+function getOutgoingMessageAttributes(chat, attrs) {
+  if (chat.get('omemo_active') && attrs.body) {
+    attrs['is_encrypted'] = true;
+    attrs['plaintext'] = attrs.body;
+    attrs['body'] = (0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('This is an OMEMO encrypted message which your client doesn’t seem to support. ' + 'Find more information on https://conversations.im/omemo');
+  }
+
+  return attrs;
 }
 
 async function encryptMessage(plaintext) {
@@ -54464,7 +54450,7 @@ function getJIDForDecryption(attrs) {
 
 async function handleDecryptedWhisperMessage(attrs, key_and_tag) {
   const from_jid = getJIDForDecryption(attrs);
-  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.getDeviceList(from_jid);
+  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(from_jid, true);
   const encrypted = attrs.encrypted;
   let device = devicelist.devices.get(encrypted.device_id);
 
@@ -54635,18 +54621,14 @@ async function generateFingerprint(device) {
 }
 async function getDevicesForContact(jid) {
   await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.waitUntil('OMEMOInitialized');
-
-  const devicelist = _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.get(jid) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.create({
-    'jid': jid
-  });
-
+  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(jid, true);
   await devicelist.fetchDevices();
   return devicelist.devices;
 }
-function generateDeviceID() {
+async function generateDeviceID() {
   /* Generates a device ID, making sure that it's unique */
-  const existing_ids = _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid).devices.pluck('id');
-
+  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid, true);
+  const existing_ids = devicelist.devices.pluck('id');
   let device_id = libsignal.KeyHelper.generateRegistrationId(); // Before publishing a freshly generated device id for the first time,
   // a device MUST check whether that device id already exists, and if so, generate a new one.
 
@@ -54719,7 +54701,7 @@ async function updateBundleFromStanza(stanza) {
   const device_id = items_el.getAttribute('node').split(':')[1];
   const jid = stanza.getAttribute('from');
   const bundle_el = sizzle(`item > bundle`, items_el).pop();
-  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.getDeviceList(jid);
+  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(jid, true);
   const device = devicelist.devices.get(device_id) || devicelist.devices.create({
     'id': device_id,
     jid
@@ -54739,7 +54721,7 @@ async function updateDevicesFromStanza(stanza) {
   const device_selector = `item list[xmlns="${Strophe.NS.OMEMO}"] device`;
   const device_ids = sizzle(device_selector, items_el).map(d => d.getAttribute('id'));
   const jid = stanza.getAttribute('from');
-  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.getDeviceList(jid);
+  const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(jid, true);
   const devices = devicelist.devices;
   const removed_ids = (0,lodash_es_difference__WEBPACK_IMPORTED_MODULE_14__.default)(devices.pluck('id'), device_ids);
   removed_ids.forEach(id => {
@@ -54785,7 +54767,7 @@ function registerPEPPushHandler() {
     return true;
   }, null, 'message', 'headline');
 }
-function restoreOMEMOSession() {
+async function restoreOMEMOSession() {
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store === undefined) {
     const id = `converse.omemosession-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid}`;
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.OMEMOStore({
@@ -54794,12 +54776,14 @@ function restoreOMEMOSession() {
     (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__.initStorage)(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store, id);
   }
 
-  return _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store.fetchSession();
+  await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store.fetchSession();
 }
 
 async function fetchDeviceLists() {
-  _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.DeviceLists();
   const id = `converse.devicelists-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid}`;
+  _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.DeviceLists({
+    id
+  });
   (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__.initStorage)(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists, id);
   await new Promise(resolve => {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.fetch({
@@ -54809,21 +54793,11 @@ async function fetchDeviceLists() {
         resolve();
       }
     });
-  });
+  }); // Call API method to wait for our own device list to be fetched from the
+  // server or to be created. If we have no pre-existing OMEMO session, this
+  // will cause a new device and bundle to be generated and published.
 
-  const promises = _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.map(l => l.initialized);
-
-  if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid)) {
-    // Create own device list if we none was restored
-    const own_list = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.create({
-      'jid': _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid
-    }, {
-      'promise': true
-    });
-    return Promise.all([...promises, own_list.initialized]);
-  }
-
-  return Promise.all(promises);
+  await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid, true);
 }
 
 async function initOMEMO(reconnecting) {
@@ -54958,6 +54932,7 @@ function getOMEMOToolbarButton(toolbar_el, buttons) {
     `);
   return buttons;
 }
+
 async function getBundlesAndBuildSessions(chatbox) {
   const no_devices_err = (0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Sorry, no devices found to which we can send an OMEMO encrypted message.');
 
@@ -54975,8 +54950,8 @@ async function getBundlesAndBuildSessions(chatbox) {
       throw err;
     }
 
-    const own_devices = _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid).devices;
-
+    const own_list = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid);
+    const own_devices = own_list.devices;
     devices = [...own_devices.models, ...their_devices.models];
   } // Filter out our own device
 
@@ -55002,57 +54977,67 @@ async function getBundlesAndBuildSessions(chatbox) {
 
   return devices;
 }
-function createOMEMOMessageStanza(chatbox, message, devices) {
-  const body = (0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('This is an OMEMO encrypted message which your client doesn’t seem to support. ' + 'Find more information on https://conversations.im/omemo');
 
-  if (!message.get('message')) {
+function encryptKey(key_and_tag, device) {
+  return getSessionCipher(device.get('jid'), device.get('id')).encrypt(key_and_tag).then(payload => ({
+    'payload': payload,
+    'device': device
+  }));
+}
+
+async function createOMEMOMessageStanza(chat, data) {
+  let {
+    stanza
+  } = data;
+  const {
+    message
+  } = data;
+
+  if (!message.get('is_encrypted')) {
+    return data;
+  }
+
+  if (!message.get('body')) {
     throw new Error('No message body to encrypt!');
   }
 
-  const stanza = $msg({
-    'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.connection.jid,
-    'to': chatbox.get('jid'),
-    'type': chatbox.get('message_type'),
-    'id': message.get('msgid')
-  }).c('body').t(body).up();
-
-  if (message.get('type') === 'chat') {
-    stanza.c('request', {
-      'xmlns': Strophe.NS.RECEIPTS
-    }).up();
-  } // An encrypted header is added to the message for
+  const devices = await getBundlesAndBuildSessions(chat); // An encrypted header is added to the message for
   // each device that is supposed to receive it.
   // These headers simply contain the key that the
   // payload message is encrypted with,
   // and they are separately encrypted using the
   // session corresponding to the counterpart device.
 
-
   stanza.c('encrypted', {
     'xmlns': Strophe.NS.OMEMO
   }).c('header', {
     'sid': _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store.get('device_id')
   });
-  return omemo.encryptMessage(message.get('message')).then(obj => {
-    // The 16 bytes key and the GCM authentication tag (The tag
-    // SHOULD have at least 128 bit) are concatenated and for each
-    // intended recipient device, i.e. both own devices as well as
-    // devices associated with the contact, the result of this
-    // concatenation is encrypted using the corresponding
-    // long-standing SignalProtocol session.
-    const promises = devices.filter(device => device.get('trusted') != _consts_js__WEBPACK_IMPORTED_MODULE_6__.UNTRUSTED && device.get('active')).map(device => chatbox.encryptKey(obj.key_and_tag, device));
-    return Promise.all(promises).then(dicts => addKeysToMessageStanza(stanza, dicts, obj.iv)).then(stanza => {
-      stanza.c('payload').t(obj.payload).up().up();
-      stanza.c('store', {
-        'xmlns': Strophe.NS.HINTS
-      }).up();
-      stanza.c('encryption', {
-        'xmlns': Strophe.NS.EME,
-        namespace: Strophe.NS.OMEMO
-      });
-      return stanza;
-    });
+  const {
+    key_and_tag,
+    iv,
+    payload
+  } = await omemo.encryptMessage(message.get('plaintext')); // The 16 bytes key and the GCM authentication tag (The tag
+  // SHOULD have at least 128 bit) are concatenated and for each
+  // intended recipient device, i.e. both own devices as well as
+  // devices associated with the contact, the result of this
+  // concatenation is encrypted using the corresponding
+  // long-standing SignalProtocol session.
+
+  const dicts = await Promise.all(devices.filter(device => device.get('trusted') != _consts_js__WEBPACK_IMPORTED_MODULE_6__.UNTRUSTED && device.get('active')).map(device => encryptKey(key_and_tag, device)));
+  stanza = await addKeysToMessageStanza(stanza, dicts, iv);
+  stanza.c('payload').t(payload).up().up();
+  stanza.c('store', {
+    'xmlns': Strophe.NS.HINTS
+  }).up();
+  stanza.c('encryption', {
+    'xmlns': Strophe.NS.EME,
+    namespace: Strophe.NS.OMEMO
   });
+  return {
+    message,
+    stanza
+  };
 }
 const omemo = {
   decryptMessage,
@@ -60044,7 +60029,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
 
     const unsent_text = (_u$ancestor = u.ancestor(this, '.chatbox')) === null || _u$ancestor === void 0 ? void 0 : (_u$ancestor$querySele = _u$ancestor.querySelector('.chat-textarea')) === null || _u$ancestor$querySele === void 0 ? void 0 : _u$ancestor$querySele.value;
 
-    if (unsent_text && (!currently_correcting || currently_correcting.get('message') !== unsent_text)) {
+    if (unsent_text && (!currently_correcting || currently_correcting.getMessageText() !== unsent_text)) {
       if (!confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('You have an unsent message which will be lost if you continue. Are you sure?'))) {
         return;
       }
@@ -62572,13 +62557,12 @@ class MessageVersions extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomEle
 
   render() {
     const older_versions = this.model.get('older_versions');
-    const message = this.model.get('message');
     return lit__WEBPACK_IMPORTED_MODULE_2__.html`
             <h4>Older versions</h4>
             ${Object.keys(older_versions).map(k => lit__WEBPACK_IMPORTED_MODULE_2__.html`<p class="older-msg"><time>${dayjs(k).format('MMM D, YYYY, HH:mm:ss')}</time>: ${older_versions[k]}</p>`)}
             <hr/>
             <h4>Current version</h4>
-            <p>${message}</p>`;
+            <p>${this.model.getMessageText()}</p>`;
   }
 
 }
@@ -77015,6 +76999,279 @@ SOFTWARE.
 
 }));
 //# sourceMappingURL=umd.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/localforage-getitems/dist/localforage-getitems.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/localforage-getitems/dist/localforage-getitems.js ***!
+  \************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+(function (global, factory) {
+     true ? factory(exports, __webpack_require__(/*! localforage */ "./node_modules/localforage/dist/localforage.js")) :
+    0;
+}(this, (function (exports,localforage) { 'use strict';
+
+localforage = 'default' in localforage ? localforage['default'] : localforage;
+
+function getSerializerPromise(localForageInstance) {
+    if (getSerializerPromise.result) {
+        return getSerializerPromise.result;
+    }
+    if (!localForageInstance || typeof localForageInstance.getSerializer !== 'function') {
+        return Promise.reject(new Error('localforage.getSerializer() was not available! ' + 'localforage v1.4+ is required!'));
+    }
+    getSerializerPromise.result = localForageInstance.getSerializer();
+    return getSerializerPromise.result;
+}
+
+
+
+function executeCallback(promise, callback) {
+    if (callback) {
+        promise.then(function (result) {
+            callback(null, result);
+        }, function (error) {
+            callback(error);
+        });
+    }
+    return promise;
+}
+
+function getItemKeyValue(key, callback) {
+    var localforageInstance = this;
+    var promise = localforageInstance.getItem(key).then(function (value) {
+        return {
+            key: key,
+            value: value
+        };
+    });
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function getItemsGeneric(keys /*, callback*/) {
+    var localforageInstance = this;
+    var promise = new Promise(function (resolve, reject) {
+        var itemPromises = [];
+
+        for (var i = 0, len = keys.length; i < len; i++) {
+            itemPromises.push(getItemKeyValue.call(localforageInstance, keys[i]));
+        }
+
+        Promise.all(itemPromises).then(function (keyValuePairs) {
+            var result = {};
+            for (var i = 0, len = keyValuePairs.length; i < len; i++) {
+                var keyValuePair = keyValuePairs[i];
+
+                result[keyValuePair.key] = keyValuePair.value;
+            }
+            resolve(result);
+        }).catch(reject);
+    });
+    return promise;
+}
+
+
+
+
+
+function getAllItemsUsingIterate() {
+    var localforageInstance = this;
+    var accumulator = {};
+    return localforageInstance.iterate(function (value, key /*, iterationNumber*/) {
+        accumulator[key] = value;
+    }).then(function () {
+        return accumulator;
+    });
+}
+
+function getIDBKeyRange() {
+    /* global IDBKeyRange, webkitIDBKeyRange, mozIDBKeyRange */
+    if (typeof IDBKeyRange !== 'undefined') {
+        return IDBKeyRange;
+    }
+    if (typeof webkitIDBKeyRange !== 'undefined') {
+        return webkitIDBKeyRange;
+    }
+    if (typeof mozIDBKeyRange !== 'undefined') {
+        return mozIDBKeyRange;
+    }
+}
+
+var idbKeyRange = getIDBKeyRange();
+
+function getItemsIndexedDB(keys /*, callback*/) {
+    keys = keys.slice();
+    var localforageInstance = this;
+    function comparer(a, b) {
+        return a < b ? -1 : a > b ? 1 : 0;
+    }
+
+    var promise = new Promise(function (resolve, reject) {
+        localforageInstance.ready().then(function () {
+            // Thanks https://hacks.mozilla.org/2014/06/breaking-the-borders-of-indexeddb/
+            var dbInfo = localforageInstance._dbInfo;
+            var store = dbInfo.db.transaction(dbInfo.storeName, 'readonly').objectStore(dbInfo.storeName);
+
+            var set = keys.sort(comparer);
+
+            var keyRangeValue = idbKeyRange.bound(keys[0], keys[keys.length - 1], false, false);
+
+            var req;
+
+            if ('getAll' in store) {
+                req = store.getAll(keyRangeValue);
+                req.onsuccess = function () {
+                    var value = req.result;
+                    if (value === undefined) {
+                        value = null;
+                    }
+                    resolve(value);
+                };
+            } else {
+                req = store.openCursor(keyRangeValue);
+                var result = {};
+                var i = 0;
+
+                req.onsuccess = function () /*event*/{
+                    var cursor = req.result; // event.target.result;
+
+                    if (!cursor) {
+                        resolve(result);
+                        return;
+                    }
+
+                    var key = cursor.key;
+
+                    while (key > set[i]) {
+                        i++; // The cursor has passed beyond this key. Check next.
+
+                        if (i === set.length) {
+                            // There is no next. Stop searching.
+                            resolve(result);
+                            return;
+                        }
+                    }
+
+                    if (key === set[i]) {
+                        // The current cursor value should be included and we should continue
+                        // a single step in case next item has the same key or possibly our
+                        // next key in set.
+                        var value = cursor.value;
+                        if (value === undefined) {
+                            value = null;
+                        }
+
+                        result[key] = value;
+                        // onfound(cursor.value);
+                        cursor.continue();
+                    } else {
+                        // cursor.key not yet at set[i]. Forward cursor to the next key to hunt for.
+                        cursor.continue(set[i]);
+                    }
+                };
+            }
+
+            req.onerror = function () /*event*/{
+                reject(req.error);
+            };
+        }).catch(reject);
+    });
+    return promise;
+}
+
+function getItemsWebsql(keys /*, callback*/) {
+    var localforageInstance = this;
+    var promise = new Promise(function (resolve, reject) {
+        localforageInstance.ready().then(function () {
+            return getSerializerPromise(localforageInstance);
+        }).then(function (serializer) {
+            var dbInfo = localforageInstance._dbInfo;
+            dbInfo.db.transaction(function (t) {
+
+                var queryParts = new Array(keys.length);
+                for (var i = 0, len = keys.length; i < len; i++) {
+                    queryParts[i] = '?';
+                }
+
+                t.executeSql('SELECT * FROM ' + dbInfo.storeName + ' WHERE (key IN (' + queryParts.join(',') + '))', keys, function (t, results) {
+
+                    var result = {};
+
+                    var rows = results.rows;
+                    for (var i = 0, len = rows.length; i < len; i++) {
+                        var item = rows.item(i);
+                        var value = item.value;
+
+                        // Check to see if this is serialized content we need to
+                        // unpack.
+                        if (value) {
+                            value = serializer.deserialize(value);
+                        }
+
+                        result[item.key] = value;
+                    }
+
+                    resolve(result);
+                }, function (t, error) {
+                    reject(error);
+                });
+            });
+        }).catch(reject);
+    });
+    return promise;
+}
+
+function localforageGetItems(keys, callback) {
+    var localforageInstance = this;
+
+    var promise;
+    if (!arguments.length || keys === null) {
+        promise = getAllItemsUsingIterate.apply(localforageInstance);
+    } else {
+        var currentDriver = localforageInstance.driver();
+        if (currentDriver === localforageInstance.INDEXEDDB) {
+            promise = getItemsIndexedDB.apply(localforageInstance, arguments);
+        } else if (currentDriver === localforageInstance.WEBSQL) {
+            promise = getItemsWebsql.apply(localforageInstance, arguments);
+        } else {
+            promise = getItemsGeneric.apply(localforageInstance, arguments);
+        }
+    }
+
+    executeCallback(promise, callback);
+    return promise;
+}
+
+function extendPrototype(localforage$$1) {
+    var localforagePrototype = Object.getPrototypeOf(localforage$$1);
+    if (localforagePrototype) {
+        localforagePrototype.getItems = localforageGetItems;
+        localforagePrototype.getItems.indexedDB = function () {
+            return getItemsIndexedDB.apply(this, arguments);
+        };
+        localforagePrototype.getItems.websql = function () {
+            return getItemsWebsql.apply(this, arguments);
+        };
+        localforagePrototype.getItems.generic = function () {
+            return getItemsGeneric.apply(this, arguments);
+        };
+    }
+}
+
+var extendPrototypeResult = extendPrototype(localforage);
+
+exports.localforageGetItems = localforageGetItems;
+exports.extendPrototype = extendPrototype;
+exports.extendPrototypeResult = extendPrototypeResult;
+exports.getItemsGeneric = getItemsGeneric;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
 
 
 /***/ }),

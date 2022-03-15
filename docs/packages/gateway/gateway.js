@@ -119,8 +119,8 @@
         console.debug("rssChatCheck", rssUrls, summary, from);
 
         rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay, json) =>  {	
-			const message = 'RSS:' + html;			
-			const attrs = {json, message, id: msgId, msgId, type: 'chat', from, time: delay};  
+			const body = 'RSS:' + html;			
+			const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time: delay};  
 			chatbox = await _converse.api.chats.get(from, {}, true);
 			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
         });
@@ -143,8 +143,8 @@
                 //console.debug("rssGroupChatCheck", feedId, rssUrls, summary);
 
                 rssCheckEach(true, rssUrls, "rss-feed-muc-", async (msgId, html, title, delay, json) => {
-					const message = 'RSS:' + html;					
-					const attrs = {json, message, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title, time: delay};  
+					const body = 'RSS:' + html;					
+					const attrs = {json, body, message: body, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title, time: delay};  
 					chatbox = await _converse.api.rooms.get(from, {}, true);
 					//console.debug("rssGroupChatCheck", chatbox, attrs);
 					await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));					

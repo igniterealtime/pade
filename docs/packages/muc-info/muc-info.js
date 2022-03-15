@@ -1147,10 +1147,10 @@
 		const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
 		const from = model.get("jid");
 
-		let attrs = {json, message: body, id: msgid, origin_id: msgid, msgid, type, from: _converse.jid, is_unstyled: false, references: []}; 
+		let attrs = {json, body, message: body, id: msgid, origin_id: msgid, msgid, type, from: _converse.jid, is_unstyled: false, references: []}; 
 		
 		if (type == "groupchat") {
-			attrs = {json, message: body, id: msgid, origin_id: msgid, msgid, type, from_muc: from, from: from + '/' + title, nick: title, is_unstyled: false, references: []};  
+			attrs = {json, body, message: body, id: msgid, origin_id: msgid, msgid, type, from_muc: from, from: from + '/' + title, nick: title, is_unstyled: false, references: []};  
 		}
 		
 		model.queueMessage(attrs);		

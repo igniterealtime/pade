@@ -342,10 +342,10 @@
 		const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
 		const from = model.get("jid");
 
-		let attrs = {message: body, id: msgId, msgId, type, from: _converse.jid}; 
+		let attrs = {message: body, body, id: msgId, msgId, type, from: _converse.jid}; 
 		
 		if (type == "groupchat") {
-			attrs = {message: body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+			attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
 		}
 		
 		model.queueMessage(attrs);		
