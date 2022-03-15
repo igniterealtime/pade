@@ -330,7 +330,7 @@ function startConverse() {
 		connection_options: { 'worker': getSetting("useWebworker", false) ? "./pade-connection-worker.js" : undefined },
 		default_domain: domain,
 		default_state: getSetting("converseOpenState", "online"),		
-		discover_connection_methods: false,		
+		discover_connection_methods: true,		
 		domain_placeholder: domain,
 		enable_smacks: getSetting("enableSmacks", false),
 		fullname: displayname,
