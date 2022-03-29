@@ -1167,11 +1167,11 @@
 		const args = text.slice(('/' + command).length + 1).trim().split(' ').filter(s => s) || [];
 		//console.debug('parseMessageForCommands', command, args);
 		
-		if (command == "?" || command == "wiki")
+		if (command == "wiki")
 		{
-			if (args.length == 1)
+			if (args.length > 0)
 			{
-				fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + args[0], {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
+				fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + text.slice(('/' + command).length + 1).trim(), {method: "GET"}).then(function(response){if (!response.ok) throw Error(response.statusText); return response.json()}).then(function(json)
 				{
 					console.debug('wikipedia ok', json);
 					const body = "## " + json.displaytitle + '\n' + (json.thumbnail ? json.thumbnail.source : "") + '\n\n' + (json.type == "standard" ? json.extract : json.description) + '\n' + json.content_urls.desktop.page;					
@@ -1316,28 +1316,5 @@
 		}		
 
 		return false;
-	}	
-	
-	function getSetting(name, defaultValue) {
-		const localStorage = window.localStorage
-		let value = defaultValue;
-		//console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
-		
-		if (localStorage["store.settings." + name])
-		{
-			try {
-				value = JSON.parse(localStorage["store.settings." + name]);
-				if (name == "password") value = getPassword(value, localStorage);
-			} catch (e) {
-				console.error(e);
-			}
-		}
-
-		return value;
-	}
-
-	function setSetting(name, value) {
-		//console.debug("setSetting", name, value);
-		window.localStorage["store.settings." + name] = JSON.stringify(value);
-	}	
+	}		
 }));

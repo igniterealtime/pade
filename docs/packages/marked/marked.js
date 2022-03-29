@@ -38,7 +38,9 @@
 				if (text.indexOf('\n') != text.lastIndexOf('\n')) {	// apply only to paragraphs of text
 					const parsed = marked.parse(text.toString());
 					text.render_styling = false;
-					text.references = [{begin: 0,  end: text.length,  template: html([parsed]) }];					
+					const strings = [parsed];
+					strings.raw = strings;						
+					text.references = [{begin: 0,  end: text.length,  template: html(strings) }];					
 				}
             });
 			

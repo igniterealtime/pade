@@ -171,12 +171,14 @@
 
 	function resultsSaved(resp, title) {
 		console.debug("resultsSaved", title, resp);
-		getSelectedChatBox().model.createMessage({ 'message': 'Saved results OK for ' + title,  'type': 'info' });
+		const message = 'Saved results OK for ' + title;
+		getSelectedChatBox().model.createMessage({ message, body: message,  'type': 'info' });
 	}
 
 	function resultsError(err, title) {
 		console.error("resultsError", title, err);
-		getSelectedChatBox().model.createMessage({ 'message': 'Saved results ERROR for ' + title,  'type': 'info' });
+		const message = 'Saved results ERROR for ' + title;		
+		getSelectedChatBox().model.createMessage({ body: message, message,  'type': 'info' });
 	}
 	
 	async function parseStanza(stanza, attrs) {
@@ -184,9 +186,11 @@
 
 		if (json) {
 			const card = JSON.parse(json.innerHTML);
+			console.debug("parseStanza", card);
 			
 			if (card.type == 'AdaptiveCard') {
-				attrs.message = 'ADAPTIVE-CARD:' + json.innerHTML;		
+				attrs.message = 'ADAPTIVE-CARD:' + json.innerHTML;	
+				attrs.body = attrs.message;
 			}				
 		}
 		return attrs;

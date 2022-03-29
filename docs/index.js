@@ -1220,7 +1220,7 @@ function getSetting(name, defaultValue) {
     let value = defaultValue;
     //console.debug("getSetting", name, defaultValue, localStorage["store.settings." + name]);
 	
-    if (localStorage["store.settings." + name])
+    if (localStorage["store.settings." + name] && localStorage["store.settings." + name] != "undefined")
     {
         try {
             value = JSON.parse(localStorage["store.settings." + name]);

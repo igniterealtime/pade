@@ -40,8 +40,10 @@
 			
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {	
-				if (text.startsWith("RSS:")) {					
-					text.addTemplateResult(0, text.length, html([text.substr(4)]));
+				if (text.startsWith("RSS:")) {	
+					const strings = [text.substr(4)];
+					strings.raw = strings;								
+					text.addTemplateResult(0, text.length, html(strings));
 				}
             });
 
@@ -126,6 +128,8 @@
         });
     }
 
+	// https://github.com/igniterealtime/pade/commits/master.atom
+	
     function rssGroupChatCheck(view)
     {
 		const summary = getSetting("showRssSummary");		
