@@ -145,9 +145,7 @@
                 rssCheckEach(true, rssUrls, "rss-feed-muc-", async (msgId, html, title, delay, json) => {
 					const body = 'RSS:' + html;					
 					const attrs = {json, body, message: body, id: msgId, msgId, type: 'groupchat', from_muc: from, from: from + '/' + title, nick: title, time: delay};  
-					chatbox = await _converse.api.rooms.get(from, {}, true);
-					//console.debug("rssGroupChatCheck", chatbox, attrs);
-					await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));					
+					view.model.queueMessage(attrs);					
                 });
             }
         });

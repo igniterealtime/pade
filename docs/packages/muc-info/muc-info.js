@@ -1213,7 +1213,7 @@
 				if (!data) data = {};
 				if (!data[feedId]) data[feedId] = {};
 
-				var feed = {path: args[0], url: true ? "https://" + getSetting("server") + "/pade/download?url=" + args[0] : args[0]};
+				var feed = {path: args[0], url: chrome.pade  ? (getSetting("domain") == "localhost" || location.protocol == "http:" ? "http://" : "https://") + getSetting("server") + "/pade/download?url=" + args[0] : args[0]};
 
 				fetch(feed.url).then(function(response)
 				{
