@@ -20207,7 +20207,7 @@ strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARD
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XFORM', 'jabber:x:data');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v9.0.0";
+_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v9.1.0";
 Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_11__.Events); // Make converse pluggable
 
 pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_6__["default"].enable(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], '_converse', 'pluggable');
@@ -21262,11 +21262,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/plugins/muc/index.js */ "./src/headless/plugins/muc/index.js");
 /* harmony import */ var _model_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./model.js */ "./src/headless/plugins/bookmarks/model.js");
 /* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
 
 
 
@@ -21277,7 +21275,7 @@ const {
   Strophe,
   $iq,
   sizzle
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env;
 const Bookmarks = {
   model: _model_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   comparator: item => item.get('name').toLowerCase(),
@@ -21286,14 +21284,14 @@ const Bookmarks = {
     this.on('add', bm => this.openBookmarkedRoom(bm).then(bm => this.markRoomAsBookmarked(bm)).catch(e => _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].fatal(e)));
     this.on('remove', this.markRoomAsUnbookmarked, this);
     this.on('remove', this.sendBookmarkStanza, this);
-    const cache_key = `converse.room-bookmarks${_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid}`;
+    const cache_key = `converse.room-bookmarks${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid}`;
     this.fetched_flag = cache_key + 'fetched';
-    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_6__.initStorage)(this, cache_key);
+    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.initStorage)(this, cache_key);
   },
 
   async openBookmarkedRoom(bookmark) {
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('muc_respect_autojoin') && bookmark.get('autojoin')) {
-      const groupchat = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.rooms.create(bookmark.get('jid'), {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_respect_autojoin') && bookmark.get('autojoin')) {
+      const groupchat = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.rooms.create(bookmark.get('jid'), {
         'nick': bookmark.get('nick')
       });
       groupchat.maybeShow();
@@ -21303,7 +21301,7 @@ const Bookmarks = {
   },
 
   fetchBookmarks() {
-    const deferred = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_5__.getOpenPromise)();
+    const deferred = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_4__.getOpenPromise)();
 
     if (window.sessionStorage.getItem(this.fetched_flag)) {
       this.fetch({
@@ -21325,7 +21323,7 @@ const Bookmarks = {
   sendBookmarkStanza() {
     const stanza = $iq({
       'type': 'set',
-      'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid
+      'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection.jid
     }).c('pubsub', {
       'xmlns': Strophe.NS.PUBSUB
     }).c('publish', {
@@ -21354,13 +21352,16 @@ const Bookmarks = {
     }).c('value').t('true').up().up().c('field', {
       'var': 'pubsub#access_model'
     }).c('value').t('whitelist');
-    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.sendIQ(stanza);
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(stanza);
   },
 
   onBookmarkError(iq, options) {
+    const {
+      __
+    } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse;
     _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].error("Error while trying to add bookmark");
     _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].error(iq);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Sorry, something went wrong while trying to save your bookmark.")]);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.alert('error', __('Error'), [__("Sorry, something went wrong while trying to save your bookmark.")]);
     this.findWhere({
       'jid': options.jid
     }).destroy();
@@ -21368,18 +21369,18 @@ const Bookmarks = {
 
   fetchBookmarksFromServer(deferred) {
     const stanza = $iq({
-      'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid,
+      'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection.jid,
       'type': 'get'
     }).c('pubsub', {
       'xmlns': Strophe.NS.PUBSUB
     }).c('items', {
       'node': Strophe.NS.BOOKMARKS
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.sendIQ(stanza).then(iq => this.onBookmarksReceived(deferred, iq)).catch(iq => this.onBookmarksReceivedError(deferred, iq));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(stanza).then(iq => this.onBookmarksReceived(deferred, iq)).catch(iq => this.onBookmarksReceivedError(deferred, iq));
   },
 
   markRoomAsBookmarked(bookmark) {
-    const groupchat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.get(bookmark.get('jid'));
+    const groupchat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(bookmark.get('jid'));
 
     if (groupchat !== undefined) {
       groupchat.save('bookmarked', true);
@@ -21387,7 +21388,7 @@ const Bookmarks = {
   },
 
   markRoomAsUnbookmarked(bookmark) {
-    const groupchat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.get(bookmark.get('jid'));
+    const groupchat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(bookmark.get('jid'));
 
     if (groupchat !== undefined) {
       groupchat.save('bookmarked', false);
@@ -21422,9 +21423,13 @@ const Bookmarks = {
   },
 
   onBookmarksReceivedError(deferred, iq) {
+    const {
+      __
+    } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse;
+
     if (iq === null) {
       _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].error('Error: timeout while fetching bookmarks');
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Timeout Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("The server did not return your bookmarks within the allowed time. " + "You can reload the page to request them again.")]);
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.alert('error', __('Timeout Error'), [__("The server did not return your bookmarks within the allowed time. " + "You can reload the page to request them again.")]);
     } else if (deferred) {
       if (iq.querySelector('error[type="cancel"] item-not-found')) {
         // Not an exception, the user simply doesn't have any bookmarks.
@@ -21442,7 +21447,7 @@ const Bookmarks = {
   },
 
   getUnopenedBookmarks() {
-    return this.filter(b => !_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.get(b.get('jid')));
+    return this.filter(b => !_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(b.get('jid')));
   }
 
 };
@@ -21469,7 +21474,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * @description
  * Converse.js plugin which adds views for bookmarks specified in XEP-0048.
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -21887,7 +21892,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/caps/utils.js");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -22232,7 +22237,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/chat/utils.js");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -24579,7 +24584,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api.js */ "./src/headless/plugins/chatboxes/api.js");
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -25705,7 +25710,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /**
  * @module converse-emoji
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -26240,7 +26245,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_plugins_chat_parsers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/chat/parsers */ "./src/headless/plugins/chat/parsers.js");
 /**
  * @module converse-headlines
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @description XEP-0045 Multi-User Chat Views
  */
 
@@ -26817,7 +26822,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /**
  * @description XEP-0313 Message Archive Management
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -31142,7 +31147,7 @@ const ChatRoomMixin = {
   isUserMentioned(message) {
     const nick = this.get('nick');
 
-    if (message.get('references')?.length) {
+    if (message.get('references').length) {
       const mentions = message.get('references').filter(ref => ref.type === 'mention').map(ref => ref.value);
       return mentions.includes(nick);
     } else {
@@ -32161,7 +32166,7 @@ __webpack_require__.r(__webpack_exports__);
  * @description
  * Converse.js plugin which add support for application-level pings
  * as specified in XEP-0199 XMPP Ping.
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -32732,14 +32737,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _contact_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./contact.js */ "./src/headless/plugins/roster/contact.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var lodash_es_sum__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash-es/sum */ "./node_modules/lodash-es/sum.js");
+/* harmony import */ var lodash_es_sum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash-es/sum */ "./node_modules/lodash-es/sum.js");
 /* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
 /* harmony import */ var _converse_skeletor_src_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/model */ "./node_modules/@converse/skeletor/src/model.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
-
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
 
 
 
@@ -32753,17 +32756,17 @@ const {
   $iq,
   sizzle,
   u
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.env;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
 const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_2__.Collection.extend({
   model: _contact_js__WEBPACK_IMPORTED_MODULE_0__["default"],
 
   initialize() {
-    const id = `roster.state-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid}-${this.get('jid')}`;
+    const id = `roster.state-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid}-${this.get('jid')}`;
     this.state = new _converse_skeletor_src_model__WEBPACK_IMPORTED_MODULE_3__.Model({
       id,
       'collapsed_groups': []
     });
-    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_6__.initStorage)(this.state, id);
+    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.initStorage)(this.state, id);
     this.state.fetch();
   },
 
@@ -32778,8 +32781,8 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   registerRosterHandler() {
     // Register a handler for roster IQ "set" stanzas, which update
     // roster contacts.
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connection.addHandler(iq => {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster.onRosterPush(iq);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.addHandler(iq => {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.onRosterPush(iq);
 
       return true;
     }, Strophe.NS.ROSTER, 'iq', "set");
@@ -32790,11 +32793,11 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     // used to suggest roster contacts to a user.
     let t = 0;
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connection.addHandler(function (msg) {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.addHandler(function (msg) {
       window.setTimeout(function () {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connection.flush();
+        _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.flush();
 
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster.subscribeToSuggestedItems.bind(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster)(msg);
+        _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.subscribeToSuggestedItems.bind(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster)(msg);
       }, t);
       t += msg.querySelectorAll('item').length * 250;
       return true;
@@ -32820,12 +32823,12 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     if (u.isErrorObject(result)) {
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error(result); // Force a full roster refresh
 
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.session.save('roster_cached', false);
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.session.save('roster_cached', false);
 
       this.data.save('version', undefined);
     }
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.session.get('roster_cached')) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.session.get('roster_cached')) {
       /**
        * The contacts roster has been retrieved from the local cache (`sessionStorage`).
        * @event _converse#cachedRoster
@@ -32833,24 +32836,24 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
        * @example _converse.api.listen.on('cachedRoster', (items) => { ... });
        * @example _converse.api.waitUntil('cachedRoster').then(items => { ... });
        */
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.trigger('cachedRoster', result);
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('cachedRoster', result);
     } else {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.send_initial_presence = true;
-      return _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster.fetchFromServer();
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.send_initial_presence = true;
+      return _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.fetchFromServer();
     }
   },
 
   subscribeToSuggestedItems(msg) {
     Array.from(msg.querySelectorAll('item')).forEach(item => {
       if (item.getAttribute('action') === 'add') {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster.addAndSubscribe(item.getAttribute('jid'), _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.xmppstatus.getNickname() || _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.xmppstatus.getFullname());
+        _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.addAndSubscribe(item.getAttribute('jid'), _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.getNickname() || _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.getFullname());
       }
     });
     return true;
   },
 
   isSelf(jid) {
-    return u.isSameBareJID(jid, _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connection.jid);
+    return u.isSameBareJID(jid, _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid);
   },
 
   /**
@@ -32867,7 +32870,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   async addAndSubscribe(jid, name, groups, message, attributes) {
     const contact = await this.addContactToRoster(jid, name, groups, attributes);
 
-    if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.RosterContact) {
+    if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.RosterContact) {
       contact.subscribe(message);
     }
   },
@@ -32893,7 +32896,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       name
     });
     groups.forEach(g => iq.c('group').t(g).up());
-    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.sendIQ(iq);
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.sendIQ(iq);
   },
 
   /**
@@ -32908,14 +32911,17 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
    * @param { Object } attributes - Any additional attributes to be stored on the user's model.
    */
   async addContactToRoster(jid, name, groups, attributes) {
-    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.waitUntil('rosterContactsFetched');
+    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.waitUntil('rosterContactsFetched');
     groups = groups || [];
 
     try {
       await this.sendContactAddIQ(jid, name, groups);
     } catch (e) {
+      const {
+        __
+      } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse;
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error(e);
-      alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Sorry, there was an error while trying to add %1$s as a contact.', name || jid));
+      alert(__('Sorry, there was an error while trying to add %1$s as a contact.', name || jid));
       return e;
     }
 
@@ -32934,7 +32940,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   async subscribeBack(bare_jid, presence) {
     const contact = this.get(bare_jid);
 
-    if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.RosterContact) {
+    if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.RosterContact) {
       contact.authorize().subscribe();
     } else {
       var _sizzle$pop;
@@ -32945,7 +32951,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
         'subscription': 'from'
       });
 
-      if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.RosterContact) {
+      if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.RosterContact) {
         contact.authorize().subscribe();
       }
     }
@@ -32953,7 +32959,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
 
   getNumOnlineContacts() {
     const ignored = ['offline', 'unavailable'];
-    return (0,lodash_es_sum__WEBPACK_IMPORTED_MODULE_8__["default"])(this.models.filter(m => !ignored.includes(m.presence.get('show'))));
+    return (0,lodash_es_sum__WEBPACK_IMPORTED_MODULE_7__["default"])(this.models.filter(m => !ignored.includes(m.presence.get('show'))));
   },
 
   /**
@@ -32967,7 +32973,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     const id = iq.getAttribute('id');
     const from = iq.getAttribute('from');
 
-    if (from && from !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid) {
+    if (from && from !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid) {
       // https://tools.ietf.org/html/rfc6121#page-15
       //
       // A receiving client MUST ignore the stanza unless it has no 'from'
@@ -32978,10 +32984,10 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       return;
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.send($iq({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.send($iq({
       type: 'result',
       id,
-      from: _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connection.jid
+      from: _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid
     }));
     const query = sizzle(`query[xmlns="${Strophe.NS.ROSTER}"]`, iq).pop();
     this.data.save('version', query.getAttribute('ver'));
@@ -33006,12 +33012,12 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
      * @example _converse.api.listen.on('rosterPush', iq => { ... });
      */
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.trigger('rosterPush', iq);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('rosterPush', iq);
     return;
   },
 
   rosterVersioningSupported() {
-    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.disco.stream.getFeature('ver', 'urn:xmpp:features:rosterver') && this.data.get('version');
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.disco.stream.getFeature('ver', 'urn:xmpp:features:rosterver') && this.data.get('version');
   },
 
   /**
@@ -33034,7 +33040,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       });
     }
 
-    const iq = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.sendIQ(stanza, null, false);
+    const iq = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.sendIQ(stanza, null, false);
 
     if (iq.getAttribute('type') !== 'error') {
       const query = sizzle(`query[xmlns="${Strophe.NS.ROSTER}"]`, iq).pop();
@@ -33051,7 +33057,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       return;
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.session.save('roster_cached', true);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.session.save('roster_cached', true);
     /**
      * When the roster has been received from the XMPP server.
      * See also the `cachedRoster` event further up, which gets called instead of
@@ -33063,7 +33069,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
      */
 
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.trigger('roster', iq);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('roster', iq);
   },
 
   /* Update or create RosterContact models based on the given `item` XML
@@ -33130,7 +33136,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
      * @example _converse.api.listen.on('contactRequest', contact => { ... });
      */
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.trigger('contactRequest', this.create(user_data));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('contactRequest', this.create(user_data));
   },
 
   handleIncomingSubscription(presence) {
@@ -33138,11 +33144,14 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
           bare_jid = Strophe.getBareJidFromJid(jid),
           contact = this.get(bare_jid);
 
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('allow_contact_requests')) {
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_7__.rejectPresenceSubscription)(jid, (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("This client does not allow presence subscriptions"));
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_contact_requests')) {
+      const {
+        __
+      } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse;
+      (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.rejectPresenceSubscription)(jid, __("This client does not allow presence subscriptions"));
     }
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('auto_subscribe')) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('auto_subscribe')) {
       if (!contact || contact.get('subscription') !== 'to') {
         this.subscribeBack(bare_jid, presence);
       } else {
@@ -33166,7 +33175,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
           resource = Strophe.getResourceFromJid(jid),
           presence_type = presence.getAttribute('type');
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connection.jid !== jid && presence_type !== 'unavailable' && (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('synchronize_availability') === true || _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('synchronize_availability') === resource)) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid !== jid && presence_type !== 'unavailable' && (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('synchronize_availability') === true || _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('synchronize_availability') === resource)) {
       var _presence$querySelect, _presence$querySelect2;
 
       // Another resource has changed its status and
@@ -33174,7 +33183,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       // we'll update ours as well.
       const show = ((_presence$querySelect = presence.querySelector('show')) === null || _presence$querySelect === void 0 ? void 0 : _presence$querySelect.textContent) || 'online';
 
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.xmppstatus.save({
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.save({
         'status': show
       }, {
         'silent': true
@@ -33183,13 +33192,13 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       const status_message = (_presence$querySelect2 = presence.querySelector('status')) === null || _presence$querySelect2 === void 0 ? void 0 : _presence$querySelect2.textContent;
 
       if (status_message) {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.xmppstatus.save({
+        _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.save({
           'status_message': status_message
         });
       }
     }
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.jid === jid && presence_type === 'unavailable') {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.jid === jid && presence_type === 'unavailable') {
       // XXX: We've received an "unavailable" presence from our
       // own resource. Apparently this happens due to a
       // Prosody bug, whereby we send an IQ stanza to remove
@@ -33204,7 +33213,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       //
       // As a workaround for now we simply send our presence again,
       // otherwise we're treated as offline.
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.user.presence.send();
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.user.presence.send();
     }
   },
 
@@ -33270,9 +33279,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _contacts_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contacts.js */ "./src/headless/plugins/roster/contacts.js");
 /* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./api.js */ "./src/headless/plugins/roster/api.js");
 /* harmony import */ var _presence_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presence.js */ "./src/headless/plugins/roster/presence.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -33284,35 +33292,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.plugins.add('converse-roster', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('converse-roster', {
   dependencies: ['converse-status'],
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.extend({
       'allow_contact_requests': true,
       'auto_subscribe': false,
       'synchronize_availability': true
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.promises.add(['cachedRoster', 'roster', 'rosterContactsFetched', 'rosterInitialized']); // API methods only available to plugins
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.promises.add(['cachedRoster', 'roster', 'rosterContactsFetched', 'rosterInitialized']); // API methods only available to plugins
 
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_3__["default"]);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.HEADER_CURRENT_CONTACTS = (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('My contacts');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.HEADER_PENDING_CONTACTS = (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Pending contacts');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.HEADER_REQUESTING_CONTACTS = (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Contact requests');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.HEADER_UNGROUPED = (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Ungrouped');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.HEADER_UNREAD = (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('New messages');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.Presence = _presence_js__WEBPACK_IMPORTED_MODULE_4__.Presence;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.Presences = _presence_js__WEBPACK_IMPORTED_MODULE_4__.Presences;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.RosterContact = _contact_js__WEBPACK_IMPORTED_MODULE_1__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.RosterContacts = _contacts_js__WEBPACK_IMPORTED_MODULE_2__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('beforeTearDown', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_7__.unregisterPresenceHandler)());
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('chatBoxesInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_7__.onChatBoxesInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('clearSession', _utils_js__WEBPACK_IMPORTED_MODULE_7__.onClearSession);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('presencesInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_7__.onPresencesInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_7__.onStatusInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('streamResumptionFailed', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.session.set('roster_cached', false));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.waitUntil('rosterContactsFetched').then(_utils_js__WEBPACK_IMPORTED_MODULE_7__.onRosterContactsFetched);
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    const {
+      __
+    } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.HEADER_CURRENT_CONTACTS = __('My contacts');
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.HEADER_PENDING_CONTACTS = __('Pending contacts');
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.HEADER_REQUESTING_CONTACTS = __('Contact requests');
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.HEADER_UNGROUPED = __('Ungrouped');
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.HEADER_UNREAD = __('New messages');
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.Presence = _presence_js__WEBPACK_IMPORTED_MODULE_4__.Presence;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.Presences = _presence_js__WEBPACK_IMPORTED_MODULE_4__.Presences;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.RosterContact = _contact_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.RosterContacts = _contacts_js__WEBPACK_IMPORTED_MODULE_2__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('beforeTearDown', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.unregisterPresenceHandler)());
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('chatBoxesInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_6__.onChatBoxesInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('clearSession', _utils_js__WEBPACK_IMPORTED_MODULE_6__.onClearSession);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('presencesInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_6__.onPresencesInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_6__.onStatusInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('streamResumptionFailed', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.session.set('roster_cached', false));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.waitUntil('rosterContactsFetched').then(_utils_js__WEBPACK_IMPORTED_MODULE_6__.onRosterContactsFetched);
   }
 
 });
@@ -37717,7 +37727,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./src/headless/utils/core.js");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  * @description This is the form utilities module.
  */
@@ -38202,7 +38212,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  * @description Pure functions to help functionally parse messages.
  * @todo Other parsing helpers can be made more abstract and placed here.
@@ -38337,10 +38347,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const {
+  u
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env;
+/**
+ * Given a url, check whether the protocol being used is allowed for rendering
+ * the media in the chat (as opposed to just rendering a URL hyperlink).
+ * @param { String } url
+ * @returns { Boolean }
+ */
 
-function checkTLS(uri) {
-  const uri_protocol = uri.protocol().toLowerCase();
-  return window.location.protocol === 'http:' || window.location.protocol === 'https:' && ['https', 'aesgcm'].includes(uri_protocol);
+function isAllowedProtocolForMedia(url) {
+  const uri = getURI(url);
+  const {
+    protocol
+  } = window.location;
+
+  if (['chrome-extension:', 'file:'].includes(protocol)) {
+    return true;
+  }
+
+  return protocol === 'http:' || protocol === 'https:' && ['https', 'aesgcm'].includes(uri.protocol().toLowerCase());
 }
 
 function getURI(url) {
@@ -38351,12 +38378,21 @@ function getURI(url) {
     return null;
   }
 }
+/**
+ * Given the an array of file extensions, check whether a URL points to a file
+ * ending in one of them.
+ * @param { String[] } types - An array of file extensions
+ * @param { String } url
+ * @returns { Boolean }
+ * @example
+ *  checkFileTypes(['.gif'], 'https://conversejs.org/cat.gif?foo=bar');
+ */
 
 function checkFileTypes(types, url) {
   const uri = getURI(url);
 
-  if (uri === null || window.location.protocol !== 'chrome-extension:' && !checkTLS(uri)) {
-    return false;
+  if (uri === null) {
+    throw new Error(`checkFileTypes: could not parse url ${url}`);
   }
 
   const filename = uri.filename().toLowerCase();
@@ -38371,6 +38407,10 @@ function isDomainWhitelisted(whitelist, url) {
   return whitelist.includes(domain) || whitelist.includes(fulldomain);
 }
 function shouldRenderMediaFromURL(url_text, type) {
+  if (!isAllowedProtocolForMedia(url_text)) {
+    return false;
+  }
+
   const may_render = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('render_media');
   const is_domain_allowed = isDomainAllowed(url_text, `allowed_${type}_domains`);
 
@@ -38429,6 +38469,17 @@ function isImageURL(url) {
 function isEncryptedFileURL(url) {
   return url.startsWith('aesgcm://');
 }
+Object.assign(u, {
+  isAudioURL,
+  isGIFURL,
+  isVideoURL,
+  isImageURL,
+  isURLWithImageExtension,
+  checkFileTypes,
+  getURI,
+  shouldRenderMediaFromURL,
+  isAllowedProtocolForMedia
+});
 
 /***/ }),
 
@@ -38449,7 +38500,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /**
  * @module i18n
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  * @description This is the internationalization module
  */
@@ -39504,7 +39555,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/bookmarks.scss */ "./src/plugins/bookmark-views/styles/bookmarks.scss");
 /**
  * @description Converse.js plugin which adds views for XEP-0048 bookmarks
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -39986,7 +40037,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_chats_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/chats.scss */ "./src/plugins/chatboxviews/styles/chats.scss");
 /**
  * @module converse-chatboxviews
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -40565,7 +40616,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/chatview/utils.js");
 /* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/chatview/styles/index.scss");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -41483,7 +41534,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/controlbox/utils.js");
 /* harmony import */ var _styles_controlbox_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./styles/_controlbox.scss */ "./src/plugins/controlbox/styles/_controlbox.scss");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -42284,7 +42335,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /**
  * @module converse-dragresize
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -42697,7 +42748,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * @module converse-fullscreen
  * @license Mozilla Public License (MPLv2)
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  */
 
 
@@ -42822,7 +42873,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_headlines_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/headlines.scss */ "./src/plugins/headlines-view/styles/headlines.scss");
 /**
  * @module converse-headlines-view
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -43354,7 +43405,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_minimize_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/minimize.scss */ "./src/plugins/minimize/styles/minimize.scss");
 /**
  * @module converse-minimize
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -48886,7 +48937,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/notifications/utils.js");
 /**
  * @module converse-notification
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -52392,7 +52443,7 @@ __webpack_require__.r(__webpack_exports__);
  * @description
  * This is a Converse.js plugin which add support for in-band registration
  * as specified in XEP-0077.
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -53249,7 +53300,7 @@ __webpack_require__.r(__webpack_exports__);
  * @description
  *  Converse.js plugin which shows a list of currently open
  *  rooms in the "Rooms Panel" of the ControlBox.
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -53444,13 +53495,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var plugins_muc_views_modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/muc-views/modals/muc-details.js */ "./src/plugins/muc-views/modals/muc-details.js");
 /* harmony import */ var _model_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./model.js */ "./src/plugins/roomslist/model.js");
 /* harmony import */ var _templates_roomslist_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/roomslist.js */ "./src/plugins/roomslist/templates/roomslist.js");
-/* harmony import */ var _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/element.js */ "./node_modules/@converse/skeletor/src/element.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
 /* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-
 
 
 
@@ -53463,7 +53512,7 @@ const {
   Strophe,
   u
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.env;
-class RoomsList extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_3__.ElementView {
+class RoomsList extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__.CustomElement {
   initialize() {
     const id = `converse.roomspanel${_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid}`;
     this.model = new _model_js__WEBPACK_IMPORTED_MODULE_1__["default"]({
@@ -53475,11 +53524,11 @@ class RoomsList extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODU
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxes, 'remove', this.renderIfChatRoom);
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxes, 'destroy', this.renderIfChatRoom);
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxes, 'change', this.renderIfRelevantChange);
-    this.render();
+    this.requestUpdate();
   }
 
   renderIfChatRoom(model) {
-    u.isChatRoom(model) && this.render();
+    u.isChatRoom(model) && this.requestUpdate();
   }
 
   renderIfRelevantChange(model) {
@@ -53487,12 +53536,12 @@ class RoomsList extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODU
     const changed = model.changed || {};
 
     if (u.isChatRoom(model) && Object.keys(changed).filter(m => attrs.includes(m)).length) {
-      this.render();
+      this.requestUpdate();
     }
   }
 
   render() {
-    (0,lit__WEBPACK_IMPORTED_MODULE_8__.render)((0,_templates_roomslist_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    return (0,_templates_roomslist_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
       'addBookmark': ev => this.addBookmark(ev),
       'allow_bookmarks': _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('allow_bookmarks') && _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.bookmarks,
       'closeRoom': ev => this.closeRoom(ev),
@@ -53505,7 +53554,7 @@ class RoomsList extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODU
       'showRoomDetailsModal': ev => this.showRoomDetailsModal(ev),
       'toggleRoomsList': ev => this.toggleRoomsList(ev),
       'toggle_state': this.model.get('toggle-state')
-    }), this);
+    });
   }
 
   showRoomDetailsModal(ev) {
@@ -54075,7 +54124,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_styles_status_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! shared/styles/status.scss */ "./src/shared/styles/status.scss");
 /* harmony import */ var _styles_roster_scss__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./styles/roster.scss */ "./src/plugins/rosterview/styles/roster.scss");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
 
@@ -61387,7 +61436,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/directives/styling.js */ "./src/shared/directives/styling.js");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  * @description Utility functions to help with parsing XEP-393 message styling hints
  * @todo Other parsing helpers can be made more abstract and placed here.
@@ -62426,7 +62475,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @converse/headless/utils/url.js */ "./src/headless/utils/url.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /**
- * @copyright 2020, the Converse.js contributors
+ * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  * @description This is the DOM/HTML utilities module.
  */
