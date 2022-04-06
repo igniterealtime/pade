@@ -1165,7 +1165,8 @@ this.manifest = {
                 {"text": "Red Pill", "value": "redpill"},
                 {"text": "Dark Room", "value": "darkroom"},
                 {"text": "Black Board", "value": "blackboard"},
-                {"text": "Prosody", "value": "prosody"}				
+                {"text": "Prosody", "value": "prosody"},			
+                {"text": "Dracula", "value": "dracula"}					
             ]
         },		
         {
