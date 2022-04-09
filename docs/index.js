@@ -572,6 +572,28 @@ function setupPadeRoot() {
 				}
 				return buttons;
 			});	
+
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
+            {
+                console.debug("chatRoomViewInitialized", view);
+				
+				if (!getSetting("disablePadeStyling", false)) {						
+					addControlFeatures();
+					setupMUCAvatars();					
+				}						
+
+			});
+			
+            _converse.api.listen.on('chatBoxViewInitialized', function (view)
+            {
+                console.debug("chatBoxViewInitialized", view);
+				
+				if (!getSetting("disablePadeStyling", false)) {						
+					addControlFeatures();
+					setupMUCAvatars();					
+				}				
+
+			});
 			
 			_converse.api.listen.on('message', (data) => {			
 				let count = 0;
@@ -628,10 +650,7 @@ function setupPadeRoot() {
 
 function setupTimer() {	
 	//console.debug("setupTimer render");
-	if (getSetting("converseTimeAgo", false)) setupTimeAgo();
-	
-	addControlFeatures();
-	setupMUCAvatars();	
+	if (getSetting("converseTimeAgo", false)) setupTimeAgo();		
 	renderReactions();
 
 	setTimeout(setupTimer, 10000);	
