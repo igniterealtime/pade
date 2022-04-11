@@ -31076,7 +31076,7 @@ const ChatRoomMixin = {
   isUserMentioned(message) {
     const nick = this.get('nick');
 
-    if (message.get('references').length) {
+    if (message.get('references')?.length) {
       const mentions = message.get('references').filter(ref => ref.type === 'mention').map(ref => ref.value);
       return mentions.includes(nick);
     } else {

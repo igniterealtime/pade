@@ -576,23 +576,13 @@ function setupPadeRoot() {
             _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 console.debug("chatRoomViewInitialized", view);
-				
-				if (!getSetting("disablePadeStyling", false)) {						
-					addControlFeatures();
-					setupMUCAvatars();					
-				}						
-
+				addPadeUI();				
 			});
 			
             _converse.api.listen.on('chatBoxViewInitialized', function (view)
             {
                 console.debug("chatBoxViewInitialized", view);
-				
-				if (!getSetting("disablePadeStyling", false)) {						
-					addControlFeatures();
-					setupMUCAvatars();					
-				}				
-
+				addPadeUI();					
 			});
 			
 			_converse.api.listen.on('message', (data) => {			
@@ -646,6 +636,15 @@ function setupPadeRoot() {
 			}
 		}
 	});		
+}
+
+function addPadeUI() {
+	if (!getSetting("disablePadeStyling", false)) {			
+		setTimeout(() => {
+			addControlFeatures();
+			setupMUCAvatars();			
+		}, 1000);
+	}
 }
 
 function setupTimer() {	
