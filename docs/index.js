@@ -576,7 +576,8 @@ function setupPadeRoot() {
             _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
                 console.debug("chatRoomViewInitialized", view);
-				addPadeUI();				
+				addPadeUI();
+				addPadeOccupantsUI(view);											
 			});
 			
             _converse.api.listen.on('chatBoxViewInitialized', function (view)
@@ -636,6 +637,62 @@ function setupPadeRoot() {
 			}
 		}
 	});		
+}
+
+function addPadeOccupantsUI(view) {
+	const allBadges = document.querySelectorAll(".occupant-badges");	
+	
+	if (!allBadges || allBadges.length == 0) {
+		setTimeout(() => {
+			addPadeOccupantsUI(view);
+		}, 1000);
+		return;
+	}
+	
+	console.debug("chatRoomViewInitialized - occupant element", allBadges);	
+		
+	view.model.occupants.forEach(occupant =>  {	
+		if (!occupant.get('jid')) return;
+		
+        const element = document.getElementById(occupant.get('id'));
+        const badges = element.querySelector(".occupant-badges");				
+		let padeEle = element.querySelector(".occupants-pade-chat");
+
+		console.debug("chatRoomViewInitialized - occupant", occupant, element, badges, padeEle);	
+		
+		let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+		if (_converse.bare_jid == occupant.get('jid'))
+		{
+			html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
+		}
+
+		if (padeEle)
+		{
+			padeEle.innerHTML = html;
+		}
+		else {
+			padeEle = newElement('span', null, html, 'occupants-pade-chat');
+			badges.appendChild(padeEle);
+			
+			padeEle.addEventListener('click', function(ev)
+			{
+				ev.stopPropagation();
+
+				const jid = ev.target.getAttribute('data-room-jid');
+				const nick = ev.target.getAttribute('data-room-nick');
+
+				if (jid && Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
+				{
+					 _converse.api.chats.open(jid, {nickname: nick, fullname: nick, bring_to_foreground: true}, true).then(chat => {
+						 if (!chat.vcard?.attributes.fullname) chat.vcard.set('fullname', nick);
+						 if (!chat.vcard?.attributes.nickname) chat.vcard.set('nickname', nick);
+					 });
+				}
+
+			}, false);				
+		}						
+	});	
 }
 
 function addPadeUI() {
