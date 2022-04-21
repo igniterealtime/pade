@@ -65,7 +65,7 @@
 
                     console.debug("loadMore", roomJids.length, nextItem);
 
-                    if (nextItem < roomJids.length) for (let i = 0; i < 12; i++)
+                    if (nextItem < roomJids.length) for (let i = 0; i < 16; i++)
                     {
                         if (nextItem < roomJids.length)
                         {
@@ -142,7 +142,13 @@
             {
                 console.debug("chatBoxViewInitialized", view);
 				extendUI();					
-			});			
+			});	
+
+			_converse.api.listen.on('chatBoxClosed', function (chatbox)
+			{
+				console.debug("chatBoxClosed", chatbox);
+				extendUI();	
+			});				
 
             console.debug("muc directory plugin is ready");
         }

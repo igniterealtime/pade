@@ -542,14 +542,6 @@ function setupPadeRoot() {
 			}).catch(function (err) {
 				console.error('waiting for controlBoxInitialized error', err);
 			});		
-
-			_converse.api.listen.on('chatBoxClosed', function (chatbox)
-			{
-				console.debug("chatBoxClosed", chatbox);
-
-				const activeDiv = document.getElementById("active-conversations");
-				if (activeDiv) removeActiveConversation(chatbox, activeDiv);
-			});
 					
 			_converse.api.listen.on('connected', function() {
 				if (!getSetting("disablePadeStyling", false)) {				
@@ -585,6 +577,14 @@ function setupPadeRoot() {
                 console.debug("chatBoxViewInitialized", view);
 				addPadeUI();					
 			});
+			
+			_converse.api.listen.on('chatBoxClosed', function (chatbox)
+			{
+				console.debug("chatBoxClosed", chatbox);
+				addPadeUI();
+				const activeDiv = document.getElementById("active-conversations");
+				if (activeDiv) removeActiveConversation(chatbox, activeDiv);
+			});			
 			
 			_converse.api.listen.on('message', (data) => {			
 				let count = 0;
