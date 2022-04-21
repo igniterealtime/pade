@@ -77,6 +77,13 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Connection"),
+            "group": i18n.get("Login"),
+            "name": "connect",
+            "type": "button",
+            "text": i18n.get("login")
+        },		
+        {
+            "tab": i18n.get("Connection"),
             "group": i18n.get("URIs"),
             "name": "boshUri",
             "type": "text",

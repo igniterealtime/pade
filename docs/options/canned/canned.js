@@ -36,7 +36,9 @@ var getAnswersListFromStorage  = function()
     localStorage.setItem(localStorageKey, JSON.stringify(defaultAnswers));
     answers = defaultAnswers;
   } else {
-   answers = JSON.parse(localStorage.getItem(localStorageKey));
+	  if (localStorage.getItem(localStorageKey)) {
+		answers = JSON.parse(localStorage.getItem(localStorageKey));
+	  }
   }
   return answers;
 }

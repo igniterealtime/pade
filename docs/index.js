@@ -700,7 +700,7 @@ function addPadeUI() {
 		setTimeout(() => {
 			addControlFeatures();
 			setupMUCAvatars();			
-		}, 1000);
+		}, 3000);
 	}
 }
 
@@ -809,6 +809,7 @@ function setupMUCAvatars() {
 		}			
 	}
 
+/*
 	elements = document.querySelectorAll('.chat-head-chatroom .chatbox-title__text');	
 		
 	for (let i=0; i < elements.length; i++)
@@ -823,7 +824,8 @@ function setupMUCAvatars() {
 				elements[i].prepend(avatar);
 			}
 		}			
-	}	
+	}
+*/	
 }
 
 function addControlFeatures() {

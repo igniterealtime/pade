@@ -98,7 +98,7 @@
                     if (needMore) this.loadMore();
                 },
 
-                doDirectory() {
+                async doDirectory() {
                     console.debug("doDirectory");
 
                     const directoryResults = this.el.querySelector("#pade-directory-results");
@@ -106,7 +106,14 @@
 
                     if (nextItem == 0)
                     {
+						
                         roomJids = Object.getOwnPropertyNames(mucJids);
+						
+						if (roomJids.length == 0) {
+							await fetchMUCs();
+							roomJids = Object.getOwnPropertyNames(mucJids);
+						}
+						
                         // uncomment this if you want sorted listing
                         //roomJids = roomJids.sort();
 
@@ -125,111 +132,61 @@
                 }
             });
 
-            Promise.all([_converse.api.waitUntil('controlBoxInitialized'), _converse.api.waitUntil('VCardsInitialized'), _converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('roomsPanelRendered'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
+            _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
-                const section = document.body.querySelector('.controlbox-heading--groupchats');	
-
-                if (section)
-                {
-                    const mucButton = newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>');
-                    section.parentNode.appendChild(mucButton);
-
-                    mucButton.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
-
-                        mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
-                        mucDirectoryDialog.show();
-
-                    }, false);
-
-                    getChats();
-                }
-            });
+                console.debug("chatRoomViewInitialized", view);
+				extendUI();											
+			});
+			
+            _converse.api.listen.on('chatBoxViewInitialized', function (view)
+            {
+                console.debug("chatBoxViewInitialized", view);
+				extendUI();					
+			});			
 
             console.debug("muc directory plugin is ready");
-        },
-
-        'overrides': {
-            ChatBoxView: {
-
-                parseMessageForCommands: function(text) {
-                    console.debug('directory - parseMessageForCommands', text);
-
-                    const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
-                    const command = match[1].toLowerCase();
-
-                    if (command === "dir")
-                    {
-                        mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
-                        mucDirectoryDialog.show();
-                        return true;
-                    }
-                    else
-
-                    return this.__super__.parseMessageForCommands.apply(this, arguments);
-                }
-            }
         }
     });
+	
+	async function fetchMUCs() {
+		let page = 1;
+		
+		while (page < 20) {
+			const response = await fetch('https://search.jabber.network/api/1.0/rooms/unsafe?p=' + page++);
+			const data = await response.json();
+			
+			if (!data.items || data.items.length == 0)  break;
+			console.debug("search.jabber.network", data.items);	
 
-    function getChats()
-    {
-        const domains = {};
-        domains[_converse.connection.domain] = {}; // boostrap with own domain;
+			for (item of data.items) 
+			{							
+				if (item.address && item.address != "null") {
+					mucJids[item.address] = {jid: item.address};	
+				}								
+			}
+		}	
+	}
+	
+	function extendUI() {
+		const section = document.body.querySelector('.controlbox-heading--groupchats');	
 
-        _converse.roster.forEach(function(contact)
-        {
-            //console.debug("muc-directory contact", contact);
+		if (section)
+		{
+			if (!section.parentNode.querySelector('.pade-muc-directory')) {	
+				const mucButton = newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>', 'pade-muc-directory');
+				section.parentNode.appendChild(mucButton);
 
-            const domain = converse.env.Strophe.getDomainFromJid(contact.get("id"));
-            if (domain.indexOf("pade.") == -1) domains[domain] = {};
-        });
+				mucButton.addEventListener('click', function(evt)
+				{
+					evt.stopPropagation();
 
-        console.debug("muc-directory domains", domains);
-        Object.getOwnPropertyNames(domains).forEach(getComponents);
-    }
+					mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
+					mucDirectoryDialog.show();
 
-    async function getComponents(domain)
-    {
-        console.debug("getComponents", domain);
-        const stanza = await _converse.api.disco.items(domain);
-        console.debug("getComponents", stanza);
-        stanza.querySelectorAll('item').forEach(getComponent);
-    }
-
-    async function getComponent(component)
-    {
-        //console.debug("getComponent", component);
-        const jid = component.getAttribute("jid");
-        const name = component.getAttribute("name");
-        let isMuc = false;
-
-        //console.debug("getComponent", jid, name);
-        const stanza = await _converse.api.disco.info(jid);
-        //console.debug("getComponent", stanza);
-
-        stanza.querySelectorAll('feature').forEach(function(feature)
-        {
-            const type = feature.getAttribute("var");
-            //console.debug("getComponent", type);
-            if (type == "http://jabber.org/protocol/muc") isMuc = true;
-        });
-
-        if (isMuc)
-        {
-            const stanza2 = await _converse.api.disco.items(jid);
-            //console.debug("getComponent muc rooms", stanza2);
-            stanza2.querySelectorAll('item').forEach(getRoom);
-        }
-    }
-
-    function getRoom(item)
-    {
-        const room = item.getAttribute("jid");
-        //console.debug("getRoom", room);
-        mucJids[room] = {jid: room};
-    }
+				}, false);	
+			}				
+		}		
+	}
 
     async function getRoomDetails(room, ele, filter)
     {
@@ -237,7 +194,7 @@
 
         const stanza = await _converse.api.disco.info(room);
 
-        mucJids[room].label = stanza.querySelector('identity').getAttribute("name");
+        mucJids[room].label = stanza.querySelector('identity').getAttribute("name") || room;
         mucJids[room].subject = getValue(stanza.querySelector('field[var="muc#roominfo_subject"] > value'));
         mucJids[room].occupants = getValue(stanza.querySelector('field[var="muc#roominfo_occupants"] > value'));
         mucJids[room].description = getValue(stanza.querySelector('field[var="muc#roominfo_description"] > value'));

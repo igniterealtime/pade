@@ -21,11 +21,11 @@
 }
 
 .pade-col-desc {
-  /*
-  max-width: 230px;
+ 
+  max-width: 350px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; */
+  text-overflow: ellipsis;
 }
 .pade-col-badge {
     position:relative;

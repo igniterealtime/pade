@@ -39,6 +39,11 @@ window.addEvent("domready", function () {
             document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " | Settings";
         }
 
+        if (settings.manifest.connect) settings.manifest.connect.addEvent("action", function ()
+        {
+			location.href= "./../index.html";
+        });
+		
         if (settings.manifest.meetingPlanner)
         {
             var planner = settings.manifest.meetingPlanner.element;
