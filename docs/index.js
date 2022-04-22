@@ -655,43 +655,46 @@ function addPadeOccupantsUI(view) {
 		if (!occupant.get('jid')) return;
 		
         const element = document.getElementById(occupant.get('id'));
-        const badges = element.querySelector(".occupant-badges");				
-		let padeEle = element.querySelector(".occupants-pade-chat");
-
-		console.debug("chatRoomViewInitialized - occupant", occupant, element, badges, padeEle);	
 		
-		let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+		if (element) {
+			const badges = element.querySelector(".occupant-badges");				
+			let padeEle = element.querySelector(".occupants-pade-chat");
 
-		if (_converse.bare_jid == occupant.get('jid'))
-		{
-			html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
-		}
-
-		if (padeEle)
-		{
-			padeEle.innerHTML = html;
-		}
-		else {
-			padeEle = newElement('span', null, html, 'occupants-pade-chat');
-			badges.appendChild(padeEle);
+			console.debug("chatRoomViewInitialized - occupant", occupant, element, badges, padeEle);	
 			
-			padeEle.addEventListener('click', function(ev)
+			let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
+
+			if (_converse.bare_jid == occupant.get('jid'))
 			{
-				ev.stopPropagation();
+				html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' class='badge badge-groupchat'>self</span>";
+			}
 
-				const jid = ev.target.getAttribute('data-room-jid');
-				const nick = ev.target.getAttribute('data-room-nick');
-
-				if (jid && Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
+			if (padeEle)
+			{
+				padeEle.innerHTML = html;
+			}
+			else {
+				padeEle = newElement('span', null, html, 'occupants-pade-chat');
+				badges.appendChild(padeEle);
+				
+				padeEle.addEventListener('click', function(ev)
 				{
-					 _converse.api.chats.open(jid, {nickname: nick, fullname: nick, bring_to_foreground: true}, true).then(chat => {
-						 if (!chat.vcard?.attributes.fullname) chat.vcard.set('fullname', nick);
-						 if (!chat.vcard?.attributes.nickname) chat.vcard.set('nickname', nick);
-					 });
-				}
+					ev.stopPropagation();
 
-			}, false);				
-		}						
+					const jid = ev.target.getAttribute('data-room-jid');
+					const nick = ev.target.getAttribute('data-room-nick');
+
+					if (jid && Strophe.getNodeFromJid(jid) && _converse.bare_jid != jid)
+					{
+						 _converse.api.chats.open(jid, {nickname: nick, fullname: nick, bring_to_foreground: true}, true).then(chat => {
+							 if (!chat.vcard?.attributes.fullname) chat.vcard.set('fullname', nick);
+							 if (!chat.vcard?.attributes.nickname) chat.vcard.set('nickname', nick);
+						 });
+					}
+
+				}, false);				
+			}	
+		}			
 	});	
 }
 
