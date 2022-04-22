@@ -8,7 +8,7 @@
     var Strophe, $iq, _converse, html, __, Model, BootstrapModal;
     var MUCDirectoryDialog = null;
     var mucDirectoryDialog = null;
-    var mucJids = {}, nextItem = 0, nickColors = {}, roomJids = [];
+    var mucJids = {}, nextItem = 0, nickColors = {}, roomJids = [], timestamp = (new Date()).toISOString();
 
     converse.plugins.add("muc-directory", {
         'dependencies': [],
@@ -109,7 +109,8 @@
 						
                         roomJids = Object.getOwnPropertyNames(mucJids);
 						
-						if (roomJids.length == 0) {
+						if (roomJids.length == 0 || converse.env.dayjs().isAfter(timestamp, 'hour')) {
+							timestamp = (new Date()).toISOString();
 							await fetchMUCs();
 							roomJids = Object.getOwnPropertyNames(mucJids);
 						}
