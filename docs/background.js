@@ -32,44 +32,44 @@ self.addEventListener('notificationclick', function(event) {
 //
 // -------------------------------------------------------
 
-if (chrome.runtime) chrome.runtime.onInstalled.addListener((details) => {
-	console.debug("onInstalled");
-	
-	if (details.reason == "install")
-	{
-		console.debug("This is a first install!");
-
-	} else if (details.reason == "update"){
-		const thisVersion = chrome.runtime.getManifest().version;
-
-		if (thisVersion != details.previousVersion)
+if (chrome) {
+	chrome.runtime.onInstalled.addListener((details) => {
+		console.debug("onInstalled");
+		
+		if (details.reason == "install")
 		{
-			console.debug("Updated from " + details.previousVersion + " to " + thisVersion + "!");			
-			doExtensionPage("changelog.html");
+			console.debug("This is a first install!");
+
+		} else if (details.reason == "update"){
+			const thisVersion = chrome.runtime.getManifest().version;
+
+			if (thisVersion != details.previousVersion)
+			{
+				console.debug("Updated from " + details.previousVersion + " to " + thisVersion + "!");			
+				doExtensionPage("changelog.html");
+			}
 		}
-	}
-	openPadeConverseWindow();	
-});
+		openPadeConverseWindow();	
+	});
 
-if (chrome.runtime) chrome.runtime.onStartup.addListener(() => {
-	console.debug("onStartup");	
-	openPadeConverseWindow();
-});
-
-if (chrome.action) chrome.action.onClicked.addListener(() => {
-	console.debug("action onClicked");	
-	openPadeConverseWindow();
-});
-
-if (chrome.commands) chrome.commands.onCommand.addListener((command) => {
-	console.debug('Command:', command);
-	
-	if (command == "activate_pade") {
+	chrome.runtime.onStartup.addListener(() => {
+		console.debug("onStartup");	
 		openPadeConverseWindow();
-	}
-});	
+	});
 
-if (chrome.commands) {
+	chrome.action.onClicked.addListener(() => {
+		console.debug("action onClicked");	
+		openPadeConverseWindow();
+	});
+
+	chrome.commands.onCommand.addListener((command) => {
+		console.debug('Command:', command);
+		
+		if (command == "activate_pade") {
+			openPadeConverseWindow();
+		}
+	});	
+
 	chrome.windows.onFocusChanged.addListener((win) => {
 		//console.debug("onFocusChanged", win);	
 	});	
