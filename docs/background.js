@@ -32,7 +32,7 @@ self.addEventListener('notificationclick', function(event) {
 //
 // -------------------------------------------------------
 
-chrome.runtime.onInstalled.addListener((details) => {
+if (chrome.runtime) chrome.runtime.onInstalled.addListener((details) => {
 	console.debug("onInstalled");
 	
 	if (details.reason == "install")
@@ -51,17 +51,17 @@ chrome.runtime.onInstalled.addListener((details) => {
 	openPadeConverseWindow();	
 });
 
-chrome.runtime.onStartup.addListener(() => {
+if (chrome.runtime) chrome.runtime.onStartup.addListener(() => {
 	console.debug("onStartup");	
 	openPadeConverseWindow();
 });
 
-chrome.action.onClicked.addListener(() => {
+if (chrome.action) chrome.action.onClicked.addListener(() => {
 	console.debug("action onClicked");	
 	openPadeConverseWindow();
 });
 
-chrome.commands.onCommand.addListener((command) => {
+if (chrome.commands) chrome.commands.onCommand.addListener((command) => {
 	console.debug('Command:', command);
 	
 	if (command == "activate_pade") {
@@ -69,22 +69,24 @@ chrome.commands.onCommand.addListener((command) => {
 	}
 });	
 
-chrome.windows.onFocusChanged.addListener((win) => {
-	//console.debug("onFocusChanged", win);	
-});	
-
-chrome.windows.onCreated.addListener((win) => {
-	//console.debug("onCreated");
-});	
-
-chrome.windows.onRemoved.addListener((win) => {
-	//console.debug("onRemoved", win);	
-	chrome.storage.local.get('converseWin', (data) => {	
-		if (data.converseWin && data.converseWin == win) {	
-			chrome.storage.local.remove('converseWin');	
-		}
+if (chrome.commands) {
+	chrome.windows.onFocusChanged.addListener((win) => {
+		//console.debug("onFocusChanged", win);	
 	});	
-});	
+
+	chrome.windows.onCreated.addListener((win) => {
+		//console.debug("onCreated");
+	});	
+
+	chrome.windows.onRemoved.addListener((win) => {
+		//console.debug("onRemoved", win);	
+		chrome.storage.local.get('converseWin', (data) => {	
+			if (data.converseWin && data.converseWin == win) {	
+				chrome.storage.local.remove('converseWin');	
+			}
+		});	
+	});	
+}
 
 // -------------------------------------------------------
 //

@@ -59,11 +59,11 @@ window.addEventListener("unload", function() {
 function setupServiceWorker() {
 	console.debug("setupServiceWorker");	
 	
-	function initialiseError(error) {
-		console.error("setupServiceWorker - initialiseError2", error);
+	const initialiseError = (error) => {
+		console.error("setupServiceWorker - initialiseError", error);
 	}	
 
-	function initialiseState(registration) {
+	const initialiseState = (registration) => {
 		if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
 			console.warn('Notifications aren\'t supported.');
 			return;
@@ -90,7 +90,7 @@ function setupServiceWorker() {
 
 	navigator.serviceWorker.ready.then(svcWorkerRegistration =>
 	{
-		console.debug("setupServiceWorker - initialiseState ready", svcWorkerRegistration);
+		console.debug("setupServiceWorker - resdy", svcWorkerRegistration);
 		serviceWorkerRegistration = svcWorkerRegistration;	
 		showOutgoingNotification();			
 	});	
