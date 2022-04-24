@@ -1,4 +1,4 @@
-let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal;
+let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration;
 const nickColors = {}, pade = {webAppsWindow: {}};
 const whitelistedPlugins = [];
 
@@ -32,6 +32,7 @@ window.addEventListener('focus', function(evt) {
 });
 							
 window.addEventListener("load", function() {
+	setupServiceWorker();
 	setupChromeHandlers()
 	startConverse();
 });
@@ -54,6 +55,58 @@ window.addEventListener("unload", function() {
 //  Setup
 //
 // -------------------------------------------------------	
+
+function setupServiceWorker() {
+	console.log("setupServiceWorker");	
+
+	function initialiseError(error) {
+		navigator.serviceWorker.register('./background.js', {scope: './'}).then(initialiseState, initialiseError2);
+	}
+	
+	function initialiseError2(error) {
+		console.error("initialiseError2", error);
+	}	
+
+	function initialiseState(registration) {
+		if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
+			console.warn('Notifications aren\'t supported.');
+			return;
+		}
+
+		if (Notification.permission === 'denied') {
+			console.warn('The user has blocked notifications.');
+			return;
+		}
+
+		if (!('PushManager' in window)) {
+			console.warn('Push messaging isn\'t supported.');
+			return;
+		}
+
+		console.debug("setupServiceWorker - initialiseState", registration);
+
+		navigator.serviceWorker.ready.then(svcWorkerRegistration =>
+		{
+			console.debug("setupServiceWorker - initialiseState ready", svcWorkerRegistration);
+			serviceWorkerRegistration = svcWorkerRegistration;	
+			showOutgoingNotification();			
+		});
+	}
+	
+	navigator.serviceWorker.getRegistration('/').then(initialiseState, initialiseError);
+	
+	navigator.serviceWorker.addEventListener('message', event => 
+	{
+		console.debug("setupServiceWorker - message event", event.data, event.action, event.reply);		
+	});	
+
+	const actionChannel = new BroadcastChannel('pade-action');
+	
+    actionChannel.addEventListener('message', event =>
+	{
+		console.debug("setupServiceWorker - notication action", event.data, event.action, event.reply);
+	});		
+}
 
 function loadPlugins() {
     if (getSetting("showToolbarIcons", false))
@@ -1118,6 +1171,20 @@ function addSelfBot() {
 //  Utility Functions
 //
 // -------------------------------------------------------	
+
+function showOutgoingNotification() {		
+	const options = {
+		body: "Outgoing Call",
+		icon: "./icon.png",
+		data: {},
+		requireInteraction: true,
+		actions: [
+          {action: 'call', title: 'Call', type: 'text', icon: './check-solid.png', placeholder: 'Type username, email or phone here..'},
+		  {action: 'cancel', title: 'Cancel', type: 'button', icon: './times-solid.png'}		  
+		]
+	};
+	serviceWorkerRegistration.showNotification("Dialer", options);
+}
 
 function loadJS(name) {
 	console.debug("loadJS", name);
