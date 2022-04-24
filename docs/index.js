@@ -58,13 +58,8 @@ window.addEventListener("unload", function() {
 
 function setupServiceWorker() {
 	console.debug("setupServiceWorker");	
-
-	function initialiseError(error) {
-		console.debug("setupServiceWorker - initialiseError");			
-		navigator.serviceWorker.register('./background.js', {scope: './'}).then(initialiseState, initialiseError2);
-	}
 	
-	function initialiseError2(error) {
+	function initialiseError(error) {
 		console.error("setupServiceWorker - initialiseError2", error);
 	}	
 
@@ -85,16 +80,20 @@ function setupServiceWorker() {
 		}
 
 		console.debug("setupServiceWorker - initialiseState", registration);
-
-		navigator.serviceWorker.ready.then(svcWorkerRegistration =>
-		{
-			console.debug("setupServiceWorker - initialiseState ready", svcWorkerRegistration);
-			serviceWorkerRegistration = svcWorkerRegistration;	
-			showOutgoingNotification();			
-		});
 	}
 	
-	navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
+	if (chrome.pade) {
+		navigator.serviceWorker.register('./background.js', {scope: './'}).then(initialiseState, initialiseError);		
+	} else {
+		navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
+	}	
+
+	navigator.serviceWorker.ready.then(svcWorkerRegistration =>
+	{
+		console.debug("setupServiceWorker - initialiseState ready", svcWorkerRegistration);
+		serviceWorkerRegistration = svcWorkerRegistration;	
+		showOutgoingNotification();			
+	});	
 	
 	navigator.serviceWorker.addEventListener('message', event => 
 	{
