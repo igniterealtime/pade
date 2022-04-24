@@ -57,14 +57,15 @@ window.addEventListener("unload", function() {
 // -------------------------------------------------------	
 
 function setupServiceWorker() {
-	console.log("setupServiceWorker");	
+	console.debug("setupServiceWorker");	
 
 	function initialiseError(error) {
+		console.debug("setupServiceWorker - initialiseError");			
 		navigator.serviceWorker.register('./background.js', {scope: './'}).then(initialiseState, initialiseError2);
 	}
 	
 	function initialiseError2(error) {
-		console.error("initialiseError2", error);
+		console.error("setupServiceWorker - initialiseError2", error);
 	}	
 
 	function initialiseState(registration) {
@@ -93,7 +94,7 @@ function setupServiceWorker() {
 		});
 	}
 	
-	navigator.serviceWorker.getRegistration('/').then(initialiseState, initialiseError);
+	navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
 	
 	navigator.serviceWorker.addEventListener('message', event => 
 	{
