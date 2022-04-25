@@ -56,6 +56,7 @@ window.addEventListener("unload", function() {
 //
 // -------------------------------------------------------	
 
+
 function setupServiceWorker() {
 	console.debug("setupServiceWorker");	
 	
