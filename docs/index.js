@@ -82,7 +82,7 @@ function setupServiceWorker() {
 		console.debug("setupServiceWorker - initialiseState", registration);
 	}
 	
-	if (chrome.pade) {
+	if (!location.protocol == "chrome-extension:") {
 		navigator.serviceWorker.register('./background.js', {scope: './'}).then(initialiseState, initialiseError);		
 	} else {
 		navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
