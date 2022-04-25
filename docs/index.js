@@ -1,4 +1,4 @@
-let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration;
+let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect;
 const nickColors = {}, pade = {webAppsWindow: {}};
 const whitelistedPlugins = [];
 
@@ -32,9 +32,164 @@ window.addEventListener('focus', function(evt) {
 });
 							
 window.addEventListener("load", function() {
-	setupServiceWorker();
+	BrowserDetect = {
+		init: function () {
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+			this.version = this.searchVersion(navigator.userAgent)
+				|| this.searchVersion(navigator.appVersion)
+				|| "an unknown version";
+			this.OS = this.searchString(this.dataOS) || "an unknown OS";
+
+			this.width = 0;
+			this.height = 0;
+
+			if ( typeof( window.innerWidth ) == 'number' )
+			{
+				this.width = window.innerWidth;
+				this.height = window.innerHeight;
+
+			} else if ( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+
+				this.width = document.documentElement.clientWidth;
+				this.height = document.documentElement.clientHeight;
+
+			} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+
+				this.width = document.body.clientWidth;
+				this.height = document.body.clientHeight;
+			}
+		},
+
+		searchString: function (data) {
+			for (var i=0;i<data.length;i++) {
+				var dataString = data[i].string;
+				var dataProp = data[i].prop;
+				this.versionSearchString = data[i].versionSearch || data[i].identity;
+				if (dataString) {
+					if (dataString.indexOf(data[i].subString) != -1)
+						return data[i].identity;
+				}
+				else if (dataProp)
+					return data[i].identity;
+			}
+		},
+
+		searchVersion: function (dataString) {
+			var index = dataString.indexOf(this.versionSearchString);
+			if (index == -1) return;
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+		},
+
+		dataBrowser: [
+			{
+				string: navigator.userAgent,
+				subString: "Chrome",
+				identity: "Chrome"
+			},
+			{   string: navigator.userAgent,
+				subString: "OmniWeb",
+				versionSearch: "OmniWeb/",
+				identity: "OmniWeb"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Apple",
+				identity: "Safari",
+				versionSearch: "Version"
+			},
+			{
+				prop: window.opera,
+				identity: "Opera"
+			},
+			{
+				string: navigator.vendor,
+				subString: "iCab",
+				identity: "iCab"
+			},
+			{
+				string: navigator.vendor,
+				subString: "KDE",
+				identity: "Konqueror"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Firefox",
+				identity: "Firefox"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Camino",
+				identity: "Camino"
+			},
+			{       // for newer Netscapes (6+)
+				string: navigator.userAgent,
+				subString: "Netscape",
+				identity: "Netscape"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "MSIE",
+				identity: "Explorer",
+				versionSearch: "MSIE"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Gecko",
+				identity: "Mozilla",
+				versionSearch: "rv"
+			},
+			{       // for older Netscapes (4-)
+				string: navigator.userAgent,
+				subString: "Mozilla",
+				identity: "Netscape",
+				versionSearch: "Mozilla"
+			}
+		],
+
+		dataOS : [
+			{
+				string: navigator.userAgent,
+				subString: "Windows NT 10.0; Win64",
+				identity: "Win10.64"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Windows NT 10.0",
+				identity: "Win10"
+			},
+			{
+				string: navigator.platform,
+				subString: "Win",
+				identity: "Win"
+			},
+			{
+				string: navigator.platform,
+				subString: "Mac",
+				identity: "Mac"
+			},
+			{
+			   string: navigator.userAgent,
+			   subString: "iPhone",
+			   identity: "iPhone"
+			},
+			{
+				string: navigator.platform,
+				subString: "Linux",
+				identity: "Linux"
+			}
+		]
+	};
+	BrowserDetect.init();	
 	setupChromeHandlers()
-	startConverse();
+	
+	navigator.credentials.get({password: true}).then(function(credential) {
+		console.log("window.load credential", credential);
+		startConverse(credential);
+
+	}).catch(function(err){
+		console.error("window.load credential error", err);
+		startConverse();		
+	});	
 });
 
 window.addEventListener("unload", function() {
@@ -56,8 +211,115 @@ window.addEventListener("unload", function() {
 //
 // -------------------------------------------------------	
 
+function storeCredentials(pass) {
+	const id = getSetting("username") + "@" + getSetting("domain");	
+	
+	navigator.credentials.create({password: {id: id, password: pass}}).then(function(credential)
+	{
+		console.debug("storeCredentials", credential);
+	
+		if (credential) {
+			navigator.credentials.store(credential).then(function()
+			{
+				console.log("storeCredentials stored");
 
-function setupServiceWorker() {
+			}).catch(function (err) {
+				console.error("storeCredentials error", err);
+			});
+		}
+
+	}).catch(function (err) {
+		console.error("storeCredentials error", err);
+	});	
+}
+
+function setupPushNotifications(pass) {
+	const domain = getSetting("domain", location.hostname);
+	const server = getSetting("server", location.host);
+	const username = getSetting("username");		
+	const url = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/rest/api/restapi/v1/meet/webpush/" + username;	
+	const options = {method: "GET", headers: {"Authorization": "Basic " + btoa(username + ":" + pass), "Accept":"application/json", "Content-Type":"application/json"}};
+
+    console.debug("setupPushNotifications - vapidGetPublicKey", url, options);
+		
+	fetch(url, options).then(function(response) {return response.json()}).then(function(vapid)
+	{
+		if (vapid.publicKey)
+		{
+			subscribeForPushNotifications(vapid.publicKey, pass);
+		}
+
+	}).catch(function (err) {
+		console.error('vapidGetPublicKey error!', err);
+	});	
+}
+
+function subscribeForPushNotifications(publicKey, pass) {
+	console.debug("subscribeForPushNotifications", publicKey);	
+	
+	if (serviceWorkerRegistration) {
+		serviceWorkerRegistration.pushManager.subscribe({
+			userVisibleOnly: true,
+			applicationServerKey: base64UrlToUint8Array(publicKey)
+		})
+		.then(function (subscription) {
+			return sendSubscriptionToServer(subscription, pass);
+		})
+		.catch(function (e) {
+			if (Notification.permission === 'denied') {
+				console.warn('Permission for Notifications was denied');
+			} else {
+				console.error('Unable to subscribe to push.', e);
+			}
+		});
+	}
+}
+
+function base64UrlToUint8Array(base64UrlData) {
+	const padding = '='.repeat((4 - base64UrlData.length % 4) % 4);
+	const base64 = (base64UrlData + padding).replace(/\-/g, '+').replace(/_/g, '/');
+	const rawData = atob(base64);
+	const buffer = new Uint8Array(rawData.length);
+
+	for (let i = 0; i < rawData.length; ++i) {
+		buffer[i] = rawData.charCodeAt(i);
+	}
+
+	return buffer;
+}
+
+function sendSubscriptionToServer(subscription, pass) {
+	console.debug("sendSubscriptionToServer", subscription);
+	
+	const domain = getSetting("domain", location.hostname);
+	const server = getSetting("server", location.host);
+	const username = getSetting("username");		
+	const baseUrl = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server;	
+
+	var key = subscription.getKey ? subscription.getKey('p256dh') : '';
+	var auth = subscription.getKey ? subscription.getKey('auth') : '';
+
+	var subscriptionString = JSON.stringify(subscription);  // TODO
+
+	console.debug("web push subscription", {
+		endpoint: subscription.endpoint,
+		key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : '',
+		auth: auth ? btoa(String.fromCharCode.apply(null, new Uint8Array(auth))) : ''
+	}, subscription);
+
+	var resource = chrome.i18n.getMessage('manifest_shortExtensionName').toLowerCase() + "-" + BrowserDetect.browser + BrowserDetect.version + BrowserDetect.OS;
+	var putUrl = baseUrl + "/rest/api/restapi/v1/meet/webpush/" + username + "/" + resource;
+	var options = {method: "PUT", body: JSON.stringify(subscription), headers: {"Authorization": "Basic " + btoa(username + ":" + pass), "Accept":"application/json", "Content-Type":"application/json"}};
+
+	return fetch(putUrl, options).then(function(response) {
+		console.debug("sendSubscriptionToServer - subscribe response", response);
+
+	}).catch(function (err) {
+		console.error('subscribe error!', err);
+	});
+}
+
+function setupServiceWorker(pass) {
 	console.debug("setupServiceWorker");	
 	
 	const initialiseError = (error) => {
@@ -91,9 +353,9 @@ function setupServiceWorker() {
 
 	navigator.serviceWorker.ready.then(svcWorkerRegistration =>
 	{
-		console.debug("setupServiceWorker - resdy", svcWorkerRegistration);
+		console.debug("setupServiceWorker - ready", svcWorkerRegistration);
 		serviceWorkerRegistration = svcWorkerRegistration;	
-		showOutgoingNotification();			
+		setupPushNotifications(pass);
 	});	
 	
 	navigator.serviceWorker.addEventListener('message', event => 
@@ -261,13 +523,13 @@ function setupChromeHandlers() {
 	}		
 }
 
-function startConverse() {	
+function startConverse(credential) {	
 	const domain = getSetting("domain", location.hostname);
 	const server = getSetting("server", location.host);
 	const anonUser = getSetting("useAnonymous", false);
 	
 	const username = getSetting("username");
-	const password = getSetting("password");
+	const password = credential?.password || getSetting("password");
 	
 	if (!username || !password || username == "" || password == "") {
 		location.href = "./options/index.html";
@@ -600,7 +862,12 @@ function setupPadeRoot() {
 			_converse.api.listen.on('connected', function() {
 				if (!getSetting("disablePadeStyling", false)) {				
 					setupTimer();
-					addSelfBot();	
+					addSelfBot();
+
+					if (_converse.connection.pass) {
+						setupServiceWorker(_converse.connection.pass);	
+						storeCredentials(_converse.connection.pass);
+					}				
 				}					
 			});
 

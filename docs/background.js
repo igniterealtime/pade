@@ -15,6 +15,29 @@ self.addEventListener('message', function (event) {
 	console.debug('message', event.data);
 })
 
+self.addEventListener('push', function (event) {
+   const data = event.data.json();
+   console.debug('push', data);
+   
+   const options = {
+        body: data.msgBody,
+        icon: data.avatar || './icon.png',
+        requireInteraction: true,
+        persistent: true,
+        sticky: true,
+        vibrate: [100, 50, 100],
+        data: data,
+        actions: [
+          {action: 'reply', type: 'text', title: 'Reply', icon: './check-solid.png', placeholder: 'Type a reply here..'},
+          {action: 'ignore', type: 'button', title: 'Ignore', icon: './times-solid.png'},
+        ]
+    };
+	
+    event.waitUntil(
+        self.registration.showNotification(data.fullname, options)
+    );
+});
+
 self.addEventListener('notificationclose', function(event) {
     console.debug('notificationclose', event.notification);
 });
@@ -22,9 +45,47 @@ self.addEventListener('notificationclose', function(event) {
 self.addEventListener('notificationclick', function(event) {
     console.debug('notificationclick', event);
 
-    const source = new BroadcastChannel('pade-action');	
-	source.postMessage({action: event.action, id: event.notification.data.id, reply: event.reply});	
-}, false);
+    if (event.action === 'reject') {
+        event.notification.close();
+		
+	} else if (event.action === 'reply') {
+
+		if (event.reply && event.reply != "") {
+			const payload = {
+				msgFrom: event.notification.data.msgFrom,
+				msgType: event.notification.data.msgType,
+				msgBody: event.notification.data.msgBody,
+				reply: 	event.reply			
+			};
+			console.debug('notificationclick - reply', payload, event.reply);
+			
+			const postUrl = event.notification.data.url + "/rest/api/restapi/v1/meet/message";
+			var options = {method: "POST", body: JSON.stringify(payload), headers: {"Authorization": event.notification.data.token, "Accept":"application/json", "Content-Type":"application/json"}};
+
+			return fetch(postUrl, options).then(function(response) {
+				console.debug("notificationclick - reply response", response);
+
+			}).catch(function (err) {
+				console.error('notificationclick - reply  error!', err);
+			});			
+	
+		} else {
+			if (location.protocol == "chrome-extension:") {
+				const data = {url: chrome.runtime.getURL("./index.html"), type: "popup"};
+				
+				chrome.windows.create(data, (win) => {
+					chrome.windows.update(win.id, {width: 1300, height: 900});
+				});	
+			} else {
+				event.waitUntil(
+					clients.openWindow("./index.html")
+				);	
+			}
+		}
+	    
+		event.notification.close();	
+    } 
+});
 
 // -------------------------------------------------------
 //
@@ -40,7 +101,6 @@ if (location.protocol == "chrome-extension:") {
 		
 		chrome.windows.create(data, (win) => {
 			chrome.windows.update(win.id, {width: 1300, height: 900});
-			chrome.storage.local.set({converseWin: win.id});
 		});	
 	}
 
@@ -128,6 +188,7 @@ if (location.protocol == "chrome-extension:") {
 
 	chrome.windows.onCreated.addListener((win) => {
 		//console.debug("onCreated");
+		chrome.storage.local.set({converseWin: win});		
 	});	
 
 	chrome.windows.onRemoved.addListener((win) => {
