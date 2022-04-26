@@ -371,7 +371,7 @@ function setupServiceWorker(pass) {
 	}
 	
 	if (!location.protocol == "chrome-extension:") {
-		navigator.serviceWorker.register('./background.js', {scope: '/pade'}).then(initialiseState, initialiseError);		
+		navigator.serviceWorker.register('./background.js', {scope: '.'}).then(initialiseState, initialiseError);		
 	} else {
 		navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
 	}	
