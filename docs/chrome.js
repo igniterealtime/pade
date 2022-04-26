@@ -14,14 +14,14 @@ if (!window.chrome?.extension)
 		if (!appLanguage || appLanguage == "") appLanguage = "en";
     }
 
-    fetch("https://" + location.host + "/" + padeName + "/_locales/" + appLanguage + "/messages.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(messages)
+    fetch(location.protocol + "//" + location.host + "/" + padeName + "/_locales/" + appLanguage + "/messages.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(messages)
     {
         console.debug("i18nMessages", messages);
         i18nMessages = messages;
 
         if (i18nMessages.manifest_shortExtensionName) appName = i18nMessages.manifest_shortExtensionName.message;
 
-        fetch("https://" + location.host + "/" + padeName + "/manifest.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(manifest)
+        fetch(location.protocol + "//" +  location.host + "/" + padeName + "/manifest.json", {method: "GET", headers: {"accept": "application/json"}}).then(function(response){ return response.json()}).then(function(manifest)
         {
             console.debug("manifest.json", manifest);
             appVer = manifest.version;

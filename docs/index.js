@@ -212,18 +212,18 @@ window.addEventListener("unload", function() {
 // -------------------------------------------------------	
 
 function loadBranding() {
-	var overrides = Object.getOwnPropertyNames(branding);
+	var defaults = Object.getOwnPropertyNames(branding);
 
-	console.debug("branding - start", overrides, branding);
+	console.debug("branding - start", defaults, branding);
 
-	for (var i=0; i<overrides.length; i++)
+	for (var i=0; i<defaults.length; i++)
 	{
-		var setting = overrides[i];
-		var override = branding[setting];
+		var setting = defaults[i];
+		var defaultVal = branding[setting];
 
-		if (override.value && override.value != "" && !override.disable) 	{
-			console.debug("branding - found", i, setting, override.value, override.disable, getSetting(setting));			
-			setSetting(setting, override.value);
+		if (defaultVal.value && defaultVal.value != "" && !defaultVal.disable && !getSetting(setting)) {
+			console.debug("branding - found", i, setting, defaultVal.value, defaultVal.disable, getSetting(setting));			
+			setSetting(setting, defaultVal.value);
 		}
 	}	
 }
