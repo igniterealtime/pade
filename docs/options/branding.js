@@ -65,8 +65,11 @@ var branding = {
 
 	// connection
     name                    : {disable: false, value: "pade"},
-    server                  : {disable: false, value: "pade.chat:5443"},
-    domain                  : {disable: false, value: "pade.chat"},
+    server                  : {disable: false, value: "localhost:7070"},
+	ofmeetUrl				: {disable: false, value: "http://localhost:7070/ofmeet/"},
+	boshUri					: {disable: false, value: "http://localhost:7070/http-bind/"},
+	websocketUri			: {disable: false, value: "ws://localhost:7070/ws/"},
+    domain                  : {disable: false, value: "localhost"},
 	useWebsocket            : {disable: false, value: true},
 	useWebAuthn				: {disable: true},
 	useBasicAuth			: {disable: true},

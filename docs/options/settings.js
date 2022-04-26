@@ -806,40 +806,14 @@ window.addEvent("domready", function () {
         if (settings.manifest.factoryReset) settings.manifest.factoryReset.addEvent("action", function ()
         {
             let keepSettings = false;
-            let savedSettings = JSON.parse(JSON.stringify(branding));
 
             if (confirm("Reset?"))
             {
-                if (confirm("Keep data?")) // save settings
-                {
-                    keepSettings = true;
-
-                    for (var i = 0; i < localStorage.length; i++)
-                    {
-                        if (localStorage.key(i).startsWith("store.settings.") && localStorage.key(i).indexOf("password") == -1)
-                        {
-                            const key = localStorage.key(i).substring(15);
-                            if (!savedSettings[key]) savedSettings[key] = {disable: false};
-                            savedSettings[key].value = localStorage.getItem(localStorage.key(i));
-                        }
-                    }
-                }
-
                 sessionStorage.clear();
                 localStorage.clear();
                 if (chrome.storage) chrome.storage.local.clear();
-
-                if (keepSettings)   // restore settings
-                {
-                    const keys = Object.getOwnPropertyNames(savedSettings);
-
-                    for (var i=0; i<keys.length; i++)
-                    {
-                        window.localStorage["store.settings." + keys[i]] = savedSettings[keys[i]].value;
-                    }
-                }
-
-                if (chrome.runtime.reload) chrome.runtime.reload();
+				
+				window.location.reload();
             }
         });
 

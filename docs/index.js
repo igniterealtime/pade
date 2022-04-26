@@ -211,26 +211,51 @@ window.addEventListener("unload", function() {
 //
 // -------------------------------------------------------	
 
+function loadBranding() {
+	var overrides = Object.getOwnPropertyNames(branding);
+
+	console.debug("branding - start", overrides, branding);
+
+	for (var i=0; i<overrides.length; i++)
+	{
+		var setting = overrides[i];
+		var override = branding[setting];
+
+		if (override.value && override.value != "" && !override.disable) 	{
+			console.debug("branding - found", i, setting, override.value, override.disable, getSetting(setting));			
+			setSetting(setting, override.value);
+		}
+	}	
+}
+
 function storeCredentials(pass) {
 	const id = getSetting("username") + "@" + getSetting("domain");	
 	
-	navigator.credentials.create({password: {id: id, password: pass}}).then(function(credential)
-	{
-		console.debug("storeCredentials", credential);
-	
-		if (credential) {
-			navigator.credentials.store(credential).then(function()
-			{
-				console.log("storeCredentials stored");
+	if (location.protocol == "chrome-extension:") {
+		setSetting("password", pass);	
+		
+	} else {
+		navigator.credentials.create({password: {id: id, password: pass}}).then(function(credential)
+		{
+			console.debug("storeCredentials", credential);
+		
+			if (credential) {
+				navigator.credentials.store(credential).then(function()
+				{
+					console.log("storeCredentials stored");
 
-			}).catch(function (err) {
-				console.error("storeCredentials error", err);
-			});
-		}
+				}).catch(function (err) {
+					console.error("storeCredentials error", err);
+				});
+			} else {
+				setSetting("password", pass);			
+			}
 
-	}).catch(function (err) {
-		console.error("storeCredentials error", err);
-	});	
+		}).catch(function (err) {
+			console.error("storeCredentials error", err);
+			setSetting("password", pass);			
+		});	
+	}
 }
 
 function setupPushNotifications(pass) {
@@ -346,7 +371,7 @@ function setupServiceWorker(pass) {
 	}
 	
 	if (!location.protocol == "chrome-extension:") {
-		navigator.serviceWorker.register('./background.js', {scope: './'}).then(initialiseState, initialiseError);		
+		navigator.serviceWorker.register('./background.js', {scope: '/pade'}).then(initialiseState, initialiseError);		
 	} else {
 		navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
 	}	
@@ -524,24 +549,30 @@ function setupChromeHandlers() {
 }
 
 function startConverse(credential) {	
-	const domain = getSetting("domain", location.hostname);
-	const server = getSetting("server", location.host);
 	const anonUser = getSetting("useAnonymous", false);
 	
-	const username = getSetting("username");
-	const password = credential?.password || getSetting("password");
+	let username = getSetting("username");
+	let password = credential?.password || getSetting("password");
 	
 	if (!username || !password || username == "" || password == "") {
-		location.href = "./options/index.html";
+		loadBranding();
+		
+		if (!username) {
+			location.href = "./options/index.html";
+		}
 	}
+
+	const domain = getSetting("domain", location.hostname);
+	const server = getSetting("server", location.host);
+	let discoverConnectionMethods = false;
 
 	const defaultBoshServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/";
 	let boshServiceUrl = getSetting("boshUri", defaultBoshServiceUrl);
-	if (boshServiceUrl.trim() == "") boshServiceUrl = defaultBoshServiceUrl;
+	if (boshServiceUrl.trim() == "") discoverConnectionMethods = true;
 	
 	const defaultWSServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/';
 	let wsServiceUrl = getSetting('websocketUri', defaultWSServiceUrl);	
-	if (wsServiceUrl.trim() == "") wsServiceUrl = defaultWSServiceUrl;
+	if (wsServiceUrl.trim() == "") discoverConnectionMethods = true;
 	
     const displayname = getSetting("displayname", username);
 	let autoJoinRooms = undefined;
@@ -635,7 +666,7 @@ function startConverse(credential) {
 		auto_join_private_chats: autoJoinPrivateChats,
 		auto_join_rooms: autoJoinRooms,
 		auto_list_rooms: getSetting("autoListRooms", true),
-		auto_login: username || anonUser,		  
+		auto_login: password,		  
 		auto_reconnect: getSetting("autoReconnectConverse", true),
 		auto_subscribe: getSetting("autoSubscribe", false),
 		auto_register_muc_nickname: getSetting("autoRegisterMucNick", false),
@@ -646,7 +677,7 @@ function startConverse(credential) {
 		connection_options: { 'worker': getSetting("useWebworker", false) ? "./pade-connection-worker.js" : undefined },
 		default_domain: domain,
 		default_state: getSetting("converseOpenState", "online"),		
-		discover_connection_methods: true,		
+		discover_connection_methods: discoverConnectionMethods,		
 		domain_placeholder: domain,
 		enable_smacks: getSetting("enableSmacks", false),
 		fullname: displayname,
@@ -683,7 +714,7 @@ function startConverse(credential) {
 		roster_groups: getSetting("rosterGroups", false),
 		show_controlbox_by_default: true,
 		show_message_load_animation: true,	
-		show_connection_url_input: true,		
+		show_connection_url_input: false,		
 		show_desktop_notifications: getSetting("notifyAllMessages", true),
 		show_send_button: getSetting("showSendButton", true),
 		show_client_info: false,
@@ -716,7 +747,7 @@ function startConverse(credential) {
 		whitelisted_plugins: whitelistedPlugins		
 	}
 
-    if (getSetting("showToolbarIcons", false))  {	
+    if (getSetting("showToolbarIcons", true))  {	
 		setupPadeRoot();
 	}
 
@@ -726,6 +757,7 @@ function startConverse(credential) {
 }
 
 function setupPadeRoot() {
+	console.debug("setupPadeRoot - converse", converse);
 	converse.plugins.add("paderoot", {
 		dependencies: [],
 
@@ -742,7 +774,9 @@ function setupPadeRoot() {
             Model = converse.env.Model;
             BootstrapModal = converse.env.BootstrapModal;
             _ = converse.env._;
-            __ = _converse.__;		
+            __ = _converse.__;	
+
+			console.debug("setupPadeRoot - _converse", _converse);			
 
 			class PadeBrandLogo extends _converse.CustomElement 
 			{
@@ -865,6 +899,9 @@ function setupPadeRoot() {
 					addSelfBot();
 
 					if (_converse.connection.pass) {
+						const username = Strophe.getNodeFromJid(_converse.connection.jid);
+						setSetting("username", username);
+						
 						setupServiceWorker(_converse.connection.pass);	
 						storeCredentials(_converse.connection.pass);
 					}				
