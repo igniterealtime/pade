@@ -370,10 +370,11 @@ function setupServiceWorker(pass) {
 		console.debug("setupServiceWorker - initialiseState", registration);
 	}
 	
-	if (!location.protocol == "chrome-extension:") {
-		navigator.serviceWorker.register('./background.js', {scope: '.'}).then(initialiseState, initialiseError);		
+	if (location.protocol == "chrome-extension:") {
+		navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);		
+	
 	} else {
-		navigator.serviceWorker.getRegistration('./').then(initialiseState, initialiseError);
+		navigator.serviceWorker.register('./background.js', {scope: '.'}).then(initialiseState, initialiseError);	
 	}	
 
 	navigator.serviceWorker.ready.then(svcWorkerRegistration =>

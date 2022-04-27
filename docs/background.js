@@ -7,7 +7,7 @@
 self.addEventListener('install', function(event) {
     console.debug('install', event);
 	
-	if (!location.protocol == "chrome-extension:")
+	if (location.protocol != "chrome-extension:")
 	{
 	  var indexPage = new Request('index.html');
 	  event.waitUntil(
@@ -23,7 +23,7 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  if (!location.protocol == "chrome-extension:" && event.request.method == "GET") event.respondWith(
+  if (location.protocol != "chrome-extension:" && event.request.method == "GET") event.respondWith(
     fetch(event.request).then(function(response) {
       return caches.open('offline').then(function(cache) {
           try {
