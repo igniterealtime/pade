@@ -6,9 +6,37 @@
 
 self.addEventListener('install', function(event) {
     console.debug('install', event);
+	
+	if (!location.protocol == "chrome-extension:")
+	{
+	  var indexPage = new Request('index.html');
+	  event.waitUntil(
+		fetch(indexPage).then(function(response) {
+		  return caches.open('offline').then(function(cache) {
+			return cache.put(indexPage, response);
+		  });
+	  }));
+	}	
 });
 self.addEventListener('activate', function (event) {
     console.debug('activate', event);
+});
+
+self.addEventListener('fetch', function(event) {
+  if (!location.protocol == "chrome-extension:" && event.request.method == "GET") event.respondWith(
+    fetch(event.request).then(function(response) {
+      return caches.open('offline').then(function(cache) {
+          try {
+            cache.put(event.request, response.clone());
+        } catch (e) {};
+        return response;
+      });
+    }).catch(function (error) {
+      caches.match(event.request).then(function(resp) {
+        return resp;
+      });
+    })
+  );
 });
 
 self.addEventListener('message', function (event) {
@@ -36,6 +64,10 @@ self.addEventListener('push', function (event) {
     event.waitUntil(
         self.registration.showNotification(data.fullname, options)
     );
+});
+
+self.addEventListener("pushsubscriptionchange", function(e) {
+    console.debug('pushsubscriptionchange', e);
 });
 
 self.addEventListener('notificationclose', function(event) {
@@ -100,6 +132,7 @@ if (location.protocol == "chrome-extension:") {
 		const data = {url: chrome.runtime.getURL("index.html"), type: "popup"};
 		
 		chrome.windows.create(data, (win) => {
+			chrome.storage.local.set({converseWin: win.id});			
 			chrome.windows.update(win.id, {width: 1300, height: 900});
 		});	
 	}
@@ -187,8 +220,7 @@ if (location.protocol == "chrome-extension:") {
 	});	
 
 	chrome.windows.onCreated.addListener((win) => {
-		//console.debug("onCreated");
-		chrome.storage.local.set({converseWin: win});		
+		//console.debug("onCreated");		
 	});	
 
 	chrome.windows.onRemoved.addListener((win) => {
