@@ -898,15 +898,15 @@ function setupPadeRoot() {
 				if (!getSetting("disablePadeStyling", false)) {				
 					setupTimer();
 					addSelfBot();
-
-					if (_converse.connection.pass) {
-						const username = Strophe.getNodeFromJid(_converse.connection.jid);
-						setSetting("username", username);
-						
-						setupServiceWorker(_converse.connection.pass);	
-						storeCredentials(_converse.connection.pass);
-					}				
 				}					
+
+				if (_converse.connection.pass) {
+					const username = Strophe.getNodeFromJid(_converse.connection.jid);
+					setSetting("username", username);
+					
+					setupServiceWorker(_converse.connection.pass);	
+					storeCredentials(_converse.connection.pass);
+				}									
 			});
 
 			_converse.api.listen.on('rosterContactInitialized', function(contact) {
