@@ -1,0 +1,123 @@
+@import url(../closure/css/common.css);
+@import url(../closure/css/menu.css);
+@import url(../closure/css/menuitem.css);
+@import url(../closure/css/menubutton.css);
+@import url(../closure/css/css3button.css);
+@import url(../closure/css/css3menubutton.css);
+@import url(../closure/css/checkbox.css);
+@import url(../closure/css/dialog.css);
+
+.goog-css3-button {
+    border-radius: 0;
+    border: 1px solid gray;
+    background: none;
+}
+
+.goog-menu {
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 5px #777;
+}
+.goog-menu * {
+    font-family: "Roboto", sans-serif;
+}
+
+.goog-menuitem-highlight {
+    background-color: lightgray;
+    border-color: lightgray;
+}
+
+.button, .goog-buttonset-default {
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 6px 24px;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+.button:active, .goog-buttonset-default:active {
+    position: relative;
+    top: 1px;
+}
+.button.red {
+    background-color: #d0451b;
+    color: #ffffff;
+    text-shadow: 0px 1px 0px #854629;
+    border: 1px solid #942911;
+}
+.button.red:hover {
+    background-color: #bc3315;
+    border: 1px solid #942911 !important;
+    box-shadow: 0px 0px 5px -1px black;
+}
+.button.blue, .goog-buttonset-default {
+    background-color: #1122FF;
+    color: #ffffff;
+    text-shadow: 0px 1px 0px #854629;
+    border: 1px solid black;
+}
+.button.blue:hover, .goog-buttonset-default:hover {
+    background-color: blue;
+    border: 1px solid black !important;
+    box-shadow: 0px 0px 5px -1px black;
+}
+
+.modal-dialog {
+    outline: none;
+    z-index: 3;
+    border: none;
+    background: white;
+    min-width: 300px;
+    box-shadow: 1px 1px 10px -1px black;
+    border-radius: 2px;
+}
+.modal-dialog-bg {
+    z-index: 2;
+    background: black;
+}
+.modal-dialog-title {
+    background: initial;
+    font-size: 14pt;
+}
+
+.popup {
+    position:absolute;
+    outline: none;
+    z-index: 3;
+    border: none;
+    background: white;
+    box-shadow: 1px 1px 10px -1px black;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.checkbox {
+    padding: 5px;
+    font-size: 10pt;
+    cursor: pointer;
+}
+.checkbox:hover {
+    background-color: whitesmoke;
+}
+.checkbox > .goog-checkbox {
+    margin-bottom: 2px;
+}
+
+.input {
+    font-family: "Roboto";
+    font-size: 10pt;
+    box-shadow: 0px 1px 1px #ddd inset;
+    padding: 5px;
+    outline: medium none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #F9F9F9;
+    width: 100%;
+    margin: 3px;
+}
+.input:focus {
+    border-color: black;
+}
+
+

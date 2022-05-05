@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+}
+table, th, td {
+    border-collapse: collapse;
+    border: 1px solid lightgray;
+    padding: 5px;
+    word-wrap: break-word;
+}
+tr:hover {
+    background-color: #eee;
+}
+table a {
+    font-weight: bold;
+    text-decoration: none;
+}
+table .date,.time {
+    text-align: center;
+    font-size: 8pt;
+}
+table .time {
+    font-style: italic;
+    font-weight: thin;
+}

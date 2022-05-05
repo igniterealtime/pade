@@ -1609,6 +1609,19 @@ function getSelectedChatBox() {
 	return view;
 }
 
+
+function replyInverseChat(text) {
+	var box = getSelectedChatBox();
+
+	console.debug("replyInverseChat", text, box);
+
+	if (box)
+	{
+		var textArea = box.el.querySelector('.chat-textarea');
+		if (textArea) textArea.value = ">" + text + "\n\n";
+	}
+}
+
 function replyChat(model, text) {
 	console.debug("replyChat", model, text);
 	
@@ -1851,6 +1864,7 @@ function closeWebAppsWindow(window) {
 	}
 }
 
+	
 function openWebAppsWindow(url, state, width, height) {
 	if (chrome.windows)
 	{

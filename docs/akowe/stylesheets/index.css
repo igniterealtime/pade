@@ -1,0 +1,49 @@
+@import url(table.css);
+
+#file-uploader > form {
+    display: none;
+}
+.create-document {
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    text-align: center;
+    display: block;
+}
+
+h2, h3 {
+    text-align: center;
+    margin-top: 0;
+}
+.document-list {
+    max-width: 400px;
+    min-height: 50px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 25px;
+}
+
+#templates {
+    float: left;
+}
+
+#documents {
+    float: right;
+}
+
+#documents-only {
+}
+
+#lists-container {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 900px) {
+    #templates, #documents {
+        float: none;
+    }
+}
