@@ -43,27 +43,11 @@ window.addEvent("domready", function () {
         {
 			location.href= "./../index.html";
         });
-		
-        if (settings.manifest.meetingPlanner)
-        {
-            var planner = settings.manifest.meetingPlanner.element;
-            planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='../calendar/index.html'></iframe>";
-        }
 
         if (settings.manifest.cannedResponses)
         {
             var planner = settings.manifest.cannedResponses.element;
             planner.innerHTML = "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:700px;' src='canned/index.html'></iframe>";
-        }
-
-        if (settings.manifest.uploadAvatar)
-        {
-            settings.manifest.uploadAvatar.element.innerHTML = "<input id='uploadAvatar' type='file' name='files[]'>";
-
-            document.getElementById("uploadAvatar").addEventListener('change', function(event)
-            {
-                uploadAvatar(event, settings);
-            });
         }
 
         if (settings.manifest.exportPreferences) settings.manifest.exportPreferences.addEvent("action", function ()
@@ -120,13 +104,13 @@ window.addEvent("domready", function () {
                 }
 
                 var url = "http://" + hostname + "/rdpdirect.html?gateway=" + hostname + "&server=" + getSetting("remoteHost", hostname) + "&domain=" + getSetting("remoteDomain") + "&color=16" + creds;
-                //background.openWebAppsWindow(url, null, screen.availWidth, screen.availHeight);
+                openWebAppsWindow(url, null, screen.availWidth, screen.availHeight);
             }
         });
 
         if (settings.manifest.converseTheme) settings.manifest.converseTheme.addEvent("action", function ()
         {
-            reloadConverse(background);
+            reloadConverse();
         });
 
         if (settings.manifest.publishLocation && settings.manifest.userLocation)
@@ -134,7 +118,6 @@ window.addEvent("domready", function () {
             var setPublish = function()
             {
                 settings.manifest.userLocation.element.innerHTML = getSetting("publishLocation", false) ? "<iframe frameborder='0' style='border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;' src='location/index.html'></iframe>" : "";
-                //background.publishUserLocation();
             }
 
             settings.manifest.publishLocation.addEvent("action", setPublish);
@@ -176,469 +159,6 @@ window.addEvent("domready", function () {
             settings.manifest.useBasicAuth.addEvent("action", setAnonBasicAuth);
         }
 
-        if (settings.manifest.convPdf) settings.manifest.convPdf.addEvent("action", function ()
-        {
-            var keywords = settings.manifest.convSearchString.element.value;
-
-            if (!keywords || keywords.length == 0)
-            {
-                settings.manifest.convSearchResults.element.innerHTML = i18n.get("Enter the keywords delimted by space");
-                return;
-            }
-
-/*
-            background.pdfConversations(keywords, function(blob, error)
-            {
-                if (!error) chrome.downloads.download({url: URL.createObjectURL(blob), filename: "conversations" + Math.random().toString(36).substr(2,9) + ".pdf"}, function(id)
-                {
-                    console.debug("PDF downloaded", id);
-                });
-            });
-*/
-        });
-
-        if (settings.manifest.convSearch) settings.manifest.convSearch.addEvent("action", function ()
-        {
-            var keywords = settings.manifest.convSearchString.element.value;
-
-            if (!keywords || keywords.length == 0)
-            {
-                settings.manifest.convSearchResults.element.innerHTML = i18n.get("Enter the keywords delimted by space");
-                return;
-            }
-/*
-            background.searchConversations(keywords, function(html, conversations)
-            {
-                settings.manifest.convSearchResults.element.innerHTML = html;
-
-                for (var i=0; i<conversations.length; i++)
-                {
-                    try {
-                        document.getElementById("conversation-" + conversations[i].conversationID).addEventListener("click", function(e)
-                        {
-                            e.stopPropagation();
-
-                            if (e.target.title && getSetting("enableInverse"))
-                            {
-                                if (background.pade.chatWindow.id)
-                                {
-                                    chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChatPanel(e.target.title);
-                                }
-                                else {
-                                    background.openChatWindow("inverse/index.html#converse/chat?jid=" + e.target.title);
-                                }
-                            }
-                        }, false);
-
-                    } catch (e) {
-
-                    }
-                }
-            });
-*/			
-        });
-
-        if (settings.manifest.roomsSearch) settings.manifest.roomsSearch.addEvent("action", function ()
-        {
-            var searchString = settings.manifest.roomsSearchString.element.value;
-            var foundRooms = [];
-
-            settings.manifest.roomsSearchResults.element.innerHTML = "please wait....";
-
-            var messageHandler = function(message)
-            {
-                var body = message.querySelector('body');
-                var from = message.querySelector('forwarded').querySelector('message').getAttribute('from');
-
-                var timestamp = undefined;
-                var delay = message.querySelector('forwarded').querySelector('delay');
-                if (delay) timestamp = delay.getAttribute('stamp');
-                var stamp = moment(timestamp).format('MMM DD YYYY HH:mm:ss')
-
-                if (body)
-                {
-                    const nick = from.split("/")[1];
-                    const room = from.split("/")[0];
-                    const msg = body.innerHTML;
-                    const div = document.getElementById("pade-room-conv-" + room);
-
-                    console.debug("roomsSearch message", stamp, nick, room, msg, message, div);
-
-                    if (div)
-                    {
-                        div.innerHTML = div.innerHTML + stamp + " <b>" + nick + "</b> " + msg + "<br/>"
-                    }
-
-                }
-
-                return true;
-
-            }
-/*
-            background.findRooms(function(items)
-            {
-                console.debug("roomsSearch", items);
-
-                if (message_handler) background.pade.connection.deleteHandler(message_handler);
-                message_handler = background.pade.connection.addHandler(messageHandler, 'urn:xmpp:mam:2', 'message');
-
-                var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>Conversation</th></tr>";
-
-                for (var i=0; i<items.length; i++)
-                {
-                    var jid = items[i].getAttribute('jid');
-                    var name = items[i].getAttribute('name');
-
-                    if (!searchString || searchString.length == 0 || jid.indexOf(searchString) > -1 || name.indexOf(searchString) > -1)
-                    {
-                        html = html + "<tr><td><a data-jid='" + jid + "' title='" + name + "' id='pade-room-" + jid + "' href='#'>" + name + "</a></td><td id='pade-room-conv-" + jid + "'></td></tr>";
-
-                        foundRooms.push({jid: jid, name: name});
-                        background.roomHistory(jid);
-                    }
-                }
-                html = html + "</table>"
-                settings.manifest.roomsSearchResults.element.innerHTML = html;
-
-                for (var i=0; i<foundRooms.length; i++)
-                {
-                    document.getElementById("pade-room-" + foundRooms[i].jid).addEventListener("click", function(e)
-                    {
-                        e.stopPropagation();
-                        var room = e.target.getAttribute("data-jid");
-                        var title = e.target.title;
-
-                        console.debug("findRooms - click", room);
-
-                        if (getSetting("enableInverse"))
-                        {
-                            if (background.pade.chatWindow.id)
-                            {
-                                chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(room, title);
-                            }
-                            else {
-                                background.openChatsWindow("inverse/index.html#converse/chat?jid=" + room, title);
-                            }
-                        }
-                    });
-                }
-
-            });
-*/			
-        });
-
-        if (settings.manifest.search) settings.manifest.search.addEvent("action", function ()
-        {
-/*			
-            background.findUsers(settings.manifest.searchString.element.value, function(userList)
-            {
-                console.debug("findUsers", userList);
-
-                var usersObj = {};
-
-                for (var i=0; i < userList.length; i++ )
-                {
-                    usersObj[userList[i].jid] = userList[i];
-                }
-
-                var users = new Array();
-
-                for (var key in usersObj)
-                {
-                    users.push(usersObj[key]);
-                }
-
-                var html = "<table style='margin-left: 15px'><tr><th>Name</th><th>ID</th><th>Email</th><th>Phone</th><th>Invite</th></tr>";
-                var count = 0;
-
-                for (var i=0; i<users.length; i++)
-                {
-                    var user = users[i];
-                    user.room = background.makeRoomName(user.username);
-
-                    if (!user.email) user.email = "";
-                    if (!user.caller_id_number) user.caller_id_number = "";
-
-                    var checked = settings.manifest.invitationList.element.value.indexOf(user.jid) > -1 ? "checked" : "";
-
-                    html = html + "<tr><td><a title='" + user.name + "' name='" + user.room + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td><td><a name='" + user.caller_id_number + "' id='phone-" + user.jid + "' title='Click here to call or transfer call to " + user.caller_id_number + "' href='#'>" + user.caller_id_number + "</a></td><td><input id='check-" + user.jid + "' type='checkbox' " + checked + "></td></tr>";
-                }
-                html = html + "</table>"
-
-                if (users.length == 0) html = "No user found";
-
-                settings.manifest.searchResults.element.innerHTML = "<p/><p/>" + html;
-
-                users.forEach(function(theUser)
-                {
-                    var element = document.getElementById(theUser.jid);
-
-                    var setAvatar = function(imgHref)
-                    {
-                        element.innerHTML = "<img style='width: 22px;' src='" + imgHref + "'>" + element.innerHTML;
-                    }
-
-                    background.getVCard(theUser.jid, function(vCard)
-                    {
-                        console.debug("displayUsers vcard", vCard);
-                        setAvatar(vCard.avatar ? vCard.avatar : background.createAvatar(element.innerHTML));
-
-                    }, function() {
-                        setAvatar(background.createAvatar(element.innerHTML));
-                    });
-
-                    element.addEventListener("click", function(e)
-                    {
-                        e.stopPropagation();
-                        var user = e.target;
-
-                        console.debug("findUsers - click", user.id, user.name, user.title);
-
-                        if (getSetting("enableInverse"))
-                        {
-                            if (background.pade.chatWindow.id)
-                            {
-                                chrome.extension.getViews({windowId: background.pade.chatWindow.id})[0].openChat(user.id, user.title);
-                            }
-                            else {
-                                background.openChatsWindow("inverse/index.html#converse/chat?jid=" + user.id, user.title);
-                            }
-                        }
-                        else {
-                            background.acceptCall(user.title, user.id, user.name);
-                            background.inviteToConference(user.id, user.name);
-                        }
-                    });
-
-                    document.getElementById("check-" + theUser.jid).addEventListener("click", function(e)
-                    {
-                        e.stopPropagation();
-                        var invitation = e.target;
-
-                        console.debug("inviteUser - click", invitation.id, invitation.checked);
-
-                        var inviteList = settings.manifest.invitationList.element.value.split("\n");
-                        var invitee = invitation.id.substring(6);
-
-                        if (invitation.checked)
-                        {
-                            if (inviteList.indexOf(invitee) == -1) inviteList.push(invitee);
-
-                        } else {
-                            var index = inviteList.indexOf(invitee);
-                            if (index > -1) inviteList.splice(index, 1);
-                        }
-
-                        settings.manifest.invitationList.element.value = inviteList.join("\n").trim();
-                    });
-
-                    document.getElementById("phone-" + theUser.jid).addEventListener("click", function(e)
-                    {
-                        e.stopPropagation();
-                        var user = e.target;
-                        var phone = getSetting("exten", null)
-
-                        if (phone && phone != "" && background.pade.chatAPIAvailable)
-                        {
-                            console.debug("findUsers phone - click", user.name);
-
-                            background.makePhoneCall(phone, user.name, function(err)
-                            {
-                                if (err) alert("Telephone call failed!!");
-                            });
-
-                        } else alert("Phone Extension not configured");
-                    });
-                });
-            });
-*/			
-        });
-
-        if (settings.manifest.inviteToMeeting) settings.manifest.inviteToMeeting.addEvent("action", function ()
-        {
-            var inviteList = settings.manifest.invitationList.element.value.split("\n");
-            var room = "pade-" + Math.random().toString(36).substr(2,9);
-            var invite = getSetting("meetingName");
-
-            console.debug("inviteToMeeting", inviteList, room);
-/*
-            background.openVideoWindow(room);
-
-            for (var i=0; i<inviteList.length; i++)
-            {
-                background.inviteToConference(inviteList[i], room, invite);
-            }
-*/			
-        });
-
-        if (settings.manifest.saveMeeting) settings.manifest.saveMeeting.addEvent("action", function ()
-        {
-            var inviteList = settings.manifest.invitationList.element.value.split("\n");
-            var room = "pade-" + Math.random().toString(36).substr(2,9);
-            var invite = getSetting("meetingName");
-
-            if (!invite || invite.length == 0 || inviteList.length == 0 || inviteList[0].length == 0)
-            {
-                alert(i18n.get("Enter a name for the meeting and select participants"))
-                return;
-            }
-
-            var meetings = {};
-            var encoded = window.localStorage["store.settings.savedMeetings"];
-            if (encoded) meetings = JSON.parse(atob(encoded));
-
-            meetings[room] = {room: room, invite: invite, inviteList: inviteList};
-            window.localStorage["store.settings.savedMeetings"] = btoa(JSON.stringify(meetings));
-        });
-
-        if (settings.manifest.inviteMeetings) settings.manifest.inviteMeetings.addEvent("action", function ()
-        {
-            var keyword = settings.manifest.inviteMeetingsString.element.value;
-            var meetings = {};
-            var encoded = window.localStorage["store.settings.savedMeetings"];
-            if (encoded) meetings = JSON.parse(atob(encoded));
-
-            var doHTML = function()
-            {
-                var html = "<p/><p/><table style='margin-left: 15px'><tr><th>Meeting</th><th>Room</th><th>Participants</th><th><input id='select-all-rooms' type='checkbox'><a href='#' id='deleteSelected' title='Delete selected Meetings'>Delete</a></th></tr>";
-                var saveMeetings = Object.getOwnPropertyNames(meetings);
-
-                for (var i=0; i<saveMeetings.length; i++)
-                {
-                    var meeting = meetings[saveMeetings[i]];
-                    var participants = "";
-
-                    for (var j=0; j<meeting.inviteList.length; j++)
-                    {
-                        participants = participants + meeting.inviteList[j] + "<br/>"
-                    }
-
-                    var newItem = "<tr><td><a href='#' title='Invite and join this Meeting' id='invite-" + meeting.room + "'>" + meeting.invite + "</a></td><td><a href='#' id='join-" + meeting.room + "' title='Join this meeting'>" + meeting.room + "</a></td><td>" + participants + "</td><td><input id='select-" + meeting.room + "' type='checkbox'/></td></tr>";
-
-                    if (keyword.length == 0 || newItem.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
-                    {
-                        html = html + newItem;
-                    }
-                }
-
-                settings.manifest.inviteMeetingsResults.element.innerHTML = html;
-            }
-
-            doHTML();
-
-            document.getElementById("select-all-rooms").addEventListener("click", function(e)
-            {
-                e.stopPropagation();
-
-                var saveMeetings = Object.getOwnPropertyNames(meetings);
-
-                for (var i=0; i<saveMeetings.length; i++)
-                {
-                    var meeting = document.getElementById("select-" + saveMeetings[i]);
-                    meeting.checked = !meeting.checked;
-                }
-
-            }, false);
-
-            document.getElementById("deleteSelected").addEventListener("click", function(e)
-            {
-                e.stopPropagation();
-
-                var didSomething = false;
-                var saveMeetings = Object.getOwnPropertyNames(meetings);
-
-                for (var i=0; i<saveMeetings.length; i++)
-                {
-                    var meeting = document.getElementById("select-" + saveMeetings[i]);
-
-                    if (meeting.checked)
-                    {
-                        delete meetings[saveMeetings[i]];
-                        didSomething = true;
-                    }
-                }
-
-                if (didSomething)
-                {
-                    window.localStorage["store.settings.savedMeetings"] = btoa(JSON.stringify(meetings));
-                    doHTML();
-                }
-
-            }, false);
-
-            var saveMeetings = Object.getOwnPropertyNames(meetings);
-
-            for (var i=0; i<saveMeetings.length; i++)
-            {
-                var savedMeeting = document.getElementById("invite-" + saveMeetings[i]);
-
-                if (savedMeeting)
-                {
-                    savedMeeting.addEventListener("click", function(e)
-                    {
-                        e.stopPropagation();
-                        var meeting = meetings[e.target.id.substring(7)];
-
-                        for (var j=0; j<meeting.inviteList.length; j++)
-                        {
-                            // make sure we have a jid entry and not blank line
-
-                            if (meeting.inviteList[j] && meeting.inviteList[j].indexOf("@") > -1)
-                            {
-                                //background.inviteToConference(meeting.inviteList[j], meeting.room, meeting.invite);
-                            }
-                        }
-
-                        //background.openVideoWindow(meeting.room);
-
-                    }, false);
-
-                    document.getElementById("join-" + saveMeetings[i]).addEventListener("click", function(e)
-                    {
-                        e.stopPropagation();
-                        //background.openVideoWindow(e.target.id.substring(5));
-
-                    }, false);
-                }
-            }
-        });
-
-        if (settings.manifest.popupWindow) settings.manifest.popupWindow.addEvent("action", function ()
-        {
-            if (getSetting("popupWindow"))
-            {
-                //chrome.action.setPopup({popup: ""});
-
-            } else {
-                //chrome.action.setPopup({popup: "popup.html"});
-            }
-        });
-
-        if (settings.manifest.enableCommunity) settings.manifest.enableCommunity.addEvent("action", function ()
-        {
-            if (getSetting("enableCommunity"))
-            {
-                //background.addCommunityMenu();
-
-            } else {
-               //background.removeCommunityMenu();
-            }
-        });
-
-        if (settings.manifest.enableInverse) settings.manifest.enableInverse.addEvent("action", function ()
-        {
-            if (getSetting("enableInverse"))
-            {
-                //background.addInverseMenu();
-
-            } else {
-               //background.removeInverseMenu();
-            }
-
-            localStorage.removeItem("store.settings.chatWindow");
-            //background.reloadApp();
-        });
-
         if (settings.manifest.enableCannedResponses)
         {
             settings.manifest.enableCannedResponses.addEvent("action", function ()
@@ -650,73 +170,6 @@ window.addEvent("domready", function () {
             settings.manifest.cannedResponses.element.style = getSetting("enableCannedResponses") ? "display:initial;" : "display: none;";
         }
 
-        if (settings.manifest.enableMeetingPlanner)
-        {
-            settings.manifest.enableMeetingPlanner.addEvent("action", function ()
-            {
-                settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
-            });
-
-            // default
-            settings.manifest.meetingPlanner.element.style = getSetting("enableMeetingPlanner") ? "display:initial;" : "display: none;";
-        }
-
-        if (settings.manifest.useSmartIdCard && chrome.tabs)
-        {
-            settings.manifest.useSmartIdCard.addEvent("action", function ()
-            {
-                if (!getSetting("useSmartIdCard", false)) setSetting("password", "");
-                location.reload()
-            });
-
-            if (getSetting("useSmartIdCard", false) && !getSetting("password", null)) startSmartIdLogin(function(url)
-            {
-                console.debug("Smart-ID URL", url);
-
-                fetch(url, {method: "GET"}).then(function(response){ return response.json()}).then(function(json)
-                {
-                    console.debug("Smart-ID DATA", json);
-
-                    var fullName = null;
-                    var email = null;
-
-                    if (json.firstname && json.lastname)
-                    {
-                        fullName = json.firstname + " " + json.lastname;
-                    }
-
-                    if (json.email) email = json.email;
-
-                    setSetting("username", json.idcode);
-                    setSetting("password", json.password);
-
-                    if (fullName) setSetting("displayname", fullName);
-                    if (email) setSetting("email", email);
-
-                    //background.reloadApp();
-
-                }).catch(function (err) {
-                    console.error("Smart-ID DATA", err);
-                    settings.manifest.status.element.innerHTML = '<b style="color:red">Smart-ID Error ' + err + '</b>';
-                });
-            });
-        }
-
-        if (settings.manifest.autoReconnect) settings.manifest.autoReconnect.addEvent("action", function ()
-        {
-            if (getSetting("autoReconnect", true))
-            {
-                //background.pade.connection.connectionmanager.enable();
-            }
-            else {
-                //background.pade.connection.connectionmanager.disable();
-            }
-        });
-
-        if (settings.manifest.ofmeetUrl) settings.manifest.ofmeetUrl.addEvent("action", function ()
-        {
-            //background.pade.ofmeetUrl = getSetting("ofmeetUrl");
-        });
 
         if (settings.manifest.enableFriendships) settings.manifest.enableFriendships.addEvent("action", function ()
         {
@@ -732,10 +185,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableOffice365Business"))
             {
-                //background.addOffice365Business();
+                addOffice365Business();
 
             } else {
-               //background.removeOffice365Business();
+               removeOffice365Business();
             }
         });
 
@@ -743,10 +196,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableOffice365Personal"))
             {
-                //background.addOffice365Personal();
+                addOffice365Personal();
 
             } else {
-               //background.removeOffice365Personal();
+               removeOffice365Personal();
             }
         });
 
@@ -754,10 +207,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableWebApps"))
             {
-                //background.addWebApps();
+                addWebApps();
 
             } else {
-               //background.removeWebApps();
+               removeWebApps();
             }
         });
 
@@ -784,23 +237,23 @@ window.addEvent("domready", function () {
 
         if (settings.manifest.useTotp) settings.manifest.useTotp.addEvent("action", function ()
         {
-            //background.reloadApp();
+            location.reload();
         });
 
         if (settings.manifest.useWinSSO) settings.manifest.useWinSSO.addEvent("action", function ()
         {
             setDefaultSetting("password", "__DEFAULT__WINSSO__")
-            //background.reloadApp();
+            location.reload();
         });
 
         if (settings.manifest.enableRemoteControl) settings.manifest.enableRemoteControl.addEvent("action", function ()
         {
-            //background.reloadApp();
+            location.reload()
         });
 
         if (settings.manifest.enableHomePage) settings.manifest.enableHomePage.addEvent("action", function ()
         {
-            reloadConverse(background);
+            reloadConverse();
         });
 
         if (settings.manifest.factoryReset) settings.manifest.factoryReset.addEvent("action", function ()
@@ -817,20 +270,14 @@ window.addEvent("domready", function () {
             }
         });
 
-        if (settings.manifest.useClientCert) settings.manifest.useClientCert.addEvent("action", function ()
-        {
-            setDefaultPassword(settings);
-            //background.reloadApp();
-        });
-
         if (settings.manifest.enableBlog) settings.manifest.enableBlog.addEvent("action", function ()
         {
             if (getSetting("enableBlog"))
             {
-                //background.addBlogMenu();
+                addBlogMenu();
 
             } else {
-               //background.removeBlogMenu();
+               removeBlogMenu();
             }
         });
 
@@ -838,10 +285,10 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableBlast"))
             {
-                //background.addBlastMenu();
+                addBlastMenu();
 
             } else {
-               //background.removeBlastMenu();
+              removeBlastMenu();
             }
         });
 
@@ -849,33 +296,12 @@ window.addEvent("domready", function () {
         {
             if (getSetting("enableDrawIO"))
             {
-                //background.addDrawIOMenu();
+                addDrawIOMenu();
 
             } else {
-               //background.removeDrawIOMenu();
+               removeDrawIOMenu();
             }
         });
-
-
-        if (settings.manifest.qrcode) settings.manifest.qrcode.addEvent("action", function ()
-        {
-            if (window.localStorage["store.settings.server"] && chrome.windows)
-            {
-                var host = JSON.parse(window.localStorage["store.settings.server"]);
-                var url = "https://" + host + "/dashboard/qrcode.jsp";
-
-                chrome.windows.create({url: url, type: "popup"}, function (win)
-                {
-                    chrome.windows.update(win.id, {drawAttention: true, focused: true, width: 400, height: 270});
-                });
-            }
-        });
-
-        if (settings.manifest.updateCollabUrlList) settings.manifest.updateCollabUrlList.addEvent("action", function ()
-        {
-            //background.updateCollabUrlList();
-        });
-
 
         if (settings.manifest.registerUrlProtocols && chrome.extension) settings.manifest.registerUrlProtocols.addEvent("action", function ()
         {
@@ -1071,7 +497,6 @@ function doDefaults(background)
     setDefaultSetting("language", "en");
     setDefaultSetting("friendType", "xmpp");
     setDefaultSetting("enableLipSync", false);
-    setDefaultSetting("enableCommunity", false);
     setDefaultSetting("audioOnly", false);
     setDefaultSetting("enableBlog", false);
     setDefaultSetting("showSharedCursor", true);
@@ -1104,10 +529,10 @@ function doDefaults(background)
 
     setDefaultSetting("enableAdaptiveCardViewer", true);
     setDefaultSetting("conversePersistentStore", 'IndexedDB')
-    //setDefaultSetting("clearCacheOnConnect", true);
+    setDefaultSetting("clearCacheOnConnect", true);
+	setDefaultSetting("enableMucDirectory", true);
     setDefaultSetting("allowNonRosterMessaging", true);
     setDefaultSetting("autoListRooms", true);
-    setDefaultSetting("autoReconnect", true);
     setDefaultSetting("autoReconnectConverse", true);
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
@@ -1189,7 +614,6 @@ function setDefaultServer()
                 if (getSetting("useWinSSO", false))
                 {
                     setDefaultSetting("password", "__DEFAULT__WINSSO__");
-                    //chrome.extension.getBackgroundPage().reloadApp();
                 }
 
                 window.location.reload();
@@ -1254,12 +678,6 @@ function setDefaultPassword(settings)
     if (settings.manifest.password)
     {
         settings.manifest.password.element.disabled = false;
-
-        if (settings.manifest.useClientCert && settings.manifest.useClientCert.element.checked)
-        {
-            settings.manifest.password.element.disabled = true;
-            setDefaultSetting("password", settings.manifest.username.element.value);
-        }
     }
 }
 
@@ -1437,80 +855,10 @@ function importPreferences(event, settings)
     }
 }
 
-function uploadAvatar(event, settings)
+
+function reloadConverse()
 {
-    settings.manifest.uploadAvatarStatus.element.innerHTML = "Please wait...";
-
-    var files = event.target.files;
-    //var background = chrome.extension.getBackgroundPage();
-
-    var domain = JSON.parse(window.localStorage["store.settings.domain"]);
-    var username = JSON.parse(window.localStorage["store.settings.username"]);
-    var jid = username + "@" + domain
-
-    for (var i = 0, file; file = files[i]; i++)
-    {
-        if (file.name.endsWith(".png") || file.name.endsWith(".jpg"))
-        {
-            var reader = new FileReader();
-
-            reader.onload = function(event)
-            {
-                dataUri = event.target.result;
-                console.debug("uploadAvatar", dataUri);
-
-                window.localStorage["store.settings.avatar"] = JSON.stringify(dataUri);
-
-                var sourceImage = new Image();
-
-                sourceImage.onload = function() {
-                    var canvas = document.createElement("canvas");
-                    canvas.width = 32;
-                    canvas.height = 32;
-                    canvas.getContext("2d").drawImage(sourceImage, 0, 0, 32, 32);
-/*
-                    background.getVCard(jid, function(vCard)
-                    {
-                        console.debug("uploadAvatar - get vcard", vCard);
-                        vCard.avatar = canvas.toDataURL();
-
-                        background.setVCard(vCard, function(resp)
-                        {
-                            console.debug("uploadAvatar - set vcard", resp);
-                            setTimeout(function() {location.reload();}, 500);
-
-                        }, avatarError);
-
-                    }, avatarError);
-*/					
-                }
-
-                sourceImage.src = dataUri;
-            };
-
-            reader.onerror = function(event) {
-                console.error("uploadAvatar - error", event);
-                settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">File could not be read! Code ' + event.target.error.code;
-            };
-
-            reader.readAsDataURL(file);
-
-        } else {
-            settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">image file must be a png or jpg file</b>';
-        }
-    }
-}
-
-function reloadConverse(background)
-{
-    console.log("reloadConverse", background);
-	location.reload()
-}
-
-function avatarError(error)
-{
-    console.error("uploadAvatar - error", error);
-    settings.manifest.uploadAvatarStatus.element.innerHTML = '<b style="color:red">picture/avatar cannot be uploaded and saved</b>';
+	location.href = "/index.html";
 }
 
 function startSmartIdLogin(callback)
@@ -1552,3 +900,4 @@ function startSmartIdLogin(callback)
         });
     }
 }
+

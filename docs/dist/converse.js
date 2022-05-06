@@ -18063,7 +18063,7 @@ strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('VCARD
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('XFORM', 'jabber:x:data');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v9.1.0";
+_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v9.1.1";
 Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_13__.Events); // Make converse pluggable
 
 pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__["default"].enable(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], '_converse', 'pluggable');

@@ -37,13 +37,6 @@ this.manifest = {
         },		
         {
             "tab": i18n.get("Connection"),
-            "group": i18n.get("Connection"),
-            "name": "autoReconnect",
-            "type": "checkbox",
-            "label": i18n.get("Auto reconnect background connection")
-        },
-        {
-            "tab": i18n.get("Connection"),
             "group": i18n.get("Login"),
             "name": "displayname",
             "type": "text",
@@ -97,90 +90,6 @@ this.manifest = {
             "type": "text",
             "label": i18n.get("WebSocket"),
             "text": "wss://example.com:7443/ws/"
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "restartDesc",
-            "type": "description",
-            "text": i18n.get("<b>These settings can restart application</b>")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useWebAuthn",
-            "type": "checkbox",
-            "label": i18n.get("Use Web Authentication <b>(requires openfire pade plugin)</b>")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useBasicAuth",
-            "type": "checkbox",
-            "label": i18n.get("Use Basic Authentication <b>(requires openfire pade plugin)</b>")
-        },		
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useAnonymous",
-            "type": "checkbox",
-            "label": i18n.get("Use an Anonymous identity")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useWinSSO",
-            "type": "checkbox",
-            "label": i18n.get("Use Windows Single Sign On <b>(requires openfire pade plugin)</b>")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useGitea",
-            "type": "checkbox",
-            "label": i18n.get("Use Gitea authentication <b>(requires openfire gitea plugin)</b>")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useSmartIdCard",
-            "type": "checkbox",
-            "label": i18n.get("Use E-Residency Smart ID")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useSmartIdCardCert",
-            "type": "checkbox",
-            "label": i18n.get("Use E-Residency Smart ID Client Certificate <b>(requires openfire pade plugin)</b>")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useTotp",
-            "type": "checkbox",
-            "label": i18n.get("Time based One-Time Password - Use OfChat and FreeOTP or Google Authernticator App")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "qrcode",
-            "type": "button",
-            "text": i18n.get("QR Code")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "useClientCert",
-            "type": "checkbox",
-            "label": i18n.get("Use Client Certificate with no password.")
-        },
-        {
-            "tab": i18n.get("Connection"),
-            "group": i18n.get("Authentication"),
-            "name": "certificate",
-            "type": "button",
-            "text": i18n.get("Download")
         },
         {
             "tab": i18n.get("Connection"),
@@ -360,34 +269,6 @@ this.manifest = {
         },
         {
             "tab": i18n.get("General"),
-            "group": i18n.get("Avatar/Picture"),
-            "name": "uploadAvatarLabel",
-            "type": "description",
-            "text": i18n.get("Upload a local PNG/JPEG file as user image")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Avatar/Picture"),
-            "name": "uploadAvatar",
-            "type": "description",
-            "text": ""
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Avatar/Picture"),
-            "name": "updateAvatar",
-            "type": "checkbox",
-            "label": i18n.get("Update vCard with browser generated avatar")
-        },
-        {
-            "tab": i18n.get("General"),
-            "group": i18n.get("Avatar/Picture"),
-            "name": "uploadAvatarStatus",
-            "type": "description",
-            "text": ""
-        },
-        {
-            "tab": i18n.get("General"),
             "group": i18n.get("Preferences"),
             "name": "saveWinPositions",
             "type": "checkbox",
@@ -525,73 +406,6 @@ this.manifest = {
             "name": "registerUrlProtocols",
             "type": "button",
             "text": i18n.get("Register URL Protocols")
-        },
-        {                                   // ofmeet config
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Invites"),
-            "name": "inviteMeetingsString",
-            "type": "text",
-            "label": i18n.get(""),
-            "text": i18n.get("Enter the partial name of meeting or blank for all"),
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Invites"),
-            "name": "inviteMeetings",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Find")
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Invites"),
-            "name": "inviteMeetingsResults",
-            "text": i18n.get(""),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Planner"),
-            "name": "enableMeetingPlanner",
-            "type": "checkbox",
-            "label": i18n.get("Enable Meeting Planner")
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Planner"),
-            "name": "meetingPlanner",
-            "text": i18n.get(""),
-            "type": "description"
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Planner Settings"),
-            "name": "plannerNotice",
-            "type": "slider",
-            "label": i18n.get("Meeting Planner notice period (mins)"),
-            "max": 30,
-            "min": 0,
-            "step": 5
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Planner Settings"),
-            "name": "plannerExpire",
-            "type": "slider",
-            "label": i18n.get("Meeting Planner expiry period (mins)"),
-            "max": 30,
-            "min": 0,
-            "step": 5
-        },
-        {
-            "tab": i18n.get("Meetings"),
-            "group": i18n.get("Planner Settings"),
-            "name": "plannerCheck",
-            "type": "slider",
-            "label": i18n.get("Meeting Planner check interval (mins)"),
-            "max": 30,
-            "min": 5,
-            "step": 5
         },
         {
             "tab": i18n.get("Meetings"),
@@ -1485,14 +1299,6 @@ this.manifest = {
         {
             "tab": i18n.get("Applications"),
             "group": i18n.get("Collaboration"),
-            "name": "updateCollabUrlList",
-            "type": "button",
-            "label": i18n.get(""),
-            "text": i18n.get("Update")
-        },
-        {
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Collaboration"),
             "name": "collabUrlList",
             "type": "textarea",
             "label": i18n.get(""),
@@ -1539,13 +1345,6 @@ this.manifest = {
             "name": "audioOnly",
             "type": "checkbox",
             "label": i18n.get("Audioconference Only (no video)")
-        },
-        {                                      // community web app
-            "tab": i18n.get("Applications"),
-            "group": i18n.get("Community"),
-            "name": "enableCommunity",
-            "type": "checkbox",
-            "label": i18n.get("Enable Community")
         },
         {
             "tab": i18n.get("Applications"),
@@ -2074,121 +1873,6 @@ if (getSetting("enableFriendships", false))
         "label": i18n.get(""),
         "text": i18n.get("Create Friendship")
     });
-}
-
-if (getSetting("enableDirectorySearch", true))
-{
-    this.manifest.settings.push(
-    {
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Rooms Directory"),
-        "name": "roomsSearchString",
-        "type": "text",
-        "label": i18n.get(""),
-        "text": i18n.get("Enter the search text"),
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Rooms Directory"),
-        "name": "roomsSearch",
-        "type": "button",
-        "label": i18n.get(""),
-        "text": i18n.get("search")
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Rooms Directory"),
-        "name": "roomsSearchResults",
-        "text": i18n.get(""),
-        "type": "description"
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("User Directory"),
-        "name": "searchString",
-        "type": "text",
-        "label": i18n.get(""),
-        "text": i18n.get("Enter the partial name or email address"),
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("User Directory"),
-        "name": "search",
-        "type": "button",
-        "label": i18n.get(""),
-        "text": i18n.get("search")
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("User Directory"),
-        "name": "searchResults",
-        "text": i18n.get(""),
-        "type": "description"
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Invitation List"),
-        "name": "meetingName",
-        "type": "text",
-        "label": i18n.get(""),
-        "text": i18n.get("Enter a name for the meeting"),
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Invitation List"),
-        "name": "invitationList",
-        "type": "textarea",
-        "label": i18n.get(""),
-        "text": i18n.get("Edit the list of meeting invitees"),
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Invitation List"),
-        "name": "inviteToMeeting",
-        "type": "button",
-        "label": i18n.get(""),
-        "text": i18n.get("Meet Now")
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Invitation List"),
-        "name": "saveMeeting",
-        "type": "button",
-        "label": i18n.get(""),
-        "text": i18n.get("Save for Later")
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Conversations"),
-        "name": "convSearchString",
-        "type": "text",
-        "label": i18n.get(""),
-        "text": i18n.get("Enter the keywords delimted by space"),
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Conversations"),
-        "name": "convSearch",
-        "type": "button",
-        "label": i18n.get(""),
-        "text": i18n.get("search")
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Conversations"),
-        "name": "convPdf",
-        "type": "button",
-        "label": i18n.get(""),
-        "text": i18n.get("Download PDF File")
-    });
-    this.manifest.settings.push({
-        "tab": i18n.get("Search"),
-        "group": i18n.get("Conversations"),
-        "name": "convSearchResults",
-        "text": i18n.get(""),
-        "type": "description"
-    });
-
 }
 // TouchPad
 

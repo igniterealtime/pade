@@ -1,8 +1,8 @@
 let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect;
-const nickColors = {}, pade = {webAppsWindow: {}};
+const nickColors = {}
 const whitelistedPlugins = [];
 
-var paderoot = {
+var pade = {
 	participants: {},
 	presence: {},
 	tasks: {},
@@ -673,8 +673,8 @@ function startConverse(credential) {
 		auto_register_muc_nickname: getSetting("autoRegisterMucNick", false),
 		auto_xa:  autoXa,
 		bosh_service_url: boshServiceUrl,
-		clear_cache_on_logout: getSetting("clearCacheOnConnect", false),
-		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", false),
+		clear_cache_on_logout: getSetting("clearCacheOnConnect", true),
+		clear_messages_on_reconnection: getSetting("clearCacheOnConnect", true),
 		connection_options: { 'worker': getSetting("useWebworker", false) ? "./pade-connection-worker.js" : undefined },
 		default_domain: domain,
 		default_state: getSetting("converseOpenState", "online"),		
@@ -1340,7 +1340,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage) {
 
 		const item = document.getElementById('pade-active-conv-ohun-' + id);
 
-		if (item && paderoot.ohun[jid] && paderoot.ohun[jid].peer)
+		if (item && pade.ohun[jid] && pade.ohun[jid].peer)
 		{
 			item.style.color =  "red";
 			item.style.visibility = "visible";
@@ -1957,4 +1957,29 @@ function getVideoWindowUrl(room, mode) {
 
 
     return url + '/' + room + params;
+}
+
+function dndCheckClick(info)
+{
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#ff0000' });
+
+    if (!info.wasChecked && info.checked)
+    {
+        pade.busy = true;
+        _converse.xmppstatusview.model.set("status", "dnd");
+
+        chrome.browserAction.setBadgeText({ text: "DND" });
+        chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Do not Disturb"});
+    }
+    else
+
+    if (info.wasChecked && !info.checked)
+    {
+        pade.busy = false;
+        _converse.xmppstatusview.model.set("status", "online");
+
+        chrome.browserAction.setBadgeText({ text: "" });
+        chrome.browserAction.setTitle({title: chrome.i18n.getMessage('manifest_shortExtensionName') + " - Connected"});
+    }
+
 }
