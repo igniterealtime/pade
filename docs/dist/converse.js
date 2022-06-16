@@ -18788,20 +18788,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _plugins_bookmarks_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./plugins/bookmarks/index.js */ "./src/headless/plugins/bookmarks/index.js");
 /* harmony import */ var _plugins_bosh_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./plugins/bosh.js */ "./src/headless/plugins/bosh.js");
 /* harmony import */ var _plugins_caps_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/caps/index.js */ "./src/headless/plugins/caps/index.js");
-/* harmony import */ var _plugins_carbons_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/carbons.js */ "./src/headless/plugins/carbons.js");
-/* harmony import */ var _plugins_chat_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plugins/chat/index.js */ "./src/headless/plugins/chat/index.js");
-/* harmony import */ var _plugins_chatboxes_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plugins/chatboxes/index.js */ "./src/headless/plugins/chatboxes/index.js");
-/* harmony import */ var _plugins_disco_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./plugins/disco/index.js */ "./src/headless/plugins/disco/index.js");
-/* harmony import */ var _plugins_headlines_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./plugins/headlines.js */ "./src/headless/plugins/headlines.js");
-/* harmony import */ var _plugins_mam_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugins/mam/index.js */ "./src/headless/plugins/mam/index.js");
-/* harmony import */ var _plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./plugins/muc/index.js */ "./src/headless/plugins/muc/index.js");
-/* harmony import */ var _plugins_ping_index_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./plugins/ping/index.js */ "./src/headless/plugins/ping/index.js");
-/* harmony import */ var _plugins_pubsub_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./plugins/pubsub.js */ "./src/headless/plugins/pubsub.js");
-/* harmony import */ var _plugins_roster_index_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./plugins/roster/index.js */ "./src/headless/plugins/roster/index.js");
-/* harmony import */ var _plugins_smacks_index_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./plugins/smacks/index.js */ "./src/headless/plugins/smacks/index.js");
-/* harmony import */ var _plugins_status_index_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./plugins/status/index.js */ "./src/headless/plugins/status/index.js");
-/* harmony import */ var _plugins_vcard_index_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./plugins/vcard/index.js */ "./src/headless/plugins/vcard/index.js");
-/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./core.js */ "./src/headless/core.js");
+/* harmony import */ var _plugins_chat_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/chat/index.js */ "./src/headless/plugins/chat/index.js");
+/* harmony import */ var _plugins_chatboxes_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plugins/chatboxes/index.js */ "./src/headless/plugins/chatboxes/index.js");
+/* harmony import */ var _plugins_disco_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plugins/disco/index.js */ "./src/headless/plugins/disco/index.js");
+/* harmony import */ var _plugins_headlines_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./plugins/headlines/index.js */ "./src/headless/plugins/headlines/index.js");
+/* harmony import */ var _plugins_mam_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./plugins/mam/index.js */ "./src/headless/plugins/mam/index.js");
+/* harmony import */ var _plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugins/muc/index.js */ "./src/headless/plugins/muc/index.js");
+/* harmony import */ var _plugins_ping_index_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./plugins/ping/index.js */ "./src/headless/plugins/ping/index.js");
+/* harmony import */ var _plugins_pubsub_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./plugins/pubsub.js */ "./src/headless/plugins/pubsub.js");
+/* harmony import */ var _plugins_roster_index_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./plugins/roster/index.js */ "./src/headless/plugins/roster/index.js");
+/* harmony import */ var _plugins_smacks_index_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./plugins/smacks/index.js */ "./src/headless/plugins/smacks/index.js");
+/* harmony import */ var _plugins_status_index_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./plugins/status/index.js */ "./src/headless/plugins/status/index.js");
+/* harmony import */ var _plugins_vcard_index_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./plugins/vcard/index.js */ "./src/headless/plugins/vcard/index.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./core.js */ "./src/headless/core.js");
 /* START: Removable components
  * --------------------
  * Any of the following components may be removed if they're not needed.
@@ -18813,8 +18812,6 @@ __webpack_require__.r(__webpack_exports__);
  // XEP-0206 BOSH
 
  // XEP-0115 Entity Capabilities
-
- // XEP-0280 Message Carbons
 
  // RFC-6121 Instant messaging
 
@@ -18841,7 +18838,7 @@ __webpack_require__.r(__webpack_exports__);
 /* END: Removable components */
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_core_js__WEBPACK_IMPORTED_MODULE_17__.converse);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_core_js__WEBPACK_IMPORTED_MODULE_16__.converse);
 
 /***/ }),
 
@@ -19728,90 +19725,6 @@ function createCapsNode() {
 
 /***/ }),
 
-/***/ "./src/headless/plugins/carbons.js":
-/*!*****************************************!*\
-  !*** ./src/headless/plugins/carbons.js ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
-/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
-/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core.js */ "./src/headless/core.js");
-/**
- * @module converse-carbons
- * @copyright The Converse.js contributors
- * @license Mozilla Public License (MPLv2)
- * @description Implements support for XEP-0280 Message Carbons
- */
-
-
-
-const {
-  u
-} = _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.env;
-/**
- * Ask the XMPP server to enable Message Carbons
- * See [XEP-0280](https://xmpp.org/extensions/xep-0280.html#enabling)
- */
-
-async function enableCarbons(reconnecting) {
-  var _converse$session;
-
-  if (reconnecting && _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.session.get('carbons_enabled')) {
-    if (_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.session.get('smacks_enabled')) {
-      // No need to re-enable carbons when resuming a XEP-0198 stream
-      return;
-    }
-
-    _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.session.set({
-      'carbons_enabled': false
-    });
-  }
-
-  if (!_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get("message_carbons") || (_converse$session = _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.session) !== null && _converse$session !== void 0 && _converse$session.get('carbons_enabled')) {
-    return;
-  }
-
-  const iq = new strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__.Strophe.Builder('iq', {
-    'from': _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.connection.jid,
-    'type': 'set'
-  }).c('enable', {
-    xmlns: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.CARBONS
-  });
-  const result = await _core_js__WEBPACK_IMPORTED_MODULE_2__.api.sendIQ(iq, null, false);
-
-  if (result === null) {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`A timeout occurred while trying to enable carbons`);
-  } else if (u.isErrorStanza(result)) {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn('An error occurred while trying to enable message carbons.');
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(result);
-  } else {
-    _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.session.set({
-      'carbons_enabled': true
-    });
-
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].debug('Message carbons have been enabled.');
-  }
-
-  _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.session.save(); // Gather multiple sets into one save
-
-}
-
-_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-carbons', {
-  initialize() {
-    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.extend({
-      message_carbons: true
-    });
-    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('connected', () => enableCarbons());
-    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('reconnected', () => enableCarbons(true));
-  }
-
-});
-
-/***/ }),
-
 /***/ "./src/headless/plugins/chat/api.js":
 /*!******************************************!*\
   !*** ./src/headless/plugins/chat/api.js ***!
@@ -20016,18 +19929,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 _core_js__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('converse-chat', {
-  /* Optional dependencies are other plugins which might be
-   * overridden or relied upon, and therefore need to be loaded before
-   * this plugin. They are called "optional" because they might not be
-   * available, in which case any overrides applicable to them will be
-   * ignored.
-   *
-   * It's possible however to make optional dependencies non-optional.
-   * If the setting "strict_plugin_dependencies" is set to true,
-   * an error will be raised if the plugin is not found.
-   *
-   * NB: These plugins need to have already been loaded via require.js.
-   */
   dependencies: ['converse-chatboxes', 'converse-disco'],
 
   initialize() {
@@ -20044,7 +19945,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('converse-chat', {
       'filter_by_resource': false,
       'prune_messages_above': undefined,
       'pruning_behavior': 'unscrolled',
-      'send_chat_markers': ["received", "displayed", "acknowledged"],
+      'send_chat_markers': ['received', 'displayed', 'acknowledged'],
       'send_chat_state_notifications': true
     });
     _core_js__WEBPACK_IMPORTED_MODULE_5__._converse.Message = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"].extend(_message_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -20063,6 +19964,8 @@ _core_js__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('converse-chat', {
     _core_js__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('chatBoxesFetched', _utils_js__WEBPACK_IMPORTED_MODULE_6__.autoJoinChats);
     _core_js__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('presencesInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_6__.registerMessageHandlers);
     _core_js__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('clearSession', _utils_js__WEBPACK_IMPORTED_MODULE_6__.onClearSession);
+    _core_js__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('connected', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.enableCarbons)());
+    _core_js__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('reconnected', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.enableCarbons)(true));
   }
 
 });
@@ -21485,7 +21388,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     const is_spoiler = !!this.get('composing_spoiler');
     const origin_id = u.getUniqueId();
     const text = (_attrs = attrs) === null || _attrs === void 0 ? void 0 : _attrs.body;
-    const body = text ? u.httpToGeoUri(u.shortnamesToUnicode(text), _core_js__WEBPACK_IMPORTED_MODULE_4__._converse) : undefined;
+    const body = text ? u.shortnamesToUnicode(text) : undefined;
     attrs = Object.assign({}, attrs, {
       'from': _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid,
       'fullname': _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.get('fullname'),
@@ -22045,6 +21948,7 @@ async function parseMessage(stanza) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "autoJoinChats": () => (/* binding */ autoJoinChats),
+/* harmony export */   "enableCarbons": () => (/* binding */ enableCarbons),
 /* harmony export */   "handleMessageStanza": () => (/* binding */ handleMessageStanza),
 /* harmony export */   "onClearSession": () => (/* binding */ onClearSession),
 /* harmony export */   "openChat": () => (/* binding */ openChat),
@@ -22162,7 +22066,6 @@ function registerMessageHandlers() {
 }
 /**
  * Handler method for all incoming single-user chat "message" stanzas.
- * @private
  * @param { MessageAttributes } attrs - The message attributes
  */
 
@@ -22214,6 +22117,54 @@ async function handleMessageStanza(stanza) {
    */
 
   _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.trigger('message', data);
+}
+/**
+ * Ask the XMPP server to enable Message Carbons
+ * See [XEP-0280](https://xmpp.org/extensions/xep-0280.html#enabling)
+ * @param { Boolean } reconnecting
+ */
+
+async function enableCarbons(reconnecting) {
+  var _converse$session;
+
+  if (reconnecting && _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.session.get('carbons_enabled')) {
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.session.get('smacks_enabled')) {
+      // No need to re-enable carbons when resuming a XEP-0198 stream
+      return;
+    }
+
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.session.set({
+      'carbons_enabled': false
+    });
+  }
+
+  if ((_converse$session = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.session) !== null && _converse$session !== void 0 && _converse$session.get('carbons_enabled')) {
+    return;
+  }
+
+  const iq = new Strophe.Builder('iq', {
+    'from': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.jid,
+    'type': 'set'
+  }).c('enable', {
+    xmlns: Strophe.NS.CARBONS
+  });
+  const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.sendIQ(iq, null, false);
+
+  if (result === null) {
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn(`A timeout occurred while trying to enable carbons`);
+  } else if (u.isErrorStanza(result)) {
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn('An error occurred while trying to enable message carbons.');
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(result);
+  } else {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.session.set({
+      'carbons_enabled': true
+    });
+
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].debug('Message carbons have been enabled.');
+  }
+
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.session.save(); // Gather multiple sets into one save
+
 }
 
 /***/ }),
@@ -23360,16 +23311,13 @@ function addClientFeatures() {
   _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.disco.own.features.add(Strophe.NS.DISCO_INFO);
   _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.disco.own.features.add(Strophe.NS.ROSTERX); // Limited support
 
-  if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("message_carbons")) {
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.disco.own.features.add(Strophe.NS.CARBONS);
-  }
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.disco.own.features.add(Strophe.NS.CARBONS);
   /**
    * Triggered in converse-disco once the core disco features of
    * Converse have been added.
    * @event _converse#addClientFeatures
    * @example _converse.api.listen.on('addClientFeatures', () => { ... });
    */
-
 
   _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.trigger('addClientFeatures');
   return this;
@@ -23922,17 +23870,133 @@ Object.assign(u, {
 
 /***/ }),
 
-/***/ "./src/headless/plugins/headlines.js":
-/*!*******************************************!*\
-  !*** ./src/headless/plugins/headlines.js ***!
-  \*******************************************/
+/***/ "./src/headless/plugins/headlines/api.js":
+/*!***********************************************!*\
+  !*** ./src/headless/plugins/headlines/api.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/shared/parsers */ "./src/headless/shared/parsers.js");
-/* harmony import */ var _converse_headless_plugins_chat_parsers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/chat/parsers */ "./src/headless/plugins/chat/parsers.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  /**
+   * The "headlines" namespace, which is used for headline-channels
+   * which are read-only channels containing messages of type
+   * "headline".
+   *
+   * @namespace api.headlines
+   * @memberOf api
+   */
+  headlines: {
+    /**
+     * Retrieves a headline-channel or all headline-channels.
+     *
+     * @method api.headlines.get
+     * @param {String|String[]} jids - e.g. 'buddy@example.com' or ['buddy1@example.com', 'buddy2@example.com']
+     * @param {Object} [attrs] - Attributes to be set on the _converse.ChatBox model.
+     * @param {Boolean} [create=false] - Whether the chat should be created if it's not found.
+     * @returns { Promise<_converse.HeadlinesFeed> }
+     */
+    async get(jids) {
+      let attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      let create = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      async function _get(jid) {
+        let model = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get(jid);
+
+        if (!model && create) {
+          model = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.create(jid, attrs, _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HeadlinesFeed);
+        } else {
+          model = model && model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE ? model : null;
+
+          if (model && Object.keys(attrs).length) {
+            model.save(attrs);
+          }
+        }
+
+        return model;
+      }
+
+      if (jids === undefined) {
+        const chats = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get();
+        return chats.filter(c => c.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE);
+      } else if (typeof jids === 'string') {
+        return _get(jids);
+      }
+
+      return Promise.all(jids.map(jid => _get(jid)));
+    }
+
+  }
+});
+
+/***/ }),
+
+/***/ "./src/headless/plugins/headlines/feed.js":
+/*!************************************************!*\
+  !*** ./src/headless/plugins/headlines/feed.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HeadlinesFeed)
+/* harmony export */ });
+/* harmony import */ var _converse_headless_plugins_chat_model_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/plugins/chat/model.js */ "./src/headless/plugins/chat/model.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
+
+
+class HeadlinesFeed extends _converse_headless_plugins_chat_model_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  defaults() {
+    return {
+      'bookmarked': false,
+      'hidden': ['mobile', 'fullscreen'].includes(_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get("view_mode")),
+      'message_type': 'headline',
+      'num_unread': 0,
+      'time_opened': this.get('time_opened') || new Date().getTime(),
+      'type': _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE
+    };
+  }
+
+  async initialize() {
+    this.set({
+      'box_id': `box-${this.get('jid')}`
+    });
+    this.initUI();
+    this.initMessages();
+    await this.fetchMessages();
+    /**
+     * Triggered once a { @link _converse.HeadlinesFeed } has been created and initialized.
+     * @event _converse#headlinesFeedInitialized
+     * @type { _converse.HeadlinesFeed }
+     * @example _converse.api.listen.on('headlinesFeedInitialized', model => { ... });
+     */
+
+    _core_js__WEBPACK_IMPORTED_MODULE_1__.api.trigger('headlinesFeedInitialized', this);
+  }
+
+}
+
+/***/ }),
+
+/***/ "./src/headless/plugins/headlines/index.js":
+/*!*************************************************!*\
+  !*** ./src/headless/plugins/headlines/index.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _feed_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./feed.js */ "./src/headless/plugins/headlines/feed.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.js */ "./src/headless/plugins/headlines/api.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/headlines/utils.js");
 /**
  * @module converse-headlines
  * @copyright 2022, the Converse.js contributors
@@ -23941,7 +24005,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('converse-headlines', {
+
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-headlines', {
   /* Plugin dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
    * this plugin.
@@ -23966,7 +24031,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
         } = this.__super__;
 
         if (attrs.type == _converse.HEADLINES_TYPE) {
-          return new _converse.HeadlinesBox(attrs, options);
+          return new _converse.HeadlinesFeed(attrs, options);
         } else {
           return this.__super__.model.apply(this, arguments);
         }
@@ -23976,146 +24041,79 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
   },
 
   initialize() {
-    /* The initialize function gets called as soon as the plugin is
-     * loaded by converse.js's plugin machinery.
-     */
-
     /**
      * Shows headline messages
      * @class
-     * @namespace _converse.HeadlinesBox
+     * @namespace _converse.HeadlinesFeed
      * @memberOf _converse
      */
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HeadlinesBox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.ChatBox.extend({
-      defaults() {
-        return {
-          'bookmarked': false,
-          'hidden': ['mobile', 'fullscreen'].includes(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("view_mode")),
-          'message_type': 'headline',
-          'num_unread': 0,
-          'time_opened': this.get('time_opened') || new Date().getTime(),
-          'type': _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE
-        };
-      },
-
-      async initialize() {
-        this.set({
-          'box_id': `box-${this.get('jid')}`
-        });
-        this.initUI();
-        this.initMessages();
-        await this.fetchMessages();
-        /**
-         * Triggered once a {@link _converse.HeadlinesBox} has been created and initialized.
-         * @event _converse#headlinesBoxInitialized
-         * @type { _converse.HeadlinesBox }
-         * @example _converse.api.listen.on('headlinesBoxInitialized', model => { ... });
-         */
-
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.trigger('headlinesBoxInitialized', this);
-      }
-
-    });
-
-    async function onHeadlineMessage(stanza) {
-      // Handler method for all incoming messages of type "headline".
-      if ((0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isHeadline)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isServerMessage)(stanza)) {
-        const from_jid = stanza.getAttribute('from');
-        await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.waitUntil('rosterInitialized');
-
-        if (from_jid.includes('@') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster.get(from_jid) && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("allow_non_roster_messaging")) {
-          return;
-        }
-
-        if (stanza.querySelector('body') === null) {
-          // Avoid creating a chat box if we have nothing to show inside it.
-          return;
-        }
-
-        const chatbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.chatboxes.create({
-          'id': from_jid,
-          'jid': from_jid,
-          'type': _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE,
-          'from': from_jid
-        });
-
-        const attrs = await (0,_converse_headless_plugins_chat_parsers__WEBPACK_IMPORTED_MODULE_2__.parseMessage)(stanza, _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse);
-        await chatbox.createMessage(attrs);
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.trigger('message', {
-          chatbox,
-          stanza,
-          attrs
-        });
-      }
-    }
-    /************************ BEGIN Event Handlers ************************/
-
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HeadlinesFeed = _feed_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 
     function registerHeadlineHandler() {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(message => onHeadlineMessage(message) || true, null, 'message');
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.connection.addHandler(m => (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.onHeadlineMessage)(m) || true, null, 'message');
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.listen.on('connected', registerHeadlineHandler);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.listen.on('reconnected', registerHeadlineHandler);
-    /************************ END Event Handlers ************************/
-
-    /************************ BEGIN API ************************/
-
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api, {
-      /**
-       * The "headlines" namespace, which is used for headline-channels
-       * which are read-only channels containing messages of type
-       * "headline".
-       *
-       * @namespace api.headlines
-       * @memberOf api
-       */
-      headlines: {
-        /**
-         * Retrieves a headline-channel or all headline-channels.
-         *
-         * @method api.headlines.get
-         * @param {String|String[]} jids - e.g. 'buddy@example.com' or ['buddy1@example.com', 'buddy2@example.com']
-         * @param {Object} [attrs] - Attributes to be set on the _converse.ChatBox model.
-         * @param {Boolean} [create=false] - Whether the chat should be created if it's not found.
-         * @returns { Promise<_converse.HeadlinesBox> }
-         */
-        async get(jids) {
-          let attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-          let create = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-          async function _get(jid) {
-            let model = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get(jid);
-
-            if (!model && create) {
-              model = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.create(jid, attrs, _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HeadlinesBox);
-            } else {
-              model = model && model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE ? model : null;
-
-              if (model && Object.keys(attrs).length) {
-                model.save(attrs);
-              }
-            }
-
-            return model;
-          }
-
-          if (jids === undefined) {
-            const chats = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get();
-            return chats.filter(c => c.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE);
-          } else if (typeof jids === 'string') {
-            return _get(jids);
-          }
-
-          return Promise.all(jids.map(jid => _get(jid)));
-        }
-
-      }
-    });
-    /************************ END API ************************/
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('connected', registerHeadlineHandler);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('reconnected', registerHeadlineHandler);
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api, _api_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
   }
 
 });
+
+/***/ }),
+
+/***/ "./src/headless/plugins/headlines/utils.js":
+/*!*************************************************!*\
+  !*** ./src/headless/plugins/headlines/utils.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "onHeadlineMessage": () => (/* binding */ onHeadlineMessage)
+/* harmony export */ });
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/shared/parsers */ "./src/headless/shared/parsers.js");
+/* harmony import */ var _converse_headless_plugins_chat_parsers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/chat/parsers */ "./src/headless/plugins/chat/parsers.js");
+
+
+
+/**
+ * Handler method for all incoming messages of type "headline".
+ * @param { XMLElement } stanza
+ */
+
+async function onHeadlineMessage(stanza) {
+  if ((0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isHeadline)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isServerMessage)(stanza)) {
+    const from_jid = stanza.getAttribute('from');
+    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.waitUntil('rosterInitialized');
+
+    if (from_jid.includes('@') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster.get(from_jid) && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("allow_non_roster_messaging")) {
+      return;
+    }
+
+    if (stanza.querySelector('body') === null) {
+      // Avoid creating a chat box if we have nothing to show inside it.
+      return;
+    }
+
+    const chatbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.chatboxes.create({
+      'id': from_jid,
+      'jid': from_jid,
+      'type': _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADLINES_TYPE,
+      'from': from_jid
+    });
+
+    const attrs = await (0,_converse_headless_plugins_chat_parsers__WEBPACK_IMPORTED_MODULE_2__.parseMessage)(stanza, _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse);
+    await chatbox.createMessage(attrs);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.trigger('message', {
+      chatbox,
+      stanza,
+      attrs
+    });
+  }
+}
 
 /***/ }),
 
@@ -26911,7 +26909,7 @@ const ChatRoomMixin = {
     }
 
     const origin_id = (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_11__.getUniqueId)();
-    const body = text ? _utils_form__WEBPACK_IMPORTED_MODULE_3__["default"].httpToGeoUri(_utils_form__WEBPACK_IMPORTED_MODULE_3__["default"].shortnamesToUnicode(text), _core_js__WEBPACK_IMPORTED_MODULE_6__._converse) : undefined;
+    const body = text ? _utils_form__WEBPACK_IMPORTED_MODULE_3__["default"].shortnamesToUnicode(text) : undefined;
     attrs = Object.assign({}, attrs, {
       body,
       is_spoiler,
@@ -29654,13 +29652,13 @@ async function onDirectMUCInvitation(message) {
     contact = contact ? contact.getDisplayName() : from;
 
     if (!reason) {
-      result = confirm(__('%1$s has invited you to join a groupchat: %2$s', contact, room_jid));
+      result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.confirm(__('%1$s has invited you to join a groupchat: %2$s', contact, room_jid));
     } else {
-      result = confirm(__('%1$s has invited you to join a groupchat: %2$s, and left the following reason: "%3$s"', contact, room_jid, reason));
+      result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.confirm(__('%1$s has invited you to join a groupchat: %2$s, and left the following reason: "%3$s"', contact, room_jid, reason));
     }
   }
 
-  if (result === true) {
+  if (result) {
     const chatroom = await openChatRoom(room_jid, {
       'password': x_el.getAttribute('password')
     });
@@ -30513,7 +30511,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   /**
    * Fetches the roster contacts, first by trying the browser cache,
    * and if that's empty, then by querying the XMPP server.
-   * @private
    * @returns {promise} Promise which resolves once the contacts have been fetched.
    */
   async fetchRosterContacts() {
@@ -30565,7 +30562,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   /**
    * Add a roster contact and then once we have confirmation from
    * the XMPP server we subscribe to that contact's presence updates.
-   * @private
    * @method _converse.RosterContacts#addAndSubscribe
    * @param { String } jid - The Jabber ID of the user being added and subscribed to.
    * @param { String } name - The name of that user
@@ -30583,7 +30579,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
 
   /**
    * Send an IQ stanza to the XMPP server to add a new roster contact.
-   * @private
    * @method _converse.RosterContacts#sendContactAddIQ
    * @param { String } jid - The Jabber ID of the user being added
    * @param { String } name - The name of that user
@@ -30609,7 +30604,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
    * Adds a RosterContact instance to _converse.roster and
    * registers the contact on the XMPP server.
    * Returns a promise which is resolved once the XMPP server has responded.
-   * @private
    * @method _converse.RosterContacts#addContactToRoster
    * @param { String } jid - The Jabber ID of the user being added and subscribed to.
    * @param { String } name - The name of that user
@@ -30671,7 +30665,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   /**
    * Handle roster updates from the XMPP server.
    * See: https://xmpp.org/rfcs/rfc6121.html#roster-syntax-actions-push
-   * @private
    * @method _converse.RosterContacts#onRosterPush
    * @param { XMLElement } IQ - The IQ stanza received from the XMPP server.
    */
@@ -30728,7 +30721,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
 
   /**
    * Fetch the roster from the XMPP server
-   * @private
    * @emits _converse#roster
    * @returns {promise}
    */
@@ -30754,11 +30746,11 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       if (query) {
         const items = sizzle(`item`, query);
 
-        if (!this.data.get('version')) {
+        if (!this.data.get('version') && this.models.length) {
           // We're getting the full roster, so remove all cached
           // contacts that aren't included in it.
           const jids = items.map(item => item.getAttribute('jid'));
-          this.models.forEach(m => !m.get('requesting') && !jids.includes(m.get('jid')) && m.destroy());
+          this.forEach(m => !m.get('requesting') && !jids.includes(m.get('jid')) && m.destroy());
         }
 
         items.forEach(item => this.updateContact(item));
@@ -30786,47 +30778,44 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('roster', iq);
   },
 
-  /* Update or create RosterContact models based on the given `item` XML
+  /**
+   * Update or create RosterContact models based on the given `item` XML
    * node received in the resulting IQ stanza from the server.
-   * @private
    * @param { XMLElement } item
    */
   updateContact(item) {
     const jid = item.getAttribute('jid');
     const contact = this.get(jid);
     const subscription = item.getAttribute("subscription");
+
+    if (subscription === "remove") {
+      return contact === null || contact === void 0 ? void 0 : contact.destroy();
+    }
+
     const ask = item.getAttribute("ask");
+    const nickname = item.getAttribute('name');
     const groups = [...new Set(sizzle('group', item).map(e => e.textContent))];
 
-    if (!contact) {
-      if (subscription === "none" && ask === null || subscription === "remove") {
-        return; // We're lazy when adding contacts.
-      }
-
-      this.create({
-        'ask': ask,
-        'nickname': item.getAttribute("name"),
-        'groups': groups,
-        'jid': jid,
-        'subscription': subscription
-      }, {
-        sort: false
-      });
-    } else {
-      if (subscription === "remove") {
-        return contact.destroy();
-      } // We only find out about requesting contacts via the
+    if (contact) {
+      // We only find out about requesting contacts via the
       // presence handler, so if we receive a contact
       // here, we know they aren't requesting anymore.
-      // see docs/DEVELOPER.rst
-
-
       contact.save({
-        'subscription': subscription,
-        'ask': ask,
-        'nickname': item.getAttribute("name"),
-        'requesting': null,
-        'groups': groups
+        subscription,
+        ask,
+        nickname,
+        groups,
+        'requesting': null
+      });
+    } else {
+      this.create({
+        nickname,
+        ask,
+        groups,
+        jid,
+        subscription
+      }, {
+        sort: false
       });
     }
   },
@@ -30935,13 +30924,9 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     var _presence$querySelect3;
 
     const presence_type = presence.getAttribute('type');
-
-    if (presence_type === 'error') {
-      return true;
-    }
-
-    const jid = presence.getAttribute('from'),
-          bare_jid = Strophe.getBareJidFromJid(jid);
+    if (presence_type === 'error') return true;
+    const jid = presence.getAttribute('from');
+    const bare_jid = Strophe.getBareJidFromJid(jid);
 
     if (this.isSelf(bare_jid)) {
       return this.handleOwnPresence(presence);
@@ -33780,7 +33765,7 @@ CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.St
 // These are just the @converse/headless plugins, for the full converse,
 // the other plugins are whitelisted in src/consts.js
 
-const CORE_PLUGINS = ['converse-adhoc', 'converse-bookmarks', 'converse-bosh', 'converse-caps', 'converse-carbons', 'converse-chat', 'converse-chatboxes', 'converse-disco', 'converse-emoji', 'converse-headlines', 'converse-mam', 'converse-muc', 'converse-ping', 'converse-pubsub', 'converse-roster', 'converse-smacks', 'converse-status', 'converse-vcard'];
+const CORE_PLUGINS = ['converse-adhoc', 'converse-bookmarks', 'converse-bosh', 'converse-caps', 'converse-chat', 'converse-chatboxes', 'converse-disco', 'converse-emoji', 'converse-headlines', 'converse-mam', 'converse-muc', 'converse-ping', 'converse-pubsub', 'converse-roster', 'converse-smacks', 'converse-status', 'converse-vcard'];
 const URL_PARSE_OPTIONS = {
   'start': /(\b|_)(?:([a-z][a-z0-9.+-]*:\/\/)|xmpp:|mailto:|www\.)/gi
 };
@@ -34668,7 +34653,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property { String } [credentials_url] - URL from where login credentials can be fetched
  * @property { Boolean } [discover_connection_methods=true]
  * @property { RegExp } [geouri_regex]
- * @property { RegExp } [geouri_replacement='https - //www.openstreetmap.org/?mlat=$1&mlon=$2#map=18/$1/$2']
+ * @property { RegExp } [geouri_replacement='https://www.openstreetmap.org/?mlat=$1&mlon=$2#map=18/$1/$2']
  * @property { String } [i18n]
  * @property { String } [jid]
  * @property { Boolean } [keepalive=true]
@@ -35450,11 +35435,6 @@ function getUniqueId(suffix) {
     return uuid;
   }
 }
-
-u.httpToGeoUri = function (text) {
-  const replacement = 'geo:$1,$2';
-  return text.replace(_converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_8__.settings_api.get("geouri_regex"), replacement);
-};
 /**
  * Clears the specified timeout and interval.
  * @method u#clearTimers
@@ -35464,7 +35444,6 @@ u.httpToGeoUri = function (text) {
  * @copyright Simen Bekkhus 2016
  * @license MIT
  */
-
 
 function clearTimers(timeout, interval) {
   clearTimeout(timeout);
@@ -36559,9 +36538,6 @@ const {
 const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
 const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
   id: "add-contact-modal",
-  events: {
-    'submit form': 'addContactFromForm'
-  },
 
   initialize() {
     plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
@@ -36569,11 +36545,7 @@ const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["defa
   },
 
   toHTML() {
-    const label_nickname = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url') ? (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Contact name') : (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Optional nickname');
-    return (0,_templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"])(Object.assign(this.model.toJSON(), {
-      _converse: _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse,
-      label_nickname
-    }));
+    return (0,_templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
   },
 
   afterRender() {
@@ -36587,7 +36559,24 @@ const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["defa
     this.el.addEventListener('shown.bs.modal', () => jid_input.focus(), false);
   },
 
+  getGroupsAutoCompleteList() {
+    return ['apple', 'pear', 'banana']; // return [...new Set(_converse.roster.map(i => i.get('gruop')).filter(i => i))];
+  },
+
   initJIDAutoComplete() {
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
+      return;
+    }
+
+    const el = this.el.querySelector('.suggestion-box__jid').parentElement;
+    this.jid_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
+      'data': (text, input) => `${input.slice(0, input.indexOf("@"))}@${text}`,
+      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
+      'list': [...new Set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.map(item => Strophe.getDomainFromJid(item.get('jid'))))]
+    });
+  },
+
+  initGroupAutoComplete() {
     if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
       return;
     }
@@ -36682,8 +36671,12 @@ const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["defa
     return true;
   },
 
-  afterSubmission(form, jid, name) {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.addAndSubscribe(jid, name);
+  afterSubmission(form, jid, name, group) {
+    if (group && !Array.isArray(group)) {
+      group = [group];
+    }
+
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.addAndSubscribe(jid, name, group);
 
     this.model.clear();
     this.modal.hide();
@@ -36691,8 +36684,8 @@ const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["defa
 
   addContactFromForm(ev) {
     ev.preventDefault();
-    const data = new FormData(ev.target),
-          jid = (data.get('jid') || '').trim();
+    const data = new FormData(ev.target);
+    const jid = (data.get('jid') || '').trim();
 
     if (!jid && typeof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url') === 'string') {
       const input_el = this.el.querySelector('input[name="name"]');
@@ -36702,7 +36695,7 @@ const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["defa
     }
 
     if (this.validateSubmission(jid)) {
-      this.afterSubmission(ev.target, jid, data.get('name'));
+      this.afterSubmission(ev.target, jid, data.get('name'), data.get('group'));
     }
   }
 
@@ -36786,18 +36779,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_contact_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('name@example.org');
-
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const i18n_add = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add');
+
+  const i18n_contact_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('name@example.org');
 
   const i18n_error_message = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please enter a valid XMPP address');
 
+  const i18n_group = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Group');
+
   const i18n_new_contact = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add a Contact');
 
-  const i18n_xmpp_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('XMPP Address');
+  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Name');
 
-  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Nickname');
+  const i18n_xmpp_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('XMPP Address');
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <div class="modal-dialog" role="document">
@@ -36806,33 +36801,37 @@ __webpack_require__.r(__webpack_exports__);
                     <h5 class="modal-title" id="addContactModalLabel">${i18n_new_contact}</h5>
                     ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
                 </div>
-                <form class="converse-form add-xmpp-contact">
+                <form class="converse-form add-xmpp-contact" @submit=${ev => el.addContactFromForm(ev)}>
                     <div class="modal-body">
                         <span class="modal-alert"></span>
                         <div class="form-group add-xmpp-contact__jid">
                             <label class="clearfix" for="jid">${i18n_xmpp_address}:</label>
                             <div class="suggestion-box suggestion-box__jid">
-                                <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>
+                                <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>
                                 <input type="text" name="jid" ?required=${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('xhr_user_search_url')}
-                                    value="${o.jid || ''}"
+                                    value="${el.model.get('jid') || ''}"
                                     class="form-control suggestion-box__input"
                                     placeholder="${i18n_contact_placeholder}"/>
                                 <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
                             </div>
                         </div>
+
                         <div class="form-group add-xmpp-contact__name">
                             <label class="clearfix" for="name">${i18n_nickname}:</label>
                             <div class="suggestion-box suggestion-box__name">
                                 <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>
-                                <input type="text" name="name" value="${o.nickname || ''}"
-                                    class="form-control suggestion-box__input"
-                                    placeholder="${i18n_nickname}"/>
+                                <input type="text" name="name" value="${el.model.get('nickname') || ''}"
+                                    class="form-control suggestion-box__input"/>
                                 <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="invalid-feedback">${i18n_error_message}</div>
+
+                        <div class="form-group add-xmpp-contact__group">
+                            <label class="clearfix" for="name">${i18n_group}:</label>
+                            <converse-autocomplete .getAutoCompleteList="${() => el.getGroupsAutoCompleteList()}" name="group"></converse-autocomplete>
                         </div>
+
+                        <div class="form-group"><div class="invalid-feedback">${i18n_error_message}</div></div>
                         <button type="submit" class="btn btn-primary">${i18n_add}</button>
                     </div>
                 </form>
@@ -37197,7 +37196,7 @@ const UserDetailsModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["def
     u.removeClass('fa-spin', refresh_icon);
   },
 
-  removeContact(ev) {
+  async removeContact(ev) {
     var _ev$preventDefault;
 
     ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
@@ -37206,9 +37205,9 @@ const UserDetailsModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["def
       return;
     }
 
-    const result = confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Are you sure you want to remove this contact?"));
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Are you sure you want to remove this contact?"));
 
-    if (result === true) {
+    if (result) {
       // XXX: The `dismissHandler` in bootstrap.native tries to
       // reference the remove button after it's been cleared from
       // the DOM, so we delay removing the contact to give it time.
@@ -37643,14 +37642,16 @@ __webpack_require__.r(__webpack_exports__);
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <div class="list-item controlbox-padded room-item available-chatroom d-flex flex-row ${is_hidden ? 'hidden' : ''}" data-room-jid="${jid}">
             <a class="list-item-link open-room w-100" data-room-jid="${jid}"
-            title="${open_title}"
-            @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.openRoomViaEvent}>${bm.getDisplayName()}</a>
+                title="${open_title}"
+                @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.openRoomViaEvent}>${bm.getDisplayName()}</a>
 
-            <a class="list-item-action remove-bookmark fa fa-bookmark align-self-center ${bm.get('bookmarked') ? 'button-on' : ''}"
-            data-room-jid="${jid}"
-            data-bookmark-name="${bm.getDisplayName()}"
-            title="${info_remove_bookmark}"
-            @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.removeBookmarkViaEvent}></a>
+            <a class="list-item-action remove-bookmark align-self-center ${bm.get('bookmarked') ? 'button-on' : ''}"
+                data-room-jid="${jid}"
+                data-bookmark-name="${bm.getDisplayName()}"
+                title="${info_remove_bookmark}"
+                @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.removeBookmarkViaEvent}>
+            <converse-icon class="fa fa-bookmark" size="1em"></converse-icon>
+            </a>
         </div>
     `;
 });
@@ -37789,12 +37790,13 @@ function getHeadingButtons(view, buttons) {
 
   return buttons;
 }
-function removeBookmarkViaEvent(ev) {
+async function removeBookmarkViaEvent(ev) {
   ev.preventDefault();
   const name = ev.target.getAttribute('data-bookmark-name');
   const jid = ev.target.getAttribute('data-room-jid');
+  const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Are you sure you want to remove the bookmark "%1$s"?', name));
 
-  if (confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Are you sure you want to remove the bookmark "%1$s"?', name))) {
+  if (result) {
     (0,lodash_es_invokeMap__WEBPACK_IMPORTED_MODULE_5__["default"])(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bookmarks.where({
       jid
     }), _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Model.prototype.destroy);
@@ -38305,7 +38307,7 @@ class ChatView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_2__["def
     /**
      * Triggered once the {@link _converse.ChatBoxView} has been initialized
      * @event _converse#chatBoxViewInitialized
-     * @type { _converse.HeadlinesBoxView }
+     * @type { _converse.ChatBoxView }
      * @example _converse.api.listen.on('chatBoxViewInitialized', view => { ... });
      */
 
@@ -39116,9 +39118,9 @@ async function getHeadingStandaloneButton(promise_or_data) {
     `;
 }
 async function clearMessages(chat) {
-  const result = confirm((0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Are you sure you want to clear the messages from this conversation?'));
+  const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Are you sure you want to clear the messages from this conversation?'));
 
-  if (result === true) {
+  if (result) {
     await chat.clearMessages();
   }
 }
@@ -39732,7 +39734,7 @@ function whenNotConnected(o) {
     return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-register-panel></converse-register-panel>`;
   }
 
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-login-form id="converse-login-panel" class="controlbox-pane fade-in row no-gutters"></converse-login-form>}`;
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-login-form id="converse-login-panel" class="controlbox-pane fade-in row no-gutters"></converse-login-form>`;
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
@@ -39743,14 +39745,16 @@ function whenNotConnected(o) {
             <converse-dragresize></converse-dragresize>
             <div class="chat-head controlbox-head">
                 ${sticky_controlbox ? '' : lit__WEBPACK_IMPORTED_MODULE_2__.html`
-                        <a class="chatbox-btn close-chatbox-button fa fa-times" @click=${ev => el.close(ev)}></a>
+                        <a class="chatbox-btn close-chatbox-button" @click=${ev => el.close(ev)}>
+                            <converse-icon class="fa fa-times" size="1em"></converse-icon>
+                        </a>
                     `}
             </div>
             <div class="controlbox-panes">
                 <div class="controlbox-pane">
                     ${o.connected ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
                             <converse-user-profile></converse-user-profile>
-                            <converse-headlines-panel class="controlbox-section"></converse-headlines-panel>
+                            <converse-headlines-feeds-list class="controlbox-section"></converse-headlines-feeds-list>
                             <div id="chatrooms" class="controlbox-section">
                                 <converse-rooms-list></converse-rooms-list>
                                 <converse-bookmarks></converse-bookmarks>
@@ -39796,9 +39800,12 @@ const trust_checkbox = checked => {
         <div class="form-group form-check login-trusted">
             <input id="converse-login-trusted" type="checkbox" class="form-check-input" name="trusted" ?checked=${checked}>
             <label for="converse-login-trusted" class="form-check-label login-trusted__desc">${i18n_trusted}</label>
-            <i class="fa fa-info-circle" data-toggle="popover"
+
+            <converse-icon class="fa fa-info-circle" data-toggle="popover"
                 data-title="Trusted device?"
-                data-content="${i18n_hint_trusted}"></i>
+                data-content="${i18n_hint_trusted}"
+                size="1.2em"
+                title="${i18n_hint_trusted}"></converse-icon>
         </div>
     `;
 };
@@ -40654,6 +40661,60 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
 
 /***/ }),
 
+/***/ "./src/plugins/headlines-view/feed-list.js":
+/*!*************************************************!*\
+  !*** ./src/plugins/headlines-view/feed-list.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HeadlinesFeedsList": () => (/* binding */ HeadlinesFeedsList)
+/* harmony export */ });
+/* harmony import */ var _templates_feeds_list_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/feeds-list.js */ "./src/plugins/headlines-view/templates/feeds-list.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+/**
+ * Custom element which renders a list of headline feeds
+ * @class
+ * @namespace _converse.HeadlinesFeedsList
+ * @memberOf _converse
+ */
+
+class HeadlinesFeedsList extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.CustomElement {
+  initialize() {
+    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.chatboxes;
+    this.listenTo(this.model, 'add', m => this.renderIfHeadline(m));
+    this.listenTo(this.model, 'remove', m => this.renderIfHeadline(m));
+    this.listenTo(this.model, 'destroy', m => this.renderIfHeadline(m));
+    this.requestUpdate();
+  }
+
+  render() {
+    return (0,_templates_feeds_list_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
+  }
+
+  renderIfHeadline(model) {
+    return (model === null || model === void 0 ? void 0 : model.get('type')) === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADLINES_TYPE && this.requestUpdate();
+  }
+
+  async openHeadline(ev) {
+    // eslint-disable-line class-methods-use-this
+    ev.preventDefault();
+    const jid = ev.target.getAttribute('data-headline-jid');
+    const feed = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.headlines.get(jid);
+    feed.maybeShow(true);
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-headlines-feeds-list', HeadlinesFeedsList);
+
+/***/ }),
+
 /***/ "./src/plugins/headlines-view/heading.js":
 /*!***********************************************!*\
   !*** ./src/plugins/headlines-view/heading.js ***!
@@ -40746,7 +40807,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('conver
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chatview_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../chatview/index.js */ "./src/plugins/chatview/index.js");
 /* harmony import */ var _view_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view.js */ "./src/plugins/headlines-view/view.js");
-/* harmony import */ var _panel_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./panel.js */ "./src/plugins/headlines-view/panel.js");
+/* harmony import */ var _feed_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./feed-list.js */ "./src/plugins/headlines-view/feed-list.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _styles_headlines_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/headlines.scss */ "./src/plugins/headlines-view/styles/headlines.scss");
 /**
@@ -40773,82 +40834,12 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('conve
   dependencies: ['converse-headlines', 'converse-chatview'],
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.HeadlinesPanel = _panel_js__WEBPACK_IMPORTED_MODULE_2__.HeadlinesPanel;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.HeadlinesFeedsList = _feed_list_js__WEBPACK_IMPORTED_MODULE_2__.HeadlinesFeedsList; // Deprecated
+
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.HeadlinesPanel = _feed_list_js__WEBPACK_IMPORTED_MODULE_2__.HeadlinesFeedsList;
   }
 
 });
-
-/***/ }),
-
-/***/ "./src/plugins/headlines-view/panel.js":
-/*!*********************************************!*\
-  !*** ./src/plugins/headlines-view/panel.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HeadlinesPanel": () => (/* binding */ HeadlinesPanel)
-/* harmony export */ });
-/* harmony import */ var _templates_panel_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/panel.js */ "./src/plugins/headlines-view/templates/panel.js");
-/* harmony import */ var _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/skeletor/src/element.js */ "./node_modules/@converse/skeletor/src/element.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-/**
- * View which renders headlines section of the control box.
- * @class
- * @namespace _converse.HeadlinesPanel
- * @memberOf _converse
- */
-
-class HeadlinesPanel extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_1__.ElementView {
-  constructor() {
-    super(...arguments);
-
-    _defineProperty(this, "events", {
-      'click .open-headline': 'openHeadline'
-    });
-  }
-
-  initialize() {
-    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes;
-    this.listenTo(this.model, 'add', this.renderIfHeadline);
-    this.listenTo(this.model, 'remove', this.renderIfHeadline);
-    this.listenTo(this.model, 'destroy', this.renderIfHeadline);
-    this.render();
-  }
-
-  toHTML() {
-    return (0,_templates_panel_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
-      'heading_headline': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Announcements'),
-      'headlineboxes': this.model.filter(m => m.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.HEADLINES_TYPE),
-      'open_title': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Click to open this server message')
-    });
-  }
-
-  renderIfHeadline(model) {
-    return model && model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.HEADLINES_TYPE && this.render();
-  }
-
-  openHeadline(ev) {
-    // eslint-disable-line class-methods-use-this
-    ev.preventDefault();
-    const jid = ev.target.getAttribute('data-headline-jid');
-
-    const chat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(jid);
-
-    chat.maybeShow(true);
-  }
-
-}
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-headlines-panel', HeadlinesPanel);
 
 /***/ }),
 
@@ -40889,6 +40880,59 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/plugins/headlines-view/templates/feeds-list.js":
+/*!************************************************************!*\
+  !*** ./src/plugins/headlines-view/templates/feeds-list.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
+
+
+
+const tpls_headlines_feeds_list_item = (el, feed) => {
+  const open_title = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to open this server message');
+
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+        <div class="list-item controlbox-padded d-flex flex-row"
+            data-headline-jid="${feed.get('jid')}">
+        <a class="list-item-link open-headline available-room w-100"
+            data-headline-jid="${feed.get('jid')}"
+            title="${open_title}"
+            @click=${ev => el.openHeadline(ev)}
+            href="#">${feed.get('jid')}</a>
+        </div>
+    `;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const feeds = el.model.filter(m => m.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE);
+
+  const heading_headline = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Announcements');
+
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+        <div class="controlbox-section" id="headline">
+            <div class="d-flex controlbox-padded ${feeds.length ? '' : 'hidden'}">
+                <span class="w-100 controlbox-heading controlbox-heading--headline">${heading_headline}</span>
+            </div>
+        </div>
+        <div class="list-container list-container--headline ${feeds.length ? '' : 'hidden'}">
+            <div class="items-list rooms-list headline-list">
+                ${feeds.map(feed => tpls_headlines_feeds_list_item(el, feed))}
+            </div>
+        </div>`;
+});
+
+/***/ }),
+
 /***/ "./src/plugins/headlines-view/templates/headlines.js":
 /*!***********************************************************!*\
   !*** ./src/plugins/headlines-view/templates/headlines.js ***!
@@ -40922,32 +40966,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/plugins/headlines-view/templates/panel.js":
-/*!*******************************************************!*\
-  !*** ./src/plugins/headlines-view/templates/panel.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var templates_headline_list_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/headline_list.js */ "./src/templates/headline_list.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
-    <div class="controlbox-section" id="headline">
-        <div class="d-flex controlbox-padded ${o.headlineboxes.length ? '' : 'hidden'}">
-            <span class="w-100 controlbox-heading controlbox-heading--headline">${o.heading_headline}</span>
-        </div>
-    </div>
-    ${(0,templates_headline_list_js__WEBPACK_IMPORTED_MODULE_1__["default"])(o)}
-`);
-
-/***/ }),
-
 /***/ "./src/plugins/headlines-view/view.js":
 /*!********************************************!*\
   !*** ./src/plugins/headlines-view/view.js ***!
@@ -40963,7 +40981,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class HeadlinesView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class HeadlinesFeedView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   async initialize() {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.chatboxviews.add(this.jid, this);
 
@@ -40979,9 +40997,9 @@ class HeadlinesView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_0__
     await this.model.messages.fetched;
     this.model.maybeShow();
     /**
-     * Triggered once the {@link _converse.HeadlinesBoxView} has been initialized
+     * Triggered once the { @link _converse.HeadlinesFeedView } has been initialized
      * @event _converse#headlinesBoxViewInitialized
-     * @type { _converse.HeadlinesBoxView }
+     * @type { _converse.HeadlinesFeedView }
      * @example _converse.api.listen.on('headlinesBoxViewInitialized', view => { ... });
      */
 
@@ -41018,7 +41036,7 @@ class HeadlinesView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_0__
 
 }
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-headlines', HeadlinesView);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-headlines', HeadlinesFeedView);
 
 /***/ }),
 
@@ -41556,7 +41574,7 @@ function getBoxesWidth(newchat) {
  * to create space.
  * @private
  * @method _converse.ChatBoxViews#trimChats
- * @param { _converse.ChatBoxView|_converse.ChatRoomView|_converse.ControlBoxView|_converse.HeadlinesBoxView } [newchat]
+ * @param { _converse.ChatBoxView|_converse.ChatRoomView|_converse.ControlBoxView|_converse.HeadlinesFeedView } [newchat]
  */
 
 
@@ -43458,6 +43476,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _styles_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../styles/add-muc-modal.scss */ "./src/plugins/muc-views/styles/add-muc-modal.scss");
+
 
 
 
@@ -43490,7 +43510,6 @@ const {
     }
 
     return (0,_templates_add_muc_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(this.model.toJSON(), {
-      '_converse': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse,
       'label_room_address': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_domain') ? (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat name') : (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat address'),
       'chatroom_placeholder': placeholder,
       'muc_roomid_policy_error_msg': this.muc_roomid_policy_error_msg,
@@ -44896,6 +44915,94 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('conver
 
 /***/ }),
 
+/***/ "./src/plugins/muc-views/search.js":
+/*!*****************************************!*\
+  !*** ./src/plugins/muc-views/search.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getAutoCompleteList": () => (/* binding */ getAutoCompleteList)
+/* harmony export */ });
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+const {
+  Strophe,
+  $iq,
+  sizzle
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
+Strophe.addNamespace('MUCSEARCH', 'https://xmlns.zombofant.net/muclumbus/search/1.0');
+const rooms_cache = {};
+
+async function searchRooms(query) {
+  const iq = $iq({
+    'type': 'get',
+    'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid,
+    'to': 'api@search.jabber.network'
+  }).c('search', {
+    'xmlns': Strophe.NS.MUCSEARCH
+  }).c('set', {
+    'xmlns': Strophe.NS.RSM
+  }).c('max').t(10).up().up().c('x', {
+    'xmlns': Strophe.NS.XFORM,
+    'type': 'submit'
+  }).c('field', {
+    'var': 'FORM_TYPE',
+    'type': 'hidden'
+  }).c('value').t('https://xmlns.zombofant.net/muclumbus/search/1.0#params').up().up().c('field', {
+    'var': 'q',
+    'type': 'text-single'
+  }).c('value').t(query).up().up().c('field', {
+    'var': 'sinname',
+    'type': 'boolean'
+  }).c('value').t('true').up().up().c('field', {
+    'var': 'sindescription',
+    'type': 'boolean'
+  }).c('value').t('false').up().up().c('field', {
+    'var': 'sinaddr',
+    'type': 'boolean'
+  }).c('value').t('true').up().up().c('field', {
+    'var': 'min_users',
+    'type': 'text-single'
+  }).c('value').t('1').up().up().c('field', {
+    'var': 'key',
+    'type': 'list-single'
+  }).c('value').t('address').up().c('option').c('value').t('nusers').up().up().c('option').c('value').t('address');
+  let iq_result;
+
+  try {
+    iq_result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(iq);
+  } catch (e) {
+    _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
+    return [];
+  }
+
+  const s = `result[xmlns="${Strophe.NS.MUCSEARCH}"] item`;
+  return sizzle(s, iq_result).map(i => {
+    var _i$querySelector;
+
+    const jid = i.getAttribute('address');
+    return {
+      'label': `${(_i$querySelector = i.querySelector('name')) === null || _i$querySelector === void 0 ? void 0 : _i$querySelector.textContent} (${jid})`,
+      'value': jid
+    };
+  });
+}
+
+function getAutoCompleteList(query) {
+  if (!rooms_cache[query]) {
+    rooms_cache[query] = searchRooms(query);
+  }
+
+  return rooms_cache[query];
+}
+
+/***/ }),
+
 /***/ "./src/plugins/muc-views/sidebar.js":
 /*!******************************************!*\
   !*** ./src/plugins/muc-views/sidebar.js ***!
@@ -45090,7 +45197,8 @@ __webpack_require__.r(__webpack_exports__);
                     <converse-autocomplete
                         .getAutoCompleteList="${_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAutoCompleteList}"
                         placeholder="${i18n_jid_placeholder}"
-                        name="jid"/>
+                        name="jid">
+                    </converse-autocomplete>
                 </label>
             </fieldset>
             <fieldset class="form-group">
@@ -45128,6 +45236,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
 /* harmony import */ var lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit/directives/unsafe-html.js */ "./node_modules/lit/directives/unsafe-html.js");
+/* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../search.js */ "./src/plugins/muc-views/search.js");
+
 
 
 
@@ -45166,7 +45276,15 @@ const nickname_input = o => {
                         <div class="form-group">
                             <label for="chatroom">${o.label_room_address}:</label>
                             ${o.muc_roomid_policy_error_msg ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<label class="roomid-policy-error">${o.muc_roomid_policy_error_msg}</label>` : ''}
-                            <input type="text" required="required" name="chatroom" class="form-control roomjid-input" placeholder="${o.chatroom_placeholder}"/>
+                            <converse-autocomplete
+                                .getAutoCompleteList=${_search_js__WEBPACK_IMPORTED_MODULE_6__.getAutoCompleteList}
+                                ?autofocus=${true}
+                                min_chars="3"
+                                position="below"
+                                placeholder="${o.chatroom_placeholder}"
+                                class="add-muc-autocomplete"
+                                name="chatroom">
+                            </converse-autocomplete>
                         </div>
                         ${o.muc_roomid_policy_hint ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<div class="form-group">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(o.muc_roomid_policy_hint, {
     'ALLOWED_TAGS': ['b', 'br', 'em']
@@ -45954,7 +46072,12 @@ __webpack_require__.r(__webpack_exports__);
             <div class="chatbox-title--row">
                 ${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.api.settings.get("singleton") ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
                 <div class="chatbox-title__text" title="${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_domain') !== 'hidden' ? o.jid : ''}">${el.model.getDisplayName()}
-                    ${o.bookmarked ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<i class="fa fa-bookmark chatbox-title__text--bookmarked" title="${i18n_bookmarked}"></i>` : ''}
+                ${o.bookmarked ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<converse-icon
+                            class="fa fa-bookmark chatbox-title__text--bookmarked"
+                            size="1em"
+                            color="var(--chatroom-head-color)"
+                            title="${i18n_bookmarked}">
+                        </converse-icon>` : ''}
                 </div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
@@ -47966,8 +48089,9 @@ class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.
 
   async generateOMEMODeviceBundle(ev) {
     ev.preventDefault();
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Are you sure you want to generate new OMEMO keys? ' + 'This will remove your old keys and all previously ' + 'encrypted messages will no longer be decryptable on this device.'));
 
-    if (confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Are you sure you want to generate new OMEMO keys? ' + 'This will remove your old keys and all previously encrypted messages will no longer be decryptable on this device.'))) {
+    if (result) {
       await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.omemo.bundle.generate();
       await this.setAttributes();
       this.requestUpdate();
@@ -48135,7 +48259,7 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
       'pubKey': u.arrayBufferToBase64(spk.keyPair.pubKey),
       // XXX: The InMemorySignalProtocolStore does not pass
       // in or store the signature, but we need it when we
-      // publish out bundle and this method isn't called from
+      // publish our bundle and this method isn't called from
       // within libsignal code, so we modify it to also store
       // the signature.
       'signature': u.arrayBufferToBase64(spk.signature)
@@ -48214,21 +48338,45 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
   },
 
   /**
-   * Generate the data used by the X3DH key agreement protocol
-   * that can be used to build a session with a device.
+   * Generates, stores and then returns pre-keys.
+   *
+   * Pre-keys are one half of a X3DH key exchange and are published as part
+   * of the device bundle.
+   *
+   * For a new contact or device to establish an encrypted session, it needs
+   * to use a pre-key, which it chooses randomly from the list of available
+   * ones.
+   */
+  async generatePreKeys() {
+    const amount = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.NUM_PREKEYS;
+    const {
+      KeyHelper
+    } = libsignal;
+    const keys = await Promise.all((0,lodash_es_range__WEBPACK_IMPORTED_MODULE_7__["default"])(0, amount).map(id => KeyHelper.generatePreKey(id)));
+    keys.forEach(k => this.storePreKey(k.keyId, k.keyPair));
+    return keys.map(k => ({
+      'id': k.keyId,
+      'key': u.arrayBufferToBase64(k.keyPair.pubKey)
+    }));
+  },
+
+  /**
+   * Generate the cryptographic data used by the X3DH key agreement protocol
+   * in order to build a session with other devices.
+   *
+   * By generating a bundle, and publishing it via PubSub, we allow other
+   * clients to download it and start asynchronous encrypted sessions with us,
+   * even if we're offline at that time.
    */
   async generateBundle() {
     // The first thing that needs to happen if a client wants to
     // start using OMEMO is they need to generate an IdentityKey
-    // and a Device ID. The IdentityKey is a Curve25519 [6]
-    // public/private Key pair. The Device ID is a randomly
-    // generated integer between 1 and 2^31 - 1.
+    // and a Device ID.
+    // The IdentityKey is a Curve25519 public/private Key pair.
     const identity_keypair = await libsignal.KeyHelper.generateIdentityKeyPair();
-    const bundle = {};
-    const identity_key = u.arrayBufferToBase64(identity_keypair.pubKey);
+    const identity_key = u.arrayBufferToBase64(identity_keypair.pubKey); // The Device ID is a randomly generated integer between 1 and 2^31 - 1.
+
     const device_id = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.generateDeviceID)();
-    bundle['identity_key'] = identity_key;
-    bundle['device_id'] = device_id;
     this.save({
       'device_id': device_id,
       'identity_keypair': {
@@ -48239,13 +48387,17 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
     });
     const signed_prekey = await libsignal.KeyHelper.generateSignedPreKey(identity_keypair, 0);
     this.storeSignedPreKey(signed_prekey);
+    const prekeys = await this.generatePreKeys();
+    const bundle = {
+      identity_key,
+      device_id,
+      prekeys
+    };
     bundle['signed_prekey'] = {
       'id': signed_prekey.keyId,
       'public_key': u.arrayBufferToBase64(signed_prekey.keyPair.pubKey),
       'signature': u.arrayBufferToBase64(signed_prekey.signature)
     };
-    const keys = await Promise.all((0,lodash_es_range__WEBPACK_IMPORTED_MODULE_7__["default"])(0, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.NUM_PREKEYS).map(id => libsignal.KeyHelper.generatePreKey(id)));
-    keys.forEach(k => this.storePreKey(k.keyId, k.keyPair));
     const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid);
     const device = await devicelist.devices.create({
       'id': bundle.device_id,
@@ -48253,11 +48405,6 @@ const OMEMOStore = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.
     }, {
       'promise': true
     });
-    const marshalled_keys = keys.map(k => ({
-      'id': k.keyId,
-      'key': u.arrayBufferToBase64(k.keyPair.pubKey)
-    }));
-    bundle['prekeys'] = marshalled_keys;
     device.save('bundle', bundle);
   },
 
@@ -48494,20 +48641,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "restoreOMEMOSession": () => (/* binding */ restoreOMEMOSession),
 /* harmony export */   "setEncryptedFileURL": () => (/* binding */ setEncryptedFileURL)
 /* harmony export */ });
+/* harmony import */ var lodash_es_concat__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lodash-es/concat */ "./node_modules/lodash-es/concat.js");
 /* harmony import */ var lodash_es_difference__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! lodash-es/difference */ "./node_modules/lodash-es/difference.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var templates_audio_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/audio.js */ "./src/templates/audio.js");
 /* harmony import */ var templates_file_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! templates/file.js */ "./src/templates/file.js");
 /* harmony import */ var templates_image_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! templates/image.js */ "./src/templates/image.js");
 /* harmony import */ var templates_video_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! templates/video.js */ "./src/templates/video.js");
-/* harmony import */ var utils_file_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! utils/file.js */ "./src/utils/file.js");
-/* harmony import */ var _consts_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./consts.js */ "./src/plugins/omemo/consts.js");
+/* harmony import */ var _consts_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./consts.js */ "./src/plugins/omemo/consts.js");
+/* harmony import */ var utils_file_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! utils/file.js */ "./src/utils/file.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
 /* harmony import */ var _converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/utils/url.js */ "./src/headless/utils/url.js");
-/* harmony import */ var lodash_es_concat__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lodash-es/concat */ "./node_modules/lodash-es/concat.js");
 /* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
 /* harmony import */ var _converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @converse/headless/utils/arraybuffer.js */ "./src/headless/utils/arraybuffer.js");
 /* global libsignal */
@@ -48585,11 +48732,11 @@ async function encryptMessage(plaintext) {
   //
   // https://crypto.stackexchange.com/questions/26783/ciphertext-and-tag-size-and-iv-transmission-with-aes-in-gcm-mode
   const iv = crypto.getRandomValues(new window.Uint8Array(12));
-  const key = await crypto.subtle.generateKey(_consts_js__WEBPACK_IMPORTED_MODULE_6__.KEY_ALGO, true, ['encrypt', 'decrypt']);
+  const key = await crypto.subtle.generateKey(_consts_js__WEBPACK_IMPORTED_MODULE_5__.KEY_ALGO, true, ['encrypt', 'decrypt']);
   const algo = {
     'name': 'AES-GCM',
     'iv': iv,
-    'tagLength': _consts_js__WEBPACK_IMPORTED_MODULE_6__.TAG_LENGTH
+    'tagLength': _consts_js__WEBPACK_IMPORTED_MODULE_5__.TAG_LENGTH
   };
   const encrypted = await crypto.subtle.encrypt(algo, key, (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.stringToArrayBuffer)(plaintext));
   const length = encrypted.byteLength - (128 + 7 >> 3);
@@ -48606,12 +48753,12 @@ async function encryptMessage(plaintext) {
 }
 
 async function decryptMessage(obj) {
-  const key_obj = await crypto.subtle.importKey('raw', obj.key, _consts_js__WEBPACK_IMPORTED_MODULE_6__.KEY_ALGO, true, ['encrypt', 'decrypt']);
+  const key_obj = await crypto.subtle.importKey('raw', obj.key, _consts_js__WEBPACK_IMPORTED_MODULE_5__.KEY_ALGO, true, ['encrypt', 'decrypt']);
   const cipher = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.appendArrayBuffer)((0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(obj.payload), obj.tag);
   const algo = {
     'name': 'AES-GCM',
     'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(obj.iv),
-    'tagLength': _consts_js__WEBPACK_IMPORTED_MODULE_6__.TAG_LENGTH
+    'tagLength': _consts_js__WEBPACK_IMPORTED_MODULE_5__.TAG_LENGTH
   };
   return (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToString)(await crypto.subtle.decrypt(algo, key_obj, cipher));
 }
@@ -48695,7 +48842,7 @@ async function getAndDecryptFile(uri) {
   }
 
   const [filename, extension] = (_uri$filename = uri.filename()) === null || _uri$filename === void 0 ? void 0 : _uri$filename.split('.');
-  const mimetype = utils_file_js__WEBPACK_IMPORTED_MODULE_5__.MIMETYPES_MAP[extension];
+  const mimetype = utils_file_js__WEBPACK_IMPORTED_MODULE_6__.MIMETYPES_MAP[extension];
 
   try {
     const file = new File([content], filename, {
@@ -49443,7 +49590,7 @@ async function createOMEMOMessageStanza(chat, data) {
   // concatenation is encrypted using the corresponding
   // long-standing SignalProtocol session.
 
-  const dicts = await Promise.all(devices.filter(device => device.get('trusted') != _consts_js__WEBPACK_IMPORTED_MODULE_6__.UNTRUSTED && device.get('active')).map(device => encryptKey(key_and_tag, device)));
+  const dicts = await Promise.all(devices.filter(device => device.get('trusted') != _consts_js__WEBPACK_IMPORTED_MODULE_5__.UNTRUSTED && device.get('active')).map(device => encryptKey(key_and_tag, device)));
   stanza = await addKeysToMessageStanza(stanza, dicts, iv);
   stanza.c('payload').t(payload).up().up();
   stanza.c('store', {
@@ -49715,9 +49862,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var modals_user_settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modals/user-settings */ "./src/modals/user-settings.js");
 /* harmony import */ var _templates_profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/profile.js */ "./src/plugins/profile/templates/profile.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
@@ -49725,7 +49870,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
   initialize() {
-    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus;
+    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.xmppstatus;
     this.listenTo(this.model, "change", this.requestUpdate);
     this.listenTo(this.model, "vcard:add", this.requestUpdate);
     this.listenTo(this.model, "vcard:change", this.requestUpdate);
@@ -49737,39 +49882,29 @@ class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.
 
   showProfileModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.ProfileModal, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ProfileModal, {
       model: this.model
     }, ev);
   }
 
   showStatusChangeModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.ChatStatusModal, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ChatStatusModal, {
       model: this.model
     }, ev);
   }
 
   showUserSettingsModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show(modals_user_settings__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(modals_user_settings__WEBPACK_IMPORTED_MODULE_0__["default"], {
       model: this.model,
-      _converse: _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse
+      _converse: _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse
     }, ev);
-  }
-
-  logout(ev) {
-    // eslint-disable-line class-methods-use-this
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    const result = confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Are you sure you want to log out?"));
-
-    if (result === true) {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.user.logout();
-    }
   }
 
 }
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-user-profile', Profile);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-user-profile', Profile);
 
 /***/ }),
 
@@ -49862,10 +49997,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function tpl_signout(o) {
+function tpl_signout() {
   const i18n_logout = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Log out');
 
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`<a class="controlbox-heading__btn logout align-self-center" title="${i18n_logout}" @click=${o.logout}>
+  return lit__WEBPACK_IMPORTED_MODULE_4__.html`<a class="controlbox-heading__btn logout align-self-center" title="${i18n_logout}" @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.logOut}>
         <converse-icon class="fa fa-sign-out-alt" size="1em"></converse-icon>
     </a>`;
 }
@@ -49912,7 +50047,7 @@ function tpl_user_settings_button(o) {
                 </a>
                 <span class="username w-100 align-self-center">${fullname}</span>
                 ${show_settings_button ? tpl_user_settings_button(el) : ''}
-                ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_logout') ? tpl_signout(el) : ''}
+                ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_logout') ? tpl_signout() : ''}
             </div>
             <div class="d-flex xmpp-status">
                 <a class="change-status" title="${i18n_change_status}" data-toggle="modal" data-target="#changeStatusModal" @click=${el.showStatusChangeModal}>
@@ -50058,9 +50193,12 @@ const omemo_page = () => lit__WEBPACK_IMPORTED_MODULE_3__.html`
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getPrettyStatus": () => (/* binding */ getPrettyStatus)
+/* harmony export */   "getPrettyStatus": () => (/* binding */ getPrettyStatus),
+/* harmony export */   "logOut": () => (/* binding */ logOut)
 /* harmony export */ });
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
 
 function getPrettyStatus(stat) {
   if (stat === 'chat') {
@@ -50075,6 +50213,14 @@ function getPrettyStatus(stat) {
     return (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('offline');
   } else {
     return (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)(stat) || (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('online');
+  }
+}
+async function logOut(ev) {
+  ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+  const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Are you sure you want to log out?"));
+
+  if (result) {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.user.logout();
   }
 }
 
@@ -51221,18 +51367,24 @@ const bookmark = o => {
 
   if (o.bookmarked) {
     return lit__WEBPACK_IMPORTED_MODULE_4__.html`
-            <a class="list-item-action fa fa-bookmark remove-bookmark button-on"
+            <a class="list-item-action remove-bookmark button-on"
                data-room-jid="${o.room.get('jid')}"
                data-bookmark-name="${o.room.getDisplayName()}"
                @click=${o.removeBookmark}
-               title="${o.bookmarked ? i18n_remove_bookmark : i18n_add_bookmark}"></a>`;
+               title="${o.bookmarked ? i18n_remove_bookmark : i18n_add_bookmark}">
+
+                <converse-icon class="fa fa-bookmark" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+            </a>`;
   } else {
     return lit__WEBPACK_IMPORTED_MODULE_4__.html`
-            <a class="list-item-action fa fa-bookmark add-bookmark"
+            <a class="list-item-action add-bookmark"
                data-room-jid="${o.room.get('jid')}"
                data-bookmark-name="${o.room.getDisplayName()}"
                @click=${o.addBookmark}
-               title="${o.bookmarked ? i18n_remove_bookmark : i18n_add_bookmark}"></a>`;
+               title="${o.bookmarked ? i18n_remove_bookmark : i18n_add_bookmark}">
+
+                <converse-icon class="fa fa-bookmark" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+            </a>`;
   }
 };
 
@@ -51257,16 +51409,22 @@ const room_item = o => {
 
             ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('allow_bookmarks') ? bookmark(o) : ''}
 
-            <a class="list-item-action room-info fa fa-info-circle"
+            <a class="list-item-action room-info"
                 data-room-jid="${o.room.get('jid')}"
                 title="${(0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Show more information on this groupchat')}"
-                @click=${o.showRoomDetailsModal}></a>
+                @click=${o.showRoomDetailsModal}>
 
-            <a class="list-item-action fa fa-sign-out-alt close-room"
+                <converse-icon class="fa fa-info-circle" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+            </a>
+
+            <a class="list-item-action close-room"
                 data-room-jid="${o.room.get('jid')}"
                 data-room-name="${o.room.getDisplayName()}"
                 title="${i18n_leave_room}"
-                @click=${o.closeRoom}></a>
+                @click=${o.closeRoom}>
+
+                <converse-icon class="fa fa-sign-out-alt" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+            </a>
         </div>`;
 };
 
@@ -51287,14 +51445,14 @@ const room_item = o => {
     'model': o.model
   }, ev)}
                 title="${i18n_title_list_rooms}" data-toggle="modal" data-target="#muc-list-modal">
-                    <converse-icon class="fa fa-list-ul right" path-prefix="/dist" size="1em"></converse-icon>
+                    <converse-icon class="fa fa-list-ul right" size="1em"></converse-icon>
             </a>
             <a class="controlbox-heading__btn show-add-muc-modal"
                 @click=${ev => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(plugins_muc_views_modals_add_muc_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
     'model': o.model
   }, ev)}
                 title="${i18n_title_new_room}" data-toggle="modal" data-target="#add-chatrooms-modal">
-                    <converse-icon class="fa fa-plus right" path-prefix="/dist" size="1em"></converse-icon>
+                    <converse-icon class="fa fa-plus right" size="1em"></converse-icon>
             </a>
         </div>
 
@@ -51414,8 +51572,9 @@ class RoomsList extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3_
     // eslint-disable-line class-methods-use-this
     ev.preventDefault();
     const name = ev.target.getAttribute('data-room-name');
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Are you sure you want to leave the groupchat %1$s?", name));
 
-    if (confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Are you sure you want to leave the groupchat %1$s?", name))) {
+    if (result) {
       const jid = ev.target.getAttribute('data-room-jid');
       const room = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.rooms.get(jid);
       room.close();
@@ -51664,21 +51823,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ RosterContact)
 /* harmony export */ });
 /* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
-/* harmony import */ var _templates_pending_contact_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/pending_contact.js */ "./src/plugins/rosterview/templates/pending_contact.js");
-/* harmony import */ var _templates_requesting_contact_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/requesting_contact.js */ "./src/plugins/rosterview/templates/requesting_contact.js");
-/* harmony import */ var _templates_roster_item_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates/roster_item.js */ "./src/plugins/rosterview/templates/roster_item.js");
-/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _templates_requesting_contact_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/requesting_contact.js */ "./src/plugins/rosterview/templates/requesting_contact.js");
+/* harmony import */ var _templates_roster_item_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/roster_item.js */ "./src/plugins/rosterview/templates/roster_item.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
 
 
 
-
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.env.utils;
-class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_4__.CustomElement {
+class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__.CustomElement {
   static get properties() {
     return {
       model: {
@@ -51695,47 +51851,19 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
   }
 
   render() {
-    const ask = this.model.get('ask');
-    const requesting = this.model.get('requesting');
-    const subscription = this.model.get('subscription');
-    const jid = this.model.get('jid');
-
-    if (ask === 'subscribe' || subscription === 'from') {
-      /* ask === 'subscribe'
-       *      Means we have asked to subscribe to them.
-       *
-       * subscription === 'from'
-       *      They are subscribed to use, but not vice versa.
-       *      We assume that there is a pending subscription
-       *      from us to them (otherwise we're in a state not
-       *      supported by converse.js).
-       *
-       *  So in both cases the user is a "pending" contact.
-       */
+    if (this.model.get('requesting') === true) {
       const display_name = this.model.getDisplayName();
-      return (0,_templates_pending_contact_js__WEBPACK_IMPORTED_MODULE_1__["default"])(Object.assign(this.model.toJSON(), {
-        display_name,
-        'openChat': ev => this.openChat(ev),
-        'removeContact': ev => this.removeContact(ev)
-      }));
-    } else if (requesting === true) {
-      const display_name = this.model.getDisplayName();
-      return (0,_templates_requesting_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"])(Object.assign(this.model.toJSON(), {
+      return (0,_templates_requesting_contact_js__WEBPACK_IMPORTED_MODULE_1__["default"])(Object.assign(this.model.toJSON(), {
         display_name,
         'openChat': ev => this.openChat(ev),
         'acceptRequest': ev => this.acceptRequest(ev),
         'declineRequest': ev => this.declineRequest(ev),
-        'desc_accept': (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)("Click to accept the contact request from %1$s", display_name),
-        'desc_decline': (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)("Click to decline the contact request from %1$s", display_name),
-        'allow_chat_pending_contacts': _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('allow_chat_pending_contacts')
+        'desc_accept': (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Click to accept the contact request from %1$s", display_name),
+        'desc_decline': (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Click to decline the contact request from %1$s", display_name)
       }));
-    } else if (subscription === 'both' || subscription === 'to' || u.isSameBareJID(jid, _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.connection.jid)) {
-      return this.renderRosterItem(this.model);
+    } else {
+      return (0,_templates_roster_item_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this, this.model);
     }
-  }
-
-  renderRosterItem(item) {
-    return (0,_templates_roster_item_js__WEBPACK_IMPORTED_MODULE_3__["default"])(this, item);
   }
 
   openChat(ev) {
@@ -51745,18 +51873,17 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
     this.model.openChat();
   }
 
-  removeContact(ev) {
+  async removeContact(ev) {
     var _ev$preventDefault2;
 
     ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
 
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('allow_contact_removal')) {
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('allow_contact_removal')) {
       return;
     }
 
-    if (!confirm((0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)("Are you sure you want to remove this contact?"))) {
-      return;
-    }
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Are you sure you want to remove this contact?"));
+    if (!result) return;
 
     try {
       this.model.removeFromRoster();
@@ -51768,7 +51895,7 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
       }
     } catch (e) {
       _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Sorry, there was an error while trying to remove %1$s as a contact.', this.model.getDisplayName())]);
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Sorry, there was an error while trying to remove %1$s as a contact.', this.model.getDisplayName())]);
     }
   }
 
@@ -51776,18 +51903,18 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
     var _ev$preventDefault3;
 
     ev === null || ev === void 0 ? void 0 : (_ev$preventDefault3 = ev.preventDefault) === null || _ev$preventDefault3 === void 0 ? void 0 : _ev$preventDefault3.call(ev);
-    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.roster.sendContactAddIQ(this.model.get('jid'), this.model.getFullname(), []);
+    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster.sendContactAddIQ(this.model.get('jid'), this.model.getFullname(), []);
     this.model.authorize().subscribe();
   }
 
-  declineRequest(ev) {
+  async declineRequest(ev) {
     if (ev && ev.preventDefault) {
       ev.preventDefault();
     }
 
-    const result = confirm((0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)("Are you sure you want to decline this contact request?"));
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Are you sure you want to decline this contact request?"));
 
-    if (result === true) {
+    if (result) {
       this.model.unauthorize().destroy();
     }
 
@@ -51795,7 +51922,7 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
   }
 
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.elements.define('converse-roster-contact', RosterContact);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.elements.define('converse-roster-contact', RosterContact);
 
 /***/ }),
 
@@ -51958,7 +52085,6 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.converse.plugins.add('conve
   initialize() {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.settings.extend({
       'autocomplete_add_contact': true,
-      'allow_chat_pending_contacts': true,
       'allow_contact_removal': true,
       'hide_offline_users': false,
       'roster_groups': true,
@@ -52157,36 +52283,6 @@ function renderContact(contact) {
 
 /***/ }),
 
-/***/ "./src/plugins/rosterview/templates/pending_contact.js":
-/*!*************************************************************!*\
-  !*** ./src/plugins/rosterview/templates/pending_contact.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-
-
-
-
-const tpl_pending_contact = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="pending-contact-name" title="JID: ${o.jid}">${o.display_name}</span>`;
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_remove = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to remove %1$s as a contact', o.display_name);
-
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_chat_pending_contacts') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<a class="list-item-link open-chat w-100" href="#" @click=${o.openChat}>${tpl_pending_contact(o)}</a>` : tpl_pending_contact(o)}
-        <a class="list-item-action remove-xmpp-contact far fa-trash-alt" @click=${o.removeContact} title="${i18n_remove}" href="#"></a>`;
-});
-
-/***/ }),
-
 /***/ "./src/plugins/rosterview/templates/requesting_contact.js":
 /*!****************************************************************!*\
   !*** ./src/plugins/rosterview/templates/requesting_contact.js ***!
@@ -52198,21 +52294,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-
-
-const tpl_requesting_contact = o => lit__WEBPACK_IMPORTED_MODULE_1__.html`<span class="req-contact-name w-100" title="JID: ${o.jid}">${o.display_name}</span>`;
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_1__.html`
-   ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('allow_chat_pending_contacts') ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<a class="open-chat w-100" href="#" @click=${o.openChat}>${tpl_requesting_contact(o)}</a>` : tpl_requesting_contact(o)}
-   <a class="accept-xmpp-request list-item-action list-item-action--visible fa fa-check"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+   <a class="open-chat w-100" href="#" @click=${o.openChat}>
+      <span class="req-contact-name w-100" title="JID: ${o.jid}">${o.display_name}</span>
+   </a>
+   <a class="accept-xmpp-request list-item-action list-item-action--visible"
       @click=${o.acceptRequest}
-      aria-label="${o.desc_accept}" title="${o.desc_accept}" href="#"></a>
-   <a class="decline-xmpp-request list-item-action list-item-action--visible  fa fa-times"
+      aria-label="${o.desc_accept}" title="${o.desc_accept}" href="#">
+
+      <converse-icon class="fa fa-check" size="1em"></converse-icon>
+   </a>
+
+   <a class="decline-xmpp-request list-item-action list-item-action--visible"
       @click=${o.declineRequest}
-      aria-label="${o.desc_decline}" title="${o.desc_decline}" href="#"></a>`);
+      aria-label="${o.desc_decline}" title="${o.desc_decline}" href="#">
+
+      <converse-icon class="fa fa-times" size="1em"></converse-icon>
+   </a>`);
 
 /***/ }),
 
@@ -52241,37 +52341,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-function populateContactsMap(contacts_map, contact) {
-  if (contact.get('ask') === 'subscribe') {
-    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_PENDING_CONTACTS;
-    contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
-  } else if (contact.get('requesting')) {
-    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_REQUESTING_CONTACTS;
-    contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
-  } else {
-    let contact_groups;
-
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('roster_groups')) {
-      contact_groups = contact.get('groups');
-      contact_groups = contact_groups.length === 0 ? [_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_UNGROUPED] : contact_groups;
-    } else {
-      contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_CURRENT_CONTACTS];
-    }
-
-    for (const name of contact_groups) {
-      contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
-    }
-  }
-
-  if (contact.get('num_unread')) {
-    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_UNREAD;
-    contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
-  }
-
-  return contacts_map;
-}
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const i18n_heading_contacts = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Contacts');
 
@@ -52280,7 +52349,7 @@ function populateContactsMap(contacts_map, contact) {
   const i18n_title_sync_contacts = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Re-sync your contacts');
 
   const roster = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster || [];
-  const contacts_map = roster.reduce((acc, contact) => populateContactsMap(acc, contact), {});
+  const contacts_map = roster.reduce((acc, contact) => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.populateContactsMap)(acc, contact), {});
   const groupnames = Object.keys(contacts_map).filter(_utils_js__WEBPACK_IMPORTED_MODULE_6__.shouldShowGroup);
   groupnames.sort(_converse_headless_plugins_roster_utils_js__WEBPACK_IMPORTED_MODULE_3__.groupsComparator);
   return lit__WEBPACK_IMPORTED_MODULE_4__.html`
@@ -52481,6 +52550,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "highlightRosterItem": () => (/* binding */ highlightRosterItem),
 /* harmony export */   "isContactFiltered": () => (/* binding */ isContactFiltered),
+/* harmony export */   "populateContactsMap": () => (/* binding */ populateContactsMap),
 /* harmony export */   "shouldShowContact": () => (/* binding */ shouldShowContact),
 /* harmony export */   "shouldShowGroup": () => (/* binding */ shouldShowGroup),
 /* harmony export */   "toggleGroup": () => (/* binding */ toggleGroup)
@@ -52563,6 +52633,36 @@ function shouldShowGroup(group) {
   }
 
   return true;
+}
+function populateContactsMap(contacts_map, contact) {
+  if (contact.get('requesting')) {
+    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_REQUESTING_CONTACTS;
+    contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
+  } else {
+    let contact_groups;
+
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('roster_groups')) {
+      contact_groups = contact.get('groups');
+      contact_groups = contact_groups.length === 0 ? [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_UNGROUPED] : contact_groups;
+    } else {
+      if (contact.get('ask') === 'subscribe') {
+        contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_PENDING_CONTACTS];
+      } else {
+        contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_CURRENT_CONTACTS];
+      }
+    }
+
+    for (const name of contact_groups) {
+      contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
+    }
+  }
+
+  if (contact.get('num_unread')) {
+    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_UNREAD;
+    contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
+  }
+
+  return contacts_map;
 }
 
 /***/ }),
@@ -52692,7 +52792,6 @@ class AutoComplete {
   }
 
   bindEvents() {
-    // Bind events
     const input = {
       "blur": () => this.close({
         'reason': 'blur'
@@ -52700,7 +52799,7 @@ class AutoComplete {
     };
 
     if (this.auto_evaluate) {
-      input["input"] = () => this.evaluate();
+      input["input"] = e => this.evaluate(e);
     }
 
     this._events = {
@@ -52915,26 +53014,27 @@ class AutoComplete {
       return;
     }
 
-    const list = typeof this._list === "function" ? await this._list() : this._list;
-
-    if (list.length === 0) {
-      return;
-    }
-
     let value = this.match_current_word ? u.getCurrentWord(this.input) : this.input.value;
     const contains_trigger = _utils_js__WEBPACK_IMPORTED_MODULE_1__.helpers.isMention(value, this.ac_triggers);
 
-    if (contains_trigger) {
-      this.auto_completing = true;
-
-      if (!this.include_triggers.includes(ev.key)) {
-        value = u.isMentionBoundary(value[0]) ? value.slice('2') : value.slice('1');
-      }
+    if (contains_trigger && !this.include_triggers.includes(ev.key)) {
+      value = u.isMentionBoundary(value[0]) ? value.slice('2') : value.slice('1');
     }
 
-    if ((contains_trigger || value.length) && value.length >= this.min_chars) {
-      this.index = -1; // Populate list with options that match
+    const is_long_enough = value.length && value.length >= this.min_chars;
 
+    if (contains_trigger || is_long_enough) {
+      this.auto_completing = true;
+      const list = typeof this._list === "function" ? await this._list(value) : this._list;
+
+      if (list.length === 0 || !this.auto_completing) {
+        this.close({
+          'reason': 'nomatches'
+        });
+        return;
+      }
+
+      this.index = -1;
       this.ul.innerHTML = "";
       this.suggestions = list.map(item => new _suggestion_js__WEBPACK_IMPORTED_MODULE_2__["default"](this.data(item, value), value)).filter(item => this.filter(item, value));
 
@@ -52991,9 +53091,50 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+/**
+ * A custom element that can be used to add auto-completion suggestions to a form input.
+ * @class AutoCompleteComponent
+ *
+ * @property { "above" | "below" } [position="above"]
+ *  Should the autocomplete list show above or below the input element?
+ * @property { Boolean } [autofocus=false]
+ *  Should the `focus` attribute be set on the input element?
+ * @property { Function } getAutoCompleteList
+ *  A function that returns the list of autocomplete suggestions
+ * @property { Boolean } [auto_evaluate=true]
+ *  Should evaluation happen automatically without any particular key as trigger?
+ * @property { Boolean } [auto_first=false]
+ *  Should the first element automatically be selected?
+ * @property { "contains" | "startswith" } [filter="contains"]
+ *  Provide matches which contain the entered text, or which starts with the entered text
+ * @property { String } [include_triggers=""]
+ *  Space separated characters which should be included in the returned value
+ * @property { Number } [min_chars=1]
+ *  The minimum number of characters to be entered into the input before autocomplete starts.
+ * @property { String } [name]
+ *  The `name` attribute of the `input` element
+ * @property { String } [placeholder]
+ *  The `placeholder` attribute of the `input` element
+ * @property { String } [triggers]
+ *  String of space separated characters which trigger autocomplete
+ *
+ * @example
+ *     <converse-autocomplete
+ *         .getAutoCompleteList="${getAutoCompleteList}"
+ *         placeholder="${placeholder_text}"
+ *         name="foo">
+ *     </converse-autocomplete>
+ */
+
 class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.CustomElement {
   static get properties() {
     return {
+      'position': {
+        type: String
+      },
+      'autofocus': {
+        type: Boolean
+      },
       'getAutoCompleteList': {
         type: Function
       },
@@ -53003,7 +53144,6 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
       'auto_first': {
         type: Boolean
       },
-      // Should the first element be automatically selected?
       'filter': {
         type: String
       },
@@ -53027,25 +53167,25 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
 
   constructor() {
     super();
-    this.auto_evaluate = true; // Should evaluation happen automatically without any particular key as trigger?
-
-    this.auto_first = false; // Should the first element be automatically selected?
-
+    this.position = 'above';
+    this.auto_evaluate = true;
+    this.auto_first = false;
     this.filter = 'contains';
-    this.include_triggers = ''; // Space separated chars which should be included in the returned value
-
+    this.include_triggers = '';
     this.match_current_word = false; // Match only the current word, otherwise all input is matched
 
     this.max_items = 10;
     this.min_chars = 1;
-    this.triggers = ''; // String of space separated chars
+    this.triggers = '';
   }
 
   render() {
+    const position_class = `suggestion-box__results--${this.position}`;
     return lit__WEBPACK_IMPORTED_MODULE_4__.html`
             <div class="suggestion-box suggestion-box__name">
-                <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>
+                <ul class="suggestion-box__results ${position_class}" hidden=""></ul>
                 <input
+                    ?autofocus=${this.autofocus}
                     type="text"
                     name="${this.name}"
                     autocomplete="off"
@@ -53071,7 +53211,7 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
       'auto_first': this.auto_first,
       'filter': this.filter == 'contains' ? _utils_js__WEBPACK_IMPORTED_MODULE_2__.FILTER_CONTAINS : _utils_js__WEBPACK_IMPORTED_MODULE_2__.FILTER_STARTSWITH,
       'include_triggers': [],
-      'list': () => this.getAutoCompleteList(),
+      'list': q => this.getAutoCompleteList(q),
       'match_current_word': true,
       'max_items': this.max_items,
       'min_chars': this.min_chars
@@ -54421,7 +54561,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
         `;
   }
 
-  onMessageEditButtonClicked(ev) {
+  async onMessageEditButtonClicked(ev) {
     var _u$ancestor, _u$ancestor$querySele;
 
     ev.preventDefault();
@@ -54431,9 +54571,8 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     const unsent_text = (_u$ancestor = u.ancestor(this, '.chatbox')) === null || _u$ancestor === void 0 ? void 0 : (_u$ancestor$querySele = _u$ancestor.querySelector('.chat-textarea')) === null || _u$ancestor$querySele === void 0 ? void 0 : _u$ancestor$querySele.value;
 
     if (unsent_text && (!currently_correcting || currently_correcting.getMessageText() !== unsent_text)) {
-      if (!confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('You have an unsent message which will be lost if you continue. Are you sure?'))) {
-        return;
-      }
+      const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('You have an unsent message which will be lost if you continue. Are you sure?'));
+      if (!result) return;
     }
 
     if (currently_correcting !== this.model) {
@@ -60162,41 +60301,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/templates/headline_list.js":
-/*!****************************************!*\
-  !*** ./src/templates/headline_list.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-
-
-const tpl_headline_box = o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
-    <div class="list-item controlbox-padded d-flex flex-row"
-        data-headline-jid="${o.headlinebox.get('jid')}">
-    <a class="list-item-link open-headline available-room w-100"
-        data-headline-jid="${o.headlinebox.get('jid')}"
-        title="${o.open_title}" href="#">${o.headlinebox.get('jid')}</a>
-    </div>
-`;
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
-    <div class="list-container list-container--headline ${o.headlineboxes.length ? '' : 'hidden'}">
-        <div class="items-list rooms-list headline-list">
-            ${o.headlineboxes.map(headlinebox => tpl_headline_box(Object.assign({
-  headlinebox
-}, o)))}
-        </div>
-    </div>
-`);
-
-/***/ }),
-
 /***/ "./src/templates/hyperlink.js":
 /*!************************************!*\
   !*** ./src/templates/hyperlink.js ***!
@@ -62670,6 +62774,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss ***!
   \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -75761,6 +75892,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/styles/add-muc-modal.scss":
+/*!*********************************************************!*\
+  !*** ./src/plugins/muc-views/styles/add-muc-modal.scss ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./add-muc-modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
