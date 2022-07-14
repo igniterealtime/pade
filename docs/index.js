@@ -898,6 +898,12 @@ function setupPadeRoot() {
 				if (!getSetting("disablePadeStyling", false)) {				
 					setupTimer();
 					addSelfBot();
+					
+					_converse.api.waitUntil('rosterContactsFetched').then(() => {
+						if (getSetting("enableRssFeeds", false)) {					
+							createFeedItem("pade-rss@" + _converse.connection.domain);
+						}
+					});
 				}					
 
 				if (_converse.connection.pass) {
@@ -1763,12 +1769,16 @@ function openChat(from, name, groups, closed) {
 		}
 
 		if (!closed) _converse.api.chats.open(from, {'bring_to_foreground': true}, true);
-
-		if (_converse.connection.injectMessage)
-		{
-			_converse.connection.injectMessage('<presence to="' + _converse.connection.jid + '" from="' + from + '"/>');
-		}
 	}
+}
+	
+function createFeedItem(from_jid) {
+	const chatbox = _converse.chatboxes.create({
+	  'id': from_jid,
+	  'jid': from_jid,
+	  'type': _converse.HEADLINES_TYPE,
+	  'from': from_jid
+	});		
 }
 
 function getRandomColor(nickname) {

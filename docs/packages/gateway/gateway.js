@@ -88,8 +88,9 @@
 
                         var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
                         rssInterval = setInterval(rssRefresh, rssFeedCheck);
-
-                        openChat("pade-rss@" + _converse.connection.domain, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);
+						
+						const jid = "pade-rss@" + _converse.connection.domain;
+                        openChat(jid, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);
                     }
                 });
             });
