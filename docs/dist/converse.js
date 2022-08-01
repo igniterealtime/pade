@@ -18809,8 +18809,8 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
   dependencies: ['converse-status'],
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.listen.on('constructedPresence', (_, p) => p.root().cnode((0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.createCapsNode)()).up() && p);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.listen.on('constructedMUCPresence', (_, p) => p.root().cnode((0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.createCapsNode)()).up() && p);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.listen.on('constructedPresence', (_, p) => (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.addCapsNode)(p));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.listen.on('constructedMUCPresence', (_, p) => (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.addCapsNode)(p));
   }
 
 });
@@ -18826,16 +18826,16 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createCapsNode": () => (/* binding */ createCapsNode)
+/* harmony export */   "addCapsNode": () => (/* binding */ addCapsNode)
 /* harmony export */ });
-/* harmony import */ var strophe_js_src_sha1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! strophe.js/src/sha1 */ "./node_modules/strophe.js/src/sha1.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/utils/arraybuffer.js */ "./src/headless/utils/arraybuffer.js");
 
 
 const {
   Strophe,
   $build
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.converse.env;
 
 function propertySort(array, property) {
   return array.sort((a, b) => {
@@ -18843,10 +18843,10 @@ function propertySort(array, property) {
   });
 }
 
-function generateVerificationString() {
-  const identities = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.api.disco.own.identities.get();
+async function generateVerificationString() {
+  const identities = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.api.disco.own.identities.get();
 
-  const features = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.api.disco.own.features.get();
+  const features = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.api.disco.own.features.get();
 
   if (identities.length > 1) {
     propertySort(identities, "category");
@@ -18857,16 +18857,28 @@ function generateVerificationString() {
   let S = identities.reduce((result, id) => `${result}${id.category}/${id.type}/${(id === null || id === void 0 ? void 0 : id.lang) ?? ''}/${id.name}<`, "");
   features.sort();
   S = features.reduce((result, feature) => `${result}${feature}<`, S);
-  return strophe_js_src_sha1__WEBPACK_IMPORTED_MODULE_0__["default"].b64_sha1(S);
+  const ab = await crypto.subtle.digest('SHA-1', (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_1__.stringToArrayBuffer)(S));
+  return (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_1__.arrayBufferToBase64)(ab);
 }
 
-function createCapsNode() {
+async function createCapsNode() {
   return $build("c", {
     'xmlns': Strophe.NS.CAPS,
     'hash': "sha-1",
     'node': "https://conversejs.org",
-    'ver': generateVerificationString()
+    'ver': await generateVerificationString()
   }).nodeTree;
+}
+/**
+ * Given a stanza, adds a XEP-0115 CAPS element
+ * @param { XMLElement } stanza
+ */
+
+
+async function addCapsNode(stanza) {
+  const caps_el = await createCapsNode();
+  stanza.root().cnode(caps_el).up();
+  return stanza;
 }
 
 /***/ }),
@@ -25976,6 +25988,13 @@ const ChatRoomMixin = {
     });
   },
 
+  getReferenceURIFromNickname(nickname) {
+    const muc_jid = this.get('jid');
+    const occupant = this.getOccupant(nickname);
+    const uri = this.features.get('nonanonymous') && (occupant === null || occupant === void 0 ? void 0 : occupant.get('jid')) || `${muc_jid}/${nickname}`;
+    return encodeURI(`xmpp:${uri}`);
+  },
+
   /**
    * Given a text message, look for `@` mentions and turn them into
    * XEP-0372 references
@@ -25990,13 +26009,6 @@ const ChatRoomMixin = {
 
     const getMatchingNickname = _utils_parse_helpers__WEBPACK_IMPORTED_MODULE_1__["default"].findFirstMatchInArray(this.getAllKnownNicknames());
 
-    const uriFromNickname = nickname => {
-      const jid = this.get('jid');
-      const occupant = this.getOccupant(nickname) || this.getOccupant(jid);
-      const uri = this.features.get('nonanonymous') && (occupant === null || occupant === void 0 ? void 0 : occupant.get('jid')) || `${jid}/${nickname}`;
-      return encodeURI(`xmpp:${uri}`);
-    };
-
     const matchToReference = match => {
       let at_sign_index = match[0].indexOf('@');
 
@@ -26009,7 +26021,7 @@ const ChatRoomMixin = {
       const end = begin + match[0].length - at_sign_index;
       const value = getMatchingNickname(match[1]);
       const type = 'mention';
-      const uri = uriFromNickname(value);
+      const uri = this.getReferenceURIFromNickname(value);
       return {
         begin,
         end,
@@ -26371,7 +26383,7 @@ const ChatRoomMixin = {
       args = '@' + args;
     }
 
-    const [text, references] = this.parseTextForReferences(args); // eslint-disable-line no-unused-vars
+    const [_text, references] = this.parseTextForReferences(args); // eslint-disable-line no-unused-vars
 
     if (!references.length) {
       const message = __("Error: couldn't find a groupchat participant based on your arguments");
@@ -31353,10 +31365,12 @@ function sendCSI(stat) {
   }));
   _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.inactive = stat === _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.INACTIVE ? true : false;
 }
+/**
+ * Set an interval of one second and register a handler for it.
+ * Required for the auto_away, auto_xa and csi_waiting_time features.
+ */
+
 function registerIntervalHandler() {
-  /* Set an interval of one second and register a handler for it.
-   * Required for the auto_away, auto_xa and csi_waiting_time features.
-   */
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("auto_away") < 1 && _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("auto_xa") < 1 && _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("csi_waiting_time") < 1 && _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get("idle_presence_timeout") < 1) {
     // Waiting time of less then one second means features aren't used.
     return;
@@ -31375,11 +31389,6 @@ function registerIntervalHandler() {
   window.addEventListener(unloadevent, _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.onUserActivity, {
     'once': true,
     'passive': true
-  });
-  window.addEventListener(unloadevent, () => {
-    var _converse$session;
-
-    return (_converse$session = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.session) === null || _converse$session === void 0 ? void 0 : _converse$session.save('active', false);
   });
   _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.everySecondTrigger = window.setInterval(_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.onEverySecond, 1000);
 }
@@ -33285,6 +33294,12 @@ function getErrorAttributes(stanza) {
 
   return {};
 }
+/**
+ * Given a message stanza, find and return any XEP-0372 references
+ * @param { XMLElement } stana - The message stanza
+ * @returns { Reference }
+ */
+
 function getReferences(stanza) {
   return sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`reference[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.REFERENCE}"]`, stanza).map(ref => {
     var _stanza$querySelector;
@@ -33299,9 +33314,19 @@ function getReferences(stanza) {
 
     const begin = ref.getAttribute('begin');
     const end = ref.getAttribute('end');
+    /**
+     * @typedef { Object } Reference
+     * An object representing XEP-0372 reference data
+     * @property { string } begin
+     * @property { string } end
+     * @property { string } type
+     * @property { String } value
+     * @property { String } uri
+     */
+
     return {
-      'begin': begin,
-      'end': end,
+      begin,
+      end,
       'type': ref.getAttribute('type'),
       'value': text.slice(begin, end),
       'uri': ref.getAttribute('uri')
@@ -34926,6 +34951,7 @@ function saveJIDtoSession(_converse, jid) {
     // We use the `active` flag to determine whether we should use the values from sessionStorage.
     // When "cloning" a tab (e.g. via middle-click), the `active` flag will be set and we'll create
     // a new empty user session, otherwise it'll be false and we can re-use the user session.
+    // When the tab is reloaded, the `active` flag is set to `false`.
     'active': true
   }); // Set JID on the connection object so that when we call `connection.bind`
   // the new resource is found by Strophe.js and sent to the XMPP server.
@@ -34987,7 +35013,13 @@ async function initSession(_converse, jid) {
       });
     }
 
-    saveJIDtoSession(_converse, jid);
+    saveJIDtoSession(_converse, jid); // Set `active` flag to false when the tab gets reloaded
+
+    window.addEventListener(_converse.unloadevent, () => {
+      var _converse$session2;
+
+      return (_converse$session2 = _converse.session) === null || _converse$session2 === void 0 ? void 0 : _converse$session2.save('active', false);
+    });
     /**
      * Triggered once the user's session has been initialized. The session is a
      * cache which stores information about the user's current session.
@@ -58248,9 +58280,9 @@ const isString = s => typeof s === 'string'; // We don't render more than two li
 
 const collapseLineBreaks = text => text.replace(/\n\n+/g, m => `\n${'\u200B'.repeat(m.length - 2)}\n`);
 
-const tpl_mention_with_nick = o => lit__WEBPACK_IMPORTED_MODULE_12__.html`<span class="mention mention--self badge badge-info">${o.mention}</span>`;
+const tpl_mention_with_nick = o => lit__WEBPACK_IMPORTED_MODULE_12__.html`<span class="mention mention--self badge badge-info" data-uri="${o.uri}">${o.mention}</span>`;
 
-const tpl_mention = o => lit__WEBPACK_IMPORTED_MODULE_12__.html`<span class="mention">${o.mention}</span>`;
+const tpl_mention = o => lit__WEBPACK_IMPORTED_MODULE_12__.html`<span class="mention" data-uri="${o.uri}">${o.mention}</span>`;
 /**
  * @class RichText
  * A String subclass that is used to render rich text (i.e. text that contains
@@ -58434,11 +58466,11 @@ class RichText extends String {
       const mention = text.slice(begin, end);
 
       if (mention === this.nick) {
-        this.addTemplateResult(begin + local_offset, end + local_offset, tpl_mention_with_nick({
+        this.addTemplateResult(begin + local_offset, end + local_offset, tpl_mention_with_nick({ ...ref,
           mention
         }));
       } else {
-        this.addTemplateResult(begin + local_offset, end + local_offset, tpl_mention({
+        this.addTemplateResult(begin + local_offset, end + local_offset, tpl_mention({ ...ref,
           mention
         }));
       }
