@@ -1,4 +1,4 @@
-let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect;
+let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect, streamChannel;
 const nickColors = {}
 const whitelistedPlugins = [];
 
@@ -912,7 +912,70 @@ function setupPadeRoot() {
 					
 					setupServiceWorker(_converse.connection.pass);	
 					storeCredentials(_converse.connection.pass);
-				}									
+				}			
+
+			   _converse.connection.addHandler(message => {
+				   console.debug("muc invite handler", message);
+					if (_converse.api.settings.get('auto_join_on_invite')) return;
+					
+					const x_el = message.querySelector("x");
+					const from = Strophe.getBareJidFromJid(message.getAttribute('from'));
+					const room_jid = x_el.getAttribute('jid');
+					const reason = x_el.getAttribute('reason');
+					const password = x_el.getAttribute('password');
+					
+					let contact = _converse.roster.get(from);
+					contact = contact ? contact.getDisplayName() : from;	
+					let body = `${contact} has invited you to join ${room_jid}`;					
+					
+					if (reason) {
+						body = body + "\n" + reason;
+					}	
+
+					const options = {
+						body,
+						icon: "./icon.png",
+						data: {from, contact, room_jid, reason, password},
+						requireInteraction: true,
+						actions: [
+						  {action: 'join', title: 'Join', type: 'button', icon: './check-solid.png'},
+						  {action: 'reject', title: 'Reject', type: 'button', icon: './times-solid.png'}		  
+						]
+					};
+
+					if (serviceWorkerRegistration) 
+					{
+						if (!streamChannel) {
+							streamChannel = new BroadcastChannel('pade.notification.action');
+							
+							streamChannel.addEventListener('message', event =>
+							{
+								console.debug("notificationclick", event);							
+								const settings = {'bring_to_foreground': true};
+								
+								if (event.data.password) {
+									settings.password = event.data.password;
+								}
+								
+								window.focus();
+
+								const chat = _converse.chatboxes.get(event.data.room_jid);
+								
+								if (chat) {
+									chat.maybeShow(true);
+								} else {	
+									_converse.api.rooms.open(event.data.room_jid, settings, true);	
+								}									
+							});	
+						}
+						
+						serviceWorkerRegistration.showNotification(room_jid, options);
+					}
+					
+					return true;
+					
+			   }, 'jabber:x:conference', 'message');
+  
 			});
 
 			_converse.api.listen.on('rosterContactInitialized', function(contact) {

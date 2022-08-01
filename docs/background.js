@@ -79,6 +79,28 @@ self.addEventListener('notificationclick', function(event) {
 
     if (event.action === 'reject') {
         event.notification.close();
+
+	} else if (event.action === 'join') {
+		
+		const actionChannel = new BroadcastChannel("pade.notification.action");	
+		actionChannel.postMessage(event.notification.data);	
+		
+		chrome.storage.local.get('converseWin', (data) => 
+		{	
+			if (data.converseWin) {
+				chrome.windows.getAll((windows) => {
+					let window = null;
+
+					for (let win of windows) {
+						if (data.converseWin == win.id) window = win;
+					}
+					
+					if (window) {
+						chrome.windows.update(window.id, {focused: true});			
+					}					
+				});	
+			}
+		});		
 		
 	} else if (event.action === 'reply') {
 
