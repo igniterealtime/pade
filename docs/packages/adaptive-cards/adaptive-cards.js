@@ -114,7 +114,8 @@
 						const renderedCard = adaptiveCard.render();
 						
 						textarea.style.display = 'none';						
-						preview.innerHTML = renderedCard.innerHTML;	
+						preview.innerHTML = "";
+						preview.appendChild(renderedCard);
 						preview.style.display = '';
 						button.innerHTML = 'Edit';
 						
