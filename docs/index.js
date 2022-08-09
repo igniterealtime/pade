@@ -559,7 +559,10 @@ function startConverse(credential) {
 		loadBranding();
 		
 		if (!username) {
-			location.href = "./options/index.html";
+			if (!chrome.pade) {
+				setSetting("useWebsocket", true);
+				location.href = "./options/index.html";
+			}
 		}
 	}
 
@@ -705,7 +708,7 @@ function startConverse(credential) {
 		notification_icon: './image.png',
 		notify_all_room_messages: getSetting("notifyAllRoomMessages", false),
 		notify_nicknames_without_references: true,
-		password: anonUser ? undefined : password,
+		password: anonUser ? undefined : ((password && password != "") ? password : undefined),
 		persistent_store: getSetting("conversePersistentStore", 'none'),
 		play_sounds: getSetting("conversePlaySounds", false),
 		priority: 0,

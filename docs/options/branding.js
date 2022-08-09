@@ -69,7 +69,7 @@ var branding = {
 	boshUri					: {disable: false, value: "http://localhost:7070/http-bind/"},
 	websocketUri			: {disable: false, value: "ws://localhost:7070/ws/"},
     domain                  : {disable: false, value: "localhost"},
-	useWebsocket            : {disable: false, value: true},
+	useWebsocket            : {disable: false, value: false},
 	useWebAuthn				: {disable: true},
 	useBasicAuth			: {disable: true},
 	useAnonymous			: {disable: true},
