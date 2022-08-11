@@ -504,6 +504,7 @@ function doDefaults(background)
 	setDefaultSetting("pruneMessagesSize", 0);
 	setDefaultSetting("renderMedia", true);
 	setDefaultSetting("notifyAllMessages", true);
+	setDefaultSetting("useUpDownCursorKeys", true);
 
     // config
     setDefaultSetting("startBitrate", 800);

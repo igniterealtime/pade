@@ -657,7 +657,7 @@ function startConverse(credential) {
 		allow_chat_pending_contacts: true,		
 		allow_adhoc_commands: false,
 		allow_logout: false,
-		allow_message_corrections: getSetting("useUpDownCursorKeys") ? 'all' : false,
+		allow_message_corrections: getSetting("useUpDownCursorKeys", true) ? 'all' : false,
 		allow_muc_invitations: true,		
 		allow_non_roster_messaging: true,
 		allow_registration: true,
