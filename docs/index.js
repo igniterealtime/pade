@@ -551,8 +551,13 @@ function setupChromeHandlers() {
 
 function startConverse(credential) {	
 	const anonUser = getSetting("useAnonymous", false);
+	let username = getSetting("username");	
 	
-	let username = getSetting("username");
+	if (credential?.id) {
+		username = credential?.id.split("@")[0];
+		setSetting("username", username);	
+	}
+	
 	let password = credential?.password || getSetting("password");
 	
 	if (!username || !password || username == "" || password == "") {
