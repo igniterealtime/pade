@@ -17913,7 +17913,7 @@ Object.assign(converse, {
     log: _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"],
     sizzle: (sizzle__WEBPACK_IMPORTED_MODULE_8___default()),
     sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_21__.sprintf,
-    stanza: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].stanza,
+    stx: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].stx,
     u: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"]
   }
 });
@@ -19530,7 +19530,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/shared/parsers.js */ "./src/headless/shared/parsers.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../utils/core.js */ "./src/headless/utils/core.js");
 /* harmony import */ var _parsers_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./parsers.js */ "./src/headless/plugins/chat/parsers.js");
 /* harmony import */ var _converse_headless_shared_actions_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/shared/actions.js */ "./src/headless/shared/actions.js");
 
@@ -19566,7 +19566,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     return {
       'bookmarked': false,
       'chat_state': undefined,
-      'hidden': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.isUniView)() && !_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('singleton'),
+      'hidden': (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.isUniView)() && !_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('singleton'),
       'message_type': 'chat',
       'nickname': undefined,
       'num_unread': 0,
@@ -19634,18 +19634,6 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
   initMessages() {
     this.messages = this.getMessagesCollection();
     this.messages.fetched = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_7__.getOpenPromise)();
-    this.messages.fetched.then(() => {
-      this.pruneHistoryWhenScrolledDown();
-      /**
-       * Triggered whenever a { @link _converse.ChatBox } or ${ @link _converse.ChatRoom }
-       * has fetched its messages from the local cache.
-       * @event _converse#afterMessagesFetched
-       * @type { _converse.ChatBox| _converse.ChatRoom }
-       * @example _converse.api.listen.on('afterMessagesFetched', (chat) => { ... });
-       */
-
-      _core_js__WEBPACK_IMPORTED_MODULE_4__.api.trigger('afterMessagesFetched', this);
-    });
     this.messages.chatbox = this;
     (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_8__.initStorage)(this.messages, this.getMessagesCacheKey());
     this.listenTo(this.messages, 'change:upload', this.onMessageUploadChanged, this);
@@ -19679,13 +19667,15 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
   },
 
   afterMessagesFetched() {
+    this.pruneHistoryWhenScrolledDown();
     /**
-     * Triggered whenever a `_converse.ChatBox` instance has fetched its messages from
-     * `sessionStorage` but **NOT** from the server.
+     * Triggered whenever a { @link _converse.ChatBox } or ${ @link _converse.ChatRoom }
+     * has fetched its messages from the local cache.
      * @event _converse#afterMessagesFetched
-     * @type {_converse.ChatBox | _converse.ChatRoom}
-     * @example _converse.api.listen.on('afterMessagesFetched', view => { ... });
+     * @type { _converse.ChatBox| _converse.ChatRoom }
+     * @example _converse.api.listen.on('afterMessagesFetched', (chat) => { ... });
      */
+
     _core_js__WEBPACK_IMPORTED_MODULE_4__.api.trigger('afterMessagesFetched', this);
   },
 
@@ -19795,7 +19785,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
       }
 
       if (u.shouldCreateMessage(attrs)) {
-        const msg = (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_5__.handleCorrection)(this, attrs) || (await this.createMessage(attrs));
+        const msg = (await (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_5__.handleCorrection)(this, attrs)) || (await this.createMessage(attrs));
         this.notifications.set({
           'chat_state': null
         });
@@ -19817,7 +19807,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
   },
 
   onMessageAdded(message) {
-    if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('prune_messages_above') && (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('pruning_behavior') === 'scrolled' || !this.ui.get('scrolled')) && !u.isEmptyMessage(message)) {
+    if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('prune_messages_above') && (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('pruning_behavior') === 'scrolled' || !this.ui.get('scrolled')) && !(0,_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.isEmptyMessage)(message)) {
       (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_5__.debouncedPruneHistory)(this);
     }
   },
@@ -20488,6 +20478,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
   async getOutgoingMessageAttributes(attrs) {
     var _attrs;
 
+    await _core_js__WEBPACK_IMPORTED_MODULE_4__.api.emojis.initialize();
     const is_spoiler = !!this.get('composing_spoiler');
     const origin_id = u.getUniqueId();
     const text = (_attrs = attrs) === null || _attrs === void 0 ? void 0 : _attrs.body;
@@ -20534,26 +20525,23 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
    * @param { String } send_time - time when the message was sent
    */
   setEditable(attrs, send_time) {
-    if (attrs.is_headline || u.isEmptyMessage(attrs) || attrs.sender !== 'me') {
+    if (attrs.is_headline || (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.isEmptyMessage)(attrs) || attrs.sender !== 'me') {
       return;
     }
 
     if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_message_corrections') === 'all') {
       attrs.editable = !(attrs.file || attrs.retracted || 'oob_url' in attrs);
     } else if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_message_corrections') === 'last' && send_time > this.get('time_sent')) {
+      var _this$messages$findWh;
+
       this.set({
         'time_sent': send_time
       });
-      const msg = this.messages.findWhere({
+      (_this$messages$findWh = this.messages.findWhere({
         'editable': true
+      })) === null || _this$messages$findWh === void 0 ? void 0 : _this$messages$findWh.save({
+        'editable': false
       });
-
-      if (msg) {
-        msg.save({
-          'editable': false
-        });
-      }
-
       attrs.editable = !(attrs.file || attrs.retracted || 'oob_url' in attrs);
     }
   },
@@ -20592,18 +20580,16 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
       const older_versions = message.get('older_versions') || {};
       const edited_time = message.get('edited') || message.get('time');
       older_versions[edited_time] = message.getMessageText();
-      const plaintext = attrs.is_encrypted ? attrs.message : undefined;
-      message.save({
-        'body': attrs.body,
-        'message': attrs.body,
-        'correcting': false,
-        'edited': new Date().toISOString(),
-        'is_only_emojis': attrs.is_only_emojis,
-        'origin_id': u.getUniqueId(),
-        'received': undefined,
-        'references': attrs.references,
-        older_versions,
-        plaintext
+      message.save({ ...(0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_13__["default"])(attrs, ['body', 'is_only_emojis', 'media_urls', 'references', 'is_encrypted']),
+        ...{
+          'correcting': false,
+          'edited': new Date().toISOString(),
+          'message': attrs.body,
+          'origin_id': u.getUniqueId(),
+          'received': undefined,
+          older_versions,
+          plaintext: attrs.is_encrypted ? attrs.message : undefined
+        }
       });
     } else {
       this.setEditable(attrs, new Date().toISOString());
@@ -20736,7 +20722,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
   },
 
   maybeShow(force) {
-    if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.isUniView)()) {
+    if ((0,_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.isUniView)()) {
       const filter = c => !c.get('hidden') && c.get('jid') !== this.get('jid') && c.get('id') !== 'controlbox';
 
       const other_chats = _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.filter(filter);
@@ -21100,7 +21086,7 @@ async function handleErrorMessage(stanza) {
 
   const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get(from_jid);
 
-  if (chatbox.get('type') === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.PRIVATE_CHAT_TYPE) {
+  if ((chatbox === null || chatbox === void 0 ? void 0 : chatbox.get('type')) === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.PRIVATE_CHAT_TYPE) {
     chatbox === null || chatbox === void 0 ? void 0 : chatbox.handleErrorMessageStanza(stanza);
   }
 }
@@ -22203,7 +22189,7 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
           jid,
           name: item.getAttribute('name')
         });
-        this.items.add(entity);
+        this.items.create(entity);
       }
     });
   },
@@ -22863,7 +22849,7 @@ function convertASCII2Emoji(str) {
 }
 function getShortnameReferences(text) {
   if (!_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.initialized) {
-    throw new Error('getShortnameReferences called before emojis are initialized. ' + 'To avoid this problem, first await the converse.emojis.initilaized_promise.');
+    throw new Error('getShortnameReferences called before emojis are initialized. ' + 'To avoid this problem, first await the converse.emojis.initialized_promise');
   }
 
   const references = [...text.matchAll(_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.shortnames_regex)].filter(ref => ref[0].length > 0);
@@ -23656,18 +23642,12 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('enteredNewRoom', muc => muc.features.get('mam_enabled') && (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.fetchNewestMessages)(muc));
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatReconnected', chat => {
-      // XXX: For MUCs, we listen to enteredNewRoom instead
       if (chat.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.PRIVATE_CHAT_TYPE) {
         (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.fetchNewestMessages)(chat);
       }
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('afterMessagesFetched', chat => {
-      // XXX: We don't want to query MAM every time this is triggered
-      // since it's not necessary when the chat is restored from cache.
-      // (given that BOSH or SMACKS will ensure that you get messages
-      // sent during the reload).
-      // With MUCs we can listen for `enteredNewRoom`.
-      if (chat.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.PRIVATE_CHAT_TYPE && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.restored) {
+      if (chat.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.PRIVATE_CHAT_TYPE) {
         (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.fetchNewestMessages)(chat);
       }
     });
@@ -24489,14 +24469,89 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MUC_ROLE_WEIGHTS": () => (/* binding */ MUC_ROLE_WEIGHTS)
+/* harmony export */   "AFFILIATIONS": () => (/* binding */ AFFILIATIONS),
+/* harmony export */   "AFFILIATION_CHANGES": () => (/* binding */ AFFILIATION_CHANGES),
+/* harmony export */   "AFFILIATION_CHANGES_LIST": () => (/* binding */ AFFILIATION_CHANGES_LIST),
+/* harmony export */   "INFO_CODES": () => (/* binding */ INFO_CODES),
+/* harmony export */   "MUC_NICK_CHANGED_CODE": () => (/* binding */ MUC_NICK_CHANGED_CODE),
+/* harmony export */   "MUC_ROLE_CHANGES": () => (/* binding */ MUC_ROLE_CHANGES),
+/* harmony export */   "MUC_ROLE_CHANGES_LIST": () => (/* binding */ MUC_ROLE_CHANGES_LIST),
+/* harmony export */   "MUC_ROLE_WEIGHTS": () => (/* binding */ MUC_ROLE_WEIGHTS),
+/* harmony export */   "MUC_TRAFFIC_STATES": () => (/* binding */ MUC_TRAFFIC_STATES),
+/* harmony export */   "MUC_TRAFFIC_STATES_LIST": () => (/* binding */ MUC_TRAFFIC_STATES_LIST),
+/* harmony export */   "ROLES": () => (/* binding */ ROLES),
+/* harmony export */   "ROOMSTATUS": () => (/* binding */ ROOMSTATUS),
+/* harmony export */   "ROOM_FEATURES": () => (/* binding */ ROOM_FEATURES)
 /* harmony export */ });
+const ROLES = ['moderator', 'participant', 'visitor'];
+const AFFILIATIONS = ['owner', 'admin', 'member', 'outcast', 'none'];
 const MUC_ROLE_WEIGHTS = {
   'moderator': 1,
   'participant': 2,
   'visitor': 3,
   'none': 2
 };
+const AFFILIATION_CHANGES = {
+  OWNER: 'owner',
+  ADMIN: 'admin',
+  MEMBER: 'member',
+  EXADMIN: 'exadmin',
+  EXOWNER: 'exowner',
+  EXOUTCAST: 'exoutcast',
+  EXMEMBER: 'exmember'
+};
+const AFFILIATION_CHANGES_LIST = Object.values(AFFILIATION_CHANGES);
+const MUC_TRAFFIC_STATES = {
+  ENTERED: 'entered',
+  EXITED: 'exited'
+};
+const MUC_TRAFFIC_STATES_LIST = Object.values(MUC_TRAFFIC_STATES);
+const MUC_ROLE_CHANGES = {
+  OP: 'op',
+  DEOP: 'deop',
+  VOICE: 'voice',
+  MUTE: 'mute'
+};
+const MUC_ROLE_CHANGES_LIST = Object.values(MUC_ROLE_CHANGES);
+const INFO_CODES = {
+  'visibility_changes': ['100', '102', '103', '172', '173', '174'],
+  'self': ['110'],
+  'non_privacy_changes': ['104', '201'],
+  'muc_logging_changes': ['170', '171'],
+  'nickname_changes': ['210', '303'],
+  'disconnected': ['301', '307', '321', '322', '332', '333'],
+  'affiliation_changes': [...AFFILIATION_CHANGES_LIST],
+  'join_leave_events': [...MUC_TRAFFIC_STATES_LIST],
+  'role_changes': [...MUC_ROLE_CHANGES_LIST]
+};
+const ROOMSTATUS = {
+  CONNECTED: 0,
+  CONNECTING: 1,
+  NICKNAME_REQUIRED: 2,
+  PASSWORD_REQUIRED: 3,
+  DISCONNECTED: 4,
+  ENTERED: 5,
+  DESTROYED: 6,
+  BANNED: 7,
+  CLOSING: 8
+};
+const ROOM_FEATURES = ['passwordprotected', 'unsecured', 'hidden', 'publicroom', 'membersonly', 'open', 'persistent', 'temporary', 'nonanonymous', 'semianonymous', 'moderated', 'unmoderated', 'mam_enabled'];
+const MUC_NICK_CHANGED_CODE = '303'; // No longer used in code, but useful as reference.
+//
+// const ROOM_FEATURES_MAP = {
+//     'passwordprotected': 'unsecured',
+//     'unsecured': 'passwordprotected',
+//     'hidden': 'publicroom',
+//     'publicroom': 'hidden',
+//     'membersonly': 'open',
+//     'open': 'membersonly',
+//     'persistent': 'temporary',
+//     'temporary': 'persistent',
+//     'nonanonymous': 'semianonymous',
+//     'semianonymous': 'nonanonymous',
+//     'moderated': 'unmoderated',
+//     'unmoderated': 'moderated'
+// };
 
 /***/ }),
 
@@ -24525,6 +24580,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/muc/utils.js");
 /* harmony import */ var _affiliations_utils_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./constants.js */ "./src/headless/plugins/muc/constants.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -24543,42 +24599,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const ROLES = ['moderator', 'participant', 'visitor'];
 const AFFILIATIONS = ['owner', 'admin', 'member', 'outcast', 'none'];
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.AFFILIATION_CHANGES = {
-  OWNER: 'owner',
-  ADMIN: 'admin',
-  MEMBER: 'member',
-  EXADMIN: 'exadmin',
-  EXOWNER: 'exowner',
-  EXOUTCAST: 'exoutcast',
-  EXMEMBER: 'exmember'
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.AFFILIATION_CHANGES = _constants_js__WEBPACK_IMPORTED_MODULE_13__.AFFILIATION_CHANGES;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.AFFILIATION_CHANGES_LIST = _constants_js__WEBPACK_IMPORTED_MODULE_13__.AFFILIATION_CHANGES_LIST;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_TRAFFIC_STATES = _constants_js__WEBPACK_IMPORTED_MODULE_13__.MUC_TRAFFIC_STATES;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_TRAFFIC_STATES_LIST = _constants_js__WEBPACK_IMPORTED_MODULE_13__.MUC_TRAFFIC_STATES_LIST;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_ROLE_CHANGES = _constants_js__WEBPACK_IMPORTED_MODULE_13__.MUC_ROLE_CHANGES;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_ROLE_CHANGES_LIST = _constants_js__WEBPACK_IMPORTED_MODULE_13__.MUC_ROLE_CHANGES_LIST;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC = {
+  INFO_CODES: _constants_js__WEBPACK_IMPORTED_MODULE_13__.INFO_CODES
 };
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.AFFILIATION_CHANGES_LIST = Object.values(_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.AFFILIATION_CHANGES);
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_TRAFFIC_STATES = {
-  ENTERED: 'entered',
-  EXITED: 'exited'
-};
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_TRAFFIC_STATES_LIST = Object.values(_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_TRAFFIC_STATES);
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_ROLE_CHANGES = {
-  OP: 'op',
-  DEOP: 'deop',
-  VOICE: 'voice',
-  MUTE: 'mute'
-};
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_ROLE_CHANGES_LIST = Object.values(_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_ROLE_CHANGES);
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC = {};
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC.INFO_CODES = {
-  'visibility_changes': ['100', '102', '103', '172', '173', '174'],
-  'self': ['110'],
-  'non_privacy_changes': ['104', '201'],
-  'muc_logging_changes': ['170', '171'],
-  'nickname_changes': ['210', '303'],
-  'disconnected': ['301', '307', '321', '322', '332', '333'],
-  'affiliation_changes': [..._core_js__WEBPACK_IMPORTED_MODULE_10__.converse.AFFILIATION_CHANGES_LIST],
-  'join_leave_events': [..._core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_TRAFFIC_STATES_LIST],
-  'role_changes': [..._core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_ROLE_CHANGES_LIST]
-};
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_NICK_CHANGED_CODE = _constants_js__WEBPACK_IMPORTED_MODULE_13__.MUC_NICK_CHANGED_CODE;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.ROOM_FEATURES = _constants_js__WEBPACK_IMPORTED_MODULE_13__.ROOM_FEATURES;
+_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.ROOMSTATUS = _constants_js__WEBPACK_IMPORTED_MODULE_13__.ROOMSTATUS;
 const {
   Strophe
 } = _core_js__WEBPACK_IMPORTED_MODULE_10__.converse.env; // Add Strophe Namespaces
@@ -24590,35 +24625,6 @@ Strophe.addNamespace('MUC_ROOMCONF', Strophe.NS.MUC + '#roomconfig');
 Strophe.addNamespace('MUC_USER', Strophe.NS.MUC + '#user');
 Strophe.addNamespace('MUC_HATS', 'xmpp:prosody.im/protocol/hats:1');
 Strophe.addNamespace('CONFINFO', 'urn:ietf:params:xml:ns:conference-info');
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.MUC_NICK_CHANGED_CODE = '303';
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.ROOM_FEATURES = ['passwordprotected', 'unsecured', 'hidden', 'publicroom', 'membersonly', 'open', 'persistent', 'temporary', 'nonanonymous', 'semianonymous', 'moderated', 'unmoderated', 'mam_enabled']; // No longer used in code, but useful as reference.
-//
-// const ROOM_FEATURES_MAP = {
-//     'passwordprotected': 'unsecured',
-//     'unsecured': 'passwordprotected',
-//     'hidden': 'publicroom',
-//     'publicroom': 'hidden',
-//     'membersonly': 'open',
-//     'open': 'membersonly',
-//     'persistent': 'temporary',
-//     'temporary': 'persistent',
-//     'nonanonymous': 'semianonymous',
-//     'semianonymous': 'nonanonymous',
-//     'moderated': 'unmoderated',
-//     'unmoderated': 'moderated'
-// };
-
-_core_js__WEBPACK_IMPORTED_MODULE_10__.converse.ROOMSTATUS = {
-  CONNECTED: 0,
-  CONNECTING: 1,
-  NICKNAME_REQUIRED: 2,
-  PASSWORD_REQUIRED: 3,
-  DISCONNECTED: 4,
-  ENTERED: 5,
-  DESTROYED: 6,
-  BANNED: 7,
-  CLOSING: 8
-};
 _core_js__WEBPACK_IMPORTED_MODULE_10__.converse.plugins.add('converse-muc', {
   dependencies: ['converse-chatboxes', 'converse-chat', 'converse-disco'],
   overrides: {
@@ -24950,12 +24956,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
-/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
-/* harmony import */ var lodash_es_isElement__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lodash-es/isElement */ "./node_modules/lodash-es/isElement.js");
+/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
+/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
+/* harmony import */ var lodash_es_isElement__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lodash-es/isElement */ "./node_modules/lodash-es/isElement.js");
 /* harmony import */ var _log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../log */ "./src/headless/log.js");
 /* harmony import */ var _utils_parse_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/parse-helpers */ "./src/headless/utils/parse-helpers.js");
-/* harmony import */ var lodash_es_pick__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lodash-es/pick */ "./node_modules/lodash-es/pick.js");
+/* harmony import */ var lodash_es_pick__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lodash-es/pick */ "./node_modules/lodash-es/pick.js");
 /* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
 /* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _utils_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/form */ "./src/headless/utils/form.js");
@@ -24970,6 +24976,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
 /* harmony import */ var _parsers_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./parsers.js */ "./src/headless/plugins/muc/parsers.js");
 /* harmony import */ var _converse_headless_shared_actions_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @converse/headless/shared/actions.js */ "./src/headless/shared/actions.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./constants.js */ "./src/headless/plugins/muc/constants.js");
+
 
 
 
@@ -24998,7 +25006,7 @@ const ACTION_INFO_CODES = ['301', '303', '333', '307', '321', '322'];
 const MUCSession = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_4__.Model.extend({
   defaults() {
     return {
-      'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED
+      'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED
     };
   }
 
@@ -25040,7 +25048,7 @@ const ChatRoomMixin = {
 
   async initialize() {
     this.initialized = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_9__.getOpenPromise)();
-    this.debouncedRejoin = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_15__["default"])(this.rejoin, 250);
+    this.debouncedRejoin = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_16__["default"])(this.rejoin, 250);
     this.set('box_id', `box-${this.get('jid')}`);
     this.initNotifications();
     this.initMessages();
@@ -25080,7 +25088,7 @@ const ChatRoomMixin = {
   },
 
   isEntered() {
-    return this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.ENTERED;
+    return this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.ENTERED;
   },
 
   /**
@@ -25104,7 +25112,7 @@ const ChatRoomMixin = {
       await this.fetchMessages().catch(e => _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e));
       return true;
     } else {
-      this.session.save('connection_status', _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED);
+      this.session.save('connection_status', _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED);
       this.clearOccupantsCache();
       return false;
     }
@@ -25127,13 +25135,13 @@ const ChatRoomMixin = {
     } // Set this early, so we don't rejoin in onHiddenChange
 
 
-    this.session.save('connection_status', _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.CONNECTING);
+    this.session.save('connection_status', _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.CONNECTING);
     await this.refreshDiscoInfo();
     nick = await this.getAndPersistNickname(nick);
 
     if (!nick) {
       (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
-        'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.NICKNAME_REQUIRED
+        'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.NICKNAME_REQUIRED
       });
 
       if (_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_show_logs_before_join')) {
@@ -25153,7 +25161,7 @@ const ChatRoomMixin = {
    * @method _converse.ChatRoom#rejoin
    */
   rejoin() {
-    this.session.save('connection_status', _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED);
+    this.session.save('connection_status', _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED);
     this.registerHandlers();
     this.clearOccupantsCache();
     return this.join();
@@ -25252,7 +25260,7 @@ const ChatRoomMixin = {
    * @method _converse.ChatRoom#onHiddenChange
    */
   async onHiddenChange() {
-    const roomstatus = _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS;
+    const roomstatus = _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS;
     const conn_status = this.session.get('connection_status');
 
     if (this.get('hidden')) {
@@ -25271,7 +25279,7 @@ const ChatRoomMixin = {
   },
 
   onOccupantAdded(occupant) {
-    if (_core_js__WEBPACK_IMPORTED_MODULE_6__._converse.isInfoVisible(_core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC_TRAFFIC_STATES.ENTERED) && this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.ENTERED && occupant.get('show') === 'online') {
+    if (_core_js__WEBPACK_IMPORTED_MODULE_6__._converse.isInfoVisible(_core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC_TRAFFIC_STATES.ENTERED) && this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.ENTERED && occupant.get('show') === 'online') {
       this.updateNotifications(occupant.get('nick'), _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC_TRAFFIC_STATES.ENTERED);
     }
   },
@@ -25876,15 +25884,20 @@ const ChatRoomMixin = {
     }
 
     (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
-      'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED
+      'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED
     });
   },
 
   async close(ev) {
+    const {
+      ENTERED,
+      CLOSING
+    } = _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS;
+    const was_entered = this.session.get('connection_status') === ENTERED;
     (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
-      'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.CLOSING
+      'connection_status': CLOSING
     });
-    this.sendMarkerForLastMessage('received', true);
+    was_entered && this.sendMarkerForLastMessage('received', true);
     await this.unregisterNickname();
     await this.leave();
     this.occupants.clearStore();
@@ -25989,6 +26002,7 @@ const ChatRoomMixin = {
   async getOutgoingMessageAttributes(attrs) {
     var _attrs;
 
+    await _core_js__WEBPACK_IMPORTED_MODULE_6__.api.emojis.initialize();
     const is_spoiler = this.get('composing_spoiler');
     let text = '',
         references;
@@ -26858,8 +26872,20 @@ const ChatRoomMixin = {
       'resource': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getResourceFromJid(jid) || (occupant === null || occupant === void 0 ? void 0 : (_occupant$attributes2 = occupant.attributes) === null || _occupant$attributes2 === void 0 ? void 0 : _occupant$attributes2.resource)
     };
 
-    if (data.is_me && data.states.includes(_core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC_NICK_CHANGED_CODE)) {
-      this.save('nick', data.nick);
+    if (data.is_me) {
+      let modified = false;
+
+      if (data.states.includes(_core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC_NICK_CHANGED_CODE)) {
+        modified = true;
+        this.set('nick', data.nick);
+      }
+
+      if (this.features.get(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.OCCUPANTID) && this.get('occupant-id') !== data.occupant_id) {
+        modified = true;
+        this.set('occupant_id', data.occupant_id);
+      }
+
+      modified && this.save();
     }
 
     if (occupant) {
@@ -27024,7 +27050,7 @@ const ChatRoomMixin = {
   isOwnMessage(msg) {
     let from;
 
-    if ((0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_16__["default"])(msg)) {
+    if ((0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_17__["default"])(msg)) {
       from = msg.getAttribute('from');
     } else if (msg instanceof _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.Message) {
       from = msg.get('from');
@@ -27036,13 +27062,13 @@ const ChatRoomMixin = {
   },
 
   getUpdatedMessageAttributes(message, attrs) {
-    const new_attrs = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.ChatBox.prototype.getUpdatedMessageAttributes.call(this, message, attrs);
-
-    new_attrs['from_muc'] = attrs['from_muc'];
+    const new_attrs = { ..._core_js__WEBPACK_IMPORTED_MODULE_6__._converse.ChatBox.prototype.getUpdatedMessageAttributes.call(this, message, attrs),
+      ...(0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_18__["default"])(attrs, ['from_muc', 'occupant_id'])
+    };
 
     if (this.isOwnMessage(attrs)) {
       const stanza_id_keys = Object.keys(attrs).filter(k => k.startsWith('stanza_id'));
-      Object.assign(new_attrs, (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_17__["default"])(attrs, stanza_id_keys));
+      Object.assign(new_attrs, (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_18__["default"])(attrs, stanza_id_keys));
 
       if (!message.get('received')) {
         new_attrs.received = new Date().toISOString();
@@ -27093,7 +27119,7 @@ const ChatRoomMixin = {
    *  Nodes(s) to be added as child nodes of the `presence` XML element.
    */
   async sendStatusPresence(type, status, child_nodes) {
-    if (this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.ENTERED) {
+    if (this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.ENTERED) {
       const presence = await _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.xmppstatus.constructPresence(type, this.getRoomJIDAndNick(), status);
       child_nodes === null || child_nodes === void 0 ? void 0 : child_nodes.map(c => (c === null || c === void 0 ? void 0 : c.tree()) ?? c).forEach(c => presence.cnode(c).up());
       _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(presence);
@@ -27193,14 +27219,14 @@ const ChatRoomMixin = {
         return true;
       }
 
-      message.save((0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_17__["default"])(attrs, MODERATION_ATTRIBUTES));
+      message.save((0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_18__["default"])(attrs, MODERATION_ATTRIBUTES));
       return true;
     } else {
       // Check if we have dangling moderation message
       const message = this.findDanglingModeration(attrs);
 
       if (message) {
-        const moderation_attrs = (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_17__["default"])(message.attributes, MODERATION_ATTRIBUTES);
+        const moderation_attrs = (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_18__["default"])(message.attributes, MODERATION_ATTRIBUTES);
         const new_attrs = Object.assign({
           'dangling_moderation': false
         }, attrs, moderation_attrs);
@@ -27364,7 +27390,7 @@ const ChatRoomMixin = {
           return false;
         }
 
-        const list = [...old_list, (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_17__["default"])(attrs, METADATA_ATTRIBUTES)];
+        const list = [...old_list, (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_18__["default"])(attrs, METADATA_ATTRIBUTES)];
         message.save('ogp_metadata', list);
         return true;
       }
@@ -27456,7 +27482,7 @@ const ChatRoomMixin = {
     }
 
     if (_utils_form__WEBPACK_IMPORTED_MODULE_3__["default"].shouldCreateGroupchatMessage(attrs)) {
-      const msg = (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_8__.handleCorrection)(this, attrs) || (await this.createMessage(attrs));
+      const msg = (await (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_8__.handleCorrection)(this, attrs)) || (await this.createMessage(attrs));
       this.removeNotification(attrs.nick, ['composing', 'paused']);
       this.handleUnreadMessage(msg);
     }
@@ -27468,7 +27494,7 @@ const ChatRoomMixin = {
     const text = (_pres$querySelector = pres.querySelector('error text')) === null || _pres$querySelector === void 0 ? void 0 : _pres$querySelector.textContent;
 
     if (text) {
-      if (this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.CONNECTING) {
+      if (this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.CONNECTING) {
         this.setDisconnectionState(text);
       } else {
         const attrs = {
@@ -27509,9 +27535,9 @@ const ChatRoomMixin = {
 
     const item = x.querySelector('item');
     const reason = item ? (_item$querySelector = item.querySelector('reason')) === null || _item$querySelector === void 0 ? void 0 : _item$querySelector.textContent : undefined;
-    const actor = item ? (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_18__["default"])(item.querySelector('actor'), 'getAttribute', 'nick') : undefined;
+    const actor = item ? (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_19__["default"])(item.querySelector('actor'), 'getAttribute', 'nick') : undefined;
     const message = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.disconnect_messages[codes[0]];
-    const status = codes.includes('301') ? _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.BANNED : _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED;
+    const status = codes.includes('301') ? _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.BANNED : _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED;
     this.setDisconnectionState(message, reason, actor, status);
   },
 
@@ -27688,10 +27714,10 @@ const ChatRoomMixin = {
    *  implied by) the server.
    * @param { String } reason - The reason provided for the disconnection
    * @param { String } actor - The person (if any) responsible for this disconnection
-   * @param { Integer } status - The status code (see `converse.ROOMSTATUS`)
+   * @param { Integer } status - The status code (see `ROOMSTATUS`)
    */
   setDisconnectionState(message, reason, actor) {
-    let status = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED;
+    let status = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED;
     this.session.save({
       'connection_status': status,
       'disconnection_actor': actor,
@@ -27718,7 +27744,7 @@ const ChatRoomMixin = {
         'nickname_validation_message': __('The nickname you chose is reserved or ' + 'currently in use, please choose a different one.')
       });
       this.session.save({
-        'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.NICKNAME_REQUIRED
+        'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.NICKNAME_REQUIRED
       });
     }
   },
@@ -27746,7 +27772,7 @@ const ChatRoomMixin = {
           'password_validation_message': reason || __('Password incorrect')
         });
         this.session.save({
-          'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.PASSWORD_REQUIRED
+          'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.PASSWORD_REQUIRED
         });
       }
 
@@ -27755,7 +27781,7 @@ const ChatRoomMixin = {
 
         this.setDisconnectionState(message, reason);
       } else if (error.querySelector('forbidden')) {
-        this.setDisconnectionState(_core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.disconnect_messages[301], reason, null, _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.BANNED);
+        this.setDisconnectionState(_core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.disconnect_messages[301], reason, null, _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.BANNED);
       }
     } else if (error_type === 'cancel') {
       if (error.querySelector('not-allowed')) {
@@ -27775,7 +27801,7 @@ const ChatRoomMixin = {
           'destroyed_reason': reason
         });
         this.session.save({
-          'connection_status': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DESTROYED
+          'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DESTROYED
         });
       } else if (error.querySelector('conflict')) {
         this.onNicknameClash(stanza);
@@ -27816,7 +27842,7 @@ const ChatRoomMixin = {
       if ((error === null || error === void 0 ? void 0 : error.getAttribute('type')) === 'wait' && error !== null && error !== void 0 && error.querySelector('resource-constraint')) {
         // If we get a <resource-constraint> error, we assume it's in context of XEP-0437 RAI.
         // We remove this MUC's host from the list of enabled domains and rejoin the MUC.
-        if (this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.DISCONNECTED) {
+        if (this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED) {
           this.rejoin();
         }
       }
@@ -27839,8 +27865,8 @@ const ChatRoomMixin = {
     if (stanza.querySelector("status[code='110']")) {
       this.onOwnPresence(stanza);
 
-      if (this.getOwnRole() !== 'none' && this.session.get('connection_status') === _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.CONNECTING) {
-        this.session.save('connection_status', _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.CONNECTED);
+      if (this.getOwnRole() !== 'none' && this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.CONNECTING) {
+        this.session.save('connection_status', _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.CONNECTED);
       }
     } else {
       this.updateOccupantsOnPresence(stanza);
@@ -27864,13 +27890,19 @@ const ChatRoomMixin = {
    */
   async onOwnPresence(stanza) {
     await this.occupants.fetched;
+
+    if (stanza.getAttribute('type') === 'unavailable') {
+      this.handleDisconnection(stanza);
+      return;
+    }
+
     const old_status = this.session.get('connection_status');
 
-    if (stanza.getAttribute('type') !== 'unavailable' && old_status !== _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.ENTERED && old_status !== _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.CLOSING) {
+    if (old_status !== _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.ENTERED && old_status !== _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.CLOSING) {
       // Set connection_status before creating the occupant, but
       // only trigger afterwards, so that plugins can access the
       // occupant in their event handlers.
-      this.session.save('connection_status', _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.ROOMSTATUS.ENTERED, {
+      this.session.save('connection_status', _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.ENTERED, {
         'silent': true
       });
       this.updateOccupantsOnPresence(stanza);
@@ -27879,35 +27911,18 @@ const ChatRoomMixin = {
       this.updateOccupantsOnPresence(stanza);
     }
 
-    if (stanza.getAttribute('type') === 'unavailable') {
-      this.handleDisconnection(stanza);
-      return;
-    } else {
-      const locked_room = stanza.querySelector("status[code='201']");
+    const locked_room = stanza.querySelector("status[code='201']");
 
-      if (locked_room) {
-        if (this.get('auto_configure')) {
-          this.autoConfigureChatRoom().then(() => this.refreshDiscoInfo());
-        } else if (_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_instant_rooms')) {
-          // Accept default configuration
-          this.sendConfiguration().then(() => this.refreshDiscoInfo());
-        } else {
-          this.session.save({
-            'view': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC.VIEWS.CONFIG
-          });
-          return;
-        }
-      } else if (!this.features.get('fetched')) {
-        // The features for this groupchat weren't fetched.
-        // That must mean it's a new groupchat without locking
-        // (in which case Prosody doesn't send a 201 status),
-        // otherwise the features would have been fetched in
-        // the "initialize" method already.
-        if (this.getOwnAffiliation() === 'owner' && this.get('auto_configure')) {
-          this.autoConfigureChatRoom().then(() => this.refreshDiscoInfo());
-        } else {
-          this.getDiscoInfo();
-        }
+    if (locked_room) {
+      if (this.get('auto_configure')) {
+        await this.autoConfigureChatRoom().then(() => this.refreshDiscoInfo());
+      } else if (_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_instant_rooms')) {
+        // Accept default configuration
+        await this.sendConfiguration().then(() => this.refreshDiscoInfo());
+      } else {
+        this.session.save({
+          'view': _core_js__WEBPACK_IMPORTED_MODULE_6__.converse.MUC.VIEWS.CONFIG
+        });
       }
     }
   },
@@ -28104,19 +28119,6 @@ class ChatRoomOccupants extends _converse_skeletor_src_collection_js__WEBPACK_IM
     attrs.id = attrs.occupant_id || (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.getUniqueId)();
     return super.create(attrs, options);
   }
-  /**
-   * Get the {@link _converse.ChatRoomOccupant} instance which
-   * represents the current user.
-   * @method _converse.ChatRoomOccupants#getOwnOccupant
-   * @returns { _converse.ChatRoomOccupant }
-   */
-
-
-  getOwnOccupant() {
-    return this.findWhere({
-      'jid': _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.bare_jid
-    });
-  }
 
   async fetchMembers() {
     var _this$getOwnOccupant;
@@ -28170,10 +28172,10 @@ class ChatRoomOccupants extends _converse_skeletor_src_collection_js__WEBPACK_IM
    */
 
   /**
-   * Try to find an existing occupant based on the passed in
-   * data object.
+   * Try to find an existing occupant based on the provided
+   * @link { OccupantData } object.
    *
-   * Fetching the user by occupant_id is the quickest, O(1),
+   * Fetching the user by `occupant_id` is the quickest, O(1),
    * since it's a dictionary lookup.
    *
    * Fetching by jid or nick is O(n), since it requires traversing an array.
@@ -28195,6 +28197,20 @@ class ChatRoomOccupants extends _converse_skeletor_src_collection_js__WEBPACK_IM
       jid
     }) || data.nick && this.findWhere({
       'nick': data.nick
+    });
+  }
+  /**
+   * Get the {@link _converse.ChatRoomOccupant} instance which
+   * represents the current user.
+   * @method _converse.ChatRoomOccupants#getOwnOccupant
+   * @returns { _converse.ChatRoomOccupant }
+   */
+
+
+  getOwnOccupant() {
+    return this.findOccupant({
+      'jid': _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.bare_jid,
+      'occupant_id': this.chatroom.get('occupant_id')
     });
   }
 
@@ -28352,6 +28368,29 @@ function getOccupantID(stanza, chatbox) {
   }
 }
 /**
+ * Determines whether the sender of this MUC message is the current user or
+ * someone else.
+ * @param { MUCMessageAttributes } attrs
+ * @param { _converse.ChatRoom } chatbox
+ * @returns { 'me'|'them' }
+ */
+
+
+function getSender(attrs, chatbox) {
+  let is_me;
+  const own_occupant_id = chatbox.get('occupant_id');
+
+  if (own_occupant_id) {
+    is_me = attrs.occupant_id === own_occupant_id;
+  } else if (attrs.from_real_jid) {
+    is_me = Strophe.getBareJidFromJid(attrs.from_real_jid) === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bare_jid;
+  } else {
+    is_me = attrs.nick === chatbox.get('nick');
+  }
+
+  return is_me ? 'me' : 'them';
+}
+/**
  * Parses a passed in message stanza and returns an object of attributes.
  * @param { XMLElement } stanza - The message stanza
  * @param { XMLElement } original_stanza - The original stanza, that contains the
@@ -28376,10 +28415,7 @@ async function parseMUCMessage(stanza, chatbox) {
 
   const delay = sizzle(`delay[xmlns="${Strophe.NS.DELAY}"]`, original_stanza).pop();
   const from = stanza.getAttribute('from');
-  const from_muc = Strophe.getBareJidFromJid(from);
-  const nick = Strophe.unescapeNode(Strophe.getResourceFromJid(from));
   const marker = (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getChatMarker)(stanza);
-  const now = new Date().toISOString();
   /**
    * @typedef { Object } MUCMessageAttributes
    * The object which {@link parseMUCMessage} returns
@@ -28439,40 +28475,39 @@ async function parseMUCMessage(stanza, chatbox) {
 
   let attrs = Object.assign({
     from,
-    from_muc,
-    nick,
-    'is_forwarded': !!stanza.querySelector('forwarded'),
     'activities': getMEPActivities(stanza),
-    'body': (_stanza$querySelector = stanza.querySelector('body')) === null || _stanza$querySelector === void 0 ? void 0 : (_stanza$querySelector2 = _stanza$querySelector.textContent) === null || _stanza$querySelector2 === void 0 ? void 0 : _stanza$querySelector2.trim(),
+    'body': (_stanza$querySelector = stanza.querySelector(':scope > body')) === null || _stanza$querySelector === void 0 ? void 0 : (_stanza$querySelector2 = _stanza$querySelector.textContent) === null || _stanza$querySelector2 === void 0 ? void 0 : _stanza$querySelector2.trim(),
     'chat_state': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getChatState)(stanza),
+    'from_muc': Strophe.getBareJidFromJid(from),
     'is_archived': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isArchived)(original_stanza),
     'is_carbon': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isCarbon)(original_stanza),
     'is_delayed': !!delay,
+    'is_forwarded': !!stanza.querySelector('forwarded'),
     'is_headline': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isHeadline)(stanza),
     'is_markable': !!sizzle(`markable[xmlns="${Strophe.NS.MARKERS}"]`, stanza).length,
     'is_marker': !!marker,
     'is_unstyled': !!sizzle(`unstyled[xmlns="${Strophe.NS.STYLING}"]`, stanza).length,
     'marker_id': marker && marker.getAttribute('id'),
     'msgid': stanza.getAttribute('id') || original_stanza.getAttribute('id'),
+    'nick': Strophe.unescapeNode(Strophe.getResourceFromJid(from)),
     'occupant_id': getOccupantID(stanza, chatbox),
     'receipt_id': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getReceiptId)(stanza),
     'received': new Date().toISOString(),
     'references': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getReferences)(stanza),
     'subject': (_stanza$querySelector3 = stanza.querySelector('subject')) === null || _stanza$querySelector3 === void 0 ? void 0 : _stanza$querySelector3.textContent,
     'thread': (_stanza$querySelector4 = stanza.querySelector('thread')) === null || _stanza$querySelector4 === void 0 ? void 0 : _stanza$querySelector4.textContent,
-    'time': delay ? dayjs__WEBPACK_IMPORTED_MODULE_0___default()(delay.getAttribute('stamp')).toISOString() : now,
+    'time': delay ? dayjs__WEBPACK_IMPORTED_MODULE_0___default()(delay.getAttribute('stamp')).toISOString() : new Date().toISOString(),
     'to': stanza.getAttribute('to'),
     'type': stanza.getAttribute('type')
   }, (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getErrorAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getOutOfBandAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getSpoilerAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getCorrectionAttributes)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getStanzaIDs)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getOpenGraphMetadata)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getRetractionAttributes)(stanza, original_stanza), getModerationAttributes(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getEncryptionAttributes)(stanza, _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse));
   await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.emojis.initialize();
-  const from_real_jid = attrs.is_archived && getJIDFromMUCUserData(stanza, attrs) || ((_chatbox$occupants$fi = chatbox.occupants.findOccupant(attrs)) === null || _chatbox$occupants$fi === void 0 ? void 0 : _chatbox$occupants$fi.get('jid'));
+  attrs.from_real_jid = attrs.is_archived && getJIDFromMUCUserData(stanza) || ((_chatbox$occupants$fi = chatbox.occupants.findOccupant(attrs)) === null || _chatbox$occupants$fi === void 0 ? void 0 : _chatbox$occupants$fi.get('jid'));
   attrs = Object.assign({
-    from_real_jid,
     'is_only_emojis': attrs.body ? u.isOnlyEmojis(attrs.body) : false,
     'is_valid_receipt_request': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isValidReceiptRequest)(stanza, attrs),
     'message': attrs.body || attrs.error,
-    // TODO: Remove and use body and error attributes instead
-    'sender': attrs.nick === chatbox.get('nick') ? 'me' : 'them'
+    // TODO: Should only be used for error and info messages
+    'sender': getSender(attrs, chatbox)
   }, attrs);
 
   if (attrs.is_archived && original_stanza.getAttribute('from') !== attrs.from_muc) {
@@ -28639,7 +28674,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lodash_es_isObject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash-es/isObject */ "./node_modules/lodash-es/isObject.js");
 /* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
-/* harmony import */ var _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/plugins/muc/index.js */ "./src/headless/plugins/muc/index.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants.js */ "./src/headless/plugins/muc/constants.js");
 /* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
 /* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
 
@@ -28666,11 +28701,11 @@ function getAssignableRoles(occupant) {
   let disabled = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('modtools_disable_assign');
 
   if (!Array.isArray(disabled)) {
-    disabled = disabled ? _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_1__.ROLES : [];
+    disabled = disabled ? _constants_js__WEBPACK_IMPORTED_MODULE_1__.ROLES : [];
   }
 
   if (occupant.get('role') === 'moderator') {
-    return _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_1__.ROLES.filter(r => !disabled.includes(r));
+    return _constants_js__WEBPACK_IMPORTED_MODULE_1__.ROLES.filter(r => !disabled.includes(r));
   } else {
     return [];
   }
@@ -32225,10 +32260,8 @@ function getMediaURLs(arr, text) {
   }).filter(o => o);
 }
 /**
- * Determines whether the passed in message attributes represent a
- * message which corrects a previously received message, or an
- * older message which has already been corrected.
- * In both cases, update the corrected message accordingly.
+ * Determines whether the given attributes of an incoming message
+ * represent a XEP-0308 correction and, if so, handles it appropriately.
  * @private
  * @method _converse.ChatBox#handleCorrection
  * @param { _converse.ChatBox | _converse.ChatRoom }
@@ -32238,7 +32271,7 @@ function getMediaURLs(arr, text) {
  *  message or `undefined` if not applicable.
  */
 
-function handleCorrection(model, attrs) {
+async function handleCorrection(model, attrs) {
   if (!attrs.replace_id || !attrs.from) {
     return;
   }
@@ -32258,7 +32291,8 @@ function handleCorrection(model, attrs) {
   const message = model.messages.models.find(query);
 
   if (!message) {
-    return;
+    attrs['older_versions'] = {};
+    return await model.createMessage(attrs); // eslint-disable-line no-return-await
   }
 
   const older_versions = message.get('older_versions') || {};
@@ -34739,7 +34773,7 @@ function decodeHTMLEntities(str) {
   isEmptyMessage,
   getUniqueId,
   toStanza: _stanza_js__WEBPACK_IMPORTED_MODULE_9__.toStanza,
-  stanza: _stanza_js__WEBPACK_IMPORTED_MODULE_9__.stanza
+  stx: _stanza_js__WEBPACK_IMPORTED_MODULE_9__.stx
 }, u));
 
 /***/ }),
@@ -35309,7 +35343,7 @@ helpers.reduceTextFromReferences = (text, refs) => refs.reduce(reduceReferences,
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "stanza": () => (/* binding */ stanza),
+/* harmony export */   "stx": () => (/* binding */ stx),
 /* harmony export */   "toStanza": () => (/* binding */ toStanza)
 /* harmony export */ });
 const parser = new DOMParser();
@@ -35323,7 +35357,14 @@ function toStanza(string) {
 
   return node.firstElementChild;
 }
-function stanza(strings) {
+/**
+ * Tagged template literal function which can be used to generate XML stanzas.
+ * Similar to the `html` function, from Lit.
+ *
+ * @example stx`<presence type="${type}"><show>${show}</show></presence>`
+ */
+
+function stx(strings) {
   for (var _len = arguments.length, values = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     values[_key - 1] = arguments[_key];
   }
@@ -38933,9 +38974,6 @@ const {
 
 function whenNotConnected(o) {
   const connection_status = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.connfeedback.get('connection_status');
-
-  console.log("connection_status");
-  console.log(connection_status);
 
   if ([Strophe.Status.RECONNECTING, Strophe.Status.CONNECTING].includes(connection_status)) {
     return (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
@@ -43642,7 +43680,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
 /* harmony import */ var _templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/moderator-tools.js */ "./src/plugins/muc-views/templates/moderator-tools.js");
-/* harmony import */ var _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/muc/index.js */ "./src/headless/plugins/muc/index.js");
+/* harmony import */ var _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/muc/constants.js */ "./src/headless/plugins/muc/constants.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
@@ -43748,8 +43786,8 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
         'loading_users_with_affiliation': this.loading_users_with_affiliation,
         'queryAffiliation': ev => this.queryAffiliation(ev),
         'queryRole': ev => this.queryRole(ev),
-        'queryable_affiliations': _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_2__.AFFILIATIONS.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
-        'queryable_roles': _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_2__.ROLES.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
+        'queryable_affiliations': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__.AFFILIATIONS.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
+        'queryable_roles': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__.ROLES.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
         'roles_filter': this.roles_filter,
         'switchTab': ev => this.switchTab(ev),
         'toggleForm': ev => this.toggleForm(ev),
@@ -52124,6 +52162,7 @@ class AutoComplete {
   }
 
   goto(i) {
+    let scroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     // Should not be used directly, highlights specific item without any checks!
     const list = this.ul.children;
 
@@ -52136,9 +52175,13 @@ class AutoComplete {
     if (i > -1 && list.length > 0) {
       list[i].setAttribute("aria-selected", "true");
       list[i].focus();
-      this.status.textContent = list[i].textContent; // scroll to highlighted element in case parent's height is fixed
+      this.status.textContent = list[i].textContent;
 
-      this.ul.scrollTop = list[i].offsetTop - this.ul.clientHeight + list[i].clientHeight;
+      if (scroll) {
+        // scroll to highlighted element in case parent's height is fixed
+        this.ul.scrollTop = list[i].offsetTop - this.ul.clientHeight + list[i].clientHeight;
+      }
+
       this.trigger("suggestion-box-highlight", {
         'text': this.suggestions[this.index]
       });
@@ -52169,7 +52212,8 @@ class AutoComplete {
     const li = u.ancestor(ev.target, 'li');
 
     if (li) {
-      this.goto(Array.prototype.slice.call(this.ul.children).indexOf(li));
+      const index = Array.prototype.slice.call(this.ul.children).indexOf(li);
+      this.goto(index, false);
     }
   }
 
@@ -56412,12 +56456,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _element_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element.js */ "./src/shared/components/element.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _styles_message_versions_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/message-versions.scss */ "./src/shared/components/styles/message-versions.scss");
+
+
 
 
 
 const {
   dayjs
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
+
+const tpl_older_version = (k, older_versions) => lit__WEBPACK_IMPORTED_MODULE_2__.html`<p class="older-msg"><time>${dayjs(k).format('MMM D, YYYY, HH:mm:ss')}</time>: ${older_versions[k]}</p>`;
+
 class MessageVersions extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElement {
   static get properties() {
     return {
@@ -56429,12 +56480,12 @@ class MessageVersions extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomEle
 
   render() {
     const older_versions = this.model.get('older_versions');
+    const keys = Object.keys(older_versions);
     return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-            <h4>Older versions</h4>
-            ${Object.keys(older_versions).map(k => lit__WEBPACK_IMPORTED_MODULE_2__.html`<p class="older-msg"><time>${dayjs(k).format('MMM D, YYYY, HH:mm:ss')}</time>: ${older_versions[k]}</p>`)}
+            ${keys.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Older versions')}</h4> ${keys.map(k => tpl_older_version(k, older_versions))}` : lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('No older versions found')}</h4>`}
             <hr/>
-            <h4>Current version</h4>
-            <p>${this.model.getMessageText()}</p>`;
+            <h4>${(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Current version')}</h4>
+            <p><time>${dayjs(this.model.get('time')).format('MMM D, YYYY, HH:mm:ss')}</time>: ${this.model.getMessageText()}</p>`;
   }
 
 }
@@ -58526,57 +58577,57 @@ class RichText extends String {
     });
   }
   /**
-   * Look for XEP-0393 styling directives and add templates for rendering
-   * them.
+   * Look for XEP-0393 styling directives and add templates for rendering them.
    */
 
 
   addStyling() {
+    if (!(0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.containsDirectives)(this, this.mentions)) {
+      return;
+    }
+
     const references = [];
+    const mention_ranges = this.mentions.map(m => Array.from({
+      'length': Number(m.end)
+    }, (_, i) => Number(m.begin) + i));
+    let i = 0;
 
-    if ((0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.containsDirectives)(this, this.mentions)) {
-      const mention_ranges = this.mentions.map(m => Array.from({
-        'length': Number(m.end)
-      }, (v, i) => Number(m.begin) + i));
-      let i = 0;
-
-      while (i < this.length) {
-        if (mention_ranges.filter(r => r.includes(i)).length) {
-          // eslint-disable-line no-loop-func
-          // Don't treat potential directives if they fall within a
-          // declared XEP-0372 reference
-          i++;
-          continue;
-        }
-
-        const {
-          d,
-          length
-        } = (0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.getDirectiveAndLength)(this, i);
-
-        if (d && length) {
-          const is_quote = (0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.isQuoteDirective)(d);
-          const end = i + length;
-          const slice_end = is_quote ? end : end - d.length;
-          let slice_begin = d === '```' ? i + d.length + 1 : i + d.length;
-
-          if (is_quote && this[slice_begin] === ' ') {
-            // Trim leading space inside codeblock
-            slice_begin += 1;
-          }
-
-          const offset = slice_begin;
-          const text = this.slice(slice_begin, slice_end);
-          references.push({
-            'begin': i,
-            'template': (0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.getDirectiveTemplate)(d, text, offset, this.options),
-            end
-          });
-          i = end;
-        }
-
+    while (i < this.length) {
+      if (mention_ranges.filter(r => r.includes(i)).length) {
+        // eslint-disable-line no-loop-func
+        // Don't treat potential directives if they fall within a
+        // declared XEP-0372 reference
         i++;
+        continue;
       }
+
+      const {
+        d,
+        length
+      } = (0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.getDirectiveAndLength)(this, i);
+
+      if (d && length) {
+        const is_quote = (0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.isQuoteDirective)(d);
+        const end = i + length;
+        const slice_end = is_quote ? end : end - d.length;
+        let slice_begin = d === '```' ? i + d.length + 1 : i + d.length;
+
+        if (is_quote && this[slice_begin] === ' ') {
+          // Trim leading space inside codeblock
+          slice_begin += 1;
+        }
+
+        const offset = slice_begin;
+        const text = this.slice(slice_begin, slice_end);
+        references.push({
+          'begin': i,
+          'template': (0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.getDirectiveTemplate)(d, text, offset, this.options),
+          end
+        });
+        i = end;
+      }
+
+      i++;
     }
 
     references.forEach(ref => this.addTemplateResult(ref.begin, ref.end, ref.template));
@@ -58817,8 +58868,7 @@ function isValidDirective(d, text, i, opening) {
   return true;
 }
 /**
- * Given a specific index "i" of "text", return the directive it matches or
- * null otherwise.
+ * Given a specific index "i" of "text", return the directive it matches or null otherwise.
  * @param { String } text - The text in which  the directive appears
  * @param { Number } i - The directive index
  * @param { Boolean } opening - Whether we're looking for an opening or closing directive
@@ -58829,7 +58879,7 @@ function getDirective(text, i) {
   let opening = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
   let d;
 
-  if (/(^```\s*\n|^```\s*$)/.test(text.slice(i)) && (i === 0 || text[i - 1] === '\n' || text[i - 1] === '>')) {
+  if (/(^```[\s,\u200B]*\n)|(^```[\s,\u200B]*$)/.test(text.slice(i)) && (i === 0 || text[i - 1] === '>' || /\n\u200B{0,2}$/.test(text.slice(0, i)))) {
     d = text.slice(i, i + 3);
   } else if (styling_directives.includes(text.slice(i, i + 1))) {
     d = text.slice(i, i + 1);
@@ -58851,10 +58901,7 @@ function getDirective(text, i) {
 
 
 function getDirectiveLength(d, text, i) {
-  if (!d) {
-    return 0;
-  }
-
+  if (!d) return 0;
   const begin = i;
   i += d.length;
 
@@ -58906,8 +58953,8 @@ function getDirectiveTemplate(d, text, offset, options) {
   const template = styling_templates[styling_map[d].name];
 
   if (isQuoteDirective(d)) {
-    const newtext = text.replace(/\n>/g, '\n') // Don't show the directive itself
-    .replace(/\n$/, ''); // Trim line-break at the end
+    const newtext = text // Don't show the directive itself
+    .replace(/\n>\s/g, '\n\u200B\u200B').replace(/\n>/g, '\n\u200B').replace(/\n$/, ''); // Trim line-break at the end
 
     return template(newtext, offset, options);
   } else {
@@ -62590,6 +62637,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss ***!
   \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -76511,6 +76585,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/shared/components/styles/message-versions.scss":
+/*!************************************************************!*\
+  !*** ./src/shared/components/styles/message-versions.scss ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-versions.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
