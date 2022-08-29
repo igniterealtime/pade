@@ -583,7 +583,7 @@ function startConverse(credential) {
 	let wsServiceUrl = getSetting('websocketUri', defaultWSServiceUrl);	
 	if (wsServiceUrl.trim() == "") discoverConnectionMethods = true;
 	
-    const displayname = getSetting("displayname");	
+    let displayname = getSetting("displayname");	
 	
 	if (!displayname) {
 		displayname = username;
