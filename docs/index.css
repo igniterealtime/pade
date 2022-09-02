@@ -24,7 +24,8 @@
 /* Plain Simple */
 
 .conversejs.theme-plainsimple {
-
+	--chat-head-color: #aaaaaa;
+	--chatroom-head-bg-color: #aaaaaa;
 }
 
 .conversejs.theme-plainsimple.converse-fullscreen .flyout {
