@@ -90,6 +90,7 @@
             });
 
             MeetDialog = BootstrapModal.extend({
+                id: "plugin-meet-modal",					
                 initialize() {
                     BootstrapModal.prototype.initialize.apply(this, arguments);
                     this.listenTo(this.model, 'change', this.render);
