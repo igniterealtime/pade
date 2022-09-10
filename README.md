@@ -1,6 +1,6 @@
 <img src="https://discourse.igniterealtime.org/uploads/default/original/2X/8/8a20644093cdefad9f3d16e92a7a3d83c9a1fffe.png" />
 
-Pade is the Yoruba word for "Meet". It is a web based unified communications client for Openfire Meetings and uses the following front end web applications.
+Pàdé is the Yoruba word for "Meet". It is a web based unified communications client for Openfire Meetings and uses the following front end web applications.
 
 - [Converse.js](https://conversejs.org/) for XMPP chat/groupchat with Openfire
 - [Jitsi Meet](https://jitsi.org/jitsi-meet/) for SFU-based WebRTC audio/video conferencing, screen share and real-time application collaboration with Jitsi Video-bridge
