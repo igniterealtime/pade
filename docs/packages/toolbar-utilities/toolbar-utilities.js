@@ -21,6 +21,12 @@
                 if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 				
                 buttons.push(html`
+                    <button class="toolbar-utilities-refresh" title="${__('Hide chat')}" @click=${hideChat}/>
+                        <converse-icon style="width:18px; height:18px; ${color}" class="fa fa-minus" size="1em"></converse-icon>
+                    </button>
+                `);	
+				
+                buttons.push(html`
                     <button class="toolbar-utilities-scroll" title="${__('Scroll to the bottom')}" @click=${scrollToBottom}/>
                         <converse-icon style="width:18px; height:18px; ${color}" class="fa fa-angle-double-down" size="1em"></converse-icon>
                     </button>
@@ -36,7 +42,7 @@
                     <button class="toolbar-utilities-refresh" title="${__('Refresh chat history')}" @click=${refreshHistory}/>
                         <converse-icon style="width:18px; height:18px; ${color}" class="fa fa-sync" size="1em"></converse-icon>
                     </button>
-                `);
+                `);			
 
                 return buttons;
             });
@@ -97,6 +103,16 @@
 		console.debug("scrollToBottom", chatview);
 
         chatview.scrollDown();
+    }
+	
+    function hideChat(ev)
+    {
+        ev.stopPropagation();
+        ev.preventDefault();
+		
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+		toolbar_el.model.set('hidden', true);		
+		console.debug("hideChat", toolbar_el.model);
     }
 
 }));
