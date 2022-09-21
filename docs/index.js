@@ -267,13 +267,14 @@ function setupPushNotifications(pass) {
 
     console.debug("setupPushNotifications - vapidGetPublicKey", url, options);
 		
-	fetch(url, options).then(function(response) {return response.json()}).then(function(vapid)
-	{
-		if (vapid.publicKey)
-		{
+	fetch(url, options).then(function(response) {
+		if (response.status < 400) {
+			return response.json()
+		}	
+	}).then(function(vapid) {
+		if (vapid?.publicKey) {
 			subscribeForPushNotifications(vapid.publicKey, pass);
 		}
-
 	}).catch(function (err) {
 		console.error('vapidGetPublicKey error!', err);
 	});	

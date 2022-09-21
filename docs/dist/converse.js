@@ -17015,24 +17015,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared/constants.js */ "./src/shared/constants.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var shared_styles_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! shared/styles/index.scss */ "./src/shared/styles/index.scss");
-/* harmony import */ var _plugins_bookmark_views_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./plugins/bookmark-views/index.js */ "./src/plugins/bookmark-views/index.js");
-/* harmony import */ var _plugins_chatview_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./plugins/chatview/index.js */ "./src/plugins/chatview/index.js");
-/* harmony import */ var _plugins_controlbox_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugins/controlbox/index.js */ "./src/plugins/controlbox/index.js");
-/* harmony import */ var _plugins_dragresize_index_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./plugins/dragresize/index.js */ "./src/plugins/dragresize/index.js");
-/* harmony import */ var _plugins_fullscreen_index_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./plugins/fullscreen/index.js */ "./src/plugins/fullscreen/index.js");
-/* harmony import */ var _plugins_headlines_view_index_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./plugins/headlines-view/index.js */ "./src/plugins/headlines-view/index.js");
-/* harmony import */ var _plugins_mam_views_index_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./plugins/mam-views/index.js */ "./src/plugins/mam-views/index.js");
+/* harmony import */ var _plugins_modal_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./plugins/modal/index.js */ "./src/plugins/modal/index.js");
+/* harmony import */ var _plugins_bookmark_views_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./plugins/bookmark-views/index.js */ "./src/plugins/bookmark-views/index.js");
+/* harmony import */ var _plugins_chatview_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugins/chatview/index.js */ "./src/plugins/chatview/index.js");
+/* harmony import */ var _plugins_controlbox_index_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./plugins/controlbox/index.js */ "./src/plugins/controlbox/index.js");
+/* harmony import */ var _plugins_headlines_view_index_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./plugins/headlines-view/index.js */ "./src/plugins/headlines-view/index.js");
+/* harmony import */ var _plugins_mam_views_index_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./plugins/mam-views/index.js */ "./src/plugins/mam-views/index.js");
+/* harmony import */ var _plugins_muc_views_index_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./plugins/muc-views/index.js */ "./src/plugins/muc-views/index.js");
 /* harmony import */ var _plugins_minimize_index_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./plugins/minimize/index.js */ "./src/plugins/minimize/index.js");
-/* harmony import */ var _plugins_muc_views_index_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./plugins/muc-views/index.js */ "./src/plugins/muc-views/index.js");
-/* harmony import */ var _plugins_notifications_index_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./plugins/notifications/index.js */ "./src/plugins/notifications/index.js");
+/* harmony import */ var _plugins_notifications_index_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./plugins/notifications/index.js */ "./src/plugins/notifications/index.js");
+/* harmony import */ var _plugins_profile_index_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./plugins/profile/index.js */ "./src/plugins/profile/index.js");
 /* harmony import */ var _plugins_omemo_index_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./plugins/omemo/index.js */ "./src/plugins/omemo/index.js");
-/* harmony import */ var _plugins_profile_index_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./plugins/profile/index.js */ "./src/plugins/profile/index.js");
-/* harmony import */ var _plugins_push_index_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./plugins/push/index.js */ "./src/plugins/push/index.js");
-/* harmony import */ var _plugins_register_index_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./plugins/register/index.js */ "./src/plugins/register/index.js");
-/* harmony import */ var _plugins_roomslist_index_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./plugins/roomslist/index.js */ "./src/plugins/roomslist/index.js");
-/* harmony import */ var _plugins_rootview_index_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./plugins/rootview/index.js */ "./src/plugins/rootview/index.js");
-/* harmony import */ var _plugins_rosterview_index_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./plugins/rosterview/index.js */ "./src/plugins/rosterview/index.js");
-/* harmony import */ var _plugins_singleton_index_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./plugins/singleton/index.js */ "./src/plugins/singleton/index.js");
+/* harmony import */ var _plugins_push_index_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./plugins/push/index.js */ "./src/plugins/push/index.js");
+/* harmony import */ var _plugins_register_index_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./plugins/register/index.js */ "./src/plugins/register/index.js");
+/* harmony import */ var _plugins_roomslist_index_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./plugins/roomslist/index.js */ "./src/plugins/roomslist/index.js");
+/* harmony import */ var _plugins_rootview_index_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./plugins/rootview/index.js */ "./src/plugins/rootview/index.js");
+/* harmony import */ var _plugins_rosterview_index_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./plugins/rosterview/index.js */ "./src/plugins/rosterview/index.js");
+/* harmony import */ var _plugins_singleton_index_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./plugins/singleton/index.js */ "./src/plugins/singleton/index.js");
+/* harmony import */ var _plugins_dragresize_index_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./plugins/dragresize/index.js */ "./src/plugins/dragresize/index.js");
+/* harmony import */ var _plugins_fullscreen_index_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./plugins/fullscreen/index.js */ "./src/plugins/fullscreen/index.js");
 /**
  * @description Converse.js (A browser based XMPP chat client)
  * @copyright 2021, The Converse developers
@@ -17050,20 +17051,18 @@ __webpack_require__.r(__webpack_exports__);
  * Any of the following plugin imports may be removed if the plugin is not needed
  */
 
+
  // Views for XEP-0048 Bookmarks
 
  // Renders standalone chat boxes for single user chat
 
  // The control box
 
- // Allows chat boxes to be resized by dragging them
 
-
-
-
- // Allows chat boxes to be minimized
 
  // Views related to MUC
+
+ // Allows chat boxes to be minimized
 
 
 
@@ -17075,6 +17074,9 @@ __webpack_require__.r(__webpack_exports__);
  // Show currently open chat rooms
 
 
+
+
+ // Allows chat boxes to be resized by dragging them
 
 
 /* END: Removable components */
@@ -20585,6 +20587,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
           'correcting': false,
           'edited': new Date().toISOString(),
           'message': attrs.body,
+          'ogp_metadata': [],
           'origin_id': u.getUniqueId(),
           'received': undefined,
           older_versions,
@@ -27087,27 +27090,11 @@ const ChatRoomMixin = {
    * @returns {Promise<boolean>}
    */
   async isJoined() {
-    const jid = this.get('jid');
-    const ping = (0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.$iq)({
-      'to': `${jid}/${this.get('nick')}`,
-      'type': 'get'
-    }).c('ping', {
-      'xmlns': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.PING
-    });
-
-    try {
-      await _core_js__WEBPACK_IMPORTED_MODULE_6__.api.sendIQ(ping);
-    } catch (e) {
-      if (e === null) {
-        _log__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`isJoined: Timeout error while checking whether we're joined to MUC: ${jid}`);
-      } else {
-        _log__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`isJoined: Apparently we're no longer connected to MUC: ${jid}`);
-      }
-
-      return false;
+    if (!_core_js__WEBPACK_IMPORTED_MODULE_6__.api.connection.connected()) {
+      await new Promise(resolve => _core_js__WEBPACK_IMPORTED_MODULE_6__.api.listen.once('reconnected', resolve));
     }
 
-    return true;
+    return _core_js__WEBPACK_IMPORTED_MODULE_6__.api.ping(`${this.get('jid')}/${this.get('nick')}`);
   },
 
   /**
@@ -28939,46 +28926,51 @@ const {
 } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   /**
-   * Pings the service represented by the passed in JID by sending an IQ stanza.
-   * @private
+   * Pings the entity represented by the passed in JID by sending an IQ stanza to it.
    * @method api.ping
    * @param { String } [jid] - The JID of the service to ping
+   *  If the ping is sent out to the user's bare JID and no response is received it will attempt to reconnect.
    * @param { Integer } [timeout] - The amount of time in
    *  milliseconds to wait for a response. The default is 10000;
+   * @returns { Boolean | null }
+   *  Whether the pinged entity responded with a non-error IQ stanza.
+   *  If we already know we're not connected, no ping is sent out and `null` is returned.
    */
   async ping(jid, timeout) {
-    // XXX: We could first check here if the server advertised that it supports PING.
+    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.connection.authenticated()) {
+      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn("Not pinging when we know we're not authenticated");
+      return null;
+    } // XXX: We could first check here if the server advertised that it supports PING.
     // However, some servers don't advertise while still responding to pings
-    //
     // const feature = _converse.disco_entities[_converse.domain].features.findWhere({'var': Strophe.NS.PING});
+
+
     (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.setLastStanzaDate)(new Date());
     jid = jid || Strophe.getDomainFromJid(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid);
+    const iq = $iq({
+      'type': 'get',
+      'to': jid,
+      'id': u.getUniqueId('ping')
+    }).c('ping', {
+      'xmlns': Strophe.NS.PING
+    });
+    const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(iq, timeout || 10000, false);
 
-    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.connection) {
-      const iq = $iq({
-        'type': 'get',
-        'to': jid,
-        'id': u.getUniqueId('ping')
-      }).c('ping', {
-        'xmlns': Strophe.NS.PING
-      });
-      const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(iq, timeout || 10000, false);
+    if (result === null) {
+      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`Timeout while pinging ${jid}`);
 
-      if (result === null) {
-        _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`Timeout while pinging ${jid}`);
-
-        if (jid === Strophe.getDomainFromJid(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid)) {
-          _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.connection.reconnect();
-        }
-      } else if (u.isErrorStanza(result)) {
-        _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Error while pinging ${jid}`);
-        _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(result);
+      if (jid === Strophe.getDomainFromJid(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid)) {
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.connection.reconnect();
       }
 
-      return true;
+      return false;
+    } else if (u.isErrorStanza(result)) {
+      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Error while pinging ${jid}`);
+      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(result);
+      return false;
     }
 
-    return false;
+    return true;
   }
 
 });
@@ -29017,9 +29009,9 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('co
 
     });
     Object.assign(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api, _api_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
-    setInterval(_utils_js__WEBPACK_IMPORTED_MODULE_2__.onEverySecond, 1000);
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_2__.onConnected);
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('reconnected', _utils_js__WEBPACK_IMPORTED_MODULE_2__.onConnected);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_2__.registerHandlers);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('reconnected', _utils_js__WEBPACK_IMPORTED_MODULE_2__.registerHandlers);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('disconnected', _utils_js__WEBPACK_IMPORTED_MODULE_2__.unregisterIntervalHandler);
     _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.listen.on('windowStateChanged', _utils_js__WEBPACK_IMPORTED_MODULE_2__.onWindowStateChanged);
   }
 
@@ -29036,12 +29028,13 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('co
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "onConnected": () => (/* binding */ onConnected),
 /* harmony export */   "onEverySecond": () => (/* binding */ onEverySecond),
 /* harmony export */   "onWindowStateChanged": () => (/* binding */ onWindowStateChanged),
+/* harmony export */   "registerHandlers": () => (/* binding */ registerHandlers),
 /* harmony export */   "registerPingHandler": () => (/* binding */ registerPingHandler),
 /* harmony export */   "registerPongHandler": () => (/* binding */ registerPongHandler),
-/* harmony export */   "setLastStanzaDate": () => (/* binding */ setLastStanzaDate)
+/* harmony export */   "setLastStanzaDate": () => (/* binding */ setLastStanzaDate),
+/* harmony export */   "unregisterIntervalHandler": () => (/* binding */ unregisterIntervalHandler)
 /* harmony export */ });
 /* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
 
@@ -29051,9 +29044,7 @@ const {
 } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.converse.env;
 let lastStanzaDate;
 function onWindowStateChanged(data) {
-  if (data.state === 'visible' && _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.connection.connected()) {
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.ping(null, 5000);
-  }
+  data.state === 'visible' && _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.ping(null, 5000);
 }
 function setLastStanzaDate(date) {
   lastStanzaDate = date;
@@ -29095,13 +29086,19 @@ function registerPingHandler() {
     }
   });
 }
-function onConnected() {
+let intervalId;
+function registerHandlers() {
   // Wrapper so that we can spy on registerPingHandler in tests
   registerPongHandler();
   registerPingHandler();
+  clearInterval(intervalId);
+  intervalId = setInterval(onEverySecond, 1000);
+}
+function unregisterIntervalHandler() {
+  clearInterval(intervalId);
 }
 function onEverySecond() {
-  if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.isTestEnv() || !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.connection.connected()) {
+  if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.isTestEnv() || !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.connection.authenticated()) {
     return;
   }
 
@@ -29109,10 +29106,7 @@ function onEverySecond() {
 
   if (ping_interval > 0) {
     const now = new Date();
-
-    if (!lastStanzaDate) {
-      lastStanzaDate = now;
-    }
+    lastStanzaDate = lastStanzaDate ?? now;
 
     if ((now - lastStanzaDate) / 1000 > ping_interval) {
       _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.ping();
@@ -29573,13 +29567,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _contact_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./contact.js */ "./src/headless/plugins/roster/contact.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var lodash_es_sum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash-es/sum */ "./node_modules/lodash-es/sum.js");
 /* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
 /* harmony import */ var _converse_skeletor_src_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/model */ "./node_modules/@converse/skeletor/src/model.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
-
 
 
 
@@ -29787,11 +29779,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
         contact.authorize().subscribe();
       }
     }
-  },
-
-  getNumOnlineContacts() {
-    const ignored = ['offline', 'unavailable'];
-    return (0,lodash_es_sum__WEBPACK_IMPORTED_MODULE_7__["default"])(this.models.filter(m => !ignored.includes(m.presence.get('show'))));
   },
 
   /**
@@ -30318,6 +30305,7 @@ const Presences = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_0__
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "contactsComparator": () => (/* binding */ contactsComparator),
+/* harmony export */   "getGroupsAutoCompleteList": () => (/* binding */ getGroupsAutoCompleteList),
 /* harmony export */   "groupsComparator": () => (/* binding */ groupsComparator),
 /* harmony export */   "onChatBoxesInitialized": () => (/* binding */ onChatBoxesInitialized),
 /* harmony export */   "onClearSession": () => (/* binding */ onClearSession),
@@ -30585,6 +30573,13 @@ function groupsComparator(a, b) {
     const b_header = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.HEADER_CURRENT_CONTACTS;
     return WEIGHTS[a] < WEIGHTS[b_header] ? -1 : WEIGHTS[a] > WEIGHTS[b_header] ? 1 : 0;
   }
+}
+function getGroupsAutoCompleteList() {
+  const {
+    roster
+  } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse;
+  const groups = roster.reduce((groups, contact) => groups.concat(contact.get('groups')), []);
+  return [...new Set(groups.filter(i => i))];
 }
 
 /***/ }),
@@ -32352,14 +32347,25 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   /**
+   * @method _converse.api.connection.authenticated
+   * @memberOf _converse.api.connection
+   * @returns {boolean} Whether we're authenticated to the XMPP server or not
+   */
+  authenticated() {
+    var _converse$connection;
+
+    return (_converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === null || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === void 0 ? void 0 : (_converse$connection = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection) === null || _converse$connection === void 0 ? void 0 : _converse$connection.authenticated) && true;
+  },
+
+  /**
    * @method _converse.api.connection.connected
    * @memberOf _converse.api.connection
    * @returns {boolean} Whether there is an established connection or not.
    */
   connected() {
-    var _converse$connection;
+    var _converse$connection2;
 
-    return (_converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === null || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === void 0 ? void 0 : (_converse$connection = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection) === null || _converse$connection === void 0 ? void 0 : _converse$connection.connected) && true;
+    return (_converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === null || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === void 0 ? void 0 : (_converse$connection2 = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection) === null || _converse$connection2 === void 0 ? void 0 : _converse$connection2.connected) && true;
   },
 
   /**
@@ -35762,757 +35768,6 @@ const __ = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.i18n.__;
 
 /***/ }),
 
-/***/ "./src/modals/add-contact.js":
-/*!***********************************!*\
-  !*** ./src/modals/add-contact.js ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var shared_autocomplete_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/autocomplete/index.js */ "./src/shared/autocomplete/index.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var lodash_es_compact__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash-es/compact */ "./node_modules/lodash-es/compact.js");
-/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
-/* harmony import */ var _templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/add-contact.js */ "./src/modals/templates/add-contact.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-
-
-
-
-
-
-
-const {
-  Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
-const AddContactModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
-  id: "add-contact-modal",
-
-  initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-  },
-
-  toHTML() {
-    return (0,_templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
-  },
-
-  afterRender() {
-    if (typeof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url') === 'string') {
-      this.initXHRAutoComplete();
-    } else {
-      this.initJIDAutoComplete();
-    }
-
-    const jid_input = this.el.querySelector('input[name="jid"]');
-    this.el.addEventListener('shown.bs.modal', () => jid_input.focus(), false);
-  },
-
-  getGroupsAutoCompleteList() {
-    return ['apple', 'pear', 'banana']; // return [...new Set(_converse.roster.map(i => i.get('gruop')).filter(i => i))];
-  },
-
-  initJIDAutoComplete() {
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
-      return;
-    }
-
-    const el = this.el.querySelector('.suggestion-box__jid').parentElement;
-    this.jid_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
-      'data': (text, input) => `${input.slice(0, input.indexOf("@"))}@${text}`,
-      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
-      'list': [...new Set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.map(item => Strophe.getDomainFromJid(item.get('jid'))))]
-    });
-  },
-
-  initGroupAutoComplete() {
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
-      return;
-    }
-
-    const el = this.el.querySelector('.suggestion-box__jid').parentElement;
-    this.jid_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
-      'data': (text, input) => `${input.slice(0, input.indexOf("@"))}@${text}`,
-      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
-      'list': [...new Set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.map(item => Strophe.getDomainFromJid(item.get('jid'))))]
-    });
-  },
-
-  initXHRAutoComplete() {
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
-      return this.initXHRFetch();
-    }
-
-    const el = this.el.querySelector('.suggestion-box__name').parentElement;
-    this.name_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
-      'auto_evaluate': false,
-      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
-      'list': []
-    });
-    const xhr = new window.XMLHttpRequest(); // `open` must be called after `onload` for mock/testing purposes.
-
-    xhr.onload = () => {
-      if (xhr.responseText) {
-        const r = xhr.responseText;
-        this.name_auto_complete.list = JSON.parse(r).map(i => ({
-          'label': i.fullname || i.jid,
-          'value': i.jid
-        }));
-        this.name_auto_complete.auto_completing = true;
-        this.name_auto_complete.evaluate();
-      }
-    };
-
-    const input_el = this.el.querySelector('input[name="name"]');
-    input_el.addEventListener('input', (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__["default"])(() => {
-      xhr.open("GET", `${_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url')}q=${encodeURIComponent(input_el.value)}`, true);
-      xhr.send();
-    }, 300));
-    this.name_auto_complete.on('suggestion-box-selectcomplete', ev => {
-      this.el.querySelector('input[name="name"]').value = ev.text.label;
-      this.el.querySelector('input[name="jid"]').value = ev.text.value;
-    });
-  },
-
-  initXHRFetch() {
-    this.xhr = new window.XMLHttpRequest();
-
-    this.xhr.onload = () => {
-      if (this.xhr.responseText) {
-        const r = this.xhr.responseText;
-        const list = JSON.parse(r).map(i => ({
-          'label': i.fullname || i.jid,
-          'value': i.jid
-        }));
-
-        if (list.length !== 1) {
-          const el = this.el.querySelector('.invalid-feedback');
-          el.textContent = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, could not find a contact with that name');
-          u.addClass('d-block', el);
-          return;
-        }
-
-        const jid = list[0].value;
-
-        if (this.validateSubmission(jid)) {
-          const form = this.el.querySelector('form');
-          const name = list[0].label;
-          this.afterSubmission(form, jid, name);
-        }
-      }
-    };
-  },
-
-  validateSubmission(jid) {
-    const el = this.el.querySelector('.invalid-feedback');
-
-    if (!jid || (0,lodash_es_compact__WEBPACK_IMPORTED_MODULE_6__["default"])(jid.split('@')).length < 2) {
-      u.addClass('is-invalid', this.el.querySelector('input[name="jid"]'));
-      u.addClass('d-block', el);
-      return false;
-    } else if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.get(Strophe.getBareJidFromJid(jid))) {
-      el.textContent = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('This contact has already been added');
-      u.addClass('d-block', el);
-      return false;
-    }
-
-    u.removeClass('d-block', el);
-    return true;
-  },
-
-  afterSubmission(form, jid, name, group) {
-    if (group && !Array.isArray(group)) {
-      group = [group];
-    }
-
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.addAndSubscribe(jid, name, group);
-
-    this.model.clear();
-    this.modal.hide();
-  },
-
-  addContactFromForm(ev) {
-    ev.preventDefault();
-    const data = new FormData(ev.target);
-    const jid = (data.get('jid') || '').trim();
-
-    if (!jid && typeof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url') === 'string') {
-      const input_el = this.el.querySelector('input[name="name"]');
-      this.xhr.open("GET", `${_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url')}q=${encodeURIComponent(input_el.value)}`, true);
-      this.xhr.send();
-      return;
-    }
-
-    if (this.validateSubmission(jid)) {
-      this.afterSubmission(ev.target, jid, data.get('name'), data.get('group'));
-    }
-  }
-
-});
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AddContactModal = AddContactModal;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddContactModal);
-
-/***/ }),
-
-/***/ "./src/modals/image.js":
-/*!*****************************!*\
-  !*** ./src/modals/image.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_image_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/image.js */ "./src/modals/templates/image.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: 'image-modal',
-
-  toHTML() {
-    return (0,_templates_image_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
-      'src': this.src,
-      'onload': ev => ev.target.parentElement.style.height = `${ev.target.height}px`
-    });
-  }
-
-}));
-
-/***/ }),
-
-/***/ "./src/modals/message-versions.js":
-/*!****************************************!*\
-  !*** ./src/modals/message-versions.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_message_versions_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/message-versions.js */ "./src/modals/templates/message-versions.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "message-versions-modal",
-
-  toHTML() {
-    return (0,_templates_message_versions_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.model);
-  }
-
-}));
-
-/***/ }),
-
-/***/ "./src/modals/templates/add-contact.js":
-/*!*********************************************!*\
-  !*** ./src/modals/templates/add-contact.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  const i18n_add = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add');
-
-  const i18n_contact_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('name@example.org');
-
-  const i18n_error_message = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please enter a valid XMPP address');
-
-  const i18n_group = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Group');
-
-  const i18n_new_contact = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add a Contact');
-
-  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Name');
-
-  const i18n_xmpp_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('XMPP Address');
-
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addContactModalLabel">${i18n_new_contact}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
-                </div>
-                <form class="converse-form add-xmpp-contact" @submit=${ev => el.addContactFromForm(ev)}>
-                    <div class="modal-body">
-                        <span class="modal-alert"></span>
-                        <div class="form-group add-xmpp-contact__jid">
-                            <label class="clearfix" for="jid">${i18n_xmpp_address}:</label>
-                            <div class="suggestion-box suggestion-box__jid">
-                                <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>
-                                <input type="text" name="jid" ?required=${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('xhr_user_search_url')}
-                                    value="${el.model.get('jid') || ''}"
-                                    class="form-control suggestion-box__input"
-                                    placeholder="${i18n_contact_placeholder}"/>
-                                <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group add-xmpp-contact__name">
-                            <label class="clearfix" for="name">${i18n_nickname}:</label>
-                            <div class="suggestion-box suggestion-box__name">
-                                <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>
-                                <input type="text" name="name" value="${el.model.get('nickname') || ''}"
-                                    class="form-control suggestion-box__input"/>
-                                <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group add-xmpp-contact__group">
-                            <label class="clearfix" for="name">${i18n_group}:</label>
-                            <converse-autocomplete .getAutoCompleteList="${() => el.getGroupsAutoCompleteList()}" name="group"></converse-autocomplete>
-                        </div>
-
-                        <div class="form-group"><div class="invalid-feedback">${i18n_error_message}</div></div>
-                        <button type="submit" class="btn btn-primary">${i18n_add}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    `;
-});
-
-/***/ }),
-
-/***/ "./src/modals/templates/image.js":
-/*!***************************************!*\
-  !*** ./src/modals/templates/image.js ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
-        <div class="modal-dialog fit-content" role="document">
-            <div class="modal-content fit-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="message-versions-modal-label">${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Image: ')}<a target="_blank" rel="noopener" href="${o.src}">${o.src}</a></h4>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body modal-body--image fit-content">
-                    <img class="chat-image" src="${o.src}" @load=${o.onload}>
-                </div>
-                <div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>
-            </div>
-        </div>`;
-});
-
-/***/ }),
-
-/***/ "./src/modals/templates/message-versions.js":
-/*!**************************************************!*\
-  !*** ./src/modals/templates/message-versions.js ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var shared_components_message_versions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/components/message-versions.js */ "./src/shared/components/message-versions.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => lit__WEBPACK_IMPORTED_MODULE_2__.html`
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="message-versions-modal-label">${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Message versions')}</h4>
-                ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
-            </div>
-            <div class="modal-body">
-                <converse-message-versions .model=${model}></converse-message-versions>
-            </div>
-            <div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}</div>
-        </div>
-    </div>
-`);
-
-/***/ }),
-
-/***/ "./src/modals/templates/user-details.js":
-/*!**********************************************!*\
-  !*** ./src/modals/templates/user-details.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var shared_avatar_templates_avatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/avatar/templates/avatar.js */ "./src/shared/avatar/templates/avatar.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-
-
-const remove_button = o => {
-  const i18n_remove_contact = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Remove as contact');
-
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <button type="button" @click="${o.removeContact}" class="btn btn-danger remove-contact">
-            <converse-icon
-                class="fas fa-trash-alt"
-                color="var(--text-color-lighten-15-percent)"
-                size="1em"
-            ></converse-icon>
-            ${i18n_remove_contact}
-        </button>
-    `;
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_address = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address');
-
-  const i18n_email = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Email');
-
-  const i18n_full_name = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Full Name');
-
-  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname');
-
-  const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('The User\'s Profile Image');
-
-  const i18n_refresh = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Refresh');
-
-  const i18n_role = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Role');
-
-  const i18n_url = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('URL');
-
-  const avatar_data = {
-    'alt_text': i18n_profile,
-    'extra_classes': 'mb-3',
-    'height': '120',
-    'width': '120'
-  };
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="user-details-modal-label">${o.display_name}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
-                </div>
-                <div class="modal-body">
-                    ${o.image ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="mb-4">${(0,shared_avatar_templates_avatar_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(o, avatar_data))}</div>` : ''}
-                    ${o.fullname ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_full_name}:</label> ${o.fullname}</p>` : ''}
-                    <p><label>${i18n_address}:</label> <a href="xmpp:${o.jid}">${o.jid}</a></p>
-                    ${o.nickname ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_nickname}:</label> ${o.nickname}</p>` : ''}
-                    ${o.url ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_url}:</label> <a target="_blank" rel="noopener" href="${o.url}">${o.url}</a></p>` : ''}
-                    ${o.email ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_email}:</label> <a href="mailto:${o.email}">${o.email}</a></p>` : ''}
-                    ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_role}:</label> ${o.role}</p>` : ''}
-
-                    <converse-omemo-fingerprints jid=${o.jid}></converse-omemo-fingerprints>
-                </div>
-                <div class="modal-footer">
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}
-                    <button type="button" class="btn btn-info refresh-contact">
-                        <converse-icon
-                            class="fa fa-refresh"
-                            color="var(--text-color-lighten-15-percent)"
-                            size="1em"
-                        ></converse-icon>
-                        ${i18n_refresh}</button>
-                    ${o.allow_contact_removal && o.is_roster_contact ? remove_button(o) : ''}
-
-                </div>
-            </div>
-        </div>
-    `;
-});
-
-/***/ }),
-
-/***/ "./src/modals/templates/user-settings.js":
-/*!***********************************************!*\
-  !*** ./src/modals/templates/user-settings.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
-/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-/* harmony import */ var lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit/directives/unsafe-html.js */ "./node_modules/lit/directives/unsafe-html.js");
-
-
-
-
-
-
-
-const tpl_navigation = o => {
-  const i18n_about = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('About');
-
-  const i18n_commands = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Commands');
-
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-        <ul class="nav nav-pills justify-content-center">
-            <li role="presentation" class="nav-item">
-                <a class="nav-link active" id="about-tab" href="#about-tabpanel" aria-controls="about-tabpanel" role="tab" data-toggle="tab" @click=${o.switchTab}>${i18n_about}</a>
-            </li>
-            <li role="presentation" class="nav-item">
-                <a class="nav-link" id="commands-tab" href="#commands-tabpanel" aria-controls="commands-tabpanel" role="tab" data-toggle="tab" @click=${o.switchTab}>${i18n_commands}</a>
-            </li>
-        </ul>
-    `;
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_modal_title = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Settings');
-
-  const first_subtitle = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">');
-
-  const second_subtitle = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>');
-
-  const show_client_info = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_client_info');
-  const allow_adhoc_commands = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_adhoc_commands');
-  const show_both_tabs = show_client_info && allow_adhoc_commands;
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="converse-modtools-modal-label">${i18n_modal_title}</h5>
-                ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__.modal_header_close_button}
-            </div>
-            <div class="modal-body">
-                ${show_both_tabs ? tpl_navigation(o) : ''}
-
-                <div class="tab-content">
-                    <div class="tab-pane tab-pane--columns ${show_client_info ? 'active' : ''}"
-                         id="about-tabpanel" role="tabpanel" aria-labelledby="about-tab">
-
-                        <span class="modal-alert"></span>
-                        <br/>
-                        <div class="container">
-                            <h6 class="brand-heading">Converse</h6>
-                            <p class="brand-subtitle">${o.version_name}</p>
-                            <p class="brand-subtitle">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(first_subtitle))}</p>
-                            <p class="brand-subtitle">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(second_subtitle))}</p>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane tab-pane--columns ${!show_client_info && allow_adhoc_commands ? 'active' : ''}"
-                         id="commands-tabpanel"
-                         role="tabpanel"
-                         aria-labelledby="commands-tab">
-                        <converse-adhoc-commands/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-`;
-});
-
-/***/ }),
-
-/***/ "./src/modals/user-details.js":
-/*!************************************!*\
-  !*** ./src/modals/user-details.js ***!
-  \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _templates_user_details_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/user-details.js */ "./src/modals/templates/user-details.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-
-
-
-
-
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
-
-function removeContact(contact) {
-  contact.removeFromRoster(() => contact.destroy(), e => {
-    e && _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error(e);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, there was an error while trying to remove %1$s as a contact.', contact.getDisplayName())]);
-  });
-}
-
-const UserDetailsModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: 'user-details-modal',
-  persistent: true,
-  events: {
-    'click button.refresh-contact': 'refreshContact'
-  },
-
-  initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
-    this.model.rosterContactAdded.then(() => this.registerContactEventHandlers());
-    this.listenTo(this.model, 'change', this.render);
-    this.registerContactEventHandlers();
-    /**
-     * Triggered once the UserDetailsModal has been initialized
-     * @event _converse#userDetailsModalInitialized
-     * @type { _converse.ChatBox }
-     * @example _converse.api.listen.on('userDetailsModalInitialized', (chatbox) => { ... });
-     */
-
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('userDetailsModalInitialized', this.model);
-  },
-
-  toHTML() {
-    var _this$model;
-
-    const vcard = (_this$model = this.model) === null || _this$model === void 0 ? void 0 : _this$model.vcard;
-    const vcard_json = vcard ? vcard.toJSON() : {};
-    return (0,_templates_user_details_js__WEBPACK_IMPORTED_MODULE_2__["default"])(Object.assign(this.model.toJSON(), vcard_json, {
-      '_converse': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse,
-      'allow_contact_removal': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_contact_removal'),
-      'display_name': this.model.getDisplayName(),
-      'is_roster_contact': this.model.contact !== undefined,
-      'removeContact': ev => this.removeContact(ev),
-      'view': this,
-      'utils': u
-    }));
-  },
-
-  registerContactEventHandlers() {
-    if (this.model.contact !== undefined) {
-      this.listenTo(this.model.contact, 'change', this.render);
-      this.listenTo(this.model.contact.vcard, 'change', this.render);
-      this.model.contact.on('destroy', () => {
-        delete this.model.contact;
-        this.render();
-      });
-    }
-  },
-
-  async refreshContact(ev) {
-    if (ev && ev.preventDefault) {
-      ev.preventDefault();
-    }
-
-    const refresh_icon = this.el.querySelector('.fa-refresh');
-    u.addClass('fa-spin', refresh_icon);
-
-    try {
-      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.vcard.update(this.model.contact.vcard, true);
-    } catch (e) {
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].fatal(e);
-      this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, something went wrong while trying to refresh'), 'danger');
-    }
-
-    u.removeClass('fa-spin', refresh_icon);
-  },
-
-  async removeContact(ev) {
-    var _ev$preventDefault;
-
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
-
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_contact_removal')) {
-      return;
-    }
-
-    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Are you sure you want to remove this contact?"));
-
-    if (result) {
-      // XXX: The `dismissHandler` in bootstrap.native tries to
-      // reference the remove button after it's been cleared from
-      // the DOM, so we delay removing the contact to give it time.
-      setTimeout(() => removeContact(this.model.contact), 1);
-      this.modal.hide();
-    }
-  }
-
-});
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.UserDetailsModal = UserDetailsModal;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserDetailsModal);
-
-/***/ }),
-
-/***/ "./src/modals/user-settings.js":
-/*!*************************************!*\
-  !*** ./src/modals/user-settings.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_user_settings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/user-settings.js */ "./src/modals/templates/user-settings.js");
-
-
-
-let _converse;
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "converse-client-info-modal",
-
-  initialize(settings) {
-    _converse = settings._converse;
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
-  },
-
-  toHTML() {
-    return (0,_templates_user_settings_js__WEBPACK_IMPORTED_MODULE_1__["default"])(Object.assign(this.model.toJSON(), this.model.vcard.toJSON(), {
-      'version_name': _converse.VERSION_NAME
-    }));
-  }
-
-}));
-
-/***/ }),
-
 /***/ "./src/plugins/bookmark-views/bookmarks-list.js":
 /*!******************************************************!*\
   !*** ./src/plugins/bookmark-views/bookmarks-list.js ***!
@@ -36766,7 +36021,7 @@ const bookmarkableChatRoomView = {
   showBookmarkModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
     const jid = this.model.get('jid');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.modal.show(_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.modal.show('converse-bookmark-form-modal', {
       jid
     }, ev);
   }
@@ -36784,29 +36039,32 @@ const bookmarkableChatRoomView = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ BookmarkFormModal)
 /* harmony export */ });
 /* harmony import */ var _form_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.js */ "./src/plugins/bookmark-views/form.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_modal_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/modal.js */ "./src/plugins/bookmark-views/templates/modal.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
-const MUCBookmarkFormModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
-  id: "converse-bookmark-modal",
 
-  initialize(attrs) {
-    this.jid = attrs.jid;
-    this.affiliation = attrs.affiliation;
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
-  },
 
-  toHTML() {
-    return (0,_templates_modal_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
+class BookmarkFormModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  renderModal() {
+    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+            <converse-muc-bookmark-form class="muc-form-container" jid="${this.jid}">
+            </converse-muc-bookmark-form>`;
   }
 
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MUCBookmarkFormModal);
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bookmark');
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-bookmark-form-modal', BookmarkFormModal);
 
 /***/ }),
 
@@ -36964,42 +36222,6 @@ const list = (el, bookmarks) => {
 
 /***/ }),
 
-/***/ "./src/plugins/bookmark-views/templates/modal.js":
-/*!*******************************************************!*\
-  !*** ./src/plugins/bookmark-views/templates/modal.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_moderator_tools = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Bookmark');
-
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="converse-modtools-modal-label">${i18n_moderator_tools}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body d-flex flex-column">
-                    <converse-muc-bookmark-form class="muc-form-container" jid="${o.jid}"></converse-muc-bookmark-form>
-                </div>
-            </div>
-        </div>`;
-});
-
-/***/ }),
-
 /***/ "./src/plugins/bookmark-views/utils.js":
 /*!*********************************************!*\
   !*** ./src/plugins/bookmark-views/utils.js ***!
@@ -37047,8 +36269,8 @@ function getHeadingButtons(view, buttons) {
 }
 async function removeBookmarkViaEvent(ev) {
   ev.preventDefault();
-  const name = ev.target.getAttribute('data-bookmark-name');
-  const jid = ev.target.getAttribute('data-room-jid');
+  const name = ev.currentTarget.getAttribute('data-bookmark-name');
+  const jid = ev.currentTarget.getAttribute('data-room-jid');
   const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Are you sure you want to remove the bookmark "%1$s"?', name));
 
   if (result) {
@@ -37059,8 +36281,8 @@ async function removeBookmarkViaEvent(ev) {
 }
 function addBookmarkViaEvent(ev) {
   ev.preventDefault();
-  const jid = ev.target.getAttribute('data-room-jid');
-  _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+  const jid = ev.currentTarget.getAttribute('data-room-jid');
+  _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show('converse-bookmark-form-modal', {
     jid
   }, ev);
 }
@@ -37556,7 +36778,7 @@ class ChatView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_2__["def
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxes.get(this.jid);
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse, 'windowStateChanged', this.onWindowStateChanged);
     this.listenTo(this.model, 'change:hidden', () => !this.model.get('hidden') && this.afterShown());
-    this.listenTo(this.model, 'change:show_help_messages', this.requestUpdate);
+    this.listenTo(this.model, 'change:show_help_messages', () => this.requestUpdate());
     await this.model.messages.fetched;
     !this.model.get('hidden') && this.afterShown();
     /**
@@ -37604,7 +36826,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ ChatHeading)
 /* harmony export */ });
-/* harmony import */ var modals_user_details_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modals/user-details.js */ "./src/modals/user-details.js");
+/* harmony import */ var shared_modals_user_details_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/modals/user-details.js */ "./src/shared/modals/user-details.js");
 /* harmony import */ var _templates_chat_head_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/chat-head.js */ "./src/plugins/chatview/templates/chat-head.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
@@ -37629,16 +36851,16 @@ class ChatHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     var _this$model$rosterCon;
 
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.get(this.jid);
-    this.listenTo(this.model, 'change:status', this.requestUpdate);
-    this.listenTo(this.model, 'vcard:add', this.requestUpdate);
-    this.listenTo(this.model, 'vcard:change', this.requestUpdate);
+    this.listenTo(this.model, 'change:status', () => this.requestUpdate());
+    this.listenTo(this.model, 'vcard:add', () => this.requestUpdate());
+    this.listenTo(this.model, 'vcard:change', () => this.requestUpdate());
 
     if (this.model.contact) {
-      this.listenTo(this.model.contact, 'destroy', this.requestUpdate);
+      this.listenTo(this.model.contact, 'destroy', () => this.requestUpdate());
     }
 
     (_this$model$rosterCon = this.model.rosterContactAdded) === null || _this$model$rosterCon === void 0 ? void 0 : _this$model$rosterCon.then(() => {
-      this.listenTo(this.model.contact, 'change:nickname', this.requestUpdate);
+      this.listenTo(this.model.contact, 'change:nickname', () => this.requestUpdate());
       this.requestUpdate();
     });
   }
@@ -37653,7 +36875,7 @@ class ChatHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
 
   showUserDetailsModal(ev) {
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show(modals_user_details_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show('converse-user-details-modal', {
       model: this.model
     }, ev);
   }
@@ -37754,14 +36976,13 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('conver
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chatboxviews_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../chatboxviews/index.js */ "./src/plugins/chatboxviews/index.js");
-/* harmony import */ var plugins_modal_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/index.js */ "./src/plugins/modal/index.js");
-/* harmony import */ var shared_chat_chat_content_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/chat/chat-content.js */ "./src/shared/chat/chat-content.js");
-/* harmony import */ var shared_chat_help_messages_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/chat/help-messages.js */ "./src/shared/chat/help-messages.js");
-/* harmony import */ var shared_chat_toolbar_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! shared/chat/toolbar.js */ "./src/shared/chat/toolbar.js");
-/* harmony import */ var _chat_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat.js */ "./src/plugins/chatview/chat.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/chatview/utils.js");
-/* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/chatview/styles/index.scss");
+/* harmony import */ var shared_chat_chat_content_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/chat/chat-content.js */ "./src/shared/chat/chat-content.js");
+/* harmony import */ var shared_chat_help_messages_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/chat/help-messages.js */ "./src/shared/chat/help-messages.js");
+/* harmony import */ var shared_chat_toolbar_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/chat/toolbar.js */ "./src/shared/chat/toolbar.js");
+/* harmony import */ var _chat_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat.js */ "./src/plugins/chatview/chat.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/chatview/utils.js");
+/* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/chatview/styles/index.scss");
 /**
  * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -37774,11 +36995,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 const {
   Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.env;
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.plugins.add('converse-chatview', {
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.env;
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('converse-chatview', {
   /* Plugin dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
    * this plugin.
@@ -37795,7 +37015,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.plugins.add('conve
     /* The initialize function gets called as soon as the plugin is
      * loaded by converse.js's plugin machinery.
      */
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.extend({
       'allowed_audio_domains': null,
       'allowed_image_domains': null,
       'allowed_video_domains': null,
@@ -37819,9 +37039,9 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.plugins.add('conve
         'spoiler': true
       }
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.ChatBoxView = _chat_js__WEBPACK_IMPORTED_MODULE_5__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('connected', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.disco.own.features.add(Strophe.NS.SPOILER));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.listen.on('chatBoxClosed', model => (0,_utils_js__WEBPACK_IMPORTED_MODULE_7__.clearHistory)(model.get('jid')));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ChatBoxView = _chat_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('connected', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.disco.own.features.add(Strophe.NS.SPOILER));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('chatBoxClosed', model => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.clearHistory)(model.get('jid')));
   }
 
 });
@@ -39464,11 +38684,9 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('con
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_dragresize_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/dragresize.js */ "./src/plugins/dragresize/components/dragresize.js");
-/* harmony import */ var plugins_chatview_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/chatview/index.js */ "./src/plugins/chatview/index.js");
-/* harmony import */ var plugins_controlbox_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/controlbox/index.js */ "./src/plugins/controlbox/index.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/dragresize/utils.js");
-/* harmony import */ var _mixin_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mixin.js */ "./src/plugins/dragresize/mixin.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/dragresize/utils.js");
+/* harmony import */ var _mixin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixin.js */ "./src/plugins/dragresize/mixin.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /**
  * @module converse-dragresize
  * @copyright 2022, the Converse.js contributors
@@ -39478,9 +38696,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('converse-dragresize', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('converse-dragresize', {
   /* Plugin dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
    * this plugin.
@@ -39507,8 +38723,8 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('conve
         const width = this.get('width');
         const save = this.get('id') === 'controlbox' ? a => this.set(a) : a => this.save(a);
         save({
-          'height': (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.applyDragResistance)(height, this.get('default_height')),
-          'width': (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.applyDragResistance)(width, this.get('default_width'))
+          'height': (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.applyDragResistance)(height, this.get('default_height')),
+          'width': (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.applyDragResistance)(width, this.get('default_width'))
         });
         return result;
       }
@@ -39520,31 +38736,31 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.plugins.add('conve
     /* The initialize function gets called as soon as the plugin is
      * loaded by converse.js's plugin machinery.
      */
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.extend({
       'allow_dragresize': true
     });
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ChatBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ChatRoomView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ChatBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ChatRoomView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ControlBoxView) {
-      Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.ControlBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ControlBoxView) {
+      Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ControlBoxView.prototype, _mixin_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
     }
     /************************ BEGIN Event Handlers ************************/
 
 
     function registerGlobalEventHandlers() {
-      document.addEventListener('mousemove', _utils_js__WEBPACK_IMPORTED_MODULE_3__.onMouseMove);
-      document.addEventListener('mouseup', _utils_js__WEBPACK_IMPORTED_MODULE_3__.onMouseUp);
+      document.addEventListener('mousemove', _utils_js__WEBPACK_IMPORTED_MODULE_1__.onMouseMove);
+      document.addEventListener('mouseup', _utils_js__WEBPACK_IMPORTED_MODULE_1__.onMouseUp);
     }
 
     function unregisterGlobalEventHandlers() {
-      document.removeEventListener('mousemove', _utils_js__WEBPACK_IMPORTED_MODULE_3__.onMouseMove);
-      document.removeEventListener('mouseup', _utils_js__WEBPACK_IMPORTED_MODULE_3__.onMouseUp);
+      document.removeEventListener('mousemove', _utils_js__WEBPACK_IMPORTED_MODULE_1__.onMouseMove);
+      document.removeEventListener('mouseup', _utils_js__WEBPACK_IMPORTED_MODULE_1__.onMouseUp);
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('registeredGlobalEventHandlers', registerGlobalEventHandlers);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('unregisteredGlobalEventHandlers', unregisterGlobalEventHandlers);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.listen.on('beforeShowingChatView', view => view.initDragResize().setDimensions());
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('registeredGlobalEventHandlers', registerGlobalEventHandlers);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('unregisteredGlobalEventHandlers', unregisterGlobalEventHandlers);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('beforeShowingChatView', view => view.initDragResize().setDimensions());
   }
 
 });
@@ -39872,13 +39088,9 @@ function onMouseUp(ev) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/plugins/muc/index.js */ "./src/headless/plugins/muc/index.js");
-/* harmony import */ var plugins_chatview_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/chatview/index.js */ "./src/plugins/chatview/index.js");
-/* harmony import */ var plugins_controlbox_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/controlbox/index.js */ "./src/plugins/controlbox/index.js");
-/* harmony import */ var plugins_singleton_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/singleton/index.js */ "./src/plugins/singleton/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
-/* harmony import */ var _styles_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/fullscreen.scss */ "./src/plugins/fullscreen/styles/fullscreen.scss");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _styles_fullscreen_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./styles/fullscreen.scss */ "./src/plugins/fullscreen/styles/fullscreen.scss");
 /**
  * @module converse-fullscreen
  * @license Mozilla Public License (MPLv2)
@@ -39887,17 +39099,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('converse-fullscreen', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('converse-fullscreen', {
   enabled() {
-    return (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__.isUniView)();
+    return (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_1__.isUniView)();
   },
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.extend({
       chatview_avatar_height: 50,
       chatview_avatar_width: 50,
       hide_open_bookmarks: true,
@@ -40241,9 +39449,9 @@ class HeadlinesFeedView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse, 'windowStateChanged', this.onWindowStateChanged);
     this.listenTo(this.model, 'change:hidden', () => this.afterShown());
     this.listenTo(this.model, 'destroy', this.remove);
-    this.listenTo(this.model.messages, 'add', this.requestUpdate);
-    this.listenTo(this.model.messages, 'remove', this.requestUpdate);
-    this.listenTo(this.model.messages, 'reset', this.requestUpdate);
+    this.listenTo(this.model.messages, 'add', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'remove', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'reset', () => this.requestUpdate());
     await this.model.messages.fetched;
     this.model.maybeShow();
     /**
@@ -40543,12 +39751,11 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('conver
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view.js */ "./src/plugins/minimize/view.js");
 /* harmony import */ var _components_minimized_chat_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/minimized-chat.js */ "./src/plugins/minimize/components/minimized-chat.js");
-/* harmony import */ var plugins_chatview_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/chatview/index.js */ "./src/plugins/chatview/index.js");
-/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
-/* harmony import */ var _toggle_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toggle.js */ "./src/plugins/minimize/toggle.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/minimize/utils.js");
-/* harmony import */ var _styles_minimize_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/minimize.scss */ "./src/plugins/minimize/styles/minimize.scss");
+/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
+/* harmony import */ var _toggle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toggle.js */ "./src/plugins/minimize/toggle.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/minimize/utils.js");
+/* harmony import */ var _styles_minimize_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/minimize.scss */ "./src/plugins/minimize/styles/minimize.scss");
 /**
  * @module converse-minimize
  * @copyright 2022, the Converse.js contributors
@@ -40561,8 +39768,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('converse-minimize', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('converse-minimize', {
   /* Optional dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
    * this plugin. They are called "optional" because they might not be
@@ -40620,37 +39826,37 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
   },
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.extend({
       'no_trimming': false
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.promises.add('minimizedChatsInitialized');
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.MinimizedChatsToggle = _toggle_js__WEBPACK_IMPORTED_MODULE_3__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.minimize = {
-      trimChats: _utils_js__WEBPACK_IMPORTED_MODULE_5__.trimChats,
-      minimize: _utils_js__WEBPACK_IMPORTED_MODULE_5__.minimize,
-      maximize: _utils_js__WEBPACK_IMPORTED_MODULE_5__.maximize
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.promises.add('minimizedChatsInitialized');
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.MinimizedChatsToggle = _toggle_js__WEBPACK_IMPORTED_MODULE_2__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.minimize = {
+      trimChats: _utils_js__WEBPACK_IMPORTED_MODULE_4__.trimChats,
+      minimize: _utils_js__WEBPACK_IMPORTED_MODULE_4__.minimize,
+      maximize: _utils_js__WEBPACK_IMPORTED_MODULE_4__.maximize
     };
 
     function onChatInitialized(model) {
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.initializeChat)(model);
-      model.on('change:minimized', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.onMinimizedChanged)(model));
+      (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.initializeChat)(model);
+      model.on('change:minimized', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.onMinimizedChanged)(model));
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatBoxViewInitialized', view => _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.minimize.trimChats(view));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatRoomViewInitialized', view => _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.minimize.trimChats(view));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('controlBoxOpened', view => _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.minimize.trimChats(view));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatBoxInitialized', onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatRoomInitialized', onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('getHeadingButtons', (view, buttons) => {
-      if (view.model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.CHATROOMS_TYPE) {
-        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.addMinimizeButtonToMUC)(view, buttons);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('chatBoxViewInitialized', view => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.minimize.trimChats(view));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('chatRoomViewInitialized', view => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.minimize.trimChats(view));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('controlBoxOpened', view => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.minimize.trimChats(view));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('chatBoxInitialized', onChatInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('chatRoomInitialized', onChatInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('getHeadingButtons', (view, buttons) => {
+      if (view.model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.CHATROOMS_TYPE) {
+        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.addMinimizeButtonToMUC)(view, buttons);
       } else {
-        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.addMinimizeButtonToChat)(view, buttons);
+        return (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.addMinimizeButtonToChat)(view, buttons);
       }
     });
-    const debouncedTrimChats = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_7__["default"])(() => _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.minimize.trimChats(), 250);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('registeredGlobalEventHandlers', () => window.addEventListener("resize", debouncedTrimChats));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('unregisteredGlobalEventHandlers', () => window.removeEventListener("resize", debouncedTrimChats));
+    const debouncedTrimChats = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_6__["default"])(() => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.minimize.trimChats(), 250);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('registeredGlobalEventHandlers', () => window.addEventListener("resize", debouncedTrimChats));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('unregisteredGlobalEventHandlers', () => window.removeEventListener("resize", debouncedTrimChats));
   }
 
 });
@@ -41024,17 +40230,17 @@ class MinimizedChats extends shared_components_element__WEBPACK_IMPORTED_MODULE_
   async initialize() {
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes;
     await this.initToggle();
-    this.listenTo(this.minchats, 'change:collapsed', this.requestUpdate);
-    this.listenTo(this.model, 'add', this.requestUpdate);
-    this.listenTo(this.model, 'change:fullname', this.requestUpdate);
-    this.listenTo(this.model, 'change:jid', this.requestUpdate);
-    this.listenTo(this.model, 'change:minimized', this.requestUpdate);
-    this.listenTo(this.model, 'change:name', this.requestUpdate);
-    this.listenTo(this.model, 'change:num_unread', this.requestUpdate);
-    this.listenTo(this.model, 'remove', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'connected', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'reconnected', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'disconnected', this.requestUpdate);
+    this.listenTo(this.minchats, 'change:collapsed', () => this.requestUpdate());
+    this.listenTo(this.model, 'add', () => this.requestUpdate());
+    this.listenTo(this.model, 'change:fullname', () => this.requestUpdate());
+    this.listenTo(this.model, 'change:jid', () => this.requestUpdate());
+    this.listenTo(this.model, 'change:minimized', () => this.requestUpdate());
+    this.listenTo(this.model, 'change:name', () => this.requestUpdate());
+    this.listenTo(this.model, 'change:num_unread', () => this.requestUpdate());
+    this.listenTo(this.model, 'remove', () => this.requestUpdate());
+    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'connected', () => this.requestUpdate());
+    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'reconnected', () => this.requestUpdate());
+    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'disconnected', () => this.requestUpdate());
   }
 
   render() {
@@ -41089,30 +40295,31 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('conver
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Alert)
 /* harmony export */ });
-/* harmony import */ var _base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_alert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/alert.js */ "./src/plugins/modal/templates/alert.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
-const Alert = _base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: 'alert-modal',
-
+class Alert extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   initialize() {
-    _base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-  },
-
-  toHTML() {
-    return (0,_templates_alert_js__WEBPACK_IMPORTED_MODULE_1__["default"])(Object.assign({
-      __: i18n__WEBPACK_IMPORTED_MODULE_2__.__
-    }, this.model.toJSON()));
+    super.initialize();
+    this.listenTo(this.model, 'change', () => this.render());
+    this.addEventListener('hide.bs.modal', () => this.remove(), false);
   }
 
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Alert);
+  renderModal() {
+    return (0,_templates_alert_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.model.toJSON());
+  }
+
+  getModalTitle() {
+    return this.model.get('title');
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-alert-modal', Alert);
 
 /***/ }),
 
@@ -41134,6 +40341,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let modals = [];
+let modals_map = {};
 const modal_api = {
   /**
    * API namespace for methods relating to modals
@@ -41146,13 +40354,22 @@ const modal_api = {
      * Will create a new instance of that class if an existing one isn't
      * found.
      * @param { Class } ModalClass
-     * @param { Object } [properties] - Optional properties that will be
-     *  set on a newly created modal instance (if no pre-existing modal was
-     *  found).
+     * @param { Object } [properties] - Optional properties that will be set on a newly created modal instance.
      * @param { Event } [event] - The DOM event that causes the modal to be shown.
      */
-    show(ModalClass, properties, ev) {
-      const modal = this.get(ModalClass.id) || this.create(ModalClass, properties);
+    show(name, properties, ev) {
+      let modal;
+
+      if (typeof name === 'string') {
+        modal = this.get(name) ?? this.create(name, properties);
+        Object.assign(modal, properties);
+      } else {
+        // Legacy...
+        const ModalClass = name;
+        const id = ModalClass.id ?? properties.id;
+        modal = this.get(id) ?? this.create(ModalClass, properties);
+      }
+
       modal.show(ev);
       return modal;
     },
@@ -41162,28 +40379,50 @@ const modal_api = {
      * @param { String } id
      */
     get(id) {
-      return modals.filter(m => m.id == id).pop();
+      return modals_map[id] ?? modals.filter(m => m.id == id).pop();
     },
 
     /**
      * Create a modal of the passed-in type.
-     * @param { Class } ModalClass
+     * @param { String } name
      * @param { Object } [properties] - Optional properties that will be
      *  set on the modal instance.
      */
-    create(ModalClass, properties) {
-      const modal = new ModalClass(properties);
-      modals.push(modal);
+    create(name, properties) {
+      let modal;
+
+      if (typeof name === 'string') {
+        const ModalClass = customElements.get(name);
+        modal = modals_map[name] = new ModalClass(properties);
+      } else {
+        // Legacy...
+        const ModalClass = name;
+        modal = new ModalClass(properties);
+        modals.push(modal);
+      }
+
       return modal;
     },
 
     /**
      * Remove a particular modal
-     * @param { View } modal
+     * @param { String } name
      */
-    remove(modal) {
-      modals = modals.filter(m => m !== modal);
-      modal.remove();
+    remove(name) {
+      var _modal;
+
+      let modal;
+
+      if (typeof name === 'string') {
+        modal = modals_map[name];
+        delete modals_map[name];
+      } else {
+        // Legacy...
+        modal = name;
+        modals = modals.filter(m => m !== modal);
+      }
+
+      (_modal = modal) === null || _modal === void 0 ? void 0 : _modal.remove();
     },
 
     /**
@@ -41192,6 +40431,7 @@ const modal_api = {
     removeAll() {
       modals.forEach(m => m.remove());
       modals = [];
+      modals_map = {};
     }
 
   },
@@ -41312,7 +40552,7 @@ const modal_api = {
       'level': level,
       'type': 'alert'
     });
-    modal_api.modal.show(_alert_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    modal_api.modal.show('converse-alert-modal', {
       model
     });
   }
@@ -41336,7 +40576,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap.native */ "./node_modules/bootstrap.native/dist/bootstrap-native.js");
 /* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_native__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var templates_alert_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! templates/alert.js */ "./src/templates/alert.js");
+/* harmony import */ var _templates_modal_alert_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/modal-alert.js */ "./src/plugins/modal/templates/modal-alert.js");
 /* harmony import */ var _converse_skeletor_src_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/view.js */ "./node_modules/@converse/skeletor/src/view.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
@@ -41414,7 +40654,7 @@ const BaseModal = _converse_skeletor_src_view_js__WEBPACK_IMPORTED_MODULE_3__.Vi
     // find a way to let the modal rerender with an alert message
 
 
-    (0,lit__WEBPACK_IMPORTED_MODULE_5__.render)((0,templates_alert_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    (0,lit__WEBPACK_IMPORTED_MODULE_5__.render)((0,_templates_modal_alert_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
       'type': `alert-${type}`,
       'message': message
     }), body);
@@ -41449,41 +40689,39 @@ const BaseModal = _converse_skeletor_src_view_js__WEBPACK_IMPORTED_MODULE_3__.Vi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Confirm)
 /* harmony export */ });
-/* harmony import */ var _base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_prompt_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/prompt.js */ "./src/plugins/modal/templates/prompt.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
-const Confirm = _base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: 'confirm-modal',
-  events: {
-    'submit .confirm': 'onConfimation'
-  },
+
+class Confirm extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(options) {
+    super(options);
+    this.confirmation = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_2__.getOpenPromise)();
+  }
 
   initialize() {
-    this.confirmation = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_2__.getOpenPromise)();
-    _base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-    this.el.addEventListener('closed.bs.modal', () => this.confirmation.reject(), false);
-  },
+    super.initialize();
+    this.listenTo(this.model, 'change', () => this.render());
+    this.addEventListener('hide.bs.modal', () => {
+      if (!this.confirmation.isResolved) {
+        this.confirmation.reject();
+      }
+    }, false);
+  }
 
-  toHTML() {
-    return (0,_templates_prompt_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.model.toJSON());
-  },
+  renderModal() {
+    return (0,_templates_prompt_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+  }
 
-  afterRender() {
-    if (!this.close_handler_registered) {
-      this.el.addEventListener('closed.bs.modal', () => {
-        if (!this.confirmation.isResolved) {
-          this.confirmation.reject();
-        }
-      }, false);
-      this.close_handler_registered = true;
-    }
-  },
+  getModalTitle() {
+    this.model.get('title');
+  }
 
   onConfimation(ev) {
     ev.preventDefault();
@@ -41510,8 +40748,8 @@ const Confirm = _base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
     this.modal.hide();
   }
 
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Confirm);
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-confirm-modal', Confirm);
 
 /***/ }),
 
@@ -41552,6 +40790,98 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('conve
 
 /***/ }),
 
+/***/ "./src/plugins/modal/modal.js":
+/*!************************************!*\
+  !*** ./src/plugins/modal/modal.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap.native */ "./node_modules/bootstrap.native/dist/bootstrap-native.js");
+/* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_native__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _templates_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/modal.js */ "./src/plugins/modal/templates/modal.js");
+/* harmony import */ var _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/skeletor/src/element.js */ "./node_modules/@converse/skeletor/src/element.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _styles_modal_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/_modal.scss */ "./src/plugins/modal/styles/_modal.scss");
+
+
+
+
+
+
+class BaseModal extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODULE_2__.ElementView {
+  constructor(options) {
+    super();
+    this.className = 'modal';
+    this.initialized = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_3__.getOpenPromise)(); // Allow properties to be set via passed in options
+
+    Object.assign(this, options);
+    setTimeout(() => this.insertIntoDOM());
+  }
+
+  initialize() {
+    this.modal = new (bootstrap_native__WEBPACK_IMPORTED_MODULE_0___default().Modal)(this, {
+      backdrop: true,
+      keyboard: true
+    });
+    this.addEventListener('hide.bs.modal', () => this.onHide(), false);
+    this.initialized.resolve();
+    this.render();
+  }
+
+  toHTML() {
+    return (0,_templates_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    // Intended to be overwritten
+    return '';
+  }
+
+  switchTab(ev) {
+    ev === null || ev === void 0 ? void 0 : ev.stopPropagation();
+    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    this.tab = ev.target.getAttribute('data-name');
+    this.render();
+  }
+
+  onHide() {
+    this.modal.hide();
+  }
+
+  insertIntoDOM() {
+    const container_el = document.querySelector("#converse-modals");
+    container_el.insertAdjacentElement('beforeEnd', this);
+  }
+
+  alert(message) {
+    let type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'primary';
+    this.model.set('alert', {
+      message,
+      type
+    });
+    setTimeout(() => {
+      this.model.set('alert', undefined);
+    }, 5000);
+  }
+
+  async show() {
+    await this.initialized;
+    this.modal.show();
+    this.render();
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BaseModal);
+
+/***/ }),
+
 /***/ "./src/plugins/modal/templates/alert.js":
 /*!**********************************************!*\
   !*** ./src/plugins/modal/templates/alert.js ***!
@@ -41564,21 +40894,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var _buttons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header ${o.level}">
-              <h5 class="modal-title">${o.title}</h5>
-              ${_buttons_js__WEBPACK_IMPORTED_MODULE_1__.modal_header_close_button}
-            </div>
-            <div class="modal-body">
-              <span class="modal-alert"></span>
-              ${o.messages.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
-            </div>
-        </div>
+    <div class="modal-body">
+        <span class="modal-alert"></span>
+        ${o.messages.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
     </div>`);
 
 /***/ }),
@@ -41601,6 +40921,72 @@ __webpack_require__.r(__webpack_exports__);
 
 const modal_close_button = lit__WEBPACK_IMPORTED_MODULE_1__.html`<button type="button" class="btn btn-secondary" data-dismiss="modal">${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Close')}</button>`;
 const modal_header_close_button = lit__WEBPACK_IMPORTED_MODULE_1__.html`<button type="button" class="close" data-dismiss="modal" aria-label="${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Close')}"><span aria-hidden="true">×</span></button>`;
+
+/***/ }),
+
+/***/ "./src/plugins/modal/templates/modal-alert.js":
+/*!****************************************************!*\
+  !*** ./src/plugins/modal/templates/modal-alert.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="alert ${o.type}" role="alert"><p>${o.message}</p></div>`);
+
+/***/ }),
+
+/***/ "./src/plugins/modal/templates/modal.js":
+/*!**********************************************!*\
+  !*** ./src/plugins/modal/templates/modal.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _modal_alert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal-alert.js */ "./src/plugins/modal/templates/modal-alert.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  var _el$model, _el$model2, _el$renderModal, _el$renderModalFooter;
+
+  const alert = (_el$model = el.model) === null || _el$model === void 0 ? void 0 : _el$model.get('alert');
+  const level = ((_el$model2 = el.model) === null || _el$model2 === void 0 ? void 0 : _el$model2.get('level')) ?? '';
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+        <div class="modal-dialog" role="document" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header ${level}">
+                    <h5 class="modal-title">${el.getModalTitle()}</h5>
+                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
+                </div>
+                <div class="modal-body">
+                    <span class="modal-alert">
+                        ${alert ? (0,_modal_alert_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    'type': `alert-${alert.type}`,
+    'message': alert.message
+  }) : ''}
+                    </span>
+                    ${((_el$renderModal = el.renderModal) === null || _el$renderModal === void 0 ? void 0 : _el$renderModal.call(el)) ?? ''}
+                </div>
+                <div class="modal-footer">
+                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}
+                    ${((_el$renderModalFooter = el.renderModalFooter) === null || _el$renderModalFooter === void 0 ? void 0 : _el$renderModalFooter.call(el)) ?? ''}
+                </div>
+            </div>
+        </div>
+    `;
+});
 
 /***/ }),
 
@@ -41633,31 +41019,21 @@ const tpl_field = f => lit__WEBPACK_IMPORTED_MODULE_0__.html`
     </div>
 `;
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header ${o.level || ''}">
-          <h5 class="modal-title">${o.title}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <span class="modal-alert"></span>
-            <form class="converse-form converse-form--modal confirm" action="#">
-              <div class="form-group">
-                  ${o.messages.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
-              </div>
-              ${o.fields.map(f => tpl_field(f))}
-              <div class="form-group">
-                  <button type="submit" class="btn btn-primary">${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OK')}</button>
-                  <input type="button" class="btn btn-secondary" data-dismiss="modal" value="${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel')}"/>
-              </div>
-          </form>
-        </div>
-      </div>
-    </div>
-`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  var _el$model$get, _el$model$get2;
+
+  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+        <form class="converse-form converse-form--modal confirm" action="#" @submit=${ev => el.onConfimation(ev)}>
+            <div class="form-group">
+                ${(_el$model$get = el.model.get('messages')) === null || _el$model$get === void 0 ? void 0 : _el$model$get.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
+            </div>
+            ${(_el$model$get2 = el.model.get('fields')) === null || _el$model$get2 === void 0 ? void 0 : _el$model$get2.map(f => tpl_field(f))}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OK')}</button>
+                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel')}"/>
+            </div>
+        </form>`;
+});
 
 /***/ }),
 
@@ -42103,8 +41479,8 @@ class MUCConfigForm extends shared_components_element__WEBPACK_IMPORTED_MODULE_2
   connectedCallback() {
     super.connectedCallback();
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.get(this.jid);
-    this.listenTo(this.model.features, 'change:passwordprotected', this.requestUpdate);
-    this.listenTo(this.model.session, 'change:config_stanza', this.requestUpdate);
+    this.listenTo(this.model.features, 'change:passwordprotected', () => this.requestUpdate());
+    this.listenTo(this.model.session, 'change:config_stanza', () => this.requestUpdate());
     this.getConfig();
   }
 
@@ -42301,9 +41677,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ MUCHeading)
 /* harmony export */ });
-/* harmony import */ var _modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/muc-invite.js */ "./src/plugins/muc-views/modals/muc-invite.js");
-/* harmony import */ var _modals_nickname_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/nickname.js */ "./src/plugins/muc-views/modals/nickname.js");
-/* harmony import */ var _modals_muc_details_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modals/muc-details.js */ "./src/plugins/muc-views/modals/muc-details.js");
+/* harmony import */ var _modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/muc-details.js */ "./src/plugins/muc-views/modals/muc-details.js");
+/* harmony import */ var _modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/muc-invite.js */ "./src/plugins/muc-views/modals/muc-invite.js");
+/* harmony import */ var _modals_nickname_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modals/nickname.js */ "./src/plugins/muc-views/modals/nickname.js");
 /* harmony import */ var _templates_muc_head_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates/muc-head.js */ "./src/plugins/muc-views/templates/muc-head.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
@@ -42355,14 +41731,14 @@ class MUCHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_4
 
   showRoomDetailsModal(ev) {
     ev.preventDefault();
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(_modals_muc_details_js__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.modal.show('converse-muc-details-modal', {
       'model': this.model
     }, ev);
   }
 
   showInviteModal(ev) {
     ev.preventDefault();
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(_modals_muc_invite_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.modal.show('converse-muc-invite-modal', {
       'model': new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_5__.Model(),
       'chatroomview': this
     }, ev);
@@ -42419,7 +41795,7 @@ class MUCHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_4
     buttons.push({
       'i18n_text': (0,i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Nickname'),
       'i18n_title': (0,i18n__WEBPACK_IMPORTED_MODULE_6__.__)("Change the nickname you're using in this groupchat"),
-      'handler': ev => _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.modal.show(_modals_nickname_js__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      'handler': ev => _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.modal.show('converse-muc-nickname-modal', {
         'model': this.model
       }, ev),
       'a_class': 'open-nickname-modal',
@@ -42520,12 +41896,11 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.elements.define('con
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chatboxviews_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../chatboxviews/index.js */ "./src/plugins/chatboxviews/index.js");
-/* harmony import */ var plugins_modal_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/index.js */ "./src/plugins/modal/index.js");
-/* harmony import */ var _adhoc_commands_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adhoc-commands.js */ "./src/plugins/muc-views/adhoc-commands.js");
-/* harmony import */ var _muc_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./muc.js */ "./src/plugins/muc-views/muc.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/muc-views/utils.js");
-/* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/muc-views/styles/index.scss");
+/* harmony import */ var _adhoc_commands_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./adhoc-commands.js */ "./src/plugins/muc-views/adhoc-commands.js");
+/* harmony import */ var _muc_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./muc.js */ "./src/plugins/muc-views/muc.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/muc-views/utils.js");
+/* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/muc-views/styles/index.scss");
 /**
  * @copyright The Converse.js developers
  * @description XEP-0045 Multi-User Chat Views
@@ -42536,15 +41911,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 const {
   Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env;
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.MUC.VIEWS = {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.MUC.VIEWS = {
   CONFIG: 'config-form'
 };
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('converse-muc-views', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('converse-muc-views', {
   /* Dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
    * this plugin. They are "optional" because they might not be
@@ -42567,7 +41941,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
     // Refer to docs/source/configuration.rst for explanations of these
     // configuration settings.
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.extend({
       'auto_list_rooms': false,
       'cache_muc_messages': true,
       'locked_muc_nickname': false,
@@ -42584,11 +41958,11 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
         'toggle_occupants': true
       }
     });
-    _converse.ChatRoomView = _muc_js__WEBPACK_IMPORTED_MODULE_3__["default"];
+    _converse.ChatRoomView = _muc_js__WEBPACK_IMPORTED_MODULE_2__["default"];
 
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('muc_domain')) {
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_domain')) {
       // Use service discovery to get the default MUC domain
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('serviceDiscovered', async feature => {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('serviceDiscovered', async feature => {
         if ((feature === null || feature === void 0 ? void 0 : feature.get('var')) === Strophe.NS.MUC) {
           if (feature.entity.get('jid').includes('@')) {
             // Ignore full JIDs, we're only looking for a MUC service, not a room
@@ -42598,13 +41972,13 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
           const identity = await feature.entity.getIdentity('conference', 'text');
 
           if (identity) {
-            _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.set('muc_domain', Strophe.getDomainFromJid(feature.get('from')));
+            _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.set('muc_domain', Strophe.getDomainFromJid(feature.get('from')));
           }
         }
       });
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('clearsession', () => {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('clearsession', () => {
       const view = _converse.chatboxviews.get('controlbox');
 
       if (view && view.roomspanel) {
@@ -42613,12 +41987,12 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('conve
         delete view.roomspanel;
       }
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatBoxClosed', model => {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('chatBoxClosed', model => {
       if (model.get('type') === _converse.CHATROOMS_TYPE) {
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.clearHistory)(model.get('jid'));
+        (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.clearHistory)(model.get('jid'));
       }
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_5__.parseMessageForMUCCommands);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_4__.parseMessageForMUCCommands);
   }
 
 });
@@ -42726,10 +42100,10 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('conver
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ AddMUCModal)
 /* harmony export */ });
-/* harmony import */ var _templates_add_muc_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../templates/add-muc.js */ "./src/plugins/muc-views/templates/add-muc.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var _templates_add_muc_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/add-muc.js */ "./src/plugins/muc-views/modals/templates/add-muc.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _styles_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../styles/add-muc-modal.scss */ "./src/plugins/muc-views/styles/add-muc-modal.scss");
@@ -42742,46 +42116,32 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.util
 const {
   Strophe
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
-  persistent: true,
-  id: 'add-chatroom-modal',
-  events: {
-    'submit form.add-chatroom': 'openChatRoom',
-    'keyup .roomjid-input': 'checkRoomidPolicy',
-    'change .roomjid-input': 'checkRoomidPolicy'
-  },
-
+class AddMUCModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change:muc_domain', this.render);
+    super.initialize();
+    this.listenTo(this.model, 'change:muc_domain', () => this.render());
     this.muc_roomid_policy_error_msg = null;
-  },
-
-  toHTML() {
-    let placeholder = '';
-
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_domain')) {
-      const muc_domain = this.model.get('muc_domain') || _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_domain');
-      placeholder = muc_domain ? `name@${muc_domain}` : (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('name@conference.example.org');
-    }
-
-    return (0,_templates_add_muc_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(this.model.toJSON(), {
-      'label_room_address': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_domain') ? (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat name') : (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat address'),
-      'chatroom_placeholder': placeholder,
-      'muc_roomid_policy_error_msg': this.muc_roomid_policy_error_msg,
-      'muc_roomid_policy_hint': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_roomid_policy_hint')
-    }));
-  },
-
-  afterRender() {
-    this.el.addEventListener('shown.bs.modal', () => {
-      this.el.querySelector('input[name="chatroom"]').focus();
+    this.render();
+    this.addEventListener('shown.bs.modal', () => {
+      this.querySelector('input[name="chatroom"]').focus();
     }, false);
-  },
+  }
+
+  renderModal() {
+    return (0,_templates_add_muc_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter a new Groupchat');
+  }
 
   parseRoomDataFromEvent(form) {
+    var _data$get;
+
+    // eslint-disable-line class-methods-use-this
     const data = new FormData(form);
-    const jid = data.get('chatroom');
+    const jid = (_data$get = data.get('chatroom')) === null || _data$get === void 0 ? void 0 : _data$get.trim();
     let nick;
 
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_nickname')) {
@@ -42798,10 +42158,11 @@ const {
       'jid': jid,
       'nick': nick
     };
-  },
+  }
 
   openChatRoom(ev) {
     ev.preventDefault();
+    if (this.checkRoomidPolicy()) return;
     const data = this.parseRoomDataFromEvent(ev.target);
 
     if (data.nick === "") {
@@ -42821,13 +42182,13 @@ const {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.rooms.open(jid, Object.assign(data, {
       jid
     }), true);
-    this.modal.hide();
     ev.target.reset();
-  },
+    this.modal.hide();
+  }
 
   checkRoomidPolicy() {
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_roomid_policy') && _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_domain')) {
-      let jid = this.el.querySelector('.roomjid-input').value;
+      let jid = this.querySelector('converse-autocomplete input').value;
 
       if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_domain') || !u.isValidJID(jid)) {
         jid = `${Strophe.escapeNode(jid)}@${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('muc_domain')}`;
@@ -42840,13 +42201,15 @@ const {
         this.muc_roomid_policy_error_msg = null;
       } else {
         this.muc_roomid_policy_error_msg = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat id is invalid.');
+        return true;
       }
 
       this.render();
     }
   }
 
-}));
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-add-muc-modal', AddMUCModal);
 
 /***/ }),
 
@@ -42859,30 +42222,35 @@ const {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ ModeratorToolsModal)
 /* harmony export */ });
 /* harmony import */ var _modtools_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modtools.js */ "./src/plugins/muc-views/modtools.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var _templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/moderator-tools.js */ "./src/plugins/muc-views/modals/templates/moderator-tools.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 
 
-const ModeratorToolsModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
-  id: "converse-modtools-modal",
-  persistent: true,
 
-  initialize(attrs) {
-    this.jid = attrs.jid;
-    this.affiliation = attrs.affiliation;
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
-  },
 
-  toHTML() {
-    return (0,_templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
+class ModeratorToolsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  constructor(options) {
+    super(options);
+    this.id = "converse-modtools-modal";
   }
 
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModeratorToolsModal);
+  renderModal() {
+    return lit__WEBPACK_IMPORTED_MODULE_4__.html`<converse-modtools jid=${this.jid} affiliation=${this.affiliation}></converse-modtools>`;
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Moderator Tools');
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-modtools-modal', ModeratorToolsModal);
 
 /***/ }),
 
@@ -42895,30 +42263,38 @@ const ModeratorToolsModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ MUCDetailsModal)
 /* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/muc-details.js */ "./src/plugins/muc-views/modals/templates/muc-details.js");
-/* harmony import */ var _styles_muc_details_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/muc-details.scss */ "./src/plugins/muc-views/styles/muc-details.scss");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _styles_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../styles/muc-details-modal.scss */ "./src/plugins/muc-views/styles/muc-details-modal.scss");
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "muc-details-modal",
 
+
+class MUCDetailsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-    this.listenTo(this.model.features, 'change', this.render);
-    this.listenTo(this.model.occupants, 'add', this.render);
-    this.listenTo(this.model.occupants, 'change', this.render);
-  },
+    super.initialize();
+    this.listenTo(this.model, 'change', () => this.render());
+    this.listenTo(this.model.features, 'change', () => this.render());
+    this.listenTo(this.model.occupants, 'add', () => this.render());
+    this.listenTo(this.model.occupants, 'change', () => this.render());
+  }
 
-  toHTML() {
+  renderModal() {
     return (0,_templates_muc_details_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.model);
   }
 
-}));
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Groupchat info for %1$s', this.model.getDisplayName());
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-muc-details-modal', MUCDetailsModal);
 
 /***/ }),
 
@@ -42931,54 +42307,49 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ MUCInviteModal)
 /* harmony export */ });
 /* harmony import */ var shared_autocomplete_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/autocomplete/index.js */ "./src/shared/autocomplete/index.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/muc-invite.js */ "./src/plugins/muc-views/modals/templates/muc-invite.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
 
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.utils;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
-  id: "muc-invite-modal",
 
+const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
+class MUCInviteModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.render);
-    this.initInviteWidget();
-  },
+    super.initialize();
+    this.listenTo(this.model, 'change', () => this.render());
+  }
 
-  toHTML() {
-    return (0,_templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__["default"])(Object.assign(this.model.toJSON(), {
-      'submitInviteForm': ev => this.submitInviteForm(ev)
-    }));
-  },
+  renderModal() {
+    return (0,_templates_muc_invite_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
+  }
 
-  initInviteWidget() {
-    if (this.invite_auto_complete) {
-      this.invite_auto_complete.destroy();
-    }
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Invite someone to this groupchat');
+  }
 
-    const list = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.map(i => ({
+  getAutoCompleteList() {
+    // eslint-disable-line class-methods-use-this
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.map(i => ({
       'label': i.getDisplayName(),
       'value': i.get('jid')
     }));
-
-    const el = this.el.querySelector('.suggestion-box').parentElement;
-    this.invite_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.AutoComplete(el, {
-      'min_chars': 1,
-      'list': list
-    });
-  },
+  }
 
   submitInviteForm(ev) {
+    var _data$get;
+
     ev.preventDefault(); // TODO: Add support for sending an invite to multiple JIDs
 
     const data = new FormData(ev.target);
-    const jid = data.get('invitee_jids');
+    const jid = (_data$get = data.get('invitee_jids')) === null || _data$get === void 0 ? void 0 : _data$get.trim();
     const reason = data.get('reason');
 
     if (u.isValidJID(jid)) {
@@ -42992,7 +42363,8 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.util
     }
   }
 
-}));
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-muc-invite-modal', MUCInviteModal);
 
 /***/ }),
 
@@ -43005,13 +42377,13 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.util
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ MUCListModal)
 /* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var lodash_es_head__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash-es/head */ "./node_modules/lodash-es/head.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _templates_muc_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../templates/muc-list.js */ "./src/plugins/muc-views/templates/muc-list.js");
-/* harmony import */ var _templates_muc_description_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../templates/muc-description.js */ "./src/plugins/muc-views/templates/muc-description.js");
+/* harmony import */ var _templates_muc_description_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../templates/muc-description.js */ "./src/plugins/muc-views/templates/muc-description.js");
+/* harmony import */ var _templates_muc_list_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../templates/muc-list.js */ "./src/plugins/muc-views/templates/muc-list.js");
 /* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
@@ -43043,7 +42415,7 @@ function insertRoomInfo(el, stanza) {
   // All MUC features found here: https://xmpp.org/registrar/disco-features.html
   el.querySelector('span.spinner').remove();
   el.querySelector('a.room-info').classList.add('selected');
-  el.insertAdjacentHTML('beforeEnd', u.getElementFromTemplateResult((0,_templates_muc_description_js__WEBPACK_IMPORTED_MODULE_3__["default"])({
+  el.insertAdjacentHTML('beforeEnd', u.getElementFromTemplateResult((0,_templates_muc_description_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
     'jid': stanza.getAttribute('from'),
     'desc': (_head = (0,lodash_es_head__WEBPACK_IMPORTED_MODULE_8__["default"])(sizzle('field[var="muc#roominfo_description"] value', stanza))) === null || _head === void 0 ? void 0 : _head.textContent,
     'occ': (_head2 = (0,lodash_es_head__WEBPACK_IMPORTED_MODULE_8__["default"])(sizzle('field[var="muc#roominfo_occupants"] value', stanza))) === null || _head2 === void 0 ? void 0 : _head2.textContent,
@@ -43080,22 +42452,23 @@ function toggleRoomInfo(ev) {
   }
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "muc-list-modal",
-  persistent: true,
-
-  initialize() {
+class MUCListModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(options) {
+    super(options);
     this.items = [];
     this.loading_items = false;
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
+  }
+
+  initialize() {
+    super.initialize();
     this.listenTo(this.model, 'change:muc_domain', this.onDomainChange);
     this.listenTo(this.model, 'change:feedback_text', () => this.render());
-    this.el.addEventListener('shown.bs.modal', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('locked_muc_domain') ? this.updateRoomsList() : this.el.querySelector('input[name="server"]').focus());
+    this.addEventListener('shown.bs.modal', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('locked_muc_domain') && this.updateRoomsList());
     this.model.save('feedback_text', '');
-  },
+  }
 
-  toHTML() {
-    return (0,_templates_muc_list_js__WEBPACK_IMPORTED_MODULE_2__["default"])(Object.assign(this.model.toJSON(), {
+  renderModal() {
+    return (0,_templates_muc_list_js__WEBPACK_IMPORTED_MODULE_3__["default"])(Object.assign(this.model.toJSON(), {
       'show_form': !_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('locked_muc_domain'),
       'server_placeholder': this.model.get('muc_domain') || (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('conference.example.org'),
       'items': this.items,
@@ -43105,7 +42478,12 @@ function toggleRoomInfo(ev) {
       'submitForm': ev => this.showRooms(ev),
       'toggleRoomInfo': ev => this.toggleRoomInfo(ev)
     }));
-  },
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Query for Groupchats');
+  }
 
   openRoom(ev) {
     ev.preventDefault();
@@ -43115,17 +42493,17 @@ function toggleRoomInfo(ev) {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.rooms.open(jid, {
       'name': name
     }, true);
-  },
+  }
 
   toggleRoomInfo(ev) {
+    // eslint-disable-line
     ev.preventDefault();
     toggleRoomInfo(ev);
-  },
+  }
 
   onDomainChange() {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('auto_list_rooms') && this.updateRoomsList();
-  },
-
+  }
   /**
    * Handle the IQ stanza returned from the server, containing
    * all its public groupchats.
@@ -43133,6 +42511,8 @@ function toggleRoomInfo(ev) {
    * @method _converse.ChatRoomView#onRoomsFound
    * @param { HTMLElement } iq
    */
+
+
   onRoomsFound(iq) {
     this.loading_items = false;
     const rooms = iq ? sizzle('query item', iq) : [];
@@ -43155,13 +42535,14 @@ function toggleRoomInfo(ev) {
 
     this.render();
     return true;
-  },
-
+  }
   /**
    * Send an IQ stanza to the server asking for all groupchats
    * @private
    * @method _converse.ChatRoomView#updateRoomsList
    */
+
+
   updateRoomsList() {
     const iq = $iq({
       'to': this.model.get('muc_domain'),
@@ -43171,7 +42552,7 @@ function toggleRoomInfo(ev) {
       xmlns: Strophe.NS.DISCO_ITEMS
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.sendIQ(iq).then(iq => this.onRoomsFound(iq)).catch(() => this.onRoomsFound());
-  },
+  }
 
   showRooms(ev) {
     ev.preventDefault();
@@ -43180,11 +42561,11 @@ function toggleRoomInfo(ev) {
     const data = new FormData(ev.target);
     this.model.setDomain(data.get('server'));
     this.updateRoomsList();
-  },
+  }
 
   setDomainFromEvent(ev) {
     this.model.setDomain(ev.target.value);
-  },
+  }
 
   setNick(ev) {
     this.model.save({
@@ -43192,7 +42573,8 @@ function toggleRoomInfo(ev) {
     });
   }
 
-}));
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.elements.define('converse-muc-list-modal', MUCListModal);
 
 /***/ }),
 
@@ -43205,25 +42587,28 @@ function toggleRoomInfo(ev) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ MUCNicknameModal)
 /* harmony export */ });
-/* harmony import */ var _templates_nickname_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/nickname.js */ "./src/plugins/muc-views/modals/templates/nickname.js");
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].extend({
-  id: 'change-nickname-modal',
 
-  initialize(attrs) {
-    this.model = attrs.model;
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.initialize.apply(this, arguments);
-  },
 
-  toHTML() {
-    return (0,_templates_nickname_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
+class MUCNicknameModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  renderModal() {
+    return lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-muc-nickname-form jid="${this.model.get('jid')}"></converse-muc-nickname-form>`;
   }
 
-}));
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Change your nickname');
+  }
+
+}
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-muc-nickname-modal', MUCNicknameModal);
 
 /***/ }),
 
@@ -43236,23 +42621,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ OccupantModal)
 /* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/occupant.js */ "./src/plugins/muc-views/modals/templates/occupant.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
-const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "muc-occupant",
-
+class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   initialize() {
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
-
-    if (this.model) {
-      this.listenTo(this.model, 'change', this.render);
-    }
+    super.initialize();
+    const model = this.model ?? this.message;
+    this.listenTo(model, 'change', () => this.render());
     /**
      * Triggered once the OccupantModal has been initialized
      * @event _converse#occupantModalInitialized
@@ -43260,12 +42641,11 @@ const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["defaul
      * @example _converse.api.listen.on('occupantModalInitialized', data);
      */
 
-
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('occupantModalInitialized', {
       'model': this.model,
       'message': this.message
     });
-  },
+  }
 
   getVcard() {
     const model = this.model ?? this.message;
@@ -43276,15 +42656,14 @@ const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["defaul
 
     const jid = (model === null || model === void 0 ? void 0 : model.get('jid')) || (model === null || model === void 0 ? void 0 : model.get('from'));
     return jid ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.vcards.get(jid) : null;
-  },
+  }
 
-  toHTML() {
+  renderModal() {
     var _this$model, _this$model2, _this$model3, _this$model3$get;
 
     const model = this.model ?? this.message;
     const jid = model === null || model === void 0 ? void 0 : model.get('jid');
     const vcard = this.getVcard();
-    const display_name = model === null || model === void 0 ? void 0 : model.getDisplayName();
     const nick = model.get('nick');
     const occupant_id = model.get('occupant_id');
     const role = (_this$model = this.model) === null || _this$model === void 0 ? void 0 : _this$model.get('role');
@@ -43293,7 +42672,6 @@ const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["defaul
     return (0,_templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
       jid,
       vcard,
-      display_name,
       nick,
       occupant_id,
       role,
@@ -43302,16 +42680,21 @@ const OccupantModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["defaul
     });
   }
 
-});
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.OccupantModal = OccupantModal;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OccupantModal);
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    const model = this.model ?? this.message;
+    return model === null || model === void 0 ? void 0 : model.getDisplayName();
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-muc-occupant-modal', OccupantModal);
 
 /***/ }),
 
-/***/ "./src/plugins/muc-views/modals/templates/moderator-tools.js":
-/*!*******************************************************************!*\
-  !*** ./src/plugins/muc-views/modals/templates/moderator-tools.js ***!
-  \*******************************************************************/
+/***/ "./src/plugins/muc-views/modals/templates/add-muc.js":
+/*!***********************************************************!*\
+  !*** ./src/plugins/muc-views/modals/templates/add-muc.js ***!
+  \***********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -43319,27 +42702,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
+/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
+/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/directives/unsafe-html.js */ "./node_modules/lit/directives/unsafe-html.js");
+/* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../search.js */ "./src/plugins/muc-views/search.js");
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_moderator_tools = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moderator Tools');
 
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="converse-modtools-modal-label">${i18n_moderator_tools}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body d-flex flex-column">
-                    <converse-modtools jid=${o.jid} affiliation=${o.affiliation}></converse-modtools>
-                </div>
+
+
+
+const nickname_input = el => {
+  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname');
+
+  const i18n_required_field = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This field is required');
+
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+            <div class="form-group" >
+                <label for="nickname">${i18n_nickname}:</label>
+                <input type="text"
+                    title="${i18n_required_field}"
+                    required="required"
+                    name="nickname"
+                    value="${el.model.get('nick') || ''}"
+                    class="form-control"/>
             </div>
-        </div>`;
+    `;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const i18n_join = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Join');
+
+  const muc_domain = el.model.get('muc_domain') || _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_domain');
+  let placeholder = '';
+
+  if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('locked_muc_domain')) {
+    placeholder = muc_domain ? `name@${muc_domain}` : (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('name@conference.example.org');
+  }
+
+  const label_room_address = muc_domain ? (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Groupchat name') : (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Groupchat address');
+  const muc_roomid_policy_error_msg = el.muc_roomid_policy_error_msg;
+  const muc_roomid_policy_hint = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_roomid_policy_hint');
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+        <form class="converse-form add-chatroom" @submit=${ev => el.openChatRoom(ev)}>
+            <div class="form-group">
+                <label for="chatroom">${label_room_address}:</label>
+                ${muc_roomid_policy_error_msg ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<label class="roomid-policy-error">${muc_roomid_policy_error_msg}</label>` : ''}
+                <converse-autocomplete
+                    .getAutoCompleteList=${_search_js__WEBPACK_IMPORTED_MODULE_5__.getAutoCompleteList}
+                    ?autofocus=${true}
+                    min_chars="3"
+                    position="below"
+                    placeholder="${placeholder}"
+                    class="add-muc-autocomplete"
+                    name="chatroom">
+                </converse-autocomplete>
+            </div>
+            ${muc_roomid_policy_hint ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<div class="form-group">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(muc_roomid_policy_hint, {
+    'ALLOWED_TAGS': ['b', 'br', 'em']
+  }))}</div>` : ''}
+            ${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('locked_muc_nickname') ? nickname_input(el) : ''}
+            <input type="submit" class="btn btn-primary" name="join" value="${i18n_join || ''}" ?disabled=${muc_roomid_policy_error_msg}/>
+        </form>
+    `;
 });
 
 /***/ }),
@@ -43357,8 +42786,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
 
 
 
@@ -43376,9 +42803,6 @@ const subject = o => {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => {
   const o = model.toJSON();
   const config = model.config.toJSON();
-
-  const display_name = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Groupchat info for %1$s', model.getDisplayName());
-
   const features = model.features.toJSON();
   const num_occupants = model.occupants.filter(o => o.get('show') !== 'offline').length;
 
@@ -43443,44 +42867,31 @@ const subject = o => {
   const i18n_temporary_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat will disappear once the last person leaves');
 
   return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="muc-details-modal-label">${display_name}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
+        <div class="room-info">
+            <p class="room-info"><strong>${i18n_name}</strong>: ${o.name}</p>
+            <p class="room-info"><strong>${i18n_address}</strong>: <converse-rich-text text="xmpp:${o.jid}?join"></converse-rich-text></p>
+            <p class="room-info"><strong>${i18n_desc}</strong>: <converse-rich-text text="${config.description}" render_styling></converse-rich-text></p>
+            ${o.subject ? subject(o) : ''}
+            <p class="room-info"><strong>${i18n_online_users}</strong>: ${num_occupants}</p>
+            <p class="room-info"><strong>${i18n_features}</strong>:
+                <div class="chatroom-features">
+                <ul class="features-list">
+                    ${features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon>${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
+                    ${features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon>${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
+                    ${features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon>${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
+                    ${features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon>${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
+                    ${features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon>${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
+                    ${features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon>${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
+                    ${features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon>${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
+                    ${features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake"></converse-icon>${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
+                    ${features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon>${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
+                    ${features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon>${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
+                    ${features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon>${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
+                    ${features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon>${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
+                    ${features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon>${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
+                </ul>
                 </div>
-                <div class="modal-body">
-                    <span class="modal-alert"></span>
-                    <div class="room-info">
-                        <p class="room-info"><strong>${i18n_name}</strong>: ${o.name}</p>
-                        <p class="room-info"><strong>${i18n_address}</strong>: <converse-rich-text text="xmpp:${o.jid}?join"></converse-rich-text></p>
-                        <p class="room-info"><strong>${i18n_desc}</strong>: <converse-rich-text text="${config.description}" render_styling></converse-rich-text></p>
-                        ${o.subject ? subject(o) : ''}
-                        <p class="room-info"><strong>${i18n_online_users}</strong>: ${num_occupants}</p>
-                        <p class="room-info"><strong>${i18n_features}</strong>:
-                            <div class="chatroom-features">
-                            <ul class="features-list">
-                                ${features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon>${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
-                                ${features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon>${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
-                                ${features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon>${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
-                                ${features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon>${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
-                                ${features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon>${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
-                                ${features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon>${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
-                                ${features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon>${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
-                                ${features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake-o"></converse-icon>${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
-                                ${features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon>${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
-                                ${features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon>${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
-                                ${features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon>${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
-                                ${features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon>${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
-                                ${features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon>${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
-                            </ul>
-                            </div>
-                        </p>
-                    </div>
-                </div>
-                <div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>
-            </div>
-        </div>
+            </p>
     `;
 });
 
@@ -43499,14 +42910,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
 
 
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const i18n_invite = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Invite');
-
-  const i18n_invite_heading = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Invite someone to this groupchat');
 
   const i18n_jid_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('user@example.org');
 
@@ -43517,80 +42924,30 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Optional reason for the invitation');
 
   return lit__WEBPACK_IMPORTED_MODULE_0__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-chatroom-modal-label">${i18n_invite_heading}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body">
-                    <span class="modal-alert"></span>
-                    <div class="suggestion-box room-invite">
-                        <form @submit=${o.submitInviteForm}>
-                            <div class="form-group">
-                                <label class="clearfix" for="invitee_jids">${i18n_invite_label}:</label>
-                                ${o.invalid_invite_jid ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="error error-feedback">${i18n_error_message}</div>` : ''}
-                                <input class="form-control suggestion-box__input"
-                                    required="required"
-                                    name="invitee_jids"
-                                    id="invitee_jids"
-                                    placeholder="${i18n_jid_placeholder}"
-                                    type="text"/>
-                                <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
-                                <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>
-                            </div>
-                            <div class="form-group">
-                                <label>${i18n_reason}:</label>
-                                <textarea class="form-control" name="reason"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">${i18n_invite}</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <form class="converse-form" @submit=${ev => el.submitInviteForm(ev)}>
+            <div class="form-group">
+                <label class="clearfix" for="invitee_jids">${i18n_invite_label}:</label>
+                ${el.model.get('invalid_invite_jid') ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="error error-feedback">${i18n_error_message}</div>` : ''}
+                <converse-autocomplete
+                    .getAutoCompleteList=${() => el.getAutoCompleteList()}
+                    ?autofocus=${true}
+                    min_chars="1"
+                    position="below"
+                    required="required"
+                    name="invitee_jids"
+                    id="invitee_jids"
+                    placeholder="${i18n_jid_placeholder}">
+                </converse-autocomplete>
             </div>
-        </div>
+            <div class="form-group">
+                <label>${i18n_reason}:</label>
+                <textarea class="form-control" name="reason"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="${i18n_invite}"/>
+            </div>
+        </form>
     `;
-});
-
-/***/ }),
-
-/***/ "./src/plugins/muc-views/modals/templates/nickname.js":
-/*!************************************************************!*\
-  !*** ./src/plugins/muc-views/modals/templates/nickname.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modal => {
-  const jid = modal.model.get('jid');
-
-  const i18n_heading = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Change your nickname');
-
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="converse-modtools-modal-label">
-                        ${i18n_heading}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_header_close_button}
-                </div>
-                <div class="modal-body d-flex flex-column">
-                    <converse-muc-nickname-form jid="${jid}"></converse-muc-nickname-form>
-                </div>
-            </div>
-        </div>`;
 });
 
 /***/ }),
@@ -43609,8 +42966,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_avatar_avatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/avatar/avatar.js */ "./src/shared/avatar/avatar.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-
 
 
 
@@ -43618,48 +42973,35 @@ __webpack_require__.r(__webpack_exports__);
   var _o$vcard, _o$vcard2;
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="user-details-modal-label">${o.display_name}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
-                </div>
-                <div class="modal-body" class="d-flex">
-                    <div class="row">
-                        <div class="col-auto">
-                            <converse-avatar
-                                class="avatar modal-avatar"
-                                .data=${(_o$vcard = o.vcard) === null || _o$vcard === void 0 ? void 0 : _o$vcard.attributes}
-                                nonce=${(_o$vcard2 = o.vcard) === null || _o$vcard2 === void 0 ? void 0 : _o$vcard2.get('vcard_updated')}
-                                height="120" width="120"></converse-avatar>
-                        </div>
-                        <div class="col">
-                            <ul class="occupant-details">
-                                <li>
-                                    ${o.nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${o.nick}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${o.jid}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${o.affiliation}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${o.role}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${o.hats}</div>` : ''}
-                                </li>
-                                <li>
-                                    ${o.occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${o.occupant_id}</div>` : ''}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}
-                </div>
+        <div class="row">
+            <div class="col-auto">
+                <converse-avatar
+                    class="avatar modal-avatar"
+                    .data=${(_o$vcard = o.vcard) === null || _o$vcard === void 0 ? void 0 : _o$vcard.attributes}
+                    nonce=${(_o$vcard2 = o.vcard) === null || _o$vcard2 === void 0 ? void 0 : _o$vcard2.get('vcard_updated')}
+                    height="120" width="120"></converse-avatar>
+            </div>
+            <div class="col">
+                <ul class="occupant-details">
+                    <li>
+                        ${o.nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${o.nick}</div>` : ''}
+                    </li>
+                    <li>
+                        ${o.jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${o.jid}</div>` : ''}
+                    </li>
+                    <li>
+                        ${o.affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${o.affiliation}</div>` : ''}
+                    </li>
+                    <li>
+                        ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${o.role}</div>` : ''}
+                    </li>
+                    <li>
+                        ${o.hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${o.hats}</div>` : ''}
+                    </li>
+                    <li>
+                        ${o.occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${o.occupant_id}</div>` : ''}
+                    </li>
+                </ul>
             </div>
         </div>
     `;
@@ -43733,6 +43075,9 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
         type: String,
         attribute: false
       },
+      tab: {
+        type: String
+      },
       users_with_affiliation: {
         type: Array,
         attribute: false
@@ -43746,6 +43091,7 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
 
   constructor() {
     super();
+    this.tab = 'affiliations';
     this.affiliation = '';
     this.affiliations_filter = '';
     this.role = '';
@@ -43790,6 +43136,7 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
         'queryable_roles': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__.ROLES.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
         'roles_filter': this.roles_filter,
         'switchTab': ev => this.switchTab(ev),
+        'tab': this.tab,
         'toggleForm': ev => this.toggleForm(ev),
         'users_with_affiliation': this.users_with_affiliation,
         'users_with_role': this.users_with_role
@@ -43797,6 +43144,13 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     } else {
       return '';
     }
+  }
+
+  switchTab(ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.tab = ev.target.getAttribute('data-name');
+    this.requestUpdate();
   }
 
   async onSearchAffiliationChange() {
@@ -44005,7 +43359,7 @@ class MUCView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE_0__["defa
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse, 'windowStateChanged', this.onWindowStateChanged);
     this.listenTo(this.model, 'change:composing_spoiler', this.requestUpdateMessageForm);
     this.listenTo(this.model.session, 'change:connection_status', this.onConnectionStatusChanged);
-    this.listenTo(this.model.session, 'change:view', this.requestUpdate);
+    this.listenTo(this.model.session, 'change:view', () => this.requestUpdate());
     this.onConnectionStatusChanged();
     this.model.maybeShow();
     /**
@@ -44297,11 +43651,11 @@ class MUCSidebar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2
   connectedCallback() {
     super.connectedCallback();
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(this.jid);
-    this.listenTo(this.model.occupants, 'add', this.requestUpdate);
-    this.listenTo(this.model.occupants, 'remove', this.requestUpdate);
-    this.listenTo(this.model.occupants, 'change', this.requestUpdate);
-    this.listenTo(this.model.occupants, 'vcard:change', this.requestUpdate);
-    this.listenTo(this.model.occupants, 'vcard:add', this.requestUpdate);
+    this.listenTo(this.model.occupants, 'add', () => this.requestUpdate());
+    this.listenTo(this.model.occupants, 'remove', () => this.requestUpdate());
+    this.listenTo(this.model.occupants, 'change', () => this.requestUpdate());
+    this.listenTo(this.model.occupants, 'vcard:change', () => this.requestUpdate());
+    this.listenTo(this.model.occupants, 'vcard:add', () => this.requestUpdate());
     this.model.initialized.then(() => this.requestUpdate());
   }
 
@@ -44469,88 +43823,6 @@ __webpack_require__.r(__webpack_exports__);
             </fieldset>` : ''}
 
         </form>
-    `;
-});
-
-/***/ }),
-
-/***/ "./src/plugins/muc-views/templates/add-muc.js":
-/*!****************************************************!*\
-  !*** ./src/plugins/muc-views/templates/add-muc.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
-/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-/* harmony import */ var lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit/directives/unsafe-html.js */ "./node_modules/lit/directives/unsafe-html.js");
-/* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../search.js */ "./src/plugins/muc-views/search.js");
-
-
-
-
-
-
-
-
-const nickname_input = o => {
-  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname');
-
-  const i18n_required_field = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This field is required');
-
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-        <div class="form-group" >
-            <label for="nickname">${i18n_nickname}:</label>
-            <input type="text" title="${i18n_required_field}" required="required" name="nickname" value="${o.nick || ''}" class="form-control"/>
-        </div>
-    `;
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_join = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Join');
-
-  const i18n_enter = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter a new Groupchat');
-
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-chatroom-modal-label">${i18n_enter}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__.modal_header_close_button}
-                </div>
-                <div class="modal-body">
-                    <span class="modal-alert"></span>
-                    <form class="converse-form add-chatroom">
-                        <div class="form-group">
-                            <label for="chatroom">${o.label_room_address}:</label>
-                            ${o.muc_roomid_policy_error_msg ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<label class="roomid-policy-error">${o.muc_roomid_policy_error_msg}</label>` : ''}
-                            <converse-autocomplete
-                                .getAutoCompleteList=${_search_js__WEBPACK_IMPORTED_MODULE_6__.getAutoCompleteList}
-                                ?autofocus=${true}
-                                min_chars="3"
-                                position="below"
-                                placeholder="${o.chatroom_placeholder}"
-                                class="add-muc-autocomplete"
-                                name="chatroom">
-                            </converse-autocomplete>
-                        </div>
-                        ${o.muc_roomid_policy_hint ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<div class="form-group">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(o.muc_roomid_policy_hint, {
-    'ALLOWED_TAGS': ['b', 'br', 'em']
-  }))}</div>` : ''}
-                        ${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('locked_muc_nickname') ? nickname_input(o) : ''}
-                        <input type="submit" class="btn btn-primary" name="join" value="${i18n_join || ''}" ?disabled=${o.muc_roomid_policy_error_msg}>
-                    </form>
-                </div>
-            </div>
-        </div>
     `;
 });
 
@@ -44815,13 +44087,25 @@ const affiliation_list_item = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
     </li>
 `;
 
-const tpl_navigation = () => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const tpl_navigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
     <ul class="nav nav-pills justify-content-center">
         <li role="presentation" class="nav-item">
-            <a class="nav-link active" id="affiliations-tab" href="#affiliations-tabpanel" aria-controls="affiliations-tabpanel" role="tab" data-toggle="tab">Affiliations</a>
+            <a class="nav-link ${o.tab === "affiliations" ? "active" : ""}"
+               id="affiliations-tab"
+               href="#affiliations-tabpanel"
+               aria-controls="affiliations-tabpanel"
+               role="tab"
+               data-name="affiliations"
+               @click=${o.switchTab}>Affiliations</a>
         </li>
         <li role="presentation" class="nav-item">
-            <a class="nav-link" id="roles-tab" href="#roles-tabpanel" aria-controls="roles-tabpanel" role="tab" data-toggle="tab">Roles</a>
+            <a class="nav-link ${o.tab === "roles" ? "active" : ""}"
+               id="roles-tab"
+               href="#roles-tabpanel"
+               aria-controls="roles-tabpanel"
+               role="tab"
+               data-name="roles"
+               @click=${o.switchTab}>Roles</a>
         </li>
     </ul>
 `;
@@ -44846,12 +44130,12 @@ const tpl_navigation = () => lit__WEBPACK_IMPORTED_MODULE_2__.html`
   const show_both_tabs = o.queryable_roles.length && o.queryable_affiliations.length;
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         ${o.alert_message ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="alert alert-${o.alert_type}" role="alert">${o.alert_message}</div>` : ''}
-        ${show_both_tabs ? tpl_navigation() : ''}
+        ${show_both_tabs ? tpl_navigation(o) : ''}
 
         <div class="tab-content">
 
             ${o.queryable_affiliations.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
-            <div class="tab-pane tab-pane--columns ${o.queryable_affiliations.length ? 'active' : ''}" id="affiliations-tabpanel" role="tabpanel" aria-labelledby="affiliations-tab">
+            <div class="tab-pane tab-pane--columns ${o.tab === 'affiliations' ? 'active' : ''}" id="affiliations-tabpanel" role="tabpanel" aria-labelledby="affiliations-tab">
                 <form class="converse-form query-affiliation" @submit=${o.queryAffiliation}>
                     <p class="helptext pb-3">${i18n_helptext_affiliation}</p>
                     <div class="form-group">
@@ -44892,7 +44176,7 @@ const tpl_navigation = () => lit__WEBPACK_IMPORTED_MODULE_2__.html`
             </div>` : ''}
 
             ${o.queryable_roles.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
-            <div class="tab-pane tab-pane--columns ${!show_both_tabs && o.queryable_roles.length ? 'active' : ''}" id="roles-tabpanel" role="tabpanel" aria-labelledby="roles-tab">
+            <div class="tab-pane tab-pane--columns ${o.tab === 'roles' ? 'active' : ''}" id="roles-tabpanel" role="tabpanel" aria-labelledby="roles-tab">
                 <form class="converse-form query-role" @submit=${o.queryRole}>
                     <p class="helptext pb-3">${i18n_helptext_role}</p>
                     <div class="form-group">
@@ -45367,9 +44651,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit/directives/repeat.js */ "./node_modules/lit/directives/repeat.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
-/* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
-
+/* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
 
 
 
@@ -45386,6 +44668,7 @@ const form = o => {
             <div class="form-group">
                 <label for="chatroom">${i18n_server_address}:</label>
                 <input type="text"
+                    autofocus
                     @change=${o.setDomainFromEvent}
                     value="${o.muc_domain || ''}"
                     required="required"
@@ -45407,43 +44690,29 @@ const tpl_item = (o, item) => {
         <li class="room-item list-group-item">
             <div class="available-chatroom d-flex flex-row">
                 <a class="open-room available-room w-100"
-                @click=${o.openRoom}
-                data-room-jid="${item.jid}"
-                data-room-name="${item.name}"
-                title="${i18n_open_title}"
-                href="#">${item.name || item.jid}</a>
-                <a class="right room-info icon-room-info"
-                @click=${o.toggleRoomInfo}
-                data-room-jid="${item.jid}"
-                title="${i18n_info_title}"
-                href="#"></a>
+                    @click=${o.openRoom}
+                    data-room-jid="${item.jid}"
+                    data-room-name="${item.name}"
+                    title="${i18n_open_title}"
+                    href="#">${item.name || item.jid}</a>
+                    <a class="right room-info icon-room-info"
+                    @click=${o.toggleRoomInfo}
+                    data-room-jid="${item.jid}"
+                    title="${i18n_info_title}"
+                    href="#"></a>
             </div>
         </li>
     `;
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const i18n_list_chatrooms = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Query for Groupchats');
-
   return lit__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="muc-list-modal-label">${i18n_list_chatrooms}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_header_close_button}
-                </div>
-                <div class="modal-body d-flex flex-column">
-                    <span class="modal-alert"></span>
-                    ${o.show_form ? form(o) : ''}
-                    <ul class="available-chatrooms list-group">
-                        ${o.loading_items ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_4__["default"])()} </li>` : ''}
-                        ${o.feedback_text ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item active">${o.feedback_text}</li>` : ''}
-                        ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_2__.repeat)(o.items, item => item.jid, item => tpl_item(o, item))}
-                    </ul>
-                </div>
-                <div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_3__.modal_close_button}</div>
-            </div>
-        </div>
+        ${o.show_form ? form(o) : ''}
+        <ul class="available-chatrooms list-group">
+            ${o.loading_items ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__["default"])()} </li>` : ''}
+            ${o.feedback_text ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item active">${o.feedback_text}</li>` : ''}
+            ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_2__.repeat)(o.items, item => item.jid, item => tpl_item(o, item))}
+        </ul>
     `;
 });
 
@@ -45475,9 +44744,9 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_heading = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('muc_show_logs_before_join') ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Choose a nickname to enter') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please choose your nickname');
   const validation_message = (_el$model2 = el.model) === null || _el$model2 === void 0 ? void 0 : _el$model2.get('nickname_validation_message');
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <div class="chatroom-form-container muc-nickname-form"
-                @submit=${ev => el.submitNickname(ev)}>
-            <form class="converse-form chatroom-form converse-centered-form">
+        <div class="chatroom-form-container muc-nickname-form">
+                <form class="converse-form chatroom-form converse-centered-form"
+                        @submit=${ev => el.submitNickname(ev)}>
                 <fieldset class="form-group">
                     <label>${i18n_heading}</label>
                     <p class="validation-message">${validation_message}</p>
@@ -45489,7 +44758,10 @@ __webpack_require__.r(__webpack_exports__);
                         placeholder="${i18n_nickname}"/>
                 </fieldset>
                 <fieldset class="form-group">
-                    <input type="submit" class="btn btn-primary" name="join" value="${i18n_join}"/>
+                    <input type="submit"
+                        class="btn btn-primary"
+                        name="join"
+                        value="${i18n_join}"/>
                 </fieldset>
             </form>
         </div>`;
@@ -45748,8 +45020,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "showModeratorToolsModal": () => (/* binding */ showModeratorToolsModal),
 /* harmony export */   "showOccupantModal": () => (/* binding */ showOccupantModal)
 /* harmony export */ });
-/* harmony import */ var _modals_moderator_tools_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/moderator-tools.js */ "./src/plugins/muc-views/modals/moderator-tools.js");
-/* harmony import */ var _modals_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/occupant.js */ "./src/plugins/muc-views/modals/occupant.js");
+/* harmony import */ var _modals_occupant_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/occupant.js */ "./src/plugins/muc-views/modals/occupant.js");
+/* harmony import */ var _modals_moderator_tools_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/moderator-tools.js */ "./src/plugins/muc-views/modals/moderator-tools.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
@@ -46008,13 +45280,13 @@ function showModeratorToolsModal(muc, affiliation) {
     return;
   }
 
-  let modal = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.get(_modals_moderator_tools_js__WEBPACK_IMPORTED_MODULE_0__["default"].id);
+  let modal = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.get('converse-modtools-modal');
 
   if (modal) {
     modal.affiliation = affiliation;
     modal.render();
   } else {
-    modal = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.create(_modals_moderator_tools_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    modal = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.create('converse-modtools-modal', {
       affiliation,
       'jid': muc.get('jid')
     });
@@ -46023,7 +45295,7 @@ function showModeratorToolsModal(muc, affiliation) {
   modal.show();
 }
 function showOccupantModal(ev, occupant) {
-  _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show(_modals_occupant_js__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show('converse-muc-occupant-modal', {
     'model': occupant
   }, ev);
 }
@@ -47097,11 +46369,11 @@ class Fingerprints extends shared_components_element_js__WEBPACK_IMPORTED_MODULE
 
   async initialize() {
     this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.omemo.devicelists.get(this.jid, true);
-    this.listenTo(this.devicelist.devices, 'change:bundle', this.requestUpdate);
-    this.listenTo(this.devicelist.devices, 'change:trusted', this.requestUpdate);
-    this.listenTo(this.devicelist.devices, 'remove', this.requestUpdate);
-    this.listenTo(this.devicelist.devices, 'add', this.requestUpdate);
-    this.listenTo(this.devicelist.devices, 'reset', this.requestUpdate);
+    this.listenTo(this.devicelist.devices, 'change:bundle', () => this.requestUpdate());
+    this.listenTo(this.devicelist.devices, 'change:trusted', () => this.requestUpdate());
+    this.listenTo(this.devicelist.devices, 'remove', () => this.requestUpdate());
+    this.listenTo(this.devicelist.devices, 'add', () => this.requestUpdate());
+    this.listenTo(this.devicelist.devices, 'reset', () => this.requestUpdate());
     this.requestUpdate();
   }
 
@@ -47130,18 +46402,17 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('conver
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fingerprints_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fingerprints.js */ "./src/plugins/omemo/fingerprints.js");
 /* harmony import */ var _profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile.js */ "./src/plugins/omemo/profile.js");
-/* harmony import */ var modals_user_details_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! modals/user-details.js */ "./src/modals/user-details.js");
-/* harmony import */ var plugins_profile_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/profile/index.js */ "./src/plugins/profile/index.js");
-/* harmony import */ var _mixins_converse_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mixins/converse.js */ "./src/plugins/omemo/mixins/converse.js");
-/* harmony import */ var _device_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./device.js */ "./src/plugins/omemo/device.js");
-/* harmony import */ var _devicelist_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./devicelist.js */ "./src/plugins/omemo/devicelist.js");
-/* harmony import */ var _devicelists_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./devicelists.js */ "./src/plugins/omemo/devicelists.js");
-/* harmony import */ var _devices_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./devices.js */ "./src/plugins/omemo/devices.js");
-/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store.js */ "./src/plugins/omemo/store.js");
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./api.js */ "./src/plugins/omemo/api.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
+/* harmony import */ var shared_modals_user_details_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/modals/user-details.js */ "./src/shared/modals/user-details.js");
+/* harmony import */ var _mixins_converse_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mixins/converse.js */ "./src/plugins/omemo/mixins/converse.js");
+/* harmony import */ var _device_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./device.js */ "./src/plugins/omemo/device.js");
+/* harmony import */ var _devicelist_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./devicelist.js */ "./src/plugins/omemo/devicelist.js");
+/* harmony import */ var _devicelists_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./devicelists.js */ "./src/plugins/omemo/devicelists.js");
+/* harmony import */ var _devices_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./devices.js */ "./src/plugins/omemo/devices.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store.js */ "./src/plugins/omemo/store.js");
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./api.js */ "./src/plugins/omemo/api.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -47159,75 +46430,74 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 const {
   Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.converse.env;
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.converse.env.omemo = _utils_js__WEBPACK_IMPORTED_MODULE_13__.omemo;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.converse.env;
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.converse.env.omemo = _utils_js__WEBPACK_IMPORTED_MODULE_12__.omemo;
 Strophe.addNamespace('OMEMO_DEVICELIST', Strophe.NS.OMEMO + '.devicelist');
 Strophe.addNamespace('OMEMO_VERIFICATION', Strophe.NS.OMEMO + '.verification');
 Strophe.addNamespace('OMEMO_WHITELISTED', Strophe.NS.OMEMO + '.whitelisted');
 Strophe.addNamespace('OMEMO_BUNDLES', Strophe.NS.OMEMO + '.bundles');
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.converse.plugins.add('converse-omemo', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.converse.plugins.add('converse-omemo', {
   enabled(_converse) {
-    return window.libsignal && _converse.config.get('trusted') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get('blacklisted_plugins').includes('converse-omemo');
+    return window.libsignal && _converse.config.get('trusted') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get('blacklisted_plugins').includes('converse-omemo');
   },
 
-  dependencies: ['converse-chatview', 'converse-pubsub'],
+  dependencies: ['converse-chatview', 'converse-pubsub', 'converse-profile'],
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.settings.extend({
       'omemo_default': false
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.promises.add(['OMEMOInitialized']);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.NUM_PREKEYS = 100; // Set here so that tests can override
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.promises.add(['OMEMOInitialized']);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.NUM_PREKEYS = 100; // Set here so that tests can override
 
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse, _mixins_converse_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_11__["default"]);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.OMEMOStore = _store_js__WEBPACK_IMPORTED_MODULE_9__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.Device = _device_js__WEBPACK_IMPORTED_MODULE_5__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.Devices = _devices_js__WEBPACK_IMPORTED_MODULE_8__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.DeviceList = _devicelist_js__WEBPACK_IMPORTED_MODULE_6__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.DeviceLists = _devicelists_js__WEBPACK_IMPORTED_MODULE_7__["default"];
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse, _mixins_converse_js__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_10__["default"]);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.OMEMOStore = _store_js__WEBPACK_IMPORTED_MODULE_8__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.Device = _device_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.Devices = _devices_js__WEBPACK_IMPORTED_MODULE_7__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.DeviceList = _devicelist_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.DeviceLists = _devicelists_js__WEBPACK_IMPORTED_MODULE_6__["default"];
     /******************** Event Handlers ********************/
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.waitUntil('chatBoxesInitialized').then(_utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatBoxesInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('getOutgoingMessageAttributes', _utils_js__WEBPACK_IMPORTED_MODULE_13__.getOutgoingMessageAttributes);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('createMessageStanza', async (chat, data) => {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.waitUntil('chatBoxesInitialized').then(_utils_js__WEBPACK_IMPORTED_MODULE_12__.onChatBoxesInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('getOutgoingMessageAttributes', _utils_js__WEBPACK_IMPORTED_MODULE_12__.getOutgoingMessageAttributes);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('createMessageStanza', async (chat, data) => {
       try {
-        data = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.createOMEMOMessageStanza)(chat, data);
+        data = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.createOMEMOMessageStanza)(chat, data);
       } catch (e) {
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.handleMessageSendError)(e, chat);
+        (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.handleMessageSendError)(e, chat);
       }
 
       return data;
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('afterFileUploaded', (msg, attrs) => msg.file.xep454_ivkey ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.setEncryptedFileURL)(msg, attrs) : attrs);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('beforeFileUpload', (chat, file) => chat.get('omemo_active') ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.encryptFile)(file) : file);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('parseMessage', _utils_js__WEBPACK_IMPORTED_MODULE_13__.parseEncryptedMessage);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('parseMUCMessage', _utils_js__WEBPACK_IMPORTED_MODULE_13__.parseEncryptedMessage);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('chatBoxViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('chatRoomViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_13__.registerPEPPushHandler);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('getToolbarButtons', _utils_js__WEBPACK_IMPORTED_MODULE_13__.getOMEMOToolbarButton);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.initOMEMO);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('addClientFeatures', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.disco.own.features.add(`${Strophe.NS.OMEMO_DEVICELIST}+notify`));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('afterMessageBodyTransformed', _utils_js__WEBPACK_IMPORTED_MODULE_13__.handleEncryptedFiles);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('userDetailsModalInitialized', contact => {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('afterFileUploaded', (msg, attrs) => msg.file.xep454_ivkey ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.setEncryptedFileURL)(msg, attrs) : attrs);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('beforeFileUpload', (chat, file) => chat.get('omemo_active') ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.encryptFile)(file) : file);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('parseMessage', _utils_js__WEBPACK_IMPORTED_MODULE_12__.parseEncryptedMessage);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('parseMUCMessage', _utils_js__WEBPACK_IMPORTED_MODULE_12__.parseEncryptedMessage);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('chatBoxViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_12__.onChatInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('chatRoomViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_12__.onChatInitialized);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_12__.registerPEPPushHandler);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('getToolbarButtons', _utils_js__WEBPACK_IMPORTED_MODULE_12__.getOMEMOToolbarButton);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_12__.initOMEMO);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('addClientFeatures', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.disco.own.features.add(`${Strophe.NS.OMEMO_DEVICELIST}+notify`));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('afterMessageBodyTransformed', _utils_js__WEBPACK_IMPORTED_MODULE_12__.handleEncryptedFiles);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('userDetailsModalInitialized', contact => {
       const jid = contact.get('jid');
 
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.generateFingerprints(jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_10__["default"].error(e));
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.generateFingerprints(jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__["default"].error(e));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('profileModalInitialized', () => {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.generateFingerprints(_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.bare_jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_10__["default"].error(e));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('profileModalInitialized', () => {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.generateFingerprints(_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.bare_jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__["default"].error(e));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__.api.listen.on('clearSession', () => {
-      delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.omemo_store;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('clearSession', () => {
+      delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.omemo_store;
 
-      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.shouldClearCache() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.devicelists) {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.devicelists.clearStore();
+      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.shouldClearCache() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists) {
+        _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists.clearStore();
 
-        delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_12__._converse.devicelists;
+        delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists;
       }
     });
   }
@@ -47784,7 +47054,7 @@ const device_with_fingerprint = el => {
   const i18n_fingerprint_checkbox_label = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Checkbox for selecting the following fingerprint');
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <li class="fingerprint-removal-item list-group-item nopadding">
+        <li class="fingerprint-removal-item list-group-item">
             <label>
             <input type="checkbox" value="${el.device.get('id')}"
                 aria-label="${i18n_fingerprint_checkbox_label}"/>
@@ -47800,7 +47070,7 @@ const device_without_fingerprint = el => {
   const i18n_fingerprint_checkbox_label = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Checkbox for selecting the following device');
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <li class="fingerprint-removal-item list-group-item nopadding">
+        <li class="fingerprint-removal-item list-group-item">
             <label>
             <input type="checkbox" value="${el.device.get('id')}"
                 aria-label="${i18n_fingerprint_checkbox_label}"/>
@@ -47827,7 +47097,7 @@ const device_list = el => {
 
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <ul class="list-group fingerprints">
-            <li class="list-group-item nopadding active">
+            <li class="list-group-item active">
                 <label>
                     <input type="checkbox" class="select-all" @change=${el.selectAll} title="${i18n_select_all}" aria-label="${i18n_other_devices_label}"/>
                     ${i18n_other_devices}
@@ -48878,12 +48148,13 @@ const omemo = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modal_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modal/index.js */ "./src/plugins/modal/index.js");
-/* harmony import */ var _statusview_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./statusview.js */ "./src/plugins/profile/statusview.js");
-/* harmony import */ var _converse_headless_plugins_status__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/status */ "./src/headless/plugins/status/index.js");
-/* harmony import */ var _converse_headless_plugins_vcard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/plugins/vcard */ "./src/headless/plugins/vcard/index.js");
-/* harmony import */ var _modals_chat_status_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modals/chat-status.js */ "./src/plugins/profile/modals/chat-status.js");
-/* harmony import */ var _modals_profile_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modals/profile.js */ "./src/plugins/profile/modals/profile.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _modals_chat_status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/chat-status.js */ "./src/plugins/profile/modals/chat-status.js");
+/* harmony import */ var _modals_profile_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modals/profile.js */ "./src/plugins/profile/modals/profile.js");
+/* harmony import */ var _modals_user_settings_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals/user-settings.js */ "./src/plugins/profile/modals/user-settings.js");
+/* harmony import */ var _statusview_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statusview.js */ "./src/plugins/profile/statusview.js");
+/* harmony import */ var _converse_headless_plugins_status__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/plugins/status */ "./src/headless/plugins/status/index.js");
+/* harmony import */ var _converse_headless_plugins_vcard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/plugins/vcard */ "./src/headless/plugins/vcard/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -48895,11 +48166,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.plugins.add('converse-profile', {
+
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_7__.converse.plugins.add('converse-profile', {
   dependencies: ["converse-status", "converse-modal", "converse-vcard", "converse-chatboxviews"],
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_7__.api.settings.extend({
       'allow_adhoc_commands': true,
       'show_client_info': true
     });
@@ -48918,9 +48190,9 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.plugins.add('conve
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ ChatStatusModal)
 /* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_chat_status_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/chat-status-modal.js */ "./src/plugins/profile/templates/chat-status-modal.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
@@ -48929,44 +48201,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.utils;
-const ChatStatusModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "modal-status-change",
-  events: {
-    "submit form#set-xmpp-status": "onFormSubmitted",
-    "click .clear-input": "clearStatusMessage"
-  },
-
-  toHTML() {
-    return (0,_templates_chat_status_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"])(Object.assign(this.model.toJSON(), this.model.vcard.toJSON(), {
-      'label_away': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Away'),
-      'label_busy': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Busy'),
-      'label_cancel': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Cancel'),
-      'label_close': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Close'),
-      'label_custom_status': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Custom status'),
-      'label_offline': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Offline'),
-      'label_online': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Online'),
-      'label_save': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Save'),
-      'label_xa': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Away for long'),
-      'modal_title': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change chat status'),
-      'placeholder_status_message': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Personal status message')
-    }));
-  },
-
-  afterRender() {
-    this.el.addEventListener('shown.bs.modal', () => {
-      this.el.querySelector('input[name="status_message"]').focus();
+class ChatStatusModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  initialize() {
+    super.initialize();
+    this.render();
+    this.addEventListener('shown.bs.modal', () => {
+      this.querySelector('input[name="status_message"]').focus();
     }, false);
-  },
+  }
+
+  renderModal() {
+    return (0,_templates_chat_status_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change chat status');
+  }
 
   clearStatusMessage(ev) {
     if (ev && ev.preventDefault) {
       ev.preventDefault();
-      u.hideElement(this.el.querySelector('.clear-input'));
+      u.hideElement(this.querySelector('.clear-input'));
     }
 
-    const roster_filter = this.el.querySelector('input[name="status_message"]');
+    const roster_filter = this.querySelector('input[name="status_message"]');
     roster_filter.value = '';
-  },
+  }
 
   onFormSubmitted(ev) {
     ev.preventDefault();
@@ -48978,9 +48239,9 @@ const ChatStatusModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["defa
     this.modal.hide();
   }
 
-});
+}
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ChatStatusModal = ChatStatusModal;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatStatusModal);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-chat-status-modal', ChatStatusModal);
 
 /***/ }),
 
@@ -48993,74 +48254,66 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ChatStatusModal =
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ ProfileModal)
 /* harmony export */ });
-/* harmony import */ var plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/base.js */ "./src/plugins/modal/base.js");
-/* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap.native */ "./node_modules/bootstrap.native/dist/bootstrap-native.js");
-/* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_native__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _templates_profile_modal_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../templates/profile_modal.js */ "./src/plugins/profile/templates/profile_modal.js");
-/* harmony import */ var client_compress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! client-compress */ "./node_modules/client-compress/dist/index.js");
-/* harmony import */ var client_compress__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(client_compress__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _templates_profile_modal_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../templates/profile_modal.js */ "./src/plugins/profile/templates/profile_modal.js");
+/* harmony import */ var client_compress__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! client-compress */ "./node_modules/client-compress/dist/index.js");
+/* harmony import */ var client_compress__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(client_compress__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
 
 
 
-
-const {
-  sizzle
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.env;
-const options = {
+const compress = new (client_compress__WEBPACK_IMPORTED_MODULE_3___default())({
   targetSize: 0.1,
   quality: 0.75,
   maxWidth: 256,
   maxHeight: 256
-};
-const compress = new (client_compress__WEBPACK_IMPORTED_MODULE_4___default())(options);
-const ProfileModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].extend({
-  id: "user-profile-modal",
-  events: {
-    'submit .profile-form': 'onFormSubmitted'
-  },
+});
+class ProfileModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(options) {
+    super(options);
+    this.tab = 'profile';
+  }
 
   initialize() {
+    super.initialize();
     this.listenTo(this.model, 'change', this.render);
-    plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
     /**
-        * Triggered when the _converse.ProfileModal has been created and initialized.
-        * @event _converse#profileModalInitialized
-        * @type { _converse.XMPPStatus }
-        * @example _converse.api.listen.on('profileModalInitialized', status => { ... });
-        */
+     * Triggered when the _converse.ProfileModal has been created and initialized.
+     * @event _converse#profileModalInitialized
+     * @type { _converse.XMPPStatus }
+     * @example _converse.api.listen.on('profileModalInitialized', status => { ... });
+     */
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.trigger('profileModalInitialized', this.model);
-  },
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.trigger('profileModalInitialized', this.model);
+  }
 
-  toHTML() {
-    return (0,_templates_profile_modal_js__WEBPACK_IMPORTED_MODULE_3__["default"])(Object.assign(this.model.toJSON(), this.model.vcard.toJSON(), {
-      'view': this
-    }));
-  },
+  renderModal() {
+    return (0,_templates_profile_modal_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
+  }
 
-  afterRender() {
-    this.tabs = sizzle('.nav-item .nav-link', this.el).map(e => new (bootstrap_native__WEBPACK_IMPORTED_MODULE_1___default().Tab)(e));
-  },
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Your Profile');
+  }
 
   async setVCard(data) {
     try {
-      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.api.vcard.set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.bare_jid, data);
+      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.vcard.set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid, data);
     } catch (err) {
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__["default"].fatal(err);
-      this.alert([(0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)("Sorry, an error happened while trying to save your profile data."), (0,i18n__WEBPACK_IMPORTED_MODULE_5__.__)("You can check your browser's developer console for any error output.")].join(" "));
+      _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].fatal(err);
+      this.alert([(0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Sorry, an error happened while trying to save your profile data."), (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("You can check your browser's developer console for any error output.")].join(" "));
       return;
     }
 
     this.modal.hide();
-  },
+  }
 
   onFormSubmitted(ev) {
     ev.preventDefault();
@@ -49101,9 +48354,148 @@ const ProfileModal = plugins_modal_base_js__WEBPACK_IMPORTED_MODULE_0__["default
     }
   }
 
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.elements.define('converse-profile-modal', ProfileModal);
+
+/***/ }),
+
+/***/ "./src/plugins/profile/modals/templates/user-settings.js":
+/*!***************************************************************!*\
+  !*** ./src/plugins/profile/modals/templates/user-settings.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
+/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/directives/unsafe-html.js */ "./node_modules/lit/directives/unsafe-html.js");
+
+
+
+
+
+
+const tpl_navigation = el => {
+  const i18n_about = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('About');
+
+  const i18n_commands = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Commands');
+
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+        <ul class="nav nav-pills justify-content-center">
+            <li role="presentation" class="nav-item">
+                <a class="nav-link ${el.tab === "about" ? "active" : ""}"
+                   id="about-tab"
+                   href="#about-tabpanel"
+                   aria-controls="about-tabpanel"
+                   role="tab"
+                   data-toggle="tab"
+                   data-name="about"
+                   @click=${ev => el.switchTab(ev)}>${i18n_about}</a>
+            </li>
+            <li role="presentation" class="nav-item">
+                <a class="nav-link ${el.tab === "commands" ? "active" : ""}"
+                   id="commands-tab"
+                   href="#commands-tabpanel"
+                   aria-controls="commands-tabpanel"
+                   role="tab"
+                   data-toggle="tab"
+                   data-name="commands"
+                   @click=${ev => el.switchTab(ev)}>${i18n_commands}</a>
+            </li>
+        </ul>
+    `;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const first_subtitle = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('%1$s Open Source %2$s XMPP chat client brought to you by %3$s Opkode %2$s', '<a target="_blank" rel="nofollow" href="https://conversejs.org">', '</a>', '<a target="_blank" rel="nofollow" href="https://opkode.com">');
+
+  const second_subtitle = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('%1$s Translate %2$s it into your own language', '<a target="_blank" rel="nofollow" href="https://hosted.weblate.org/projects/conversejs/#languages">', '</a>');
+
+  const show_client_info = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_client_info');
+  const allow_adhoc_commands = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_adhoc_commands');
+  const show_both_tabs = show_client_info && allow_adhoc_commands;
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+        ${show_both_tabs ? tpl_navigation(el) : ''}
+
+        <div class="tab-content">
+            ${show_client_info ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                <div class="tab-pane tab-pane--columns ${el.tab === 'about' ? 'active' : ''}"
+                        id="about-tabpanel" role="tabpanel" aria-labelledby="about-tab">
+
+                    <span class="modal-alert"></span>
+                    <br/>
+                    <div class="container">
+                        <h6 class="brand-heading">Converse</h6>
+                        <p class="brand-subtitle">${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.VERSION_NAME}</p>
+                        <p class="brand-subtitle">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(first_subtitle))}</p>
+                        <p class="brand-subtitle">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(second_subtitle))}</p>
+                    </div>
+                </div>` : ''}
+
+            ${allow_adhoc_commands ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                <div class="tab-pane tab-pane--columns ${el.tab === 'commands' ? 'active' : ''}"
+                        id="commands-tabpanel"
+                        role="tabpanel"
+                        aria-labelledby="commands-tab">
+                    <converse-adhoc-commands/>
+                </div> ` : ''}
+        </div>
+`;
 });
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.ProfileModal = ProfileModal;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProfileModal);
+
+/***/ }),
+
+/***/ "./src/plugins/profile/modals/user-settings.js":
+/*!*****************************************************!*\
+  !*** ./src/plugins/profile/modals/user-settings.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UserSettingsModal)
+/* harmony export */ });
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var _templates_user_settings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/user-settings.js */ "./src/plugins/profile/modals/templates/user-settings.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+
+class UserSettingsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(options) {
+    super(options);
+    const show_client_info = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('show_client_info');
+    const allow_adhoc_commands = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('allow_adhoc_commands');
+    const show_both_tabs = show_client_info && allow_adhoc_commands;
+
+    if (show_both_tabs || show_client_info) {
+      this.tab = 'about';
+    } else if (allow_adhoc_commands) {
+      this.tab = 'commands';
+    }
+  }
+
+  renderModal() {
+    return (0,_templates_user_settings_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Settings');
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-user-settings-modal', UserSettingsModal);
 
 /***/ }),
 
@@ -49115,52 +48507,50 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__._converse.ProfileModal = Pr
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var modals_user_settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modals/user-settings */ "./src/modals/user-settings.js");
-/* harmony import */ var _templates_profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/profile.js */ "./src/plugins/profile/templates/profile.js");
-/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _templates_profile_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/profile.js */ "./src/plugins/profile/templates/profile.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
 
-
-class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
+class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.CustomElement {
   initialize() {
-    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.xmppstatus;
-    this.listenTo(this.model, "change", this.requestUpdate);
-    this.listenTo(this.model, "vcard:add", this.requestUpdate);
-    this.listenTo(this.model, "vcard:change", this.requestUpdate);
+    this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.xmppstatus;
+    this.listenTo(this.model, "change", () => this.requestUpdate());
+    this.listenTo(this.model, "vcard:add", () => this.requestUpdate());
+    this.listenTo(this.model, "vcard:change", () => this.requestUpdate());
   }
 
   render() {
-    return (0,_templates_profile_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+    return (0,_templates_profile_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
   }
 
   showProfileModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ProfileModal, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-profile-modal', {
       model: this.model
     }, ev);
   }
 
   showStatusChangeModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ChatStatusModal, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-chat-status-modal', {
       model: this.model
     }, ev);
   }
 
   showUserSettingsModal(ev) {
     ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(modals_user_settings__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-user-settings-modal', {
       model: this.model,
-      _converse: _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse
+      _converse: _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse
     }, ev);
   }
 
 }
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-user-profile', Profile);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-user-profile', Profile);
 
 /***/ }),
 
@@ -49176,58 +48566,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="changeStatusModalLabel">${o.modal_title}</h5>
-                ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_1__.modal_header_close_button}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const label_away = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Away');
+
+  const label_busy = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Busy');
+
+  const label_online = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Online');
+
+  const label_save = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Save');
+
+  const label_xa = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Away for long');
+
+  const placeholder_status_message = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Personal status message');
+
+  const status = el.model.get('status');
+  const status_message = el.model.get('status_message');
+  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+    <form class="converse-form set-xmpp-status" id="set-xmpp-status" @submit=${ev => el.onFormSubmitted(ev)}>
+        <div class="form-group">
+            <div class="custom-control custom-radio">
+                <input ?checked=${status === 'online'}
+                    type="radio" id="radio-online" value="online" name="chat_status" class="custom-control-input"/>
+                <label class="custom-control-label" for="radio-online">
+                    <converse-icon size="1em" class="fa fa-circle chat-status chat-status--online"></converse-icon>${label_online}</label>
             </div>
-            <div class="modal-body">
-                <span class="modal-alert"></span>
-                <form class="converse-form set-xmpp-status" id="set-xmpp-status">
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input ?checked=${o.status === 'online'}
-                                type="radio" id="radio-online" value="online" name="chat_status" class="custom-control-input"/>
-                            <label class="custom-control-label" for="radio-online">
-                                <converse-icon size="1em" class="fa fa-circle chat-status chat-status--online"></converse-icon>${o.label_online}</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input ?checked=${o.status === 'busy'}
-                                type="radio" id="radio-busy" value="dnd" name="chat_status" class="custom-control-input"/>
-                            <label class="custom-control-label" for="radio-busy">
-                                <converse-icon size="1em" class="fa fa-minus-circle  chat-status chat-status--busy"></converse-icon>${o.label_busy}</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input ?checked=${o.status === 'away'}
-                                type="radio" id="radio-away" value="away" name="chat_status" class="custom-control-input"/>
-                            <label class="custom-control-label" for="radio-away">
-                                <converse-icon size="1em" class="fa fa-circle chat-status chat-status--away"></converse-icon>${o.label_away}</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input ?checked=${o.status === 'xa'}
-                                type="radio" id="radio-xa" value="xa" name="chat_status" class="custom-control-input"/>
-                            <label class="custom-control-label" for="radio-xa">
-                                <converse-icon size="1em" class="far fa-circle chat-status chat-status--xa"></converse-icon>${o.label_xa}</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="btn-group w-100">
-                            <input name="status_message" type="text" class="form-control"
-                                value="${o.status_message || ''}" placeholder="${o.placeholder_status_message}"/>
-                            <converse-icon size="1em" class="fa fa-times clear-input ${o.status_message ? '' : 'hidden'}"></converse-icon>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">${o.label_save}</button>
-                </form>
+            <div class="custom-control custom-radio">
+                <input ?checked=${status === 'busy'}
+                    type="radio" id="radio-busy" value="dnd" name="chat_status" class="custom-control-input"/>
+                <label class="custom-control-label" for="radio-busy">
+                    <converse-icon size="1em" class="fa fa-minus-circle  chat-status chat-status--busy"></converse-icon>${label_busy}</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input ?checked=${status === 'away'}
+                    type="radio" id="radio-away" value="away" name="chat_status" class="custom-control-input"/>
+                <label class="custom-control-label" for="radio-away">
+                    <converse-icon size="1em" class="fa fa-circle chat-status chat-status--away"></converse-icon>${label_away}</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input ?checked=${status === 'xa'}
+                    type="radio" id="radio-xa" value="xa" name="chat_status" class="custom-control-input"/>
+                <label class="custom-control-label" for="radio-xa">
+                    <converse-icon size="1em" class="far fa-circle chat-status chat-status--xa"></converse-icon>${label_xa}</label>
             </div>
         </div>
-    </div>
-`);
+        <div class="form-group">
+            <div class="btn-group w-100">
+                <input name="status_message" type="text" class="form-control" autofocus
+                    value="${status_message || ''}" placeholder="${placeholder_status_message}"/>
+                <converse-icon size="1em" class="fa fa-times clear-input ${status_message ? '' : 'hidden'}" @click=${ev => el.clearStatusMessage(ev)}></converse-icon>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">${label_save}</button>
+    </form>`;
+});
 
 /***/ }),
 
@@ -49331,22 +48725,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! plugins/modal/templates/buttons.js */ "./src/plugins/modal/templates/buttons.js");
 
 
 
 
 
-
-const omemo_page = () => lit__WEBPACK_IMPORTED_MODULE_3__.html`
-    <div class="tab-pane" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">
+const omemo_page = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
+    <div class="tab-pane ${el.tab === 'omemo' ? 'active' : ''}" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">
         <converse-omemo-profile></converse-omemo-profile>
     </div>`;
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
+const navigation = el => {
+  const i18n_omemo = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OMEMO');
+
+  const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Profile');
+
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`<ul class="nav nav-pills justify-content-center">
+        <li role="presentation" class="nav-item">
+            <a class="nav-link ${el.tab === "profile" ? "active" : ""}"
+               id="profile-tab"
+               href="#profile-tabpanel"
+               aria-controls="profile-tabpanel" role="tab"
+               @click=${ev => el.switchTab(ev)}
+               data-name="profile"
+               data-toggle="tab">${i18n_profile}</a>
+        </li>
+        <li role="presentation" class="nav-item">
+            <a class="nav-link ${el.tab === "omemo" ? "active" : ""}"
+               id="omemo-tab"
+               href="#omemo-tabpanel"
+               aria-controls="omemo-tabpanel" role="tab"
+               @click=${ev => el.switchTab(ev)}
+               data-name="omemo"
+               data-toggle="tab">${i18n_omemo}</a>
+        </li>
+    </ul>`;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   var _converse$pluggable$p, _converse$pluggable$p2;
 
-  const heading_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Your Profile');
+  const o = { ...el.model.toJSON(),
+    ...el.model.vcard.toJSON()
+  };
 
   const i18n_email = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Email');
 
@@ -49364,76 +48785,53 @@ const omemo_page = () => lit__WEBPACK_IMPORTED_MODULE_3__.html`
 
   const i18n_url = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('URL');
 
-  const i18n_omemo = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OMEMO');
-
-  const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Profile');
-
-  const navigation = lit__WEBPACK_IMPORTED_MODULE_3__.html`<ul class="nav nav-pills justify-content-center">
-            <li role="presentation" class="nav-item">
-                <a class="nav-link active" id="profile-tab" href="#profile-tabpanel" aria-controls="profile-tabpanel" role="tab" data-toggle="tab">${i18n_profile}</a>
-            </li>
-            <li role="presentation" class="nav-item">
-                <a class="nav-link" id="omemo-tab" href="#omemo-tabpanel" aria-controls="omemo-tabpanel" role="tab" data-toggle="tab">${i18n_omemo}</a>
-            </li>
-        </ul>`;
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="user-profile-modal-label">${heading_profile}</h5>
-                    ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__.modal_header_close_button}
-                </div>
-                <div class="modal-body">
-                    <span class="modal-alert"></span>
-                    ${(_converse$pluggable$p = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]) !== null && _converse$pluggable$p !== void 0 && _converse$pluggable$p.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? navigation : ''}
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="profile-tabpanel" role="tabpanel" aria-labelledby="profile-tab">
-                            <form class="converse-form converse-form--modal profile-form" action="#">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <converse-image-picker .data="${{
+        ${(_converse$pluggable$p = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]) !== null && _converse$pluggable$p !== void 0 && _converse$pluggable$p.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? navigation(el) : ''}
+        <div class="tab-content">
+            <div class="tab-pane ${el.tab === 'profile' ? 'active' : ''}" id="profile-tabpanel" role="tabpanel" aria-labelledby="profile-tab">
+                <form class="converse-form converse-form--modal profile-form" action="#" @submit=${ev => el.onFormSubmitted(ev)}>
+                    <div class="row">
+                        <div class="col-auto">
+                            <converse-image-picker .data="${{
     image: o.image,
     image_type: o.image_type
   }}" width="128" height="128"></converse-image-picker>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label class="col-form-label">${i18n_jid}:</label>
-                                            <div>${o.jid}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="vcard-fullname" class="col-form-label">${i18n_fullname}:</label>
-                                    <input id="vcard-fullname" type="text" class="form-control" name="fn" value="${o.fullname || ''}"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="vcard-nickname" class="col-form-label">${i18n_nickname}:</label>
-                                    <input id="vcard-nickname" type="text" class="form-control" name="nickname" value="${o.nickname || ''}"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="vcard-url" class="col-form-label">${i18n_url}:</label>
-                                    <input id="vcard-url" type="url" class="form-control" name="url" value="${o.url || ''}"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="vcard-email" class="col-form-label">${i18n_email}:</label>
-                                    <input id="vcard-email" type="email" class="form-control" name="email" value="${o.email || ''}"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="vcard-role" class="col-form-label">${i18n_role}:</label>
-                                    <input id="vcard-role" type="text" class="form-control" name="role" value="${o.role || ''}" aria-describedby="vcard-role-help"/>
-                                    <small id="vcard-role-help" class="form-text text-muted">${i18n_role_help}</small>
-                                </div>
-                                <hr/>
-                                <div class="form-group">
-                                    <button type="submit" class="save-form btn btn-primary">${i18n_save}</button>
-                                </div>
-                            </form>
                         </div>
-                        ${(_converse$pluggable$p2 = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]) !== null && _converse$pluggable$p2 !== void 0 && _converse$pluggable$p2.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? omemo_page() : ''}
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="col-form-label">${i18n_jid}:</label>
+                                <div>${o.jid}</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="vcard-fullname" class="col-form-label">${i18n_fullname}:</label>
+                        <input id="vcard-fullname" type="text" class="form-control" name="fn" value="${o.fullname || ''}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="vcard-nickname" class="col-form-label">${i18n_nickname}:</label>
+                        <input id="vcard-nickname" type="text" class="form-control" name="nickname" value="${o.nickname || ''}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="vcard-url" class="col-form-label">${i18n_url}:</label>
+                        <input id="vcard-url" type="url" class="form-control" name="url" value="${o.url || ''}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="vcard-email" class="col-form-label">${i18n_email}:</label>
+                        <input id="vcard-email" type="email" class="form-control" name="email" value="${o.email || ''}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="vcard-role" class="col-form-label">${i18n_role}:</label>
+                        <input id="vcard-role" type="text" class="form-control" name="role" value="${o.role || ''}" aria-describedby="vcard-role-help"/>
+                        <small id="vcard-role-help" class="form-text text-muted">${i18n_role_help}</small>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <button type="submit" class="save-form btn btn-primary">${i18n_save}</button>
+                    </div>
+                </form>
             </div>
+            ${(_converse$pluggable$p2 = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]) !== null && _converse$pluggable$p2 !== void 0 && _converse$pluggable$p2.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? omemo_page(el) : ''}
         </div>
     `;
 });
@@ -49672,9 +49070,8 @@ function onChatBoxAdded(model) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _panel_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./panel.js */ "./src/plugins/register/panel.js");
-/* harmony import */ var _controlbox_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../controlbox/index.js */ "./src/plugins/controlbox/index.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /**
  * @module converse-register
  * @description
@@ -49685,12 +49082,11 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-
  // Strophe methods for building stanzas
 
 const {
   Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env; // Add Strophe Namespaces
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env; // Add Strophe Namespaces
 
 Strophe.addNamespace('REGISTER', 'jabber:iq:register'); // Add Strophe Statuses
 
@@ -49699,7 +49095,7 @@ Strophe.Status.REGIFAIL = i + 1;
 Strophe.Status.REGISTERED = i + 2;
 Strophe.Status.CONFLICT = i + 3;
 Strophe.Status.NOTACCEPTABLE = i + 5;
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('converse-register', {
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-register', {
   dependencies: ['converse-controlbox'],
 
   enabled() {
@@ -49707,13 +49103,13 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('conve
   },
 
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.CONNECTION_STATUS[Strophe.Status.REGIFAIL] = 'REGIFAIL';
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.CONNECTION_STATUS[Strophe.Status.REGISTERED] = 'REGISTERED';
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.CONNECTION_STATUS[Strophe.Status.CONFLICT] = 'CONFLICT';
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.CONNECTION_STATUS[Strophe.Status.NOTACCEPTABLE] = 'NOTACCEPTABLE';
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.extend({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CONNECTION_STATUS[Strophe.Status.REGIFAIL] = 'REGIFAIL';
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CONNECTION_STATUS[Strophe.Status.REGISTERED] = 'REGISTERED';
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CONNECTION_STATUS[Strophe.Status.CONFLICT] = 'CONFLICT';
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CONNECTION_STATUS[Strophe.Status.NOTACCEPTABLE] = 'NOTACCEPTABLE';
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.extend({
       'allow_registration': true,
-      'domain_placeholder': (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)(' e.g. conversejs.org'),
+      'domain_placeholder': (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)(' e.g. conversejs.org'),
       // Placeholder text shown in the domain input on the registration form
       'providers_link': 'https://compliance.conversations.im/',
       // Link to XMPP providers shown on registration page
@@ -49721,20 +49117,20 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('conve
     });
 
     async function setActiveForm(value) {
-      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.waitUntil('controlBoxInitialized');
+      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.waitUntil('controlBoxInitialized');
 
-      const controlbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get('controlbox');
+      const controlbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.chatboxes.get('controlbox');
 
       controlbox.set({
         'active-form': value
       });
     }
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.router.route('converse/login', () => setActiveForm('login'));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.router.route('converse/login', () => setActiveForm('login'));
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.router.route('converse/register', () => setActiveForm('register'));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.router.route('converse/register', () => setActiveForm('register'));
 
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.listen.on('controlBoxInitialized', view => {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('controlBoxInitialized', view => {
       view.model.on('change:active-form', view.showLoginOrRegisterForm, view);
     });
   }
@@ -50697,14 +50093,14 @@ const room_item = o => {
         <div class="d-flex controlbox-padded">
             <span class="w-100 controlbox-heading controlbox-heading--groupchats">${i18n_heading_chatrooms}</span>
             <a class="controlbox-heading__btn show-list-muc-modal"
-                @click=${ev => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(plugins_muc_views_modals_muc_list_js__WEBPACK_IMPORTED_MODULE_1__["default"], {
+                @click=${ev => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show('converse-muc-list-modal', {
     'model': o.model
   }, ev)}
                 title="${i18n_title_list_rooms}" data-toggle="modal" data-target="#muc-list-modal">
                     <converse-icon class="fa fa-list-ul right" size="1em"></converse-icon>
             </a>
             <a class="controlbox-heading__btn show-add-muc-modal"
-                @click=${ev => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(plugins_muc_views_modals_add_muc_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+                @click=${ev => _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show('converse-add-muc-modal', {
     'model': o.model
   }, ev)}
                 title="${i18n_title_new_room}" data-toggle="modal" data-target="#add-chatrooms-modal">
@@ -50803,12 +50199,12 @@ class RoomsList extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3_
 
   showRoomDetailsModal(ev) {
     // eslint-disable-line class-methods-use-this
-    const jid = ev.target.getAttribute('data-room-jid');
+    const jid = ev.currentTarget.getAttribute('data-room-jid');
 
     const room = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxes.get(jid);
 
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show(plugins_muc_views_modals_muc_details_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.modal.show('converse-muc-details-modal', {
       'model': room
     }, ev);
   }
@@ -50827,11 +50223,11 @@ class RoomsList extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3_
   async closeRoom(ev) {
     // eslint-disable-line class-methods-use-this
     ev.preventDefault();
-    const name = ev.target.getAttribute('data-room-name');
+    const name = ev.currentTarget.getAttribute('data-room-name');
+    const jid = ev.currentTarget.getAttribute('data-room-jid');
     const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Are you sure you want to leave the groupchat %1$s?", name));
 
     if (result) {
-      const jid = ev.target.getAttribute('data-room-jid');
       const room = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.rooms.get(jid);
       room.close();
     }
@@ -51310,7 +50706,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modal */ "./src/plugins/modal/index.js");
 /* harmony import */ var _converse_headless_plugins_chatboxes_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/plugins/chatboxes/index.js */ "./src/headless/plugins/chatboxes/index.js");
 /* harmony import */ var _converse_headless_plugins_roster_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/roster/index.js */ "./src/headless/plugins/roster/index.js");
-/* harmony import */ var modals_add_contact_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modals/add-contact.js */ "./src/modals/add-contact.js");
+/* harmony import */ var _modals_add_contact_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals/add-contact.js */ "./src/plugins/rosterview/modals/add-contact.js");
 /* harmony import */ var _rosterview_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./rosterview.js */ "./src/plugins/rosterview/rosterview.js");
 /* harmony import */ var _contactview_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./contactview.js */ "./src/plugins/rosterview/contactview.js");
 /* harmony import */ var _converse_headless_plugins_roster_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/plugins/roster/filter.js */ "./src/headless/plugins/roster/filter.js");
@@ -51368,6 +50764,274 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.converse.plugins.add('conve
 
 /***/ }),
 
+/***/ "./src/plugins/rosterview/modals/add-contact.js":
+/*!******************************************************!*\
+  !*** ./src/plugins/rosterview/modals/add-contact.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ AddContactModal)
+/* harmony export */ });
+/* harmony import */ var shared_autocomplete_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/autocomplete/index.js */ "./src/shared/autocomplete/index.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var lodash_es_compact__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash-es/compact */ "./node_modules/lodash-es/compact.js");
+/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
+/* harmony import */ var _templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/add-contact.js */ "./src/plugins/rosterview/modals/templates/add-contact.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+
+
+
+
+const {
+  Strophe
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
+class AddContactModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  initialize() {
+    super.initialize();
+    this.listenTo(this.model, 'change', () => this.render());
+    this.render();
+    this.addEventListener('shown.bs.modal', () => {
+      var _this$querySelector;
+
+      return (_this$querySelector = this.querySelector('input[name="jid"]')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.focus();
+    }, false);
+  }
+
+  renderModal() {
+    return (0,_templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Add a Contact');
+  }
+
+  afterRender() {
+    if (typeof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url') === 'string') {
+      this.initXHRAutoComplete();
+    } else {
+      this.initJIDAutoComplete();
+    }
+  }
+
+  initJIDAutoComplete() {
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
+      return;
+    }
+
+    const el = this.querySelector('.suggestion-box__jid').parentElement;
+    this.jid_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
+      'data': (text, input) => `${input.slice(0, input.indexOf("@"))}@${text}`,
+      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
+      'list': [...new Set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.map(item => Strophe.getDomainFromJid(item.get('jid'))))]
+    });
+  }
+
+  initGroupAutoComplete() {
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
+      return;
+    }
+
+    const el = this.querySelector('.suggestion-box__jid').parentElement;
+    this.jid_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
+      'data': (text, input) => `${input.slice(0, input.indexOf("@"))}@${text}`,
+      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
+      'list': [...new Set(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.map(item => Strophe.getDomainFromJid(item.get('jid'))))]
+    });
+  }
+
+  initXHRAutoComplete() {
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('autocomplete_add_contact')) {
+      return this.initXHRFetch();
+    }
+
+    const el = this.querySelector('.suggestion-box__name').parentElement;
+    this.name_auto_complete = new _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.AutoComplete(el, {
+      'auto_evaluate': false,
+      'filter': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.FILTER_STARTSWITH,
+      'list': []
+    });
+    const xhr = new window.XMLHttpRequest(); // `open` must be called after `onload` for mock/testing purposes.
+
+    xhr.onload = () => {
+      if (xhr.responseText) {
+        const r = xhr.responseText;
+        this.name_auto_complete.list = JSON.parse(r).map(i => ({
+          'label': i.fullname || i.jid,
+          'value': i.jid
+        }));
+        this.name_auto_complete.auto_completing = true;
+        this.name_auto_complete.evaluate();
+      }
+    };
+
+    const input_el = this.querySelector('input[name="name"]');
+    input_el.addEventListener('input', (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__["default"])(() => {
+      xhr.open("GET", `${_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url')}q=${encodeURIComponent(input_el.value)}`, true);
+      xhr.send();
+    }, 300));
+    this.name_auto_complete.on('suggestion-box-selectcomplete', ev => {
+      this.querySelector('input[name="name"]').value = ev.text.label;
+      this.querySelector('input[name="jid"]').value = ev.text.value;
+    });
+  }
+
+  initXHRFetch() {
+    this.xhr = new window.XMLHttpRequest();
+
+    this.xhr.onload = () => {
+      if (this.xhr.responseText) {
+        const r = this.xhr.responseText;
+        const list = JSON.parse(r).map(i => ({
+          'label': i.fullname || i.jid,
+          'value': i.jid
+        }));
+
+        if (list.length !== 1) {
+          const el = this.querySelector('.invalid-feedback');
+          el.textContent = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, could not find a contact with that name');
+          u.addClass('d-block', el);
+          return;
+        }
+
+        const jid = list[0].value;
+
+        if (this.validateSubmission(jid)) {
+          const form = this.querySelector('form');
+          const name = list[0].label;
+          this.afterSubmission(form, jid, name);
+        }
+      }
+    };
+  }
+
+  validateSubmission(jid) {
+    const el = this.querySelector('.invalid-feedback');
+
+    if (!jid || (0,lodash_es_compact__WEBPACK_IMPORTED_MODULE_6__["default"])(jid.split('@')).length < 2) {
+      u.addClass('is-invalid', this.querySelector('input[name="jid"]'));
+      u.addClass('d-block', el);
+      return false;
+    } else if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.get(Strophe.getBareJidFromJid(jid))) {
+      el.textContent = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('This contact has already been added');
+      u.addClass('d-block', el);
+      return false;
+    }
+
+    u.removeClass('d-block', el);
+    return true;
+  }
+
+  afterSubmission(_form, jid, name, group) {
+    if (group && !Array.isArray(group)) {
+      group = [group];
+    }
+
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.roster.addAndSubscribe(jid, name, group);
+
+    this.model.clear();
+    this.modal.hide();
+  }
+
+  addContactFromForm(ev) {
+    ev.preventDefault();
+    const data = new FormData(ev.target);
+    const jid = (data.get('jid') || '').trim();
+
+    if (!jid && typeof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url') === 'string') {
+      const input_el = this.querySelector('input[name="name"]');
+      this.xhr.open("GET", `${_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('xhr_user_search_url')}q=${encodeURIComponent(input_el.value)}`, true);
+      this.xhr.send();
+      return;
+    }
+
+    if (this.validateSubmission(jid)) {
+      this.afterSubmission(ev.target, jid, data.get('name'), data.get('group'));
+    }
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-add-contact-modal', AddContactModal);
+
+/***/ }),
+
+/***/ "./src/plugins/rosterview/modals/templates/add-contact.js":
+/*!****************************************************************!*\
+  !*** ./src/plugins/rosterview/modals/templates/add-contact.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_plugins_roster_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/roster/utils.js */ "./src/headless/plugins/roster/utils.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const i18n_add = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add');
+
+  const i18n_contact_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('name@example.org');
+
+  const i18n_error_message = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please enter a valid XMPP address');
+
+  const i18n_group = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Group');
+
+  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Name');
+
+  const i18n_xmpp_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('XMPP Address');
+
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+        <form class="converse-form add-xmpp-contact" @submit=${ev => el.addContactFromForm(ev)}>
+            <div class="modal-body">
+                <span class="modal-alert"></span>
+                <div class="form-group add-xmpp-contact__jid">
+                    <label class="clearfix" for="jid">${i18n_xmpp_address}:</label>
+                    <div class="suggestion-box suggestion-box__jid">
+                        <ul class="suggestion-box__results suggestion-box__results--below" hidden=""></ul>
+                        <input type="text" name="jid" ?required=${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('xhr_user_search_url')}
+                            value="${el.model.get('jid') || ''}"
+                            class="form-control suggestion-box__input"
+                            placeholder="${i18n_contact_placeholder}"/>
+                        <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
+                    </div>
+                </div>
+
+                <div class="form-group add-xmpp-contact__name">
+                    <label class="clearfix" for="name">${i18n_nickname}:</label>
+                    <div class="suggestion-box suggestion-box__name">
+                        <ul class="suggestion-box__results suggestion-box__results--above" hidden=""></ul>
+                        <input type="text" name="name" value="${el.model.get('nickname') || ''}"
+                            class="form-control suggestion-box__input"/>
+                        <span class="suggestion-box__additions visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span>
+                    </div>
+                </div>
+                <div class="form-group add-xmpp-contact__group">
+                    <label class="clearfix" for="name">${i18n_group}:</label>
+                    <converse-autocomplete .list=${(0,_converse_headless_plugins_roster_utils_js__WEBPACK_IMPORTED_MODULE_2__.getGroupsAutoCompleteList)()} name="group"></converse-autocomplete>
+                </div>
+                <div class="form-group"><div class="invalid-feedback">${i18n_error_message}</div></div>
+                <button type="submit" class="btn btn-primary">${i18n_add}</button>
+            </div>
+        </form>`;
+});
+
+/***/ }),
+
 /***/ "./src/plugins/rosterview/rosterview.js":
 /*!**********************************************!*\
   !*** ./src/plugins/rosterview/rosterview.js ***!
@@ -51396,13 +51060,17 @@ __webpack_require__.r(__webpack_exports__);
 class RosterView extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.CustomElement {
   async initialize() {
     await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.waitUntil('rosterInitialized');
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'rosterContactsFetched', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.presences, 'change:show', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster, 'add', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster, 'destroy', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster, 'remove', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster, 'change', this.requestUpdate);
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.state, 'change', this.requestUpdate);
+    const {
+      presences,
+      roster
+    } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse;
+    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'rosterContactsFetched', () => this.requestUpdate());
+    this.listenTo(presences, 'change:show', () => this.requestUpdate());
+    this.listenTo(roster, 'add', () => this.requestUpdate());
+    this.listenTo(roster, 'destroy', () => this.requestUpdate());
+    this.listenTo(roster, 'remove', () => this.requestUpdate());
+    this.listenTo(roster, 'change', () => this.requestUpdate());
+    this.listenTo(roster.state, 'change', () => this.requestUpdate());
     /**
      * Triggered once the _converse.RosterView instance has been created and initialized.
      * @event _converse#rosterViewInitialized
@@ -51427,7 +51095,7 @@ class RosterView extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1
 
   showAddContactModal(ev) {
     // eslint-disable-line class-methods-use-this
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.AddContactModal, {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.modal.show('converse-add-contact-modal', {
       'model': new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__.Model()
     }, ev);
   }
@@ -51807,38 +51475,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "highlightRosterItem": () => (/* binding */ highlightRosterItem),
 /* harmony export */   "isContactFiltered": () => (/* binding */ isContactFiltered),
 /* harmony export */   "populateContactsMap": () => (/* binding */ populateContactsMap),
+/* harmony export */   "removeContact": () => (/* binding */ removeContact),
 /* harmony export */   "shouldShowContact": () => (/* binding */ shouldShowContact),
 /* harmony export */   "shouldShowGroup": () => (/* binding */ shouldShowGroup),
 /* harmony export */   "toggleGroup": () => (/* binding */ toggleGroup)
 /* harmony export */ });
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
+
+
+function removeContact(contact) {
+  contact.removeFromRoster(() => contact.destroy(), e => {
+    e && _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.alert('error', (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Sorry, there was an error while trying to remove %1$s as a contact.', contact.getDisplayName())]);
+  });
+}
 function highlightRosterItem(chatbox) {
   var _converse$roster, _converse$roster$get;
 
-  (_converse$roster = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster) === null || _converse$roster === void 0 ? void 0 : (_converse$roster$get = _converse$roster.get(chatbox.get('jid'))) === null || _converse$roster$get === void 0 ? void 0 : _converse$roster$get.trigger('highlight');
+  (_converse$roster = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster) === null || _converse$roster === void 0 ? void 0 : (_converse$roster$get = _converse$roster.get(chatbox.get('jid'))) === null || _converse$roster$get === void 0 ? void 0 : _converse$roster$get.trigger('highlight');
 }
 function toggleGroup(ev, name) {
   var _ev$preventDefault;
 
   ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
 
-  const collapsed = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster.state.get('collapsed_groups');
+  const collapsed = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.get('collapsed_groups');
 
   if (collapsed.includes(name)) {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster.state.save('collapsed_groups', collapsed.filter(n => n !== name));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.save('collapsed_groups', collapsed.filter(n => n !== name));
   } else {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster.state.save('collapsed_groups', [...collapsed, name]);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.save('collapsed_groups', [...collapsed, name]);
   }
 }
 function isContactFiltered(contact, groupname) {
-  const filter = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster_filter;
+  const filter = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster_filter;
   const type = filter.get('filter_type');
   const q = type === 'state' ? filter.get('chat_state').toLowerCase() : filter.get('filter_text').toLowerCase();
   if (!q) return false;
 
   if (type === 'state') {
-    const sticky_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_REQUESTING_CONTACTS, _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_UNREAD];
+    const sticky_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_REQUESTING_CONTACTS, _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_UNREAD];
 
     if (sticky_groups.includes(groupname)) {
       // When filtering by chat state, we still want to
@@ -51859,7 +51538,7 @@ function isContactFiltered(contact, groupname) {
 function shouldShowContact(contact, groupname) {
   const chat_status = contact.presence.get('show');
 
-  if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('hide_offline_users') && chat_status === 'offline') {
+  if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('hide_offline_users') && chat_status === 'offline') {
     // If pending or requesting, show
     if (contact.get('ask') === 'subscribe' || contact.get('subscription') === 'from' || contact.get('requesting') === true) {
       return !isContactFiltered(contact, groupname);
@@ -51871,7 +51550,7 @@ function shouldShowContact(contact, groupname) {
   return !isContactFiltered(contact, groupname);
 }
 function shouldShowGroup(group) {
-  const filter = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.roster_filter;
+  const filter = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster_filter;
   const type = filter.get('filter_type');
 
   if (type === 'groups') {
@@ -51892,19 +51571,19 @@ function shouldShowGroup(group) {
 }
 function populateContactsMap(contacts_map, contact) {
   if (contact.get('requesting')) {
-    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_REQUESTING_CONTACTS;
+    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_REQUESTING_CONTACTS;
     contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
   } else {
     let contact_groups;
 
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('roster_groups')) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('roster_groups')) {
       contact_groups = contact.get('groups');
-      contact_groups = contact_groups.length === 0 ? [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_UNGROUPED] : contact_groups;
+      contact_groups = contact_groups.length === 0 ? [_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_UNGROUPED] : contact_groups;
     } else {
       if (contact.get('ask') === 'subscribe') {
-        contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_PENDING_CONTACTS];
+        contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_PENDING_CONTACTS];
       } else {
-        contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_CURRENT_CONTACTS];
+        contact_groups = [_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_CURRENT_CONTACTS];
       }
     }
 
@@ -51914,7 +51593,7 @@ function populateContactsMap(contacts_map, contact) {
   }
 
   if (contact.get('num_unread')) {
-    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.HEADER_UNREAD;
+    const name = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADER_UNREAD;
     contacts_map[name] ? contacts_map[name].push(contact) : contacts_map[name] = [contact];
   }
 
@@ -52363,6 +52042,8 @@ __webpack_require__.r(__webpack_exports__);
  *  Should the `focus` attribute be set on the input element?
  * @property { Function } getAutoCompleteList
  *  A function that returns the list of autocomplete suggestions
+ * @property { Array } list
+ *  An array of suggestions, to be used instead of the `getAutoCompleteList` *  function
  * @property { Boolean } [auto_evaluate=true]
  *  Should evaluation happen automatically without any particular key as trigger?
  * @property { Boolean } [auto_first=false]
@@ -52400,6 +52081,9 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
       'getAutoCompleteList': {
         type: Function
       },
+      'list': {
+        type: Array
+      },
       'auto_evaluate': {
         type: Boolean
       },
@@ -52423,6 +52107,9 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
       },
       'triggers': {
         type: String
+      },
+      'required': {
+        type: Boolean
       }
     };
   }
@@ -52448,6 +52135,7 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
                 <ul class="suggestion-box__results ${position_class}" hidden=""></ul>
                 <input
                     ?autofocus=${this.autofocus}
+                    ?required=${this.required}
                     type="text"
                     name="${this.name}"
                     autocomplete="off"
@@ -52473,7 +52161,7 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
       'auto_first': this.auto_first,
       'filter': this.filter == 'contains' ? _utils_js__WEBPACK_IMPORTED_MODULE_2__.FILTER_CONTAINS : _utils_js__WEBPACK_IMPORTED_MODULE_2__.FILTER_STARTSWITH,
       'include_triggers': [],
-      'list': q => this.getAutoCompleteList(q),
+      'list': this.list ?? (q => this.getAutoCompleteList(q)),
       'match_current_word': true,
       'max_items': this.max_items,
       'min_chars': this.min_chars
@@ -52974,18 +52662,18 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
 
   async initialize() {
     await this.setModels();
-    this.listenTo(this.model, 'change:hidden_occupants', this.requestUpdate);
-    this.listenTo(this.model.messages, 'add', this.requestUpdate);
-    this.listenTo(this.model.messages, 'change', this.requestUpdate);
-    this.listenTo(this.model.messages, 'remove', this.requestUpdate);
-    this.listenTo(this.model.messages, 'rendered', this.requestUpdate);
-    this.listenTo(this.model.messages, 'reset', this.requestUpdate);
-    this.listenTo(this.model.notifications, 'change', this.requestUpdate);
-    this.listenTo(this.model.ui, 'change', this.requestUpdate);
+    this.listenTo(this.model, 'change:hidden_occupants', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'add', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'change', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'remove', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'rendered', () => this.requestUpdate());
+    this.listenTo(this.model.messages, 'reset', () => this.requestUpdate());
+    this.listenTo(this.model.notifications, 'change', () => this.requestUpdate());
+    this.listenTo(this.model.ui, 'change', () => this.requestUpdate());
     this.listenTo(this.model.ui, 'change:scrolled', this.scrollDown);
 
     if (this.model.occupants) {
-      this.listenTo(this.model.occupants, 'change', this.requestUpdate);
+      this.listenTo(this.model.occupants, 'change', () => this.requestUpdate());
     }
 
     this.addEventListener('scroll', _utils_js__WEBPACK_IMPORTED_MODULE_5__.markScrolled);
@@ -54111,7 +53799,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ MessageBody)
 /* harmony export */ });
 /* harmony import */ var shared_registry_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/registry.js */ "./src/shared/registry.js");
-/* harmony import */ var modals_image_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modals/image.js */ "./src/modals/image.js");
+/* harmony import */ var shared_modals_image_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/modals/image.js */ "./src/shared/modals/image.js");
 /* harmony import */ var shared_directives_rich_text_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/directives/rich-text.js */ "./src/shared/directives/rich-text.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
@@ -54155,9 +53843,9 @@ class MessageBody extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   onImgClick(ev) {
     // eslint-disable-line class-methods-use-this
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.create(modals_image_js__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show('converse-image-modal', {
       'src': ev.target.src
-    }, ev).show(ev);
+    }, ev);
   }
 
   onImgLoad() {
@@ -54302,7 +53990,7 @@ class MessageLimitIndicator extends shared_components_element_js__WEBPACK_IMPORT
 
   connectedCallback() {
     super.connectedCallback();
-    this.listenTo(this.model, 'change:draft', this.requestUpdate);
+    this.listenTo(this.model, 'change:draft', () => this.requestUpdate());
   }
 
   render() {
@@ -54331,11 +54019,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _message_actions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./message-actions.js */ "./src/shared/chat/message-actions.js");
 /* harmony import */ var _message_body_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./message-body.js */ "./src/shared/chat/message-body.js");
 /* harmony import */ var shared_components_dropdown_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/dropdown.js */ "./src/shared/components/dropdown.js");
-/* harmony import */ var shared_registry__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/registry */ "./src/shared/registry.js");
-/* harmony import */ var _templates_file_progress_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/file-progress.js */ "./src/shared/chat/templates/file-progress.js");
-/* harmony import */ var modals_message_versions_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modals/message-versions.js */ "./src/modals/message-versions.js");
+/* harmony import */ var shared_modals_message_versions_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/modals/message-versions.js */ "./src/shared/modals/message-versions.js");
+/* harmony import */ var shared_modals_user_details_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! shared/modals/user-details.js */ "./src/shared/modals/user-details.js");
+/* harmony import */ var shared_registry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! shared/registry */ "./src/shared/registry.js");
 /* harmony import */ var plugins_muc_views_modals_occupant_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! plugins/muc-views/modals/occupant.js */ "./src/plugins/muc-views/modals/occupant.js");
-/* harmony import */ var modals_user_details_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! modals/user-details.js */ "./src/modals/user-details.js");
+/* harmony import */ var _templates_file_progress_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./templates/file-progress.js */ "./src/shared/chat/templates/file-progress.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var _templates_info_message_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./templates/info-message.js */ "./src/shared/chat/templates/info-message.js");
 /* harmony import */ var plugins_muc_views_templates_mep_message_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! plugins/muc-views/templates/mep-message.js */ "./src/plugins/muc-views/templates/mep-message.js");
@@ -54465,7 +54153,7 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
       return '';
     }
 
-    return (0,_templates_file_progress_js__WEBPACK_IMPORTED_MODULE_4__["default"])(this);
+    return (0,_templates_file_progress_js__WEBPACK_IMPORTED_MODULE_7__["default"])(this);
   }
 
   renderChatMessage() {
@@ -54568,19 +54256,19 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
 
   showUserModal(ev) {
     if (this.model.get('sender') === 'me') {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show(_converse_headless_core__WEBPACK_IMPORTED_MODULE_17__._converse.ProfileModal, {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show('converse-profile-modal', {
         model: this.model
       }, ev);
     } else if (this.model.get('type') === 'groupchat') {
       ev.preventDefault();
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show(plugins_muc_views_modals_occupant_js__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show('converse-muc-occupant-modal', {
         'model': this.model.occupant,
         'message': this.model
       }, ev);
     } else {
       ev.preventDefault();
       const chatbox = this.model.collection.chatbox;
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show(modals_user_details_js__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show('converse-user-details-modal', {
         model: chatbox
       }, ev);
     }
@@ -54588,7 +54276,7 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
 
   showMessageVersionsModal(ev) {
     ev.preventDefault();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show(modals_message_versions_js__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show('converse-message-versions-modal', {
       'model': this.model
     }, ev);
   }
@@ -58304,6 +57992,305 @@ function parseGIF(st) {
 
 /***/ }),
 
+/***/ "./src/shared/modals/image.js":
+/*!************************************!*\
+  !*** ./src/shared/modals/image.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ImageModal)
+/* harmony export */ });
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var _templates_image_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/image.js */ "./src/shared/modals/templates/image.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var utils_html_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! utils/html.js */ "./src/utils/html.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _styles_image_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/image.scss */ "./src/shared/modals/styles/image.scss");
+
+
+
+
+
+
+
+class ImageModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  renderModal() {
+    return (0,_templates_image_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
+      'src': this.src
+    });
+  }
+
+  getModalTitle() {
+    return lit__WEBPACK_IMPORTED_MODULE_5__.html`${(0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Image: ')}<a target="_blank" rel="noopener" href="${this.src}">${(0,utils_html_js__WEBPACK_IMPORTED_MODULE_4__.getFileName)(this.src)}</a>`;
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-image-modal', ImageModal);
+
+/***/ }),
+
+/***/ "./src/shared/modals/message-versions.js":
+/*!***********************************************!*\
+  !*** ./src/shared/modals/message-versions.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MessageVersionsModal)
+/* harmony export */ });
+/* harmony import */ var shared_components_message_versions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/components/message-versions.js */ "./src/shared/components/message-versions.js");
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+
+
+class MessageVersionsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  renderModal() {
+    return lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-message-versions .model=${this.model}></converse-message-versions>`;
+  }
+
+  getModalTitle() {
+    // eslint-disable-line class-methods-use-this
+    return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Message versions');
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-message-versions-modal', MessageVersionsModal);
+
+/***/ }),
+
+/***/ "./src/shared/modals/templates/image.js":
+/*!**********************************************!*\
+  !*** ./src/shared/modals/templates/image.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<img class="chat-image chat-image--modal" src="${o.src}">`);
+
+/***/ }),
+
+/***/ "./src/shared/modals/templates/user-details.js":
+/*!*****************************************************!*\
+  !*** ./src/shared/modals/templates/user-details.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "tpl_footer": () => (/* binding */ tpl_footer),
+/* harmony export */   "tpl_user_details_modal": () => (/* binding */ tpl_user_details_modal)
+/* harmony export */ });
+/* harmony import */ var shared_avatar_templates_avatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/avatar/templates/avatar.js */ "./src/shared/avatar/templates/avatar.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+
+
+const remove_button = el => {
+  const i18n_remove_contact = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Remove as contact');
+
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+        <button type="button" @click="${ev => el.removeContact(ev)}" class="btn btn-danger remove-contact">
+            <converse-icon
+                class="fas fa-trash-alt"
+                color="var(--text-color-lighten-15-percent)"
+                size="1em"
+            ></converse-icon>
+            ${i18n_remove_contact}
+        </button>
+    `;
+};
+
+const tpl_footer = el => {
+  const is_roster_contact = el.model.contact !== undefined;
+
+  const i18n_refresh = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Refresh');
+
+  const allow_contact_removal = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('allow_contact_removal');
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+        <button type="button" class="btn btn-info refresh-contact" @click=${ev => el.refreshContact(ev)}>
+            <converse-icon
+                class="fa fa-refresh"
+                color="var(--text-color-lighten-15-percent)"
+                size="1em"
+            ></converse-icon>
+            ${i18n_refresh}</button>
+        ${allow_contact_removal && is_roster_contact ? remove_button(el) : ''}
+    `;
+};
+const tpl_user_details_modal = el => {
+  var _el$model;
+
+  const vcard = (_el$model = el.model) === null || _el$model === void 0 ? void 0 : _el$model.vcard;
+  const vcard_json = vcard ? vcard.toJSON() : {};
+  const o = { ...el.model.toJSON(),
+    ...vcard_json
+  };
+
+  const i18n_address = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address');
+
+  const i18n_email = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Email');
+
+  const i18n_full_name = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Full Name');
+
+  const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname');
+
+  const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('The User\'s Profile Image');
+
+  const i18n_role = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Role');
+
+  const i18n_url = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('URL');
+
+  const avatar_data = {
+    'alt_text': i18n_profile,
+    'extra_classes': 'mb-3',
+    'height': '120',
+    'width': '120'
+  };
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+        <div class="modal-body">
+            ${o.image ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="mb-4">${(0,shared_avatar_templates_avatar_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(o, avatar_data))}</div>` : ''}
+            ${o.fullname ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_full_name}:</label> ${o.fullname}</p>` : ''}
+            <p><label>${i18n_address}:</label> <a href="xmpp:${o.jid}">${o.jid}</a></p>
+            ${o.nickname ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_nickname}:</label> ${o.nickname}</p>` : ''}
+            ${o.url ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_url}:</label> <a target="_blank" rel="noopener" href="${o.url}">${o.url}</a></p>` : ''}
+            ${o.email ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_email}:</label> <a href="mailto:${o.email}">${o.email}</a></p>` : ''}
+            ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p><label>${i18n_role}:</label> ${o.role}</p>` : ''}
+
+            <converse-omemo-fingerprints jid=${o.jid}></converse-omemo-fingerprints>
+        </div>
+    `;
+};
+
+/***/ }),
+
+/***/ "./src/shared/modals/user-details.js":
+/*!*******************************************!*\
+  !*** ./src/shared/modals/user-details.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UserDetailsModal)
+/* harmony export */ });
+/* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _templates_user_details_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/user-details.js */ "./src/shared/modals/templates/user-details.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var plugins_rosterview_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! plugins/rosterview/utils.js */ "./src/plugins/rosterview/utils.js");
+
+
+
+
+
+
+const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env.utils;
+class UserDetailsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  initialize() {
+    super.initialize();
+    this.model.rosterContactAdded.then(() => this.registerContactEventHandlers());
+    this.listenTo(this.model, 'change', this.render);
+    this.registerContactEventHandlers();
+    /**
+     * Triggered once the UserDetailsModal has been initialized
+     * @event _converse#userDetailsModalInitialized
+     * @type { _converse.ChatBox }
+     * @example _converse.api.listen.on('userDetailsModalInitialized', (chatbox) => { ... });
+     */
+
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('userDetailsModalInitialized', this.model);
+  }
+
+  renderModal() {
+    return (0,_templates_user_details_js__WEBPACK_IMPORTED_MODULE_2__.tpl_user_details_modal)(this);
+  }
+
+  renderModalFooter() {
+    return (0,_templates_user_details_js__WEBPACK_IMPORTED_MODULE_2__.tpl_footer)(this);
+  }
+
+  getModalTitle() {
+    return this.model.getDisplayName();
+  }
+
+  registerContactEventHandlers() {
+    if (this.model.contact !== undefined) {
+      this.listenTo(this.model.contact, 'change', this.render);
+      this.listenTo(this.model.contact.vcard, 'change', this.render);
+      this.model.contact.on('destroy', () => {
+        delete this.model.contact;
+        this.render();
+      });
+    }
+  }
+
+  async refreshContact(ev) {
+    if (ev && ev.preventDefault) {
+      ev.preventDefault();
+    }
+
+    const refresh_icon = this.el.querySelector('.fa-refresh');
+    u.addClass('fa-spin', refresh_icon);
+
+    try {
+      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.vcard.update(this.model.contact.vcard, true);
+    } catch (e) {
+      _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].fatal(e);
+      this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, something went wrong while trying to refresh'), 'danger');
+    }
+
+    u.removeClass('fa-spin', refresh_icon);
+  }
+
+  async removeContact(ev) {
+    var _ev$preventDefault;
+
+    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+
+    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_contact_removal')) {
+      return;
+    }
+
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Are you sure you want to remove this contact?"));
+
+    if (result) {
+      // XXX: The `dismissHandler` in bootstrap.native tries to
+      // reference the remove button after it's been cleared from
+      // the DOM, so we delay removing the contact to give it time.
+      setTimeout(() => (0,plugins_rosterview_utils_js__WEBPACK_IMPORTED_MODULE_5__.removeContact)(this.model.contact), 1);
+      this.modal.hide();
+    }
+  }
+
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-user-details-modal', UserDetailsModal);
+
+/***/ }),
+
 /***/ "./src/shared/registry.js":
 /*!********************************!*\
   !*** ./src/shared/registry.js ***!
@@ -59233,23 +59220,6 @@ function getDummyXMLDOMDocument() {
 
 /***/ }),
 
-/***/ "./src/templates/alert.js":
-/*!********************************!*\
-  !*** ./src/templates/alert.js ***!
-  \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="alert ${o.type}" role="alert"><p>${o.message}</p></div>`);
-
-/***/ }),
-
 /***/ "./src/templates/audio.js":
 /*!********************************!*\
   !*** ./src/templates/audio.js ***!
@@ -59778,6 +59748,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ancestor": () => (/* binding */ ancestor),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "getFileName": () => (/* binding */ getFileName),
 /* harmony export */   "getHyperlinkTemplate": () => (/* binding */ getHyperlinkTemplate),
 /* harmony export */   "getOOBURLMarkup": () => (/* binding */ getOOBURLMarkup)
 /* harmony export */ });
@@ -59877,7 +59848,9 @@ function slideOutWrapup(el) {
   el.style.height = '';
 }
 
-function getFileName(uri) {
+function getFileName(url) {
+  const uri = (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_15__.getURI)(url);
+
   try {
     return decodeURI(uri.filename());
   } catch (error) {
@@ -59892,7 +59865,6 @@ function getFileName(uri) {
  * @param { String } url
  * @returns { String }
  */
-
 
 function getOOBURLMarkup(url) {
   const uri = (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_15__.getURI)(url);
@@ -62147,10 +62119,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details.scss":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -62691,6 +62663,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -75544,10 +75543,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./src/plugins/muc-views/styles/muc-details.scss":
-/*!*******************************************************!*\
-  !*** ./src/plugins/muc-views/styles/muc-details.scss ***!
-  \*******************************************************/
+/***/ "./src/plugins/muc-views/styles/muc-details-modal.scss":
+/*!*************************************************************!*\
+  !*** ./src/plugins/muc-views/styles/muc-details-modal.scss ***!
+  \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -75567,7 +75566,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-details.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-details-modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss");
 
       
       
@@ -75589,12 +75588,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -76695,6 +76694,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/shared/modals/styles/image.scss":
+/*!*********************************************!*\
+  !*** ./src/shared/modals/styles/image.scss ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./image.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -86064,45 +86118,6 @@ function baseSortBy(array, comparer) {
 
 /***/ }),
 
-/***/ "./node_modules/lodash-es/_baseSum.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash-es/_baseSum.js ***!
-  \********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/**
- * The base implementation of `_.sum` and `_.sumBy` without support for
- * iteratee shorthands.
- *
- * @private
- * @param {Array} array The array to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {number} Returns the sum.
- */
-function baseSum(array, iteratee) {
-  var result,
-      index = -1,
-      length = array.length;
-
-  while (++index < length) {
-    var current = iteratee(array[index]);
-    if (current !== undefined) {
-      result = result === undefined ? current : (result + current);
-    }
-  }
-  return result;
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseSum);
-
-
-/***/ }),
-
 /***/ "./node_modules/lodash-es/_baseTimes.js":
 /*!**********************************************!*\
   !*** ./node_modules/lodash-es/_baseTimes.js ***!
@@ -94228,47 +94243,6 @@ function stubFalse() {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (stubFalse);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/sum.js":
-/*!***************************************!*\
-  !*** ./node_modules/lodash-es/sum.js ***!
-  \***************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _baseSum_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_baseSum.js */ "./node_modules/lodash-es/_baseSum.js");
-/* harmony import */ var _identity_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./identity.js */ "./node_modules/lodash-es/identity.js");
-
-
-
-/**
- * Computes the sum of the values in `array`.
- *
- * @static
- * @memberOf _
- * @since 3.4.0
- * @category Math
- * @param {Array} array The array to iterate over.
- * @returns {number} Returns the sum.
- * @example
- *
- * _.sum([4, 2, 8, 6]);
- * // => 20
- */
-function sum(array) {
-  return (array && array.length)
-    ? (0,_baseSum_js__WEBPACK_IMPORTED_MODULE_0__["default"])(array, _identity_js__WEBPACK_IMPORTED_MODULE_1__["default"])
-    : 0;
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sum);
 
 
 /***/ }),
