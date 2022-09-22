@@ -1822,6 +1822,8 @@ function newElement(el, id, html, className) {
 }
 
 function openChat(from, name, groups, closed) {
+	console.debug("openChat", from, name, groups, closed);
+	
 	if (_converse && _converse.roster)
 	{
 		if (!groups) groups = [];

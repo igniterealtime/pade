@@ -539,9 +539,9 @@ function doDefaults(background)
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
     setDefaultSetting("converseTheme", "concord");
-    setDefaultSetting("enableHomePage", false);
+    setDefaultSetting("enableHomePage", true);
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("homePage", "");
+    setDefaultSetting("homePage", chrome.runtime.getManifest().homepage_url);
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("enableBookmarks", true);

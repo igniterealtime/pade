@@ -21,7 +21,7 @@
                 if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 				
                 buttons.push(html`
-                    <button class="toolbar-utilities-refresh" title="${__('Hide chat')}" @click=${hideChat}/>
+                    <button class="toolbar-utilities-refresh" title="${__('Hide chat and show home page')}" @click=${hideChat}/>
                         <converse-icon style="width:18px; height:18px; ${color}" class="fa fa-minus" size="1em"></converse-icon>
                     </button>
                 `);	
