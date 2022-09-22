@@ -541,7 +541,7 @@ function doDefaults(background)
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", true);
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("homePage", chrome.runtime.getManifest().homepage_url);
+    setDefaultSetting("homePage", "https://igniterealtime.github.io/pade/help");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("enableBookmarks", true);
