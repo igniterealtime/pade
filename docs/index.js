@@ -1853,12 +1853,14 @@ function openChat(from, name, groups, closed) {
 }
 	
 function createFeedItem(from_jid) {
+/*	
 	const chatbox = _converse.chatboxes.create({
 	  'id': from_jid,
 	  'jid': from_jid,
 	  'type': _converse.HEADLINES_TYPE,
 	  'from': from_jid
 	});		
+*/	
 }
 
 function getRandomColor(nickname) {
