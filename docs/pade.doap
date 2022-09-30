@@ -313,6 +313,11 @@
     </implements>	
     <implements>
       <xmpp:SupportedXep>
+        <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0340.html"/>
+      </xmpp:SupportedXep>
+    </implements>
+    <implements>
+      <xmpp:SupportedXep>
         <xmpp:xep rdf:resource="https://igniterealtime.github.io/openfire-galene-plugin/xep/index.html"/>
       </xmpp:SupportedXep>
     </implements>		
