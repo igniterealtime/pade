@@ -673,6 +673,13 @@ this.manifest = {
             "step": 10
         },
         {
+            "tab": i18n.get("Webinar"),        // galene webinar
+            "group": i18n.get("General"),
+            "name": "enableGalene",
+            "type": "checkbox",
+            "label": i18n.get("Enable Galene for Webinars")
+        },		
+        {
             "tab": i18n.get("Converse"),        // converse-inverse
             "group": i18n.get("General"),
             "name": "converseAutoStart",

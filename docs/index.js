@@ -424,6 +424,12 @@ function loadPlugins() {
 		whitelistedPlugins.push("screencast");	
 		loadJS("./packages/screencast/screencast.js");
 
+        if (getSetting("enableGalene", false))
+        {
+            whitelistedPlugins.push("galene");
+            loadJS("./packages/galene/galene.js");
+        }		
+
         if (getSetting("enableVoiceChat", false))
         {
             whitelistedPlugins.push("voicechat");
