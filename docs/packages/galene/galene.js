@@ -6,7 +6,7 @@
     }
 }(this, function (converse) {
 
-    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , dayjs, _converse, html, _, __, Model, BootstrapModal, galene_confirm, galene_invitation, galene_tab_invitation;
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , dayjs, _converse, html, _, __, Model, BootstrapModal, galene_confirm, galene_invitation, galene_tab_invitation, galene_ready;
 
     converse.plugins.add("galene", {
         dependencies: [],
@@ -30,11 +30,11 @@
             _converse.api.settings.update({
                 galene_head_display_toggle: false,
                 galene_signature: 'GALENE',
-				galene_host: location.hostname
+				galene_host:  getSetting("domain", location.hostname)
             });
 
-            galene_confirm  = __('Galene Meeting?');
-            galene_invitation = __('Please join meeting in room at');
+            galene_confirm  = __('Webinar?');
+            galene_invitation = __('Please join webinar in room at');
             galene_tab_invitation = __('Or open in new tab at');
 
             _converse.api.listen.on('messageNotification', function (data)
@@ -83,39 +83,43 @@
                 }
             });
 
-            _converse.api.listen.on('getToolbarButtons', async function(toolbar_el, buttons)
+            _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
                 let color = "fill:var(--chat-toolbar-btn-color);";
                 if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
-				
-				const features = await _converse.api.disco.getFeatures(_converse.api.settings.get("galene_host"));
-                //console.debug("getToolbarButtons", toolbar_el.model.get("jid"), features);
-				
-				//features.each(feature => {
-					//const fieldname = feature.get('var');
-					
-					//if (fieldname == "urn:xmpp:sfu:galene:0") {
-						//console.debug("SFU found");
-						
-						buttons.push(html`
-							<button class="plugin-galene" title="${__('Galene Meeting')}" @click=${performVideo}/>
-								<svg style="width:20px; height:20px; ${color}" viewBox="0 0 452.388 452.388"  xml:space="preserve"> <g> 	<g id="Layer_8_38_"> 		<path d="M441.677,43.643H10.687C4.785,43.643,0,48.427,0,54.329v297.425c0,5.898,4.785,10.676,10.687,10.676h162.069v25.631 			c0,0.38,0.074,0.722,0.112,1.089h-23.257c-5.407,0-9.796,4.389-9.796,9.795c0,5.408,4.389,9.801,9.796,9.801h158.506 			c5.406,0,9.795-4.389,9.795-9.801c0-5.406-4.389-9.795-9.795-9.795h-23.256c0.032-0.355,0.115-0.709,0.115-1.089V362.43H441.7 			c5.898,0,10.688-4.782,10.688-10.676V54.329C452.37,48.427,447.589,43.643,441.677,43.643z M422.089,305.133 			c0,5.903-4.784,10.687-10.683,10.687H40.96c-5.898,0-10.684-4.783-10.684-10.687V79.615c0-5.898,4.786-10.684,10.684-10.684 			h370.446c5.898,0,10.683,4.785,10.683,10.684V305.133z M303.942,290.648H154.025c0-29.872,17.472-55.661,42.753-67.706 			c-15.987-10.501-26.546-28.571-26.546-49.13c0-32.449,26.306-58.755,58.755-58.755c32.448,0,58.753,26.307,58.753,58.755 			c0,20.553-10.562,38.629-26.545,49.13C286.475,234.987,303.942,260.781,303.942,290.648z"/> </g></g> </svg>
-							</button>
-						`);						
-					//}
-				//});					
+	
+				buttons.push(html`
+					<button class="plugin-galene" title="${__('Galene Meeting')}" @click=${performVideo}/>
+						<svg style="width:20px; height:20px; ${color}" viewBox="0 0 452.388 452.388"  xml:space="preserve"> <g> 	<g id="Layer_8_38_"> 		<path d="M441.677,43.643H10.687C4.785,43.643,0,48.427,0,54.329v297.425c0,5.898,4.785,10.676,10.687,10.676h162.069v25.631 			c0,0.38,0.074,0.722,0.112,1.089h-23.257c-5.407,0-9.796,4.389-9.796,9.795c0,5.408,4.389,9.801,9.796,9.801h158.506 			c5.406,0,9.795-4.389,9.795-9.801c0-5.406-4.389-9.795-9.795-9.795h-23.256c0.032-0.355,0.115-0.709,0.115-1.089V362.43H441.7 			c5.898,0,10.688-4.782,10.688-10.676V54.329C452.37,48.427,447.589,43.643,441.677,43.643z M422.089,305.133 			c0,5.903-4.784,10.687-10.683,10.687H40.96c-5.898,0-10.684-4.783-10.684-10.687V79.615c0-5.898,4.786-10.684,10.684-10.684 			h370.446c5.898,0,10.683,4.785,10.683,10.684V305.133z M303.942,290.648H154.025c0-29.872,17.472-55.661,42.753-67.706 			c-15.987-10.501-26.546-28.571-26.546-49.13c0-32.449,26.306-58.755,58.755-58.755c32.448,0,58.753,26.307,58.753,58.755 			c0,20.553-10.562,38.629-26.545,49.13C286.475,234.987,303.942,260.781,303.942,290.648z"/> </g></g> </svg>
+					</button>
+				`);						
 
                 return buttons;
             });
 
-            _converse.api.listen.on('connected', function()
+            _converse.api.listen.on('connected', async function()
             {
                 window.connection = _converse.connection;
+				
+				const server = _converse.api.settings.get("galene_host");
+                console.debug("connected", server);
+				
+				const features = await _converse.api.disco.getFeatures(server);
+                console.debug("connected", features);
+				
+				features.each(feature => {
+					const fieldname = feature.get('var');
+					
+					if (fieldname == "urn:xmpp:sfu:galene:0") {
+						console.debug("galene SFU found");
+						galene_ready = true;						
+					}
+				});					
             });			
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
             {
-                console.debug("afterMessageBodyTransformed", text);
+                //console.debug("afterMessageBodyTransformed", text);
 					
                 if (text.indexOf(_converse.api.settings.get("galene_signature")) > -1)
                 {
@@ -126,7 +130,7 @@
 
                     text.references = [];
                     text.addTemplateResult(0, text.length, html`<a @click=${clickVideo} data-room="${link_room}" data-url="${url}" href="#">${link_label} ${link_room}</a>`);
-                }
+                }			
             });
 
             console.debug("galene plugin is ready");
@@ -151,14 +155,18 @@
     {
         ev.stopPropagation();
         ev.preventDefault();
-
-		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
-		const chatView = _converse.chatboxviews.get(toolbar_el.model.get('jid'));	
 		
-		if (chatView) {
-			__confirm(galene_confirm, function() {
-				doVideo(chatView);
-			});
+		if (galene_ready) {
+			const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+			const chatView = _converse.chatboxviews.get(toolbar_el.model.get('jid'));	
+			
+			if (chatView) {
+				__confirm(galene_confirm, function() {
+					doVideo(chatView);
+				});
+			}
+		} else {
+			alert("Galene not found");
 		}
     }
 
@@ -186,7 +194,7 @@
 
         console.debug("doVideo", room, url, view);
 
-        view.model.sendMessage(url);	
+        view.model.sendMessage({'body': url});	
         doLocalVideo(view, room, galene_invitation);
 
     }
@@ -238,8 +246,7 @@
 				
 				if (firstTime) {
 					firstTime = false;   // ignore when galene-meet room url is loaded
-
-/*					
+					
 					galeneFrame.contentWindow.addEventListener("message", function (event) {
 					  if (typeof event.data === 'string') {
 						let data = JSON.parse(event.data);
@@ -249,7 +256,6 @@
 						}
 					  }
 					}, false);
-*/
 				}
 			};
 			
@@ -258,7 +264,7 @@
 
 			galeneFrame.__jid = jid;
 			galeneFrame.addEventListener("load", galeneIframeCloseHandler);
-			galeneFrame.setAttribute("src", "/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&group=" + room + "&host=" + _converse.api.settings.get("galene_host"));
+			galeneFrame.setAttribute("src", "/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=" + _converse.connection.pass + "&group=" + room + "&host=" + _converse.api.settings.get("galene_host"));
 			galeneFrame.setAttribute("class", "galene");
 			galeneFrame.setAttribute("allow", "microphone; camera;");
 			galeneFrame.setAttribute("frameborder", "0");

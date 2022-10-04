@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
-    <link rel="stylesheet" type="text/css" href="./common.css"/>
+	<!-- BAO -->
+    <link rel="stylesheet" type="text/css" href="./common.css"/> 
     <link rel="stylesheet" type="text/css" href="./galene.css"/>
     <link rel="stylesheet" type="text/css" href="./external/fontawesome/css/fontawesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="./external/fontawesome/css/solid.min.css"/>
@@ -57,7 +58,7 @@
                     <label>Share Screen</label>
                   </div>
                 </li>
-                <li>
+                <li>	<!-- BAO -->
                   <div id="closebutton" class="nav-link nav-button">
                     <span><i class="fa fa-sign-out" aria-hidden="true"></i></span>
                     <label>Close</label>
@@ -247,6 +248,10 @@
             <label for="activitybox">Activity detection</label>
           </form>
 
+          <form>
+            <input id="displayallbox" type="checkbox"/>
+            <label for="displayallbox">Display audio-only users</label>
+          </form>
         </fieldset>
       </div>
     </div>
@@ -287,4 +292,5 @@
     <script src="./external/toastify/toastify.js"></script>
     <script src="./external/contextual/contextual.js"></script>
     <script src="./galene-ui.js"></script>
+  </body>
 </html>

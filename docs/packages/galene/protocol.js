@@ -202,11 +202,28 @@ function ServerConnection() {
      * @type {(this: ServerConnection, id: string, dest: string, username: string, time: number, privileged: boolean, kind: string, message: unknown) => void}
      */
     this.onusermessage = null;
+    /**
+     * The set of files currently being transferred.
+     *
+     * @type {Object<string,TransferredFile>}
+    */
+    this.transferredFiles = {};
+    /**
+     * onfiletransfer is called whenever a peer offers a file transfer.
+     *
+     * If the transfer is accepted, it should set up the file transfer
+     * callbacks and return immediately.  It may also throw an exception
+     * in order to reject the file transfer.
+     *
+     * @type {(this: ServerConnection, f: TransferredFile) => void}
+     */
+    this.onfiletransfer = null;
 }
 
 /**
   * @typedef {Object} message
   * @property {string} type
+  * @property {Array<string>} [version]
   * @property {string} [kind]
   * @property {string} [id]
   * @property {string} [replace]
@@ -257,14 +274,15 @@ ServerConnection.prototype.send = function(m) {
  * @returns {Promise<ServerConnection>}
  * @function
  */
-ServerConnection.prototype.connect = async function(connection, host) {
+ // BAO
+ServerConnection.prototype.connect = async function(connection, host) {	
     let sc = this;
     if(sc.socket) {
         sc.socket.close(1000, 'Reconnecting');
         sc.socket = null;
     }
-
-    sc.socket = new GaleneSocket(connection, host);
+	// BAO
+	sc.socket = new GaleneSocket(connection, host);
 
     return await new Promise((resolve, reject) => {
         this.socket.onerror = function(e) {
@@ -273,6 +291,7 @@ ServerConnection.prototype.connect = async function(connection, host) {
         this.socket.onopen = function(e) {
             sc.send({
                 type: 'handshake',
+                version: ["1"],
                 id: sc.id,
             });
             if(sc.onconnected)
@@ -306,6 +325,8 @@ ServerConnection.prototype.connect = async function(connection, host) {
             let m = JSON.parse(e.data);
             switch(m.type) {
             case 'handshake':
+                if(!m.version || !m.version.includes('1'))
+                    console.warn(`Unexpected protocol version ${m.version}.`);
                 break;
             case 'offer':
                 sc.gotOffer(m.id, m.label, m.source, m.username,
@@ -380,6 +401,11 @@ ServerConnection.prototype.connect = async function(connection, host) {
                 case 'delete':
                     if(!(m.id in sc.users))
                         console.warn(`Unknown user ${m.id} ${m.username}`);
+                    for(let t in sc.transferredFiles) {
+                        let f = sc.transferredFiles[t];
+                        if(f.userid === m.id)
+                            f.fail('user has gone away');
+                    }
                     delete(sc.users[m.id]);
                     break;
                 default:
@@ -398,7 +424,9 @@ ServerConnection.prototype.connect = async function(connection, host) {
                     );
                 break;
             case 'usermessage':
-                if(sc.onusermessage)
+                if(m.kind === 'filetransfer')
+                    sc.fileTransfer(m.source, m.username, m.value);
+                else if(sc.onusermessage)
                     sc.onusermessage.call(
                         sc, m.source, m.dest, m.username, m.time,
                         m.privileged, m.kind, m.value,
@@ -460,9 +488,35 @@ ServerConnection.prototype.join = async function(group, username, credentials, d
             });
             if(!r.ok)
                 throw new Error(
-                    `The authorisation server said: ${r.status} ${r.statusText}`,
+                    `The authorisation server said ${r.status} ${r.statusText}`,
                 );
-            m.token = await r.text();
+            if(r.status === 204) {
+                // no data, fallback to password auth
+                m.password = credentials.password;
+                break;
+            }
+            let ctype = r.headers.get("Content-Type");
+            if(!ctype)
+                throw new Error(
+                    "The authorisation server didn't return a content type",
+                );
+            let semi = ctype.indexOf(";");
+            if(semi >= 0)
+                ctype = ctype.slice(0, semi);
+            ctype = ctype.trim();
+            switch(ctype.toLowerCase()) {
+            case 'application/jwt':
+                let data = await r.text();
+                if(!data)
+                    throw new Error(
+                        "The authorisation server returned empty token",
+                    );
+                m.token = data;
+                break;
+            default:
+                throw new Error(`The authorisation server returned ${ctype}`);
+                break;
+            }
             break;
         default:
             throw new Error(`Unknown credentials type ${credentials.type}`);
@@ -1419,3 +1473,656 @@ Stream.prototype.setStatsInterval = function(ms) {
         c.updateStats();
     }, ms);
 };
+
+
+/**
+ * A file in the process of being transferred.
+ * These are stored in the ServerConnection.transferredFiles dictionary.
+ *
+ * State transitions:
+ * @example
+ * '' -> inviting -> connecting -> connected -> done -> closed
+ * any -> cancelled -> closed
+ *
+ *
+ * @parm {ServerConnection} sc
+ * @parm {string} userid
+ * @parm {string} rid
+ * @parm {boolean} up
+ * @parm {string} username
+ * @parm {string} mimetype
+ * @parm {number} size
+ * @constructor
+ */
+function TransferredFile(sc, userid, id, up, username, name, mimetype, size) {
+    /**
+     * The server connection this file is associated with.
+     *
+     * @type {ServerConnection}
+     */
+    this.sc = sc;
+    /** The id of the remote peer.
+     *
+     * @type {string}
+     */
+    this.userid = userid;
+    /**
+     * The id of this file transfer.
+     *
+     * @type {string}
+     */
+    this.id = id;
+    /**
+     * True if this is an upload.
+     *
+     * @type {boolean}
+     */
+    this.up = up;
+    /**
+     * The state of this file transfer.  See the description of the
+     * constructor for possible state transitions.
+     *
+     * @type {string}
+     */
+    this.state = '';
+    /**
+     * The username of the remote peer.
+     *
+     * @type {string}
+     */
+    this.username = username;
+    /**
+     * The name of the file being transferred.
+     *
+     * @type {string}
+     */
+    this.name = name;
+    /**
+     * The MIME type of the file being transferred.
+     *
+     * @type {string}
+     */
+    this.mimetype = mimetype;
+    /**
+     * The size in bytes of the file being transferred.
+     *
+     * @type {number}
+     */
+    this.size = size;
+    /**
+     * The file being uploaded.  Unused for downloads.
+     *
+     * @type {File}
+     */
+    this.file = null;
+    /**
+     * The peer connection used for the transfer.
+     *
+     * @type {RTCPeerConnection}
+     */
+    this.pc = null;
+    /**
+     * The datachannel used for the transfer.
+     *
+     * @type {RTCDataChannel}
+     */
+    this.dc = null;
+    /**
+     * Buffered remote ICE candidates.
+     *
+     * @type {Array<RTCIceCandidateInit>}
+     */
+    this.candidates = [];
+    /**
+     * The data received to date, stored as a list of blobs or array buffers,
+     * depending on what the browser supports.
+     *
+     * @type {Array<Blob|ArrayBuffer>}
+     */
+    this.data = [];
+    /**
+     * The total size of the data received to date.
+     *
+     * @type {number}
+     */
+    this.datalen = 0;
+    /**
+     * The main filetransfer callback.
+     *
+     * This is called whenever the state of the transfer changes,
+     * but may also be called multiple times in a single state, for example
+     * in order to display a progress bar.  Call this.cancel in order
+     * to cancel the transfer.
+     *
+     * @type {(this: TransferredFile, type: string, [data]: string) => void}
+     */
+    this.onevent = null;
+}
+
+/**
+ * The full id of this file transfer, used as a key in the transferredFiles
+ * dictionary.
+ */
+TransferredFile.prototype.fullid = function() {
+    return this.userid + (this.up ? '+' : '-') + this.id;
+};
+
+/**
+ * Retrieve a transferred file from the transferredFiles dictionary.
+ *
+ * @param {string} userid
+ * @param {string} fileid
+ * @param {boolean} up
+ * @returns {TransferredFile}
+ */
+ServerConnection.prototype.getTransferredFile = function(userid, fileid, up) {
+    return this.transferredFiles[userid + (up ? '+' : '-') + fileid];
+};
+
+/**
+ * Close a file transfer and remove it from the transferredFiles dictionary.
+ * Do not call this, call 'cancel' instead.
+ */
+TransferredFile.prototype.close = function() {
+    let f = this;
+    if(f.state === 'closed')
+        return;
+    if(f.state !== 'done' && f.state !== 'cancelled')
+        console.warn(
+            `TransferredFile.close called in unexpected state ${f.state}`,
+        );
+    if(f.dc) {
+        f.dc.onclose = null;
+        f.dc.onerror = null;
+        f.dc.onmessage = null;
+    }
+    if(f.pc)
+        f.pc.close();
+    f.dc = null;
+    f.pc = null;
+    f.data = [];
+    f.datalen = 0;
+    delete(f.sc.transferredFiles[f.fullid()]);
+    f.event('closed');
+}
+
+/**
+ * Buffer a chunk of data received during a file transfer.  Do not call this.
+ *
+ * @param {Blob|ArrayBuffer} data
+ */
+TransferredFile.prototype.bufferData = function(data) {
+    let f = this;
+    if(f.up)
+        throw new Error('buffering data in the wrong direction');
+    if(data instanceof Blob) {
+        f.datalen += data.size;
+    } else if(data instanceof ArrayBuffer) {
+        f.datalen += data.byteLength;
+    } else {
+        throw new Error('unexpected type for received data');
+    }
+    f.data.push(data);
+}
+
+/**
+ * Retreive the data buffered during a file transfer.  Don't call this.
+ *
+ * @returns {Blob}
+ */
+TransferredFile.prototype.getBufferedData = function() {
+    let f = this;
+    if(f.up)
+        throw new Error('buffering data in wrong direction');
+    let blob = new Blob(f.data, {type: f.mimetype});
+    if(blob.size != f.datalen)
+        throw new Error('Inconsistent data size');
+    f.data = [];
+    f.datalen = 0;
+    return blob;
+}
+
+/**
+ * Set the file's state, and call the onevent callback.
+ *
+ * This calls the callback even if the state didn't change, which is
+ * useful if the client needs to display a progress bar.
+ *
+ * @param {string} state
+ * @param {any} [data]
+ */
+TransferredFile.prototype.event = function(state, data) {
+    let f = this;
+    f.state = state;
+    if(f.onevent)
+        f.onevent.call(f, state, data);
+}
+
+
+/**
+ * Cancel a file transfer.
+ *
+ * Depending on the state, this will either forcibly close the connection,
+ * send a handshake, or do nothing.  It will set the state to cancelled.
+ *
+ * @param {string|Error} [data]
+ */
+TransferredFile.prototype.cancel = function(data) {
+    let f = this;
+    if(f.state === 'closed')
+        return;
+    if(f.state !== '' && f.state !== 'done' && f.state !== 'cancelled') {
+        let m = {
+            type: f.up ? 'cancel' : 'reject',
+            id: f.id,
+        };
+        if(data)
+            m.message = data.toString();
+        f.sc.userMessage('filetransfer', f.userid, m);
+    }
+    if(f.state !== 'done' && f.state !== 'cancelled')
+        f.event('cancelled', data);
+    f.close();
+}
+
+/**
+ * Forcibly terminate a file transfer.
+ *
+ * This is like cancel, but will not attempt to handshake.
+ * Use cancel instead of this, unless you know what you are doing.
+ *
+ * @param {string|Error} [data]
+ */
+TransferredFile.prototype.fail = function(data) {
+    let f = this;
+    if(f.state === 'done' || f.state === 'cancelled' || f.state === 'closed')
+        return;
+    f.event('cancelled', data);
+    f.close();
+}
+
+/**
+ * Initiate a file upload.
+ *
+ * This will cause the onfiletransfer callback to be called, at which
+ * point you should set up the onevent callback.
+ *
+ * @param {string} id
+ * @param {File} file
+ */
+ServerConnection.prototype.sendFile = function(id, file) {
+    let sc = this;
+    let fileid = newRandomId();
+    let user = sc.users[id];
+    if(!user)
+        throw new Error('offering upload to unknown user');
+    let f = new TransferredFile(
+        sc, id, fileid, true, user.username, file.name, file.type, file.size,
+    );
+    f.file = file;
+
+    try {
+        if(sc.onfiletransfer)
+            sc.onfiletransfer.call(sc, f);
+        else
+            throw new Error('this client does not implement file transfer');
+    } catch(e) {
+        f.cancel(e);
+        return;
+    }
+
+    sc.transferredFiles[f.fullid()] = f;
+    sc.userMessage('filetransfer', id, {
+        type: 'invite',
+        id: fileid,
+        name: f.name,
+        size: f.size,
+        mimetype: f.mimetype,
+    });
+    f.event('inviting');
+}
+
+/**
+ * Receive a file.
+ *
+ * Call this after the onfiletransfer callback has yielded an incoming
+ * file (up field set to false).  If you wish to reject the file transfer,
+ * call cancel instead.
+ */
+TransferredFile.prototype.receive = async function() {
+    let f = this;
+    if(f.up)
+        throw new Error('Receiving in wrong direction');
+    if(f.pc)
+        throw new Error('Download already in progress');
+    let pc = new RTCPeerConnection(f.sc.getRTCConfiguration());
+    if(!pc) {
+        let err = new Error("Couldn't create peer connection");
+        f.fail(err);
+        return;
+    }
+    f.pc = pc;
+    f.event('connecting');
+
+    f.candidates = [];
+    pc.onsignalingstatechange = function(e) {
+        if(pc.signalingState === 'stable') {
+            f.candidates.forEach(c => pc.addIceCandidate(c).catch(console.warn));
+            f.candidates = [];
+        }
+    };
+    pc.onicecandidate = function(e) {
+        f.sc.userMessage('filetransfer', f.userid, {
+            type: 'downice',
+            id: f.id,
+            candidate: e.candidate,
+        });
+    };
+    f.dc = pc.createDataChannel('file');
+    f.data = [];
+    f.datalen = 0;
+    f.dc.onclose = function(e) {
+        f.cancel('remote peer closed connection');
+    };
+    f.dc.onmessage = function(e) {
+        f.receiveData(e.data).catch(e => f.cancel(e));
+    };
+    f.dc.onerror = function(e) {
+        /** @ts-ignore */
+        let err = e.error;
+        f.cancel(err)
+    };
+    let offer = await pc.createOffer();
+    if(!offer) {
+        f.cancel(new Error("Couldn't create offer"));
+        return;
+    }
+    await pc.setLocalDescription(offer);
+    f.sc.userMessage('filetransfer', f.userid, {
+        type: 'offer',
+        id: f.id,
+        sdp: pc.localDescription.sdp,
+    });
+}
+
+/**
+ * Negotiate a file transfer on the sender side.  Don't call this.
+ *
+ * @param {string} sdp
+ */
+TransferredFile.prototype.answer = async function(sdp) {
+    let f = this;
+    if(!f.up)
+        throw new Error('Sending file in wrong direction');
+    if(f.pc)
+        throw new Error('Transfer already in progress');
+    let pc = new RTCPeerConnection(f.sc.getRTCConfiguration());
+    if(!pc) {
+        let err = new Error("Couldn't create peer connection");
+        f.fail(err);
+        return;
+    }
+    f.pc = pc;
+    f.event('connecting');
+
+    f.candidates = [];
+    pc.onicecandidate = function(e) {
+        f.sc.userMessage('filetransfer', f.userid, {
+            type: 'upice',
+            id: f.id,
+            candidate: e.candidate,
+        });
+    };
+    pc.onsignalingstatechange = function(e) {
+        if(pc.signalingState === 'stable') {
+            f.candidates.forEach(c => pc.addIceCandidate(c).catch(console.warn));
+            f.candidates = [];
+        }
+    };
+    pc.ondatachannel = function(e) {
+        if(f.dc) {
+            f.cancel(new Error('Duplicate datachannel'));
+            return;
+        }
+        f.dc = /** @type{RTCDataChannel} */(e.channel);
+        f.dc.onclose = function(e) {
+            f.cancel('remote peer closed connection');
+        };
+        f.dc.onerror = function(e) {
+            /** @ts-ignore */
+            let err = e.error;
+            f.cancel(err);
+        }
+        f.dc.onmessage = function(e) {
+            if(e.data === 'done' && f.datalen === f.size) {
+                f.event('done');
+                f.dc.onclose = null;
+                f.dc.onerror = null;
+                f.close();
+            } else {
+                f.cancel(new Error('unexpected data from receiver'));
+            }
+        }
+        f.send().catch(e => f.cancel(e));
+    };
+
+    await pc.setRemoteDescription({
+        type: 'offer',
+        sdp: sdp,
+    });
+
+    let answer = await pc.createAnswer();
+    if(!answer)
+        throw new Error("Couldn't create answer");
+    await pc.setLocalDescription(answer);
+    f.sc.userMessage('filetransfer', f.userid, {
+        type: 'answer',
+        id: f.id,
+        sdp: pc.localDescription.sdp,
+    });
+
+    f.event('connected');
+}
+
+/**
+ * Transfer file data.  Don't call this, it is called automatically
+ * after negotiation completes.
+ */
+TransferredFile.prototype.send = async function() {
+    let f = this;
+    if(!f.up)
+        throw new Error('sending in wrong direction');
+    let r = f.file.stream().getReader();
+
+    f.dc.bufferedAmountLowThreshold = 65536;
+
+    async function write(a) {
+        while(f.dc.bufferedAmount > f.dc.bufferedAmountLowThreshold) {
+            await new Promise((resolve, reject) => {
+                if(!f.dc) {
+                    reject(new Error('File is closed.'));
+                    return;
+                }
+                f.dc.onbufferedamountlow = function(e) {
+                    if(!f.dc) {
+                        reject(new Error('File is closed.'));
+                        return;
+                    }
+                    f.dc.onbufferedamountlow = null;
+                    resolve();
+                }
+            });
+        }
+        f.dc.send(a);
+        f.datalen += a.length;
+        // we're already in the connected state, but invoke callbacks to
+        // that the application can display progress
+        f.event('connected');
+    }
+
+    while(true) {
+        let v = await r.read();
+        if(v.done)
+            break;
+        let data = v.value;
+        if(!(data instanceof Uint8Array))
+            throw new Error('Unexpected type for chunk');
+        /* Base SCTP only supports up to 16kB data chunks.  There are
+           extensions to handle larger chunks, but they don't interoperate
+           between browsers, so we chop the file into small pieces. */
+        if(data.length <= 16384) {
+            await write(data);
+        } else {
+            for(let i = 0; i < v.value.length; i += 16384) {
+                let d = new Uint8Array(
+                    data.buffer, i, Math.min(16384, data.length - i),
+                );
+                await write(d);
+            }
+        }
+    }
+}
+
+/**
+ * Called after we receive an answer.  Don't call this.
+ *
+ * @param {string} sdp
+ */
+TransferredFile.prototype.receiveFile = async function(sdp) {
+    let f = this;
+    if(f.up)
+        throw new Error('Receiving in wrong direction');
+    await f.pc.setRemoteDescription({
+        type: 'answer',
+        sdp: sdp,
+    });
+    f.event('connected');
+}
+
+/**
+ * Called whenever we receive a chunk of data.  Don't call this.
+ *
+ * @param {Blob|ArrayBuffer} data
+ */
+TransferredFile.prototype.receiveData = async function(data) {
+    let f = this;
+    if(f.up)
+        throw new Error('Receiving in wrong direction');
+    f.bufferData(data);
+
+    if(f.datalen < f.size) {
+        f.event('connected');
+        return;
+    }
+
+    f.dc.onmessage = null;
+
+    if(f.datalen != f.size) {
+        f.cancel('unexpected file size');
+        return;
+    }
+
+    let blob = f.getBufferedData();
+    f.event('done', blob);
+
+    await new Promise((resolve, reject) => {
+        let timer = setTimeout(function(e) { resolve(); }, 2000);
+        f.dc.onclose = function(e) {
+            clearTimeout(timer);
+            resolve();
+        };
+        f.dc.onerror = function(e) {
+            clearTimeout(timer);
+            resolve();
+        };
+        f.dc.send('done');
+    });
+
+    f.close();
+}
+
+/**
+ * fileTransfer handles a usermessage of kind 'filetransfer'.  Don't call
+ * this, it is called automatically as needed.
+ *
+ * @param {string} id
+ * @param {string} username
+ * @param {object} message
+ */
+ServerConnection.prototype.fileTransfer = function(id, username, message) {
+    let sc = this;
+    switch(message.type) {
+    case 'invite': {
+        let f = new TransferredFile(
+            sc, id, message.id, false, username,
+            message.name, message.mimetype, message.size,
+        );
+        f.state = 'inviting';
+
+        try {
+            if(sc.onfiletransfer)
+                sc.onfiletransfer.call(sc, f);
+            else
+                f.cancel('this client does not implement file transfer');
+        } catch(e) {
+            f.cancel(e);
+            return;
+        }
+
+        if(f.fullid() in sc.transferredFiles) {
+            console.error('Duplicate id for file transfer');
+            f.cancel("duplicate id (this shouldn't happen)");
+            return;
+        }
+        sc.transferredFiles[f.fullid()] = f;
+        break;
+    }
+    case 'offer': {
+        let f = sc.getTransferredFile(id, message.id, true);
+        if(!f) {
+            console.error('Unexpected offer for file transfer');
+            return;
+        }
+        f.answer(message.sdp).catch(e => f.cancel(e));
+        break;
+    }
+    case 'answer': {
+        let f = sc.getTransferredFile(id, message.id, false);
+        if(!f) {
+            console.error('Unexpected answer for file transfer');
+            return;
+        }
+        f.receiveFile(message.sdp).catch(e => f.cancel(e));
+        break;
+    }
+    case 'downice':
+    case 'upice': {
+        let f = sc.getTransferredFile(
+            id, message.id, message.type === 'downice',
+        );
+        if(!f || !f.pc) {
+            console.warn(`Unexpected ${message.type} for file transfer`);
+            return;
+        }
+        if(f.pc.signalingState === 'stable')
+            f.pc.addIceCandidate(message.candidate).catch(console.warn);
+        else
+            f.candidates.push(message.candidate);
+        break;
+    }
+    case 'cancel':
+    case 'reject': {
+        let f = sc.getTransferredFile(id, message.id, message.type === 'reject');
+        if(!f) {
+            console.error(`Unexpected ${message.type} for file transfer`);
+            return;
+        }
+        f.event('cancelled');
+        f.close();
+        break;
+    }
+    default:
+        console.error(`Unknown filetransfer message ${message.type}`);
+        break;
+    }
+}

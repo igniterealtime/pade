@@ -41,6 +41,7 @@ let token = null;
  * @property {string} [send]
  * @property {string} [request]
  * @property {boolean} [activityDetection]
+ * @property {boolean} [displayAll]
  * @property {Array.<number>} [resolution]
  * @property {boolean} [mirrorView]
  * @property {boolean} [blackboardMode]
@@ -219,6 +220,13 @@ function reflectSettings() {
         store = true;
     }
 
+    if(settings.hasOwnProperty('displayAll')) {
+        getInputElement('displayallbox').checked = settings.displayAll;
+    } else {
+        settings.displayAll = getInputElement('displayallbox').checked;
+        store = true;
+    }
+
     if(settings.hasOwnProperty('preprocessing')) {
         getInputElement('preprocessingbox').checked = settings.preprocessing;
     } else {
@@ -351,8 +359,6 @@ function gotClose(code, reason) {
     if(code != 1000) {
         console.warn('Socket close', code, reason);
     }
-	
-	closeConnection();
 }
 
 /**
@@ -369,7 +375,7 @@ function gotDownStream(c) {
         displayError(e);
     };
     c.ondowntrack = function(track, transceiver, label, stream) {
-        setMedia(c, false);
+        setMedia(c);
     };
     c.onnegotiationcompleted = function() {
         resetMedia(c);
@@ -381,7 +387,7 @@ function gotDownStream(c) {
     if(getSettings().activityDetection)
         c.setStatsInterval(activityDetectionInterval);
 
-    setMedia(c, false);
+    setMedia(c);
 }
 
 // Store current browser viewport height in css variable
@@ -393,6 +399,33 @@ function setViewportHeight() {
     // Ajust video component size
     resizePeers();
 }
+
+// On resize and orientation change, we update viewport height
+addEventListener('resize', setViewportHeight);
+addEventListener('orientationchange', setViewportHeight);
+
+getButtonElement('presentbutton').onclick = async function(e) {
+    e.preventDefault();
+    let button = this;
+    if(!(button instanceof HTMLButtonElement))
+        throw new Error('Unexpected type for this.');
+    // there's a potential race condition here: the user might click the
+    // button a second time before the stream is set up and the button hidden.
+    button.disabled = true;
+    try {
+        let id = findUpMedia('camera');
+        if(!id)
+            await addLocalMedia();
+    } finally {
+        button.disabled = false;
+    }
+};
+
+getButtonElement('unpresentbutton').onclick = function(e) {
+    e.preventDefault();
+    closeUpMedia('camera');
+    resizePeers();
+};
 
 /**
  * @param {string} id
@@ -514,14 +547,6 @@ document.getElementById('sharebutton').onclick = function(e) {
     addShareMedia();
 };
 
-document.getElementById('closebutton').onclick = async function(e) {
-    e.preventDefault();
-	console.debug("closebutton - click");
-	
-	await serverConnection.leave(group);
-	closeConnection();
-};
-
 getSelectElement('filterselect').onchange = async function(e) {
     if(!(this instanceof HTMLSelectElement))
         throw new Error('Unexpected type for this');
@@ -641,6 +666,18 @@ getInputElement('activitybox').onchange = function(e) {
         }
     }
 };
+
+getInputElement('displayallbox').onchange = function(e) {
+    if(!(this instanceof HTMLInputElement))
+        throw new Error('Unexpected type for this');
+    updateSettings({displayAll: this.checked});
+    for(let id in serverConnection.down) {
+        let c = serverConnection.down[id];
+        let elt = document.getElementById('peer-' + c.localId);
+        showHideMedia(c, elt);
+    }
+};
+
 
 /**
  * @this {Stream}
@@ -1294,7 +1331,7 @@ async function replaceUpStream(c) {
     let media = /** @type{HTMLVideoElement} */
         (document.getElementById('media-' + c.localId));
     setUpStream(cn, c.stream);
-    await setMedia(cn, true,
+    await setMedia(cn,
                    cn.label == 'camera' && getSettings().mirrorView,
                    cn.label == 'video' && media);
     return cn;
@@ -1394,13 +1431,27 @@ async function addLocalMedia(localId) {
     }
 
     setUpStream(c, stream);
-    await setMedia(c, true, settings.mirrorView);
+    await setMedia(c, settings.mirrorView);
     setButtonsVisibility();
 }
 
 let safariScreenshareDone = false;
 
 async function addShareMedia() {
+    if(!safariScreenshareDone) {
+        if(isSafari()) {
+            let ok = confirm(
+                'Screen sharing in Safari is badly broken.  ' +
+                    'It will work at first, ' +
+                    'but then your video will randomly freeze.  ' +
+                    'Are you sure that you wish to enable screensharing?'
+            );
+            if(!ok)
+                return
+        }
+        safariScreenshareDone = true;
+    }
+
     /** @type {MediaStream} */
     let stream = null;
     try {
@@ -1416,17 +1467,10 @@ async function addShareMedia() {
         return;
     }
 
-    if(!safariScreenshareDone) {
-        if(isSafari())
-            displayWarning('Screen sharing under Safari is experimental.  ' +
-                           'Please use a different browser if possible.');
-        safariScreenshareDone = true;
-    }
-
     let c = newUpStream();
     c.label = 'screenshare';
     setUpStream(c, stream);
-    await setMedia(c, true);
+    await setMedia(c);
     setButtonsVisibility();
 }
 
@@ -1471,7 +1515,7 @@ async function addFileMedia(file) {
         displayWarning('You have been muted');
     }
 
-    await setMedia(c, true, false, video);
+    await setMedia(c, false, video);
     c.userdata.play = true;
     setButtonsVisibility();
 }
@@ -1647,24 +1691,23 @@ function scheduleReconsiderDownRate() {
  * setMedia adds a new media element corresponding to stream c.
  *
  * @param {Stream} c
- * @param {boolean} isUp
- *     - indicates whether the stream goes in the up direction
  * @param {boolean} [mirror]
  *     - whether to mirror the video
  * @param {HTMLVideoElement} [video]
  *     - the video element to add.  If null, a new element with custom
  *       controls will be created.
  */
-async function setMedia(c, isUp, mirror, video) {
-    let peersdiv = document.getElementById('peers');
-
+async function setMedia(c, mirror, video) {
     let div = document.getElementById('peer-' + c.localId);
     if(!div) {
         div = document.createElement('div');
         div.id = 'peer-' + c.localId;
         div.classList.add('peer');
+        let peersdiv = document.getElementById('peers');
         peersdiv.appendChild(div);
     }
+
+    showHideMedia(c, div)
 
     let media = /** @type {HTMLVideoElement} */
         (document.getElementById('media-' + c.localId));
@@ -1673,7 +1716,7 @@ async function setMedia(c, isUp, mirror, video) {
             media = video;
         } else {
             media = document.createElement('video');
-            if(isUp)
+            if(c.up)
                 media.muted = true;
         }
 
@@ -1693,7 +1736,7 @@ async function setMedia(c, isUp, mirror, video) {
     if(!video && media.srcObject !== c.stream)
         media.srcObject = c.stream;
 
-    if(!isUp) {
+    if(!c.up) {
         media.onfullscreenchange = function(e) {
             forceDownRate(c.id, document.fullscreenElement === media, false);
         }
@@ -1713,7 +1756,7 @@ async function setMedia(c, isUp, mirror, video) {
     showVideo();
     resizePeers();
 
-    if(!isUp && isSafari() && !findUpMedia('camera')) {
+    if(!c.up && isSafari() && !findUpMedia('camera')) {
         // Safari doesn't allow autoplay unless the user has granted media access
         try {
             let stream = await navigator.mediaDevices.getUserMedia({audio: true});
@@ -1721,6 +1764,29 @@ async function setMedia(c, isUp, mirror, video) {
         } catch(e) {
         }
     }
+}
+
+
+/**
+ * @param {Stream} c
+ * @param {HTMLElement} elt
+ */
+function showHideMedia(c, elt) {
+    let display = c.up || getSettings().displayAll;
+    if(!display && c.stream) {
+        let tracks = c.stream.getTracks();
+        for(let i = 0; i < tracks.length; i++) {
+            let t = tracks[i];
+            if(t.kind === 'video') {
+                display = true;
+                break;
+            }
+        }
+    }
+    if(display)
+        elt.classList.remove('peer-hidden');
+    else
+        elt.classList.add('peer-hidden');
 }
 
 /**
@@ -2150,6 +2216,26 @@ function setUserStatus(id, elt, userinfo) {
         elt.classList.add('user-status-raisehand');
     else
         elt.classList.remove('user-status-raisehand');
+
+    let microphone=false, camera = false;
+    for(let label in userinfo.streams) {
+        for(let kind in userinfo.streams[label]) {
+            if(kind == 'audio')
+                microphone = true;
+            else
+                camera = true;
+        }
+    }
+    if(camera) {
+        elt.classList.remove('user-status-microphone');
+        elt.classList.add('user-status-camera');
+    } else if(microphone) {
+        elt.classList.add('user-status-microphone');
+        elt.classList.remove('user-status-camera');
+    } else {
+        elt.classList.remove('user-status-microphone');
+        elt.classList.remove('user-status-camera');
+    }
 }
 
 /**
@@ -2304,96 +2390,11 @@ async function gotJoined(kind, group, perms, status, data, message) {
     }
 }
 
-/** @type {Object<string,TransferredFile>} */
-let transferredFiles = {};
-
-/**
- * A file in the process of being transferred.
- *
- * @constructor
- */
-function TransferredFile(id, userid, up, username, name, type, size) {
-    /** @type {string} */
-    this.id = id;
-    /** @type {string} */
-    this.userid = userid;
-    /** @type {boolean} */
-    this.up = up;
-    /** @type {string} */
-    this.username = username;
-    /** @type {string} */
-    this.name = name;
-    /** @type {string} */
-    this.type = type;
-    /** @type {number} */
-    this.size = size;
-    /** @type {File} */
-    this.file = null;
-    /** @type {RTCPeerConnection} */
-    this.pc = null;
-    /** @type {RTCDataChannel} */
-    this.dc = null;
-    /** @type {Array<RTCIceCandidateInit>} */
-    this.candidates = [];
-    /** @type {Array<Blob|ArrayBuffer>} */
-    this.data = [];
-    /** @type {number} */
-    this.datalen = 0;
-}
-
-TransferredFile.prototype.fullid = function() {
-    return this.userid + (this.up ? '+' : '-') + this.id;
-};
-
-/**
- * @param {boolean} up
- * @param {string} userid
- * @param {string} fileid
- * @returns {TransferredFile}
- */
-TransferredFile.get = function(up, userid, fileid) {
-    return transferredFiles[userid + (up ? '+' : '-') + fileid];
-};
-
-TransferredFile.prototype.close = function() {
-    if(this.dc) {
-        this.dc.onclose = null;
-        this.dc.onerror = null;
-        this.dc.onmessage = null;
-    }
-    if(this.pc)
-        this.pc.close();
-    this.dc = null;
-    this.pc = null;
-    this.data = [];
-    this.datalen = 0;
-    delete(transferredFiles[this.fullid()]);
-}
-
-TransferredFile.prototype.pushData = function(data) {
-    if(data instanceof Blob) {
-        this.datalen += data.size;
-    } else if(data instanceof ArrayBuffer) {
-        this.datalen += data.byteLength;
-    } else {
-        throw new Error('unexpected type for received data');
-    }
-    this.data.push(data);
-}
-
-TransferredFile.prototype.getData = function() {
-    let blob = new Blob(this.data, {type: this.type});
-    if(blob.size != this.datalen)
-        throw new Error('Inconsistent data size');
-    this.data = [];
-    this.datalen = 0;
-    return blob;
-}
-
 /**
  * @param {TransferredFile} f
  */
-function fileTransferBox(f) {
+function gotFileTransfer(f) {
+    f.onevent = gotFileTransferEvent;
     let p = document.createElement('p');
     if(f.up)
         p.textContent =
@@ -2404,27 +2405,20 @@ function fileTransferBox(f) {
         `User ${f.username} offered to send us a file ` +
         `called "${f.name}" of size ${f.size}.`
     let bno = null, byes = null;
-    if(f.up) {
-        bno = document.createElement('button');
-        bno.textContent = 'Cancel';
-        bno.onclick = function(e) {
-            cancelFile(f);
-        };
-        bno.id = "bno-" + f.fullid();
-    } else {
+    if(!f.up) {
         byes = document.createElement('button');
         byes.textContent = 'Accept';
         byes.onclick = function(e) {
-            getFile(f);
+            f.receive();
         };
         byes.id = "byes-" + f.fullid();
-        bno = document.createElement('button');
-        bno.textContent = 'Decline';
-        bno.onclick = function(e) {
-            rejectFile(f);
-        };
-        bno.id = "bno-" + f.fullid();
     }
+    bno = document.createElement('button');
+    bno.textContent = f.up ? 'Cancel' : 'Reject';
+    bno.onclick = function(e) {
+        f.cancel();
+    };
+    bno.id = "bno-" + f.fullid();
     let status = document.createElement('div');
     status.id = 'status-' + f.fullid();
     if(!f.up) {
@@ -2476,334 +2470,49 @@ function setFileStatus(f, status, delyes, delno) {
 }
 
 /**
- * @param {TransferredFile} f
- * @param {any} message
+ * @this {TransferredFile}
+ * @param {string} state
+ * @param {any} [data]
  */
-function failFile(f, message) {
-    if(!f.dc)
-        return;
-    console.error('File transfer failed:', message);
-    setFileStatus(f, message ? `Failed: ${message}` : 'Failed.');
-    f.close();
-}
-
-/**
- * @param {string} id
- * @param {File} file
- */
-function offerFile(id, file) {
-    let fileid = newRandomId();
-    let username = serverConnection.users[id].username;
-    let f = new TransferredFile(
-        fileid, id, true, username, file.name, file.type, file.size,
-    );
-    f.file = file;
-    transferredFiles[f.fullid()] = f;
-    try {
-        fileTransferBox(f);
-        serverConnection.userMessage('offerfile', id, {
-            id: fileid,
-            name: f.name,
-            size: f.size,
-            type: f.type,
-        });
-    } catch(e) {
-        displayError(e);
-        f.close();
-    }
-}
-
-/**
- * @param {TransferredFile} f
- */
-function cancelFile(f) {
-    serverConnection.userMessage('cancelfile', f.userid, {
-        id: f.id,
-    });
-    f.close();
-    setFileStatus(f, 'Cancelled.', true, true);
-}
-
-/**
- * @param {TransferredFile} f
- */
-async function getFile(f) {
-    if(f.pc)
-        throw new Error("Download already in progress");
-    setFileStatus(f, 'Connecting...', true);
-    let pc = new RTCPeerConnection(serverConnection.getRTCConfiguration());
-    if(!pc)
-        throw new Error("Couldn't create peer connection");
-    f.pc = pc;
-    f.candidates = [];
-    pc.onsignalingstatechange = function(e) {
-        if(pc.signalingState === 'stable') {
-            f.candidates.forEach(c => pc.addIceCandidate(c).catch(console.warn));
-            f.candidates = [];
-        }
-    };
-    pc.onicecandidate = function(e) {
-        serverConnection.userMessage('filedownice', f.userid, {
-            id: f.id,
-            candidate: e.candidate,
-        });
-    };
-    f.dc = pc.createDataChannel('file');
-    f.data = [];
-    f.datalen = 0;
-    f.dc.onclose = function(e) {
-        try {
-            closeReceiveFileData(f);
-        } catch(e) {
-            failFile(f, e);
-        }
-    };
-    f.dc.onmessage = function(e) {
-        try {
-            receiveFileData(f, e.data);
-        } catch(e) {
-            failFile(f, e);
-        }
-    };
-    f.dc.onerror = function(e) {
-        /** @ts-ignore */
-        let err = e.error;
-        failFile(f, err);
-    };
-    let offer = await pc.createOffer();
-    if(!offer)
-        throw new Error("Couldn't create offer");
-    await pc.setLocalDescription(offer);
-    serverConnection.userMessage('getfile', f.userid, {
-        id: f.id,
-        offer: pc.localDescription.sdp,
-    });
-    setFileStatus(f, 'Negotiating...', true);
-}
-
-/**
- * @param {TransferredFile} f
- */
-async function rejectFile(f) {
-    serverConnection.userMessage('rejectfile', f.userid, {
-        id: f.id,
-    });
-    setFileStatus(f, 'Rejected.', true, true);
-    f.close();
-}
-
-/**
- * @param {TransferredFile} f
- * @param {string} sdp
- */
-async function sendOfferedFile(f, sdp) {
-    if(f.pc)
-        throw new Error('Transfer already in progress');
-
-    setFileStatus(f, 'Negotiating...', true);
-    let pc = new RTCPeerConnection(serverConnection.getRTCConfiguration());
-    if(!pc)
-        throw new Error("Couldn't create peer connection");
-    f.pc = pc;
-    f.candidates = [];
-    pc.onicecandidate = function(e) {
-        serverConnection.userMessage('fileupice', f.userid, {
-            id: f.id,
-            candidate: e.candidate,
-        });
-    };
-    pc.onsignalingstatechange = function(e) {
-        if(pc.signalingState === 'stable') {
-            f.candidates.forEach(c => pc.addIceCandidate(c).catch(console.warn));
-            f.candidates = [];
-        }
-    };
-    pc.ondatachannel = function(e) {
-        if(f.dc)
-            throw new Error('Duplicate datachannel');
-        f.dc = /** @type{RTCDataChannel} */(e.channel);
-        f.dc.onclose = function(e) {
-            try {
-                closeSendFileData(f);
-            } catch(e) {
-                failFile(f, e);
-            }
-        };
-        f.dc.onerror = function(e) {
-            /** @ts-ignore */
-            let err = e.error;
-            failFile(f, err);
-        }
-        f.dc.onmessage = function(e) {
-            try {
-                ackSendFileData(f, e.data);
-            } catch(e) {
-                failFile(f, e);
-            }
-        };
-        sendFileData(f).catch(e => failFile(f, e));
-    };
-
-    await pc.setRemoteDescription({
-        type: 'offer',
-        sdp: sdp,
-    });
-
-    let answer = await pc.createAnswer();
-    if(!answer)
-        throw new Error("Couldn't create answer");
-    await pc.setLocalDescription(answer);
-    serverConnection.userMessage('sendfile', f.userid, {
-        id: f.id,
-        answer: pc.localDescription.sdp,
-    });
-    setFileStatus(f, 'Uploading...', true);
-}
-
-/**
- * @param {TransferredFile} f
- * @param {string} sdp
- */
-async function receiveFile(f, sdp) {
-    await f.pc.setRemoteDescription({
-        type: 'answer',
-        sdp: sdp,
-    });
-    setFileStatus(f, 'Downloading...', true);
-}
-
-/**
- * @param {TransferredFile} f
- */
-async function sendFileData(f) {
-    let r = f.file.stream().getReader();
-
-    f.dc.bufferedAmountLowThreshold = 65536;
-
-    async function write(a) {
-        while(f.dc.bufferedAmount > f.dc.bufferedAmountLowThreshold) {
-            await new Promise((resolve, reject) => {
-                if(!f.dc) {
-                    reject(new Error('File is closed.'));
-                    return;
-                }
-                f.dc.onbufferedamountlow = function(e) {
-                    if(!f.dc) {
-                        reject(new Error('File is closed.'));
-                        return;
-                    }
-                    f.dc.onbufferedamountlow = null;
-                    resolve();
-                }
-            });
-        }
-        f.dc.send(a);
-        f.datalen += a.length;
-        setFileStatus(f, `Uploading... ${f.datalen}/${f.size}`, true);
-    }
-
-    while(true) {
-        let v = await r.read();
-        if(v.done)
-            break;
-        if(!(v.value instanceof Uint8Array))
-            throw new Error('Unexpected type for chunk');
-        if(v.value.length <= 16384) {
-            await write(v.value);
-        } else {
-            for(let i = 0; i < v.value.length; i += 16384) {
-                let a = new Uint8Array(
-                    v.value.buffer, i, Math.min(16384, v.value.length - i),
-                );
-                await write(a);
-            }
-        }
-    }
-}
-
-/**
- * @param {TransferredFile} f
- */
-function ackSendFileData(f, data) {
-    if(data === 'done' && f.datalen == f.size)
+function gotFileTransferEvent(state, data) {
+    let f = this;
+    switch(state) {
+    case 'inviting':
+        break;
+    case 'connecting':
+        setFileStatus(f, 'Connecting...', true);
+        break;
+    case 'connected':
+        if(f.up)
+            setFileStatus(f, `Sending... ${f.datalen}/${f.size}`);
+        else
+            setFileStatus(f, `Receiving... ${f.datalen}/${f.size}`);
+        break;
+    case 'done':
         setFileStatus(f, 'Done.', true, true);
-    else
-        setFileStatus(f, 'Failed.', true, true);
-    f.dc.onclose = null;
-    f.dc.onerror = null;
-    f.close();
-}
-
-/**
- * @param {TransferredFile} f
- */
-function closeSendFileData(f) {
-    setFileStatus(f, 'Failed.', true, true);
-    f.close();
-}
-
-/**
- * @param {TransferredFile} f
- * @param {Blob|ArrayBuffer} data
- */
-function receiveFileData(f, data) {
-    f.pushData(data);
-    setFileStatus(f, `Downloading... ${f.datalen}/${f.size}`, true);
-
-    if(f.datalen < f.size)
-        return;
-
-    if(f.datalen != f.size) {
-        setFileStatus(f, 'Failed.', true, true);
-        f.close();
-        return;
-    }
-
-    f.dc.onmessage = null;
-    doneReceiveFileData(f);
-}
-
-/**
- * @param {TransferredFile} f
- */
-async function doneReceiveFileData(f) {
-    setFileStatus(f, 'Done.', true, true);
-    let blob = f.getData();
-
-    await new Promise((resolve, reject) => {
-        let timer = setTimeout(function(e) { resolve(); }, 2000);
-        f.dc.onclose = function(e) {
-            clearTimeout(timer);
-            resolve();
-        };
-        f.dc.onerror = function(e) {
-            clearTimeout(timer);
-            resolve();
-        };
-        f.dc.send('done');
-    });
-
-    f.dc.onclose = null;
-    f.dc.onerror = null;
-    f.close();
-
-    let url = URL.createObjectURL(blob);
-    let a = document.createElement('a');
-    a.href = url;
-    a.textContent = f.name;
-    a.download = f.name;
-    a.type = f.type;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-/**
- * @param {TransferredFile} f
- */
-function closeReceiveFileData(f) {
-    if(f.datalen !== f.size) {
-        setFileStatus(f, 'Failed.', true, true)
-        f.close();
+        if(!f.up) {
+            let url = URL.createObjectURL(data);
+            let a = document.createElement('a');
+            a.href = url;
+            a.textContent = f.name;
+            a.download = f.name;
+            a.type = f.mimetype;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        break;
+    case 'cancelled':
+        if(data)
+            setFileStatus(f, `Cancelled: ${data.toString()}.`, true, true);
+        else
+            setFileStatus(f, 'Cancelled.', true, true);
+        break;
+    case 'closed':
+        break;
+    default:
+        console.error(`Unexpected state "${state}"`);
+        f.cancel(`unexpected state "${state}" (this shouldn't happen)`);
+        break;
     }
 }
 
@@ -2844,70 +2553,6 @@ function gotUserMessage(id, dest, username, time, privileged, kind, message) {
             console.error(`Got unprivileged message of kind ${kind}`);
         }
         break;
-    case 'offerfile': {
-        let f = new TransferredFile(
-            message.id, id, false, username,
-            message.name, message.type, message.size,
-        );
-        transferredFiles[f.fullid()] = f;
-        fileTransferBox(f);
-        break;
-    }
-    case 'cancelfile': {
-        let f = TransferredFile.get(false, id, message.id);
-        if(!f)
-            throw new Error('unexpected cancelfile');
-        setFileStatus(f, 'Cancelled.', true, true);
-        f.close();
-        break;
-    }
-    case 'getfile': {
-        let f = TransferredFile.get(true, id, message.id);
-        if(!f)
-            throw new Error('unexpected getfile');
-        sendOfferedFile(f, message.offer);
-        break;
-    }
-    case 'rejectfile': {
-        let f = TransferredFile.get(true, id, message.id);
-        if(!f)
-            throw new Error('unexpected rejectfile');
-        setFileStatus(f, 'Rejected.', true, true);
-        f.close();
-        break;
-    }
-    case 'sendfile': {
-        let f = TransferredFile.get(false, id, message.id);
-        if(!f)
-            throw new Error('unexpected sendfile');
-        receiveFile(f, message.answer);
-        break;
-    }
-    case 'filedownice': {
-        let f = TransferredFile.get(true, id, message.id);
-        if(!f.pc) {
-            console.warn('Unexpected filedownice');
-            return;
-        }
-        if(f.pc.signalingState === 'stable')
-            f.pc.addIceCandidate(message.candidate).catch(console.warn);
-        else
-            f.candidates.push(message.candidate);
-        break;
-    }
-    case 'fileupice': {
-        let f = TransferredFile.get(false, id, message.id);
-        if(!f.pc) {
-            console.warn('Unexpected fileupice');
-            return;
-        }
-        if(f.pc.signalingState === 'stable')
-            f.pc.addIceCandidate(message.candidate).catch(console.warn);
-        else
-            f.candidates.push(message.candidate);
-        break;
-
-    }
     default:
         console.warn(`Got unknown user message ${kind}`);
         break;
@@ -3011,12 +2656,10 @@ function addToChatbox(peerId, dest, nick, time, privileged, history, kind, messa
     if(kind !== 'me') {
         let p = formatLines(message.toString().split('\n'));
         let doHeader = true;
-        if(!peerId && !dest && !nick) {
-            doHeader = false;
-        } else if(lastMessage.nick !== (nick || null) ||
-                  lastMessage.peerId !== peerId ||
-                  lastMessage.dest !== (dest || null) ||
-                  !time || !lastMessage.time) {
+        if(lastMessage.nick !== (nick || null) ||
+           lastMessage.peerId !== (peerId || null) ||
+           lastMessage.dest !== (dest || null) ||
+           !time || !lastMessage.time) {
             doHeader = true;
         } else {
             let delta = time - lastMessage.time;
@@ -3025,16 +2668,14 @@ function addToChatbox(peerId, dest, nick, time, privileged, history, kind, messa
 
         if(doHeader) {
             let header = document.createElement('p');
-            if(peerId || nick || dest) {
-                let user = document.createElement('span');
-                let u = serverConnection.users[dest];
-                let name = (u && u.username);
-                user.textContent = dest ?
-                    `${nick||'(anon)'} \u2192 ${name || '(anon)'}` :
-                    (nick || '(anon)');
-                user.classList.add('message-user');
-                header.appendChild(user);
-            }
+            let user = document.createElement('span');
+            let u = dest && serverConnection.users[dest];
+            let name = (u && u.username);
+            user.textContent = dest ?
+                `${nick || '(anon)'} \u2192 ${name || '(anon)'}` :
+                (nick || '(anon)');
+            user.classList.add('message-user');
+            header.appendChild(user);
             header.classList.add('message-header');
             container.appendChild(header);
             if(time) {
@@ -3491,7 +3132,7 @@ function sendFile(id) {
         let files = this.files;
         for(let i = 0; i < files.length; i++) {
             try {
-                offerFile(id, files[i]);
+                serverConnection.sendFile(id, files[i]);
             } catch(e) {
                 console.error(e);
                 displayError(e);
@@ -3846,8 +3487,14 @@ async function serverConnect() {
     serverConnection.onjoined = gotJoined;
     serverConnection.onchat = addToChatbox;
     serverConnection.onusermessage = gotUserMessage;
+    serverConnection.onfiletransfer = gotFileTransfer;
 
-    let url = `ws${location.protocol === 'https:' ? 's' : ''}://${location.host}/ws`;
+    let url = null; //groupStatus.endpoint;
+    if(!url) {
+        console.warn("no endpoint in status");
+        url = `ws${location.protocol === 'https:' ? 's' : ''}://${location.host}/ws`;
+    }
+
     try {
         await serverConnection.connect(url);
     } catch(e) {
@@ -3857,11 +3504,6 @@ async function serverConnect() {
 }
 
 async function start() {
-    group = decodeURIComponent(
-        location.pathname.replace(/^\/[a-z]*\//, '').replace(/\/$/, '')
-    );
-
-    /** @type {Object} */
     try {
         let r = await fetch(".status.json")
         if(!r.ok)
@@ -3869,7 +3511,17 @@ async function start() {
         groupStatus = await r.json()
     } catch(e) {
         console.error(e);
-        return;
+        displayWarning("Couldn't fetch status: " + e);
+        groupStatus = {};
+    }
+
+    if(groupStatus.name) {
+        group = groupStatus.name;
+    } else {
+        console.warn("no group name in status");
+        group = decodeURIComponent(
+            location.pathname.replace(/^\/[a-z]*\//, '').replace(/\/$/, ''),
+        );
     }
 
     let parms = new URLSearchParams(window.location.search);
@@ -3892,11 +3544,20 @@ async function start() {
     setViewportHeight();
 }
 
+// BAO
 //start();
 
 window.onload = async function() {	
 
-// On resize and orientation change, we update viewport height
+	document.getElementById('closebutton').onclick = async function(e) {
+		e.preventDefault();
+		console.debug("closebutton - click");
+		
+		await serverConnection.leave(group);
+		closeConnection();
+	};
+
+	// On resize and orientation change, we update viewport height
 	addEventListener('resize', setViewportHeight);
 	addEventListener('orientationchange', setViewportHeight);
 
@@ -3937,7 +3598,7 @@ window.onload = async function() {
 
 	const host = urlParam("host");
 	const username = urlParam("username");	
-    const password = "Welcome123";
+    const password = urlParam("password");
 	
 	group = "public/" + urlParam("group");	
 	setTitle(capitalise(group));
