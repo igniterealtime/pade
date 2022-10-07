@@ -667,6 +667,8 @@ function startConverse(credential) {
 		MUC_INFO_CODES.join_leave_events,
 		MUC_INFO_CODES.role_changes,
 	]
+	
+	const galeneUrl = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/galene";
 			
 	const autoAway = getSetting("idleTimeout", 300);
 	const autoXa = autoAway * 3;			 			
@@ -703,6 +705,9 @@ function startConverse(credential) {
 		domain_placeholder: domain,
 		enable_smacks: getSetting("enableSmacks", false),
 		fullname: displayname,
+        galene_head_display_toggle:  getSetting("galeneHeadDisplay", false),		
+		galene_url: getSetting("galeneServer", galeneUrl),
+		galene_host: getSetting("galeneHost", domain),	
 		hide_offline_users: getSetting("hideOfflineUsers", false),	
 		hide_open_bookmarks: true,	
 		hide_muc_participants: !getSetting("alwaysShowOccupants", false),

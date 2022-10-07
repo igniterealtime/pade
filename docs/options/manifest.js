@@ -678,9 +678,32 @@ this.manifest = {
             "name": "enableGalene",
             "type": "checkbox",
             "label": i18n.get("Enable Galene for Webinars")
+        },
+        {
+            "tab": i18n.get("Webinar"),
+            "group": i18n.get("Connection"),
+            "name": "galeneServer",
+            "type": "text",
+            "label": i18n.get("Server Url"),
+            "text": "https://localhost:7443/galene"
+        },
+        {
+            "tab": i18n.get("Webinar"),
+            "group": i18n.get("Connection"),
+            "name": "galeneHost",
+            "type": "text",
+            "label": i18n.get("Host Name"),
+            "text": "localhost"
+        },
+        {
+            "tab": i18n.get("Webinar"),
+            "group": i18n.get("User Interface"),
+            "name": "galeneHeadDisplay",
+            "type": "checkbox",
+            "label": i18n.get("Display Chat Header")
         },		
         {
-            "tab": i18n.get("Converse"),        // converse-inverse
+            "tab": i18n.get("Converse"),        // converse-inverse 
             "group": i18n.get("General"),
             "name": "converseAutoStart",
             "type": "checkbox",
