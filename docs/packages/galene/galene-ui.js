@@ -3547,6 +3547,8 @@ async function start() {
 // BAO
 //start();
 
+let connection = window.top?.connection, standalone = false;
+
 window.onload = async function() {	
 
 	document.getElementById('closebutton').onclick = async function(e) {
@@ -3595,27 +3597,48 @@ window.onload = async function() {
     serverConnection.onjoined = gotJoined;
     serverConnection.onchat = addToChatbox;
     serverConnection.onusermessage = gotUserMessage;
-
-	const host = urlParam("host");
-	const username = urlParam("username");	
-    const password = urlParam("password");
 	
 	group = "public/" + urlParam("group");	
 	setTitle(capitalise(group));
     addFilters();
     setMediaChoices(false).then(e => reflectSettings());	
+	handleConnection();
+}
 
-    const connection = window.top?.connection;
-	console.debug("onload", connection, host, username);	
+async function handleConnection() {
+	const host = urlParam("host") || location.hostname;
+	const username = urlParam("username");	
+	
+	console.debug("handleConnection", connection, host, username);	
 	
 	if (connection) {
 		await serverConnection.connect(connection, host);
-		setViewportHeight();			
-	}
+		setViewportHeight();	
+		
+	} else {
+		standalone = true;
+		connection = new Strophe.Connection(location.protocol + "//" + location.host + "/http-bind/");
+		
+		connection.connect(host, null, async function (status) {
+			console.debug("onload xmpp.connect", status);
+
+			if (status === Strophe.Status.CONNECTED) {
+				connection.send($pres());
+				await serverConnection.connect(connection, host);
+				setViewportHeight();					
+			}
+			else
+
+			if (status === Strophe.Status.DISCONNECTED) {
+
+			}
+		});		
+	}	
 }
 
 window.onunload = async function() {	
 	serverConnection.close();
+	if (standalone && connection) connection.disconnect();
 }
 
 function urlParam (name) {
@@ -3626,11 +3649,12 @@ function urlParam (name) {
 
 async function amConnected() {
 	console.debug("amConnected");		
-	const username = urlParam("username");
+	const username = urlParam("username") || localStorage.getItem("galene_username") || prompt("Enter username");
 	const pw = "";
 
     try {
         await serverConnection.join(group, username, pw);
+		localStorage.setItem("galene_username", username);
     } catch(e) {
         console.error(e);
         serverConnection.close();

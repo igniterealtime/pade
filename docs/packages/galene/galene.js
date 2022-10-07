@@ -26,11 +26,15 @@
             BootstrapModal = converse.env.BootstrapModal;
             _ = converse.env._;
             __ = _converse.__;
-
+			
+			const domain = getSetting("domain", location.hostname);
+			const server = getSetting("server", location.host);
+			const url = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/galene";
+			
             _converse.api.settings.update({
                 galene_head_display_toggle: false,
-                galene_signature: 'GALENE',
-				galene_host:  getSetting("domain", location.hostname)
+                galene_url: url,
+				galene_host: domain
             });
 
             galene_confirm  = __('Webinar?');
@@ -47,13 +51,14 @@
                 if (bodyElement)
                 {
                     var body = bodyElement.innerHTML;
-                    var url = _converse.api.settings.get("galene_signature");
+                    var url = _converse.api.settings.get("galene_url");
                     var pos = body.indexOf(url + "/");
-
+					
                     if (pos > -1)
                     {
-                        var room = body.substring(pos + url.length + 1);
-                        var label = pos > 0 ? body.substring(0, pos) : galene_invitation;
+                        var group = urlParam ("group", body);
+                        var host = urlParam ("host", body);						
+                        var label = galene_invitation;
                         var from = chatbox.getDisplayName().trim();
                         var avatar = _converse.api.settings.get("notification_icon");
 
@@ -61,7 +66,7 @@
 
                         var prompt = new Notification(from,
                         {
-                            'body': label + " " + room,
+                            'body': label + " " + group,
                             'lang': _converse.locale,
                             'icon': avatar,
                             'requireInteraction': true
@@ -76,7 +81,7 @@
 
                             if (view)
                             {
-                                doLocalVideo(view, room, label);
+                                doLocalVideo(view, group, label, host);
                             }
                         }
                     }
@@ -128,21 +133,30 @@
             {
                 //console.debug("afterMessageBodyTransformed", text);
 					
-                if (text.indexOf(_converse.api.settings.get("galene_signature")) > -1)
-                {
+                if (text.indexOf("/galene/") > -1) {
                     const url = text.substring(0);
-                    let link_room = url.substring(url.lastIndexOf("/") + 1);
-                    const link_label = galene_invitation;
-                    const tab_label = galene_tab_invitation;
+					const group = urlParam ("group", url);
+                    const host = urlParam ("host", url);						
+					
+					if (group && host) {
+						const link_label = galene_invitation;
+						const tab_label = galene_tab_invitation;
 
-                    text.references = [];
-                    text.addTemplateResult(0, text.length, html`<a @click=${clickVideo} data-room="${link_room}" data-url="${url}" href="#">${link_label} ${link_room}</a>`);
+						text.references = [];
+						text.addTemplateResult(0, text.length, html`<a @click=${clickVideo} data-host="${host}" data-group="${group}" data-url="${url}" href="#">${link_label} ${group}</a>`);
+					}
                 }			
             });
 
             console.debug("galene plugin is ready");
         }
     });
+
+	function urlParam (name, url) {
+		const results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
+		if (!results) { return undefined; }
+		return unescape(results[1] || undefined);
+	}	
 
     function __confirm(msg, callback) {
       if (confirm(galene_confirm)) {
@@ -182,34 +196,36 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-        var url = ev.target.getAttribute("data-url");
-        var room = ev.target.getAttribute("data-room");
+        const group = ev.target.getAttribute("data-group");
+        const host = ev.target.getAttribute("data-host");
 	
-          const chatView = getChatViewFromElement(ev.currentTarget);		
+        const chatView = getChatViewFromElement(ev.currentTarget);		
 
-        console.debug("clickVideo", ev.target, room, url, chatView);
+        console.debug("clickVideo", ev.target, group, host, chatView);
 		
         if (chatView) {			
-          doLocalVideo(chatView, room, url, galene_invitation);
+          doLocalVideo(chatView, group, galene_invitation, host);
         }
     }
 
     var doVideo = function doVideo(view)
     {
-        const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
-        const url = _converse.api.settings.get("galene_signature") + '/' + room;
+		const host = _converse.api.settings.get("galene_host");
+        const group = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
+        const url = _converse.api.settings.get("galene_url") + '/?group=' + group + "&host=" + host;
 
-        console.debug("doVideo", room, url, view);
+        console.debug("doVideo", group, url, view);
 
         view.model.sendMessage({'body': url});	
-        doLocalVideo(view, room, galene_invitation);
-
+        doLocalVideo(view, group, galene_invitation, host);
     }
 
-    var doLocalVideo = function doLocalVideo(view, room, label)
+    var doLocalVideo = function doLocalVideo(view, group, label, host)
     {
         const chatModel = view.model;
-        console.debug("doLocalVideo", view, room, label);
+        console.debug("doLocalVideo", view, group, label, host);
+		
+		if (!host) host = _converse.api.settings.get("galene_host");
 
 		const isOverlayedDisplay = _converse.api.settings.get("view_mode") === "overlayed";
 		const headDisplayToggle = isOverlayedDisplay || _converse.api.settings.get("galene_head_display_toggle") === true;
@@ -252,7 +268,7 @@
 				}
 				
 				if (firstTime) {
-					firstTime = false;   // ignore when galene-meet room url is loaded
+					firstTime = false;   // ignore when galene-meet group url is loaded
 					
 					galeneFrame.contentWindow.addEventListener("message", function (event) {
 					  if (typeof event.data === 'string') {
@@ -271,7 +287,7 @@
 
 			galeneFrame.__jid = jid;
 			galeneFrame.addEventListener("load", galeneIframeCloseHandler);
-			galeneFrame.setAttribute("src", "/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=" + _converse.connection.pass + "&group=" + room + "&host=" + _converse.api.settings.get("galene_host"));
+			galeneFrame.setAttribute("src", "/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&host=" + host + "&group=" + group);
 			galeneFrame.setAttribute("class", "galene");
 			galeneFrame.setAttribute("allow", "microphone; camera;");
 			galeneFrame.setAttribute("frameborder", "0");
