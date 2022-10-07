@@ -51,7 +51,7 @@
                 if (bodyElement)
                 {
                     var body = bodyElement.innerHTML;
-                    var url = _converse.api.settings.get("galene_signature");
+                    var url = _converse.api.settings.get("galene_url");
                     var pos = body.indexOf(url + "/");
 					
                     if (pos > -1)
