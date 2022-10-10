@@ -427,7 +427,9 @@ function loadPlugins() {
         if (getSetting("enableGalene", false))
         {
             whitelistedPlugins.push("galene");
-            loadJS("./packages/galene/galene.js");
+            loadJS("./packages/galene/protocol.js");
+            loadJS("./packages/galene/galene-socket.js");
+            loadJS("./packages/galene/galene.js");			
         }		
 
         if (getSetting("enableVoiceChat", false))
@@ -769,7 +771,7 @@ function startConverse(credential) {
 		jitsimeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),
 		jitsimeet_modal: !getSetting("converseEmbedOfMeet", true),		
 		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
-		visible_toolbar_buttons: {'emoji': true, 'call': false, 'clear': true },
+		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableGalene", false), 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}

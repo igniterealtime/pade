@@ -63,7 +63,9 @@
                         var from = chatbox.getDisplayName().trim();
                         var avatar = _converse.api.settings.get("notification_icon");
 
-                        if (data.chatbox.vcard.attributes.image) avatar = data.chatbox.vcard.attributes.image;
+                        if (data.chatbox.vcard.attributes.image) {
+							avatar = "data:" + data.chatbox.vcard.attributes.image_type + ";base64," + data.chatbox.vcard.attributes.image;
+						}						
 
                         var prompt = new Notification(from,
                         {

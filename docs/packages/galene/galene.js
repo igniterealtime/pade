@@ -6,7 +6,7 @@
     }
 }(this, function (converse) {
 
-    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , dayjs, _converse, html, _, __, Model, BootstrapModal, galene_confirm, galene_invitation, galene_tab_invitation, galene_ready;
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , dayjs, _converse, html, _, __, Model, BootstrapModal, galene_confirm, galene_invitation, galene_tab_invitation, galene_ready, serverConnection;
 
     converse.plugins.add("galene", {
         dependencies: [],
@@ -27,11 +27,14 @@
             _ = converse.env._;
             __ = _converse.__;
 			
+			setupStrophePlugins();
+			
 			const domain = getSetting("domain", location.hostname);
 			const server = getSetting("server", location.host);
 			const url = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/galene";
 			
             _converse.api.settings.update({
+                visible_toolbar_buttons: {call: true},				
                 galene_head_display_toggle: false,
                 galene_url: url,
 				galene_host: domain
@@ -62,7 +65,9 @@
                         var from = chatbox.getDisplayName().trim();
                         var avatar = _converse.api.settings.get("notification_icon");
 
-                        if (data.chatbox.vcard.attributes.image) avatar = data.chatbox.vcard.attributes.image;
+                        if (data.chatbox.vcard.attributes.image) {
+							avatar = "data:" + data.chatbox.vcard.attributes.image_type + ";base64," + data.chatbox.vcard.attributes.image;
+						}
 
                         var prompt = new Notification(from,
                         {
@@ -87,6 +92,21 @@
                     }
                 }
             });
+			
+			_converse.api.listen.on('callButtonClicked', function(data)
+			{
+				const model = data.model;
+				const target = model.get('jid');
+				const myself = Strophe.getBareJidFromJid(_converse.connection.jid);					
+				console.debug("callButtonClicked", target, myself);
+
+				if (serverConnection) {	
+					_converse.connection.rayo.hangup(serverConnection.callHeaders);	
+					serverConnection.leave("public/" + serverConnection.callId);					
+				} else {	
+					_converse.connection.rayo.dial('xmpp:' + target, 'xmpp:' + myself);						
+				}					
+			});
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
@@ -127,6 +147,77 @@
 					const button = document.querySelector(".plugin-galene");
 					if (button) button.style.display = 'none';
 				}
+				
+				_converse.connection.addHandler(presence =>  {	
+					/*
+						<presence from="a0408534-28b9-489f-8681-a2f410c89dec@localhost" to="dele@localhost">
+							<offer xmlns="urn:xmpp:rayo:1" to="xmpp:dele@localhost" from="xmpp:dele@localhost">
+								<header name="caller_name" value="dele@localhost"/>
+								<header name="called_name" value="dele@localhost"/>
+								<header name="group" value="galene-2693057755317591-kxjnb7az0"/>
+							</offer>
+						</presence>
+					*/
+					
+					_converse.connection.rayo.call_resource = presence.getAttribute("from");
+					const callId = Strophe.getNodeFromJid(_converse.connection.rayo.call_resource);
+					const headers = {};
+
+					for (header of presence.querySelectorAll('header'))	{		
+						var name = header.getAttribute('name');
+						var value = header.getAttribute('value');						
+						if (name && value) headers[name] = value;
+					};					
+					
+					if (presence.querySelector('offer')) {					
+						const view = _converse.chatboxviews.get(headers.caller_id);
+						
+						let avatar = _converse.api.settings.get("notification_icon");					
+						if (view?.model?.vcard.attributes.image) avatar = "data:" + view.model.vcard.attributes.image_type + ";base64," + view.model.vcard.attributes.image;					
+						
+						console.log("Rayo offer", callId, headers);	
+
+						if (headers.caller_name) 
+						{
+							var prompt = new Notification(headers.caller_name, {
+								'body': "Incoming Call",
+								'lang': _converse.locale,
+								'icon': avatar,
+								'requireInteraction': true
+							});
+
+							prompt.onclick = function(event) {
+								event.preventDefault();
+								console.log("Rayo event click", view?.model);
+								_converse.connection.rayo.accept(headers, Strophe.getBareJidFromJid(_converse.connection.jid));									
+								_converse.connection.rayo.answer(headers);									
+							}						
+						}
+					}
+					else
+
+					if (presence.querySelector('ringing')) {
+						console.log("Rayo ringing", callId);
+						showStatus(headers, "call ringing");							
+						connectMedia(callId, headers);
+					}
+					else
+
+					if (presence.querySelector('answered')) {
+						console.log("Rayo answered ", callId);
+						showStatus(headers, "call established");							
+					}	
+
+					else
+
+					if (presence.querySelector('end')) {
+						console.log("Rayo hangup", callId);
+						disconnectMedia();
+						showStatus(headers, "call ended");							
+					}					
+					
+					return true;			
+				}, 'urn:xmpp:rayo:1', 'presence');					
             });			
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
@@ -144,11 +235,34 @@
 						text.addTemplateResult(0, text.length, html`<a @click=${clickVideo} data-host="${host}" data-group="${group}" data-url="${url}" href="${url}">${link_label} ${group}</a>`);
 					}
                 }			
-            });
+            });		
 
-            console.debug("galene plugin is ready");
         }
     });
+
+
+	function disconnectMedia() {			
+		closeUpMedia();						
+		serverConnection = null;		
+	}
+	
+	function connectMedia(callId, headers) {
+		if (!serverConnection) {
+			serverConnection = new ServerConnection();
+			serverConnection.onconnected = gotConnected;
+			serverConnection.onpeerconnection = onPeerConnection;
+			serverConnection.onclose = gotClose;
+			serverConnection.ondownstream = gotDownStream;
+			serverConnection.onuser = gotUser;
+			serverConnection.onjoined = gotJoined;
+			serverConnection.onchat = addToChatbox;
+			serverConnection.onusermessage = gotUserMessage;
+			
+			serverConnection.callHeaders = headers;			
+			serverConnection.callId = callId;
+			serverConnection.connect(_converse.connection, _converse.api.settings.get("galene_host"));
+		}
+	}
 
 	function urlParam (name, url) {
 		const results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
@@ -206,7 +320,7 @@
         }
     }
 
-    var doVideo = function doVideo(view)
+    function doVideo(view)
     {
 		const host = _converse.api.settings.get("galene_host");
         const group = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
@@ -218,7 +332,7 @@
         doLocalVideo(view, group, galene_invitation, host);
     }
 
-    var doLocalVideo = function doLocalVideo(view, group, label, host)
+    function doLocalVideo(view, group, label, host)
     {
         const chatModel = view.model;
         console.debug("doLocalVideo", view, group, label, host);
@@ -298,5 +412,513 @@
 			div.appendChild(galeneFrame);					
 										
 		}
-    }		
+    }
+	
+	function showStatus(header, status) {
+		let place = document.querySelector('converse-message-form[jid="' + header.caller_id + '"] .chat-textarea, converse-muc-message-form[jid="' + header.caller_id + '"] .chat-textarea');
+		
+		if (!place) {
+			place = document.querySelector('converse-message-form[jid="' + header.called_id + '"] .chat-textarea, converse-muc-message-form[jid="' + header.called_id + '"] .chat-textarea');
+		}	
+		
+		if (place) {
+			place.placeholder = status
+		}		
+	}
+
+	async function gotConnected() {
+		console.debug("gotConnected");	
+		
+		const username = Strophe.getNodeFromJid(_converse.connection.jid);
+		const pw = "";
+		const group = "public/" + serverConnection.callId;	
+
+		try {
+			await serverConnection.join(group, username, pw);
+		} catch(e) {
+			console.error(e);
+			serverConnection.close();
+		}
+	}
+
+	function gotUser(id, kind) {
+		console.debug("gotUser", id, kind);
+	}
+
+	function gotJoined(kind, group, perms, status, data, message) {
+		console.debug("gotJoined", kind, group, perms, status, data, message);
+		
+		switch(kind) {
+		case 'join':		
+			startCall();				
+			break;
+		case 'change':
+			break;
+		case 'leave':
+			break;			
+		case 'redirect':
+			serverConnection.close();
+			break;
+		case 'fail':
+			console.error("failed to join")
+			break;	
+		}
+	}	
+	
+	function startCall() {
+		serverConnection.request({'':['audio']});		
+		startStream();	
+	}
+	
+	async function startStream() {
+		console.debug("startStream");
+		
+		let constraints = {audio: true};
+		let stream = null;
+		
+		try {
+			stream = await navigator.mediaDevices.getUserMedia(constraints);
+		} catch(e) {
+			console.error("talk clicked", e);
+			return;
+		}
+
+		let c;
+
+		try {
+			c = newUpStream();
+			//serverConnection.groupAction('record');
+		} catch(e) {
+			console.error("talk clicked", e);
+			return;
+		}		
+
+		setUpStream(c, stream);
+		await setMedia(c, true);		
+	}
+	
+	function stopStream(s) {
+		console.debug("stopStream", s);
+		
+		s.getTracks().forEach(t => {
+			try {
+				t.stop();
+			} catch(e) {
+				console.warn(e);
+			}
+		});	
+	}
+
+	function setUpStream(c, stream) {
+		console.debug("setUpStream", c, stream);	
+		
+		if(c.stream != null)
+			throw new Error("Setting nonempty stream");
+
+		c.setStream(stream);
+
+		c.onclose = replace => {
+
+			if(!replace) {
+				stopStream(c.stream);
+				if(c.userdata.onclose)
+					c.userdata.onclose.call(c);
+				delMedia(c.localId);
+			}
+		}
+
+		function addUpTrack(t) {
+			if(c.label === 'camera') {
+				if(t.kind == 'audio') {
+
+				} else if(t.kind == 'video') {
+
+				}
+			}
+			t.onended = e => {
+				stream.onaddtrack = null;
+				stream.onremovetrack = null;
+				c.close();
+			};
+
+			let encodings = [];
+			let tr = c.pc.addTransceiver(t, {
+				direction: 'sendonly',
+				streams: [stream],
+				sendEncodings: encodings,
+			});
+
+			// Firefox workaround
+			function match(a, b) {
+				if(!a || !b)
+					return false;
+				if(a.length !== b.length)
+					return false;
+				for(let i = 0; i < a.length; i++) {
+					if(a.maxBitrate !== b.maxBitrate)
+						return false;
+				}
+				return true;
+			}
+
+			let p = tr.sender.getParameters();
+			
+			if (!p || !match(p.encodings, encodings)) {
+				p.encodings = encodings;
+				tr.sender.setParameters(p);
+			}
+		}
+
+		// c.stream might be different from stream if there's a filter
+		c.stream.getTracks().forEach(addUpTrack);
+
+		stream.onaddtrack = function(e) {
+			addUpTrack(e.track);
+		};
+
+		stream.onremovetrack = function(e) {
+			let t = e.track;
+			let sender;
+			
+			c.pc.getSenders().forEach(s => {
+				if(s.track === t)
+					sender = s;
+			});
+			if(sender) {
+				c.pc.removeTrack(sender);
+			} else {
+				console.warn('Removing unknown track');
+			}
+
+			let found = false;
+			c.pc.getSenders().forEach(s => {
+				if(s.track)
+					found = true;
+			});
+			if(!found) {
+				stream.onaddtrack = null;
+				stream.onremovetrack = null;
+				c.close();
+			}
+		};
+	}
+
+	function onPeerConnection() {
+		console.debug("onPeerConnection");
+		return null;
+	}
+
+	function gotClose(code, reason) {
+		console.debug("gotClose", code, reason);
+		
+		closeUpMedia();
+
+		if(code != 1000) {
+			console.warn('Socket close', code, reason);
+		}
+	}
+
+	function gotDownStats(stats) {
+		console.debug("gotDownStats", stats);	
+	}
+
+	function closeUpMedia(label) {
+		console.debug("closeUpMedia", label);
+		
+		if (serverConnection?.up) {
+			for(let id in serverConnection?.up) {
+				let c = serverConnection.up[id];
+				if(label && c.label !== label)
+					continue
+				c.close();
+			}
+		}
+	}
+
+	function gotDownStream(c) {
+		console.debug("gotDownStream", c);
+		
+		c.onclose = function(replace) {
+			if(!replace)
+				delMedia(c.localId);
+		};
+		c.onerror = function(e) {
+			console.error(e);
+		};
+		c.ondowntrack = function(track, transceiver, label, stream) {
+			setMedia(c, false);
+		};
+		c.onnegotiationcompleted = function() {
+			resetMedia(c);
+		}
+		c.onstatus = function(status) {
+			setMediaStatus(c);
+		};
+		
+		c.onstats = gotDownStats;
+		setMedia(c, false);			
+	}
+
+	function setMediaStatus(c) {
+		let state = c && c.pc && c.pc.iceConnectionState;
+		let good = state === 'connected' || state === 'completed';
+
+		let media = document.getElementById('media-' + c.localId);
+		if(!media) {
+			console.warn('Setting status of unknown media.');
+			return;
+		}
+		if(good) {
+			media.classList.remove('media-failed');
+			if(c.userdata.play) {
+				if(media instanceof HTMLMediaElement)
+					media.play().catch(e => {
+						console.error(e);
+					});
+				delete(c.userdata.play);
+			}
+		} else {
+			media.classList.add('media-failed');
+		}
+	}
+
+	function delMedia(localId) {
+		console.debug("delMedia", localId);
+		
+		let mediadiv = document.getElementById('peers');
+		let peer = document.getElementById('peer-' + localId);
+		
+		if(!peer)
+			throw new Error('Removing unknown media');
+
+		let media = document.getElementById('media-' + localId);
+
+		media.srcObject = null;
+		mediadiv.removeChild(peer);
+	}
+
+	function resetMedia(c) {
+		let media = document.getElementById('media-' + c.localId);
+		
+		if(!media) {
+			console.error("Resetting unknown media element")
+			return;
+		}
+		media.srcObject = media.srcObject;
+	}
+
+	async function setMedia(c, isUp, mirror, video) {
+		console.debug("setMedia", c, isUp, mirror, video);
+		
+		let peersdiv = document.getElementById('peers');
+		
+		if (!peersdiv) {
+			peersdiv = document.createElement('div');
+			peersdiv.id = 'peers';		
+			document.body.appendChild(peersdiv);		
+		}		
+
+		let div = document.getElementById('peer-' + c.localId);
+		
+		if (!div) {
+			div = document.createElement('div');
+			div.id = 'peer-' + c.localId;
+			div.classList.add('peer');
+			peersdiv.appendChild(div);
+		}
+
+		let media = document.getElementById('media-' + c.localId);
+		
+		if(!media) {
+			if (video) {
+				media = video;
+			} else {
+				media = document.createElement('audio');
+				if(isUp)
+					media.muted = true;
+			}
+
+			media.classList.add('media');
+			media.autoplay = true;
+			media.playsInline = true;
+			media.id = 'media-' + c.localId;
+			div.appendChild(media);
+		}
+
+		if(mirror)
+			media.classList.add('mirror');
+		else
+			media.classList.remove('mirror');
+
+		if(!video && media.srcObject !== c.stream)
+			media.srcObject = c.stream;
+
+		let label = document.getElementById('label-' + c.localId);
+		
+		if(!label) {
+			label = document.createElement('div');
+			label.id = 'label-' + c.localId;
+			label.classList.add('label');
+			div.appendChild(label);
+		}
+	}
+
+	function addToChatbox(peerId, dest, nick, time, privileged, history, kind, message) {
+		console.debug("addToChatbox", peerId, dest, nick, time, privileged, history, kind, message);		
+		return message;	
+	}
+
+	function gotUserMessage(id, dest, username, time, privileged, kind, message) {
+		console.debug("gotUserMessage", id, dest, username, time, privileged, kind, message);	
+	}
+
+	function newUpStream(localId) {
+		let c = serverConnection.newUpStream(localId);
+		c.onstatus = function(status) {
+			setMediaStatus(c);
+		};
+		c.onerror = function(e) {
+			console.error(e);
+		};
+		return c;
+	}	
+	
+	function cyrb53(str, seed = 0) {
+		let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+		for (let i = 0, ch; i < str.length; i++) {
+			ch = str.charCodeAt(i);
+			h1 = Math.imul(h1 ^ ch, 2654435761);
+			h2 = Math.imul(h2 ^ ch, 1597334677);
+		}
+		h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+		h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+		return 4294967296 * (2097151 & h2) + (h1>>>0);
+	}	
+	
+	function setupStrophePlugins() {
+		Strophe.addConnectionPlugin('rayo', {
+			RAYO_XMLNS: 'urn:xmpp:rayo:1',
+			connection: null,
+			
+			init: function (conn) {
+				this.connection = conn;
+				
+				if (this.connection.disco) {
+					this.connection.disco.addFeature('urn:xmpp:rayo:client:1');
+				}
+				
+				console.debug("Rayo plugin ready");
+			},
+
+			dial: function (to, from) {
+				console.debug('dial ', to, from);
+				
+				var self = this;
+				var req = $iq({type: 'set',	to: _converse.api.settings.get("galene_host")});
+				req.c('dial', {xmlns: this.RAYO_XMLNS, to: to, from: from});
+				req.c('header',	{caller_name: _converse.xmppstatus.getFullname() || Strophe.getBareJidFromJid(_converse.connection.jid)});
+
+				this.connection.sendIQ(req,
+					function (result) {
+						console.debug('Dial result ', result);
+						var resource = result.querySelector('ref').getAttribute('uri');
+						self.call_resource = resource.substr('xmpp:'.length);
+						console.debug("Received call resource: " + self.call_resource); // BAO
+					},
+					function (error) {
+						console.debug('Dial error ', error);
+					}
+				);
+			},
+
+			accept: function (headers, callee) {
+				console.debug('accept', this.call_resource, callee, headers);
+						
+				if (!this.call_resource) {
+					console.warn("No call in progress");
+					return;
+				}
+
+				var self = this;
+				var req = $iq({	type: 'set', to: this.call_resource});
+				req.c('accept', {xmlns: this.RAYO_XMLNS});
+				
+				if (headers) {	
+					const hdrs = Object.getOwnPropertyNames(headers)
+
+					for (name of hdrs) {
+						const value = headers[name];
+						if (value) req.c("header", {name: name, value: value}).up(); 
+					}
+				}
+				
+				req.c("header", {name: 'callee_id', value: callee}).up(); 
+
+				this.connection.sendIQ(req,
+					function (result) {console.debug('Accept result ', result)},
+					function (error)  {console.debug('Accept error ', error)}
+				);
+			},
+			
+			answer: function (headers) {
+				console.debug('answer', this.call_resource, headers);
+						
+				if (!this.call_resource) {
+					console.warn("No call in progress");
+					return;
+				}
+
+				var self = this;
+				var req = $iq({	type: 'set', to: this.call_resource});
+				req.c('answer', {xmlns: this.RAYO_XMLNS});
+				
+				if (headers) {	
+					const hdrs = Object.getOwnPropertyNames(headers)
+
+					for (name of hdrs) {
+						const value = headers[name];
+						if (value) req.c("header", {name: name, value: value}).up(); 
+					}
+				}
+
+				this.connection.sendIQ(req,
+					function (result) {console.debug('Answer result ', result)},
+					function (error)  {console.debug('Answer error ', error)}
+				);
+			},
+			
+			hangup: function (headers) {
+				console.debug('hangup', this.call_resource, headers);
+						
+				if (!this.call_resource) {
+					console.warn("No call in progress");
+					return;
+				}
+
+				var self = this;
+				var req = $iq({	type: 'set', to: this.call_resource});
+				req.c('hangup', {xmlns: this.RAYO_XMLNS});
+				
+				if (headers) {	
+					const hdrs = Object.getOwnPropertyNames(headers)
+
+					for (name of hdrs) {
+						const value = headers[name];
+						if (value) req.c("header", {name: name, value: value}).up(); 
+					}
+				}
+
+				this.connection.sendIQ(req,
+					function (result) {
+						console.debug('Hangup result ', result);
+						self.call_resource = null;
+					},
+					function (error) {
+						console.debug('Hangup error ', error);
+						self.call_resource = null;
+					}
+				);
+			}
+		});
+	}		
 }));
