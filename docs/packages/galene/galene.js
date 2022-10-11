@@ -101,10 +101,10 @@
 				console.debug("callButtonClicked", target, myself);
 
 				if (serverConnection) {	
-					_converse.connection.rayo.hangup(serverConnection.callHeaders);	
-					serverConnection.leave("public/" + serverConnection.callId);					
+					_converse.connection.rayo.hangup(serverConnection.callHeaders);					
 				} else {	
-					_converse.connection.rayo.dial('xmpp:' + target, 'xmpp:' + myself);						
+					_converse.connection.rayo.dial('xmpp:' + target, 'xmpp:' + myself);	
+					showStatus({caller_id: target}, "call ringing");					
 				}					
 			});
 
@@ -212,6 +212,7 @@
 
 					if (presence.querySelector('end')) {
 						console.log("Rayo hangup", callId);
+						if (serverConnection) serverConnection.leave("public/" + callId);	
 						disconnectMedia();
 						showStatus(headers, "call ended");							
 					}					
