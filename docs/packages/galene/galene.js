@@ -94,19 +94,14 @@
             });
 			
 			_converse.api.listen.on('callButtonClicked', function(data)
-			{
-				const model = data.model;
-				const target = model.get('jid');
-				const myself = Strophe.getBareJidFromJid(_converse.connection.jid);					
-				console.debug("callButtonClicked", target, myself);
-
-				if (serverConnection) {	
-					_converse.connection.rayo.hangup(serverConnection.callHeaders);					
-				} else {	
-					_converse.connection.rayo.dial('xmpp:' + target, 'xmpp:' + myself);	
-					showStatus({caller_id: target}, "call ringing");					
-				}					
+			{		
+				handleCallRequest(data.model);
 			});
+			
+			_converse.api.listen.on('getHeadingButtons', (el, buttons) => {
+				buttons.push({'i18n_title': __('Toggle an audio call to ' + el.model.get('jid')),  'i18n_text': __('Call'), 'handler': ev => handleCallRequest(el.model), 'a_class': 'toggle-foo', 'icon_class': 'fa-phone', 'name': 'foo'});
+				return buttons;
+			});				
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
@@ -240,7 +235,30 @@
 
         }
     });
+	
+	function handleCallRequest(model) {
+		if (serverConnection) {	
+			terminateCall(model);
+		} else {	
+			makeCall(model);
+		}			
+	}
+	
+	function terminateCall(model) {
+		const target = model.get('jid');
+		const myself = Strophe.getBareJidFromJid(_converse.connection.jid);					
+		console.debug("terminateCall", target, myself);		
+		_converse.connection.rayo.hangup(serverConnection.callHeaders);				
+	}
 
+	function makeCall(model) {
+		const target = model.get('jid');
+		const myself = Strophe.getBareJidFromJid(_converse.connection.jid);					
+		console.debug("makeCall", target, myself);	
+
+		_converse.connection.rayo.dial('xmpp:' + target, 'xmpp:' + myself);	
+		showStatus({caller_id: target}, "call ringing");			
+	}
 
 	function disconnectMedia() {			
 		closeUpMedia();						
