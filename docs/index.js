@@ -851,12 +851,26 @@ function setupPadeRoot() {
 				console.error('waiting for VCardsInitialized error', err);
 			});		
 
-			_converse.api.waitUntil('bookmarksInitialized').then((initPade) => {
+			_converse.api.waitUntil('bookmarksInitialized').then(() => {
+					
+			}).catch(function (err) {
+				console.error('waiting for bookmarksInitialized error', err);
+			});
+			
+			_converse.api.waitUntil('controlBoxInitialized').then(() =>  {					
+				console.debug("controlBoxInitialized");		
+
+			}).catch(function (err) {
+				console.error('waiting for controlBoxInitialized error', err);
+			});		
+					
+			_converse.api.listen.on('connected', function() {				
 				const myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
+				console.debug("bookmarksInitialized", myNick);					
 				
 				var bookmarkRoom = function bookmarkRoom(json)
 				{
-					//console.debug("bookmarkRoom", json);					
+					console.debug("bookmarkRoom", json);					
 					
 					let bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
 
@@ -873,8 +887,7 @@ function setupPadeRoot() {
 					_converse.bookmarks.markRoomAsBookmarked(bookmark);
 				}
 
-				if (getSetting("enableBookmarks", true))
-				{
+				if (getSetting("enableBookmarks", true)) {
 					const stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });					
 					_converse.connection.sendIQ(stanza, function(iq) {
 
@@ -896,33 +909,17 @@ function setupPadeRoot() {
 						console.error("bookmarks error", error);
 					});
 				}
-			}).catch(function (err) {
-				console.error('waiting for bookmarksInitialized error', err);
-			});
-			
-			_converse.api.waitUntil('controlBoxInitialized').then(() => {
+				
+				if (!getSetting("disablePadeStyling", false)) {						
+					setupMUCAvatars();
+					addControlFeatures();	
 
-				_converse.api.waitUntil('bookmarksInitialized').then(() => {
-
-					if (!getSetting("disablePadeStyling", false)) {						
-						setupMUCAvatars();
-						addControlFeatures();	
-
-						if (getSetting("converseSimpleView", false))
-						{
-							handleActiveConversations();
-						}	
-					}						
-
-				}).catch(function (err) {
-					console.error('waiting for controlBoxInitialized error', err);
-				});			
-
-			}).catch(function (err) {
-				console.error('waiting for controlBoxInitialized error', err);
-			});		
-					
-			_converse.api.listen.on('connected', function() {
+					if (getSetting("converseSimpleView", false))
+					{
+						handleActiveConversations();
+					}	
+				}				
+				
 				if (!getSetting("disablePadeStyling", false)) {				
 					setupTimer();
 					addSelfBot();
@@ -1252,7 +1249,7 @@ function renderReactions() {
 
 function setupMUCAvatars() {
 	let elements = document.querySelectorAll('.list-item.controlbox-padded');	
-	//console.debug("setupMUCAvatars", elements);	
+	console.debug("setupMUCAvatars", elements);	
 		
 	for (let i=0; i < elements.length; i++)
 	{
@@ -1289,12 +1286,12 @@ function setupMUCAvatars() {
 
 function addControlFeatures() {
 	const section = document.body.querySelector('.controlbox-section.profile.d-flex');
+	console.debug("addControlFeatures", section);	
 	if (!section) return;
-
-	//console.debug("addControlFeatures", section);
 	
 	if (!section.querySelector('.pade-active-conversations')) {		
-		const viewButton = newElement('a', null, '<a class="controlbox-heading__btn show-active-conversations fa fa-list-ul align-self-center" title="Change view"></a>', 'pade-active-conversations');
+		const viewButton = newElement('a', null, '<converse-icon class="fa fa-list-ul right" size="1em"></converse-icon>', 'pade-active-conversations', 'controlbox-heading__btn');		
+		viewButton.title = "Change view";
 		section.appendChild(viewButton);
 
 		viewButton.addEventListener('click', function(evt)
@@ -1306,7 +1303,8 @@ function addControlFeatures() {
 	}
 	
 	if (!section.querySelector('.pade-meet-now')) {	
-		const ofmeetButton = newElement('a', null, '<a class="controlbox-heading__btn open-ofmeet fas fa-video align-self-center" title="Meet Now!!"></a>', 'pade-meet-now');
+		const ofmeetButton = newElement('a', null, '<converse-icon class="fa fa-phone right" size="1em"></converse-icon>', 'pade-meet-now', 'controlbox-heading__btn');
+		ofmeetButton.title = "Meet Now!!";
 		section.appendChild(ofmeetButton);
 
 		ofmeetButton.addEventListener('click', function(evt)
@@ -1319,7 +1317,8 @@ function addControlFeatures() {
 
 
 	if (!section.querySelector('.pade-settings')) {
-		const prefButton = newElement('a', null, '<a class="controlbox-heading__btn show-preferences fas fa-cog align-self-center" title="Preferences/Settings"></a>', 'pade-settings');
+		const prefButton = newElement('a', null, '<converse-icon class="fas fa-cog right" size="1em"></converse-icon>', 'pade-settings', 'controlbox-heading__btn');
+		prefButton.title = "Preferences/Settings";
 		section.appendChild(prefButton);
 
 		prefButton.addEventListener('click', function(evt)
@@ -1825,11 +1824,15 @@ function getPassword(password, localStorage) {
     return password;
 }
 
-function newElement(el, id, html, className) {
+function newElement(el, id, html, class1, class2, class3, class4, class5) {
 	const ele = document.createElement(el);
 	if (id) ele.id = id;
 	if (html) ele.innerHTML = html;
-	if (className) ele.classList.add(className);
+	if (class1) ele.classList.add(class1);
+	if (class2) ele.classList.add(class2);
+	if (class3) ele.classList.add(class3);
+	if (class4) ele.classList.add(class4);
+	if (class5) ele.classList.add(class5);	
 	document.body.appendChild(ele);
 	return ele;
 }

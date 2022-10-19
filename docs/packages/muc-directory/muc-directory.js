@@ -175,14 +175,15 @@
 	}
 	
 	function extendUI() {
-		const section = document.body.querySelector('.controlbox-heading--groupchats');	
+		const section = document.body.querySelector('converse-rooms-list .d-flex.controlbox-padded');	
 
 		if (section)
 		{
 			if (!section.parentNode.querySelector('.pade-muc-directory')) {	
-				const mucButton = newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>', 'pade-muc-directory');
-				section.parentNode.appendChild(mucButton);
-
+				const mucButton = newElement('a', null, '<converse-icon class="fa fa-eye right" size="1em"></converse-icon>', 'controlbox-heading__btn', 'pade-muc-directory');
+				mucButton.title = "Find Group Chat";
+				section.appendChild(mucButton);			
+			
 				mucButton.addEventListener('click', function(evt)
 				{
 					evt.stopPropagation();
@@ -270,16 +271,6 @@
     function getValue(value)
     {
         return value && value.innerHTML != "" ? value.innerHTML : '&nbsp;';
-    }
-
-    function newElement (el, id, html, className)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        if (className) ele.classList.add(className);
-        document.body.appendChild(ele);
-        return ele;
     }
 
     function getRandomColor(nickname)
