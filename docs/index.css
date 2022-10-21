@@ -4,6 +4,10 @@
     display: none;
 }
 
+.conversejs #controlbox .controlbox-section .controlbox-heading__btn {
+    padding: 0 0 0 0.5em;
+}
+
 .conversejs .message.chat-msg .chat-msg__receipt {
     float: right;	
     font-size: 8px; 
