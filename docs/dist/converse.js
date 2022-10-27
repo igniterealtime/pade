@@ -30703,6 +30703,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getLoginCredentialsFromBrowser": () => (/* binding */ getLoginCredentialsFromBrowser),
 /* harmony export */   "getUniqueId": () => (/* binding */ getUniqueId),
 /* harmony export */   "isEmptyMessage": () => (/* binding */ isEmptyMessage),
+/* harmony export */   "isError": () => (/* binding */ isError),
 /* harmony export */   "isUniView": () => (/* binding */ isUniView),
 /* harmony export */   "prefixMentions": () => (/* binding */ prefixMentions),
 /* harmony export */   "replacePromise": () => (/* binding */ replacePromise),
@@ -30745,6 +30746,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+function isError(obj) {
+  return Object.prototype.toString.call(obj) === "[object Error]";
+}
 function isEmptyMessage(attrs) {
   if (attrs instanceof _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_4__.Model) {
     attrs = attrs.attributes;
@@ -42536,8 +42540,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "restoreOMEMOSession": () => (/* binding */ restoreOMEMOSession),
 /* harmony export */   "setEncryptedFileURL": () => (/* binding */ setEncryptedFileURL)
 /* harmony export */ });
-/* harmony import */ var lodash_es_concat__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lodash-es/concat */ "./node_modules/lodash-es/concat.js");
-/* harmony import */ var lodash_es_difference__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! lodash-es/difference */ "./node_modules/lodash-es/difference.js");
+/* harmony import */ var lodash_es_concat__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lodash-es/concat */ "./node_modules/lodash-es/concat.js");
+/* harmony import */ var lodash_es_difference__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lodash-es/difference */ "./node_modules/lodash-es/difference.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var templates_audio_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/audio.js */ "./src/templates/audio.js");
 /* harmony import */ var templates_file_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! templates/file.js */ "./src/templates/file.js");
@@ -42549,10 +42553,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/utils/url.js */ "./src/headless/utils/url.js");
-/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
-/* harmony import */ var _converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @converse/headless/utils/arraybuffer.js */ "./src/headless/utils/arraybuffer.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/utils/url.js */ "./src/headless/utils/url.js");
+/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
+/* harmony import */ var _converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @converse/headless/utils/arraybuffer.js */ "./src/headless/utils/arraybuffer.js");
 /* global libsignal */
+
 
 
 
@@ -42627,7 +42633,7 @@ async function encryptMessage(plaintext) {
     'iv': iv,
     'tagLength': _consts_js__WEBPACK_IMPORTED_MODULE_5__.TAG_LENGTH
   };
-  const encrypted = await crypto.subtle.encrypt(algo, key, (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.stringToArrayBuffer)(plaintext));
+  const encrypted = await crypto.subtle.encrypt(algo, key, (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.stringToArrayBuffer)(plaintext));
   const length = encrypted.byteLength - (128 + 7 >> 3);
   const ciphertext = encrypted.slice(0, length);
   const tag = encrypted.slice(length);
@@ -42635,20 +42641,20 @@ async function encryptMessage(plaintext) {
   return {
     'key': exported_key,
     'tag': tag,
-    'key_and_tag': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.appendArrayBuffer)(exported_key, tag),
-    'payload': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToBase64)(ciphertext),
-    'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToBase64)(iv)
+    'key_and_tag': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.appendArrayBuffer)(exported_key, tag),
+    'payload': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.arrayBufferToBase64)(ciphertext),
+    'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.arrayBufferToBase64)(iv)
   };
 }
 async function decryptMessage(obj) {
   const key_obj = await crypto.subtle.importKey('raw', obj.key, _consts_js__WEBPACK_IMPORTED_MODULE_5__.KEY_ALGO, true, ['encrypt', 'decrypt']);
-  const cipher = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.appendArrayBuffer)((0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(obj.payload), obj.tag);
+  const cipher = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.appendArrayBuffer)((0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(obj.payload), obj.tag);
   const algo = {
     'name': 'AES-GCM',
-    'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(obj.iv),
+    'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(obj.iv),
     'tagLength': _consts_js__WEBPACK_IMPORTED_MODULE_5__.TAG_LENGTH
   };
-  return (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToString)(await crypto.subtle.decrypt(algo, key_obj, cipher));
+  return (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.arrayBufferToString)(await crypto.subtle.decrypt(algo, key_obj, cipher));
 }
 async function encryptFile(file) {
   const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -42665,7 +42671,7 @@ async function encryptFile(file) {
     type: file.type,
     lastModified: file.lastModified
   });
-  encrypted_file.xep454_ivkey = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToHex)(iv) + (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToHex)(exported_key);
+  encrypted_file.xep454_ivkey = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.arrayBufferToHex)(iv) + (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.arrayBufferToHex)(exported_key);
   return encrypted_file;
 }
 function setEncryptedFileURL(message, attrs) {
@@ -42678,10 +42684,10 @@ function setEncryptedFileURL(message, attrs) {
   });
 }
 async function decryptFile(iv, key, cipher) {
-  const key_obj = await crypto.subtle.importKey('raw', (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.hexToArrayBuffer)(key), 'AES-GCM', false, ['decrypt']);
+  const key_obj = await crypto.subtle.importKey('raw', (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.hexToArrayBuffer)(key), 'AES-GCM', false, ['decrypt']);
   const algo = {
     'name': 'AES-GCM',
-    'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.hexToArrayBuffer)(iv)
+    'iv': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.hexToArrayBuffer)(iv)
   };
   return crypto.subtle.decrypt(algo, key_obj, cipher);
 }
@@ -42699,17 +42705,16 @@ async function downloadFile(url) {
   }
 }
 async function getAndDecryptFile(uri) {
-  var _uri$filename;
-  const hash = uri.hash().slice(1);
-  const protocol = window.location.hostname === 'localhost' ? 'http' : 'https';
+  const protocol = window.location.hostname === 'localhost' && uri.domain() === 'localhost' ? 'http' : 'https';
   const http_url = uri.toString().replace(/^aesgcm/, protocol);
   const cipher = await downloadFile(http_url);
   if (cipher === null) {
-    _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not decrypt file ${uri.toString()} since it could not be downloaded`);
-    return null;
+    _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not decrypt a received encrypted file ${uri.toString()} since it could not be downloaded`);
+    return new Error((0,i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Error: could not decrypt a received encrypted file, because it could not be downloaded'));
   }
-  const iv = hash.slice(0, 24);
-  const key = hash.slice(24);
+  const hash = uri.hash().slice(1);
+  const key = hash.substring(hash.length - 64);
+  const iv = hash.replace(key, '');
   let content;
   try {
     content = await decryptFile(iv, key, cipher);
@@ -42718,7 +42723,7 @@ async function getAndDecryptFile(uri) {
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
     return null;
   }
-  const [filename, extension] = (_uri$filename = uri.filename()) === null || _uri$filename === void 0 ? void 0 : _uri$filename.split('.');
+  const [filename, extension] = uri.filename().split('.');
   const mimetype = utils_file_js__WEBPACK_IMPORTED_MODULE_6__.MIMETYPES_MAP[extension];
   try {
     const file = new File([content], filename, {
@@ -42732,19 +42737,19 @@ async function getAndDecryptFile(uri) {
   }
 }
 function getTemplateForObjectURL(uri, obj_url, richtext) {
-  const file_url = uri.toString();
-  if (obj_url === null) {
-    return file_url;
+  if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_11__.isError)(obj_url)) {
+    return lit__WEBPACK_IMPORTED_MODULE_9__.html`<p class="error">${obj_url.message}</p>`;
   }
-  if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_11__.isImageURL)(file_url)) {
+  const file_url = uri.toString();
+  if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__.isImageURL)(file_url)) {
     return (0,templates_image_js__WEBPACK_IMPORTED_MODULE_3__["default"])({
       'src': obj_url,
       'onClick': richtext.onImgClick,
       'onLoad': richtext.onImgLoad
     });
-  } else if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_11__.isAudioURL)(file_url)) {
+  } else if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__.isAudioURL)(file_url)) {
     return (0,templates_audio_js__WEBPACK_IMPORTED_MODULE_1__["default"])(obj_url);
-  } else if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_11__.isVideoURL)(file_url)) {
+  } else if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__.isVideoURL)(file_url)) {
     return (0,templates_video_js__WEBPACK_IMPORTED_MODULE_4__["default"])(obj_url);
   } else {
     return (0,templates_file_js__WEBPACK_IMPORTED_MODULE_2__["default"])(obj_url, uri.filename());
@@ -42769,9 +42774,9 @@ function addEncryptedFiles(text, offset, richtext) {
     return;
   }
   objs.forEach(o => {
-    const uri = (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_11__.getURI)(text.slice(o.start, o.end));
+    const uri = (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__.getURI)(text.slice(o.start, o.end));
     const promise = getAndDecryptFile(uri).then(obj_url => getTemplateForObjectURL(uri, obj_url, richtext));
-    const template = lit__WEBPACK_IMPORTED_MODULE_9__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_12__.until)(promise, '')}`;
+    const template = lit__WEBPACK_IMPORTED_MODULE_9__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_13__.until)(promise, '')}`;
     richtext.addTemplateResult(o.start + offset, o.end + offset, template);
   });
 }
@@ -42911,7 +42916,7 @@ function getDecryptionErrorAttributes(e) {
 async function decryptPrekeyWhisperMessage(attrs) {
   const from_jid = getJIDForDecryption(attrs);
   const session_cipher = getSessionCipher(from_jid, parseInt(attrs.encrypted.device_id, 10));
-  const key = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(attrs.encrypted.key);
+  const key = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(attrs.encrypted.key);
   let key_and_tag;
   try {
     key_and_tag = await session_cipher.decryptPreKeyWhisperMessage(key, 'binary');
@@ -42962,7 +42967,7 @@ async function decryptPrekeyWhisperMessage(attrs) {
 async function decryptWhisperMessage(attrs) {
   const from_jid = getJIDForDecryption(attrs);
   const session_cipher = getSessionCipher(from_jid, parseInt(attrs.encrypted.device_id, 10));
-  const key = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(attrs.encrypted.key);
+  const key = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(attrs.encrypted.key);
   try {
     const key_and_tag = await session_cipher.decryptWhisperMessage(key, 'binary');
     const plaintext = await handleDecryptedWhisperMessage(attrs, key_and_tag);
@@ -43024,7 +43029,7 @@ async function generateFingerprint(device) {
     return;
   }
   const bundle = await device.getBundle();
-  bundle['fingerprint'] = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.arrayBufferToHex)((0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(bundle['identity_key']));
+  bundle['fingerprint'] = (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.arrayBufferToHex)((0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(bundle['identity_key']));
   device.save('bundle', bundle);
   device.trigger('change:bundle'); // Doesn't get triggered automatically due to pass-by-reference
 }
@@ -43060,17 +43065,17 @@ async function buildSession(device) {
   const bundle = await device.getBundle();
   return sessionBuilder.processPreKey({
     'registrationId': parseInt(device.get('id'), 10),
-    'identityKey': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(bundle.identity_key),
+    'identityKey': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(bundle.identity_key),
     'signedPreKey': {
       'keyId': bundle.signed_prekey.id,
       // <Number>
-      'publicKey': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(bundle.signed_prekey.public_key),
-      'signature': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(bundle.signed_prekey.signature)
+      'publicKey': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(bundle.signed_prekey.public_key),
+      'signature': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(bundle.signed_prekey.signature)
     },
     'preKey': {
       'keyId': prekey.id,
       // <Number>
-      'publicKey': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_13__.base64ToArrayBuffer)(prekey.key)
+      'publicKey': (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_14__.base64ToArrayBuffer)(prekey.key)
     }
   });
 }
@@ -43121,7 +43126,7 @@ async function updateDevicesFromStanza(stanza) {
   const jid = stanza.getAttribute('from');
   const devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo.devicelists.get(jid, true);
   const devices = devicelist.devices;
-  const removed_ids = (0,lodash_es_difference__WEBPACK_IMPORTED_MODULE_14__["default"])(devices.pluck('id'), device_ids);
+  const removed_ids = (0,lodash_es_difference__WEBPACK_IMPORTED_MODULE_15__["default"])(devices.pluck('id'), device_ids);
   removed_ids.forEach(id => {
     if (jid === _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.bare_jid && id === _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.omemo_store.get('device_id')) {
       return; // We don't set the current device as inactive
@@ -43301,7 +43306,7 @@ async function getBundlesAndBuildSessions(chatbox) {
   let devices;
   if (chatbox.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.CHATROOMS_TYPE) {
     const collections = await Promise.all(chatbox.occupants.map(o => getDevicesForContact(o.get('jid'))));
-    devices = collections.reduce((a, b) => (0,lodash_es_concat__WEBPACK_IMPORTED_MODULE_15__["default"])(a, b.models), []);
+    devices = collections.reduce((a, b) => (0,lodash_es_concat__WEBPACK_IMPORTED_MODULE_16__["default"])(a, b.models), []);
   } else if (chatbox.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.PRIVATE_CHAT_TYPE) {
     const their_devices = await getDevicesForContact(chatbox.get('jid'));
     if (their_devices.length === 0) {
@@ -45056,7 +45061,7 @@ const bookmark = o => {
                @click=${o.removeBookmark}
                title="${o.bookmarked ? i18n_remove_bookmark : i18n_add_bookmark}">
 
-                <converse-icon class="fa fa-bookmark" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+                <converse-icon class="fa fa-bookmark" size="1.2em" color="${o.currently_open(o.room) ? 'var(--inverse-link-color)' : ''}"></converse-icon>
             </a>`;
   } else {
     return lit__WEBPACK_IMPORTED_MODULE_4__.html`
@@ -45066,7 +45071,7 @@ const bookmark = o => {
                @click=${o.addBookmark}
                title="${o.bookmarked ? i18n_remove_bookmark : i18n_add_bookmark}">
 
-                <converse-icon class="fa fa-bookmark" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+                <converse-icon class="fa fa-bookmark" size="1.2em" color="${o.currently_open(o.room) ? 'var(--inverse-link-color)' : ''}"></converse-icon>
             </a>`;
   }
 };
@@ -45093,7 +45098,7 @@ const room_item = o => {
                 title="${(0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Show more information on this groupchat')}"
                 @click=${o.showRoomDetailsModal}>
 
-                <converse-icon class="fa fa-info-circle" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+                <converse-icon class="fa fa-info-circle" size="1.2em" color="${o.currently_open(o.room) ? 'var(--inverse-link-color)' : ''}""></converse-icon>
             </a>
 
             <a class="list-item-action close-room"
@@ -45102,7 +45107,7 @@ const room_item = o => {
                 title="${i18n_leave_room}"
                 @click=${o.closeRoom}>
 
-                <converse-icon class="fa fa-sign-out-alt" size="1.2em" color="var(--inverse-link-color)"></converse-icon>
+                <converse-icon class="fa fa-sign-out-alt" size="1.2em" color="${o.currently_open(o.room) ? 'var(--inverse-link-color)' : ''}"></converse-icon>
             </a>
         </div>`;
 };
@@ -50398,7 +50403,7 @@ class ConverseGIFElement extends shared_components_element_js__WEBPACK_IMPORTED_
     ev.preventDefault();
     if (this.supergif.playing) {
       this.supergif.pause();
-    } else {
+    } else if (this.supergif.frames.length > 0) {
       // When the user manually clicks play, we turn on looping
       this.supergif.options.loop = true;
       this.supergif.play();
@@ -51424,6 +51429,7 @@ class ConverseGif {
     this.load_error = null;
     this.playing = this.options.autoplay;
     this.transparency = null;
+    this.frame_delay = null;
     this.frame_idx = 0;
     this.iteration_count = 0;
     this.start = null;
@@ -51457,6 +51463,9 @@ class ConverseGif {
    * @returns {number}
    */
   getNextFrameNo() {
+    if (this.frames.length === 0) {
+      return 0;
+    }
     return (this.frame_idx + 1 + this.frames.length) % this.frames.length;
   }
 
@@ -51614,8 +51623,9 @@ class ConverseGif {
    * Handler for GIF Graphic Control Extension (GCE) data
    */
   handleGCE(gce) {
-    this.pushFrame(gce.delayTime);
+    this.pushFrame();
     this.clear();
+    this.frame_delay = gce.delayTime;
     this.transparency = gce.transparencyGiven ? gce.transparencyIndex : null;
     this.disposal_method = gce.disposalMethod;
   }
@@ -51624,19 +51634,16 @@ class ConverseGif {
    * Handler for when the end of the GIF's file has been reached
    */
   handleEOF(stream) {
+    this.pushFrame();
     this.doDecodeProgress(stream, false);
-    if (!(this.options.width && this.options.height)) {
-      this.canvas.width = this.hdr.width * this.getCanvasScale();
-      this.canvas.height = this.hdr.height * this.getCanvasScale();
-    }
     this.initPlayer();
     !this.options.autoplay && this.drawPlayIcon();
   }
-  pushFrame(delay) {
+  pushFrame() {
     if (!this.frame) return;
     this.frames.push({
       data: this.frame.getImageData(0, 0, this.hdr.width, this.hdr.height),
-      delay
+      delay: this.frame_delay
     });
     this.frame_offsets.push({
       x: 0,
@@ -51710,7 +51717,7 @@ class ConverseGif {
       this.ctx_scaled = true;
     }
     if (!this.last_img) {
-      // This is the first receivd image, so we draw it
+      // This is the first received image, so we draw it
       this.ctx.drawImage(this.offscreenCanvas, 0, 0);
     }
     this.last_img = img;
@@ -51722,11 +51729,9 @@ class ConverseGif {
    */
   putFrame(i) {
     let show_pause_on_hover = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    if (!this.frames.length) return;
     i = parseInt(i, 10);
-    if (i > this.frames.length - 1) {
-      i = 0;
-    }
-    if (i < 0) {
+    if (i > this.frames.length - 1 || i < 0) {
       i = 0;
     }
     const offset = this.frame_offsets[i];
