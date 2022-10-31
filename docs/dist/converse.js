@@ -7466,24 +7466,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$iq": () => (/* binding */ $iq),
 /* harmony export */   "$msg": () => (/* binding */ $msg),
 /* harmony export */   "$pres": () => (/* binding */ $pres),
-/* harmony export */   "MD5": () => (/* reexport safe */ _md5__WEBPACK_IMPORTED_MODULE_1__["default"]),
-/* harmony export */   "SHA1": () => (/* reexport safe */ _sha1__WEBPACK_IMPORTED_MODULE_9__["default"]),
 /* harmony export */   "Strophe": () => (/* binding */ Strophe),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./shims */ "./src/strophe-shims.js");
-/* harmony import */ var _md5__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./md5 */ "./node_modules/strophe.js/src/md5.js");
-/* harmony import */ var _sasl_anon_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sasl-anon.js */ "./node_modules/strophe.js/src/sasl-anon.js");
-/* harmony import */ var _sasl_external_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sasl-external.js */ "./node_modules/strophe.js/src/sasl-external.js");
-/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
-/* harmony import */ var _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sasl-oauthbearer.js */ "./node_modules/strophe.js/src/sasl-oauthbearer.js");
-/* harmony import */ var _sasl_plain_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sasl-plain.js */ "./node_modules/strophe.js/src/sasl-plain.js");
-/* harmony import */ var _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sasl-sha1.js */ "./node_modules/strophe.js/src/sasl-sha1.js");
-/* harmony import */ var _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./sasl-xoauth2.js */ "./node_modules/strophe.js/src/sasl-xoauth2.js");
-/* harmony import */ var _sha1__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./sha1 */ "./node_modules/strophe.js/src/sha1.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
-/* harmony import */ var abab__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! abab */ "./node_modules/abab/index.js");
-/* harmony import */ var abab__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(abab__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _sasl_anon_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sasl-anon.js */ "./node_modules/strophe.js/src/sasl-anon.js");
+/* harmony import */ var _sasl_external_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sasl-external.js */ "./node_modules/strophe.js/src/sasl-external.js");
+/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
+/* harmony import */ var _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sasl-oauthbearer.js */ "./node_modules/strophe.js/src/sasl-oauthbearer.js");
+/* harmony import */ var _sasl_plain_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sasl-plain.js */ "./node_modules/strophe.js/src/sasl-plain.js");
+/* harmony import */ var _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sasl-sha1.js */ "./node_modules/strophe.js/src/sasl-sha1.js");
+/* harmony import */ var _sasl_sha256_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sasl-sha256.js */ "./node_modules/strophe.js/src/sasl-sha256.js");
+/* harmony import */ var _sasl_sha384_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./sasl-sha384.js */ "./node_modules/strophe.js/src/sasl-sha384.js");
+/* harmony import */ var _sasl_sha512_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./sasl-sha512.js */ "./node_modules/strophe.js/src/sasl-sha512.js");
+/* harmony import */ var _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./sasl-xoauth2.js */ "./node_modules/strophe.js/src/sasl-xoauth2.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
+/* harmony import */ var abab__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! abab */ "./node_modules/abab/index.js");
+/* harmony import */ var abab__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(abab__WEBPACK_IMPORTED_MODULE_12__);
 /*
     This program is distributed under the terms of the MIT license.
     Please see the LICENSE file for details.
@@ -7491,6 +7490,7 @@ __webpack_require__.r(__webpack_exports__);
     Copyright 2006-2018, OGG, LLC
 */
 /*global define, document, sessionStorage, setTimeout, clearTimeout, ActiveXObject, DOMParser, btoa, atob */
+
 
 
 
@@ -7568,7 +7568,7 @@ function $pres(attrs) {
  */
 const Strophe = {
   /** Constant: VERSION */
-  VERSION: "1.5.0",
+  VERSION: "1.6.0",
   /** Constants: XMPP Namespace Constants
    *  Common namespace constants from the XMPP RFCs and XEPs.
    *
@@ -8839,12 +8839,15 @@ Strophe.TimedHandler = class TimedHandler {
  *  If nothing is specified, then the following mechanisms (and their
  *  priorities) are registered:
  *
- *      SCRAM-SHA-1 - 60
- *      PLAIN       - 50
- *      OAUTHBEARER - 40
- *      X-OAUTH2    - 30
- *      ANONYMOUS   - 20
- *      EXTERNAL    - 10
+ *      SCRAM-SHA-512 - 72
+ *      SCRAM-SHA-384 - 71
+ *      SCRAM-SHA-256 - 70
+ *      SCRAM-SHA-1   - 60
+ *      PLAIN         - 50
+ *      OAUTHBEARER   - 40
+ *      X-OAUTH2      - 30
+ *      ANONYMOUS     - 20
+ *      EXTERNAL      - 10
  *
  *  explicitResourceBinding:
  *
@@ -8983,7 +8986,7 @@ Strophe.Connection = class Connection {
 
     // Call onIdle callback every 1/10th of a second
     this._idleTimeout = setTimeout(() => this._onIdle(), 100);
-    _utils__WEBPACK_IMPORTED_MODULE_10__["default"].addCookies(this.options.cookies);
+    _utils__WEBPACK_IMPORTED_MODULE_11__["default"].addCookies(this.options.cookies);
     this.registerSASLMechanisms(this.options.mechanisms);
 
     // A client must always respond to incoming IQ "set" and "get" stanzas.
@@ -9158,7 +9161,16 @@ Strophe.Connection = class Connection {
    *      or a full JID.  If a node is not supplied, SASL OAUTHBEARER or
    *      SASL ANONYMOUS authentication will be attempted (OAUTHBEARER will
    *      process the provided password value as an access token).
-   *    (String) pass - The user's password.
+   *    (String or Object) pass - The user's password, or an object containing
+   *      the users SCRAM client and server keys, in a fashion described as follows:
+   *
+   *      { name: String, representing the hash used (eg. SHA-1),
+   *        salt: String, base64 encoded salt used to derive the client key,
+   *        iter: Int,    the iteration count used to derive the client key,
+   *        ck:   String, the base64 encoding of the SCRAM client key
+   *        sk:   String, the base64 encoding of the SCRAM server key
+   *      }
+   *
    *    (Function) callback - The connect callback function.
    *    (Integer) wait - The optional HTTPBIND wait value.  This is the
    *      time the server will wait before returning an empty result for
@@ -9195,8 +9207,16 @@ Strophe.Connection = class Connection {
 
     /** Variable: pass
      *  Authentication identity (User password).
+     *
      */
     this.pass = pass;
+
+    /** Variable: scram_keys
+     *  The SASL SCRAM client and server keys. This variable will be populated with a non-null
+     *  object of the above described form after a successful SCRAM connection
+     *
+     */
+    this.scram_keys = null;
     this.connect_callback = callback;
     this.disconnecting = false;
     this.connected = false;
@@ -9732,7 +9752,7 @@ Strophe.Connection = class Connection {
    */
   registerSASLMechanisms(mechanisms) {
     this.mechanisms = {};
-    mechanisms = mechanisms || [Strophe.SASLAnonymous, Strophe.SASLExternal, Strophe.SASLOAuthBearer, Strophe.SASLXOAuth2, Strophe.SASLPlain, Strophe.SASLSHA1];
+    mechanisms = mechanisms || [Strophe.SASLAnonymous, Strophe.SASLExternal, Strophe.SASLOAuthBearer, Strophe.SASLXOAuth2, Strophe.SASLPlain, Strophe.SASLSHA1, Strophe.SASLSHA256, Strophe.SASLSHA384, Strophe.SASLSHA512];
     mechanisms.forEach(m => this.registerSASLMechanism(m));
   }
 
@@ -10115,7 +10135,7 @@ Strophe.Connection = class Connection {
       });
       if (this._sasl_mechanism.isClientFirst) {
         const response = this._sasl_mechanism.clientChallenge(this);
-        request_auth_exchange.t((0,abab__WEBPACK_IMPORTED_MODULE_11__.btoa)(response));
+        request_auth_exchange.t((0,abab__WEBPACK_IMPORTED_MODULE_12__.btoa)(response));
       }
       this.send(request_auth_exchange.tree());
       mechanism_found = true;
@@ -10128,14 +10148,14 @@ Strophe.Connection = class Connection {
    *  _Private_ handler for the SASL challenge
    *
    */
-  _sasl_challenge_cb(elem) {
-    const challenge = (0,abab__WEBPACK_IMPORTED_MODULE_11__.atob)(Strophe.getText(elem));
-    const response = this._sasl_mechanism.onChallenge(this, challenge);
+  async _sasl_challenge_cb(elem) {
+    const challenge = (0,abab__WEBPACK_IMPORTED_MODULE_12__.atob)(Strophe.getText(elem));
+    const response = await this._sasl_mechanism.onChallenge(this, challenge);
     const stanza = $build('response', {
       'xmlns': Strophe.NS.SASL
     });
     if (response !== "") {
-      stanza.t((0,abab__WEBPACK_IMPORTED_MODULE_11__.btoa)(response));
+      stanza.t((0,abab__WEBPACK_IMPORTED_MODULE_12__.btoa)(response));
     }
     this.send(stanza.tree());
     return true;
@@ -10212,7 +10232,7 @@ Strophe.Connection = class Connection {
   _sasl_success_cb(elem) {
     if (this._sasl_data["server-signature"]) {
       let serverSignature;
-      const success = (0,abab__WEBPACK_IMPORTED_MODULE_11__.atob)(Strophe.getText(elem));
+      const success = (0,abab__WEBPACK_IMPORTED_MODULE_12__.atob)(Strophe.getText(elem));
       const attribMatch = /([a-z]+)=([^,]+)(,|$)/;
       const matches = success.match(attribMatch);
       if (matches[1] === "v") {
@@ -10231,6 +10251,9 @@ Strophe.Connection = class Connection {
       }
     }
     Strophe.info("SASL authentication succeeded.");
+    if (this._sasl_data.keys) {
+      this.scram_keys = this._sasl_data.keys;
+    }
     if (this._sasl_mechanism) {
       this._sasl_mechanism.onSuccess();
     }
@@ -10569,7 +10592,7 @@ Strophe.Connection = class Connection {
     }
   }
 };
-Strophe.SASLMechanism = _sasl_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+Strophe.SASLMechanism = _sasl_js__WEBPACK_IMPORTED_MODULE_3__["default"];
 
 /** Constants: SASL mechanisms
  *  Available authentication mechanisms
@@ -10577,232 +10600,29 @@ Strophe.SASLMechanism = _sasl_js__WEBPACK_IMPORTED_MODULE_4__["default"];
  *  Strophe.SASLAnonymous   - SASL ANONYMOUS authentication.
  *  Strophe.SASLPlain       - SASL PLAIN authentication.
  *  Strophe.SASLSHA1        - SASL SCRAM-SHA-1 authentication
+ *  Strophe.SASLSHA256      - SASL SCRAM-SHA-256 authentication
+ *  Strophe.SASLSHA384      - SASL SCRAM-SHA-384 authentication
+ *  Strophe.SASLSHA512      - SASL SCRAM-SHA-512 authentication
  *  Strophe.SASLOAuthBearer - SASL OAuth Bearer authentication
  *  Strophe.SASLExternal    - SASL EXTERNAL authentication
  *  Strophe.SASLXOAuth2     - SASL X-OAuth2 authentication
  */
-Strophe.SASLAnonymous = _sasl_anon_js__WEBPACK_IMPORTED_MODULE_2__["default"];
-Strophe.SASLPlain = _sasl_plain_js__WEBPACK_IMPORTED_MODULE_6__["default"];
-Strophe.SASLSHA1 = _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_7__["default"];
-Strophe.SASLOAuthBearer = _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_5__["default"];
-Strophe.SASLExternal = _sasl_external_js__WEBPACK_IMPORTED_MODULE_3__["default"];
-Strophe.SASLXOAuth2 = _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_8__["default"];
-
+Strophe.SASLAnonymous = _sasl_anon_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+Strophe.SASLPlain = _sasl_plain_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+Strophe.SASLSHA1 = _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_6__["default"];
+Strophe.SASLSHA256 = _sasl_sha256_js__WEBPACK_IMPORTED_MODULE_7__["default"];
+Strophe.SASLSHA384 = _sasl_sha384_js__WEBPACK_IMPORTED_MODULE_8__["default"];
+Strophe.SASLSHA512 = _sasl_sha512_js__WEBPACK_IMPORTED_MODULE_9__["default"];
+Strophe.SASLOAuthBearer = _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+Strophe.SASLExternal = _sasl_external_js__WEBPACK_IMPORTED_MODULE_2__["default"];
+Strophe.SASLXOAuth2 = _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_10__["default"];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   'Strophe': Strophe,
   '$build': $build,
   '$iq': $iq,
   '$msg': $msg,
-  '$pres': $pres,
-  'SHA1': _sha1__WEBPACK_IMPORTED_MODULE_9__["default"],
-  'MD5': _md5__WEBPACK_IMPORTED_MODULE_1__["default"],
-  'b64_hmac_sha1': _sha1__WEBPACK_IMPORTED_MODULE_9__["default"].b64_hmac_sha1,
-  'b64_sha1': _sha1__WEBPACK_IMPORTED_MODULE_9__["default"].b64_sha1,
-  'str_hmac_sha1': _sha1__WEBPACK_IMPORTED_MODULE_9__["default"].str_hmac_sha1,
-  'str_sha1': _sha1__WEBPACK_IMPORTED_MODULE_9__["default"].str_sha1
+  '$pres': $pres
 });
-
-/***/ }),
-
-/***/ "./node_modules/strophe.js/src/md5.js":
-/*!********************************************!*\
-  !*** ./node_modules/strophe.js/src/md5.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MD5)
-/* harmony export */ });
-/*
- * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
- * Digest Algorithm, as defined in RFC 1321.
- * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- * Distributed under the BSD License
- * See http://pajhome.org.uk/crypt/md5 for more info.
- */
-/*
- * Everything that isn't used by Strophe has been stripped here!
- */
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
-const safe_add = function (x, y) {
-  const lsw = (x & 0xFFFF) + (y & 0xFFFF);
-  const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return msw << 16 | lsw & 0xFFFF;
-};
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-const bit_rol = function (num, cnt) {
-  return num << cnt | num >>> 32 - cnt;
-};
-
-/*
- * Convert a string to an array of little-endian words
- */
-const str2binl = function (str) {
-  if (typeof str !== "string") {
-    throw new Error("str2binl was passed a non-string");
-  }
-  const bin = [];
-  for (let i = 0; i < str.length * 8; i += 8) {
-    bin[i >> 5] |= (str.charCodeAt(i / 8) & 255) << i % 32;
-  }
-  return bin;
-};
-
-/*
- * Convert an array of little-endian words to a string
- */
-const binl2str = function (bin) {
-  let str = "";
-  for (let i = 0; i < bin.length * 32; i += 8) {
-    str += String.fromCharCode(bin[i >> 5] >>> i % 32 & 255);
-  }
-  return str;
-};
-
-/*
- * Convert an array of little-endian words to a hex string.
- */
-const binl2hex = function (binarray) {
-  const hex_tab = "0123456789abcdef";
-  let str = "";
-  for (let i = 0; i < binarray.length * 4; i++) {
-    str += hex_tab.charAt(binarray[i >> 2] >> i % 4 * 8 + 4 & 0xF) + hex_tab.charAt(binarray[i >> 2] >> i % 4 * 8 & 0xF);
-  }
-  return str;
-};
-
-/*
- * These functions implement the four basic operations the algorithm uses.
- */
-const md5_cmn = function (q, a, b, x, s, t) {
-  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b);
-};
-const md5_ff = function (a, b, c, d, x, s, t) {
-  return md5_cmn(b & c | ~b & d, a, b, x, s, t);
-};
-const md5_gg = function (a, b, c, d, x, s, t) {
-  return md5_cmn(b & d | c & ~d, a, b, x, s, t);
-};
-const md5_hh = function (a, b, c, d, x, s, t) {
-  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
-};
-const md5_ii = function (a, b, c, d, x, s, t) {
-  return md5_cmn(c ^ (b | ~d), a, b, x, s, t);
-};
-
-/*
- * Calculate the MD5 of an array of little-endian words, and a bit length
- */
-const core_md5 = function (x, len) {
-  /* append padding */
-  x[len >> 5] |= 0x80 << len % 32;
-  x[(len + 64 >>> 9 << 4) + 14] = len;
-  let a = 1732584193;
-  let b = -271733879;
-  let c = -1732584194;
-  let d = 271733878;
-  let olda, oldb, oldc, oldd;
-  for (let i = 0; i < x.length; i += 16) {
-    olda = a;
-    oldb = b;
-    oldc = c;
-    oldd = d;
-    a = md5_ff(a, b, c, d, x[i + 0], 7, -680876936);
-    d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
-    c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
-    b = md5_ff(b, c, d, a, x[i + 3], 22, -1044525330);
-    a = md5_ff(a, b, c, d, x[i + 4], 7, -176418897);
-    d = md5_ff(d, a, b, c, x[i + 5], 12, 1200080426);
-    c = md5_ff(c, d, a, b, x[i + 6], 17, -1473231341);
-    b = md5_ff(b, c, d, a, x[i + 7], 22, -45705983);
-    a = md5_ff(a, b, c, d, x[i + 8], 7, 1770035416);
-    d = md5_ff(d, a, b, c, x[i + 9], 12, -1958414417);
-    c = md5_ff(c, d, a, b, x[i + 10], 17, -42063);
-    b = md5_ff(b, c, d, a, x[i + 11], 22, -1990404162);
-    a = md5_ff(a, b, c, d, x[i + 12], 7, 1804603682);
-    d = md5_ff(d, a, b, c, x[i + 13], 12, -40341101);
-    c = md5_ff(c, d, a, b, x[i + 14], 17, -1502002290);
-    b = md5_ff(b, c, d, a, x[i + 15], 22, 1236535329);
-    a = md5_gg(a, b, c, d, x[i + 1], 5, -165796510);
-    d = md5_gg(d, a, b, c, x[i + 6], 9, -1069501632);
-    c = md5_gg(c, d, a, b, x[i + 11], 14, 643717713);
-    b = md5_gg(b, c, d, a, x[i + 0], 20, -373897302);
-    a = md5_gg(a, b, c, d, x[i + 5], 5, -701558691);
-    d = md5_gg(d, a, b, c, x[i + 10], 9, 38016083);
-    c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
-    b = md5_gg(b, c, d, a, x[i + 4], 20, -405537848);
-    a = md5_gg(a, b, c, d, x[i + 9], 5, 568446438);
-    d = md5_gg(d, a, b, c, x[i + 14], 9, -1019803690);
-    c = md5_gg(c, d, a, b, x[i + 3], 14, -187363961);
-    b = md5_gg(b, c, d, a, x[i + 8], 20, 1163531501);
-    a = md5_gg(a, b, c, d, x[i + 13], 5, -1444681467);
-    d = md5_gg(d, a, b, c, x[i + 2], 9, -51403784);
-    c = md5_gg(c, d, a, b, x[i + 7], 14, 1735328473);
-    b = md5_gg(b, c, d, a, x[i + 12], 20, -1926607734);
-    a = md5_hh(a, b, c, d, x[i + 5], 4, -378558);
-    d = md5_hh(d, a, b, c, x[i + 8], 11, -2022574463);
-    c = md5_hh(c, d, a, b, x[i + 11], 16, 1839030562);
-    b = md5_hh(b, c, d, a, x[i + 14], 23, -35309556);
-    a = md5_hh(a, b, c, d, x[i + 1], 4, -1530992060);
-    d = md5_hh(d, a, b, c, x[i + 4], 11, 1272893353);
-    c = md5_hh(c, d, a, b, x[i + 7], 16, -155497632);
-    b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
-    a = md5_hh(a, b, c, d, x[i + 13], 4, 681279174);
-    d = md5_hh(d, a, b, c, x[i + 0], 11, -358537222);
-    c = md5_hh(c, d, a, b, x[i + 3], 16, -722521979);
-    b = md5_hh(b, c, d, a, x[i + 6], 23, 76029189);
-    a = md5_hh(a, b, c, d, x[i + 9], 4, -640364487);
-    d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
-    c = md5_hh(c, d, a, b, x[i + 15], 16, 530742520);
-    b = md5_hh(b, c, d, a, x[i + 2], 23, -995338651);
-    a = md5_ii(a, b, c, d, x[i + 0], 6, -198630844);
-    d = md5_ii(d, a, b, c, x[i + 7], 10, 1126891415);
-    c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
-    b = md5_ii(b, c, d, a, x[i + 5], 21, -57434055);
-    a = md5_ii(a, b, c, d, x[i + 12], 6, 1700485571);
-    d = md5_ii(d, a, b, c, x[i + 3], 10, -1894986606);
-    c = md5_ii(c, d, a, b, x[i + 10], 15, -1051523);
-    b = md5_ii(b, c, d, a, x[i + 1], 21, -2054922799);
-    a = md5_ii(a, b, c, d, x[i + 8], 6, 1873313359);
-    d = md5_ii(d, a, b, c, x[i + 15], 10, -30611744);
-    c = md5_ii(c, d, a, b, x[i + 6], 15, -1560198380);
-    b = md5_ii(b, c, d, a, x[i + 13], 21, 1309151649);
-    a = md5_ii(a, b, c, d, x[i + 4], 6, -145523070);
-    d = md5_ii(d, a, b, c, x[i + 11], 10, -1120210379);
-    c = md5_ii(c, d, a, b, x[i + 2], 15, 718787259);
-    b = md5_ii(b, c, d, a, x[i + 9], 21, -343485551);
-    a = safe_add(a, olda);
-    b = safe_add(b, oldb);
-    c = safe_add(c, oldc);
-    d = safe_add(d, oldd);
-  }
-  return [a, b, c, d];
-};
-
-/*
- * These are the functions you'll usually want to call.
- * They take string arguments and return either hex or base-64 encoded
- * strings.
- */
-const MD5 = {
-  hexdigest: function (s) {
-    return binl2hex(core_md5(str2binl(s), s.length * 8));
-  },
-  hash: function (s) {
-    return binl2str(core_md5(str2binl(s), s.length * 8));
-  }
-};
-
 
 /***/ }),
 
@@ -10994,15 +10814,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SASLSHA1)
 /* harmony export */ });
-/* harmony import */ var _md5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./md5 */ "./node_modules/strophe.js/src/md5.js");
-/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
-/* harmony import */ var _sha1__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sha1 */ "./node_modules/strophe.js/src/sha1.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
+/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
+/* harmony import */ var _scram_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scram.js */ "./node_modules/strophe.js/src/scram.js");
 
 
-
-
-class SASLSHA1 extends _sasl_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+class SASLSHA1 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   /** PrivateConstructor: SASLSHA1
    *  SASL SCRAM SHA 1 authentication.
    */
@@ -11016,66 +10832,136 @@ class SASLSHA1 extends _sasl_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
     // eslint-disable-line class-methods-use-this
     return connection.authcid !== null;
   }
-  onChallenge(connection, challenge) {
-    // eslint-disable-line class-methods-use-this
-    let nonce, salt, iter, Hi, U, U_old, i, k;
-    let responseText = "c=biws,";
-    let authMessage = `${connection._sasl_data["client-first-message-bare"]},${challenge},`;
-    const cnonce = connection._sasl_data.cnonce;
-    const attribMatch = /([a-z]+)=([^,]+)(,|$)/;
-    while (challenge.match(attribMatch)) {
-      const matches = challenge.match(attribMatch);
-      challenge = challenge.replace(matches[0], "");
-      switch (matches[1]) {
-        case "r":
-          nonce = matches[2];
-          break;
-        case "s":
-          salt = matches[2];
-          break;
-        case "i":
-          iter = matches[2];
-          break;
-      }
-    }
-    if (nonce.slice(0, cnonce.length) !== cnonce) {
-      connection._sasl_data = {};
-      return connection._sasl_failure_cb();
-    }
-    responseText += "r=" + nonce;
-    authMessage += responseText;
-    salt = atob(salt);
-    salt += "\x00\x00\x00\x01";
-    const pass = _utils__WEBPACK_IMPORTED_MODULE_3__["default"].utf16to8(connection.pass);
-    Hi = U_old = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].core_hmac_sha1(pass, salt);
-    for (i = 1; i < iter; i++) {
-      U = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].core_hmac_sha1(pass, _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].binb2str(U_old));
-      for (k = 0; k < 5; k++) {
-        Hi[k] ^= U[k];
-      }
-      U_old = U;
-    }
-    Hi = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].binb2str(Hi);
-    const clientKey = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].core_hmac_sha1(Hi, "Client Key");
-    const serverKey = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].str_hmac_sha1(Hi, "Server Key");
-    const clientSignature = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].core_hmac_sha1(_sha1__WEBPACK_IMPORTED_MODULE_2__["default"].str_sha1(_sha1__WEBPACK_IMPORTED_MODULE_2__["default"].binb2str(clientKey)), authMessage);
-    connection._sasl_data["server-signature"] = _sha1__WEBPACK_IMPORTED_MODULE_2__["default"].b64_hmac_sha1(serverKey, authMessage);
-    for (k = 0; k < 5; k++) {
-      clientKey[k] ^= clientSignature[k];
-    }
-    responseText += ",p=" + btoa(_sha1__WEBPACK_IMPORTED_MODULE_2__["default"].binb2str(clientKey));
-    return responseText;
+  async onChallenge(connection, challenge) {
+    // eslint-disable-line class-methods-use-this, require-await
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-1", 160);
   }
   clientChallenge(connection, test_cnonce) {
     // eslint-disable-line class-methods-use-this
-    const cnonce = test_cnonce || _md5__WEBPACK_IMPORTED_MODULE_0__["default"].hexdigest("" + Math.random() * 1234567890);
-    let auth_str = "n=" + _utils__WEBPACK_IMPORTED_MODULE_3__["default"].utf16to8(connection.authcid);
-    auth_str += ",r=";
-    auth_str += cnonce;
-    connection._sasl_data.cnonce = cnonce;
-    connection._sasl_data["client-first-message-bare"] = auth_str;
-    auth_str = "n,," + auth_str;
-    return auth_str;
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/sasl-sha256.js":
+/*!****************************************************!*\
+  !*** ./node_modules/strophe.js/src/sasl-sha256.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SASLSHA256)
+/* harmony export */ });
+/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
+/* harmony import */ var _scram_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scram.js */ "./node_modules/strophe.js/src/scram.js");
+
+
+class SASLSHA256 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  /** PrivateConstructor: SASLSHA256
+   *  SASL SCRAM SHA 256 authentication.
+   */
+  constructor() {
+    let mechname = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'SCRAM-SHA-256';
+    let isClientFirst = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 70;
+    super(mechname, isClientFirst, priority);
+  }
+  test(connection) {
+    // eslint-disable-line class-methods-use-this
+    return connection.authcid !== null;
+  }
+  async onChallenge(connection, challenge) {
+    // eslint-disable-line class-methods-use-this, require-await
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-256", 256);
+  }
+  clientChallenge(connection, test_cnonce) {
+    // eslint-disable-line class-methods-use-this
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/sasl-sha384.js":
+/*!****************************************************!*\
+  !*** ./node_modules/strophe.js/src/sasl-sha384.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SASLSHA384)
+/* harmony export */ });
+/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
+/* harmony import */ var _scram_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scram.js */ "./node_modules/strophe.js/src/scram.js");
+
+
+class SASLSHA384 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  /** PrivateConstructor: SASLSHA384
+   *  SASL SCRAM SHA 384 authentication.
+   */
+  constructor() {
+    let mechname = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'SCRAM-SHA-384';
+    let isClientFirst = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 71;
+    super(mechname, isClientFirst, priority);
+  }
+  test(connection) {
+    // eslint-disable-line class-methods-use-this
+    return connection.authcid !== null;
+  }
+  async onChallenge(connection, challenge) {
+    // eslint-disable-line class-methods-use-this, require-await
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-384", 384);
+  }
+  clientChallenge(connection, test_cnonce) {
+    // eslint-disable-line class-methods-use-this
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/sasl-sha512.js":
+/*!****************************************************!*\
+  !*** ./node_modules/strophe.js/src/sasl-sha512.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SASLSHA512)
+/* harmony export */ });
+/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
+/* harmony import */ var _scram_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scram.js */ "./node_modules/strophe.js/src/scram.js");
+
+
+class SASLSHA512 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  /** PrivateConstructor: SASLSHA512
+   *  SASL SCRAM SHA 512 authentication.
+   */
+  constructor() {
+    let mechname = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'SCRAM-SHA-512';
+    let isClientFirst = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 72;
+    super(mechname, isClientFirst, priority);
+  }
+  test(connection) {
+    // eslint-disable-line class-methods-use-this
+    return connection.authcid !== null;
+  }
+  async onChallenge(connection, challenge) {
+    // eslint-disable-line class-methods-use-this, require-await
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-512", 512);
+  }
+  clientChallenge(connection, test_cnonce) {
+    // eslint-disable-line class-methods-use-this
+    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
   }
 }
 
@@ -11145,12 +11031,15 @@ __webpack_require__.r(__webpack_exports__);
  *
  *  By default, all mechanisms are enabled and the priorities are
  *
- *      SCRAM-SHA-1 - 60
- *      PLAIN       - 50
- *      OAUTHBEARER - 40
- *      X-OAUTH2    - 30
- *      ANONYMOUS   - 20
- *      EXTERNAL    - 10
+ *      SCRAM-SHA-512 - 72
+ *      SCRAM-SHA-384 - 71
+ *      SCRAM-SHA-256 - 70
+ *      SCRAM-SHA-1   - 60
+ *      PLAIN         - 50
+ *      OAUTHBEARER   - 40
+ *      X-OAUTH2      - 30
+ *      ANONYMOUS     - 20
+ *      EXTERNAL      - 10
  *
  *  See: Strophe.Connection.addSupportedSASLMechanisms
  */
@@ -11278,193 +11167,173 @@ class SASLMechanism {
 
 /***/ }),
 
-/***/ "./node_modules/strophe.js/src/sha1.js":
-/*!*********************************************!*\
-  !*** ./node_modules/strophe.js/src/sha1.js ***!
-  \*********************************************/
+/***/ "./node_modules/strophe.js/src/scram.js":
+/*!**********************************************!*\
+  !*** ./node_modules/strophe.js/src/scram.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SHA1)
+/* harmony export */   "default": () => (/* binding */ scram)
 /* harmony export */ });
-/*
- * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
- * in FIPS PUB 180-1
- * Version 2.1a Copyright Paul Johnston 2000 - 2002.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- * Distributed under the BSD License
- * See http://pajhome.org.uk/crypt/md5 for details.
- */
-/* global define */
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./core.js */ "./node_modules/strophe.js/src/core.js");
 
-/* Some functions and variables have been stripped for use with Strophe */
 
-/*
- * Calculate the SHA-1 of an array of big-endian words, and a bit length
- */
-function core_sha1(x, len) {
-  /* append padding */
-  x[len >> 5] |= 0x80 << 24 - len % 32;
-  x[(len + 64 >> 9 << 4) + 15] = len;
-  var w = new Array(80);
-  var a = 1732584193;
-  var b = -271733879;
-  var c = -1732584194;
-  var d = 271733878;
-  var e = -1009589776;
-  var i, j, t, olda, oldb, oldc, oldd, olde;
-  for (i = 0; i < x.length; i += 16) {
-    olda = a;
-    oldb = b;
-    oldc = c;
-    oldd = d;
-    olde = e;
-    for (j = 0; j < 80; j++) {
-      if (j < 16) {
-        w[j] = x[i + j];
-      } else {
-        w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
-      }
-      t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), sha1_kt(j)));
-      e = d;
-      d = c;
-      c = rol(b, 30);
-      b = a;
-      a = t;
-    }
-    a = safe_add(a, olda);
-    b = safe_add(b, oldb);
-    c = safe_add(c, oldc);
-    d = safe_add(d, oldd);
-    e = safe_add(e, olde);
-  }
-  return [a, b, c, d, e];
+async function scramClientProof(authMessage, clientKey, hashName) {
+  const storedKey = await window.crypto.subtle.importKey("raw", await window.crypto.subtle.digest(hashName, clientKey), {
+    "name": "HMAC",
+    "hash": hashName
+  }, false, ["sign"]);
+  const clientSignature = await window.crypto.subtle.sign("HMAC", storedKey, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(authMessage));
+  return _utils__WEBPACK_IMPORTED_MODULE_0__["default"].xorArrayBuffers(clientKey, clientSignature);
 }
 
-/*
- * Perform the appropriate triplet combination function for the current
- * iteration
+/* This function parses the information in a SASL SCRAM challenge response,
+ * into an object of the form
+ * { nonce: String,
+ *   salt:  ArrayBuffer,
+ *   iter:  Int
+ * }
+ * Returns undefined on failure.
  */
-function sha1_ft(t, b, c, d) {
-  if (t < 20) {
-    return b & c | ~b & d;
-  }
-  if (t < 40) {
-    return b ^ c ^ d;
-  }
-  if (t < 60) {
-    return b & c | b & d | c & d;
-  }
-  return b ^ c ^ d;
-}
-
-/*
- * Determine the appropriate additive constant for the current iteration
- */
-function sha1_kt(t) {
-  return t < 20 ? 1518500249 : t < 40 ? 1859775393 : t < 60 ? -1894007588 : -899497514;
-}
-
-/*
- * Calculate the HMAC-SHA1 of a key and some data
- */
-function core_hmac_sha1(key, data) {
-  var bkey = str2binb(key);
-  if (bkey.length > 16) {
-    bkey = core_sha1(bkey, key.length * 8);
-  }
-  var ipad = new Array(16),
-    opad = new Array(16);
-  for (var i = 0; i < 16; i++) {
-    ipad[i] = bkey[i] ^ 0x36363636;
-    opad[i] = bkey[i] ^ 0x5C5C5C5C;
-  }
-  var hash = core_sha1(ipad.concat(str2binb(data)), 512 + data.length * 8);
-  return core_sha1(opad.concat(hash), 512 + 160);
-}
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
-function safe_add(x, y) {
-  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return msw << 16 | lsw & 0xFFFF;
-}
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function rol(num, cnt) {
-  return num << cnt | num >>> 32 - cnt;
-}
-
-/*
- * Convert an 8-bit or 16-bit string to an array of big-endian words
- * In 8-bit function, characters >255 have their hi-byte silently ignored.
- */
-function str2binb(str) {
-  var bin = [];
-  var mask = 255;
-  for (var i = 0; i < str.length * 8; i += 8) {
-    bin[i >> 5] |= (str.charCodeAt(i / 8) & mask) << 24 - i % 32;
-  }
-  return bin;
-}
-
-/*
- * Convert an array of big-endian words to a base-64 string
- */
-function binb2b64(binarray) {
-  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  var str = "";
-  var triplet, j;
-  for (var i = 0; i < binarray.length * 4; i += 3) {
-    triplet = (binarray[i >> 2] >> 8 * (3 - i % 4) & 0xFF) << 16 | (binarray[i + 1 >> 2] >> 8 * (3 - (i + 1) % 4) & 0xFF) << 8 | binarray[i + 2 >> 2] >> 8 * (3 - (i + 2) % 4) & 0xFF;
-    for (j = 0; j < 4; j++) {
-      if (i * 8 + j * 6 > binarray.length * 32) {
-        str += "=";
-      } else {
-        str += tab.charAt(triplet >> 6 * (3 - j) & 0x3F);
-      }
+function scramParseChallenge(challenge) {
+  let nonce, salt, iter;
+  const attribMatch = /([a-z]+)=([^,]+)(,|$)/;
+  while (challenge.match(attribMatch)) {
+    const matches = challenge.match(attribMatch);
+    challenge = challenge.replace(matches[0], "");
+    switch (matches[1]) {
+      case "r":
+        nonce = matches[2];
+        break;
+      case "s":
+        salt = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(matches[2]);
+        break;
+      case "i":
+        iter = parseInt(matches[2], 10);
+        break;
+      default:
+        return undefined;
     }
   }
-  return str;
-}
 
-/*
- * Convert an array of big-endian words to a string
- */
-function binb2str(bin) {
-  var str = "";
-  var mask = 255;
-  for (var i = 0; i < bin.length * 32; i += 8) {
-    str += String.fromCharCode(bin[i >> 5] >>> 24 - i % 32 & mask);
+  // Consider iteration counts less than 4096 insecure, as reccommended by
+  // RFC 5802
+  if (isNaN(iter) || iter < 4096) {
+    _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied iteration count < 4096.");
+    return undefined;
   }
-  return str;
+  if (!salt) {
+    _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied incorrect salt.");
+    return undefined;
+  }
+  return {
+    "nonce": nonce,
+    "salt": salt,
+    "iter": iter
+  };
 }
 
-/*
- * These are the functions you'll usually want to call
- * They take string arguments and return either hex or base-64 encoded strings
+/* Derive the client and server keys given a string password,
+ * a hash name, and a bit length.
+ * Returns an object of the following form:
+ * { ck: ArrayBuffer, the client key
+ *   sk: ArrayBuffer, the server key
+ * }
  */
-const SHA1 = {
-  b64_hmac_sha1: function (key, data) {
-    return binb2b64(core_hmac_sha1(key, data));
+async function scramDeriveKeys(password, salt, iter, hashName, hashBits) {
+  const saltedPasswordBits = await window.crypto.subtle.deriveBits({
+    "name": "PBKDF2",
+    "salt": salt,
+    "iterations": iter,
+    "hash": {
+      "name": hashName
+    }
+  }, await window.crypto.subtle.importKey("raw", _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(password), "PBKDF2", false, ["deriveBits"]), hashBits);
+  const saltedPassword = await window.crypto.subtle.importKey("raw", saltedPasswordBits, {
+    "name": "HMAC",
+    "hash": hashName
+  }, false, ["sign"]);
+  return {
+    "ck": await window.crypto.subtle.sign("HMAC", saltedPassword, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf("Client Key")),
+    "sk": await window.crypto.subtle.sign("HMAC", saltedPassword, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf("Server Key"))
+  };
+}
+async function scramServerSign(authMessage, sk, hashName) {
+  const serverKey = await window.crypto.subtle.importKey("raw", sk, {
+    "name": "HMAC",
+    "hash": hashName
+  }, false, ["sign"]);
+  return window.crypto.subtle.sign("HMAC", serverKey, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(authMessage));
+}
+
+// Generate an ASCII nonce (not containing the ',' character)
+function generate_cnonce() {
+  // generate 16 random bytes of nonce, base64 encoded
+  const bytes = new Uint8Array(16);
+  return _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(crypto.getRandomValues(bytes).buffer);
+}
+const scram = {
+  /* On success, sets
+   * connection_sasl_data["server-signature"]
+   * and
+   * connection._sasl_data.keys
+   *
+   * The server signature should be verified after this function completes..
+   *
+   * On failure, returns connection._sasl_failure_cb();
+   */
+  async scramResponse(connection, challenge, hashName, hashBits) {
+    var _connection$pass, _connection$pass2, _connection$pass3;
+    const cnonce = connection._sasl_data.cnonce;
+    const challengeData = scramParseChallenge(challenge);
+
+    // The RFC requires that we verify the (server) nonce has the client
+    // nonce as an initial substring.
+    if (!challengeData && (challengeData === null || challengeData === void 0 ? void 0 : challengeData.nonce.slice(0, cnonce.length)) !== cnonce) {
+      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied incorrect nonce.");
+      connection._sasl_data = {};
+      return connection._sasl_failure_cb();
+    }
+    let clientKey, serverKey;
+
+    // Either restore the client key and server key passed in, or derive new ones
+    if (((_connection$pass = connection.pass) === null || _connection$pass === void 0 ? void 0 : _connection$pass.name) === hashName && ((_connection$pass2 = connection.pass) === null || _connection$pass2 === void 0 ? void 0 : _connection$pass2.salt) === _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt) && ((_connection$pass3 = connection.pass) === null || _connection$pass3 === void 0 ? void 0 : _connection$pass3.iter) === challengeData.iter) {
+      clientKey = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(connection.pass.ck);
+      serverKey = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(connection.pass.sk);
+    } else if (typeof connection.pass === "string" || connection.pass instanceof String) {
+      const keys = await scramDeriveKeys(connection.pass, challengeData.salt, challengeData.iter, hashName, hashBits);
+      clientKey = keys.ck;
+      serverKey = keys.sk;
+    } else {
+      return connection._sasl_failure_cb();
+    }
+    const clientFirstMessageBare = connection._sasl_data["client-first-message-bare"];
+    const serverFirstMessage = challenge;
+    const clientFinalMessageBare = `c=biws,r=${challengeData.nonce}`;
+    const authMessage = `${clientFirstMessageBare},${serverFirstMessage},${clientFinalMessageBare}`;
+    const clientProof = await scramClientProof(authMessage, clientKey, hashName);
+    const serverSignature = await scramServerSign(authMessage, serverKey, hashName);
+    connection._sasl_data["server-signature"] = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(serverSignature);
+    connection._sasl_data.keys = {
+      "name": hashName,
+      "iter": challengeData.iter,
+      "salt": _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt),
+      "ck": _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(clientKey),
+      "sk": _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(serverKey)
+    };
+    return `${clientFinalMessageBare},p=${_utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(clientProof)}`;
   },
-  b64_sha1: function (s) {
-    return binb2b64(core_sha1(str2binb(s), s.length * 8));
-  },
-  binb2str: binb2str,
-  core_hmac_sha1: core_hmac_sha1,
-  str_hmac_sha1: function (key, data) {
-    return binb2str(core_hmac_sha1(key, data));
-  },
-  str_sha1: function (s) {
-    return binb2str(core_sha1(str2binb(s), s.length * 8));
+  // Returns a string containing the client first message
+  clientChallenge(connection, test_cnonce) {
+    const cnonce = test_cnonce || generate_cnonce();
+    const client_first_message_bare = `n=${connection.authcid},r=${cnonce}`;
+    connection._sasl_data.cnonce = cnonce;
+    connection._sasl_data["client-first-message-bare"] = client_first_message_bare;
+    return `n,,${client_first_message_bare}`;
   }
 };
 
@@ -11484,8 +11353,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$iq": () => (/* reexport safe */ _core__WEBPACK_IMPORTED_MODULE_3__.$iq),
 /* harmony export */   "$msg": () => (/* reexport safe */ _core__WEBPACK_IMPORTED_MODULE_3__.$msg),
 /* harmony export */   "$pres": () => (/* reexport safe */ _core__WEBPACK_IMPORTED_MODULE_3__.$pres),
-/* harmony export */   "Strophe": () => (/* reexport safe */ _core__WEBPACK_IMPORTED_MODULE_3__.Strophe),
-/* harmony export */   "b64_sha1": () => (/* binding */ b64_sha1)
+/* harmony export */   "Strophe": () => (/* reexport safe */ _core__WEBPACK_IMPORTED_MODULE_3__.Strophe)
 /* harmony export */ });
 /* harmony import */ var _bosh__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bosh */ "./node_modules/strophe.js/src/bosh.js");
 /* harmony import */ var _websocket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./websocket */ "./node_modules/strophe.js/src/websocket.js");
@@ -11503,9 +11371,6 @@ __webpack_require__.g.$msg = _core__WEBPACK_IMPORTED_MODULE_3__["default"].$msg;
 __webpack_require__.g.$pres = _core__WEBPACK_IMPORTED_MODULE_3__["default"].$pres;
 __webpack_require__.g.Strophe = _core__WEBPACK_IMPORTED_MODULE_3__["default"].Strophe;
 
-const {
-  b64_sha1
-} = _core__WEBPACK_IMPORTED_MODULE_3__.SHA1;
 
 /***/ }),
 
@@ -11521,12 +11386,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ utils)
 /* harmony export */ });
 const utils = {
-  utf16to8: function (str) {
-    var i, c;
-    var out = "";
-    var len = str.length;
-    for (i = 0; i < len; i++) {
-      c = str.charCodeAt(i);
+  utf16to8(str) {
+    let out = "";
+    const len = str.length;
+    for (let i = 0; i < len; i++) {
+      const c = str.charCodeAt(i);
       if (c >= 0x0000 && c <= 0x007F) {
         out += str.charAt(i);
       } else if (c > 0x07FF) {
@@ -11540,7 +11404,35 @@ const utils = {
     }
     return out;
   },
-  addCookies: function (cookies) {
+  xorArrayBuffers(x, y) {
+    const xIntArray = new Uint8Array(x);
+    const yIntArray = new Uint8Array(y);
+    const zIntArray = new Uint8Array(x.byteLength);
+    for (let i = 0; i < x.byteLength; i++) {
+      zIntArray[i] = xIntArray[i] ^ yIntArray[i];
+    }
+    return zIntArray.buffer;
+  },
+  arrayBufToBase64(buffer) {
+    // This function is due to mobz (https://stackoverflow.com/users/1234628/mobz)
+    //  and Emmanuel (https://stackoverflow.com/users/288564/emmanuel)
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  },
+  base64ToArrayBuf(str) {
+    var _Uint8Array$from;
+    return (_Uint8Array$from = Uint8Array.from(atob(str), c => c.charCodeAt(0))) === null || _Uint8Array$from === void 0 ? void 0 : _Uint8Array$from.buffer;
+  },
+  stringToArrayBuf(str) {
+    const bytes = new TextEncoder("utf-8").encode(str);
+    return bytes.buffer;
+  },
+  addCookies(cookies) {
     /* Parameters:
      *  (Object) cookies - either a map of cookie names
      *    to string values or to maps of cookie values.
@@ -15485,7 +15377,7 @@ strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('VCARD
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('XFORM', 'jabber:x:data');
 strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v9.1.1";
+_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v10.0.0";
 Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_13__.Events);
 
 // Make converse pluggable
@@ -32418,7 +32310,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ad_hoc_command_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ad-hoc-command.js */ "./src/plugins/adhoc-views/templates/ad-hoc-command.js");
 /* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/adhoc-views/utils.js");
+/* harmony import */ var plugins_muc_views_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/muc-views/utils.js */ "./src/plugins/muc-views/utils.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 
@@ -32440,7 +32332,7 @@ __webpack_require__.r(__webpack_exports__);
                     ${i18n_choose_service}
                     <p class="form-help">${i18n_choose_service_instructions}</p>
                     <converse-autocomplete
-                        .getAutoCompleteList="${_utils_js__WEBPACK_IMPORTED_MODULE_3__.getAutoCompleteList}"
+                        .getAutoCompleteList="${plugins_muc_views_utils_js__WEBPACK_IMPORTED_MODULE_3__.getAutoCompleteList}"
                         placeholder="${i18n_jid_placeholder}"
                         name="jid">
                     </converse-autocomplete>
@@ -34032,7 +33924,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! plugins/chatview/utils.js */ "./src/plugins/chatview/utils.js");
+/* harmony import */ var shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/chat/utils.js */ "./src/shared/chat/utils.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
 
@@ -34040,16 +33932,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-async function getStandaloneButtons(promise) {
-  const heading_btns = await promise;
-  const standalone_btns = heading_btns.filter(b => b.standalone);
-  return standalone_btns.map(b => (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_2__.getHeadingStandaloneButton)(b));
-}
-async function getDropdownButtons(promise) {
-  const heading_btns = await promise;
-  const dropdown_btns = heading_btns.filter(b => !b.standalone);
-  return dropdown_btns.map(b => (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_2__.getHeadingDropdownItem)(b));
-}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   var _o$model$vcard, _o$model$vcard2;
   const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)("The User's Profile Image");
@@ -34060,8 +33942,6 @@ async function getDropdownButtons(promise) {
             nonce=${(_o$model$vcard2 = o.model.vcard) === null || _o$model$vcard2 === void 0 ? void 0 : _o$model$vcard2.get('vcard_updated')}
             height="40" width="40"></converse-avatar></span>`;
   const display_name = o.model.getDisplayName();
-  const tpl_dropdown_btns = () => getDropdownButtons(o.heading_buttons_promise).then(btns => btns.length ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-dropdown class="dropleft" color="var(--chat-head-text-color)" .items=${btns}></converse-dropdown>` : '');
-  const tpl_standalone_btns = () => getStandaloneButtons(o.heading_buttons_promise).then(btns => btns.reverse().map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(b, '')));
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
         <div class="chatbox-title ${o.status ? '' : "chatbox-title--no-desc"}">
             <div class="chatbox-title--row">
@@ -34072,8 +33952,8 @@ async function getDropdownButtons(promise) {
                 </div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
-                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(tpl_dropdown_btns(), '')}
-                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(tpl_standalone_btns(), '')}
+                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_2__.getDropdownButtons)(o.heading_buttons_promise), '')}
+                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_2__.getStandaloneButtons)(o.heading_buttons_promise), '')}
             </div>
         </div>
         ${o.status ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p class="chat-head__desc">${o.status}</p>` : ''}
@@ -34185,8 +34065,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "clearHistory": () => (/* binding */ clearHistory),
 /* harmony export */   "clearMessages": () => (/* binding */ clearMessages),
-/* harmony export */   "getHeadingDropdownItem": () => (/* binding */ getHeadingDropdownItem),
-/* harmony export */   "getHeadingStandaloneButton": () => (/* binding */ getHeadingStandaloneButton),
 /* harmony export */   "parseMessageForCommands": () => (/* binding */ parseMessageForCommands),
 /* harmony export */   "resetElementHeight": () => (/* binding */ resetElementHeight)
 /* harmony export */ });
@@ -34200,26 +34078,6 @@ function clearHistory(jid) {
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.router.history.getFragment() === `converse/chat?jid=${jid}`) {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.router.navigate('');
   }
-}
-async function getHeadingDropdownItem(promise_or_data) {
-  const data = await promise_or_data;
-  return data ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <a href="#" class="dropdown-item ${data.a_class}" @click=${data.handler} title="${data.i18n_title}">
-            <converse-icon size="1em" color="var(--text-color-lighten-15-percent)" class="fa ${data.icon_class}"></converse-icon>
-            ${data.i18n_text}
-        </a>
-    ` : '';
-}
-async function getHeadingStandaloneButton(promise_or_data) {
-  const data = await promise_or_data;
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <a
-            href="#"
-            class="chatbox-btn ${data.a_class} fa ${data.icon_class}"
-            @click=${data.handler}
-            title="${data.i18n_title}"
-        ></a>
-    `;
 }
 async function clearMessages(chat) {
   const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Are you sure you want to clear the messages from this conversation?'));
@@ -34469,10 +34327,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/controlbox/utils.js");
 /* harmony import */ var _styles_controlbox_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./styles/_controlbox.scss */ "./src/plugins/controlbox/styles/_controlbox.scss");
+/* harmony import */ var _styles_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./styles/controlbox-head.scss */ "./src/plugins/controlbox/styles/controlbox-head.scss");
 /**
  * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
+
 
 
 
@@ -35713,11 +35573,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _feed_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./feed-list.js */ "./src/plugins/headlines-view/feed-list.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _styles_headlines_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/headlines.scss */ "./src/plugins/headlines-view/styles/headlines.scss");
+/* harmony import */ var _styles_headlines_head_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/headlines-head.scss */ "./src/plugins/headlines-view/styles/headlines-head.scss");
 /**
  * @module converse-headlines-view
  * @copyright 2022, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
+
 
 
 
@@ -35759,17 +35621,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
-/* harmony import */ var plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! plugins/chatview/utils.js */ "./src/plugins/chatview/utils.js");
+/* harmony import */ var shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/chat/utils.js */ "./src/shared/chat/utils.js");
 
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  const standalone_btns_promise = o.heading_buttons_promise.then(btns => btns.filter(b => b.standalone).map(b => (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_3__.getHeadingStandaloneButton)(b)).reverse().map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)(b, '')));
-  const dropdown_btns_promise = o.heading_buttons_promise.then(btns => {
-    const dropdown_btns = btns.filter(b => !b.standalone).map(b => (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_3__.getHeadingDropdownItem)(b));
-    return dropdown_btns.length ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<converse-dropdown class="dropleft" .items=${dropdown_btns}></converse-dropdown>` : '';
-  });
   return lit__WEBPACK_IMPORTED_MODULE_1__.html`
         <div class="chatbox-title ${o.status ? '' : "chatbox-title--no-desc"}">
             <div class="chatbox-title--row">
@@ -35777,8 +35634,8 @@ __webpack_require__.r(__webpack_exports__);
                 <div class="chatbox-title__text" title="${o.jid}">${o.display_name}</div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
-                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)(dropdown_btns_promise, '')}
-                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)(standalone_btns_promise, '')}
+                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_3__.getDropdownButtons)(o.heading_buttons_promise), '')}
+                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_3__.getStandaloneButtons)(o.heading_buttons_promise), '')}
             </div>
         </div>
         ${o.status ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<p class="chat-head__desc">${o.status}</p>` : ''}
@@ -36316,7 +36173,7 @@ __webpack_require__.r(__webpack_exports__);
   if (o.type === 'chatroom') {
     close_color = "var(--chatroom-head-color)";
   } else if (o.type === 'headline') {
-    close_color = "var(--headline-head-text-color)";
+    close_color = "var(--headlines-head-text-color)";
   } else {
     close_color = "var(--chat-head-text-color)";
   }
@@ -40229,7 +40086,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_components_rich_text_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/rich-text.js */ "./src/shared/components/rich-text.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
-/* harmony import */ var plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! plugins/chatview/utils.js */ "./src/plugins/chatview/utils.js");
+/* harmony import */ var shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! shared/chat/utils.js */ "./src/shared/chat/utils.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
 
@@ -40243,6 +40100,7 @@ __webpack_require__.r(__webpack_exports__);
   var _el$user_settings, _el$user_settings$get, _el$model$vcard, _el$model$vcard2, _el$model$vcard3;
   const o = el.model.toJSON();
   const subject_hidden = (_el$user_settings = el.user_settings) === null || _el$user_settings === void 0 ? void 0 : (_el$user_settings$get = _el$user_settings.get('mucs_with_hidden_subject', [])) === null || _el$user_settings$get === void 0 ? void 0 : _el$user_settings$get.includes(el.model.get('jid'));
+  const heading_buttons_promise = el.getHeadingButtons(subject_hidden);
   const i18n_hide_topic = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Hide the groupchat topic');
   const i18n_bookmarked = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This groupchat is bookmarked');
   const subject = o.subject ? o.subject.text : '';
@@ -40269,12 +40127,8 @@ __webpack_require__.r(__webpack_exports__);
                 </div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
-                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)(el.getHeadingButtons(subject_hidden).then(buttons => {
-    const dropdown_btns = buttons.filter(b => !b.standalone).map(b => (0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_4__.getHeadingDropdownItem)(b));
-    return lit__WEBPACK_IMPORTED_MODULE_5__.html`
-                        ${buttons.filter(b => b.standalone).reverse().map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)((0,plugins_chatview_utils_js__WEBPACK_IMPORTED_MODULE_4__.getHeadingStandaloneButton)(b), ''))}
-                        ${dropdown_btns.length ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<converse-dropdown class="dropleft" color="var(--chatroom-head-color)" .items=${dropdown_btns}></converse-dropdown>` : ''}`;
-  }), '')}
+                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_4__.getStandaloneButtons)(heading_buttons_promise), '')}
+                ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_4__.getDropdownButtons)(heading_buttons_promise), '')}
             </div>
         </div>
         ${show_subject ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<p class="chat-head__desc" title="${i18n_hide_topic}">
@@ -49711,8 +49565,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addEmojisMarkup": () => (/* binding */ addEmojisMarkup),
 /* harmony export */   "getDayIndicator": () => (/* binding */ getDayIndicator),
+/* harmony export */   "getDropdownButtons": () => (/* binding */ getDropdownButtons),
 /* harmony export */   "getEmojiMarkup": () => (/* binding */ getEmojiMarkup),
 /* harmony export */   "getHats": () => (/* binding */ getHats),
+/* harmony export */   "getHeadingDropdownItem": () => (/* binding */ getHeadingDropdownItem),
+/* harmony export */   "getHeadingStandaloneButton": () => (/* binding */ getHeadingStandaloneButton),
+/* harmony export */   "getStandaloneButtons": () => (/* binding */ getStandaloneButtons),
 /* harmony export */   "getTonedEmojis": () => (/* binding */ getTonedEmojis),
 /* harmony export */   "markScrolled": () => (/* binding */ markScrolled),
 /* harmony export */   "onScrolledDown": () => (/* binding */ onScrolledDown),
@@ -49723,7 +49581,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_new_day_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/new-day.js */ "./src/shared/chat/templates/new-day.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var _converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/plugins/emoji/utils.js */ "./src/headless/plugins/emoji/utils.js");
+/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
+/* harmony import */ var _converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/plugins/emoji/utils.js */ "./src/headless/plugins/emoji/utils.js");
+
 
 
 
@@ -49733,6 +49593,43 @@ const {
   dayjs,
   u
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env;
+async function getHeadingDropdownItem(promise_or_data) {
+  const data = await promise_or_data;
+  return data ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+              <a href="#" class="dropdown-item ${data.a_class}" @click=${data.handler} title="${data.i18n_title}">
+                  <converse-icon
+                      size="1em"
+                      class="fa ${data.icon_class}"
+                  ></converse-icon>
+                  ${data.i18n_text}
+              </a>
+          ` : '';
+}
+async function getHeadingStandaloneButton(promise_or_data) {
+  const data = await promise_or_data;
+  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+        <a
+            href="#"
+            class="chatbox-btn ${data.a_class}"
+            @click=${data.handler}
+            title="${data.i18n_title}"
+        >
+            <converse-icon
+                size="1em"
+                class="fa ${data.icon_class}"
+            ></converse-icon>
+        </a>
+    `;
+}
+function getStandaloneButtons(promise) {
+  return promise.then(btns => btns.filter(b => b.standalone).map(b => getHeadingStandaloneButton(b)).reverse().map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(b, '')));
+}
+function getDropdownButtons(promise) {
+  return promise.then(btns => {
+    const dropdown_btns = btns.filter(b => !b.standalone).map(b => getHeadingDropdownItem(b));
+    return dropdown_btns.length ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-dropdown class="chatbox-btn dropleft" .items=${dropdown_btns}></converse-dropdown>` : '';
+  });
+}
 function onScrolledDown(model) {
   if (!model.isHidden()) {
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_url_history_change')) {
@@ -49870,7 +49767,7 @@ function getEmojiMarkup(data) {
 }
 function addEmojisMarkup(text, options) {
   let list = [text];
-  [...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__.getShortnameReferences)(text), ...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__.getCodePointReferences)(text)].sort((a, b) => b.begin - a.begin).forEach(ref => {
+  [...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__.getShortnameReferences)(text), ...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__.getCodePointReferences)(text)].sort((a, b) => b.begin - a.begin).forEach(ref => {
     const text = list.shift();
     const emoji = getEmojiMarkup(ref, options);
     if (typeof emoji === 'string') {
@@ -49914,7 +49811,7 @@ function shortnamesToEmojis(str) {
     unicode_only: false,
     add_title_wrapper: false
   };
-  str = (0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__.convertASCII2Emoji)(str);
+  str = (0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__.convertASCII2Emoji)(str);
   return addEmojisMarkup(str, options);
 }
 Object.assign(u, {
@@ -50094,9 +49991,6 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
       'icon_classes': {
         type: String
       },
-      'color': {
-        type: String
-      },
       'items': {
         type: Array
       }
@@ -50104,13 +49998,12 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
   }
   constructor() {
     super();
-    this.color = 'var(--text-color)';
     this.icon_classes = 'fa fa-bars';
   }
   render() {
     return lit__WEBPACK_IMPORTED_MODULE_5__.html`
             <button type="button" class="btn btn--transparent btn--standalone" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <converse-icon color="${this.color}" size="1em" class="${this.icon_classes}">
+                <converse-icon size="1em" class="${this.icon_classes}">
             </button>
             <div class="dropdown-menu">
                 ${this.items.map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)(b, ''))}
@@ -55992,10 +55885,64 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss ***!
   \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57006,7 +56953,7 @@ module.exports = function (item) {
   \*****************************************/
 /***/ (function(module) {
 
-!function(t,e){ true?module.exports=e():0}(this,(function(){"use strict";var t=1e3,e=6e4,n=36e5,r="millisecond",i="second",s="minute",u="hour",a="day",o="week",f="month",h="quarter",c="year",d="date",$="Invalid Date",l=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,y=/\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,M={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_")},m=function(t,e,n){var r=String(t);return!r||r.length>=e?t:""+Array(e+1-r.length).join(n)+t},g={s:m,z:function(t){var e=-t.utcOffset(),n=Math.abs(e),r=Math.floor(n/60),i=n%60;return(e<=0?"+":"-")+m(r,2,"0")+":"+m(i,2,"0")},m:function t(e,n){if(e.date()<n.date())return-t(n,e);var r=12*(n.year()-e.year())+(n.month()-e.month()),i=e.clone().add(r,f),s=n-i<0,u=e.clone().add(r+(s?-1:1),f);return+(-(r+(n-i)/(s?i-u:u-i))||0)},a:function(t){return t<0?Math.ceil(t)||0:Math.floor(t)},p:function(t){return{M:f,y:c,w:o,d:a,D:d,h:u,m:s,s:i,ms:r,Q:h}[t]||String(t||"").toLowerCase().replace(/s$/,"")},u:function(t){return void 0===t}},v="en",D={};D[v]=M;var p=function(t){return t instanceof _},S=function t(e,n,r){var i;if(!e)return v;if("string"==typeof e){var s=e.toLowerCase();D[s]&&(i=s),n&&(D[s]=n,i=s);var u=e.split("-");if(!i&&u.length>1)return t(u[0])}else{var a=e.name;D[a]=e,i=a}return!r&&i&&(v=i),i||!r&&v},w=function(t,e){if(p(t))return t.clone();var n="object"==typeof e?e:{};return n.date=t,n.args=arguments,new _(n)},O=g;O.l=S,O.i=p,O.w=function(t,e){return w(t,{locale:e.$L,utc:e.$u,x:e.$x,$offset:e.$offset})};var _=function(){function M(t){this.$L=S(t.locale,null,!0),this.parse(t)}var m=M.prototype;return m.parse=function(t){this.$d=function(t){var e=t.date,n=t.utc;if(null===e)return new Date(NaN);if(O.u(e))return new Date;if(e instanceof Date)return new Date(e);if("string"==typeof e&&!/Z$/i.test(e)){var r=e.match(l);if(r){var i=r[2]-1||0,s=(r[7]||"0").substring(0,3);return n?new Date(Date.UTC(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)):new Date(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)}}return new Date(e)}(t),this.$x=t.x||{},this.init()},m.init=function(){var t=this.$d;this.$y=t.getFullYear(),this.$M=t.getMonth(),this.$D=t.getDate(),this.$W=t.getDay(),this.$H=t.getHours(),this.$m=t.getMinutes(),this.$s=t.getSeconds(),this.$ms=t.getMilliseconds()},m.$utils=function(){return O},m.isValid=function(){return!(this.$d.toString()===$)},m.isSame=function(t,e){var n=w(t);return this.startOf(e)<=n&&n<=this.endOf(e)},m.isAfter=function(t,e){return w(t)<this.startOf(e)},m.isBefore=function(t,e){return this.endOf(e)<w(t)},m.$g=function(t,e,n){return O.u(t)?this[e]:this.set(n,t)},m.unix=function(){return Math.floor(this.valueOf()/1e3)},m.valueOf=function(){return this.$d.getTime()},m.startOf=function(t,e){var n=this,r=!!O.u(e)||e,h=O.p(t),$=function(t,e){var i=O.w(n.$u?Date.UTC(n.$y,e,t):new Date(n.$y,e,t),n);return r?i:i.endOf(a)},l=function(t,e){return O.w(n.toDate()[t].apply(n.toDate("s"),(r?[0,0,0,0]:[23,59,59,999]).slice(e)),n)},y=this.$W,M=this.$M,m=this.$D,g="set"+(this.$u?"UTC":"");switch(h){case c:return r?$(1,0):$(31,11);case f:return r?$(1,M):$(0,M+1);case o:var v=this.$locale().weekStart||0,D=(y<v?y+7:y)-v;return $(r?m-D:m+(6-D),M);case a:case d:return l(g+"Hours",0);case u:return l(g+"Minutes",1);case s:return l(g+"Seconds",2);case i:return l(g+"Milliseconds",3);default:return this.clone()}},m.endOf=function(t){return this.startOf(t,!1)},m.$set=function(t,e){var n,o=O.p(t),h="set"+(this.$u?"UTC":""),$=(n={},n[a]=h+"Date",n[d]=h+"Date",n[f]=h+"Month",n[c]=h+"FullYear",n[u]=h+"Hours",n[s]=h+"Minutes",n[i]=h+"Seconds",n[r]=h+"Milliseconds",n)[o],l=o===a?this.$D+(e-this.$W):e;if(o===f||o===c){var y=this.clone().set(d,1);y.$d[$](l),y.init(),this.$d=y.set(d,Math.min(this.$D,y.daysInMonth())).$d}else $&&this.$d[$](l);return this.init(),this},m.set=function(t,e){return this.clone().$set(t,e)},m.get=function(t){return this[O.p(t)]()},m.add=function(r,h){var d,$=this;r=Number(r);var l=O.p(h),y=function(t){var e=w($);return O.w(e.date(e.date()+Math.round(t*r)),$)};if(l===f)return this.set(f,this.$M+r);if(l===c)return this.set(c,this.$y+r);if(l===a)return y(1);if(l===o)return y(7);var M=(d={},d[s]=e,d[u]=n,d[i]=t,d)[l]||1,m=this.$d.getTime()+r*M;return O.w(m,this)},m.subtract=function(t,e){return this.add(-1*t,e)},m.format=function(t){var e=this,n=this.$locale();if(!this.isValid())return n.invalidDate||$;var r=t||"YYYY-MM-DDTHH:mm:ssZ",i=O.z(this),s=this.$H,u=this.$m,a=this.$M,o=n.weekdays,f=n.months,h=function(t,n,i,s){return t&&(t[n]||t(e,r))||i[n].slice(0,s)},c=function(t){return O.s(s%12||12,t,"0")},d=n.meridiem||function(t,e,n){var r=t<12?"AM":"PM";return n?r.toLowerCase():r},l={YY:String(this.$y).slice(-2),YYYY:this.$y,M:a+1,MM:O.s(a+1,2,"0"),MMM:h(n.monthsShort,a,f,3),MMMM:h(f,a),D:this.$D,DD:O.s(this.$D,2,"0"),d:String(this.$W),dd:h(n.weekdaysMin,this.$W,o,2),ddd:h(n.weekdaysShort,this.$W,o,3),dddd:o[this.$W],H:String(s),HH:O.s(s,2,"0"),h:c(1),hh:c(2),a:d(s,u,!0),A:d(s,u,!1),m:String(u),mm:O.s(u,2,"0"),s:String(this.$s),ss:O.s(this.$s,2,"0"),SSS:O.s(this.$ms,3,"0"),Z:i};return r.replace(y,(function(t,e){return e||l[t]||i.replace(":","")}))},m.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},m.diff=function(r,d,$){var l,y=O.p(d),M=w(r),m=(M.utcOffset()-this.utcOffset())*e,g=this-M,v=O.m(this,M);return v=(l={},l[c]=v/12,l[f]=v,l[h]=v/3,l[o]=(g-m)/6048e5,l[a]=(g-m)/864e5,l[u]=g/n,l[s]=g/e,l[i]=g/t,l)[y]||g,$?v:O.a(v)},m.daysInMonth=function(){return this.endOf(f).$D},m.$locale=function(){return D[this.$L]},m.locale=function(t,e){if(!t)return this.$L;var n=this.clone(),r=S(t,e,!0);return r&&(n.$L=r),n},m.clone=function(){return O.w(this.$d,this)},m.toDate=function(){return new Date(this.valueOf())},m.toJSON=function(){return this.isValid()?this.toISOString():null},m.toISOString=function(){return this.$d.toISOString()},m.toString=function(){return this.$d.toUTCString()},M}(),T=_.prototype;return w.prototype=T,[["$ms",r],["$s",i],["$m",s],["$H",u],["$W",a],["$M",f],["$y",c],["$D",d]].forEach((function(t){T[t[1]]=function(e){return this.$g(e,t[0],t[1])}})),w.extend=function(t,e){return t.$i||(t(e,_,w),t.$i=!0),w},w.locale=S,w.isDayjs=p,w.unix=function(t){return w(1e3*t)},w.en=D[v],w.Ls=D,w.p={},w}));
+!function(t,e){ true?module.exports=e():0}(this,(function(){"use strict";var t=1e3,e=6e4,n=36e5,r="millisecond",i="second",s="minute",u="hour",a="day",o="week",f="month",h="quarter",c="year",d="date",l="Invalid Date",$=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,y=/\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,M={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_"),ordinal:function(t){var e=["th","st","nd","rd"],n=t%100;return"["+t+(e[(n-20)%10]||e[n]||e[0])+"]"}},m=function(t,e,n){var r=String(t);return!r||r.length>=e?t:""+Array(e+1-r.length).join(n)+t},v={s:m,z:function(t){var e=-t.utcOffset(),n=Math.abs(e),r=Math.floor(n/60),i=n%60;return(e<=0?"+":"-")+m(r,2,"0")+":"+m(i,2,"0")},m:function t(e,n){if(e.date()<n.date())return-t(n,e);var r=12*(n.year()-e.year())+(n.month()-e.month()),i=e.clone().add(r,f),s=n-i<0,u=e.clone().add(r+(s?-1:1),f);return+(-(r+(n-i)/(s?i-u:u-i))||0)},a:function(t){return t<0?Math.ceil(t)||0:Math.floor(t)},p:function(t){return{M:f,y:c,w:o,d:a,D:d,h:u,m:s,s:i,ms:r,Q:h}[t]||String(t||"").toLowerCase().replace(/s$/,"")},u:function(t){return void 0===t}},g="en",D={};D[g]=M;var p=function(t){return t instanceof _},S=function t(e,n,r){var i;if(!e)return g;if("string"==typeof e){var s=e.toLowerCase();D[s]&&(i=s),n&&(D[s]=n,i=s);var u=e.split("-");if(!i&&u.length>1)return t(u[0])}else{var a=e.name;D[a]=e,i=a}return!r&&i&&(g=i),i||!r&&g},w=function(t,e){if(p(t))return t.clone();var n="object"==typeof e?e:{};return n.date=t,n.args=arguments,new _(n)},O=v;O.l=S,O.i=p,O.w=function(t,e){return w(t,{locale:e.$L,utc:e.$u,x:e.$x,$offset:e.$offset})};var _=function(){function M(t){this.$L=S(t.locale,null,!0),this.parse(t)}var m=M.prototype;return m.parse=function(t){this.$d=function(t){var e=t.date,n=t.utc;if(null===e)return new Date(NaN);if(O.u(e))return new Date;if(e instanceof Date)return new Date(e);if("string"==typeof e&&!/Z$/i.test(e)){var r=e.match($);if(r){var i=r[2]-1||0,s=(r[7]||"0").substring(0,3);return n?new Date(Date.UTC(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)):new Date(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)}}return new Date(e)}(t),this.$x=t.x||{},this.init()},m.init=function(){var t=this.$d;this.$y=t.getFullYear(),this.$M=t.getMonth(),this.$D=t.getDate(),this.$W=t.getDay(),this.$H=t.getHours(),this.$m=t.getMinutes(),this.$s=t.getSeconds(),this.$ms=t.getMilliseconds()},m.$utils=function(){return O},m.isValid=function(){return!(this.$d.toString()===l)},m.isSame=function(t,e){var n=w(t);return this.startOf(e)<=n&&n<=this.endOf(e)},m.isAfter=function(t,e){return w(t)<this.startOf(e)},m.isBefore=function(t,e){return this.endOf(e)<w(t)},m.$g=function(t,e,n){return O.u(t)?this[e]:this.set(n,t)},m.unix=function(){return Math.floor(this.valueOf()/1e3)},m.valueOf=function(){return this.$d.getTime()},m.startOf=function(t,e){var n=this,r=!!O.u(e)||e,h=O.p(t),l=function(t,e){var i=O.w(n.$u?Date.UTC(n.$y,e,t):new Date(n.$y,e,t),n);return r?i:i.endOf(a)},$=function(t,e){return O.w(n.toDate()[t].apply(n.toDate("s"),(r?[0,0,0,0]:[23,59,59,999]).slice(e)),n)},y=this.$W,M=this.$M,m=this.$D,v="set"+(this.$u?"UTC":"");switch(h){case c:return r?l(1,0):l(31,11);case f:return r?l(1,M):l(0,M+1);case o:var g=this.$locale().weekStart||0,D=(y<g?y+7:y)-g;return l(r?m-D:m+(6-D),M);case a:case d:return $(v+"Hours",0);case u:return $(v+"Minutes",1);case s:return $(v+"Seconds",2);case i:return $(v+"Milliseconds",3);default:return this.clone()}},m.endOf=function(t){return this.startOf(t,!1)},m.$set=function(t,e){var n,o=O.p(t),h="set"+(this.$u?"UTC":""),l=(n={},n[a]=h+"Date",n[d]=h+"Date",n[f]=h+"Month",n[c]=h+"FullYear",n[u]=h+"Hours",n[s]=h+"Minutes",n[i]=h+"Seconds",n[r]=h+"Milliseconds",n)[o],$=o===a?this.$D+(e-this.$W):e;if(o===f||o===c){var y=this.clone().set(d,1);y.$d[l]($),y.init(),this.$d=y.set(d,Math.min(this.$D,y.daysInMonth())).$d}else l&&this.$d[l]($);return this.init(),this},m.set=function(t,e){return this.clone().$set(t,e)},m.get=function(t){return this[O.p(t)]()},m.add=function(r,h){var d,l=this;r=Number(r);var $=O.p(h),y=function(t){var e=w(l);return O.w(e.date(e.date()+Math.round(t*r)),l)};if($===f)return this.set(f,this.$M+r);if($===c)return this.set(c,this.$y+r);if($===a)return y(1);if($===o)return y(7);var M=(d={},d[s]=e,d[u]=n,d[i]=t,d)[$]||1,m=this.$d.getTime()+r*M;return O.w(m,this)},m.subtract=function(t,e){return this.add(-1*t,e)},m.format=function(t){var e=this,n=this.$locale();if(!this.isValid())return n.invalidDate||l;var r=t||"YYYY-MM-DDTHH:mm:ssZ",i=O.z(this),s=this.$H,u=this.$m,a=this.$M,o=n.weekdays,f=n.months,h=function(t,n,i,s){return t&&(t[n]||t(e,r))||i[n].slice(0,s)},c=function(t){return O.s(s%12||12,t,"0")},d=n.meridiem||function(t,e,n){var r=t<12?"AM":"PM";return n?r.toLowerCase():r},$={YY:String(this.$y).slice(-2),YYYY:this.$y,M:a+1,MM:O.s(a+1,2,"0"),MMM:h(n.monthsShort,a,f,3),MMMM:h(f,a),D:this.$D,DD:O.s(this.$D,2,"0"),d:String(this.$W),dd:h(n.weekdaysMin,this.$W,o,2),ddd:h(n.weekdaysShort,this.$W,o,3),dddd:o[this.$W],H:String(s),HH:O.s(s,2,"0"),h:c(1),hh:c(2),a:d(s,u,!0),A:d(s,u,!1),m:String(u),mm:O.s(u,2,"0"),s:String(this.$s),ss:O.s(this.$s,2,"0"),SSS:O.s(this.$ms,3,"0"),Z:i};return r.replace(y,(function(t,e){return e||$[t]||i.replace(":","")}))},m.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},m.diff=function(r,d,l){var $,y=O.p(d),M=w(r),m=(M.utcOffset()-this.utcOffset())*e,v=this-M,g=O.m(this,M);return g=($={},$[c]=g/12,$[f]=g,$[h]=g/3,$[o]=(v-m)/6048e5,$[a]=(v-m)/864e5,$[u]=v/n,$[s]=v/e,$[i]=v/t,$)[y]||v,l?g:O.a(g)},m.daysInMonth=function(){return this.endOf(f).$D},m.$locale=function(){return D[this.$L]},m.locale=function(t,e){if(!t)return this.$L;var n=this.clone(),r=S(t,e,!0);return r&&(n.$L=r),n},m.clone=function(){return O.w(this.$d,this)},m.toDate=function(){return new Date(this.valueOf())},m.toJSON=function(){return this.isValid()?this.toISOString():null},m.toISOString=function(){return this.$d.toISOString()},m.toString=function(){return this.$d.toUTCString()},M}(),T=_.prototype;return w.prototype=T,[["$ms",r],["$s",i],["$m",s],["$H",u],["$W",a],["$M",f],["$y",c],["$D",d]].forEach((function(t){T[t[1]]=function(e){return this.$g(e,t[0],t[1])}})),w.extend=function(t,e){return t.$i||(t(e,_,w),t.$i=!0),w},w.locale=S,w.isDayjs=p,w.unix=function(t){return w(1e3*t)},w.en=D[g],w.Ls=D,w.p={},w}));
 
 /***/ }),
 
@@ -57616,7 +57563,7 @@ module.exports = webpackAsyncContext;
   \*****************************************************/
 /***/ (function(module) {
 
-!function(e,t){ true?module.exports=t():0}(this,(function(){"use strict";return function(e,t,r){var n=t.prototype,s=n.format;r.en.ordinal=function(e){var t=["th","st","nd","rd"],r=e%100;return"["+e+(t[(r-20)%10]||t[r]||t[0])+"]"},n.format=function(e){var t=this,r=this.$locale();if(!this.isValid())return s.bind(this)(e);var n=this.$utils(),a=(e||"YYYY-MM-DDTHH:mm:ssZ").replace(/\[([^\]]+)]|Q|wo|ww|w|WW|W|zzz|z|gggg|GGGG|Do|X|x|k{1,2}|S/g,(function(e){switch(e){case"Q":return Math.ceil((t.$M+1)/3);case"Do":return r.ordinal(t.$D);case"gggg":return t.weekYear();case"GGGG":return t.isoWeekYear();case"wo":return r.ordinal(t.week(),"W");case"w":case"ww":return n.s(t.week(),"w"===e?1:2,"0");case"W":case"WW":return n.s(t.isoWeek(),"W"===e?1:2,"0");case"k":case"kk":return n.s(String(0===t.$H?24:t.$H),"k"===e?1:2,"0");case"X":return Math.floor(t.$d.getTime()/1e3);case"x":return t.$d.getTime();case"z":return"["+t.offsetName()+"]";case"zzz":return"["+t.offsetName("long")+"]";default:return e}}));return s.bind(this)(a)}}}));
+!function(e,t){ true?module.exports=t():0}(this,(function(){"use strict";return function(e,t){var r=t.prototype,n=r.format;r.format=function(e){var t=this,r=this.$locale();if(!this.isValid())return n.bind(this)(e);var s=this.$utils(),a=(e||"YYYY-MM-DDTHH:mm:ssZ").replace(/\[([^\]]+)]|Q|wo|ww|w|WW|W|zzz|z|gggg|GGGG|Do|X|x|k{1,2}|S/g,(function(e){switch(e){case"Q":return Math.ceil((t.$M+1)/3);case"Do":return r.ordinal(t.$D);case"gggg":return t.weekYear();case"GGGG":return t.isoWeekYear();case"wo":return r.ordinal(t.week(),"W");case"w":case"ww":return s.s(t.week(),"w"===e?1:2,"0");case"W":case"WW":return s.s(t.isoWeek(),"W"===e?1:2,"0");case"k":case"kk":return s.s(String(0===t.$H?24:t.$H),"k"===e?1:2,"0");case"X":return Math.floor(t.$d.getTime()/1e3);case"x":return t.$d.getTime();case"z":return"["+t.offsetName()+"]";case"zzz":return"["+t.offsetName("long")+"]";default:return e}}));return n.bind(this)(a)}}}));
 
 /***/ }),
 
@@ -69283,6 +69230,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./src/plugins/controlbox/styles/controlbox-head.scss":
+/*!************************************************************!*\
+  !*** ./src/plugins/controlbox/styles/controlbox-head.scss ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./controlbox-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
 /***/ "./src/plugins/fullscreen/styles/fullscreen.scss":
 /*!*******************************************************!*\
   !*** ./src/plugins/fullscreen/styles/fullscreen.scss ***!
@@ -69334,6 +69336,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/plugins/headlines-view/styles/headlines-head.scss":
+/*!***************************************************************!*\
+  !*** ./src/plugins/headlines-view/styles/headlines-head.scss ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./headlines-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71632,6 +71689,9 @@ function _regeneratorRuntime() {
   var exports = {},
     Op = Object.prototype,
     hasOwn = Op.hasOwnProperty,
+    defineProperty = Object.defineProperty || function (obj, key, desc) {
+      obj[key] = desc.value;
+    },
     $Symbol = "function" == typeof Symbol ? Symbol : {},
     iteratorSymbol = $Symbol.iterator || "@@iterator",
     asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
@@ -71655,40 +71715,9 @@ function _regeneratorRuntime() {
     var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
       generator = Object.create(protoGenerator.prototype),
       context = new Context(tryLocsList || []);
-    return generator._invoke = function (innerFn, self, context) {
-      var state = "suspendedStart";
-      return function (method, arg) {
-        if ("executing" === state) throw new Error("Generator is already running");
-        if ("completed" === state) {
-          if ("throw" === method) throw arg;
-          return doneResult();
-        }
-        for (context.method = method, context.arg = arg;;) {
-          var delegate = context.delegate;
-          if (delegate) {
-            var delegateResult = maybeInvokeDelegate(delegate, context);
-            if (delegateResult) {
-              if (delegateResult === ContinueSentinel) continue;
-              return delegateResult;
-            }
-          }
-          if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
-            if ("suspendedStart" === state) throw state = "completed", context.arg;
-            context.dispatchException(context.arg);
-          } else "return" === context.method && context.abrupt("return", context.arg);
-          state = "executing";
-          var record = tryCatch(innerFn, self, context);
-          if ("normal" === record.type) {
-            if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-            return {
-              value: record.arg,
-              done: context.done
-            };
-          }
-          "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-        }
-      };
-    }(innerFn, self, context), generator;
+    return defineProperty(generator, "_invoke", {
+      value: makeInvokeMethod(innerFn, self, context)
+    }), generator;
   }
   function tryCatch(fn, obj, arg) {
     try {
@@ -71742,13 +71771,49 @@ function _regeneratorRuntime() {
       reject(record.arg);
     }
     var previousPromise;
-    this._invoke = function (method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
+    defineProperty(this, "_invoke", {
+      value: function value(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new PromiseImpl(function (resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+        return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
       }
-      return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+    });
+  }
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = "suspendedStart";
+    return function (method, arg) {
+      if ("executing" === state) throw new Error("Generator is already running");
+      if ("completed" === state) {
+        if ("throw" === method) throw arg;
+        return doneResult();
+      }
+      for (context.method = method, context.arg = arg;;) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+        if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
+          if ("suspendedStart" === state) throw state = "completed", context.arg;
+          context.dispatchException(context.arg);
+        } else "return" === context.method && context.abrupt("return", context.arg);
+        state = "executing";
+        var record = tryCatch(innerFn, self, context);
+        if ("normal" === record.type) {
+          if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        }
+        "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
+      }
     };
   }
   function maybeInvokeDelegate(delegate, context) {
@@ -71806,7 +71871,13 @@ function _regeneratorRuntime() {
       done: !0
     };
   }
-  return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
+    value: GeneratorFunctionPrototype,
+    configurable: !0
+  }), defineProperty(GeneratorFunctionPrototype, "constructor", {
+    value: GeneratorFunction,
+    configurable: !0
+  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
     var ctor = "function" == typeof genFun && genFun.constructor;
     return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
   }, exports.mark = function (genFun) {
@@ -71827,8 +71898,9 @@ function _regeneratorRuntime() {
     return this;
   }), define(Gp, "toString", function () {
     return "[object Generator]";
-  }), exports.keys = function (object) {
-    var keys = [];
+  }), exports.keys = function (val) {
+    var object = Object(val),
+      keys = [];
     for (var key in object) {
       keys.push(key);
     }

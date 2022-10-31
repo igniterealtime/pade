@@ -128,7 +128,7 @@ self.addEventListener('notificationclick', function(event) {
 				const data = {url: chrome.runtime.getURL("./index.html"), type: "popup"};
 				
 				chrome.windows.create(data, (win) => {
-					chrome.windows.update(win.id, {width: 1300, height: 900});
+					chrome.windows.update(win.id, {width: 1500, height: 900});
 				});	
 			} else {
 				event.waitUntil(
@@ -155,7 +155,7 @@ if (location.protocol == "chrome-extension:") {
 		
 		chrome.windows.create(data, (win) => {
 			chrome.storage.local.set({converseWin: win.id});			
-			chrome.windows.update(win.id, {width: 1300, height: 900});
+			chrome.windows.update(win.id, {width: 1500, height: 900});
 		});	
 	}
 
