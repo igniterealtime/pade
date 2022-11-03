@@ -38,7 +38,7 @@ this.manifest = {
         {
             "tab": i18n.get("Connection"),
             "group": i18n.get("Connection"),
-            "name": "useAutoDiscoverConnection",
+            "name": "useAutoDiscoverConn",
             "type": "checkbox",
             "label": i18n.get("Auto discover connection method")
         },		
