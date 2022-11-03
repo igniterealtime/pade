@@ -589,8 +589,12 @@ function startConverse(credential) {
 	const defaultWSServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/';
 	let wsServiceUrl = getSetting('websocketUri', defaultWSServiceUrl);	
 	
-	let discoverConnectionMethods = getSetting("useAutoDiscoverConn", false);	
-	if (wsServiceUrl.trim() == "" && boshServiceUrl.trim() == "") discoverConnectionMethods = true;
+	let discoverConnectionMethods = getSetting("useAutoDiscoverConn", false);
+	
+	if (getSetting("useWebsocket", false)) {	// hack because openfire does not register with websockets
+		if (!getSetting('boshUri') && !getSetting('websocketUri')) discoverConnectionMethods = true;
+		if (wsServiceUrl.trim() == "" && boshServiceUrl.trim() == "") discoverConnectionMethods = true;
+	}
 	
     let displayname = getSetting("displayname");	
 	
