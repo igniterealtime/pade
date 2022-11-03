@@ -582,15 +582,13 @@ function startConverse(credential) {
 
 	const domain = getSetting("domain", location.hostname);
 	const server = getSetting("server", location.host);
-	let discoverConnectionMethods = false;
+	const discoverConnectionMethods = getSetting("useAutoDiscoverConnection", false);
 
 	const defaultBoshServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/http-bind/";
 	let boshServiceUrl = getSetting("boshUri", defaultBoshServiceUrl);
-	if (boshServiceUrl.trim() == "" || boshServiceUrl == defaultBoshServiceUrl) discoverConnectionMethods = true;
 	
 	const defaultWSServiceUrl = (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/';
 	let wsServiceUrl = getSetting('websocketUri', defaultWSServiceUrl);	
-	if (wsServiceUrl.trim() == "" || wsServiceUrl == defaultWSServiceUrl) discoverConnectionMethods = true;
 	
     let displayname = getSetting("displayname");	
 	

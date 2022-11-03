@@ -38466,6 +38466,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/occupant.js */ "./src/plugins/muc-views/modals/templates/occupant.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+
 
 
 
@@ -38494,29 +38496,22 @@ class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__[
     return jid ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.vcards.get(jid) : null;
   }
   renderModal() {
-    var _this$model, _this$model2, _this$model3, _this$model3$get;
-    const model = this.model ?? this.message;
-    const jid = model === null || model === void 0 ? void 0 : model.get('jid');
-    const vcard = this.getVcard();
-    const nick = model.get('nick');
-    const occupant_id = model.get('occupant_id');
-    const role = (_this$model = this.model) === null || _this$model === void 0 ? void 0 : _this$model.get('role');
-    const affiliation = (_this$model2 = this.model) === null || _this$model2 === void 0 ? void 0 : _this$model2.get('affiliation');
-    const hats = (_this$model3 = this.model) !== null && _this$model3 !== void 0 && (_this$model3$get = _this$model3.get('hats')) !== null && _this$model3$get !== void 0 && _this$model3$get.length ? this.model.get('hats') : null;
-    return (0,_templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
-      jid,
-      vcard,
-      nick,
-      occupant_id,
-      role,
-      affiliation,
-      hats
-    });
+    return (0,_templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
   }
   getModalTitle() {
-    // eslint-disable-line class-methods-use-this
     const model = this.model ?? this.message;
     return model === null || model === void 0 ? void 0 : model.getDisplayName();
+  }
+  addToContacts() {
+    const model = this.model ?? this.message;
+    const jid = model.get('jid');
+    if (jid) {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-add-contact-modal', {
+        'model': new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__.Model({
+          jid
+        })
+      });
+    }
   }
 }
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-muc-occupant-modal', OccupantModal);
@@ -38751,40 +38746,58 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_avatar_avatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! shared/avatar/avatar.js */ "./src/shared/avatar/avatar.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  var _o$vcard, _o$vcard2;
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  var _el$model, _el$model2, _el$model3, _el$model3$get;
+  const model = el.model ?? el.message;
+  const jid = model === null || model === void 0 ? void 0 : model.get('jid');
+  const vcard = el.getVcard();
+  const nick = model.get('nick');
+  const occupant_id = model.get('occupant_id');
+  const role = (_el$model = el.model) === null || _el$model === void 0 ? void 0 : _el$model.get('role');
+  const affiliation = (_el$model2 = el.model) === null || _el$model2 === void 0 ? void 0 : _el$model2.get('affiliation');
+  const hats = (_el$model3 = el.model) !== null && _el$model3 !== void 0 && (_el$model3$get = _el$model3.get('hats')) !== null && _el$model3$get !== void 0 && _el$model3$get.length ? el.model.get('hats') : null;
+  const muc = el.model.collection.chatroom;
+  const i18n_add_to_contacts = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add to Contacts');
+  const can_see_real_jids = muc.features.get('nonanonymous') || muc.getOwnRole() === 'moderator';
+  const not_me = jid != _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid;
+  const add_to_contacts = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.contacts.get(jid).then(contact => !contact && not_me && can_see_real_jids).then(add => add ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li><button class="btn btn-primary" type="button" @click=${() => el.addToContacts()}>${i18n_add_to_contacts}</button></li>` : '');
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <div class="row">
             <div class="col-auto">
                 <converse-avatar
                     class="avatar modal-avatar"
-                    .data=${(_o$vcard = o.vcard) === null || _o$vcard === void 0 ? void 0 : _o$vcard.attributes}
-                    nonce=${(_o$vcard2 = o.vcard) === null || _o$vcard2 === void 0 ? void 0 : _o$vcard2.get('vcard_updated')}
+                    .data=${vcard === null || vcard === void 0 ? void 0 : vcard.attributes}
+                    nonce=${vcard === null || vcard === void 0 ? void 0 : vcard.get('vcard_updated')}
                     height="120" width="120"></converse-avatar>
             </div>
             <div class="col">
                 <ul class="occupant-details">
                     <li>
-                        ${o.nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${o.nick}</div>` : ''}
+                        ${nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${nick}</div>` : ''}
                     </li>
                     <li>
-                        ${o.jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${o.jid}</div>` : ''}
+                        ${jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${jid}</div>` : ''}
                     </li>
                     <li>
-                        ${o.affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${o.affiliation}</div>` : ''}
+                        ${affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${affiliation}</div>` : ''}
                     </li>
                     <li>
-                        ${o.role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${o.role}</div>` : ''}
+                        ${role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${role}</div>` : ''}
                     </li>
                     <li>
-                        ${o.hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${o.hats}</div>` : ''}
+                        ${hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${hats}</div>` : ''}
                     </li>
                     <li>
-                        ${o.occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${o.occupant_id}</div>` : ''}
+                        ${occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${occupant_id}</div>` : ''}
                     </li>
+                    ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_3__.until)(add_to_contacts, '')}
                 </ul>
             </div>
         </div>
@@ -41817,14 +41830,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/omemo/utils.js");
 
 const ConverseMixins = {
-  generateFingerprints: async function (jid) {
+  async generateFingerprints(jid) {
     const devices = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.getDevicesForContact)(jid);
     return Promise.all(devices.map(d => (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.generateFingerprint)(d)));
   },
-  getDeviceForContact: function (jid, device_id) {
+  getDeviceForContact(jid, device_id) {
     return (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.getDevicesForContact)(jid).then(devices => devices.get(device_id));
   },
-  contactHasOMEMOSupport: async function (jid) {
+  async contactHasOMEMOSupport(jid) {
     /* Checks whether the contact advertises any OMEMO-compatible devices. */
     const devices = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.getDevicesForContact)(jid);
     return devices.length > 0;
@@ -43734,9 +43747,9 @@ function tpl_user_settings_button(o) {
     </a>`;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model$vcard, _el$model$vcard2, _el$model$vcard3;
+  var _el$model$vcard, _el$model$vcard2, _el$model$vcard3, _el$model$vcard4;
   const chat_status = el.model.get('status') || 'offline';
-  const fullname = ((_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.get('fullname')) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bare_jid;
+  const fullname = ((_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.get('fullname')) || ((_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.get('nickname')) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bare_jid;
   const status_message = el.model.get('status_message') || (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("I am %1$s", (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.getPrettyStatus)(chat_status));
   const i18n_change_status = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Click to change your chat status');
   const show_settings_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_client_info') || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_adhoc_commands');
@@ -43755,8 +43768,8 @@ function tpl_user_settings_button(o) {
             <div class="controlbox-section profile d-flex">
                 <a class="show-profile" href="#" @click=${el.showProfileModal}>
                     <converse-avatar class="avatar align-self-center"
-                        .data=${(_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.attributes}
-                        nonce=${(_el$model$vcard3 = el.model.vcard) === null || _el$model$vcard3 === void 0 ? void 0 : _el$model$vcard3.get('vcard_updated')}
+                        .data=${(_el$model$vcard3 = el.model.vcard) === null || _el$model$vcard3 === void 0 ? void 0 : _el$model$vcard3.attributes}
+                        nonce=${(_el$model$vcard4 = el.model.vcard) === null || _el$model$vcard4 === void 0 ? void 0 : _el$model$vcard4.get('vcard_updated')}
                         height="40" width="40"></converse-avatar>
                 </a>
                 <span class="username w-100 align-self-center">${fullname}</span>
