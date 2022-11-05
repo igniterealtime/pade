@@ -1,4 +1,4 @@
-let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect, streamChannel;
+let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect, streamChannel, simpleView;
 const nickColors = {}
 const whitelistedPlugins = [];
 
@@ -916,12 +916,7 @@ function setupPadeRoot() {
 				
 				if (!getSetting("disablePadeStyling", false)) {						
 					setupMUCAvatars();
-					addControlFeatures();	
-
-					if (getSetting("converseSimpleView", false))
-					{
-						handleActiveConversations();
-					}	
+					addControlFeatures();		
 				}				
 				
 				if (!getSetting("disablePadeStyling", false)) {				
@@ -931,7 +926,7 @@ function setupPadeRoot() {
 					_converse.api.waitUntil('rosterContactsFetched').then(() => {
 						if (getSetting("enableRssFeeds", false)) {					
 							createFeedItem("pade-rss@" + _converse.connection.domain);
-						}
+						}						
 					});
 				}					
 
@@ -1331,6 +1326,11 @@ function addControlFeatures() {
 			location.href = "./options/index.html";
 		}, false);
 	}
+	
+	if (!simpleView && getSetting("converseSimpleView", false)) {
+		handleActiveConversations();
+		simpleView = true;
+	}	
 }
 
 function handleActiveConversations() {
