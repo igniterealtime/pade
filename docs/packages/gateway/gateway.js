@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var rssInterval;
+    var rssInterval, mastodonInterval;
     var Strophe, dayjs
 
     converse.plugins.add("gateway", {
@@ -40,11 +40,18 @@
 			
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {	
-				if (text.startsWith("RSS:")) {	
+				if (text.trim().startsWith("RSS:")) {	
 					const strings = [text.substr(4)];
 					strings.raw = strings;								
 					text.addTemplateResult(0, text.length, html(strings));
 				}
+				else
+					
+				if (text.trim().startsWith("MASTODON:")) {	
+					const strings = [text.substr(9)];
+					strings.raw = strings;								
+					text.addTemplateResult(0, text.length, html(strings));
+				}				
             });
 
             _converse.api.listen.on('chatRoomViewInitialized', function (view)
@@ -54,12 +61,12 @@
 			
             _converse.api.listen.on('chatBoxViewInitialized', function (view)
             {
+				var jid = view.model.get("jid");
+				var type = view.model.get("type");
+				console.debug("chatBoxViewInitialized", jid, type);
+					
                 if (getSetting("enableRssFeeds", false))
                 {
-                    var jid = view.model.get("jid");
-                    var type = view.model.get("type");
-                    console.debug("chatBoxViewInitialized", jid, type);
-
                     if (jid === "pade-rss@" + _converse.connection.domain)
                     {
                         if (getSetting("showRssToolbar", false)) {
@@ -70,6 +77,20 @@
                         }
                         rssChatCheck();
                     }
+				}
+				
+				if (getSetting("enableMastodon", false))
+				{
+                    if (jid === "pade-mastodon@" + _converse.connection.domain)
+                    {
+                        if (getSetting("showMastodonToolbar", false)) {
+							const textarea = view.querySelector('.chat-textarea')
+                            if (textarea) textarea.setAttribute("disabled", "true");
+                        } else {
+                            view.querySelector('.bottom-panel').style.display = "none";
+                        }
+                        mastodonRefresh();
+                    }					
                 }
             });
 
@@ -77,20 +98,30 @@
             {
                 _converse.api.waitUntil('rosterContactsFetched').then(() => {
 
-                    if (getSetting("enableRssFeeds", false))
+					window.addEventListener("unload", function ()
+					{
+						console.debug("gateway unloading all feed refreshing");
+
+						if (rssInterval) clearInterval(rssInterval);
+						if (mastodonInterval) clearInterval(mastodonInterval);
+					});
+
+                    if (getSetting("enableMastodon", false))
                     {
-                        window.addEventListener("unload", function ()
-                        {
-                            console.debug("gateway unloading all feed refreshing");
-
-                            if (rssInterval) clearInterval(rssInterval);
-                        });
-
-                        var rssFeedCheck = getSetting("rssFeedCheck", 10) * 60000;
-                        rssInterval = setInterval(rssRefresh, rssFeedCheck);
+						var mastodonCheck = getSetting("mastodonFeedCheck", 30) * 60000;
+                        mastodonInterval = setInterval(mastodonRefresh, mastodonCheck);	
 						
+						const jid = "pade-mastodon@" + _converse.connection.domain;
+                        openChat(jid, getSetting("mastodonFeedTitle", "Mastodon Feed"), ["Bots"]);		
+					}
+					
+                    if (getSetting("enableRssFeeds", false))
+                    {				
+                        var rssFeedCheck = getSetting("rssFeedCheck", 30) * 60000;
+                        rssInterval = setInterval(rssRefresh, rssFeedCheck);
+
 						const jid = "pade-rss@" + _converse.connection.domain;
-                        openChat(jid, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);
+                        openChat(jid, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);																	
                     }
                 });
             });
@@ -99,7 +130,61 @@
         }
     });		
 
-    var rssRefresh = function()
+	function mastodonRefresh()
+	{
+		mastodonFetch("/api/v1/timelines/public");
+		mastodonFetch("/api/v1/timelines/home");		
+	}
+	
+	function mastodonFetch(path)
+	{
+		console.log("gateway mastodonRefresh", path);	
+
+		const accessServer =  getSetting("mastodonAccessServer", _converse.connection.domain);
+		const mastodonServer =  getSetting("mastodonAccessUrl", "toot.igniterealtime.org");
+		const token =  getSetting("mastodonAccessToken", null);				
+		const endpoint = "https://" + mastodonServer + path + "?limit=" + getSetting("mastodonPageSize", 25);		
+        const iq = $iq({type: 'get', to: accessServer}).c('c2s', {xmlns: 'urn:xmpp:mastodon:0', endpoint, token});
+
+        _converse.connection.sendIQ(iq, function(response)
+        {
+			const from = "pade-mastodon@" + _converse.connection.domain;			
+			const posts = JSON.parse(response.querySelector("json").innerHTML);			
+						
+			posts.forEach(async function(json)
+			{	
+				if ((!json.content || json.content == "") && json.reblog?.account) {
+					json = json.reblog;		
+				}
+				
+				const user = json.account.username + "@" + _converse.connection.domain;				
+                const time = dayjs(json.created_at).format('MMM DD YYYY HH:mm:ss');	
+				const msgId = json.id;
+				const title = json.account.display_name.trim() == "" ? json.account.username : json.account.display_name;
+				const avatar = json.account.avatar_static;				
+				const header = '<img width=48 style="border-radius: var(--avatar-border-radius)" src=' + avatar + '/><br/><a target="_blank" href="' + json.url + '">' + title + ' - ' + time + '</a><br/>'				
+				let footer = "";
+				let cardImage = "";
+
+				if (json.card) {
+					if (json.card.image) cardImage = '<img src="' + json.card.image + '"/>';				
+					footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href="${json.card.url}">${json.card.title}</a></p>`
+				}
+				
+				const body = 'MASTODON:' + header + json.content + footer;			
+				const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from: from, time};  
+				//const attrs = {json, body, message: body, id: msgId, msgId, type: 'groupchat', from_muc: user, from: user + '/' + json.account.username, nick: title, time, avatar};				
+				chatbox = await _converse.api.chats.get("pade-mastodon@" + _converse.connection.domain, {}, true);
+				await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));						
+			})			
+			return true;
+			
+        }, function (error) {
+            console.error('mastodonRefresh', error);
+        });		
+	}
+
+    function rssRefresh()
     {
         rssChatCheck();
 
@@ -186,7 +271,7 @@
                                 //console.debug("rssCheckEach pre", post.title, post);
 
                                 var stamp = dayjs(post.published_from_feed).format('MMM DD YYYY HH:mm:ss');
-                                var delay = dayjs(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');;
+                                var delay = dayjs(post.published_from_feed).format('YYYY-MM-DDTHH:mm:ssZ');
 
                                 var msgId = prefix + btoa(post.guid);
 

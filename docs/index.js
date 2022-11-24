@@ -483,7 +483,7 @@ function loadPlugins() {
             loadJS("./packages/fastpath/fastpath.js");
         }
 		
-        if (getSetting("enableRssFeeds", false))
+        if (getSetting("enableRssFeeds", false) || getSetting("enableMastodon", false))
         {
             whitelistedPlugins.push("gateway");
 			loadJS("./packages/gateway/rss-library.js");		
@@ -916,10 +916,7 @@ function setupPadeRoot() {
 				
 				if (!getSetting("disablePadeStyling", false)) {						
 					setupMUCAvatars();
-					addControlFeatures();		
-				}				
-				
-				if (!getSetting("disablePadeStyling", false)) {				
+					addControlFeatures();					
 					setupTimer();
 					addSelfBot();
 					
@@ -1901,8 +1898,9 @@ function getRandomColor(nickname) {
 }
 
 function createAvatar(nickname, width, height, font) {
-	if (_converse.vcards)
-	{
+	if (window.localStorage["pade.avatar." + nickname]) return window.localStorage["pade.avatar." + nickname];
+	
+	if (_converse.vcards) {
 		let vcard = _converse.vcards.findWhere({'jid': nickname});
 		if (!vcard) vcard = _converse.vcards.findWhere({'nickname': nickname});
 

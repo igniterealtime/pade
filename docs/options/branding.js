@@ -1,11 +1,4 @@
 var branding = {
-    enableBeeKeeper         : {disable: true, value: false},
-    beeKeeperTitle          : {disable: true},
-    beeKeeperTopic          : {disable: true},
-    beeKeeperUrl            : {disable: true},
-    beeFeedCheck            : {disable: true},
-    beeKeeperPageSize       : {disable: true},
-	
     enableDirectorySearch   : {disable: false, value: false},
     audioOnly               : {disable: true},
     blastDescription        : {disable: true},

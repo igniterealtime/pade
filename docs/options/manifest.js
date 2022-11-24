@@ -1735,39 +1735,55 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Feeds"),
-            "group": i18n.get("BeeKeeper"),
-            "name": "enableBeeKeeper",
+            "group": i18n.get("Mastodon"),
+            "name": "enableMastodon",
             "type": "checkbox",
-            "label": i18n.get("Enable BeeKeeper posts feed")
+            "label": i18n.get("Enable Mastodon posts feed")
         },
         {
             "tab": i18n.get("Feeds"),
-            "group": i18n.get("BeeKeeper"),
-            "name": "beeKeeperTitle",
+            "group": i18n.get("Mastodon"),
+            "name": "showMastodonToolbar",
+            "type": "checkbox",
+            "label": i18n.get("Show Chatbox Toolbar")
+        },		
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("Mastodon"),
+            "name": "mastodonAccessServer",
             "type": "text",
-            "label": i18n.get("Title"),
-            "text": i18n.get("BeeKeeper"),
-        },
+            "label": i18n.get("Access Server"),
+            "text": i18n.get("localhost"),
+        },	
         {
             "tab": i18n.get("Feeds"),
-            "group": i18n.get("BeeKeeper"),
-            "name": "beeKeeperTopic",
+            "group": i18n.get("Mastodon"),
+            "name": "mastodonAccessUrl",
             "type": "text",
-            "label": i18n.get("Default topic name"),
-            "text": i18n.get("post"),
-        },
+            "label": i18n.get("Access URL"),
+            "text": i18n.get("toot.igniterealtime.org")	
+        },			
         {
             "tab": i18n.get("Feeds"),
-            "group": i18n.get("BeeKeeper"),
-            "name": "beeKeeperUrl",
+            "group": i18n.get("Mastodon"),
+            "name": "mastodonAccessToken",
             "type": "text",
-            "label": i18n.get("Access Url"),
-            "text": i18n.get("https://playgroundapi.industrioushive.com"),
-        },
+            "label": i18n.get("Access Token"),
+            "text": i18n.get(""),
+            "masked": true			
+        },	
         {
             "tab": i18n.get("Feeds"),
-            "group": i18n.get("BeeKeeper"),
-            "name": "beeFeedCheck",
+            "group": i18n.get("Mastodon"),
+            "name": "mastodonFeedTitle",
+            "type": "text",
+            "label": i18n.get("Default Feed Title"),
+            "text": i18n.get("Mastodon Feed"),
+        },		
+        {
+            "tab": i18n.get("Feeds"),
+            "group": i18n.get("Mastodon"),
+            "name": "mastodonFeedCheck",
             "type": "slider",
             "label": i18n.get("Check interval (mins)"),
             "max": 60,
@@ -1776,8 +1792,8 @@ this.manifest = {
         },
         {
             "tab": i18n.get("Feeds"),
-            "group": i18n.get("BeeKeeper"),
-            "name": "beeKeeperPageSize",
+            "group": i18n.get("Mastodon"),
+            "name": "mastodonPageSize",
             "type": "slider",
             "label": i18n.get("Messages Page Size"),
             "max": 125,
@@ -1786,7 +1802,12 @@ this.manifest = {
         },
     ],
     "alignment": [
-        [   "beeKeeperTitle", "beeKeeperUrl"],
+        [   
+			"mastodonAccessToken", 
+			"mastodonAccessServer", 
+			"mastodonFeedTitle",
+			"mastodonAccessUrl"
+		],
         [
             "server",
             "domain"

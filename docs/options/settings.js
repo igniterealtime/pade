@@ -560,7 +560,7 @@ function doDefaults(background)
     // most people don't want this
     //setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 30);
-    setDefaultSetting("beeFeedCheck", 10);
+    setDefaultSetting("mastodonFeedCheck", 30);
     setDefaultSetting("beeKeeperPageSize", 25);
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("moderatorTools", true);
