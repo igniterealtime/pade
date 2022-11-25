@@ -561,7 +561,7 @@ function doDefaults(background)
     //setDefaultSetting("enableRssFeeds", true);
     setDefaultSetting("rssFeedCheck", 30);
     setDefaultSetting("mastodonFeedCheck", 30);
-    setDefaultSetting("beeKeeperPageSize", 25);
+    setDefaultSetting("mastodonPageSize", 25);
     setDefaultSetting("alwaysShowOccupants", true);
     setDefaultSetting("moderatorTools", true);
     setDefaultSetting("converseAutoCompleteFilter", "contains");

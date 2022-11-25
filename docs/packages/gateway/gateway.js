@@ -166,7 +166,7 @@
 				const avatar = json.account.avatar_static;	
 				const timeAgo = timeago.format(new Date(json.created_at));
 				const timeAgoSpan = "<span class=chat-msg__time_span title='" + time + "' datetime='" + json.created_at + "'>" + timeAgo + '</span>';
-				const header = "<img width=48 style='border-radius: var(--avatar-border-radius)' src='" + avatar + "'/><br/><b>" + title + ' - ' + timeAgoSpan + "</b> - <a href='" + json.url + "'>Reply<br/>"			
+				const header = "<img width=48 style='border-radius: var(--avatar-border-radius)' src='" + avatar + "'/><br/><b>" + title + '</b> - ' + timeAgoSpan + " - <a href='" + json.url + "'>Reply<br/>"			
 				let footer = "";
 				let cardImage = "";
 
@@ -176,9 +176,9 @@
 				}
 				
 				const body = 'MASTODON:' + header + json.content + footer;			
-				const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from: from, time};  
+				const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time, is_unstyled: true};  
 				//const attrs = {json, body, message: body, id: msgId, msgId, type: 'groupchat', from_muc: user, from: user + '/' + json.account.username, nick: title, time, avatar};				
-				chatbox = await _converse.api.chats.get("pade-mastodon@" + _converse.connection.domain, {}, true);
+				chatbox = await _converse.api.chats.get(from, {}, true);
 				await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));						
 			})			
 			return true;
