@@ -30,7 +30,7 @@
 							const message_text = textarea.value.trim();
 							textarea.value = '';					
 							textarea.focus();
-							console.log("gateway - typed text " + message_text);
+							console.debug("gateway - typed text " + message_text);
 						}
 					}
 				}
@@ -138,7 +138,7 @@
 	
 	function mastodonFetch(path)
 	{
-		console.log("gateway mastodonRefresh", path);	
+		console.debug("gateway mastodonRefresh", path);	
 
 		const accessServer =  getSetting("mastodonAccessServer", _converse.connection.domain);
 		const mastodonServer =  getSetting("mastodonAccessUrl", "toot.igniterealtime.org");
@@ -153,6 +153,8 @@
 						
 			posts.forEach(async function(json)
 			{	
+				console.debug("gateway mastodonRefresh", path);			
+				
 				if ((!json.content || json.content == "") && json.reblog?.account) {
 					json = json.reblog;		
 				}
@@ -161,14 +163,16 @@
                 const time = dayjs(json.created_at).format('MMM DD YYYY HH:mm:ss');	
 				const msgId = json.id;
 				const title = json.account.display_name.trim() == "" ? json.account.username : json.account.display_name;
-				const avatar = json.account.avatar_static;				
-				const header = '<img width=48 style="border-radius: var(--avatar-border-radius)" src=' + avatar + '/><br/><a target="_blank" href="' + json.url + '">' + title + ' - ' + time + '</a><br/>'				
+				const avatar = json.account.avatar_static;	
+				const timeAgo = timeago.format(new Date(json.created_at));
+				const timeAgoSpan = "<span class=chat-msg__time_span title='" + time + "' datetime='" + json.created_at + "'>" + timeAgo + '</span>';
+				const header = "<img width=48 style='border-radius: var(--avatar-border-radius)' src='" + avatar + "'/><br/><b>" + title + ' - ' + timeAgoSpan + "</b> - <a href='" + json.url + "'>Reply<br/>"			
 				let footer = "";
 				let cardImage = "";
 
 				if (json.card) {
 					if (json.card.image) cardImage = '<img src="' + json.card.image + '"/>';				
-					footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href="${json.card.url}">${json.card.title}</a></p>`
+					footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href='${json.card.url}'>${json.card.title}</a></p>`
 				}
 				
 				const body = 'MASTODON:' + header + json.content + footer;			
