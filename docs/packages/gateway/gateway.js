@@ -160,7 +160,7 @@
 				}
 				
 				const user = json.account.username + "@" + _converse.connection.domain;				
-                const time = dayjs(json.created_at).format('MMM DD YYYY HH:mm:ss');	
+				const time = dayjs(json.created_at).format('YYYY-MM-DDTHH:mm:ssZ');
 				const msgId = json.id;
 				const title = json.account.display_name.trim() == "" ? json.account.username : json.account.display_name;
 				const avatar = json.account.avatar_static;	
