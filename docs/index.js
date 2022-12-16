@@ -482,12 +482,18 @@ function loadPlugins() {
             whitelistedPlugins.push("fastpath");
             loadJS("./packages/fastpath/fastpath.js");
         }
-		
-        if (getSetting("enableRssFeeds", false) || getSetting("enableMastodon", false))
+
+        if (getSetting("enableRssFeeds", false))
         {
             whitelistedPlugins.push("gateway");
 			loadJS("./packages/gateway/rss-library.js");		
             loadJS("./packages/gateway/gateway.js");
+        }
+		
+        if (getSetting("enableMastodon", false))
+        {
+            whitelistedPlugins.push("mastodon");
+			loadJS("./packages/mastodon/mastodon.js");		
         }
 		
         if (getSetting("useMarkdown", true))
@@ -775,6 +781,14 @@ function startConverse(credential) {
 		jitsimeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),
 		jitsimeet_modal: !getSetting("converseEmbedOfMeet", true),		
 		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
+		mastodon: {
+			url: getSetting("mastodonAccessUrl", "https://toot.igniterealtime.org"), 
+			token: getSetting("mastodonAccessToken", ""),
+			toolbar: getSetting("showMastodonToolbar", true),
+			limit: getSetting("mastodonPageSize", 25),	
+			check: getSetting("mastodonFeedCheck", 30),	
+			title: getSetting("mastodonFeedTitle", "Mastodon Feed")
+		},		
 		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableGalene", false), 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
 		whitelisted_plugins: whitelistedPlugins		

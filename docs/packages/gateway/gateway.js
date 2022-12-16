@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var rssInterval, mastodonInterval;
+    var rssInterval;
     var Strophe, dayjs
 
     converse.plugins.add("gateway", {
@@ -44,13 +44,6 @@
 					const strings = [text.substr(4)];
 					strings.raw = strings;								
 					text.addTemplateResult(0, text.length, html(strings));
-				}
-				else
-					
-				if (text.trim().startsWith("MASTODON:")) {	
-					const strings = [text.substr(9)];
-					strings.raw = strings;								
-					text.addTemplateResult(0, text.length, html(strings));
 				}				
             });
 
@@ -78,20 +71,6 @@
                         rssChatCheck();
                     }
 				}
-				
-				if (getSetting("enableMastodon", false))
-				{
-                    if (jid === "pade-mastodon@" + _converse.connection.domain)
-                    {
-                        if (getSetting("showMastodonToolbar", false)) {
-							const textarea = view.querySelector('.chat-textarea')
-                            if (textarea) textarea.setAttribute("disabled", "true");
-                        } else {
-                            view.querySelector('.bottom-panel').style.display = "none";
-                        }
-                        mastodonRefresh();
-                    }					
-                }
             });
 
             _converse.api.listen.on('connected', function()
@@ -103,17 +82,7 @@
 						console.debug("gateway unloading all feed refreshing");
 
 						if (rssInterval) clearInterval(rssInterval);
-						if (mastodonInterval) clearInterval(mastodonInterval);
 					});
-
-                    if (getSetting("enableMastodon", false))
-                    {
-						var mastodonCheck = getSetting("mastodonFeedCheck", 30) * 60000;
-                        mastodonInterval = setInterval(mastodonRefresh, mastodonCheck);	
-						
-						const jid = "pade-mastodon@" + _converse.connection.domain;
-                        openChat(jid, getSetting("mastodonFeedTitle", "Mastodon Feed"), ["Bots"]);		
-					}
 					
                     if (getSetting("enableRssFeeds", false))
                     {				
@@ -129,64 +98,6 @@
             console.log("gateway plugin is ready");
         }
     });		
-
-	function mastodonRefresh()
-	{
-		mastodonFetch("/api/v1/timelines/public");
-		mastodonFetch("/api/v1/timelines/home");		
-	}
-	
-	function mastodonFetch(path)
-	{
-		console.debug("gateway mastodonRefresh", path);	
-
-		const accessServer =  getSetting("mastodonAccessServer", _converse.connection.domain);
-		const mastodonServer =  getSetting("mastodonAccessUrl", "toot.igniterealtime.org");
-		const token =  getSetting("mastodonAccessToken", null);				
-		const endpoint = "https://" + mastodonServer + path + "?limit=" + getSetting("mastodonPageSize", 25);		
-        const iq = $iq({type: 'get', to: accessServer}).c('c2s', {xmlns: 'urn:xmpp:mastodon:0', endpoint, token});
-
-        _converse.connection.sendIQ(iq, function(response)
-        {
-			const from = "pade-mastodon@" + _converse.connection.domain;			
-			const posts = JSON.parse(response.querySelector("json").innerHTML);			
-						
-			posts.forEach(async function(json)
-			{	
-				console.debug("gateway mastodonRefresh", path);			
-				
-				if ((!json.content || json.content == "") && json.reblog?.account) {
-					json = json.reblog;		
-				}
-				
-				const user = json.account.username + "@" + _converse.connection.domain;				
-				const time = dayjs(json.created_at).format('YYYY-MM-DDTHH:mm:ssZ');
-				const msgId = json.id;
-				const title = json.account.display_name.trim() == "" ? json.account.username : json.account.display_name;
-				const avatar = json.account.avatar_static;	
-				const timeAgo = timeago.format(new Date(json.created_at));
-				const timeAgoSpan = "<span class=chat-msg__time_span title='" + time + "' datetime='" + json.created_at + "'>" + timeAgo + '</span>';
-				const header = "<img width=48 style='border-radius: var(--avatar-border-radius)' src='" + avatar + "'/><br/><b>" + title + '</b> - ' + timeAgoSpan + " - <a href='" + json.url + "'>Reply<br/>"			
-				let footer = "";
-				let cardImage = "";
-
-				if (json.card) {
-					if (json.card.image) cardImage = '<img src="' + json.card.image + '"/>';				
-					footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href='${json.card.url}'>${json.card.title}</a></p>`
-				}
-				
-				const body = 'MASTODON:' + header + json.content + footer;			
-				const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time, is_unstyled: true};  
-				//const attrs = {json, body, message: body, id: msgId, msgId, type: 'groupchat', from_muc: user, from: user + '/' + json.account.username, nick: title, time, avatar};				
-				chatbox = await _converse.api.chats.get(from, {}, true);
-				await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));						
-			})			
-			return true;
-			
-        }, function (error) {
-            console.error('mastodonRefresh', error);
-        });		
-	}
 
     function rssRefresh()
     {

@@ -1750,14 +1750,6 @@ this.manifest = {
         {
             "tab": i18n.get("Feeds"),
             "group": i18n.get("Mastodon"),
-            "name": "mastodonAccessServer",
-            "type": "text",
-            "label": i18n.get("Access Server"),
-            "text": i18n.get("localhost"),
-        },	
-        {
-            "tab": i18n.get("Feeds"),
-            "group": i18n.get("Mastodon"),
             "name": "mastodonAccessUrl",
             "type": "text",
             "label": i18n.get("Access URL"),
