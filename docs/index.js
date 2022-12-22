@@ -1932,7 +1932,7 @@ function createAvatar(nickname, width, height, font) {
 	canvas.style.display = 'none';
 	canvas.width = width;
 	canvas.height = height;
-	document.body.appendChild(canvas);
+
 	var context = canvas.getContext('2d');
 	context.fillStyle = getRandomColor(nickname);
 	context.fillRect(0, 0, canvas.width, canvas.height);
@@ -1971,7 +1971,6 @@ function createAvatar(nickname, width, height, font) {
 		context.fillText(initials.toUpperCase(), width / 2, (height - metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2 + metrics.actualBoundingBoxAscent);
 
 		var data = canvas.toDataURL();
-		document.body.removeChild(canvas);
 	}
 
 	return canvas.toDataURL();
@@ -2012,11 +2011,11 @@ function openWebAppsWindow(url, state, width, height) {
 			chrome.windows.create(data, function (win)
 			{
 				pade.webAppsWindow[url] = win;
-				chrome.windows.update(pade.webAppsWindow[url].id, {focused: true});				
+				chrome.windows.update(pade.webAppsWindow[url].id, {focused: true, width, height});				
 			});
 
 		} else {
-			chrome.windows.update(pade.webAppsWindow[url].id, {focused: true});
+			chrome.windows.update(pade.webAppsWindow[url].id, {focused: true, width, height});
 		}
 	
 	} else open(url, url)
