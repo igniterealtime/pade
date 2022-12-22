@@ -19366,18 +19366,32 @@ const {
         }
         if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities === undefined) {
           // Happens during tests when disco lookups happen asynchronously after teardown.
-          const msg = `Tried to look up entity ${jid} but _converse.disco_entities has been torn down`;
-          _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(msg);
+          _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`Tried to look up entity ${jid} but _converse.disco_entities has been torn down`);
           return;
         }
         const entity = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities.get(jid);
         if (entity || !create) {
           return entity;
         }
-        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.create(jid);
+        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.create({
+          jid
+        });
       },
       /**
-       * Create a new disco entity. It's identity and features
+       * Return any disco items advertised on this entity
+       *
+       * @method api.disco.entities.items
+       * @param {string} jid The Jabber ID of the entity for which we want to fetch items
+       * @example api.disco.entities.items(jid);
+       */
+      items(jid) {
+        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities.filter(e => {
+          var _e$get;
+          return (_e$get = e.get('parent_jids')) === null || _e$get === void 0 ? void 0 : _e$get.includes(jid);
+        });
+      },
+      /**
+       * Create a new  disco entity. It's identity and features
        * will automatically be fetched from cache or from the
        * XMPP server.
        *
@@ -19385,16 +19399,17 @@ const {
        * `ignore_cache: true` in the options parameter.
        *
        * @method api.disco.entities.create
-       * @param {string} jid The Jabber ID of the entity
-       * @param {object} [options] Additional options
+       * @param {object} data
+       * @param {string} data.jid - The Jabber ID of the entity
+       * @param {string} data.parent_jid - The Jabber ID of the parent entity
+       * @param {string} data.name
+       * @param {object} [options] - Additional options
        * @param {boolean} [options.ignore_cache]
        *     If true, fetch all features from the XMPP server instead of restoring them from cache
-       * @example _converse.api.disco.entities.create(jid, {'ignore_cache': true});
+       * @example _converse.api.disco.entities.create({ jid }, {'ignore_cache': true});
        */
-      create(jid, options) {
-        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities.create({
-          'jid': jid
-        }, options);
+      create(data, options) {
+        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities.create(data, options);
       }
     },
     /**
@@ -19420,21 +19435,45 @@ const {
        * api.disco.features.get(Strophe.NS.MAM, _converse.bare_jid);
        */
       async get(feature, jid) {
-        if (!jid) {
-          throw new TypeError('You need to provide an entity JID');
-        }
-        await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.waitUntil('discoInitialized');
-        let entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.get(jid, true);
+        if (!jid) throw new TypeError('You need to provide an entity JID');
+        const entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.get(jid, true);
         if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities === undefined && !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.connection.connected()) {
           // Happens during tests when disco lookups happen asynchronously after teardown.
-          const msg = `Tried to get feature ${feature} for ${jid} but _converse.disco_entities has been torn down`;
-          _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(msg);
-          return;
+          _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`Tried to get feature ${feature} for ${jid} but _converse.disco_entities has been torn down`);
+          return [];
         }
-        entity = await entity.waitUntilFeaturesDiscovered;
-        const promises = [...entity.items.map(i => i.hasFeature(feature)), entity.hasFeature(feature)];
+        const promises = [entity.getFeature(feature), ..._converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.items(jid).map(i => i.getFeature(feature))];
         const result = await Promise.all(promises);
         return result.filter(lodash_es_isObject__WEBPACK_IMPORTED_MODULE_3__["default"]);
+      },
+      /**
+       * Returns true if an entity with the given JID, or if one of its
+       * associated items, supports a given feature.
+       *
+       * @method api.disco.features.has
+       * @param {string} feature The feature that might be
+       *     supported. In the XML stanza, this is the `var`
+       *     attribute of the `<feature>` element. For
+       *     example: `http://jabber.org/protocol/muc`
+       * @param {string} jid The JID of the entity
+       *     (and its associated items) which should be queried
+       * @returns {Promise} A promise which resolves with a boolean
+       * @example
+       *      api.disco.features.has(Strophe.NS.MAM, _converse.bare_jid);
+       */
+      async has(feature, jid) {
+        if (!jid) throw new TypeError('You need to provide an entity JID');
+        const entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.get(jid, true);
+        if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities === undefined && !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.connection.connected()) {
+          // Happens during tests when disco lookups happen asynchronously after teardown.
+          _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`Tried to check if ${jid} supports feature ${feature}`);
+          return false;
+        }
+        if (await entity.getFeature(feature)) {
+          return true;
+        }
+        const result = await Promise.all(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.items(jid).map(i => i.getFeature(feature)));
+        return result.map(lodash_es_isObject__WEBPACK_IMPORTED_MODULE_3__["default"]).includes(true);
       }
     },
     /**
@@ -19455,9 +19494,8 @@ const {
      *     // The feature is not supported
      * }
      */
-    async supports(feature, jid) {
-      const features = (await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.features.get(feature, jid)) || [];
-      return features.length > 0;
+    supports(feature, jid) {
+      return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.features.has(feature, jid);
     },
     /**
      * Refresh the features, fields and identities associated with a
@@ -19484,7 +19522,9 @@ const {
         entity.queryInfo();
       } else {
         // Create it if it doesn't exist
-        entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.create(jid, {
+        entity = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.entities.create({
+          jid
+        }, {
           'ignore_cache': true
         });
       }
@@ -19656,7 +19696,7 @@ const {
  */
 const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__.Model.extend({
   idAttribute: 'jid',
-  async initialize(_, options) {
+  initialize(_, options) {
     this.waitUntilFeaturesDiscovered = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_5__.getOpenPromise)();
     this.dataforms = new _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_2__.Collection();
     let id = `converse.dataforms-${this.get('jid')}`;
@@ -19669,13 +19709,6 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
     id = `converse.fields-${this.get('jid')}`;
     this.fields.browserStorage = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.createStore(id, 'session');
     this.listenTo(this.fields, 'add', this.onFieldAdded);
-    this.items = new _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.DiscoEntities();
-    id = `converse.disco-items-${this.get('jid')}`;
-    this.items.browserStorage = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.createStore(id, 'session');
-    await new Promise(f => this.items.fetch({
-      'success': f,
-      'error': f
-    }));
     this.identities = new _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_2__.Collection();
     id = `converse.identities-${this.get('jid')}`;
     this.identities.browserStorage = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.createStore(id, 'session');
@@ -19700,10 +19733,10 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
    * Returns a Promise which resolves with a map indicating
    * whether a given feature is supported.
    * @private
-   * @method _converse.DiscoEntity#hasFeature
+   * @method _converse.DiscoEntity#getFeature
    * @param { String } feature - The feature that might be supported.
    */
-  async hasFeature(feature) {
+  async getFeature(feature) {
     await this.waitUntilFeaturesDiscovered;
     if (this.features.findWhere({
       'var': feature
@@ -19767,19 +19800,23 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
   },
   onDiscoItems(stanza) {
     sizzle__WEBPACK_IMPORTED_MODULE_1___default()(`query[xmlns="${Strophe.NS.DISCO_ITEMS}"] item`, stanza).forEach(item => {
-      if (item.getAttribute("node")) {
+      if (item.getAttribute('node')) {
         // XXX: Ignore nodes for now.
         // See: https://xmpp.org/extensions/xep-0030.html#items-nodes
         return;
       }
       const jid = item.getAttribute('jid');
-      if (this.items.get(jid) === undefined) {
-        const entities = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.disco_entities;
-        const entity = entities.get(jid) || entities.create({
-          jid,
-          name: item.getAttribute('name')
+      const entity = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.disco_entities.get(jid);
+      if (entity) {
+        entity.set({
+          parent_jids: [this.get('jid')]
         });
-        this.items.create(entity);
+      } else {
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.disco.entities.create({
+          jid,
+          'parent_jids': [this.get('jid')],
+          'name': item.getAttribute('name')
+        });
       }
     });
   },
@@ -19794,7 +19831,7 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
     const stanza = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.disco.items(this.get('jid'));
     this.onDiscoItems(stanza);
   },
-  onInfo(stanza) {
+  async onInfo(stanza) {
     Array.from(stanza.querySelectorAll('identity')).forEach(identity => {
       this.identities.create({
         'category': identity.getAttribute('category'),
@@ -19814,7 +19851,7 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
       this.dataforms.create(data);
     });
     if (stanza.querySelector(`feature[var="${Strophe.NS.DISCO_ITEMS}"]`)) {
-      this.queryForItems();
+      await this.queryForItems();
     }
     Array.from(stanza.querySelectorAll('feature')).forEach(feature => {
       this.features.create({
@@ -19995,8 +20032,10 @@ async function initializeDisco() {
   const collection = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities.fetchEntities();
   if (collection.length === 0 || !collection.get(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.domain)) {
     // If we don't have an entity for our own XMPP server, create one.
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities.create({
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.disco.entities.create({
       'jid': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.domain
+    }, {
+      'ignore_cache': true
     });
   }
   /**
@@ -40326,15 +40365,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _occupant_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./occupant.js */ "./src/plugins/muc-views/templates/occupant.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _occupant_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./occupant.js */ "./src/plugins/muc-views/templates/occupant.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit/directives/repeat.js */ "./node_modules/lit/directives/repeat.js");
+
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const i18n_participants = o.occupants.length === 1 ? (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Participant') : (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Participants');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <div class="occupants-header">
             <div class="occupants-header--title">
                 <span class="occupants-heading">${o.occupants.length} ${i18n_participants}</span>
@@ -40344,7 +40385,7 @@ __webpack_require__.r(__webpack_exports__);
             </div>
         </div>
         <div class="dragresize dragresize-occupants-left"></div>
-        <ul class="occupant-list">${o.occupants.map(occ => (0,_occupant_js__WEBPACK_IMPORTED_MODULE_2__["default"])(occ, o))}</ul>
+        <ul class="occupant-list">${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_3__.repeat)(o.occupants, occ => occ.get('jid'), occ => (0,_occupant_js__WEBPACK_IMPORTED_MODULE_0__["default"])(occ, o))}</ul>
     `;
 });
 
@@ -45963,7 +46004,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/rosterview/utils.js");
+/* harmony import */ var lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit/directives/repeat.js */ "./node_modules/lit/directives/repeat.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/rosterview/utils.js");
+
 
 
 
@@ -46015,11 +46058,11 @@ function renderContact(contact) {
   const collapsed = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.get('collapsed_groups');
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
         <div class="roster-group" data-group="${o.name}">
-            <a href="#" class="list-toggle group-toggle controlbox-padded" title="${i18n_title}" @click=${ev => (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.toggleGroup)(ev, o.name)}>
+            <a href="#" class="list-toggle group-toggle controlbox-padded" title="${i18n_title}" @click=${ev => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.toggleGroup)(ev, o.name)}>
                 <converse-icon color="var(--chat-head-color-dark)" size="1em" class="fa ${collapsed.includes(o.name) ? 'fa-caret-right' : 'fa-caret-down'}"></converse-icon> ${o.name}
             </a>
             <ul class="items-list roster-group-contacts ${collapsed.includes(o.name) ? 'collapsed' : ''}" data-group="${o.name}">
-                ${o.contacts.map(renderContact)}
+                ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(o.contacts, c => c.get('jid'), renderContact)}
             </ul>
         </div>`;
 });
@@ -46120,19 +46163,16 @@ __webpack_require__.r(__webpack_exports__);
                     <converse-icon class="fa fa-user-plus right" size="1.25em"></converse-icon>
                 </a>` : ''}
         </div>
+
         <div class="list-container roster-contacts ${is_closed ? 'hidden' : ''}">
             <converse-roster-filter @update=${() => el.requestUpdate()}></converse-roster-filter>
             ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(groupnames, n => n, name => {
     const contacts = contacts_map[name].filter(c => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.shouldShowContact)(c, name));
     contacts.sort(_converse_headless_plugins_roster_utils_js__WEBPACK_IMPORTED_MODULE_3__.contactsComparator);
-    if (contacts.length) {
-      return (0,_group_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
-        'contacts': contacts,
-        'name': name
-      });
-    } else {
-      return '';
-    }
+    return contacts.length ? (0,_group_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+      contacts,
+      name
+    }) : '';
   })}
         </div>
     `;
