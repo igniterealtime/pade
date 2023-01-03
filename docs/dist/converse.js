@@ -772,8 +772,7 @@ Object.assign(Collection.prototype, _events_js__WEBPACK_IMPORTED_MODULE_1__.Even
   },
   // Define how to uniquely identify models in the collection.
   modelId: function (attrs) {
-    var _this$model$prototype;
-    return attrs[((_this$model$prototype = this.model.prototype) === null || _this$model$prototype === void 0 ? void 0 : _this$model$prototype.idAttribute) || 'id'];
+    return attrs[this.model.prototype?.idAttribute || 'id'];
   },
   // Get an iterator of all models in this collection.
   values: function () {
@@ -2923,8 +2922,7 @@ class Storage {
     }
   }
   flush() {
-    var _this$store$debounced;
-    return (_this$store$debounced = this.store.debouncedSetItems) === null || _this$store$debounced === void 0 ? void 0 : _this$store$debounced.flush();
+    return this.store.debouncedSetItems?.flush();
   }
   async clear() {
     await this.store.removeItem(this.name).catch(e => console.error(e));
@@ -3076,7 +3074,7 @@ class Storage {
     /* Return the array of all models currently in storage.
      */
     const keys = await this.store.getItem(this.name);
-    if (keys !== null && keys !== void 0 && keys.length) {
+    if (keys?.length) {
       const items = await this.store.getItems(keys);
       return Object.values(items);
     }
@@ -6028,7 +6026,7 @@ function mergebounce(func, wait) {
   }
   function concatArrays(objValue, srcValue) {
     if (Array.isArray(objValue) && Array.isArray(srcValue)) {
-      if (options !== null && options !== void 0 && options.dedupeArrays) {
+      if (options?.dedupeArrays) {
         return objValue.concat(srcValue.filter(i => objValue.indexOf(i) === -1));
       } else {
         return objValue.concat(srcValue);
@@ -6036,12 +6034,11 @@ function mergebounce(func, wait) {
     }
   }
   function mergeArguments(args) {
-    var _lastArgs;
-    if ((_lastArgs = lastArgs) !== null && _lastArgs !== void 0 && _lastArgs.length) {
+    if (lastArgs?.length) {
       if (!args.length) {
         return lastArgs;
       }
-      if (options !== null && options !== void 0 && options.concatArrays || options !== null && options !== void 0 && options.dedupeArrays) {
+      if (options?.concatArrays || options?.dedupeArrays) {
         return (0,lodash_es_mergeWith_js__WEBPACK_IMPORTED_MODULE_4__["default"])(lastArgs, args, concatArrays);
       } else {
         return (0,lodash_es_merge_js__WEBPACK_IMPORTED_MODULE_5__["default"])(lastArgs, args);
@@ -6219,12 +6216,10 @@ class PluginSocket {
   // made pluggable), then no error will be thrown if any of these plugins aren't
   // available.
   loadPluginDependencies(plugin) {
-    var _plugin$dependencies;
-    (_plugin$dependencies = plugin.dependencies) === null || _plugin$dependencies === void 0 ? void 0 : _plugin$dependencies.forEach(name => {
+    plugin.dependencies?.forEach(name => {
       const dep = this.plugins[name];
       if (dep) {
-        var _dep$dependencies;
-        if ((_dep$dependencies = dep.dependencies) !== null && _dep$dependencies !== void 0 && _dep$dependencies.includes(plugin.__name__)) {
+        if (dep.dependencies?.includes(plugin.__name__)) {
           /* FIXME: circular dependency checking is only one level deep. */
           throw "Found a circular dependency between the plugins \"" + plugin.__name__ + "\" and \"" + name + "\"";
         }
@@ -6267,7 +6262,6 @@ class PluginSocket {
   // `initializePlugin` applies the overrides (if any) defined on all
   // the registered plugins and then calls the initialize method of the plugin
   initializePlugin(plugin) {
-    var _plugin$enabled;
     if (!Object.keys(this.allowed_plugins).includes(plugin.__name__)) {
       /* Don't initialize disallowed plugins. */
       return;
@@ -6278,7 +6272,7 @@ class PluginSocket {
       */
       return;
     }
-    if (typeof plugin.enabled === 'boolean' && plugin.enabled || (_plugin$enabled = plugin.enabled) !== null && _plugin$enabled !== void 0 && _plugin$enabled.call(plugin, this.plugged) || plugin.enabled == null) {
+    if (typeof plugin.enabled === 'boolean' && plugin.enabled || plugin.enabled?.(this.plugged) || plugin.enabled == null) {
       // isNil
 
       Object.assign(plugin, this.properties);
@@ -8209,8 +8203,7 @@ const Strophe = {
    */
   log(level, msg) {
     if (level === this.LogLevel.FATAL) {
-      var _console;
-      (_console = console) === null || _console === void 0 ? void 0 : _console.error(msg);
+      console?.error(msg);
     }
   },
   /** Function: debug
@@ -11287,13 +11280,12 @@ const scram = {
    * On failure, returns connection._sasl_failure_cb();
    */
   async scramResponse(connection, challenge, hashName, hashBits) {
-    var _connection$pass, _connection$pass2, _connection$pass3;
     const cnonce = connection._sasl_data.cnonce;
     const challengeData = scramParseChallenge(challenge);
 
     // The RFC requires that we verify the (server) nonce has the client
     // nonce as an initial substring.
-    if (!challengeData && (challengeData === null || challengeData === void 0 ? void 0 : challengeData.nonce.slice(0, cnonce.length)) !== cnonce) {
+    if (!challengeData && challengeData?.nonce.slice(0, cnonce.length) !== cnonce) {
       _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied incorrect nonce.");
       connection._sasl_data = {};
       return connection._sasl_failure_cb();
@@ -11301,7 +11293,7 @@ const scram = {
     let clientKey, serverKey;
 
     // Either restore the client key and server key passed in, or derive new ones
-    if (((_connection$pass = connection.pass) === null || _connection$pass === void 0 ? void 0 : _connection$pass.name) === hashName && ((_connection$pass2 = connection.pass) === null || _connection$pass2 === void 0 ? void 0 : _connection$pass2.salt) === _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt) && ((_connection$pass3 = connection.pass) === null || _connection$pass3 === void 0 ? void 0 : _connection$pass3.iter) === challengeData.iter) {
+    if (connection.pass?.name === hashName && connection.pass?.salt === _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt) && connection.pass?.iter === challengeData.iter) {
       clientKey = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(connection.pass.ck);
       serverKey = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(connection.pass.sk);
     } else if (typeof connection.pass === "string" || connection.pass instanceof String) {
@@ -11425,8 +11417,7 @@ const utils = {
     return window.btoa(binary);
   },
   base64ToArrayBuf(str) {
-    var _Uint8Array$from;
-    return (_Uint8Array$from = Uint8Array.from(atob(str), c => c.charCodeAt(0))) === null || _Uint8Array$from === void 0 ? void 0 : _Uint8Array$from.buffer;
+    return Uint8Array.from(atob(str), c => c.charCodeAt(0))?.buffer;
   },
   stringToArrayBuf(str) {
     const bytes = new TextEncoder("utf-8").encode(str);
@@ -12065,8 +12056,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.WorkerWebsocket = class WorkerWebs
     this._conn = connection;
     this.worker = new SharedWorker(this._conn.options.worker, 'Strophe XMPP Connection');
     this.worker.onerror = e => {
-      var _console;
-      (_console = console) === null || _console === void 0 ? void 0 : _console.error(e);
+      console?.error(e);
       _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.log(_core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.LogLevel.ERROR, `Shared Worker Error: ${e}`);
     };
   }
@@ -14902,7 +14892,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
     var k = 0;
     delta = firstTime ? floor(delta / damp) : delta >> 1;
     delta += floor(delta / numPoints);
-    for (; delta > baseMinusTMin * tMax >> 1; k += base) {
+    for /* no initialization */
+    (; delta > baseMinusTMin * tMax >> 1; k += base) {
       delta = floor(delta / baseMinusTMin);
     }
     return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
@@ -14953,13 +14944,15 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
     // Main decoding loop: start just after the last delimiter if any basic code
     // points were copied; start at the beginning otherwise.
 
-    for (index = basic > 0 ? basic + 1 : 0; index < inputLength;) {
+    for /* no final expression */
+    (index = basic > 0 ? basic + 1 : 0; index < inputLength;) {
       // `index` is the index of the next character to be consumed.
       // Decode a generalized variable-length integer into `delta`,
       // which gets added to `i`. The overflow checking is easier
       // if we increase `i` as we go, then subtract off its starting
       // value at the end to obtain `delta`.
-      for (oldi = i, w = 1, k = base;; k += base) {
+      for /* no condition */
+      (oldi = i, w = 1, k = base;; k += base) {
         if (index >= inputLength) {
           error('invalid-input');
         }
@@ -15076,7 +15069,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
         }
         if (currentValue == n) {
           // Represent delta as a generalized variable-length integer
-          for (q = delta, k = base;; k += base) {
+          for /* no condition */
+          (q = delta, k = base;; k += base) {
             t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
             if (q < t) {
               break;
@@ -15273,41 +15267,40 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.initialize = funct
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "_converse": () => (/* reexport safe */ _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
+/* harmony export */   "_converse": () => (/* reexport safe */ _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
 /* harmony export */   "api": () => (/* binding */ api),
 /* harmony export */   "converse": () => (/* binding */ converse),
-/* harmony export */   "i18n": () => (/* reexport safe */ _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_5__["default"])
+/* harmony export */   "i18n": () => (/* reexport safe */ _shared_i18n__WEBPACK_IMPORTED_MODULE_5__["default"])
 /* harmony export */ });
 /* harmony import */ var urijs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! urijs */ "./node_modules/urijs/src/URI.js");
 /* harmony import */ var urijs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(urijs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/shared/_converse */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _shared_converse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shared/_converse */ "./src/headless/shared/_converse.js");
 /* harmony import */ var dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dayjs/plugin/advancedFormat */ "./node_modules/dayjs/plugin/advancedFormat.js");
 /* harmony import */ var dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _converse_headless_shared_connection_api_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/shared/connection/api.js */ "./src/headless/shared/connection/api.js");
+/* harmony import */ var _shared_connection_api_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared/connection/api.js */ "./src/headless/shared/connection/api.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/shared/i18n */ "./src/headless/shared/i18n.js");
-/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
-/* harmony import */ var lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lodash-es/isFunction */ "./node_modules/lodash-es/isFunction.js");
-/* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
+/* harmony import */ var _shared_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./shared/i18n */ "./src/headless/shared/i18n.js");
+/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
+/* harmony import */ var lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lodash-es/isFunction */ "./node_modules/lodash-es/isFunction.js");
+/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./log.js */ "./src/headless/log.js");
 /* harmony import */ var pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! pluggable.js/src/pluggable.js */ "./node_modules/pluggable.js/src/pluggable.js");
 /* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
 /* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/core.js */ "./src/headless/utils/core.js");
 /* harmony import */ var _shared_constants_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./shared/constants.js */ "./src/headless/shared/constants.js");
 /* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
-/* harmony import */ var _converse_headless_shared_connection_index_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/shared/connection/index.js */ "./src/headless/shared/connection/index.js");
-/* harmony import */ var _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @converse/skeletor/src/events.js */ "./node_modules/@converse/skeletor/src/events.js");
-/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
-/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
-/* harmony import */ var _converse_headless_shared_errors__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @converse/headless/shared/errors */ "./src/headless/shared/errors.js");
-/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var _converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @converse/headless/shared/settings/utils.js */ "./src/headless/shared/settings/utils.js");
-/* harmony import */ var _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @converse/headless/shared/settings/api.js */ "./src/headless/shared/settings/api.js");
-/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! sprintf-js */ "./node_modules/sprintf-js/src/sprintf.js");
-/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(sprintf_js__WEBPACK_IMPORTED_MODULE_21__);
-/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./utils/init.js */ "./src/headless/utils/init.js");
+/* harmony import */ var _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/skeletor/src/events.js */ "./node_modules/@converse/skeletor/src/events.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
+/* harmony import */ var _shared_errors__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./shared/errors */ "./src/headless/shared/errors.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./shared/settings/utils.js */ "./src/headless/shared/settings/utils.js");
+/* harmony import */ var _shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./shared/settings/api.js */ "./src/headless/shared/settings/api.js");
+/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! sprintf-js */ "./node_modules/sprintf-js/src/sprintf.js");
+/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(sprintf_js__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./utils/init.js */ "./src/headless/utils/init.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -15338,50 +15331,49 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 dayjs__WEBPACK_IMPORTED_MODULE_4___default().extend((dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2___default()));
 
 // Add Strophe Namespaces
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('ACTIVITY', 'http://jabber.org/protocol/activity');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('CARBONS', 'urn:xmpp:carbons:2');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('CHATSTATES', 'http://jabber.org/protocol/chatstates');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('CSI', 'urn:xmpp:csi:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('DELAY', 'urn:xmpp:delay');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('EME', 'urn:xmpp:eme:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('FASTEN', 'urn:xmpp:fasten:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('FORWARD', 'urn:xmpp:forward:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('HINTS', 'urn:xmpp:hints');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('HTTPUPLOAD', 'urn:xmpp:http:upload:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('MAM', 'urn:xmpp:mam:2');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('MARKERS', 'urn:xmpp:chat-markers:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('MENTIONS', 'urn:xmpp:mmn:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('MESSAGE_CORRECT', 'urn:xmpp:message-correct:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('MODERATE', 'urn:xmpp:message-moderate:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('NICK', 'http://jabber.org/protocol/nick');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('OCCUPANTID', 'urn:xmpp:occupant-id:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('OMEMO', 'eu.siacs.conversations.axolotl');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('OUTOFBAND', 'jabber:x:oob');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('PUBSUB', 'http://jabber.org/protocol/pubsub');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('RAI', 'urn:xmpp:rai:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('RECEIPTS', 'urn:xmpp:receipts');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('REFERENCE', 'urn:xmpp:reference:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('REGISTER', 'jabber:iq:register');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('RETRACT', 'urn:xmpp:message-retract:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('ROSTERX', 'http://jabber.org/protocol/rosterx');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('RSM', 'http://jabber.org/protocol/rsm');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('SID', 'urn:xmpp:sid:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('SPOILER', 'urn:xmpp:spoiler:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('STANZAS', 'urn:ietf:params:xml:ns:xmpp-stanzas');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('STYLING', 'urn:xmpp:styling:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('VCARD', 'vcard-temp');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('XFORM', 'jabber:x:data');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v10.0.0";
-Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_13__.Events);
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('ACTIVITY', 'http://jabber.org/protocol/activity');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('CARBONS', 'urn:xmpp:carbons:2');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('CHATSTATES', 'http://jabber.org/protocol/chatstates');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('CSI', 'urn:xmpp:csi:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('DELAY', 'urn:xmpp:delay');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('EME', 'urn:xmpp:eme:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('FASTEN', 'urn:xmpp:fasten:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('FORWARD', 'urn:xmpp:forward:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('HINTS', 'urn:xmpp:hints');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('HTTPUPLOAD', 'urn:xmpp:http:upload:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MAM', 'urn:xmpp:mam:2');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MARKERS', 'urn:xmpp:chat-markers:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MENTIONS', 'urn:xmpp:mmn:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MESSAGE_CORRECT', 'urn:xmpp:message-correct:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MODERATE', 'urn:xmpp:message-moderate:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('NICK', 'http://jabber.org/protocol/nick');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('OCCUPANTID', 'urn:xmpp:occupant-id:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('OMEMO', 'eu.siacs.conversations.axolotl');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('OUTOFBAND', 'jabber:x:oob');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('PUBSUB', 'http://jabber.org/protocol/pubsub');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RAI', 'urn:xmpp:rai:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RECEIPTS', 'urn:xmpp:receipts');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('REFERENCE', 'urn:xmpp:reference:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('REGISTER', 'jabber:iq:register');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RETRACT', 'urn:xmpp:message-retract:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('ROSTERX', 'http://jabber.org/protocol/rosterx');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RSM', 'http://jabber.org/protocol/rsm');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('SID', 'urn:xmpp:sid:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('SPOILER', 'urn:xmpp:spoiler:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('STANZAS', 'urn:ietf:params:xml:ns:xmpp-stanzas');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('STYLING', 'urn:xmpp:styling:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARD', 'vcard-temp');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XFORM', 'jabber:x:data');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
+_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v10.0.0";
+Object.assign(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_12__.Events);
 
 // Make converse pluggable
-pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__["default"].enable(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], '_converse', 'pluggable');
+pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__["default"].enable(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], '_converse', 'pluggable');
 
 /**
  * ### The private API
@@ -15396,9 +15388,9 @@ pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__["default"].enable(_co
  * @namespace _converse.api
  * @memberOf _converse
  */
-const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api = {
-  connection: _converse_headless_shared_connection_api_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-  settings: _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_20__.settings_api,
+const api = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api = {
+  connection: _shared_connection_api_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+  settings: _shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__.settings_api,
   /**
    * Lets you trigger events, which can be listened to via
    * {@link _converse.api.listen.on} or {@link _converse.api.listen.once}
@@ -15416,19 +15408,19 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
    *  event handlers' promises have been resolved.
    */
   async trigger(name) {
-    if (!_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events) {
+    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events) {
       return;
     }
     const args = Array.from(arguments);
     const options = args.pop();
     if (options && options.synchronous) {
-      const events = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events[name] || [];
+      const events = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events[name] || [];
       const event_args = args.splice(1);
       await Promise.all(events.map(e => e.callback.apply(e.ctx, event_args)));
     } else {
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].trigger.apply(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], arguments);
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].trigger.apply(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], arguments);
     }
-    const promise = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name];
+    const promise = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name];
     if (promise !== undefined) {
       promise.resolve();
     }
@@ -15446,7 +15438,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
    * @returns {Promise<any>} - A promise that resolves with the modified data structure.
    */
   hook(name, context, data) {
-    const events = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events[name] || [];
+    const events = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events[name] || [];
     if (events.length) {
       // Create a chain of promises, with each one feeding its output to
       // the next. The first input is a promise with the original data
@@ -15463,14 +15455,14 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
    * @memberOf _converse.api
    */
   user: {
-    settings: _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_20__.user_settings_api,
+    settings: _shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__.user_settings_api,
     /**
      * @method _converse.api.user.jid
      * @returns {string} The current user's full JID (Jabber ID)
      * @example _converse.api.user.jid())
      */
     jid() {
-      return _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.jid;
+      return _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.jid;
     },
     /**
      * Logs the user in.
@@ -15490,26 +15482,25 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
      *  @returns  {void}
      */
     async login(jid, password) {
-      var _converse$connection, _api$settings$get;
       let automatic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       jid = jid || api.settings.get('jid');
-      if (!((_converse$connection = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection) !== null && _converse$connection !== void 0 && _converse$connection.jid) || jid && !_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].isSameDomain(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.jid, jid)) {
-        await _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].initConnection();
+      if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection?.jid || jid && !_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].isSameDomain(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.jid, jid)) {
+        (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initConnection)();
       }
-      if ((_api$settings$get = api.settings.get("connection_options")) !== null && _api$settings$get !== void 0 && _api$settings$get.worker && (await _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.restoreWorkerSession())) {
+      if (api.settings.get("connection_options")?.worker && (await _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.restoreWorkerSession())) {
         return;
       }
       if (jid) {
-        jid = await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.setUserJID)(jid);
+        jid = await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.setUserJID)(jid);
       }
 
       // See whether there is a BOSH session to re-attach to
-      const bosh_plugin = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins["converse-bosh"];
-      if (bosh_plugin !== null && bosh_plugin !== void 0 && bosh_plugin.enabled()) {
-        if (await _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].restoreBOSHSession()) {
+      const bosh_plugin = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins["converse-bosh"];
+      if (bosh_plugin?.enabled()) {
+        if (await _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].restoreBOSHSession()) {
           return;
-        } else if (api.settings.get("authentication") === _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].PREBIND && (!automatic || api.settings.get("auto_login"))) {
-          return _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].startNewPreboundBOSHSession();
+        } else if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].PREBIND && (!automatic || api.settings.get("auto_login"))) {
+          return _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].startNewPreboundBOSHSession();
         }
       }
       password = password || api.settings.get("password");
@@ -15517,7 +15508,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
         jid,
         password
       } : null;
-      (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.attemptNonPreboundSession)(credentials, automatic);
+      (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.attemptNonPreboundSession)(credentials, automatic);
     },
     /**
      * Logs the user out of the current XMPP session.
@@ -15532,11 +15523,16 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
       await api.trigger('beforeLogout', {
         'synchronous': true
       });
-      const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_17__.getOpenPromise)();
+      const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_16__.getOpenPromise)();
       const complete = () => {
         // Recreate all the promises
-        Object.keys(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises).forEach(_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.replacePromise);
-        delete _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid;
+        Object.keys(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises).forEach(_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.replacePromise);
+        delete _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid;
+
+        // Remove the session JID, otherwise the user would just be logged
+        // in again upon reload. See #2759
+        localStorage.removeItem('conversejs-session-jid');
+
         /**
          * Triggered once the user has logged out.
          * @event _converse#logout
@@ -15544,10 +15540,10 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
         api.trigger('logout');
         promise.resolve();
       };
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.setDisconnectionCause(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGOUT, undefined, true);
-      if (_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection !== undefined) {
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.setDisconnectionCause(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGOUT, undefined, true);
+      if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection !== undefined) {
         api.listen.once('disconnected', () => complete());
-        _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.disconnect();
+        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.disconnect();
       } else {
         complete();
       }
@@ -15601,9 +15597,9 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
       let replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       promises = Array.isArray(promises) ? promises : [promises];
       promises.forEach(name => {
-        const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_17__.getOpenPromise)();
+        const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_16__.getOpenPromise)();
         promise.replace = replace;
-        _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name] = promise;
+        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name] = promise;
       });
     }
   },
@@ -15625,7 +15621,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
      * @param {object} [context] The value of the `this` parameter for the callback.
      * @example _converse.api.listen.once('message', function (messageXML) { ... });
      */
-    once: _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].once.bind(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
+    once: _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].once.bind(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
     /**
      * Lets you subscribe to an event.
      * Every time the event fires, the callback method specified by `callback` will be called.
@@ -15635,7 +15631,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
      * @param {object} [context] The value of the `this` parameter for the callback.
      * @example _converse.api.listen.on('message', function (messageXML) { ... });
      */
-    on: _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].on.bind(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
+    on: _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].on.bind(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
     /**
      * To stop listening to an event, you can use the `not` method.
      * @method _converse.api.listen.not
@@ -15643,7 +15639,7 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
      * @param {function} callback The callback method that is to no longer be called when the event fires
      * @example _converse.api.listen.not('message', function (messageXML);
      */
-    not: _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].off.bind(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
+    not: _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].off.bind(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
     /**
      * Subscribe to an incoming stanza
      * Every a matched stanza is received, the callback method specified by
@@ -15654,13 +15650,13 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
      * @param {function} handler The callback method to be called when the stanza appears
      */
     stanza(name, options, handler) {
-      if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_23__["default"])(options)) {
+      if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__["default"])(options)) {
         handler = options;
         options = {};
       } else {
         options = options || {};
       }
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.addHandler(handler, options.ns, name, options.type, options.id, options.from, options);
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.addHandler(handler, options.ns, name, options.type, options.id, options.from, options);
     }
   },
   /**
@@ -15672,10 +15668,10 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
    * @returns {Promise}
    */
   waitUntil(condition) {
-    if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_23__["default"])(condition)) {
-      return _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].waitUntil(condition);
+    if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__["default"])(condition)) {
+      return _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].waitUntil(condition);
     } else {
-      const promise = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[condition];
+      const promise = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[condition];
       if (promise === undefined) {
         return null;
       }
@@ -15696,21 +15692,20 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
    * _converse.api.send(msg);
    */
   send(stanza) {
-    var _stanza;
     if (!api.connection.connected()) {
-      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].warn("Not sending stanza because we're not connected!");
-      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].warn(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.serialize(stanza));
+      _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].warn("Not sending stanza because we're not connected!");
+      _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].warn(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.serialize(stanza));
       return;
     }
     if (typeof stanza === 'string') {
-      stanza = _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].toStanza(stanza);
-    } else if ((_stanza = stanza) !== null && _stanza !== void 0 && _stanza.nodeTree) {
+      stanza = _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].toStanza(stanza);
+    } else if (stanza?.nodeTree) {
       stanza = stanza.nodeTree;
     }
     if (stanza.tagName === 'iq') {
       return api.sendIQ(stanza);
     } else {
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.send(stanza);
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.send(stanza);
       api.trigger('send', stanza);
     }
   },
@@ -15727,103 +15722,38 @@ const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["def
    *  nothing to wait for, so an already resolved promise is returned.
    */
   sendIQ(stanza) {
-    var _stanza2;
-    let timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].STANZA_TIMEOUT;
+    let timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].STANZA_TIMEOUT;
     let reject = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
     let promise;
-    stanza = ((_stanza2 = stanza) === null || _stanza2 === void 0 ? void 0 : _stanza2.nodeTree) ?? stanza;
+    stanza = stanza?.nodeTree ?? stanza;
     if (['get', 'set'].includes(stanza.getAttribute('type'))) {
-      timeout = timeout || _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].STANZA_TIMEOUT;
+      timeout = timeout || _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].STANZA_TIMEOUT;
       if (reject) {
-        promise = new Promise((resolve, reject) => _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza, resolve, reject, timeout));
+        promise = new Promise((resolve, reject) => _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza, resolve, reject, timeout));
         promise.catch(e => {
           if (e === null) {
-            throw new _converse_headless_shared_errors__WEBPACK_IMPORTED_MODULE_16__.TimeoutError(`Timeout error after ${timeout}ms for the following IQ stanza: ${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.serialize(stanza)}`);
+            throw new _shared_errors__WEBPACK_IMPORTED_MODULE_15__.TimeoutError(`Timeout error after ${timeout}ms for the following IQ stanza: ${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.serialize(stanza)}`);
           }
         });
       } else {
-        promise = new Promise(resolve => _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza, resolve, resolve, timeout));
+        promise = new Promise(resolve => _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza, resolve, resolve, timeout));
       }
     } else {
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza);
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza);
       promise = Promise.resolve();
     }
     api.trigger('send', stanza);
     return promise;
   }
 };
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].shouldClearCache = () => !_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].config.get('trusted') || api.settings.get('clear_cache_on_logout') || _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv();
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].initConnection = function () {
-  const api = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api;
-  if (!api.settings.get('bosh_service_url')) {
-    if (api.settings.get("authentication") === _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].PREBIND) {
-      throw new Error("authentication is set to 'prebind' but we don't have a BOSH connection");
-    }
-  }
-  const XMPPConnection = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv() ? _converse_headless_shared_connection_index_js__WEBPACK_IMPORTED_MODULE_12__.MockConnection : _converse_headless_shared_connection_index_js__WEBPACK_IMPORTED_MODULE_12__.Connection;
-  _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection = new XMPPConnection((0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.getConnectionServiceURL)(), Object.assign(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].default_connection_options, api.settings.get("connection_options"), {
-    'keepalive': api.settings.get("keepalive")
-  }));
-  setUpXMLLogging();
-  /**
-   * Triggered once the `Connection` constructor has been initialized, which
-   * will be responsible for managing the connection to the XMPP server.
-   *
-   * @event _converse#connectionInitialized
-   */
-  api.trigger('connectionInitialized');
-};
-function setUpXMLLogging() {
-  const lmap = {};
-  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.LogLevel.DEBUG] = 'debug';
-  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.LogLevel.INFO] = 'info';
-  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.LogLevel.WARN] = 'warn';
-  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.LogLevel.ERROR] = 'error';
-  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.LogLevel.FATAL] = 'fatal';
-  strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.log = (level, msg) => _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].log(msg, lmap[level]);
-  strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.error = msg => _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].error(msg);
-  _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.xmlInput = body => _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].debug(body.outerHTML, 'color: darkgoldenrod');
-  _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.xmlOutput = body => _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].debug(body.outerHTML, 'color: darkcyan');
-}
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].saveWindowState = function (ev) {
-  // XXX: eventually we should be able to just use
-  // document.visibilityState (when we drop support for older
-  // browsers).
-  let state;
-  const event_map = {
-    'focus': "visible",
-    'focusin': "visible",
-    'pageshow': "visible",
-    'blur': "hidden",
-    'focusout': "hidden",
-    'pagehide': "hidden"
-  };
-  ev = ev || document.createEvent('Events');
-  if (ev.type in event_map) {
-    state = event_map[ev.type];
-  } else {
-    state = document.hidden ? "hidden" : "visible";
-  }
-  _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].windowState = state;
-  /**
-      * Triggered when window state has changed.
-      * Used to determine when a user left the page and when came back.
-      * @event _converse#windowStateChanged
-      * @type { object }
-      * @property{ string } state - Either "hidden" or "visible"
-      * @example _converse.api.listen.on('windowStateChanged', obj => { ... });
-      */
-  api.trigger('windowStateChanged', {
-    state
-  });
-};
-_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ConnectionFeedback = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_14__.Model.extend({
+_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].shouldClearCache = () => !_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].config.get('trusted') || api.settings.get('clear_cache_on_logout') || _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv();
+_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ConnectionFeedback = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__.Model.extend({
   defaults: {
-    'connection_status': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe.Status.DISCONNECTED,
+    'connection_status': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.Status.DISCONNECTED,
     'message': ''
   },
   initialize() {
-    this.on('change', () => api.trigger('connfeedback', _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connfeedback));
+    this.on('change', () => api.trigger('connfeedback', _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connfeedback));
   }
 });
 const converse = window.converse || {};
@@ -15865,19 +15795,18 @@ Object.assign(converse, {
    * });
    */
   async initialize(settings) {
-    var _api$elements;
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.cleanup)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.setUnloadEvent)();
-    (0,_converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_19__.initAppSettings)(settings);
-    _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].strict_plugin_dependencies = settings.strict_plugin_dependencies; // Needed by pluggable.js
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].setLogLevel(api.settings.get("loglevel"));
-    if (api.settings.get("authentication") === _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS) {
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.cleanup)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.setUnloadEvent)();
+    (0,_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_18__.initAppSettings)(settings);
+    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].strict_plugin_dependencies = settings.strict_plugin_dependencies; // Needed by pluggable.js
+    _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].setLogLevel(api.settings.get("loglevel"));
+    if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS) {
       if (api.settings.get("auto_login") && !api.settings.get('jid')) {
         throw new Error("Config Error: you need to provide the server's " + "domain via the 'jid' option when using anonymous " + "authentication with auto_login.");
       }
     }
-    _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].router.route(/^converse\?loglevel=(debug|info|warn|error|fatal)$/, 'loglevel', l => _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].setLogLevel(l));
-    _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connfeedback = new _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ConnectionFeedback();
+    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].router.route(/^converse\?loglevel=(debug|info|warn|error|fatal)$/, 'loglevel', l => _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].setLogLevel(l));
+    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connfeedback = new _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ConnectionFeedback();
 
     /* When reloading the page:
      * For new sessions, we need to send out a presence stanza to notify
@@ -15886,24 +15815,24 @@ Object.assign(converse, {
      * because it's as if "we never left" (see onConnectStatusChanged).
      * https://github.com/conversejs/converse.js/issues/521
      */
-    _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].send_initial_presence = true;
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.initSessionStorage)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.initClientConfig)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    await _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_5__["default"].initialize();
-    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.initPlugins)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].send_initial_presence = true;
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initSessionStorage)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initClientConfig)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    await _shared_i18n__WEBPACK_IMPORTED_MODULE_5__["default"].initialize();
+    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initPlugins)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
     // Register all custom elements
     // XXX: api.elements is defined in the UI part of Converse, outside of @converse/headless.
     // This line should probably be moved to the UI code as part of a larger refactoring.
-    (_api$elements = api.elements) === null || _api$elements === void 0 ? void 0 : _api$elements.register();
-    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_22__.registerGlobalEventHandlers)(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    api.elements?.register();
+    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.registerGlobalEventHandlers)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
     try {
-      !History.started && _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].router.history.start();
+      !History.started && _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].router.history.start();
     } catch (e) {
-      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"].error(e);
+      _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].error(e);
     }
-    const plugins = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins;
-    if (api.settings.get("auto_login") || api.settings.get("keepalive") && (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_24__["default"])(plugins['converse-bosh'], 'enabled')) {
+    const plugins = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins;
+    if (api.settings.get("auto_login") || api.settings.get("keepalive") && (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_23__["default"])(plugins['converse-bosh'], 'enabled')) {
       await api.user.login(null, null, true);
     }
 
@@ -15912,8 +15841,8 @@ Object.assign(converse, {
      * @event _converse#initialized
      */
     api.trigger('initialized');
-    if (_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv()) {
-      return _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
+    if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv()) {
+      return _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
     }
   },
   /**
@@ -15946,10 +15875,10 @@ Object.assign(converse, {
      */
     add(name, plugin) {
       plugin.__name__ = name;
-      if (_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins[name] !== undefined) {
+      if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins[name] !== undefined) {
         throw new TypeError(`Error: plugin with name "${name}" has already been ` + 'registered!');
       } else {
-        _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins[name] = plugin;
+        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins[name] = plugin;
       }
     }
   },
@@ -15971,23 +15900,23 @@ Object.assign(converse, {
    * @memberOf converse
    */
   'env': {
-    $build: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.$build,
-    $iq: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.$iq,
-    $msg: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.$msg,
-    $pres: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.$pres,
-    'utils': _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"],
+    $build: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$build,
+    $iq: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$iq,
+    $msg: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$msg,
+    $pres: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$pres,
+    'utils': _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"],
     Collection: _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_11__.Collection,
-    Model: _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_14__.Model,
+    Model: _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__.Model,
     Promise,
-    Strophe: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_15__.Strophe,
+    Strophe: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe,
     URI: (urijs__WEBPACK_IMPORTED_MODULE_0___default()),
     dayjs: (dayjs__WEBPACK_IMPORTED_MODULE_4___default()),
-    html: lit__WEBPACK_IMPORTED_MODULE_18__.html,
-    log: _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    html: lit__WEBPACK_IMPORTED_MODULE_17__.html,
+    log: _log_js__WEBPACK_IMPORTED_MODULE_6__["default"],
     sizzle: (sizzle__WEBPACK_IMPORTED_MODULE_8___default()),
-    sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_21__.sprintf,
-    stx: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].stx,
-    u: _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"]
+    sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_20__.sprintf,
+    stx: _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].stx,
+    u: _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"]
   }
 });
 
@@ -16060,7 +15989,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lodash_es_isElement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash-es/isElement */ "./node_modules/lodash-es/isElement.js");
-var _console, _console2, _console3, _console4;
 
 const LEVELS = {
   'debug': 0,
@@ -16070,10 +15998,10 @@ const LEVELS = {
   'fatal': 4
 };
 const logger = Object.assign({
-  'debug': (_console = console) !== null && _console !== void 0 && _console.log ? console.log.bind(console) : function noop() {},
-  'error': (_console2 = console) !== null && _console2 !== void 0 && _console2.log ? console.log.bind(console) : function noop() {},
-  'info': (_console3 = console) !== null && _console3 !== void 0 && _console3.log ? console.log.bind(console) : function noop() {},
-  'warn': (_console4 = console) !== null && _console4 !== void 0 && _console4.log ? console.log.bind(console) : function noop() {}
+  'debug': console?.log ? console.log.bind(console) : function noop() {},
+  'error': console?.log ? console.log.bind(console) : function noop() {},
+  'info': console?.log ? console.log.bind(console) : function noop() {},
+  'warn': console?.log ? console.log.bind(console) : function noop() {}
 }, console);
 
 /**
@@ -16330,14 +16258,13 @@ const Bookmarks = {
     return _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(stanza);
   },
   onBookmarkError(iq, options) {
-    var _this$get;
     const {
       __
     } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse;
     _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].error("Error while trying to add bookmark");
     _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].error(iq);
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.alert('error', __('Error'), [__("Sorry, something went wrong while trying to save your bookmark.")]);
-    (_this$get = this.get(options.jid)) === null || _this$get === void 0 ? void 0 : _this$get.destroy();
+    this.get(options.jid)?.destroy();
   },
   fetchBookmarksFromServer(deferred) {
     const stanza = $iq({
@@ -16352,24 +16279,23 @@ const Bookmarks = {
   },
   markRoomAsBookmarked(bookmark) {
     const groupchat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(bookmark.get('jid'));
-    groupchat === null || groupchat === void 0 ? void 0 : groupchat.save('bookmarked', true);
+    groupchat?.save('bookmarked', true);
   },
   markRoomAsUnbookmarked(bookmark) {
     const groupchat = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(bookmark.get('jid'));
-    groupchat === null || groupchat === void 0 ? void 0 : groupchat.save('bookmarked', false);
+    groupchat?.save('bookmarked', false);
   },
   createBookmarksFromStanza(stanza) {
     const xmlns = Strophe.NS.BOOKMARKS;
     const sel = `items[node="${xmlns}"] item storage[xmlns="${xmlns}"] conference`;
     sizzle(sel, stanza).forEach(el => {
-      var _el$querySelector;
       const jid = el.getAttribute('jid');
       const bookmark = this.get(jid);
       const attrs = {
         'jid': jid,
         'name': el.getAttribute('name') || jid,
         'autojoin': el.getAttribute('autojoin') === 'true',
-        'nick': ((_el$querySelector = el.querySelector('nick')) === null || _el$querySelector === void 0 ? void 0 : _el$querySelector.textContent) || ''
+        'nick': el.querySelector('nick')?.textContent || ''
       };
       bookmark ? bookmark.save(attrs) : this.create(attrs);
     });
@@ -16453,13 +16379,12 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('co
 
     ChatRoom: {
       getDisplayName() {
-        var _converse$bookmarks;
         const {
           _converse,
           getDisplayName
         } = this.__super__;
-        const bookmark = this.get('bookmarked') ? (_converse$bookmarks = _converse.bookmarks) === null || _converse$bookmarks === void 0 ? void 0 : _converse$bookmarks.get(this.get('jid')) : null;
-        return (bookmark === null || bookmark === void 0 ? void 0 : bookmark.get('name')) || getDisplayName.apply(this, arguments);
+        const bookmark = this.get('bookmarked') ? _converse.bookmarks?.get(this.get('jid')) : null;
+        return bookmark?.get('name') || getDisplayName.apply(this, arguments);
       },
       getAndPersistNickname(nick) {
         nick = nick || (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.getNicknameFromBookmark)(this.get('jid'));
@@ -16575,11 +16500,10 @@ async function initBookmarks() {
   }
 }
 function getNicknameFromBookmark(jid) {
-  var _converse$bookmarks, _converse$bookmarks$g;
   if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_bookmarks')) {
     return null;
   }
-  return (_converse$bookmarks = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bookmarks) === null || _converse$bookmarks === void 0 ? void 0 : (_converse$bookmarks$g = _converse$bookmarks.get(jid)) === null || _converse$bookmarks$g === void 0 ? void 0 : _converse$bookmarks$g.get('nick');
+  return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bookmarks?.get(jid)?.get('nick');
 }
 function handleBookmarksPush(message) {
   if (sizzle(`event[xmlns="${Strophe.NS.PUBSUB}#event"] items[node="${Strophe.NS.BOOKMARKS}"]`, message).length) {
@@ -16818,7 +16742,7 @@ async function generateVerificationString() {
     propertySort(identities, "type");
     propertySort(identities, "lang");
   }
-  let S = identities.reduce((result, id) => `${result}${id.category}/${id.type}/${(id === null || id === void 0 ? void 0 : id.lang) ?? ''}/${id.name}<`, "");
+  let S = identities.reduce((result, id) => `${result}${id.category}/${id.type}/${id?.lang ?? ''}/${id.name}<`, "");
   features.sort();
   S = features.reduce((result, feature) => `${result}${feature}<`, S);
   const ab = await crypto.subtle.digest('SHA-1', (0,_converse_headless_utils_arraybuffer_js__WEBPACK_IMPORTED_MODULE_1__.stringToArrayBuffer)(S));
@@ -16875,10 +16799,9 @@ __webpack_require__.r(__webpack_exports__);
      */
     async create(jids, attrs) {
       if (typeof jids === 'string') {
-        if (attrs && !(attrs !== null && attrs !== void 0 && attrs.fullname)) {
-          var _contact$attributes;
+        if (attrs && !attrs?.fullname) {
           const contact = await _core_js__WEBPACK_IMPORTED_MODULE_0__.api.contacts.get(jids);
-          attrs.fullname = contact === null || contact === void 0 ? void 0 : (_contact$attributes = contact.attributes) === null || _contact$attributes === void 0 ? void 0 : _contact$attributes.fullname;
+          attrs.fullname = contact?.attributes?.fullname;
         }
         const chatbox = _core_js__WEBPACK_IMPORTED_MODULE_0__.api.chats.get(jids, attrs, true);
         if (!chatbox) {
@@ -16889,9 +16812,8 @@ __webpack_require__.r(__webpack_exports__);
       }
       if (Array.isArray(jids)) {
         return Promise.all(jids.forEach(async jid => {
-          var _contact$attributes2;
           const contact = await _core_js__WEBPACK_IMPORTED_MODULE_0__.api.contacts.get(jids);
-          attrs.fullname = contact === null || contact === void 0 ? void 0 : (_contact$attributes2 = contact.attributes) === null || _contact$attributes2 === void 0 ? void 0 : _contact$attributes2.fullname;
+          attrs.fullname = contact?.attributes?.fullname;
           return _core_js__WEBPACK_IMPORTED_MODULE_0__.api.chats.get(jid, attrs, true).maybeShow();
         }));
       }
@@ -17098,7 +17020,8 @@ const {
 } = _core_js__WEBPACK_IMPORTED_MODULE_3__.converse.env;
 
 /**
- * Mixin which turns a `ModelWithContact` model into a non-MUC message. These can be either `chat` messages or `headline` messages.
+ * Mixin which turns a `ModelWithContact` model into a non-MUC message.
+ * These can be either `chat`, `normal` or `headline` messages.
  * @mixin
  * @namespace _converse.Message
  * @memberOf _converse
@@ -17137,7 +17060,7 @@ const MessageMixin = {
     this.initialized.resolve();
   },
   setContact() {
-    if (this.get('type') === 'chat') {
+    if (['chat', 'normal'].includes(this.get('type'))) {
       _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.initialize.apply(this, arguments);
       this.setRosterContact(Strophe.getBareJidFromJid(this.get('from')));
     }
@@ -17240,7 +17163,7 @@ const MessageMixin = {
         __
       } = _core_js__WEBPACK_IMPORTED_MODULE_3__._converse;
       return this.get('plaintext') || this.get('body') || __('Undecryptable OMEMO message');
-    } else if (['groupchat', 'chat'].includes(this.get('type'))) {
+    } else if (['groupchat', 'chat', 'normal'].includes(this.get('type'))) {
       return this.get('body');
     } else {
       return this.get('message');
@@ -17311,7 +17234,6 @@ const MessageMixin = {
     }
   },
   uploadFile() {
-    var _this$upload_metadata;
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = async () => {
       if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -17359,7 +17281,7 @@ const MessageMixin = {
     };
     xhr.open('PUT', this.get('put'), true);
     xhr.setRequestHeader('Content-type', this.file.type);
-    (_this$upload_metadata = this.upload_metadata.headers) === null || _this$upload_metadata === void 0 ? void 0 : _this$upload_metadata.forEach(h => xhr.setRequestHeader(h.name, h.value));
+    this.upload_metadata.headers?.forEach(h => xhr.setRequestHeader(h.name, h.value));
     xhr.send(this.file);
   }
 };
@@ -17532,15 +17454,14 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     this.notifications = new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__.Model();
   },
   getNotificationsText() {
-    var _this$notifications, _this$notifications2, _this$notifications3;
     const {
       __
     } = _core_js__WEBPACK_IMPORTED_MODULE_4__._converse;
-    if (((_this$notifications = this.notifications) === null || _this$notifications === void 0 ? void 0 : _this$notifications.get('chat_state')) === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.COMPOSING) {
+    if (this.notifications?.get('chat_state') === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.COMPOSING) {
       return __('%1$s is typing', this.getDisplayName());
-    } else if (((_this$notifications2 = this.notifications) === null || _this$notifications2 === void 0 ? void 0 : _this$notifications2.get('chat_state')) === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.PAUSED) {
+    } else if (this.notifications?.get('chat_state') === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.PAUSED) {
       return __('%1$s has stopped typing', this.getDisplayName());
-    } else if (((_this$notifications3 = this.notifications) === null || _this$notifications3 === void 0 ? void 0 : _this$notifications3.get('chat_state')) === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.GONE) {
+    } else if (this.notifications?.get('chat_state') === _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.GONE) {
       return __('%1$s has gone away', this.getDisplayName());
     } else {
       return '';
@@ -18105,7 +18026,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     if (!msg || !_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('send_chat_markers').includes(type)) {
       return;
     }
-    if (msg !== null && msg !== void 0 && msg.get('is_markable') || force) {
+    if (msg?.get('is_markable') || force) {
       const from_jid = Strophe.getBareJidFromJid(msg.get('from'));
       (0,_converse_headless_shared_actions_js__WEBPACK_IMPORTED_MODULE_11__.sendMarker)(from_jid, msg.get('msgid'), type, msg.get('type'));
     }
@@ -18248,11 +18169,10 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     return data.stanza;
   },
   async getOutgoingMessageAttributes(attrs) {
-    var _attrs;
     await _core_js__WEBPACK_IMPORTED_MODULE_4__.api.emojis.initialize();
     const is_spoiler = !!this.get('composing_spoiler');
     const origin_id = u.getUniqueId();
-    const text = (_attrs = attrs) === null || _attrs === void 0 ? void 0 : _attrs.body;
+    const text = attrs?.body;
     const body = text ? u.shortnamesToUnicode(text) : undefined;
     attrs = Object.assign({}, attrs, {
       'from': _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid,
@@ -18301,13 +18221,12 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_message_corrections') === 'all') {
       attrs.editable = !(attrs.file || attrs.retracted || 'oob_url' in attrs);
     } else if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_message_corrections') === 'last' && send_time > this.get('time_sent')) {
-      var _this$messages$findWh;
       this.set({
         'time_sent': send_time
       });
-      (_this$messages$findWh = this.messages.findWhere({
+      this.messages.findWhere({
         'editable': true
-      })) === null || _this$messages$findWh === void 0 ? void 0 : _this$messages$findWh.save({
+      })?.save({
         'editable': false
       });
       attrs.editable = !(attrs.file || attrs.retracted || 'oob_url' in attrs);
@@ -18411,7 +18330,6 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
     }
   },
   async sendFiles(files) {
-    var _maxFileSize;
     const {
       __
     } = _core_js__WEBPACK_IMPORTED_MODULE_4__._converse;
@@ -18431,8 +18349,8 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
         'type': "hidden"
       }
     }).pop();
-    const max_file_size = window.parseInt((_maxFileSize = ((data === null || data === void 0 ? void 0 : data.attributes) || {})['max-file-size']) === null || _maxFileSize === void 0 ? void 0 : _maxFileSize.value);
-    const slot_request_url = item === null || item === void 0 ? void 0 : item.id;
+    const max_file_size = window.parseInt((data?.attributes || {})['max-file-size']?.value);
+    const slot_request_url = item?.id;
     if (!slot_request_url) {
       this.createMessage({
         'message': __("Sorry, looks like file upload is not supported by your server."),
@@ -18515,7 +18433,7 @@ const ChatBox = _model_with_contact_js__WEBPACK_IMPORTED_MODULE_0__["default"].e
    * @param {_converse.Message} message
    */
   handleUnreadMessage(message) {
-    if (!(message !== null && message !== void 0 && message.get('body'))) {
+    if (!message?.get('body')) {
       return;
     }
     if (u.isNewMessage(message)) {
@@ -18594,7 +18512,6 @@ const {
  * @returns { (MessageAttributes|Error) }
  */
 async function parseMessage(stanza) {
-  var _stanza$querySelector, _stanza$querySelector2, _contact, _contact$attributes, _stanza$querySelector3, _stanza$querySelector4;
   (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.throwErrorIfInvalidForward)(stanza);
   let to_jid = stanza.getAttribute('to');
   const to_resource = Strophe.getResourceFromJid(to_jid);
@@ -18699,7 +18616,7 @@ async function parseMessage(stanza) {
     is_archived,
     is_headline,
     is_server_message,
-    'body': (_stanza$querySelector = stanza.querySelector('body')) === null || _stanza$querySelector === void 0 ? void 0 : (_stanza$querySelector2 = _stanza$querySelector.textContent) === null || _stanza$querySelector2 === void 0 ? void 0 : _stanza$querySelector2.trim(),
+    'body': stanza.querySelector('body')?.textContent?.trim(),
     'chat_state': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getChatState)(stanza),
     'from': Strophe.getBareJidFromJid(stanza.getAttribute('from')),
     'is_carbon': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.isCarbon)(original_stanza),
@@ -18709,16 +18626,16 @@ async function parseMessage(stanza) {
     'is_unstyled': !!sizzle(`unstyled[xmlns="${Strophe.NS.STYLING}"]`, stanza).length,
     'marker_id': marker && marker.getAttribute('id'),
     'msgid': stanza.getAttribute('id') || original_stanza.getAttribute('id'),
-    'nick': (_contact = contact) === null || _contact === void 0 ? void 0 : (_contact$attributes = _contact.attributes) === null || _contact$attributes === void 0 ? void 0 : _contact$attributes.nickname,
+    'nick': contact?.attributes?.nickname,
     'receipt_id': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getReceiptId)(stanza),
     'received': new Date().toISOString(),
     'references': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getReferences)(stanza),
     'sender': is_me ? 'me' : 'them',
-    'subject': (_stanza$querySelector3 = stanza.querySelector('subject')) === null || _stanza$querySelector3 === void 0 ? void 0 : _stanza$querySelector3.textContent,
-    'thread': (_stanza$querySelector4 = stanza.querySelector('thread')) === null || _stanza$querySelector4 === void 0 ? void 0 : _stanza$querySelector4.textContent,
+    'subject': stanza.querySelector('subject')?.textContent,
+    'thread': stanza.querySelector('thread')?.textContent,
     'time': delay ? dayjs__WEBPACK_IMPORTED_MODULE_0___default()(delay.getAttribute('stamp')).toISOString() : now,
     'to': stanza.getAttribute('to'),
-    'type': stanza.getAttribute('type')
+    'type': stanza.getAttribute('type') || 'normal'
   }, (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getErrorAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getOutOfBandAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getSpoilerAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getCorrectionAttributes)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getStanzaIDs)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getRetractionAttributes)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_5__.getEncryptionAttributes)(stanza, _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse));
   if (attrs.is_archived) {
     const from = original_stanza.getAttribute('from');
@@ -18778,7 +18695,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const {
   Strophe,
-  sizzle,
   u
 } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.converse.env;
 function openChat(jid) {
@@ -18804,8 +18720,8 @@ async function handleErrorMessage(stanza) {
     return;
   }
   const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get(from_jid);
-  if ((chatbox === null || chatbox === void 0 ? void 0 : chatbox.get('type')) === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.PRIVATE_CHAT_TYPE) {
-    chatbox === null || chatbox === void 0 ? void 0 : chatbox.handleErrorMessageStanza(stanza);
+  if (chatbox?.get('type') === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.PRIVATE_CHAT_TYPE) {
+    chatbox?.handleErrorMessageStanza(stanza);
   }
 }
 function autoJoinChats() {
@@ -18835,33 +18751,12 @@ function autoJoinChats() {
 }
 function registerMessageHandlers() {
   _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(stanza => {
-    if (sizzle(`message > result[xmlns="${Strophe.NS.MAM}"]`, stanza).pop()) {
-      // MAM messages are handled in converse-mam.
-      // We shouldn't get MAM messages here because
-      // they shouldn't have a `type` attribute.
-      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn(`Received a MAM message with type "chat".`);
+    if (['groupchat', 'error'].includes(stanza.getAttribute('type')) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isHeadline)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isServerMessage)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isArchived)(stanza)) {
       return true;
     }
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.handleMessageStanza(stanza);
-    return true;
-  }, null, 'message', 'chat');
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(stanza => {
-    // Message receipts are usually without the `type` attribute. See #1353
-    if (stanza.getAttribute('type') !== null) {
-      // TODO: currently Strophe has no way to register a handler
-      // for stanzas without a `type` attribute.
-      // We could update it to accept null to mean no attribute,
-      // but that would be a backward-incompatible change
-      return true; // Gets handled above.
-    }
-
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.handleMessageStanza(stanza);
-    return true;
-  }, Strophe.NS.RECEIPTS, 'message');
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(stanza => {
-    handleErrorMessage(stanza);
-    return true;
-  }, null, 'message', 'error');
+    return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.handleMessageStanza(stanza) || true;
+  }, null, 'message');
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(stanza => handleErrorMessage(stanza) || true, null, 'message', 'error');
 }
 
 /**
@@ -18876,7 +18771,7 @@ async function handleMessageStanza(stanza) {
   }
   let attrs;
   try {
-    attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_2__.parseMessage)(stanza, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse);
+    attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_2__.parseMessage)(stanza);
   } catch (e) {
     return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(e);
   }
@@ -18889,7 +18784,7 @@ async function handleMessageStanza(stanza) {
   const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chats.get(attrs.contact_jid, {
     'nickname': attrs.nick
   }, has_body);
-  await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
+  await chatbox?.queueMessage(attrs);
   /**
    * @typedef { Object } MessageData
    * An object containing the original message stanza, as well as the
@@ -19385,10 +19280,7 @@ const {
        * @example api.disco.entities.items(jid);
        */
       items(jid) {
-        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities.filter(e => {
-          var _e$get;
-          return (_e$get = e.get('parent_jids')) === null || _e$get === void 0 ? void 0 : _e$get.includes(jid);
-        });
+        return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.disco_entities.filter(e => e.get('parent_jids')?.includes(jid));
       },
       /**
        * Create a new  disco entity. It's identity and features
@@ -19842,9 +19734,8 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
     sizzle__WEBPACK_IMPORTED_MODULE_1___default()(`x[type="result"][xmlns="${Strophe.NS.XFORM}"]`, stanza).forEach(form => {
       const data = {};
       sizzle__WEBPACK_IMPORTED_MODULE_1___default()('field', form).forEach(field => {
-        var _field$querySelector;
         data[field.getAttribute('var')] = {
-          'value': (_field$querySelector = field.querySelector('value')) === null || _field$querySelector === void 0 ? void 0 : _field$querySelector.textContent,
+          'value': field.querySelector('value')?.textContent,
           'type': field.getAttribute('type')
         };
       });
@@ -19862,10 +19753,9 @@ const DiscoEntity = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__
 
     // XEP-0128 Service Discovery Extensions
     sizzle__WEBPACK_IMPORTED_MODULE_1___default()('x[type="result"][xmlns="jabber:x:data"] field', stanza).forEach(field => {
-      var _field$querySelector2;
       this.fields.create({
         'var': field.getAttribute('var'),
-        'value': (_field$querySelector2 = field.querySelector('value')) === null || _field$querySelector2 === void 0 ? void 0 : _field$querySelector2.textContent,
+        'value': field.querySelector('value')?.textContent,
         'from': stanza.getAttribute('from')
       });
     });
@@ -20087,12 +19977,11 @@ function populateStreamFeatures() {
   notifyStreamFeaturesAdded();
 }
 function clearSession() {
-  var _converse$disco_entit, _converse$disco_entit2, _converse$disco_entit3, _converse$disco_entit4, _converse$disco_entit5;
-  (_converse$disco_entit = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities) === null || _converse$disco_entit === void 0 ? void 0 : _converse$disco_entit.forEach(e => e.features.clearStore());
-  (_converse$disco_entit2 = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities) === null || _converse$disco_entit2 === void 0 ? void 0 : _converse$disco_entit2.forEach(e => e.identities.clearStore());
-  (_converse$disco_entit3 = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities) === null || _converse$disco_entit3 === void 0 ? void 0 : _converse$disco_entit3.forEach(e => e.dataforms.clearStore());
-  (_converse$disco_entit4 = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities) === null || _converse$disco_entit4 === void 0 ? void 0 : _converse$disco_entit4.forEach(e => e.fields.clearStore());
-  (_converse$disco_entit5 = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities) === null || _converse$disco_entit5 === void 0 ? void 0 : _converse$disco_entit5.clearStore();
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities?.forEach(e => e.features.clearStore());
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities?.forEach(e => e.identities.clearStore());
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities?.forEach(e => e.dataforms.clearStore());
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities?.forEach(e => e.fields.clearStore());
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities?.clearStore();
   delete _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.disco_entities;
 }
 
@@ -20455,13 +20344,12 @@ function parseStringForEmojis(str, callback) {
 function getCodePointReferences(text) {
   const references = [];
   parseStringForEmojis(text, (icon_id, emoji, offset) => {
-    var _getEmojisByAtrribute;
     references.push({
       'begin': offset,
       'cp': icon_id,
       'emoji': emoji,
       'end': offset + emoji.length,
-      'shortname': ((_getEmojisByAtrribute = getEmojisByAtrribute('cp')[icon_id]) === null || _getEmojisByAtrribute === void 0 ? void 0 : _getEmojisByAtrribute.sn) || ''
+      'shortname': getEmojisByAtrribute('cp')[icon_id]?.sn || ''
     });
   });
   return references;
@@ -20650,7 +20538,7 @@ class HeadlinesFeed extends _converse_headless_plugins_chat_model_js__WEBPACK_IM
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _feed_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./feed.js */ "./src/headless/plugins/headlines/feed.js");
 /* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.js */ "./src/headless/plugins/headlines/api.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/headlines/utils.js");
 /**
  * @module converse-headlines
@@ -20660,7 +20548,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-headlines', {
+_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-headlines', {
   dependencies: ["converse-chat"],
   overrides: {
     // Overrides mentioned here will be picked up by converse.js's
@@ -20687,13 +20575,13 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('conve
      * @namespace _converse.HeadlinesFeed
      * @memberOf _converse
      */
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HeadlinesFeed = _feed_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+    _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.HeadlinesFeed = _feed_js__WEBPACK_IMPORTED_MODULE_0__["default"];
     function registerHeadlineHandler() {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.connection.addHandler(m => (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.onHeadlineMessage)(m) || true, null, 'message');
+      _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.connection.addHandler(m => (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.onHeadlineMessage)(m) || true, null, 'message');
     }
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('connected', registerHeadlineHandler);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('reconnected', registerHeadlineHandler);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api, _api_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('connected', registerHeadlineHandler);
+    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('reconnected', registerHeadlineHandler);
+    Object.assign(_core_js__WEBPACK_IMPORTED_MODULE_2__.api, _api_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
   }
 });
 
@@ -21071,7 +20959,7 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.util
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection.deleteHandler(message_handler);
       let rsm;
       const fin = iq_result && sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`fin[xmlns="${NS.MAM}"]`, iq_result).pop();
-      const complete = (fin === null || fin === void 0 ? void 0 : fin.getAttribute('complete')) === 'true';
+      const complete = fin?.getAttribute('complete') === 'true';
       const set = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`set[xmlns="${NS.RSM}"]`, fin).pop();
       if (set) {
         rsm = new _converse_headless_shared_rsm__WEBPACK_IMPORTED_MODULE_0__.RSM({
@@ -21243,7 +21131,7 @@ const {
 } = Strophe;
 const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env.utils;
 function onMAMError(iq) {
-  if (iq !== null && iq !== void 0 && iq.querySelectorAll('feature-not-implemented').length) {
+  if (iq?.querySelectorAll('feature-not-implemented').length) {
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].warn(`Message Archive Management (XEP-0313) not supported by ${iq.getAttribute('from')}`);
   } else {
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error(`Error while trying to set archiving preferences for ${iq.getAttribute('from')}.`);
@@ -21871,7 +21759,7 @@ __webpack_require__.r(__webpack_exports__);
         throw new TypeError(err_msg);
       } else if (typeof jids === 'string') {
         const room = await _core_js__WEBPACK_IMPORTED_MODULE_3__.api.rooms.get(jids, attrs, true);
-        !attrs.hidden && (room === null || room === void 0 ? void 0 : room.maybeShow(force));
+        !attrs.hidden && room?.maybeShow(force);
         return room;
       } else {
         const rooms = await Promise.all(jids.map(jid => _core_js__WEBPACK_IMPORTED_MODULE_3__.api.rooms.get(jid, attrs, true)));
@@ -22295,8 +22183,7 @@ const ChatRoomMessageMixin = {
     _core_js__WEBPACK_IMPORTED_MODULE_2__.api.trigger('chatRoomMessageInitialized', this);
   },
   getDisplayName() {
-    var _this$occupant;
-    return ((_this$occupant = this.occupant) === null || _this$occupant === void 0 ? void 0 : _this$occupant.getDisplayName()) || this.get('nick');
+    return this.occupant?.getDisplayName() || this.get('nick');
   },
   /**
    * Determines whether this messsage may be moderated,
@@ -22320,17 +22207,15 @@ const ChatRoomMessageMixin = {
     return result;
   },
   onOccupantRemoved() {
-    var _this$collection;
     this.stopListening(this.occupant);
     delete this.occupant;
-    const chatbox = this === null || this === void 0 ? void 0 : (_this$collection = this.collection) === null || _this$collection === void 0 ? void 0 : _this$collection.chatbox;
+    const chatbox = this?.collection?.chatbox;
     if (!chatbox) {
       return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not get collection.chatbox for message: ${JSON.stringify(this.toJSON())}`);
     }
     this.listenTo(chatbox.occupants, 'add', this.onOccupantAdded);
   },
   onOccupantAdded(occupant) {
-    var _this$collection2;
     if (this.get('occupant_id')) {
       if (occupant.get('occupant_id') !== this.get('occupant_id')) {
         return;
@@ -22338,7 +22223,7 @@ const ChatRoomMessageMixin = {
     } else if (occupant.get('nick') !== strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__.Strophe.getResourceFromJid(this.get('from'))) {
       return;
     }
-    const chatbox = this === null || this === void 0 ? void 0 : (_this$collection2 = this.collection) === null || _this$collection2 === void 0 ? void 0 : _this$collection2.chatbox;
+    const chatbox = this?.collection?.chatbox;
     if (!chatbox) {
       return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not get collection.chatbox for message: ${JSON.stringify(this.toJSON())}`);
     }
@@ -22351,11 +22236,10 @@ const ChatRoomMessageMixin = {
     this.stopListening(chatbox.occupants, 'add', this.onOccupantAdded);
   },
   setOccupant() {
-    var _this$collection3;
     if (this.get('type') !== 'groupchat' || this.isEphemeral() || this.occupant) {
       return;
     }
-    const chatbox = this === null || this === void 0 ? void 0 : (_this$collection3 = this.collection) === null || _this$collection3 === void 0 ? void 0 : _this$collection3.chatbox;
+    const chatbox = this?.collection?.chatbox;
     if (!chatbox) {
       return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not get collection.chatbox for message: ${JSON.stringify(this.toJSON())}`);
     }
@@ -22409,13 +22293,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 /* harmony import */ var _affiliations_utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
-/* harmony import */ var _converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/shared/chat/utils.js */ "./src/headless/shared/chat/utils.js");
+/* harmony import */ var _shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../shared/chat/utils.js */ "./src/headless/shared/chat/utils.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/shared/parsers.js */ "./src/headless/shared/parsers.js");
-/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_storage_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _shared_parsers_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../shared/parsers.js */ "./src/headless/shared/parsers.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/core.js */ "./src/headless/utils/core.js");
 /* harmony import */ var _parsers_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./parsers.js */ "./src/headless/plugins/muc/parsers.js");
-/* harmony import */ var _converse_headless_shared_actions_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @converse/headless/shared/actions.js */ "./src/headless/shared/actions.js");
+/* harmony import */ var _shared_actions_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../shared/actions.js */ "./src/headless/shared/actions.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./constants.js */ "./src/headless/plugins/muc/constants.js");
 
 
@@ -22464,7 +22348,7 @@ const ChatRoomMixin = {
       'chat_state': undefined,
       'has_activity': false,
       // XEP-437
-      'hidden': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.isUniView)() && !_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('singleton'),
+      'hidden': (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.isUniView)() && !_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('singleton'),
       'hidden_occupants': !!_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('hide_muc_participants'),
       'message_type': 'groupchat',
       'name': '',
@@ -22569,7 +22453,7 @@ const ChatRoomMixin = {
     await this.refreshDiscoInfo();
     nick = await this.getAndPersistNickname(nick);
     if (!nick) {
-      (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
+      (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
         'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.NICKNAME_REQUIRED
       });
       if (_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_show_logs_before_join')) {
@@ -22593,7 +22477,7 @@ const ChatRoomMixin = {
   },
   async constructJoinPresence(password) {
     let stanza = (0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.$pres)({
-      'id': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)(),
+      'id': (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)(),
       'from': _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.connection.jid,
       'to': this.getRoomJIDAndNick()
     }).c('x', {
@@ -22634,10 +22518,10 @@ const ChatRoomMixin = {
   sendMarkerForMessage(msg) {
     let type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'displayed';
     let force = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    if (!msg || !_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('send_chat_markers').includes(type) || (msg === null || msg === void 0 ? void 0 : msg.get('type')) !== 'groupchat') {
+    if (!msg || !_core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('send_chat_markers').includes(type) || msg?.get('type') !== 'groupchat') {
       return;
     }
-    if (msg !== null && msg !== void 0 && msg.get('is_markable') || force) {
+    if (msg?.get('is_markable') || force) {
       const key = `stanza_id ${this.get('jid')}`;
       const id = msg.get(key);
       if (!id) {
@@ -22645,7 +22529,7 @@ const ChatRoomMixin = {
         return;
       }
       const from_jid = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getBareJidFromJid(msg.get('from'));
-      (0,_converse_headless_shared_actions_js__WEBPACK_IMPORTED_MODULE_14__.sendMarker)(from_jid, id, type, msg.get('type'));
+      (0,_shared_actions_js__WEBPACK_IMPORTED_MODULE_14__.sendMarker)(from_jid, id, type, msg.get('type'));
     }
   },
   /**
@@ -22751,7 +22635,7 @@ const ChatRoomMixin = {
     this.session = new MUCSession({
       id
     });
-    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__.initStorage)(this.session, id, 'session');
+    (0,_utils_storage_js__WEBPACK_IMPORTED_MODULE_10__.initStorage)(this.session, id, 'session');
     return new Promise(r => this.session.fetch({
       'success': r,
       'error': r
@@ -22823,7 +22707,7 @@ const ChatRoomMixin = {
     const {
       __
     } = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse;
-    const attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCMessage)(stanza, this, _core_js__WEBPACK_IMPORTED_MODULE_6__._converse);
+    const attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCMessage)(stanza, this);
     if (!(await this.shouldShowErrorMessage(attrs))) {
       return;
     }
@@ -22876,7 +22760,7 @@ const ChatRoomMixin = {
       return;
     }
     const rai = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`rai[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.RAI}"]`, stanza).pop();
-    const active_mucs = Array.from((rai === null || rai === void 0 ? void 0 : rai.querySelectorAll('activity')) || []).map(m => m.textContent);
+    const active_mucs = Array.from(rai?.querySelectorAll('activity') || []).map(m => m.textContent);
     if (active_mucs.includes(this.get('jid'))) {
       this.save({
         'has_activity': true,
@@ -22905,7 +22789,7 @@ const ChatRoomMixin = {
         'num_unread': this.get('num_unread') + mentions.length
       });
       mentions.forEach(async stanza => {
-        const attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCMessage)(stanza, this, _core_js__WEBPACK_IMPORTED_MODULE_6__._converse);
+        const attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCMessage)(stanza, this);
         const data = {
           stanza,
           attrs,
@@ -22927,7 +22811,7 @@ const ChatRoomMixin = {
       return this.handleErrorMessageStanza(stanza);
     }
     if (type === 'groupchat') {
-      if ((0,_converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_11__.isArchived)(stanza)) {
+      if ((0,_shared_parsers_js__WEBPACK_IMPORTED_MODULE_11__.isArchived)(stanza)) {
         // MAM messages are handled in converse-mam.
         // We shouldn't get MAM messages here because
         // they shouldn't have a `type` attribute.
@@ -22947,7 +22831,7 @@ const ChatRoomMixin = {
      */
     let attrs;
     try {
-      attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCMessage)(stanza, this, _core_js__WEBPACK_IMPORTED_MODULE_6__._converse);
+      attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCMessage)(stanza, this);
     } catch (e) {
       return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
     }
@@ -23070,7 +22954,7 @@ const ChatRoomMixin = {
     }
     const editable = message.get('editable');
     const stanza = (0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.$msg)({
-      'id': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)(),
+      'id': (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)(),
       'to': this.get('jid'),
       'type': 'groupchat'
     }).c('store', {
@@ -23193,7 +23077,6 @@ const ChatRoomMixin = {
    * @param { string } [exit_msg] - Message to indicate your reason for leaving
    */
   async leave(exit_msg) {
-    var _converse$disco_entit;
     _core_js__WEBPACK_IMPORTED_MODULE_6__.api.connection.connected() && _core_js__WEBPACK_IMPORTED_MODULE_6__.api.user.presence.send('unavailable', this.getRoomJIDAndNick(), exit_msg);
 
     // Delete the features model
@@ -23207,7 +23090,7 @@ const ChatRoomMixin = {
       }));
     }
     // Delete disco entity
-    const disco_entity = (_converse$disco_entit = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.disco_entities) === null || _converse$disco_entit === void 0 ? void 0 : _converse$disco_entit.get(this.get('jid'));
+    const disco_entity = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.disco_entities?.get(this.get('jid'));
     if (disco_entity) {
       await new Promise(resolve => disco_entity.destroy({
         'success': resolve,
@@ -23217,7 +23100,7 @@ const ChatRoomMixin = {
         }
       }));
     }
-    (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
+    (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
       'connection_status': _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED
     });
   },
@@ -23227,14 +23110,14 @@ const ChatRoomMixin = {
       CLOSING
     } = _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS;
     const was_entered = this.session.get('connection_status') === ENTERED;
-    (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
+    (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this.session, {
       'connection_status': CLOSING
     });
     was_entered && this.sendMarkerForLastMessage('received', true);
     await this.unregisterNickname();
     await this.leave();
     this.occupants.clearStore();
-    if ((ev === null || ev === void 0 ? void 0 : ev.name) !== 'closeAllChatBoxes' && _core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_clear_messages_on_leave')) {
+    if (ev?.name !== 'closeAllChatBoxes' && _core_js__WEBPACK_IMPORTED_MODULE_6__.api.settings.get('muc_clear_messages_on_leave')) {
       this.clearMessages();
     }
 
@@ -23278,7 +23161,7 @@ const ChatRoomMixin = {
   getReferenceURIFromNickname(nickname) {
     const muc_jid = this.get('jid');
     const occupant = this.getOccupant(nickname);
-    const uri = this.features.get('nonanonymous') && (occupant === null || occupant === void 0 ? void 0 : occupant.get('jid')) || `${muc_jid}/${nickname}`;
+    const uri = this.features.get('nonanonymous') && occupant?.get('jid') || `${muc_jid}/${nickname}`;
     return encodeURI(`xmpp:${uri}`);
   },
   /**
@@ -23318,15 +23201,14 @@ const ChatRoomMixin = {
     return [updated_message, updated_references];
   },
   async getOutgoingMessageAttributes(attrs) {
-    var _attrs;
     await _core_js__WEBPACK_IMPORTED_MODULE_6__.api.emojis.initialize();
     const is_spoiler = this.get('composing_spoiler');
     let text = '',
       references;
-    if ((_attrs = attrs) !== null && _attrs !== void 0 && _attrs.body) {
+    if (attrs?.body) {
       [text, references] = this.parseTextForReferences(attrs.body);
     }
-    const origin_id = (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)();
+    const origin_id = (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)();
     const body = text ? _utils_form__WEBPACK_IMPORTED_MODULE_3__["default"].shortnamesToUnicode(text) : undefined;
     attrs = Object.assign({}, attrs, {
       body,
@@ -23342,7 +23224,7 @@ const ChatRoomMixin = {
       'nick': this.get('nick'),
       'sender': 'me',
       'type': 'groupchat'
-    }, (0,_converse_headless_shared_parsers_js__WEBPACK_IMPORTED_MODULE_11__.getMediaURLsMetadata)(text));
+    }, (0,_shared_parsers_js__WEBPACK_IMPORTED_MODULE_11__.getMediaURLsMetadata)(text));
 
     /**
      * *Hook* which allows plugins to update the attributes of an outgoing
@@ -23425,7 +23307,7 @@ const ChatRoomMixin = {
     const invitation = (0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.$msg)({
       'from': _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.connection.jid,
       'to': recipient,
-      'id': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)()
+      'id': (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)()
     }).c('x', attrs);
     _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(invitation);
     /**
@@ -23463,7 +23345,7 @@ const ChatRoomMixin = {
    */
   getDiscoInfo() {
     return _core_js__WEBPACK_IMPORTED_MODULE_6__.api.disco.getIdentity('conference', 'text', this.get('jid')).then(identity => this.save({
-      'name': identity === null || identity === void 0 ? void 0 : identity.get('name')
+      'name': identity?.get('name')
     })).then(() => this.getDiscoInfoFields()).then(() => this.getDiscoInfoFeatures()).catch(e => _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e));
   },
   /**
@@ -23478,7 +23360,7 @@ const ChatRoomMixin = {
     const fields = await _core_js__WEBPACK_IMPORTED_MODULE_6__.api.disco.getFields(this.get('jid'));
     const config = fields.reduce((config, f) => {
       const name = f.get('var');
-      if (name !== null && name !== void 0 && name.startsWith('muc#roominfo_')) {
+      if (name?.startsWith('muc#roominfo_')) {
         config[name.replace('muc#roominfo_', '')] = f.get('value');
       }
       return config;
@@ -23755,8 +23637,7 @@ const ChatRoomMixin = {
    * @returns { ('none'|'visitor'|'participant'|'moderator') }
    */
   getOwnRole() {
-    var _this$getOwnOccupant, _this$getOwnOccupant$;
-    return (_this$getOwnOccupant = this.getOwnOccupant()) === null || _this$getOwnOccupant === void 0 ? void 0 : (_this$getOwnOccupant$ = _this$getOwnOccupant.attributes) === null || _this$getOwnOccupant$ === void 0 ? void 0 : _this$getOwnOccupant$.role;
+    return this.getOwnOccupant()?.attributes?.role;
   },
   /**
    * Returns the `affiliation` which the current user has in this MUC
@@ -23765,8 +23646,7 @@ const ChatRoomMixin = {
    * @returns { ('none'|'outcast'|'member'|'admin'|'owner') }
    */
   getOwnAffiliation() {
-    var _this$getOwnOccupant2, _this$getOwnOccupant3;
-    return ((_this$getOwnOccupant2 = this.getOwnOccupant()) === null || _this$getOwnOccupant2 === void 0 ? void 0 : (_this$getOwnOccupant3 = _this$getOwnOccupant2.attributes) === null || _this$getOwnOccupant3 === void 0 ? void 0 : _this$getOwnOccupant3.affiliation) || 'none';
+    return this.getOwnOccupant()?.attributes?.affiliation || 'none';
   },
   /**
    * Get the {@link _converse.ChatRoomOccupant} instance which
@@ -23810,7 +23690,7 @@ const ChatRoomMixin = {
     _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send((0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.$pres)({
       'from': _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.connection.jid,
       'to': `${jid}/${nick}`,
-      'id': (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)()
+      'id': (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.getUniqueId)()
     }).tree());
   },
   /**
@@ -23921,7 +23801,7 @@ const ChatRoomMixin = {
    */
   async getAndPersistNickname(nick) {
     nick = nick || this.get('nick') || (await this.getReservedNick()) || _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.getDefaultMUCNickname();
-    if (nick) (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this, {
+    if (nick) (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this, {
       nick
     }, {
       'silent': true
@@ -23950,7 +23830,7 @@ const ChatRoomMixin = {
       throw result;
     }
     // Result might be undefined due to a timeout
-    const identity_el = result === null || result === void 0 ? void 0 : result.querySelector('query[node="x-roomuser-item"] identity');
+    const identity_el = result?.querySelector('query[node="x-roomuser-item"] identity');
     return identity_el ? identity_el.getAttribute('name') : null;
   },
   /**
@@ -24053,7 +23933,6 @@ const ChatRoomMixin = {
    * @param { XMLElement } pres - The presence stanza
    */
   updateOccupantsOnPresence(pres) {
-    var _occupant$attributes, _occupant$attributes2;
     const data = (0,_parsers_js__WEBPACK_IMPORTED_MODULE_13__.parseMUCPresence)(pres, this);
     if (data.type === 'error' || !data.jid && !data.nick && !data.occupant_id) {
       return true;
@@ -24069,8 +23948,8 @@ const ChatRoomMixin = {
     const jid = data.jid || '';
     const attributes = {
       ...data,
-      'jid': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getBareJidFromJid(jid) || (occupant === null || occupant === void 0 ? void 0 : (_occupant$attributes = occupant.attributes) === null || _occupant$attributes === void 0 ? void 0 : _occupant$attributes.jid),
-      'resource': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getResourceFromJid(jid) || (occupant === null || occupant === void 0 ? void 0 : (_occupant$attributes2 = occupant.attributes) === null || _occupant$attributes2 === void 0 ? void 0 : _occupant$attributes2.resource)
+      'jid': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getBareJidFromJid(jid) || occupant?.attributes?.jid,
+      'resource': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getResourceFromJid(jid) || occupant?.attributes?.resource
     };
     if (data.is_me) {
       let modified = false;
@@ -24167,7 +24046,7 @@ const ChatRoomMixin = {
       // MUST NOT contain a <body/> element (or a <thread/> element).
       const subject = attrs.subject;
       const author = attrs.nick;
-      (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this, {
+      (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this, {
         'subject': {
           author,
           'text': attrs.subject || ''
@@ -24176,7 +24055,7 @@ const ChatRoomMixin = {
       if (!attrs.is_delayed && author) {
         const message = subject ? __('Topic set by %1$s', author) : __('Topic cleared by %1$s', author);
         const prev_msg = this.messages.last();
-        if ((prev_msg === null || prev_msg === void 0 ? void 0 : prev_msg.get('nick')) !== attrs.nick || (prev_msg === null || prev_msg === void 0 ? void 0 : prev_msg.get('type')) !== 'info' || (prev_msg === null || prev_msg === void 0 ? void 0 : prev_msg.get('message')) !== message) {
+        if (prev_msg?.get('nick') !== attrs.nick || prev_msg?.get('type') !== 'info' || prev_msg?.get('message') !== message) {
           this.createMessage({
             message,
             'nick': attrs.nick,
@@ -24276,7 +24155,7 @@ const ChatRoomMixin = {
   async sendStatusPresence(type, status, child_nodes) {
     if (this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.ENTERED) {
       const presence = await _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.xmppstatus.constructPresence(type, this.getRoomJIDAndNick(), status);
-      child_nodes === null || child_nodes === void 0 ? void 0 : child_nodes.map(c => (c === null || c === void 0 ? void 0 : c.tree()) ?? c).forEach(c => presence.cnode(c).up());
+      child_nodes?.map(c => c?.tree() ?? c).forEach(c => presence.cnode(c).up());
       _core_js__WEBPACK_IMPORTED_MODULE_6__.api.send(presence);
     }
   },
@@ -24390,13 +24269,10 @@ const ChatRoomMixin = {
     const states = [..._core_js__WEBPACK_IMPORTED_MODULE_6__.converse.CHAT_STATES, ...join_leave_events, ...role_changes];
     return states.reduce((result, state) => {
       const existing_actors = actors_per_state[state];
-      if (!(existing_actors !== null && existing_actors !== void 0 && existing_actors.length)) {
+      if (!existing_actors?.length) {
         return result;
       }
-      const actors = existing_actors.map(a => {
-        var _this$getOccupant;
-        return ((_this$getOccupant = this.getOccupant(a)) === null || _this$getOccupant === void 0 ? void 0 : _this$getOccupant.getDisplayName()) || a;
-      });
+      const actors = existing_actors.map(a => this.getOccupant(a)?.getDisplayName() || a);
       if (actors.length === 1) {
         if (state === 'composing') {
           return `${result}${__('%1$s is typing', actors[0])}\n`;
@@ -24524,11 +24400,10 @@ const ChatRoomMixin = {
    * @param { XMLElement } stanza
    */
   handleMEPNotification(attrs) {
-    var _attrs$activities;
     if (attrs.from !== this.get('jid') || !attrs.activities) {
       return false;
     }
-    (_attrs$activities = attrs.activities) === null || _attrs$activities === void 0 ? void 0 : _attrs$activities.forEach(activity_attrs => {
+    attrs.activities?.forEach(activity_attrs => {
       const data = Object.assign(attrs, activity_attrs);
       this.createMessage(data);
       // Trigger so that notifications are shown
@@ -24548,8 +24423,7 @@ const ChatRoomMixin = {
    * @returns {Promise<_converse.Message>}
    */
   getDuplicateMessage(attrs) {
-    var _attrs$activities2;
-    if ((_attrs$activities2 = attrs.activities) !== null && _attrs$activities2 !== void 0 && _attrs$activities2.length) {
+    if (attrs.activities?.length) {
       return this.messages.findWhere({
         'type': 'mep',
         'msgid': attrs.msgid
@@ -24589,14 +24463,13 @@ const ChatRoomMixin = {
       this.updateNotifications(attrs.nick, attrs.chat_state);
     }
     if (_utils_form__WEBPACK_IMPORTED_MODULE_3__["default"].shouldCreateGroupchatMessage(attrs)) {
-      const msg = (await (0,_converse_headless_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_8__.handleCorrection)(this, attrs)) || (await this.createMessage(attrs));
+      const msg = (await (0,_shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_8__.handleCorrection)(this, attrs)) || (await this.createMessage(attrs));
       this.removeNotification(attrs.nick, ['composing', 'paused']);
       this.handleUnreadMessage(msg);
     }
   },
   handleModifyError(pres) {
-    var _pres$querySelector;
-    const text = (_pres$querySelector = pres.querySelector('error text')) === null || _pres$querySelector === void 0 ? void 0 : _pres$querySelector.textContent;
+    const text = pres.querySelector('error text')?.textContent;
     if (text) {
       if (this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.CONNECTING) {
         this.setDisconnectionState(text);
@@ -24615,7 +24488,6 @@ const ChatRoomMixin = {
    * @param { XMLElement } stanza
    */
   handleDisconnection(stanza) {
-    var _item$querySelector;
     const is_self = stanza.querySelector("status[code='110']") !== null;
     const x = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`x[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.MUC_USER}"]`, stanza).pop();
     if (!x) {
@@ -24632,7 +24504,7 @@ const ChatRoomMixin = {
     // element. This appears to be a safe assumption, since
     // each <x/> element pertains to a single user.
     const item = x.querySelector('item');
-    const reason = item ? (_item$querySelector = item.querySelector('reason')) === null || _item$querySelector === void 0 ? void 0 : _item$querySelector.textContent : undefined;
+    const reason = item ? item.querySelector('reason')?.textContent : undefined;
     const actor = item ? (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_19__["default"])(item.querySelector('actor'), 'getAttribute', 'nick') : undefined;
     const message = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.disconnect_messages[codes[0]];
     const status = codes.includes('301') ? _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.BANNED : _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED;
@@ -24742,18 +24614,17 @@ const ChatRoomMixin = {
     } else if (code in _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.info_messages) {
       data.message = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.info_messages[code];
     } else if (!is_self && ACTION_INFO_CODES.includes(code)) {
-      var _item$querySelector2, _item$querySelector3;
       const nick = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getResourceFromJid(stanza.getAttribute('from'));
       const item = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`x[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.MUC_USER}"] item`, stanza).pop();
-      data.actor = item ? (_item$querySelector2 = item.querySelector('actor')) === null || _item$querySelector2 === void 0 ? void 0 : _item$querySelector2.getAttribute('nick') : undefined;
-      data.reason = item ? (_item$querySelector3 = item.querySelector('reason')) === null || _item$querySelector3 === void 0 ? void 0 : _item$querySelector3.textContent : undefined;
+      data.actor = item ? item.querySelector('actor')?.getAttribute('nick') : undefined;
+      data.reason = item ? item.querySelector('reason')?.textContent : undefined;
       data.message = this.getActionInfoMessage(code, nick, data.actor);
     } else if (is_self && code in _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.muc.new_nickname_messages) {
       // XXX: Side-effect of setting the nick. Should ideally be refactored out of this method
       let nick;
-      if (is_self && code === '210') {
+      if (code === '210') {
         nick = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.getResourceFromJid(stanza.getAttribute('from'));
-      } else if (is_self && code === '303') {
+      } else if (code === '303') {
         nick = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`x[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.MUC_USER}"] item`, stanza).pop().getAttribute('nick');
       }
       this.save('nick', nick);
@@ -24827,11 +24698,10 @@ const ChatRoomMixin = {
    * @param { XMLElement } stanza - The presence stanza
    */
   onErrorPresence(stanza) {
-    var _sizzle$pop;
     const __ = _core_js__WEBPACK_IMPORTED_MODULE_6__._converse.__;
     const error = stanza.querySelector('error');
     const error_type = error.getAttribute('type');
-    const reason = (_sizzle$pop = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`text[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, error).pop()) === null || _sizzle$pop === void 0 ? void 0 : _sizzle$pop.textContent;
+    const reason = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`text[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, error).pop()?.textContent;
     if (error_type === 'modify') {
       this.handleModifyError(stanza);
     } else if (error_type === 'auth') {
@@ -24857,8 +24727,7 @@ const ChatRoomMixin = {
         const message = __("Your nickname doesn't conform to this groupchat's policies.");
         this.setDisconnectionState(message, reason);
       } else if (sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`gone[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, error).length) {
-        var _sizzle$pop2;
-        const moved_jid = (_sizzle$pop2 = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`gone[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, error).pop()) === null || _sizzle$pop2 === void 0 ? void 0 : _sizzle$pop2.textContent.replace(/^xmpp:/, '').replace(/\?join$/, '');
+        const moved_jid = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`gone[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, error).pop()?.textContent.replace(/^xmpp:/, '').replace(/\?join$/, '');
         this.save({
           moved_jid,
           'destroyed_reason': reason
@@ -24895,7 +24764,7 @@ const ChatRoomMixin = {
   onPresenceFromMUCHost(stanza) {
     if (stanza.getAttribute('type') === 'error') {
       const error = stanza.querySelector('error');
-      if ((error === null || error === void 0 ? void 0 : error.getAttribute('type')) === 'wait' && error !== null && error !== void 0 && error.querySelector('resource-constraint')) {
+      if (error?.getAttribute('type') === 'wait' && error?.querySelector('resource-constraint')) {
         // If we get a <resource-constraint> error, we assume it's in context of XEP-0437 RAI.
         // We remove this MUC's host from the list of enabled domains and rejoin the MUC.
         if (this.session.get('connection_status') === _constants_js__WEBPACK_IMPORTED_MODULE_15__.ROOMSTATUS.DISCONNECTED) {
@@ -25004,7 +24873,7 @@ const ChatRoomMixin = {
     if (this.get('num_unread_general') > 0 || this.get('num_unread') > 0 || this.get('has_activity')) {
       this.sendMarkerForMessage(this.messages.last());
     }
-    (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this, {
+    (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.safeSave)(this, {
       'has_activity': false,
       'num_unread': 0,
       'num_unread_general': 0
@@ -25137,8 +25006,7 @@ class ChatRoomOccupants extends _converse_skeletor_src_collection_js__WEBPACK_IM
     return super.create(attrs, options);
   }
   async fetchMembers() {
-    var _this$getOwnOccupant;
-    if (!['member', 'admin', 'owner'].includes((_this$getOwnOccupant = this.getOwnOccupant()) === null || _this$getOwnOccupant === void 0 ? void 0 : _this$getOwnOccupant.get('affiliation'))) {
+    if (!['member', 'admin', 'owner'].includes(this.getOwnOccupant()?.get('affiliation'))) {
       // https://xmpp.org/extensions/xep-0045.html#affil-priv
       return;
     }
@@ -25269,12 +25137,10 @@ function getMEPActivities(stanza) {
   const msgid = stanza.getAttribute('id');
   const selector = `item ` + `conference-info[xmlns="${Strophe.NS.CONFINFO}"] ` + `activity[xmlns="${Strophe.NS.ACTIVITY}"]`;
   return sizzle(selector, items_el).map(el => {
-    var _el$querySelector;
-    const message = (_el$querySelector = el.querySelector('text')) === null || _el$querySelector === void 0 ? void 0 : _el$querySelector.textContent;
+    const message = el.querySelector('text')?.textContent;
     if (message) {
-      var _el$querySelector2;
       const references = (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getReferences)(stanza);
-      const reason = (_el$querySelector2 = el.querySelector('reason')) === null || _el$querySelector2 === void 0 ? void 0 : _el$querySelector2.textContent;
+      const reason = el.querySelector('reason')?.textContent;
       return {
         from,
         msgid,
@@ -25303,7 +25169,7 @@ function getMEPActivities(stanza) {
  */
 function getJIDFromMUCUserData(stanza) {
   const item = sizzle(`x[xmlns="${Strophe.NS.MUC_USER}"] item`, stanza).pop();
-  return item === null || item === void 0 ? void 0 : item.getAttribute('jid');
+  return item?.getAttribute('jid');
 }
 
 /**
@@ -25321,13 +25187,12 @@ function getModerationAttributes(stanza) {
     if (moderated) {
       const retracted = sizzle(`retract[xmlns="${Strophe.NS.RETRACT}"]`, moderated).pop();
       if (retracted) {
-        var _moderated$querySelec;
         return {
           'editable': false,
           'moderated': 'retracted',
           'moderated_by': moderated.getAttribute('by'),
           'moderated_id': applies_to_id,
-          'moderation_reason': (_moderated$querySelec = moderated.querySelector('reason')) === null || _moderated$querySelec === void 0 ? void 0 : _moderated$querySelec.textContent
+          'moderation_reason': moderated.querySelector('reason')?.textContent
         };
       }
     }
@@ -25336,13 +25201,12 @@ function getModerationAttributes(stanza) {
     if (tombstone) {
       const retracted = sizzle(`retracted[xmlns="${Strophe.NS.RETRACT}"]`, tombstone).pop();
       if (retracted) {
-        var _tombstone$querySelec;
         return {
           'editable': false,
           'is_tombstone': true,
           'moderated_by': tombstone.getAttribute('by'),
           'retracted': tombstone.getAttribute('stamp'),
-          'moderation_reason': (_tombstone$querySelec = tombstone.querySelector('reason')) === null || _tombstone$querySelec === void 0 ? void 0 : _tombstone$querySelec.textContent
+          'moderation_reason': tombstone.querySelector('reason')?.textContent
         };
       }
     }
@@ -25351,8 +25215,7 @@ function getModerationAttributes(stanza) {
 }
 function getOccupantID(stanza, chatbox) {
   if (chatbox.features.get(Strophe.NS.OCCUPANTID)) {
-    var _sizzle$pop;
-    return (_sizzle$pop = sizzle(`occupant-id[xmlns="${Strophe.NS.OCCUPANTID}"]`, stanza).pop()) === null || _sizzle$pop === void 0 ? void 0 : _sizzle$pop.getAttribute('id');
+    return sizzle(`occupant-id[xmlns="${Strophe.NS.OCCUPANTID}"]`, stanza).pop()?.getAttribute('id');
   }
 }
 
@@ -25386,7 +25249,6 @@ function getSender(attrs, chatbox) {
  * @returns { Promise<MUCMessageAttributes|Error> }
  */
 async function parseMUCMessage(stanza, chatbox) {
-  var _stanza$querySelector, _stanza$querySelector2, _stanza$querySelector3, _stanza$querySelector4, _chatbox$occupants$fi;
   (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.throwErrorIfInvalidForward)(stanza);
   const selector = `[xmlns="${NS.MAM}"] > forwarded[xmlns="${NS.FORWARD}"] > message`;
   const original_stanza = stanza;
@@ -25457,7 +25319,7 @@ async function parseMUCMessage(stanza, chatbox) {
   let attrs = Object.assign({
     from,
     'activities': getMEPActivities(stanza),
-    'body': (_stanza$querySelector = stanza.querySelector(':scope > body')) === null || _stanza$querySelector === void 0 ? void 0 : (_stanza$querySelector2 = _stanza$querySelector.textContent) === null || _stanza$querySelector2 === void 0 ? void 0 : _stanza$querySelector2.trim(),
+    'body': stanza.querySelector(':scope > body')?.textContent?.trim(),
     'chat_state': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getChatState)(stanza),
     'from_muc': Strophe.getBareJidFromJid(from),
     'is_archived': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isArchived)(original_stanza),
@@ -25475,14 +25337,14 @@ async function parseMUCMessage(stanza, chatbox) {
     'receipt_id': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getReceiptId)(stanza),
     'received': new Date().toISOString(),
     'references': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getReferences)(stanza),
-    'subject': (_stanza$querySelector3 = stanza.querySelector('subject')) === null || _stanza$querySelector3 === void 0 ? void 0 : _stanza$querySelector3.textContent,
-    'thread': (_stanza$querySelector4 = stanza.querySelector('thread')) === null || _stanza$querySelector4 === void 0 ? void 0 : _stanza$querySelector4.textContent,
+    'subject': stanza.querySelector('subject')?.textContent,
+    'thread': stanza.querySelector('thread')?.textContent,
     'time': delay ? dayjs__WEBPACK_IMPORTED_MODULE_0___default()(delay.getAttribute('stamp')).toISOString() : new Date().toISOString(),
     'to': stanza.getAttribute('to'),
     'type': stanza.getAttribute('type')
   }, (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getErrorAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getOutOfBandAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getSpoilerAttributes)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getCorrectionAttributes)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getStanzaIDs)(stanza, original_stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getOpenGraphMetadata)(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getRetractionAttributes)(stanza, original_stanza), getModerationAttributes(stanza), (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.getEncryptionAttributes)(stanza, _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse));
   await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.emojis.initialize();
-  attrs.from_real_jid = attrs.is_archived && getJIDFromMUCUserData(stanza) || ((_chatbox$occupants$fi = chatbox.occupants.findOccupant(attrs)) === null || _chatbox$occupants$fi === void 0 ? void 0 : _chatbox$occupants$fi.get('jid'));
+  attrs.from_real_jid = attrs.is_archived && getJIDFromMUCUserData(stanza) || chatbox.occupants.findOccupant(attrs)?.get('jid');
   attrs = Object.assign({
     'is_only_emojis': attrs.body ? u.isOnlyEmojis(attrs.body) : false,
     'is_valid_receipt_request': (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isValidReceiptRequest)(stanza, attrs),
@@ -25600,8 +25462,7 @@ function parseMUCPresence(stanza, chatbox) {
         }
       });
     } else if (child.matches('x') && child.getAttribute('xmlns') === Strophe.NS.VCARDUPDATE) {
-      var _child$querySelector;
-      data.image_hash = (_child$querySelector = child.querySelector('photo')) === null || _child$querySelector === void 0 ? void 0 : _child$querySelector.textContent;
+      data.image_hash = child.querySelector('photo')?.textContent;
     } else if (child.matches('hats') && child.getAttribute('xmlns') === Strophe.NS.MUC_HATS) {
       /**
        * @typedef { Object } MUCHat
@@ -26663,9 +26524,8 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     if (contact instanceof _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.RosterContact) {
       contact.authorize().subscribe();
     } else {
-      var _sizzle$pop;
       // Can happen when a subscription is retried or roster was deleted
-      const nickname = ((_sizzle$pop = sizzle(`nick[xmlns="${Strophe.NS.NICK}"]`, presence).pop()) === null || _sizzle$pop === void 0 ? void 0 : _sizzle$pop.textContent) || null;
+      const nickname = sizzle(`nick[xmlns="${Strophe.NS.NICK}"]`, presence).pop()?.textContent || null;
       const contact = await this.addContactToRoster(bare_jid, nickname, [], {
         'subscription': 'from'
       });
@@ -26782,7 +26642,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     const contact = this.get(jid);
     const subscription = item.getAttribute("subscription");
     if (subscription === "remove") {
-      return contact === null || contact === void 0 ? void 0 : contact.destroy();
+      return contact?.destroy();
     }
     const ask = item.getAttribute("ask");
     const nickname = item.getAttribute('name');
@@ -26811,9 +26671,8 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     }
   },
   createRequestingContact(presence) {
-    var _sizzle$pop2;
     const bare_jid = Strophe.getBareJidFromJid(presence.getAttribute('from'));
-    const nickname = ((_sizzle$pop2 = sizzle(`nick[xmlns="${Strophe.NS.NICK}"]`, presence).pop()) === null || _sizzle$pop2 === void 0 ? void 0 : _sizzle$pop2.textContent) || null;
+    const nickname = sizzle(`nick[xmlns="${Strophe.NS.NICK}"]`, presence).pop()?.textContent || null;
     const user_data = {
       'jid': bare_jid,
       'subscription': 'none',
@@ -26862,17 +26721,16 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       resource = Strophe.getResourceFromJid(jid),
       presence_type = presence.getAttribute('type');
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.connection.jid !== jid && presence_type !== 'unavailable' && (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('synchronize_availability') === true || _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('synchronize_availability') === resource)) {
-      var _presence$querySelect, _presence$querySelect2;
       // Another resource has changed its status and
       // synchronize_availability option set to update,
       // we'll update ours as well.
-      const show = ((_presence$querySelect = presence.querySelector('show')) === null || _presence$querySelect === void 0 ? void 0 : _presence$querySelect.textContent) || 'online';
+      const show = presence.querySelector('show')?.textContent || 'online';
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.save({
         'status': show
       }, {
         'silent': true
       });
-      const status_message = (_presence$querySelect2 = presence.querySelector('status')) === null || _presence$querySelect2 === void 0 ? void 0 : _presence$querySelect2.textContent;
+      const status_message = presence.querySelector('status')?.textContent;
       if (status_message) {
         _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.xmppstatus.save({
           'status_message': status_message
@@ -26898,7 +26756,6 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     }
   },
   presenceHandler(presence) {
-    var _presence$querySelect3;
     const presence_type = presence.getAttribute('type');
     if (presence_type === 'error') return true;
     const jid = presence.getAttribute('from');
@@ -26909,7 +26766,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
       return; // Ignore MUC
     }
 
-    const status_message = (_presence$querySelect3 = presence.querySelector('status')) === null || _presence$querySelect3 === void 0 ? void 0 : _presence$querySelect3.textContent;
+    const status_message = presence.querySelector('status')?.textContent;
     const contact = this.get(bare_jid);
     if (contact && status_message !== contact.get('status')) {
       contact.save({
@@ -27072,9 +26929,8 @@ const Presence = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Mo
     this.listenTo(this.resources, 'change', this.onResourcesChanged);
   },
   onResourcesChanged() {
-    var _hpr$attributes;
     const hpr = this.getHighestPriorityResource();
-    const show = (hpr === null || hpr === void 0 ? void 0 : (_hpr$attributes = hpr.attributes) === null || _hpr$attributes === void 0 ? void 0 : _hpr$attributes.show) || 'offline';
+    const show = hpr?.attributes?.show || 'offline';
     if (this.get('show') !== show) {
       this.save({
         'show': show
@@ -27097,16 +26953,15 @@ const Presence = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Mo
    * @param { XMLElement } presence: The presence stanza
    */
   addResource(presence) {
-    var _presence$querySelect, _presence$querySelect2;
     const jid = presence.getAttribute('from'),
       name = Strophe.getResourceFromJid(jid),
       delay = sizzle(`delay[xmlns="${Strophe.NS.DELAY}"]`, presence).pop(),
-      priority = ((_presence$querySelect = presence.querySelector('priority')) === null || _presence$querySelect === void 0 ? void 0 : _presence$querySelect.textContent) ?? 0,
+      priority = presence.querySelector('priority')?.textContent ?? 0,
       resource = this.resources.get(name),
       settings = {
         'name': name,
         'priority': (0,lodash_es_isNaN__WEBPACK_IMPORTED_MODULE_4__["default"])(parseInt(priority, 10)) ? 0 : parseInt(priority, 10),
-        'show': ((_presence$querySelect2 = presence.querySelector('show')) === null || _presence$querySelect2 === void 0 ? void 0 : _presence$querySelect2.textContent) ?? 'online',
+        'show': presence.querySelector('show')?.textContent ?? 'online',
         'timestamp': delay ? dayjs(delay.getAttribute('stamp')).toISOString() : new Date().toISOString()
       };
     if (resource) {
@@ -27216,9 +27071,8 @@ async function populateRoster() {
   }
 }
 function updateUnreadCounter(chatbox) {
-  var _converse$roster;
-  const contact = (_converse$roster = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster) === null || _converse$roster === void 0 ? void 0 : _converse$roster.get(chatbox.get('jid'));
-  contact === null || contact === void 0 ? void 0 : contact.save({
+  const contact = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster?.get(chatbox.get('jid'));
+  contact?.save({
     'num_unread': chatbox.get('num_unread')
   });
 }
@@ -27236,8 +27090,7 @@ function unregisterPresenceHandler() {
   }
 }
 async function clearPresences() {
-  var _converse$presences;
-  await ((_converse$presences = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.presences) === null || _converse$presences === void 0 ? void 0 : _converse$presences.clearStore());
+  await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.presences?.clearStore();
 }
 
 /**
@@ -27251,8 +27104,7 @@ async function onClearSession() {
       delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.rostergroups;
     }
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster) {
-      var _converse$roster$data;
-      (_converse$roster$data = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.data) === null || _converse$roster$data === void 0 ? void 0 : _converse$roster$data.destroy();
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.data?.destroy();
       await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster.clearStore();
       delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.roster;
     }
@@ -27333,7 +27185,7 @@ function onRosterContactsFetched() {
     const chatbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.findWhere({
       'jid': contact.get('jid')
     });
-    chatbox === null || chatbox === void 0 ? void 0 : chatbox.setRosterContact(contact.get('jid'));
+    chatbox?.setRosterContact(contact.get('jid'));
   });
 }
 
@@ -27517,8 +27369,7 @@ function initSessionData() {
   });
 }
 function resetSessionData() {
-  var _converse$session;
-  (_converse$session = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.session) === null || _converse$session === void 0 ? void 0 : _converse$session.save({
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.session?.save({
     'smacks_enabled': false,
     'num_stanzas_handled': 0,
     'num_stanzas_handled_by_server': 0,
@@ -27618,7 +27469,6 @@ async function sendEnableStanza() {
 }
 const smacks_handlers = [];
 async function enableStreamManagement() {
-  var _converse$session2;
   if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('enable_smacks')) {
     return;
   }
@@ -27632,7 +27482,7 @@ async function enableStreamManagement() {
   smacks_handlers.push(conn.addHandler(stanzaHandler));
   smacks_handlers.push(conn.addHandler(sendAck, Strophe.NS.SM, 'r'));
   smacks_handlers.push(conn.addHandler(handleAck, Strophe.NS.SM, 'a'));
-  if ((_converse$session2 = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.session) !== null && _converse$session2 !== void 0 && _converse$session2.get('smacks_stream_id')) {
+  if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.session?.get('smacks_stream_id')) {
     await sendResumeStanza();
   } else {
     resetSessionData();
@@ -27694,14 +27544,13 @@ __webpack_require__.r(__webpack_exports__);
      *  Nodes(s) to be added as child nodes of the `presence` XML element.
      */
     async send(type, to, status, child_nodes) {
-      var _child_nodes;
       await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.waitUntil('statusInitialized');
       if (child_nodes && !Array.isArray(child_nodes)) {
         child_nodes = [child_nodes];
       }
       const model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.xmppstatus;
       const presence = await model.constructPresence(type, to, status);
-      (_child_nodes = child_nodes) === null || _child_nodes === void 0 ? void 0 : _child_nodes.map(c => (c === null || c === void 0 ? void 0 : c.tree()) ?? c).forEach(c => presence.cnode(c).up());
+      child_nodes?.map(c => c?.tree() ?? c).forEach(c => presence.cnode(c).up());
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.send(presence);
       if (['away', 'chat', 'dnd', 'online', 'xa', undefined].includes(type)) {
         const mucs = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.rooms.get();
@@ -27992,12 +27841,11 @@ function initStatus(reconnecting) {
   }
 }
 function onUserActivity() {
-  var _converse$connection;
   /* Resets counters and flags relating to CSI and auto_away/auto_xa */
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.idle_seconds > 0) {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.idle_seconds = 0;
   }
-  if (!((_converse$connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection) !== null && _converse$connection !== void 0 && _converse$connection.authenticated)) {
+  if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection?.authenticated) {
     // We can't send out any stanzas when there's no authenticated connection.
     // This can happen when the connection reconnects.
     return;
@@ -28017,11 +27865,10 @@ function onUserActivity() {
   }
 }
 function onEverySecond() {
-  var _converse$connection2;
   /* An interval handler running every second.
    * Used for CSI and the auto_away and auto_xa features.
    */
-  if (!((_converse$connection2 = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection) !== null && _converse$connection2 !== void 0 && _converse$connection2.authenticated)) {
+  if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection?.authenticated) {
     // We can't send out any stanzas when there's no authenticated connection.
     // This can happen when the connection reconnects.
     return;
@@ -28383,16 +28230,15 @@ async function onVCardData(jid, iq) {
   const vcard = iq.querySelector('vCard');
   let result = {};
   if (vcard !== null) {
-    var _vcard$querySelector, _vcard$querySelector2, _vcard$querySelector3, _vcard$querySelector4, _vcard$querySelector5, _vcard$querySelector6, _vcard$querySelector7;
     result = {
       'stanza': iq,
-      'fullname': (_vcard$querySelector = vcard.querySelector('FN')) === null || _vcard$querySelector === void 0 ? void 0 : _vcard$querySelector.textContent,
-      'nickname': (_vcard$querySelector2 = vcard.querySelector('NICKNAME')) === null || _vcard$querySelector2 === void 0 ? void 0 : _vcard$querySelector2.textContent,
-      'image': (_vcard$querySelector3 = vcard.querySelector('PHOTO BINVAL')) === null || _vcard$querySelector3 === void 0 ? void 0 : _vcard$querySelector3.textContent,
-      'image_type': (_vcard$querySelector4 = vcard.querySelector('PHOTO TYPE')) === null || _vcard$querySelector4 === void 0 ? void 0 : _vcard$querySelector4.textContent,
-      'url': (_vcard$querySelector5 = vcard.querySelector('URL')) === null || _vcard$querySelector5 === void 0 ? void 0 : _vcard$querySelector5.textContent,
-      'role': (_vcard$querySelector6 = vcard.querySelector('ROLE')) === null || _vcard$querySelector6 === void 0 ? void 0 : _vcard$querySelector6.textContent,
-      'email': (_vcard$querySelector7 = vcard.querySelector('EMAIL USERID')) === null || _vcard$querySelector7 === void 0 ? void 0 : _vcard$querySelector7.textContent,
+      'fullname': vcard.querySelector('FN')?.textContent,
+      'nickname': vcard.querySelector('NICKNAME')?.textContent,
+      'image': vcard.querySelector('PHOTO BINVAL')?.textContent,
+      'image_type': vcard.querySelector('PHOTO TYPE')?.textContent,
+      'url': vcard.querySelector('URL')?.textContent,
+      'role': vcard.querySelector('ROLE')?.textContent,
+      'email': vcard.querySelector('EMAIL USERID')?.textContent,
       'vcard_updated': new Date().toISOString(),
       'vcard_error': undefined
     };
@@ -28427,7 +28273,7 @@ function onOccupantAvatarChanged(occupant) {
     vcards.push(_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.vcards.get(occupant.get('jid')));
   }
   vcards.push(_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.vcards.get(occupant.get('from')));
-  vcards.forEach(v => hash && (v === null || v === void 0 ? void 0 : v.get('image_hash')) !== hash && _core_js__WEBPACK_IMPORTED_MODULE_1__.api.vcard.update(v, true));
+  vcards.forEach(v => hash && v?.get('image_hash') !== hash && _core_js__WEBPACK_IMPORTED_MODULE_1__.api.vcard.update(v, true));
 }
 async function setVCardOnModel(model) {
   let jid;
@@ -28451,10 +28297,9 @@ async function setVCardOnModel(model) {
   model.trigger('vcard:add');
 }
 function getVCardForOccupant(occupant) {
-  var _occupant$collection;
-  const muc = occupant === null || occupant === void 0 ? void 0 : (_occupant$collection = occupant.collection) === null || _occupant$collection === void 0 ? void 0 : _occupant$collection.chatroom;
+  const muc = occupant?.collection?.chatroom;
   const nick = occupant.get('nick');
-  if (nick && (muc === null || muc === void 0 ? void 0 : muc.get('nick')) === nick) {
+  if (nick && muc?.get('nick') === nick) {
     return _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.xmppstatus.vcard;
   } else {
     const jid = occupant.get('jid') || occupant.get('from');
@@ -28477,14 +28322,12 @@ async function setVCardOnOccupant(occupant) {
   }
 }
 function getVCardForMUCMessage(message) {
-  var _message$collection;
-  const muc = message === null || message === void 0 ? void 0 : (_message$collection = message.collection) === null || _message$collection === void 0 ? void 0 : _message$collection.chatbox;
+  const muc = message?.collection?.chatbox;
   const nick = Strophe.getResourceFromJid(message.get('from'));
-  if (nick && (muc === null || muc === void 0 ? void 0 : muc.get('nick')) === nick) {
+  if (nick && muc?.get('nick') === nick) {
     return _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.xmppstatus.vcard;
   } else {
-    var _message$occupant;
-    const jid = ((_message$occupant = message.occupant) === null || _message$occupant === void 0 ? void 0 : _message$occupant.get('jid')) || message.get('from');
+    const jid = message.occupant?.get('jid') || message.get('from');
     if (jid) {
       return _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.vcards.get(jid) || _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.vcards.create({
         jid
@@ -28628,13 +28471,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/shared/i18n */ "./src/headless/shared/i18n.js");
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/shared/constants */ "./src/headless/shared/constants.js");
+/* harmony import */ var _i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./i18n.js */ "./src/headless/shared/i18n.js");
+/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../log.js */ "./src/headless/log.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/headless/shared/constants.js");
 /* harmony import */ var _converse_skeletor_src_router_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/router.js */ "./node_modules/@converse/skeletor/src/router.js");
-/* harmony import */ var _converse_headless_shared_errors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/shared/errors */ "./src/headless/shared/errors.js");
-/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/shared/settings/utils.js */ "./src/headless/shared/settings/utils.js");
+/* harmony import */ var _errors_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./errors.js */ "./src/headless/shared/errors.js");
+/* harmony import */ var _utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _settings_utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./settings/utils.js */ "./src/headless/shared/settings/utils.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
 
 
@@ -28652,8 +28495,8 @@ __webpack_require__.r(__webpack_exports__);
  * @namespace _converse
  */
 const _converse = {
-  log: _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"],
-  CONNECTION_STATUS: _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.CONNECTION_STATUS,
+  log: _log_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  CONNECTION_STATUS: _constants__WEBPACK_IMPORTED_MODULE_2__.CONNECTION_STATUS,
   templates: {},
   promises: {
     'initialized': (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_7__.getOpenPromise)()
@@ -28706,12 +28549,12 @@ const _converse = {
     'explicitResourceBinding': true
   },
   router: new _converse_skeletor_src_router_js__WEBPACK_IMPORTED_MODULE_3__.Router(),
-  TimeoutError: _converse_headless_shared_errors__WEBPACK_IMPORTED_MODULE_4__.TimeoutError,
+  TimeoutError: _errors_js__WEBPACK_IMPORTED_MODULE_4__.TimeoutError,
   isTestEnv: () => {
-    return (0,_converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_6__.getInitSettings)()['bosh_service_url'] === 'montague.lit/http-bind';
+    return (0,_settings_utils_js__WEBPACK_IMPORTED_MODULE_6__.getInitSettings)()['bosh_service_url'] === 'montague.lit/http-bind';
   },
-  getDefaultStore: _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.getDefaultStore,
-  createStore: _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.createStore,
+  getDefaultStore: _utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.getDefaultStore,
+  createStore: _utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.createStore,
   /**
    * Translate the given string based on the current locale.
    * @method __
@@ -28720,7 +28563,7 @@ const _converse = {
    * @param { String } str
    */
   '__': function () {
-    return _converse_headless_shared_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].__(...arguments);
+    return _i18n_js__WEBPACK_IMPORTED_MODULE_0__["default"].__(...arguments);
   },
   /**
    * A no-op method which is used to signal to gettext that the passed in string
@@ -28970,8 +28813,7 @@ __webpack_require__.r(__webpack_exports__);
    * @returns {boolean} Whether we're authenticated to the XMPP server or not
    */
   authenticated() {
-    var _converse$connection;
-    return (_converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === null || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === void 0 ? void 0 : (_converse$connection = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection) === null || _converse$connection === void 0 ? void 0 : _converse$connection.authenticated) && true;
+    return _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]?.connection?.authenticated && true;
   },
   /**
    * @method _converse.api.connection.connected
@@ -28979,8 +28821,7 @@ __webpack_require__.r(__webpack_exports__);
    * @returns {boolean} Whether there is an established connection or not.
    */
   connected() {
-    var _converse$connection2;
-    return (_converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === null || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"] === void 0 ? void 0 : (_converse$connection2 = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection) === null || _converse$connection2 === void 0 ? void 0 : _converse$connection2.connected) && true;
+    return _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]?.connection?.connected && true;
   },
   /**
    * Terminates the connection.
@@ -29008,7 +28849,7 @@ __webpack_require__.r(__webpack_exports__);
       connection
     } = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"];
     connection.setConnectionStatus(strophe_js_src_strophe_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.RECONNECTING, __('The connection has dropped, attempting to reconnect.'));
-    if (connection !== null && connection !== void 0 && connection.reconnecting) {
+    if (connection?.reconnecting) {
       return connection.debouncedReconnect();
     } else {
       return connection.reconnect();
@@ -29225,6 +29066,12 @@ class Connection extends strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Str
     this.flush(); // Solves problem of returned PubSub BOSH response not received by browser
     await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_7__.setUserJID)(this.jid);
 
+    // Save the current JID in persistent storage so that we can attempt to
+    // recreate the session from SCRAM keys
+    if (_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.config.get('trusted')) {
+      localStorage.setItem('conversejs-session-jid', _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid);
+    }
+
     /**
      * Synchronous event triggered after we've sent an IQ to bind the
      * user's JID resource for this session.
@@ -29347,17 +29194,15 @@ class Connection extends strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Str
     } = _core_js__WEBPACK_IMPORTED_MODULE_4__._converse;
     _log_js__WEBPACK_IMPORTED_MODULE_0__["default"].debug(`Status changed to: ${_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.CONNECTION_STATUS[status]}`);
     if (status === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.ATTACHFAIL) {
-      var _this$worker_attach_p;
       this.setConnectionStatus(status);
-      (_this$worker_attach_p = this.worker_attach_promise) === null || _this$worker_attach_p === void 0 ? void 0 : _this$worker_attach_p.resolve(false);
+      this.worker_attach_promise?.resolve(false);
     } else if (status === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.CONNECTED || status === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.ATTACHED) {
-      var _this$worker_attach_p2, _this$worker_attach_p3;
-      if ((_this$worker_attach_p2 = this.worker_attach_promise) !== null && _this$worker_attach_p2 !== void 0 && _this$worker_attach_p2.isResolved && this.status === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.ATTACHED) {
+      if (this.worker_attach_promise?.isResolved && this.status === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.ATTACHED) {
         // A different tab must have attached, so nothing to do for us here.
         return;
       }
       this.setConnectionStatus(status);
-      (_this$worker_attach_p3 = this.worker_attach_promise) === null || _this$worker_attach_p3 === void 0 ? void 0 : _this$worker_attach_p3.resolve(true);
+      this.worker_attach_promise?.resolve(true);
 
       // By default we always want to send out an initial presence stanza.
       _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.send_initial_presence = true;
@@ -29393,11 +29238,10 @@ class Connection extends strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Str
       this.setDisconnectionCause(status, message, true);
       this.onDisconnected();
     } else if (status === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.CONNFAIL) {
-      var _Strophe$ErrorConditi;
       let feedback = message;
       if (message === "host-unknown" || message == "remote-connection-failed") {
         feedback = __("Sorry, we could not connect to the XMPP host with domain: %1$s", `\"${strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.getDomainFromJid(this.jid)}\"`);
-      } else if (message !== undefined && message === (strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe === null || strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe === void 0 ? void 0 : (_Strophe$ErrorConditi = strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.ErrorCondition) === null || _Strophe$ErrorConditi === void 0 ? void 0 : _Strophe$ErrorConditi.NO_AUTH_MECH)) {
+      } else if (message !== undefined && message === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe?.ErrorCondition?.NO_AUTH_MECH) {
         feedback = __("The XMPP server did not offer a supported authentication mechanism");
       }
       this.setConnectionStatus(status, feedback);
@@ -29414,8 +29258,7 @@ class Connection extends strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Str
     }
   }
   hasResumed() {
-    var _api$settings$get;
-    if ((_api$settings$get = _core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get("connection_options")) !== null && _api$settings$get !== void 0 && _api$settings$get.worker || this.isType('bosh')) {
+    if (_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get("connection_options")?.worker || this.isType('bosh')) {
       return _core_js__WEBPACK_IMPORTED_MODULE_4__._converse.connfeedback.get('connection_status') === strophe_js_src_core_js__WEBPACK_IMPORTED_MODULE_3__.Strophe.Status.ATTACHED;
     } else {
       // Not binding means that the session was resumed.
@@ -29700,7 +29543,7 @@ function getStanzaIDs(stanza, original_stanza) {
 }
 function getEncryptionAttributes(stanza) {
   const eme_tag = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`encryption[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.EME}"]`, stanza).pop();
-  const namespace = eme_tag === null || eme_tag === void 0 ? void 0 : eme_tag.getAttribute('namespace');
+  const namespace = eme_tag?.getAttribute('namespace');
   const attrs = {};
   if (namespace) {
     attrs.is_encrypted = true;
@@ -29840,16 +29683,15 @@ function getSpoilerAttributes(stanza) {
   const spoiler = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`spoiler[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.SPOILER}"]`, stanza).pop();
   return {
     'is_spoiler': !!spoiler,
-    'spoiler_hint': spoiler === null || spoiler === void 0 ? void 0 : spoiler.textContent
+    'spoiler_hint': spoiler?.textContent
   };
 }
 function getOutOfBandAttributes(stanza) {
   const xform = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`x[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.OUTOFBAND}"]`, stanza).pop();
   if (xform) {
-    var _xform$querySelector, _xform$querySelector2;
     return {
-      'oob_url': (_xform$querySelector = xform.querySelector('url')) === null || _xform$querySelector === void 0 ? void 0 : _xform$querySelector.textContent,
-      'oob_desc': (_xform$querySelector2 = xform.querySelector('desc')) === null || _xform$querySelector2 === void 0 ? void 0 : _xform$querySelector2.textContent
+      'oob_url': xform.querySelector('url')?.textContent,
+      'oob_desc': xform.querySelector('desc')?.textContent
     };
   }
   return {};
@@ -29866,7 +29708,7 @@ function getErrorAttributes(stanza) {
     const text = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`text[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.STANZAS}"]`, error).pop();
     return {
       'is_error': true,
-      'error_text': text === null || text === void 0 ? void 0 : text.textContent,
+      'error_text': text?.textContent,
       'error_type': error.getAttribute('type'),
       'error_condition': error.firstElementChild.nodeName
     };
@@ -29881,9 +29723,8 @@ function getErrorAttributes(stanza) {
  */
 function getReferences(stanza) {
   return sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`reference[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.REFERENCE}"]`, stanza).map(ref => {
-    var _stanza$querySelector;
     const anchor = ref.getAttribute('anchor');
-    const text = (_stanza$querySelector = stanza.querySelector(anchor ? `#${anchor}` : 'body')) === null || _stanza$querySelector === void 0 ? void 0 : _stanza$querySelector.textContent;
+    const text = stanza.querySelector(anchor ? `#${anchor}` : 'body')?.textContent;
     if (!text) {
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__["default"].warn(`Could not find referenced text for ${ref}`);
       return null;
@@ -29910,7 +29751,7 @@ function getReferences(stanza) {
 }
 function getReceiptId(stanza) {
   const receipt = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`received[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.RECEIPTS}"]`, stanza).pop();
-  return receipt === null || receipt === void 0 ? void 0 : receipt.getAttribute('id');
+  return receipt?.getAttribute('id');
 }
 
 /**
@@ -29930,13 +29771,12 @@ function isCarbon(stanza) {
  * @param { XMLElement } stanza - The message stanza
  */
 function getChatState(stanza) {
-  var _sizzle$pop;
-  return (_sizzle$pop = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`
+  return sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`
         composing[xmlns="${NS.CHATSTATES}"],
         paused[xmlns="${NS.CHATSTATES}"],
         inactive[xmlns="${NS.CHATSTATES}"],
         active[xmlns="${NS.CHATSTATES}"],
-        gone[xmlns="${NS.CHATSTATES}"]`, stanza).pop()) === null || _sizzle$pop === void 0 ? void 0 : _sizzle$pop.nodeName;
+        gone[xmlns="${NS.CHATSTATES}"]`, stanza).pop()?.nodeName;
 }
 function isValidReceiptRequest(stanza, attrs) {
   return attrs.sender !== 'me' && !attrs.is_carbon && !attrs.is_archived && sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`request[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.RECEIPTS}"]`, stanza).length;
@@ -30349,6 +30189,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property { String } [assets_path='/dist']
  * @property { ('login'|'prebind'|'anonymous'|'external') } [authentication='login']
  * @property { Boolean } [auto_login=false] - Currently only used in connection with anonymous login
+ * @property { Boolean } [reuse_scram_keys=false] - Save SCRAM keys after login to allow for future auto login
  * @property { Boolean } [auto_reconnect=true]
  * @property { Array<String>} [blacklisted_plugins]
  * @property { Boolean } [clear_cache_on_logout=false]
@@ -30382,6 +30223,7 @@ const DEFAULT_SETTINGS = {
   // Available values are "login", "prebind", "anonymous" and "external".
   auto_login: false,
   // Currently only used in connection with anonymous login
+  reuse_scram_keys: false,
   auto_reconnect: true,
   blacklisted_plugins: [],
   clear_cache_on_logout: false,
@@ -30521,13 +30363,12 @@ function updateAppSettings(key, val) {
  * @async
  */
 function initUserSettings() {
-  var _user_settings;
   if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.bare_jid) {
     const msg = "No JID to fetch user settings for";
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error(msg);
     throw Error(msg);
   }
-  if (!((_user_settings = user_settings) !== null && _user_settings !== void 0 && _user_settings.fetched)) {
+  if (!user_settings?.fetched) {
     const id = `converse.user-settings.${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.bare_jid}`;
     user_settings = new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_5__.Model({
       id
@@ -30631,39 +30472,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "clearSession": () => (/* binding */ clearSession),
 /* harmony export */   "decodeHTMLEntities": () => (/* binding */ decodeHTMLEntities),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "getLoginCredentialsFromBrowser": () => (/* binding */ getLoginCredentialsFromBrowser),
+/* harmony export */   "getRandomInt": () => (/* binding */ getRandomInt),
 /* harmony export */   "getUniqueId": () => (/* binding */ getUniqueId),
 /* harmony export */   "isEmptyMessage": () => (/* binding */ isEmptyMessage),
 /* harmony export */   "isError": () => (/* binding */ isError),
 /* harmony export */   "isUniView": () => (/* binding */ isUniView),
+/* harmony export */   "isValidJID": () => (/* binding */ isValidJID),
+/* harmony export */   "merge": () => (/* binding */ merge),
 /* harmony export */   "prefixMentions": () => (/* binding */ prefixMentions),
 /* harmony export */   "replacePromise": () => (/* binding */ replacePromise),
 /* harmony export */   "safeSave": () => (/* binding */ safeSave),
+/* harmony export */   "saveWindowState": () => (/* binding */ saveWindowState),
 /* harmony export */   "setUnloadEvent": () => (/* binding */ setUnloadEvent),
 /* harmony export */   "tearDown": () => (/* binding */ tearDown)
 /* harmony export */ });
 /* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
 /* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/shared/_converse.js */ "./src/headless/shared/_converse.js");
-/* harmony import */ var lodash_es_compact__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lodash-es/compact */ "./node_modules/lodash-es/compact.js");
-/* harmony import */ var lodash_es_isElement__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lodash-es/isElement */ "./node_modules/lodash-es/isElement.js");
-/* harmony import */ var lodash_es_isObject__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lodash-es/isObject */ "./node_modules/lodash-es/isObject.js");
-/* harmony import */ var lodash_es_last__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lodash-es/last */ "./node_modules/lodash-es/last.js");
+/* harmony import */ var lodash_es_compact__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lodash-es/compact */ "./node_modules/lodash-es/compact.js");
+/* harmony import */ var lodash_es_isElement__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lodash-es/isElement */ "./node_modules/lodash-es/isElement.js");
+/* harmony import */ var lodash_es_isObject__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lodash-es/isObject */ "./node_modules/lodash-es/isObject.js");
+/* harmony import */ var lodash_es_last__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lodash-es/last */ "./node_modules/lodash-es/last.js");
 /* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
 /* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
 /* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
 /* harmony import */ var strophe_js_src_strophe_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! strophe.js/src/strophe.js */ "./node_modules/strophe.js/src/strophe.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var _converse_headless_utils_init_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/headless/utils/init.js */ "./src/headless/utils/init.js");
-/* harmony import */ var _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/shared/settings/api.js */ "./src/headless/shared/settings/api.js");
-/* harmony import */ var _stanza_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stanza.js */ "./src/headless/utils/stanza.js");
+/* harmony import */ var _converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/headless/shared/settings/api.js */ "./src/headless/shared/settings/api.js");
+/* harmony import */ var _stanza_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stanza.js */ "./src/headless/utils/stanza.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  * @description This is the core utilities module.
  */
-
 
 
 
@@ -30693,7 +30535,7 @@ function isEmptyMessage(attrs) {
  * MultiView means that multiple chats may be visible simultaneously.
  */
 function isUniView() {
-  return ['mobile', 'fullscreen', 'embedded'].includes(_converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_8__.settings_api.get("view_mode"));
+  return ['mobile', 'fullscreen', 'embedded'].includes(_converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_7__.settings_api.get("view_mode"));
 }
 async function tearDown() {
   await _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].api.trigger('beforeTearDown', {
@@ -30709,8 +30551,7 @@ async function tearDown() {
   return _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"];
 }
 function clearSession() {
-  var _converse$session;
-  (_converse$session = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].session) === null || _converse$session === void 0 ? void 0 : _converse$session.destroy();
+  _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].session?.destroy();
   delete _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].session;
   _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].shouldClearCache() && _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].api.user.settings.clear();
   /**
@@ -30767,12 +30608,12 @@ u.getLongestSubstring = function (string, candidates) {
   }
   return candidates.reduce(reducer, '');
 };
-u.isValidJID = function (jid) {
+function isValidJID(jid) {
   if (typeof jid === 'string') {
-    return (0,lodash_es_compact__WEBPACK_IMPORTED_MODULE_10__["default"])(jid.split('@')).length === 2 && !jid.startsWith('@') && !jid.endsWith('@');
+    return (0,lodash_es_compact__WEBPACK_IMPORTED_MODULE_9__["default"])(jid.split('@')).length === 2 && !jid.startsWith('@') && !jid.endsWith('@');
   }
   return false;
-};
+}
 u.isValidMUCJID = function (jid) {
   return !jid.startsWith('@') && !jid.endsWith('@');
 };
@@ -30814,19 +30655,19 @@ u.isErrorObject = function (o) {
   return o instanceof Error;
 };
 u.isErrorStanza = function (stanza) {
-  if (!(0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_11__["default"])(stanza)) {
+  if (!(0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_10__["default"])(stanza)) {
     return false;
   }
   return stanza.getAttribute('type') === 'error';
 };
 u.isForbiddenError = function (stanza) {
-  if (!(0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_11__["default"])(stanza)) {
+  if (!(0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_10__["default"])(stanza)) {
     return false;
   }
   return sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`error[type="auth"] forbidden[xmlns="${strophe_js_src_strophe_js__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, stanza).length > 0;
 };
 u.isServiceUnavailableError = function (stanza) {
-  if (!(0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_11__["default"])(stanza)) {
+  if (!(0,lodash_es_isElement__WEBPACK_IMPORTED_MODULE_10__["default"])(stanza)) {
     return false;
   }
   return sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`error[type="cancel"] service-unavailable[xmlns="${strophe_js_src_strophe_js__WEBPACK_IMPORTED_MODULE_5__.Strophe.NS.STANZAS}"]`, stanza).length > 0;
@@ -30834,20 +30675,21 @@ u.isServiceUnavailableError = function (stanza) {
 
 /**
  * Merge the second object into the first one.
- * @private
  * @method u#merge
- * @param { Object } first
- * @param { Object } second
+ * @param { Object } dst
+ * @param { Object } src
  */
-u.merge = function merge(first, second) {
-  for (const k in second) {
-    if ((0,lodash_es_isObject__WEBPACK_IMPORTED_MODULE_12__["default"])(first[k])) {
-      merge(first[k], second[k]);
+function merge(dst, src) {
+  for (const k in src) {
+    if (!Object.prototype.hasOwnProperty.call(src, k)) continue;
+    if (k === "__proto__" || k === "constructor") continue;
+    if ((0,lodash_es_isObject__WEBPACK_IMPORTED_MODULE_11__["default"])(dst[k])) {
+      merge(dst[k], src[k]);
     } else {
-      first[k] = second[k];
+      dst[k] = src[k];
     }
   }
-};
+}
 u.getOuterWidth = function (el) {
   let include_margin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   let width = el.offsetWidth;
@@ -31016,7 +30858,7 @@ u.getCurrentWord = function (input, index, delineator) {
 u.isMentionBoundary = s => s !== '@' && RegExp(`(\\p{Z}|\\p{P})`, 'u').test(s);
 u.replaceCurrentWord = function (input, new_value) {
   const caret = input.selectionEnd || undefined;
-  const current_word = (0,lodash_es_last__WEBPACK_IMPORTED_MODULE_13__["default"])(input.value.slice(0, caret).split(/\s/));
+  const current_word = (0,lodash_es_last__WEBPACK_IMPORTED_MODULE_12__["default"])(input.value.slice(0, caret).split(/\s/));
   const value = input.value;
   const mention_boundary = u.isMentionBoundary(current_word[0]) ? current_word[0] : '';
   input.value = value.slice(0, caret - current_word.length) + mention_boundary + `${new_value} ` + value.slice(caret);
@@ -31042,9 +30884,9 @@ u.getSelectValues = function (select) {
   }
   return result;
 };
-u.getRandomInt = function (max) {
-  return Math.floor(Math.random() * Math.floor(max));
-};
+function getRandomInt(max) {
+  return Math.random() * max | 0;
+}
 u.placeCaretAtEnd = function (textarea) {
   if (textarea !== document.activeElement) {
     textarea.focus();
@@ -31058,8 +30900,8 @@ u.placeCaretAtEnd = function (textarea) {
   this.scrollTop = 999999;
 };
 function getUniqueId(suffix) {
-  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random() * 16 | 0;
+  const uuid = crypto.randomUUID?.() ?? 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = getRandomInt(16);
     const v = c === 'x' ? r : r & 0x3 | 0x8;
     return v.toString(16);
   });
@@ -31147,22 +30989,6 @@ function setUnloadEvent() {
     _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].unloadevent = 'unload';
   }
 }
-async function getLoginCredentialsFromBrowser() {
-  try {
-    const creds = await navigator.credentials.get({
-      'password': true
-    });
-    if (creds && creds.type == 'password' && u.isValidJID(creds.id)) {
-      await (0,_converse_headless_utils_init_js__WEBPACK_IMPORTED_MODULE_7__.setUserJID)(creds.id);
-      return {
-        'jid': creds.id,
-        'password': creds.password
-      };
-    }
-  } catch (e) {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_2__["default"].error(e);
-  }
-}
 function replacePromise(name) {
   const existing_promise = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name];
   if (!existing_promise) {
@@ -31185,12 +31011,48 @@ function decodeHTMLEntities(str) {
   }
   return str;
 }
+function saveWindowState(ev) {
+  // XXX: eventually we should be able to just use
+  // document.visibilityState (when we drop support for older
+  // browsers).
+  let state;
+  const event_map = {
+    'focus': "visible",
+    'focusin': "visible",
+    'pageshow': "visible",
+    'blur': "hidden",
+    'focusout': "hidden",
+    'pagehide': "hidden"
+  };
+  ev = ev || document.createEvent('Events');
+  if (ev.type in event_map) {
+    state = event_map[ev.type];
+  } else {
+    state = document.hidden ? "hidden" : "visible";
+  }
+  _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].windowState = state;
+  /**
+   * Triggered when window state has changed.
+   * Used to determine when a user left the page and when came back.
+   * @event _converse#windowStateChanged
+   * @type { object }
+   * @property{ string } state - Either "hidden" or "visible"
+   * @example _converse.api.listen.on('windowStateChanged', obj => { ... });
+   */
+  _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].api.trigger('windowStateChanged', {
+    state
+  });
+}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Object.assign({
-  prefixMentions,
-  isEmptyMessage,
+  getRandomInt,
   getUniqueId,
-  toStanza: _stanza_js__WEBPACK_IMPORTED_MODULE_9__.toStanza,
-  stx: _stanza_js__WEBPACK_IMPORTED_MODULE_9__.stx
+  isEmptyMessage,
+  isValidJID,
+  merge,
+  prefixMentions,
+  saveWindowState,
+  stx: _stanza_js__WEBPACK_IMPORTED_MODULE_8__.stx,
+  toStanza: _stanza_js__WEBPACK_IMPORTED_MODULE_8__.toStanza
 }, u));
 
 /***/ }),
@@ -31256,26 +31118,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "attemptNonPreboundSession": () => (/* binding */ attemptNonPreboundSession),
 /* harmony export */   "cleanup": () => (/* binding */ cleanup),
-/* harmony export */   "getConnectionServiceURL": () => (/* binding */ getConnectionServiceURL),
 /* harmony export */   "initClientConfig": () => (/* binding */ initClientConfig),
+/* harmony export */   "initConnection": () => (/* binding */ initConnection),
 /* harmony export */   "initPlugins": () => (/* binding */ initPlugins),
 /* harmony export */   "initSession": () => (/* binding */ initSession),
 /* harmony export */   "initSessionStorage": () => (/* binding */ initSessionStorage),
 /* harmony export */   "registerGlobalEventHandlers": () => (/* binding */ registerGlobalEventHandlers),
+/* harmony export */   "savedLoginInfo": () => (/* binding */ savedLoginInfo),
 /* harmony export */   "setUserJID": () => (/* binding */ setUserJID)
 /* harmony export */ });
 /* harmony import */ var _converse_skeletor_src_storage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/skeletor/src/storage.js */ "./node_modules/@converse/skeletor/src/storage.js");
-/* harmony import */ var _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/shared/_converse */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _shared_converse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../shared/_converse */ "./src/headless/shared/_converse.js");
 /* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
 /* harmony import */ var localforage_webextensionstorage_driver_local__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! localforage-webextensionstorage-driver/local */ "./node_modules/localforage-webextensionstorage-driver/local.js");
-/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../log.js */ "./src/headless/log.js");
 /* harmony import */ var localforage_webextensionstorage_driver_sync__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! localforage-webextensionstorage-driver/sync */ "./node_modules/localforage-webextensionstorage-driver/sync.js");
-/* harmony import */ var _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/shared/constants.js */ "./src/headless/shared/constants.js");
-/* harmony import */ var _converse_headless_shared_connection_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/shared/connection/index.js */ "./src/headless/shared/connection/index.js");
+/* harmony import */ var _shared_constants_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/constants.js */ "./src/headless/shared/constants.js");
+/* harmony import */ var _shared_connection_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../shared/connection/index.js */ "./src/headless/shared/connection/index.js");
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
 /* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
-/* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _storage_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./core.js */ "./src/headless/utils/core.js");
 
 
 
@@ -31288,6 +31151,49 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+function setUpXMLLogging() {
+  const lmap = {};
+  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.LogLevel.DEBUG] = 'debug';
+  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.LogLevel.INFO] = 'info';
+  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.LogLevel.WARN] = 'warn';
+  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.LogLevel.ERROR] = 'error';
+  lmap[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.LogLevel.FATAL] = 'fatal';
+  strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.log = (level, msg) => _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].log(msg, lmap[level]);
+  strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.error = msg => _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(msg);
+  _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.xmlInput = body => _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].debug(body.outerHTML, 'color: darkgoldenrod');
+  _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.xmlOutput = body => _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].debug(body.outerHTML, 'color: darkcyan');
+}
+function getConnectionServiceURL() {
+  const {
+    api
+  } = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
+  if (('WebSocket' in window || 'MozWebSocket' in window) && api.settings.get("websocket_url")) {
+    return api.settings.get('websocket_url');
+  } else if (api.settings.get('bosh_service_url')) {
+    return api.settings.get('bosh_service_url');
+  }
+  return '';
+}
+function initConnection() {
+  const api = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api;
+  if (!api.settings.get('bosh_service_url')) {
+    if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].PREBIND) {
+      throw new Error("authentication is set to 'prebind' but we don't have a BOSH connection");
+    }
+  }
+  const XMPPConnection = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv() ? _shared_connection_index_js__WEBPACK_IMPORTED_MODULE_6__.MockConnection : _shared_connection_index_js__WEBPACK_IMPORTED_MODULE_6__.Connection;
+  _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection = new XMPPConnection(getConnectionServiceURL(), Object.assign(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].default_connection_options, api.settings.get("connection_options"), {
+    'keepalive': api.settings.get("keepalive")
+  }));
+  setUpXMLLogging();
+  /**
+   * Triggered once the `Connection` constructor has been initialized, which
+   * will be responsible for managing the connection to the XMPP server.
+   *
+   * @event _converse#connectionInitialized
+   */
+  api.trigger('connectionInitialized');
+}
 function initPlugins(_converse) {
   // If initialize gets called a second time (e.g. during tests), then we
   // need to re-apply all plugins (for a new converse instance), and we
@@ -31296,7 +31202,7 @@ function initPlugins(_converse) {
   // If initialize is called for the first time, then this array is empty
   // in any case.
   _converse.pluggable.initialized_plugins = [];
-  const whitelist = _converse_headless_shared_constants_js__WEBPACK_IMPORTED_MODULE_5__.CORE_PLUGINS.concat(_converse.api.settings.get("whitelisted_plugins"));
+  const whitelist = _shared_constants_js__WEBPACK_IMPORTED_MODULE_5__.CORE_PLUGINS.concat(_converse.api.settings.get("whitelisted_plugins"));
   if (_converse.api.settings.get("singleton")) {
     ['converse-bookmarks', 'converse-controlbox', 'converse-headline', 'converse-register'].forEach(name => _converse.api.settings.get("blacklisted_plugins").push(name));
   }
@@ -31331,7 +31237,7 @@ async function initClientConfig(_converse) {
     id,
     'trusted': true
   });
-  _converse.config.browserStorage = (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_9__.createStore)(id, "session");
+  _converse.config.browserStorage = (0,_storage_js__WEBPACK_IMPORTED_MODULE_9__.createStore)(id, "session");
   await new Promise(r => _converse.config.fetch({
     'success': r,
     'error': r
@@ -31385,7 +31291,7 @@ function initPersistentStorage(_converse, store_name) {
 function saveJIDtoSession(_converse, jid) {
   jid = _converse.session.get('jid') || jid;
   if (_converse.api.settings.get("authentication") !== _converse.ANONYMOUS && !strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.getResourceFromJid(jid)) {
-    jid = jid.toLowerCase() + _converse_headless_shared_connection_index_js__WEBPACK_IMPORTED_MODULE_6__.Connection.generateResource();
+    jid = jid.toLowerCase() + _shared_connection_index_js__WEBPACK_IMPORTED_MODULE_6__.Connection.generateResource();
   }
   _converse.jid = jid;
   _converse.bare_jid = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.getBareJidFromJid(jid);
@@ -31413,32 +31319,32 @@ function saveJIDtoSession(_converse, jid) {
  *
  * Given that we can only create an XMPP connection if we know the domain of
  * the server connect to and we only know this once we know the JID, we also
- * call {@link _converse.initConnection } (if necessary) to make sure that the
+ * call {@link initConnection } (if necessary) to make sure that the
  * connection is set up.
  *
  * @emits _converse#setUserJID
  * @params { String } jid
  */
 async function setUserJID(jid) {
-  await initSession(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], jid);
+  await initSession(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], jid);
+
   /**
    * Triggered whenever the user's JID has been updated
    * @event _converse#setUserJID
    */
-  _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api.trigger('setUserJID');
+  _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api.trigger('setUserJID');
   return jid;
 }
 async function initSession(_converse, jid) {
-  var _converse$session;
   const is_shared_session = _converse.api.settings.get('connection_options').worker;
   const bare_jid = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.getBareJidFromJid(jid).toLowerCase();
   const id = `converse.session-${bare_jid}`;
-  if (((_converse$session = _converse.session) === null || _converse$session === void 0 ? void 0 : _converse$session.get('id')) !== id) {
+  if (_converse.session?.get('id') !== id) {
     initPersistentStorage(_converse, bare_jid);
     _converse.session = new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_7__.Model({
       id
     });
-    (0,_converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_9__.initStorage)(_converse.session, id, is_shared_session ? "persistent" : "session");
+    (0,_storage_js__WEBPACK_IMPORTED_MODULE_9__.initStorage)(_converse.session, id, is_shared_session ? "persistent" : "session");
     await new Promise(r => _converse.session.fetch({
       'success': r,
       'error': r
@@ -31454,10 +31360,7 @@ async function initSession(_converse, jid) {
     saveJIDtoSession(_converse, jid);
 
     // Set `active` flag to false when the tab gets reloaded
-    window.addEventListener(_converse.unloadevent, () => {
-      var _converse$session2;
-      return (_converse$session2 = _converse.session) === null || _converse$session2 === void 0 ? void 0 : _converse$session2.save('active', false);
-    });
+    window.addEventListener(_converse.unloadevent, () => _converse.session?.save('active', false));
 
     /**
      * Triggered once the user's session has been initialized. The session is a
@@ -31471,8 +31374,8 @@ async function initSession(_converse, jid) {
   }
 }
 function registerGlobalEventHandlers(_converse) {
-  document.addEventListener("visibilitychange", _converse.saveWindowState);
-  _converse.saveWindowState({
+  document.addEventListener("visibilitychange", _core_js__WEBPACK_IMPORTED_MODULE_10__.saveWindowState);
+  (0,_core_js__WEBPACK_IMPORTED_MODULE_10__.saveWindowState)({
     'type': document.hidden ? "blur" : "focus"
   }); // Set initial state
   /**
@@ -31489,14 +31392,13 @@ function unregisterGlobalEventHandlers(_converse) {
   const {
     api
   } = _converse;
-  document.removeEventListener("visibilitychange", _converse.saveWindowState);
+  document.removeEventListener("visibilitychange", _core_js__WEBPACK_IMPORTED_MODULE_10__.saveWindowState);
   api.trigger('unregisteredGlobalEventHandlers');
 }
 
 // Make sure everything is reset in case this is a subsequent call to
 // converse.initialize (happens during tests).
 async function cleanup(_converse) {
-  var _converse$connection;
   const {
     api
   } = _converse;
@@ -31505,34 +31407,18 @@ async function cleanup(_converse) {
   });
   _converse.router.history.stop();
   unregisterGlobalEventHandlers(_converse);
-  (_converse$connection = _converse.connection) === null || _converse$connection === void 0 ? void 0 : _converse$connection.reset();
+  _converse.connection?.reset();
   _converse.stopListening();
   _converse.off();
   if (_converse.promises['initialized'].isResolved) {
     api.promises.add('initialized');
   }
 }
-async function getLoginCredentials() {
-  let credentials;
-  let wait = 0;
-  while (!credentials) {
-    try {
-      credentials = await fetchLoginCredentials(wait); // eslint-disable-line no-await-in-loop
-    } catch (e) {
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_3__["default"].error('Could not fetch login credentials');
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_3__["default"].error(e);
-    }
-    // If unsuccessful, we wait 2 seconds between subsequent attempts to
-    // fetch the credentials.
-    wait = 2000;
-  }
-  return credentials;
-}
 function fetchLoginCredentials() {
   let wait = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
   return new Promise((0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_11__["default"])(async (resolve, reject) => {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api.settings.get("credentials_url"), true);
+    xhr.open('GET', _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api.settings.get("credentials_url"), true);
     xhr.setRequestHeader('Accept', 'application/json, text/javascript');
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 400) {
@@ -31552,15 +31438,64 @@ function fetchLoginCredentials() {
      * *Hook* which allows modifying the server request
      * @event _converse#beforeFetchLoginCredentials
      */
-    xhr = await _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api.hook('beforeFetchLoginCredentials', this, xhr);
+    xhr = await _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api.hook('beforeFetchLoginCredentials', this, xhr);
     xhr.send();
   }, wait));
+}
+async function getLoginCredentialsFromURL() {
+  let credentials;
+  let wait = 0;
+  while (!credentials) {
+    try {
+      credentials = await fetchLoginCredentials(wait); // eslint-disable-line no-await-in-loop
+    } catch (e) {
+      _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error('Could not fetch login credentials');
+      _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(e);
+    }
+    // If unsuccessful, we wait 2 seconds between subsequent attempts to
+    // fetch the credentials.
+    wait = 2000;
+  }
+  return credentials;
+}
+async function getLoginCredentialsFromBrowser() {
+  const jid = localStorage.getItem('conversejs-session-jid');
+  if (!jid) return null;
+  try {
+    const creds = await navigator.credentials.get({
+      'password': true
+    });
+    if (creds && creds.type == 'password' && (0,_core_js__WEBPACK_IMPORTED_MODULE_10__.isValidJID)(creds.id)) {
+      // XXX: We don't actually compare `creds.id` with `jid` because
+      // the user might have been presented a list of credentials with
+      // which to log in, and we want to respect their wish.
+      await setUserJID(creds.id);
+      return {
+        'jid': creds.id,
+        'password': creds.password
+      };
+    }
+  } catch (e) {
+    _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(e);
+    return null;
+  }
+}
+async function getLoginCredentialsFromSCRAMKeys() {
+  const jid = localStorage.getItem('conversejs-session-jid');
+  if (!jid) return null;
+  await setUserJID(jid);
+  const login_info = await savedLoginInfo(jid);
+  const scram_keys = login_info.get('scram_keys');
+  return scram_keys ? {
+    jid,
+    'password': scram_keys
+  } : null;
 }
 async function attemptNonPreboundSession(credentials, automatic) {
   const {
     api
-  } = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
-  if (api.settings.get("authentication") === _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGIN) {
+  } = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
+  if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGIN) {
     // XXX: If EITHER ``keepalive`` or ``auto_login`` is ``true`` and
     // ``authentication`` is set to ``login``, then Converse will try to log the user in,
     // since we don't have a way to distinguish between wether we're
@@ -31568,61 +31503,93 @@ async function attemptNonPreboundSession(credentials, automatic) {
     // automatically setting up a new session (``auto_login``).
     // So we can't do the check (!automatic || _converse.api.settings.get("auto_login")) here.
     if (credentials) {
-      connect(credentials);
+      return connect(credentials);
     } else if (api.settings.get("credentials_url")) {
       // We give credentials_url preference, because
       // _converse.connection.pass might be an expired token.
-      connect(await getLoginCredentials());
-    } else if (_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid && (api.settings.get("password") || _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.pass)) {
-      connect();
-    } else if (!_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv() && 'credentials' in navigator) {
-      connect(await (0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_10__.getLoginCredentialsFromBrowser)());
-    } else {
-      !_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv() && _converse_headless_log__WEBPACK_IMPORTED_MODULE_3__["default"].warn("attemptNonPreboundSession: Couldn't find credentials to log in with");
+      return connect(await getLoginCredentialsFromURL());
+    } else if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid && (api.settings.get("password") || _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.pass)) {
+      return connect();
     }
-  } else if ([_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS, _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].EXTERNAL].includes(api.settings.get("authentication")) && (!automatic || api.settings.get("auto_login"))) {
+    if (api.settings.get('reuse_scram_keys')) {
+      const credentials = await getLoginCredentialsFromSCRAMKeys();
+      if (credentials) return connect(credentials);
+    }
+    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv() && 'credentials' in navigator) {
+      const credentials = await getLoginCredentialsFromBrowser();
+      if (credentials) return connect(credentials);
+    }
+    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv()) _log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn("attemptNonPreboundSession: Couldn't find credentials to log in with");
+  } else if ([_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS, _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].EXTERNAL].includes(api.settings.get("authentication")) && (!automatic || api.settings.get("auto_login"))) {
     connect();
   }
 }
-function getConnectionServiceURL() {
-  const {
-    api
-  } = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
-  if (('WebSocket' in window || 'MozWebSocket' in window) && api.settings.get("websocket_url")) {
-    return api.settings.get('websocket_url');
-  } else if (api.settings.get('bosh_service_url')) {
-    return api.settings.get('bosh_service_url');
-  }
-  return '';
+
+/**
+ * Fetch the stored SCRAM keys for the given JID, if available.
+ *
+ * The user's plaintext password is not stored, nor any material from which
+ * the user's plaintext password could be recovered.
+ *
+ * @param { String } JID - The XMPP address for which to fetch the SCRAM keys
+ * @returns { Promise } A promise which resolves once we've fetched the previously
+ *  used login keys.
+ */
+async function savedLoginInfo(jid) {
+  const id = `converse.scram-keys-${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.getBareJidFromJid(jid)}`;
+  const login_info = new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_7__.Model({
+    id
+  });
+  (0,_storage_js__WEBPACK_IMPORTED_MODULE_9__.initStorage)(login_info, id, 'persistent');
+  await new Promise(f => login_info.fetch({
+    'success': f,
+    'error': f
+  }));
+  return login_info;
 }
-function connect(credentials) {
+async function connect(credentials) {
   const {
     api
-  } = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
-  if ([_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS, _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].EXTERNAL].includes(api.settings.get("authentication"))) {
-    if (!_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid) {
+  } = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
+  if ([_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS, _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].EXTERNAL].includes(api.settings.get("authentication"))) {
+    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid) {
       throw new Error("Config Error: when using anonymous login " + "you need to provide the server's domain via the 'jid' option. " + "Either when calling converse.initialize, or when calling " + "_converse.api.user.login.");
     }
-    if (!_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reconnecting) {
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reset();
+    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reconnecting) {
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reset();
     }
-    _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.connect(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid.toLowerCase());
-  } else if (api.settings.get("authentication") === _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGIN) {
-    var _converse$connection2;
-    const password = (credentials === null || credentials === void 0 ? void 0 : credentials.password) ?? (((_converse$connection2 = _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection) === null || _converse$connection2 === void 0 ? void 0 : _converse$connection2.pass) || api.settings.get("password"));
+    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.connect(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid.toLowerCase());
+  } else if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGIN) {
+    const password = credentials?.password ?? (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection?.pass || api.settings.get("password"));
     if (!password) {
       if (api.settings.get("auto_login")) {
         throw new Error("autoLogin: If you use auto_login and " + "authentication='login' then you also need to provide a password.");
       }
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.setDisconnectionCause(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.Status.AUTHFAIL, undefined, true);
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.setDisconnectionCause(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_8__.Strophe.Status.AUTHFAIL, undefined, true);
       api.connection.disconnect();
       return;
     }
-    if (!_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reconnecting) {
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reset();
-      _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.service = getConnectionServiceURL();
+    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reconnecting) {
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.reset();
+      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.service = getConnectionServiceURL();
     }
-    _converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.connect(_converse_headless_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid, password);
+    let callback;
+
+    // Save the SCRAM data if we're not already logged in with SCRAM
+    if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].config.get('trusted') && _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid && api.settings.get("reuse_scram_keys") && !password?.ck) {
+      // Store scram keys in scram storage
+      const login_info = await savedLoginInfo(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid);
+      callback = status => {
+        const {
+          scram_keys
+        } = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection;
+        if (scram_keys) login_info.save({
+          scram_keys
+        });
+        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.onConnectStatusChanged(status);
+      };
+    }
+    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.connect(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid, password, callback);
   }
 }
 
@@ -31910,7 +31877,7 @@ function isVideoURL(url) {
 }
 function isImageURL(url) {
   const regex = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('image_urls_regex');
-  return (regex === null || regex === void 0 ? void 0 : regex.test(url)) || isURLWithImageExtension(url);
+  return regex?.test(url) || isURLWithImageExtension(url);
 }
 function isEncryptedFileURL(url) {
   return url.startsWith('aesgcm://');
@@ -32219,8 +32186,7 @@ class AdHocCommands extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error(e);
     }
     if (result) {
-      var _result$querySelector;
-      cmd.alert = (_result$querySelector = result.querySelector('note')) === null || _result$querySelector === void 0 ? void 0 : _result$querySelector.textContent;
+      cmd.alert = result.querySelector('note')?.textContent;
     } else {
       cmd.alert = 'Done';
     }
@@ -32427,11 +32393,10 @@ async function fetchCommandForm(command) {
     'action': 'execute'
   });
   try {
-    var _sizzle$pop;
     const iq = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(stanza);
     const cmd_el = sizzle(`command[xmlns="${Strophe.NS.ADHOC}"]`, iq).pop();
     command.sessionid = cmd_el.getAttribute('sessionid');
-    command.instructions = (_sizzle$pop = sizzle('x[type="form"][xmlns="jabber:x:data"] instructions', cmd_el).pop()) === null || _sizzle$pop === void 0 ? void 0 : _sizzle$pop.textContent;
+    command.instructions = sizzle('x[type="form"][xmlns="jabber:x:data"] instructions', cmd_el).pop()?.textContent;
     command.fields = sizzle('x[type="form"][xmlns="jabber:x:data"] field', cmd_el).map(f => u.xForm2TemplateResult(f, cmd_el, {
       domain: jid
     }));
@@ -32486,19 +32451,17 @@ class MUCBookmarkForm extends shared_components_element__WEBPACK_IMPORTED_MODULE
     }));
   }
   onBookmarkFormSubmitted(ev) {
-    var _ev$target$querySelec, _ev$target$querySelec2, _ev$target$querySelec3;
     ev.preventDefault();
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bookmarks.createBookmark({
       'jid': this.model.get('jid'),
-      'autojoin': ((_ev$target$querySelec = ev.target.querySelector('input[name="autojoin"]')) === null || _ev$target$querySelec === void 0 ? void 0 : _ev$target$querySelec.checked) || false,
-      'name': (_ev$target$querySelec2 = ev.target.querySelector('input[name=name]')) === null || _ev$target$querySelec2 === void 0 ? void 0 : _ev$target$querySelec2.value,
-      'nick': (_ev$target$querySelec3 = ev.target.querySelector('input[name=nick]')) === null || _ev$target$querySelec3 === void 0 ? void 0 : _ev$target$querySelec3.value
+      'autojoin': ev.target.querySelector('input[name="autojoin"]')?.checked || false,
+      'name': ev.target.querySelector('input[name=name]')?.value,
+      'nick': ev.target.querySelector('input[name=nick]')?.value
     });
     this.closeBookmarkForm(ev);
   }
   removeBookmark(ev) {
-    var _this$bookmark;
-    (_this$bookmark = this.bookmark) === null || _this$bookmark === void 0 ? void 0 : _this$bookmark.destroy();
+    this.bookmark?.destroy();
     this.closeBookmarkForm(ev);
   }
   closeBookmarkForm(ev) {
@@ -32569,8 +32532,7 @@ class BookmarksView extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
     return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.bookmarks && this.model ? (0,_templates_list_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this) : (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__["default"])();
   }
   clearFilter(ev) {
-    var _ev$stopPropagation;
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation = ev.stopPropagation) === null || _ev$stopPropagation === void 0 ? void 0 : _ev$stopPropagation.call(ev);
+    ev?.stopPropagation?.();
     this.model.set('filter_text', '');
   }
 }
@@ -32594,9 +32556,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  var _o$bookmark, _o$bookmark2;
-  const name = ((_o$bookmark = o.bookmark) === null || _o$bookmark === void 0 ? void 0 : _o$bookmark.get('name')) ?? o.name;
-  const nick = ((_o$bookmark2 = o.bookmark) === null || _o$bookmark2 === void 0 ? void 0 : _o$bookmark2.get('nick')) ?? o.nick;
+  const name = o.bookmark?.get('name') ?? o.name;
+  const nick = o.bookmark?.get('nick') ?? o.nick;
   const i18n_heading = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Bookmark for "%1$s"', name);
   const i18n_autojoin = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Would you like this groupchat to be automatically joined upon startup?');
   const i18n_remove = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Remove');
@@ -32687,10 +32648,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const filterBookmark = (b, text) => {
-  var _b$get, _b$get2;
-  return ((_b$get = b.get('name')) === null || _b$get === void 0 ? void 0 : _b$get.includes(text)) || ((_b$get2 = b.get('jid')) === null || _b$get2 === void 0 ? void 0 : _b$get2.includes(text));
-};
+const filterBookmark = (b, text) => b.get('name')?.includes(text) || b.get('jid')?.includes(text);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const i18n_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Filter');
   const filter_text = el.model.get('filter_text');
@@ -32829,7 +32787,7 @@ const bookmarkableChatRoomView = {
     u.showElement(this.bookmark_form.el);
   },
   showBookmarkModal(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     const jid = this.model.get('jid');
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.modal.show('converse-bookmark-form-modal', {
       jid
@@ -33103,8 +33061,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.plugins.add('conve
        * converse.insertInto(document.querySelector('#converse-container'));
        */
       insertInto(container) {
-        var _converse$chatboxview;
-        const el = (_converse$chatboxview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews) === null || _converse$chatboxview === void 0 ? void 0 : _converse$chatboxview.el;
+        const el = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews?.el;
         if (el && !container.contains(el)) {
           container.insertAdjacentElement('afterBegin', el);
         } else if (!el) {
@@ -33149,8 +33106,8 @@ function shouldShowChat(c) {
     HEADLINES_TYPE
   } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse;
   const view_mode = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('view_mode');
-  const connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse === null || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse === void 0 ? void 0 : _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.connection;
-  const logged_out = !(connection !== null && connection !== void 0 && connection.connected) || !(connection !== null && connection !== void 0 && connection.authenticated) || (connection === null || connection === void 0 ? void 0 : connection.disconnecting);
+  const connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse?.connection;
+  const logged_out = !connection?.connected || !connection?.authenticated || connection?.disconnecting;
   return lit__WEBPACK_IMPORTED_MODULE_0__.html`
         ${!logged_out && view_mode === 'overlayed' ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-minimized-chats></converse-minimized-chats>` : ''}
         ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_1__.repeat)(chatboxes.filter(shouldShowChat), m => m.get('jid'), m => {
@@ -33318,23 +33275,19 @@ class ChatBottomPanel extends _converse_skeletor_src_element_js__WEBPACK_IMPORTE
     }), this);
   }
   sendButtonClicked(ev) {
-    var _this$querySelector;
-    (_this$querySelector = this.querySelector('converse-message-form')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.onFormSubmitted(ev);
+    this.querySelector('converse-message-form')?.onFormSubmitted(ev);
   }
   viewUnreadMessages(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     this.model.ui.set({
       'scrolled': false
     });
   }
   emitFocused(ev) {
-    var _converse$chatboxview;
-    (_converse$chatboxview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'))) === null || _converse$chatboxview === void 0 ? void 0 : _converse$chatboxview.emitFocused(ev);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'))?.emitFocused(ev);
   }
   emitBlurred(ev) {
-    var _converse$chatboxview2;
-    (_converse$chatboxview2 = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'))) === null || _converse$chatboxview2 === void 0 ? void 0 : _converse$chatboxview2.emitBlurred(ev);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'))?.emitBlurred(ev);
   }
   onDrop(evt) {
     if (evt.dataTransfer.files.length == 0) {
@@ -33350,8 +33303,7 @@ class ChatBottomPanel extends _converse_skeletor_src_element_js__WEBPACK_IMPORTE
     ev.preventDefault();
   }
   clearMessages(ev) {
-    var _ev$preventDefault2;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
+    ev?.preventDefault?.();
     (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.clearMessages)(this.model);
   }
   async autocompleteInPicker(input, value) {
@@ -33364,7 +33316,7 @@ class ChatBottomPanel extends _converse_skeletor_src_element_js__WEBPACK_IMPORTE
         'query': value
       });
       const emoji_dropdown = this.querySelector('converse-emoji-dropdown');
-      emoji_dropdown === null || emoji_dropdown === void 0 ? void 0 : emoji_dropdown.showMenu();
+      emoji_dropdown?.showMenu();
     }
   }
 }
@@ -33473,7 +33425,6 @@ class ChatHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     };
   }
   initialize() {
-    var _this$model$rosterCon;
     this.model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.chatboxes.get(this.jid);
     this.listenTo(this.model, 'change:status', () => this.requestUpdate());
     this.listenTo(this.model, 'vcard:add', () => this.requestUpdate());
@@ -33481,7 +33432,7 @@ class ChatHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     if (this.model.contact) {
       this.listenTo(this.model.contact, 'destroy', () => this.requestUpdate());
     }
-    (_this$model$rosterCon = this.model.rosterContactAdded) === null || _this$model$rosterCon === void 0 ? void 0 : _this$model$rosterCon.then(() => {
+    this.model.rosterContactAdded?.then(() => {
       this.listenTo(this.model.contact, 'change:nickname', () => this.requestUpdate());
       this.requestUpdate();
     });
@@ -33710,11 +33661,10 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     document.removeEventListener("emojiSelected", this.handleEmojiSelection);
   }
   toHTML() {
-    var _this$querySelector, _this$querySelector2;
     return (0,_templates_message_form_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(this.model.toJSON(), {
       'onDrop': ev => this.onDrop(ev),
-      'hint_value': (_this$querySelector = this.querySelector('.spoiler-hint')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.value,
-      'message_value': (_this$querySelector2 = this.querySelector('.chat-textarea')) === null || _this$querySelector2 === void 0 ? void 0 : _this$querySelector2.value,
+      'hint_value': this.querySelector('.spoiler-hint')?.value,
+      'message_value': this.querySelector('.chat-textarea')?.value,
       'onChange': ev => this.model.set({
         'draft': ev.target.value
       }),
@@ -33843,8 +33793,7 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     }
   }
   async onFormSubmitted(ev) {
-    var _ev$preventDefault, _this$querySelector3;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     const textarea = this.querySelector('.chat-textarea');
     const message_text = textarea.value.trim();
     if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_limit') && message_text.length > _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('message_limit') || !message_text.replace(/\s/g, '').length) {
@@ -33864,7 +33813,7 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
     }
     u.addClass('disabled', textarea);
     textarea.setAttribute('disabled', 'disabled');
-    (_this$querySelector3 = this.querySelector('converse-emoji-dropdown')) === null || _this$querySelector3 === void 0 ? void 0 : _this$querySelector3.hideMenu();
+    this.querySelector('converse-emoji-dropdown')?.hideMenu();
     const is_command = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.parseMessageForCommands)(this.model, message_text);
     const message = is_command ? null : await this.model.sendMessage({
       'body': message_text,
@@ -33972,13 +33921,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  var _o$model$vcard, _o$model$vcard2;
   const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)("The User's Profile Image");
   const avatar = lit__WEBPACK_IMPORTED_MODULE_3__.html`<span title="${i18n_profile}">
         <converse-avatar
             class="avatar chat-msg__avatar"
-            .data=${(_o$model$vcard = o.model.vcard) === null || _o$model$vcard === void 0 ? void 0 : _o$model$vcard.attributes}
-            nonce=${(_o$model$vcard2 = o.model.vcard) === null || _o$model$vcard2 === void 0 ? void 0 : _o$model$vcard2.get('vcard_updated')}
+            .data=${o.model.vcard?.attributes}
+            nonce=${o.model.vcard?.get('vcard_updated')}
             height="40" width="40"></converse-avatar></span>`;
   const display_name = o.model.getDisplayName();
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
@@ -34109,8 +34057,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-
 
 
 function clearHistory(jid) {
@@ -34153,8 +34099,7 @@ async function parseMessageForCommands(chat, text) {
       clearMessages(chat);
       return true;
     } else if (match[1] === 'close') {
-      var _converse$chatboxview;
-      (_converse$chatboxview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxviews.get(chat.get('jid'))) === null || _converse$chatboxview === void 0 ? void 0 : _converse$chatboxview.close();
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxviews.get(chat.get('jid'))?.close();
       return true;
     } else if (match[1] === 'help') {
       chat.set({
@@ -34317,9 +34262,8 @@ class ControlBox extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1
     return this.model ? (0,_templates_controlbox_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this) : '';
   }
   close(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
-    if ((ev === null || ev === void 0 ? void 0 : ev.name) === 'closeAllChatBoxes' && (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.disconnection_cause !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.LOGOUT || _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_controlbox_by_default'))) {
+    ev?.preventDefault?.();
+    if (ev?.name === 'closeAllChatBoxes' && (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.disconnection_cause !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.LOGOUT || _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_controlbox_by_default'))) {
       return;
     }
     if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('sticky_controlbox')) {
@@ -34448,8 +34392,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_native__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_native__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _templates_loginform_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/loginform.js */ "./src/plugins/controlbox/templates/loginform.js");
 /* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/controlbox/utils.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_init_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/utils/init.js */ "./src/headless/utils/init.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/controlbox/utils.js");
+
 
 
 
@@ -34458,19 +34404,19 @@ __webpack_require__.r(__webpack_exports__);
 const {
   Strophe,
   u
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.env;
 class LoginForm extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
   initialize() {
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connfeedback, 'change', () => this.requestUpdate());
+    this.listenTo(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.connfeedback, 'change', () => this.requestUpdate());
     this.handler = () => this.requestUpdate();
   }
   connectedCallback() {
     super.connectedCallback();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.listen.on('change', this.handler);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.listen.on('change', this.handler);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.listen.not('change', this.handler);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.listen.not('change', this.handler);
   }
   render() {
     return (0,_templates_loginform_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
@@ -34479,47 +34425,46 @@ class LoginForm extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2_
     this.initPopovers();
   }
   async onLoginFormSubmitted(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('authentication') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.ANONYMOUS) {
-      return this.connect(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.jid);
+    ev?.preventDefault();
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('authentication') === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.ANONYMOUS) {
+      return this.connect(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.jid);
     }
-    if (!(0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.validateJID)(ev.target)) {
+    if (!(0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.validateJID)(ev.target)) {
       return;
     }
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.updateSettingsWithFormData)(ev.target);
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('bosh_service_url') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('websocket_url')) {
+    (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.updateSettingsWithFormData)(ev.target);
+    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('bosh_service_url') && !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('websocket_url')) {
       // We don't have a connection URL available, so we try here to discover
       // XEP-0156 connection methods now, and if not found we present the user
       // with the option to enter their own connection URL
       await this.discoverConnectionMethods(ev);
     }
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('bosh_service_url') || _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('websocket_url')) {
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('bosh_service_url') || _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('websocket_url')) {
       // FIXME: The connection class will still try to discover XEP-0156 connection methods
       this.connect();
     } else {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.set('show_connection_url_input', true);
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.set('show_connection_url_input', true);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async discoverConnectionMethods(ev) {
-    var _converse$connection;
-    if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get("discover_connection_methods")) {
+  discoverConnectionMethods(ev) {
+    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get("discover_connection_methods")) {
       return;
     }
     const form_data = new FormData(ev.target);
     const jid = form_data.get('jid');
     const domain = Strophe.getDomainFromJid(jid);
-    if (!((_converse$connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection) !== null && _converse$connection !== void 0 && _converse$connection.jid) || jid && !u.isSameDomain(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection.jid, jid)) {
-      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.initConnection();
+    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.connection?.jid || jid && !u.isSameDomain(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.connection.jid, jid)) {
+      (0,_converse_headless_utils_init_js__WEBPACK_IMPORTED_MODULE_4__.initConnection)();
     }
-    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection.discoverConnectionMethods(domain);
+    return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.connection.discoverConnectionMethods(domain);
   }
   initPopovers() {
     Array.from(this.querySelectorAll('[data-title]')).forEach(el => {
       new (bootstrap_native__WEBPACK_IMPORTED_MODULE_0___default().Popover)(el, {
-        'trigger': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'mobile' && 'click' || 'hover',
-        'dismissible': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'mobile' && true || false,
+        'trigger': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'mobile' && 'click' || 'hover',
+        'dismissible': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('view_mode') === 'mobile' && true || false,
         'container': this.parentElement.parentElement.parentElement
       });
     });
@@ -34527,17 +34472,16 @@ class LoginForm extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2_
 
   // eslint-disable-next-line class-methods-use-this
   connect(jid) {
-    var _converse$connection2;
-    if (['converse/login', 'converse/register'].includes(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.router.history.getFragment())) {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.router.navigate('', {
+    if (['converse/login', 'converse/register'].includes(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.router.history.getFragment())) {
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.router.navigate('', {
         'replace': true
       });
     }
-    (_converse$connection2 = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.connection) === null || _converse$connection2 === void 0 ? void 0 : _converse$connection2.reset();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.user.login(jid);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.connection?.reset();
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.user.login(jid);
   }
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-login-form', LoginForm);
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-login-form', LoginForm);
 
 /***/ }),
 
@@ -34921,10 +34865,9 @@ class ControlBoxToggle extends shared_components_element_js__WEBPACK_IMPORTED_MO
     this.requestUpdate();
   }
   render() {
-    var _this$model;
     return (0,_templates_toggle_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
       'onClick': _utils_js__WEBPACK_IMPORTED_MODULE_3__.showControlBox,
-      'hide': !((_this$model = this.model) !== null && _this$model !== void 0 && _this$model.get('closed'))
+      'hide': !this.model?.get('closed')
     });
   }
 }
@@ -34960,16 +34903,14 @@ const {
   u
 } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 function addControlBox() {
-  var _converse$chatboxview;
   const m = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxes.add(new _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.ControlBox({
     'id': 'controlbox'
   }));
-  (_converse$chatboxview = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxviews.get('controlbox')) === null || _converse$chatboxview === void 0 ? void 0 : _converse$chatboxview.setModel();
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxviews.get('controlbox')?.setModel();
   return m;
 }
 function showControlBox(ev) {
-  var _ev$preventDefault;
-  ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+  ev?.preventDefault?.();
   const controlbox = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxes.get('controlbox') || addControlBox();
   u.safeSave(controlbox, {
     'closed': false
@@ -34994,13 +34935,13 @@ function disconnect() {
   return view;
 }
 function clearSession() {
-  const chatboxviews = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse === null || _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse === void 0 ? void 0 : _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxviews;
+  const chatboxviews = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse?.chatboxviews;
   const view = chatboxviews && chatboxviews.get('controlbox');
   if (view) {
     u.safeSave(view.model, {
       'connected': false
     });
-    if (view !== null && view !== void 0 && view.controlbox_pane) {
+    if (view?.controlbox_pane) {
       view.controlbox_pane.remove();
       delete view.controlbox_pane;
     }
@@ -35024,9 +34965,9 @@ function updateSettingsWithFormData(form) {
   let settings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   const form_data = new FormData(form);
   const connection_url = form_data.get('connection-url');
-  if (connection_url !== null && connection_url !== void 0 && connection_url.startsWith('ws')) {
+  if (connection_url?.startsWith('ws')) {
     settings['websocket_url'] = connection_url;
-  } else if (connection_url !== null && connection_url !== void 0 && connection_url.startsWith('http')) {
+  } else if (connection_url?.startsWith('http')) {
     settings['bosh_service_url'] = connection_url;
   }
   let jid = form_data.get('jid');
@@ -35183,7 +35124,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const DragResizableMixin = {
   initDragResize() {
-    var _converse$connection;
     const view = this;
     const debouncedSetDimensions = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_2__["default"])(() => view.setDimensions());
     window.addEventListener('resize', view.debouncedSetDimensions);
@@ -35208,7 +35148,7 @@ const DragResizableMixin = {
     // Initialize last known mouse position
     this.prev_pageY = 0;
     this.prev_pageX = 0;
-    if ((_converse$connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection) !== null && _converse$connection !== void 0 && _converse$connection.connected) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.connection?.connected) {
       this.height = this.model.get('height');
       this.width = this.model.get('width');
     }
@@ -35513,7 +35453,7 @@ class HeadlinesFeedsList extends shared_components_element_js__WEBPACK_IMPORTED_
     return (0,_templates_feeds_list_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
   }
   renderIfHeadline(model) {
-    return (model === null || model === void 0 ? void 0 : model.get('type')) === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADLINES_TYPE && this.requestUpdate();
+    return model?.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.HEADLINES_TYPE && this.requestUpdate();
   }
   async openHeadline(ev) {
     // eslint-disable-line class-methods-use-this
@@ -35803,8 +35743,7 @@ class HeadlinesFeedView extends shared_chat_baseview_js__WEBPACK_IMPORTED_MODULE
     return (0,_templates_headlines_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.model);
   }
   async close(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.router.history.getFragment() === 'converse/chat?jid=' + this.model.get('jid')) {
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.router.navigate('');
     }
@@ -35884,8 +35823,7 @@ class Placeholder extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     return (0,_templates_placeholder_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
   }
   async fetchMissingMessages(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     this.model.set('fetching', true);
     const options = {
       'before': this.model.get('before'),
@@ -36038,11 +35976,11 @@ class MinimizedChat extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
     return (0,_templates_trimmed_chat_js__WEBPACK_IMPORTED_MODULE_0__["default"])(data);
   }
   close(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     this.model.close();
   }
   restore(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.maximize)(this.model);
   }
 }
@@ -36349,7 +36287,7 @@ function trimChats(newchat) {
       const oldest_chat = getOldestMaximizedChat([new_id]);
       if (oldest_chat) {
         const model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.chatboxes.get(oldest_chat.get('id'));
-        model === null || model === void 0 ? void 0 : model.save('hidden', true);
+        model?.save('hidden', true);
         minimize(oldest_chat);
       } else {
         break;
@@ -36400,7 +36338,7 @@ function addMinimizeButtonToMUC(view, buttons) {
   return idx > -1 ? [...buttons.slice(0, idx), data, ...buttons.slice(idx)] : [data, ...buttons];
 }
 function maximize(ev, chatbox) {
-  if (ev !== null && ev !== void 0 && ev.preventDefault) {
+  if (ev?.preventDefault) {
     ev.preventDefault();
   } else {
     chatbox = ev;
@@ -36412,7 +36350,7 @@ function maximize(ev, chatbox) {
   });
 }
 function minimize(ev, model) {
-  if (ev !== null && ev !== void 0 && ev.preventDefault) {
+  if (ev?.preventDefault) {
     ev.preventDefault();
   } else {
     model = ev;
@@ -36537,7 +36475,7 @@ class MinimizedChats extends shared_components_element__WEBPACK_IMPORTED_MODULE_
     }));
   }
   toggle(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     this.minchats.save({
       'collapsed': !this.minchats.get('collapsed')
     });
@@ -36660,7 +36598,6 @@ const modal_api = {
      * @param { String } name
      */
     remove(name) {
-      var _modal;
       let modal;
       if (typeof name === 'string') {
         modal = modals_map[name];
@@ -36670,7 +36607,7 @@ const modal_api = {
         modal = name;
         modals = modals.filter(m => m !== modal);
       }
-      (_modal = modal) === null || _modal === void 0 ? void 0 : _modal.remove();
+      modal?.remove();
     },
     /**
      * Remove all modals
@@ -36750,8 +36687,7 @@ const modal_api = {
     prompt.show();
     let result;
     try {
-      var _await$prompt$confirm;
-      result = (_await$prompt$confirm = (await prompt.confirmation).pop()) === null || _await$prompt$confirm === void 0 ? void 0 : _await$prompt$confirm.value;
+      result = (await prompt.confirmation).pop()?.value;
     } catch (e) {
       result = false;
     }
@@ -37052,8 +36988,8 @@ class BaseModal extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODU
     return '';
   }
   switchTab(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.stopPropagation();
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.stopPropagation();
+    ev?.preventDefault();
     this.tab = ev.target.getAttribute('data-name');
     this.render();
   }
@@ -37161,9 +37097,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model, _el$model2, _el$renderModal, _el$renderModalFooter;
-  const alert = (_el$model = el.model) === null || _el$model === void 0 ? void 0 : _el$model.get('alert');
-  const level = ((_el$model2 = el.model) === null || _el$model2 === void 0 ? void 0 : _el$model2.get('level')) ?? '';
+  const alert = el.model?.get('alert');
+  const level = el.model?.get('level') ?? '';
   return lit__WEBPACK_IMPORTED_MODULE_1__.html`
         <div class="modal-dialog" role="document" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
@@ -37178,9 +37113,9 @@ __webpack_require__.r(__webpack_exports__);
     'message': alert.message
   }) : ''}
                     </span>
-                    ${((_el$renderModal = el.renderModal) === null || _el$renderModal === void 0 ? void 0 : _el$renderModal.call(el)) ?? ''}
+                    ${el.renderModal?.() ?? ''}
                 </div>
-                ${((_el$renderModalFooter = el.renderModalFooter) === null || _el$renderModalFooter === void 0 ? void 0 : _el$renderModalFooter.call(el)) ?? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>`}
+                ${el.renderModalFooter?.() ?? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>`}
             </div>
         </div>
     `;
@@ -37216,13 +37151,12 @@ const tpl_field = f => lit__WEBPACK_IMPORTED_MODULE_0__.html`
     </div>
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model$get, _el$model$get2;
   return lit__WEBPACK_IMPORTED_MODULE_0__.html`
         <form class="converse-form converse-form--modal confirm" action="#" @submit=${ev => el.onConfimation(ev)}>
             <div class="form-group">
-                ${(_el$model$get = el.model.get('messages')) === null || _el$model$get === void 0 ? void 0 : _el$model$get.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
+                ${el.model.get('messages')?.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
             </div>
-            ${(_el$model$get2 = el.model.get('fields')) === null || _el$model$get2 === void 0 ? void 0 : _el$model$get2.map(f => tpl_field(f))}
+            ${el.model.get('fields')?.map(f => tpl_field(f))}
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OK')}</button>
                 <input type="button" class="btn btn-secondary" data-dismiss="modal" value="${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel')}"/>
@@ -37284,13 +37218,11 @@ class MUCBottomPanel extends plugins_chatview_bottom_panel_js__WEBPACK_IMPORTED_
     o.get('jid') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.bare_jid && this.debouncedRender();
   }
   sendButtonClicked(ev) {
-    var _this$querySelector;
-    (_this$querySelector = this.querySelector('converse-muc-message-form')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.onFormSubmitted(ev);
+    this.querySelector('converse-muc-message-form')?.onFormSubmitted(ev);
   }
   hideOccupants(ev) {
-    var _ev$preventDefault, _ev$stopPropagation;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation = ev.stopPropagation) === null || _ev$stopPropagation === void 0 ? void 0 : _ev$stopPropagation.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     this.model.save({
       'hidden_occupants': true
     });
@@ -37508,8 +37440,7 @@ class MUCConfigForm extends shared_components_element__WEBPACK_IMPORTED_MODULE_2
     this.closeForm();
   }
   closeForm(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     this.model.session.set('view', null);
   }
 }
@@ -37710,8 +37641,7 @@ class MUCHeading extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_4
     }, ev);
   }
   toggleTopic(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     this.model.toggleSubjectHiddenState();
   }
   getAndRenderConfigurationForm() {
@@ -37908,7 +37838,7 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('co
     if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_domain')) {
       // Use service discovery to get the default MUC domain
       _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('serviceDiscovered', async feature => {
-        if ((feature === null || feature === void 0 ? void 0 : feature.get('var')) === Strophe.NS.MUC) {
+        if (feature?.get('var') === Strophe.NS.MUC) {
           if (feature.entity.get('jid').includes('@')) {
             // Ignore full JIDs, we're only looking for a MUC service, not a room
             return;
@@ -37964,10 +37894,9 @@ class MUCMessageForm extends plugins_chatview_message_form_js__WEBPACK_IMPORTED_
     await this.model.initialized;
   }
   toHTML() {
-    var _this$querySelector, _this$querySelector2;
     return (0,_templates_message_form_js__WEBPACK_IMPORTED_MODULE_1__["default"])(Object.assign(this.model.toJSON(), {
-      'hint_value': (_this$querySelector = this.querySelector('.spoiler-hint')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.value,
-      'message_value': (_this$querySelector2 = this.querySelector('.chat-textarea')) === null || _this$querySelector2 === void 0 ? void 0 : _this$querySelector2.value,
+      'hint_value': this.querySelector('.spoiler-hint')?.value,
+      'message_value': this.querySelector('.chat-textarea')?.value,
       'onChange': ev => this.model.set({
         'draft': ev.target.value
       }),
@@ -38064,10 +37993,9 @@ class AddMUCModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["d
     return (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter a new Groupchat');
   }
   parseRoomDataFromEvent(form) {
-    var _data$get;
     // eslint-disable-line class-methods-use-this
     const data = new FormData(form);
-    const jid = (_data$get = data.get('chatroom')) === null || _data$get === void 0 ? void 0 : _data$get.trim();
+    const jid = data.get('chatroom')?.trim();
     let nick;
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_nickname')) {
       nick = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.getDefaultMUCNickname();
@@ -38246,11 +38174,10 @@ class MUCInviteModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__
     }));
   }
   submitInviteForm(ev) {
-    var _data$get;
     ev.preventDefault();
     // TODO: Add support for sending an invite to multiple JIDs
     const data = new FormData(ev.target);
-    const jid = (_data$get = data.get('invitee_jids')) === null || _data$get === void 0 ? void 0 : _data$get.trim();
+    const jid = data.get('invitee_jids')?.trim();
     const reason = data.get('reason');
     if (u.isValidJID(jid)) {
       // TODO: Create and use API here
@@ -38309,14 +38236,13 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.env.util
  * @param { XMLElement } stanza - The IQ stanza containing the groupchat info.
  */
 function insertRoomInfo(el, stanza) {
-  var _head, _head2;
   // All MUC features found here: https://xmpp.org/registrar/disco-features.html
   el.querySelector('span.spinner').remove();
   el.querySelector('a.room-info').classList.add('selected');
   el.insertAdjacentHTML('beforeEnd', u.getElementFromTemplateResult((0,_templates_muc_description_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
     'jid': stanza.getAttribute('from'),
-    'desc': (_head = (0,lodash_es_head__WEBPACK_IMPORTED_MODULE_8__["default"])(sizzle('field[var="muc#roominfo_description"] value', stanza))) === null || _head === void 0 ? void 0 : _head.textContent,
-    'occ': (_head2 = (0,lodash_es_head__WEBPACK_IMPORTED_MODULE_8__["default"])(sizzle('field[var="muc#roominfo_occupants"] value', stanza))) === null || _head2 === void 0 ? void 0 : _head2.textContent,
+    'desc': (0,lodash_es_head__WEBPACK_IMPORTED_MODULE_8__["default"])(sizzle('field[var="muc#roominfo_description"] value', stanza))?.textContent,
+    'occ': (0,lodash_es_head__WEBPACK_IMPORTED_MODULE_8__["default"])(sizzle('field[var="muc#roominfo_occupants"] value', stanza))?.textContent,
     'hidden': sizzle('feature[var="muc_hidden"]', stanza).length,
     'membersonly': sizzle('feature[var="muc_membersonly"]', stanza).length,
     'moderated': sizzle('feature[var="muc_moderated"]', stanza).length,
@@ -38531,7 +38457,7 @@ class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__[
     if (model.vcard) {
       return model.vcard;
     }
-    const jid = (model === null || model === void 0 ? void 0 : model.get('jid')) || (model === null || model === void 0 ? void 0 : model.get('from'));
+    const jid = model?.get('jid') || model?.get('from');
     return jid ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.vcards.get(jid) : null;
   }
   renderModal() {
@@ -38539,7 +38465,7 @@ class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__[
   }
   getModalTitle() {
     const model = this.model ?? this.message;
-    return model === null || model === void 0 ? void 0 : model.getDisplayName();
+    return model?.getDisplayName();
   }
   addToContacts() {
     const model = this.model ?? this.message;
@@ -38793,15 +38719,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model, _el$model2, _el$model3, _el$model3$get;
   const model = el.model ?? el.message;
-  const jid = model === null || model === void 0 ? void 0 : model.get('jid');
+  const jid = model?.get('jid');
   const vcard = el.getVcard();
   const nick = model.get('nick');
   const occupant_id = model.get('occupant_id');
-  const role = (_el$model = el.model) === null || _el$model === void 0 ? void 0 : _el$model.get('role');
-  const affiliation = (_el$model2 = el.model) === null || _el$model2 === void 0 ? void 0 : _el$model2.get('affiliation');
-  const hats = (_el$model3 = el.model) !== null && _el$model3 !== void 0 && (_el$model3$get = _el$model3.get('hats')) !== null && _el$model3$get !== void 0 && _el$model3$get.length ? el.model.get('hats') : null;
+  const role = el.model?.get('role');
+  const affiliation = el.model?.get('affiliation');
+  const hats = el.model?.get('hats')?.length ? el.model.get('hats') : null;
   const muc = el.model.collection.chatroom;
   const i18n_add_to_contacts = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add to Contacts');
   const can_see_real_jids = muc.features.get('nonanonymous') || muc.getOwnRole() === 'moderator';
@@ -38812,8 +38737,8 @@ __webpack_require__.r(__webpack_exports__);
             <div class="col-auto">
                 <converse-avatar
                     class="avatar modal-avatar"
-                    .data=${vcard === null || vcard === void 0 ? void 0 : vcard.attributes}
-                    nonce=${vcard === null || vcard === void 0 ? void 0 : vcard.get('vcard_updated')}
+                    .data=${vcard?.attributes}
+                    nonce=${vcard?.get('vcard_updated')}
                     height="120" width="120"></converse-avatar>
             </div>
             <div class="col">
@@ -38945,8 +38870,7 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     this.initialized.resolve();
   }
   render() {
-    var _this$muc;
-    if ((_this$muc = this.muc) !== null && _this$muc !== void 0 && _this$muc.occupants) {
+    if (this.muc?.occupants) {
       const occupant = this.muc.occupants.findWhere({
         'jid': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid
       });
@@ -39363,10 +39287,9 @@ async function searchRooms(query) {
   }
   const s = `result[xmlns="${Strophe.NS.MUCSEARCH}"] item`;
   return sizzle(s, iq_result).map(i => {
-    var _i$querySelector;
     const jid = i.getAttribute('address');
     return {
-      'label': `${(_i$querySelector = i.querySelector('name')) === null || _i$querySelector === void 0 ? void 0 : _i$querySelector.textContent} (${jid})`,
+      'label': `${i.querySelector('name')?.textContent} (${jid})`,
       'value': jid
     };
   });
@@ -39433,18 +39356,16 @@ class MUCSidebar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2
     return tpl;
   }
   closeSidebar(ev) {
-    var _ev$preventDefault, _ev$stopPropagation;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation = ev.stopPropagation) === null || _ev$stopPropagation === void 0 ? void 0 : _ev$stopPropagation.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     u.safeSave(this.model, {
       'hidden_occupants': true
     });
   }
   onOccupantClicked(ev) {
-    var _ev$preventDefault2;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
+    ev?.preventDefault?.();
     const view = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxviews.get(this.getAttribute('jid'));
-    view === null || view === void 0 ? void 0 : view.getMessageForm().insertIntoTextArea(`@${ev.target.textContent}`);
+    view?.getMessageForm().insertIntoTextArea(`@${ev.target.textContent}`);
   }
 }
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-muc-sidebar', MUCSidebar);
@@ -39903,16 +39824,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  var _o$model;
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_5__.html`
     <div class="chat-area">
         <div class="chat-content ${o.show_send_button ? 'chat-content-sendbutton' : ''}" aria-live="polite">
             <converse-chat-content
                 class="chat-content__messages"
                 jid="${o.jid}"></converse-chat-content>
 
-            ${(_o$model = o.model) !== null && _o$model !== void 0 && _o$model.get('show_help_messages') ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<div class="chat-content__help">
+            ${o.model?.get('show_help_messages') ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<div class="chat-content__help">
                     <converse-chat-help
                         .model=${o.model}
                         .messages=${o.getHelpMessages()}
@@ -39929,8 +39848,7 @@ __webpack_require__.r(__webpack_exports__);
             style="flex: 0 0 ${o.model.get('occupants_width')}px"
             jid=${o.jid}
             @mousedown=${o.onMousedown}></converse-muc-sidebar>` : ''}
-`;
-});
+`);
 
 /***/ }),
 
@@ -39964,7 +39882,6 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env.util
   let instructions = '';
   let title;
   if (config_stanza) {
-    var _stanza$querySelector, _stanza$querySelector2;
     const stanza = u.toStanza(config_stanza);
     fields = sizzle('field', stanza);
     if (whitelist.length) {
@@ -39976,8 +39893,8 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env.util
       'fixed_username': o.model.get('jid')
     };
     fields = fields.map(f => u.xForm2TemplateResult(f, stanza, options));
-    instructions = (_stanza$querySelector = stanza.querySelector('instructions')) === null || _stanza$querySelector === void 0 ? void 0 : _stanza$querySelector.textContent;
-    title = (_stanza$querySelector2 = stanza.querySelector('title')) === null || _stanza$querySelector2 === void 0 ? void 0 : _stanza$querySelector2.textContent;
+    instructions = stanza.querySelector('instructions')?.textContent;
+    title = stanza.querySelector('title')?.textContent;
   } else {
     title = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Loading configuration form');
   }
@@ -40149,22 +40066,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$user_settings, _el$user_settings$get, _el$model$vcard, _el$model$vcard2, _el$model$vcard3;
   const o = el.model.toJSON();
-  const subject_hidden = (_el$user_settings = el.user_settings) === null || _el$user_settings === void 0 ? void 0 : (_el$user_settings$get = _el$user_settings.get('mucs_with_hidden_subject', [])) === null || _el$user_settings$get === void 0 ? void 0 : _el$user_settings$get.includes(el.model.get('jid'));
+  const subject_hidden = el.user_settings?.get('mucs_with_hidden_subject', [])?.includes(el.model.get('jid'));
   const heading_buttons_promise = el.getHeadingButtons(subject_hidden);
   const i18n_hide_topic = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Hide the groupchat topic');
   const i18n_bookmarked = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This groupchat is bookmarked');
   const subject = o.subject ? o.subject.text : '';
   const show_subject = subject && !subject_hidden;
-  const muc_vcard = (_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.get('image');
+  const muc_vcard = el.model.vcard?.get('image');
   return lit__WEBPACK_IMPORTED_MODULE_5__.html`
         <div class="chatbox-title ${show_subject ? '' : "chatbox-title--no-desc"}">
 
             ${muc_vcard && muc_vcard !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.DEFAULT_IMAGE ? lit__WEBPACK_IMPORTED_MODULE_5__.html`
                 <converse-avatar class="avatar align-self-center"
-                    .data=${(_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.attributes}
-                    nonce=${(_el$model$vcard3 = el.model.vcard) === null || _el$model$vcard3 === void 0 ? void 0 : _el$model$vcard3.get('vcard_updated')}
+                    .data=${el.model.vcard?.attributes}
+                    nonce=${el.model.vcard?.get('vcard_updated')}
                     height="40" width="40"></converse-avatar>` : ''}
 
             <div class="chatbox-title--row">
@@ -40283,11 +40199,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model, _el$model2, _el$model3;
   const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Nickname');
-  const i18n_join = (_el$model = el.model) !== null && _el$model !== void 0 && _el$model.isEntered() ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Change nickname') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter groupchat');
+  const i18n_join = el.model?.isEntered() ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Change nickname') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter groupchat');
   const i18n_heading = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('muc_show_logs_before_join') ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Choose a nickname to enter') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please choose your nickname');
-  const validation_message = (_el$model2 = el.model) === null || _el$model2 === void 0 ? void 0 : _el$model2.get('nickname_validation_message');
+  const validation_message = el.model?.get('nickname_validation_message');
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <div class="chatroom-form-container muc-nickname-form">
                 <form class="converse-form chatroom-form converse-centered-form"
@@ -40298,7 +40213,7 @@ __webpack_require__.r(__webpack_exports__);
                     <input type="text"
                         required="required"
                         name="nick"
-                        value="${((_el$model3 = el.model) === null || _el$model3 === void 0 ? void 0 : _el$model3.get('nick')) || ''}"
+                        value="${el.model?.get('nick') || ''}"
                         class="form-control ${validation_message ? 'error' : ''}"
                         placeholder="${i18n_nickname}"/>
                 </fieldset>
@@ -40472,7 +40387,6 @@ const occupant_title = o => {
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((o, chat) => {
-  var _o$vcard, _o$vcard2;
   const affiliation = o.get('affiliation');
   const hint_show = _constants_js__WEBPACK_IMPORTED_MODULE_0__.PRETTY_CHAT_STATUS[o.get('show')];
   const i18n_admin = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Admin');
@@ -40499,8 +40413,8 @@ const occupant_title = o => {
                     <a class="show-msg-author-modal" @click=${ev => (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.showOccupantModal)(ev, o)}>
                         <converse-avatar
                             class="avatar chat-msg__avatar"
-                            .data=${(_o$vcard = o.vcard) === null || _o$vcard === void 0 ? void 0 : _o$vcard.attributes}
-                            nonce=${(_o$vcard2 = o.vcard) === null || _o$vcard2 === void 0 ? void 0 : _o$vcard2.get('vcard_updated')}
+                            .data=${o.vcard?.attributes}
+                            nonce=${o.vcard?.get('vcard_updated')}
                             height="30" width="30"></converse-avatar>
                         <converse-icon
                            title="${hint_show}"
@@ -40603,10 +40517,9 @@ async function destroyMUC(model) {
     'placeholder': (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('replacement@example.org')
   }];
   try {
-    var _fields$filter$pop, _fields$filter$pop2;
     fields = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Confirm'), messages, fields);
-    const reason = (_fields$filter$pop = fields.filter(f => f.name === 'reason').pop()) === null || _fields$filter$pop === void 0 ? void 0 : _fields$filter$pop.value;
-    const newjid = (_fields$filter$pop2 = fields.filter(f => f.name === 'newjid').pop()) === null || _fields$filter$pop2 === void 0 ? void 0 : _fields$filter$pop2.value;
+    const reason = fields.filter(f => f.name === 'reason').pop()?.value;
+    const newjid = fields.filter(f => f.name === 'newjid').pop()?.value;
     return model.sendDestroyIQ(reason, newjid).then(() => model.close());
   } catch (e) {
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_2__["default"].error(e);
@@ -40959,20 +40872,17 @@ const supports_html5_notification = ('Notification' in window);
 _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.env.Favico = (favico_js_slevomat__WEBPACK_IMPORTED_MODULE_0___default());
 let favicon;
 function isMessageToHiddenChat(attrs) {
-  var _converse$chatboxes$g;
-  return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.isTestEnv() || (((_converse$chatboxes$g = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(attrs.from)) === null || _converse$chatboxes$g === void 0 ? void 0 : _converse$chatboxes$g.isHidden()) ?? false);
+  return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.isTestEnv() || (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.get(attrs.from)?.isHidden() ?? false);
 }
 function areDesktopNotificationsEnabled() {
   return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.isTestEnv() || supports_html5_notification && _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('show_desktop_notifications') && Notification.permission === 'granted';
 }
 function clearFavicon() {
-  var _navigator$clearAppBa, _navigator;
   favicon = null;
-  (_navigator$clearAppBa = (_navigator = navigator).clearAppBadge) === null || _navigator$clearAppBa === void 0 ? void 0 : _navigator$clearAppBa.call(_navigator).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error("Could not clear unread count in app badge " + e));
+  navigator.clearAppBadge?.().catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error("Could not clear unread count in app badge " + e));
 }
 function updateUnreadFavicon() {
   if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('show_tab_notifications')) {
-    var _navigator$setAppBadg, _navigator2;
     favicon = favicon ?? new _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.converse.env.Favico({
       type: 'circle',
       animation: 'pop'
@@ -40980,7 +40890,7 @@ function updateUnreadFavicon() {
     const chats = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.chatboxes.models;
     const num_unread = chats.reduce((acc, chat) => acc + (chat.get('num_unread') || 0), 0);
     favicon.badge(num_unread);
-    (_navigator$setAppBadg = (_navigator2 = navigator).setAppBadge) === null || _navigator$setAppBadg === void 0 ? void 0 : _navigator$setAppBadg.call(_navigator2, num_unread).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error("Could set unread count in app badge - " + e));
+    navigator.setAppBadge?.(num_unread).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_1__["default"].error("Could set unread count in app badge - " + e));
   }
 }
 function isReferenced(references, muc_jid, nick) {
@@ -40994,7 +40904,7 @@ function isReferenced(references, muc_jid, nick) {
  * @param { MUCMessageAttributes } attrs
  */
 async function shouldNotifyOfGroupMessage(attrs) {
-  if (!(attrs !== null && attrs !== void 0 && attrs.body) && !(attrs !== null && attrs !== void 0 && attrs.message)) {
+  if (!attrs?.body && !attrs?.message) {
     // attrs.message is used by 'info' messages
     return false;
   }
@@ -41080,8 +40990,7 @@ function showFeedbackNotification(data) {
  * contact's chat state.
  */
 function showChatStateNotification(contact) {
-  var _api$settings$get;
-  if ((_api$settings$get = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('chatstate_notification_blacklist')) !== null && _api$settings$get !== void 0 && _api$settings$get.includes(contact.jid)) {
+  if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('chatstate_notification_blacklist')?.includes(contact.jid)) {
     // Don't notify if the user is being ignored.
     return;
   }
@@ -41305,7 +41214,7 @@ __webpack_require__.r(__webpack_exports__);
         const list = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.devicelists.get(jid) || (create ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.devicelists.create({
           jid
         }) : null);
-        await (list === null || list === void 0 ? void 0 : list.initialized);
+        await list?.initialized;
         return list;
       }
     },
@@ -41395,8 +41304,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _errors_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./errors.js */ "./src/plugins/omemo/errors.js");
 /* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
 /* harmony import */ var _consts_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./consts.js */ "./src/plugins/omemo/consts.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
+
 
 
 
@@ -41406,9 +41317,8 @@ __webpack_require__.r(__webpack_exports__);
 const {
   Strophe,
   sizzle,
-  u,
   $iq
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.env;
 
 /**
  * @class
@@ -41423,12 +41333,12 @@ const Device = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__.Mode
   getRandomPreKey() {
     // XXX: assumes that the bundle has already been fetched
     const bundle = this.get('bundle');
-    return bundle.prekeys[u.getRandomInt(bundle.prekeys.length)];
+    return bundle.prekeys[(0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__.getRandomInt)(bundle.prekeys.length)];
   },
   async fetchBundleFromServer() {
     const stanza = $iq({
       'type': 'get',
-      'from': _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid,
+      'from': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid,
       'to': this.get('jid')
     }).c('pubsub', {
       'xmlns': Strophe.NS.PUBSUB
@@ -41437,7 +41347,7 @@ const Device = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__.Mode
     });
     let iq;
     try {
-      iq = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.sendIQ(stanza);
+      iq = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.sendIQ(stanza);
     } catch (iq) {
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not fetch bundle for device ${this.get('id')} from ${this.get('jid')}`);
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(iq);
@@ -41448,7 +41358,7 @@ const Device = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__.Mode
     }
     const publish_el = sizzle(`items[node="${Strophe.NS.OMEMO_BUNDLES}:${this.get('id')}"]`, iq).pop();
     const bundle_el = sizzle(`bundle[xmlns="${Strophe.NS.OMEMO}"]`, publish_el).pop();
-    const bundle = (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.parseBundle)(bundle_el);
+    const bundle = (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.parseBundle)(bundle_el);
     this.save('bundle', bundle);
     return bundle;
   },
@@ -41901,9 +41811,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var _templates_profile_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/profile.js */ "./src/plugins/omemo/templates/profile.js");
-/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var templates_spinner_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! templates/spinner.js */ "./src/templates/spinner.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
 
 
 
@@ -41913,10 +41825,10 @@ const {
   Strophe,
   sizzle,
   u
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
-class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.env;
+class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__.CustomElement {
   async initialize() {
-    this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid, true);
+    this.devicelist = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.omemo.devicelists.get(_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid, true);
     await this.setAttributes();
     this.listenTo(this.devicelist.devices, 'change:bundle', () => this.requestUpdate());
     this.listenTo(this.devicelist.devices, 'reset', () => this.requestUpdate());
@@ -41926,12 +41838,12 @@ class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.
     this.requestUpdate();
   }
   async setAttributes() {
-    this.device_id = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.omemo.getDeviceID();
+    this.device_id = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.omemo.getDeviceID();
     this.current_device = this.devicelist.devices.get(this.device_id);
     this.other_devices = this.devicelist.devices.filter(d => d.get('id') !== this.device_id);
   }
   render() {
-    return this.devicelist ? (0,_templates_profile_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this) : '';
+    return this.devicelist ? (0,_templates_profile_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this) : (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_2__["default"])();
   }
   selectAll(ev) {
     // eslint-disable-line class-methods-use-this
@@ -41950,22 +41862,22 @@ class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.
       await this.devicelist.removeOwnDevices(device_ids);
     } catch (err) {
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(err);
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.api.alert(Strophe.LogLevel.ERROR, (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, an error occurred while trying to remove the devices.')]);
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.api.alert(Strophe.LogLevel.ERROR, (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Error'), [(0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Sorry, an error occurred while trying to remove the devices.')]);
     }
     await this.setAttributes();
     this.requestUpdate();
   }
   async generateOMEMODeviceBundle(ev) {
     ev.preventDefault();
-    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Are you sure you want to generate new OMEMO keys? ' + 'This will remove your old keys and all previously ' + 'encrypted messages will no longer be decryptable on this device.'));
+    const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Are you sure you want to generate new OMEMO keys? ' + 'This will remove your old keys and all previously ' + 'encrypted messages will no longer be decryptable on this device.'));
     if (result) {
-      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.omemo.bundle.generate();
+      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.omemo.bundle.generate();
       await this.setAttributes();
       this.requestUpdate();
     }
   }
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-omemo-profile', Profile);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.elements.define('converse-omemo-profile', Profile);
 
 /***/ }),
 
@@ -42375,7 +42287,6 @@ const device_item = el => lit__WEBPACK_IMPORTED_MODULE_2__.html`
     ${el.device.get('bundle') && el.device.get('bundle').fingerprint ? device_with_fingerprint(el) : device_without_fingerprint(el)}
 `;
 const device_list = el => {
-  var _el$other_devices;
   const i18n_other_devices = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Other OMEMO-enabled devices');
   const i18n_other_devices_label = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Checkbox to select fingerprints of all other OMEMO devices');
   const i18n_remove_devices = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove checked devices and close');
@@ -42388,7 +42299,7 @@ const device_list = el => {
                     ${i18n_other_devices}
                 </label>
             </li>
-            ${(_el$other_devices = el.other_devices) === null || _el$other_devices === void 0 ? void 0 : _el$other_devices.map(device => device_item(Object.assign({
+            ${el.other_devices?.map(device => device_item(Object.assign({
     device
   }, el)))}
         </ul>
@@ -42396,7 +42307,6 @@ const device_list = el => {
     `;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$other_devices2;
   const i18n_fingerprint = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("This device's OMEMO fingerprint");
   const i18n_generate = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Generate new keys and fingerprint');
   return lit__WEBPACK_IMPORTED_MODULE_2__.html`
@@ -42410,7 +42320,7 @@ const device_list = el => {
             <div class="form-group">
                 <button type="button" class="generate-bundle btn btn-danger" @click=${el.generateOMEMODeviceBundle}>${i18n_generate}</button>
             </div>
-            ${(_el$other_devices2 = el.other_devices) !== null && _el$other_devices2 !== void 0 && _el$other_devices2.length ? device_list(el) : ''}
+            ${el.other_devices?.length ? device_list(el) : ''}
         </form>`;
 });
 
@@ -42704,7 +42614,6 @@ function handleEncryptedFiles(richtext) {
  * @returns (MUCMessageAttributes|MessageAttributes)
  */
 async function parseEncryptedMessage(stanza, attrs) {
-  var _api$omemo;
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.settings.get('clear_cache_on_logout') || !attrs.is_encrypted || attrs.encryption_namespace !== Strophe.NS.OMEMO) {
     return attrs;
   }
@@ -42713,14 +42622,13 @@ async function parseEncryptedMessage(stanza, attrs) {
   attrs.encrypted = {
     'device_id': header.getAttribute('sid')
   };
-  const device_id = await ((_api$omemo = _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo) === null || _api$omemo === void 0 ? void 0 : _api$omemo.getDeviceID());
+  const device_id = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.omemo?.getDeviceID();
   const key = device_id && sizzle(`key[rid="${device_id}"]`, encrypted_el).pop();
   if (key) {
-    var _encrypted_el$querySe;
     Object.assign(attrs.encrypted, {
       'iv': header.querySelector('iv').textContent,
       'key': key.textContent,
-      'payload': ((_encrypted_el$querySe = encrypted_el.querySelector('payload')) === null || _encrypted_el$querySe === void 0 ? void 0 : _encrypted_el$querySe.textContent) || null,
+      'payload': encrypted_el.querySelector('payload')?.textContent || null,
       'prekey': ['true', '1'].includes(key.getAttribute('prekey'))
     });
   } else {
@@ -42758,10 +42666,9 @@ function onChatInitialized(el) {
     if (!el.model.get('omemo_supported') && el.model.get('omemo_active')) {
       el.model.set('omemo_active', false);
     } else {
-      var _el$querySelector;
       // Manually trigger an update, setting omemo_active to
       // false above will automatically trigger one.
-      (_el$querySelector = el.querySelector('converse-chat-toolbar')) === null || _el$querySelector === void 0 ? void 0 : _el$querySelector.requestUpdate();
+      el.querySelector('converse-chat-toolbar')?.requestUpdate();
     }
   });
   el.listenTo(el.model, 'change:omemo_active', () => {
@@ -42932,8 +42839,7 @@ function parseBundle(bundle_el) {
   };
 }
 async function generateFingerprint(device) {
-  var _device$get;
-  if ((_device$get = device.get('bundle')) !== null && _device$get !== void 0 && _device$get.fingerprint) {
+  if (device.get('bundle')?.fingerprint) {
     return;
   }
   const bundle = await device.getBundle();
@@ -43426,6 +43332,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var client_compress__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(client_compress__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _password_reset_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../password-reset.js */ "./src/plugins/profile/password-reset.js");
+
 
 
 
@@ -43641,6 +43549,100 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('conver
 
 /***/ }),
 
+/***/ "./src/plugins/profile/password-reset.js":
+/*!***********************************************!*\
+  !*** ./src/plugins/profile/password-reset.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _templates_password_reset_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/password-reset.js */ "./src/plugins/profile/templates/password-reset.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+
+
+
+
+const {
+  Strophe,
+  $iq,
+  sizzle,
+  u
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.converse.env;
+class PasswordReset extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.CustomElement {
+  static get properties() {
+    return {
+      passwords_mismatched: {
+        type: Boolean
+      },
+      alert_message: {
+        type: String
+      }
+    };
+  }
+  initialize() {
+    this.passwords_mismatched = false;
+    this.alert_message = '';
+  }
+  render() {
+    return (0,_templates_password_reset_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
+  }
+  checkPasswordsMatch(ev) {
+    const form_data = new FormData(ev.target.form ?? ev.target);
+    const password = form_data.get('password');
+    const password_check = form_data.get('password_check');
+    this.passwords_mismatched = password && password !== password_check;
+    return this.passwords_mismatched;
+  }
+  async onSubmit(ev) {
+    ev.preventDefault();
+    if (this.checkPasswordsMatch(ev)) return;
+    const iq = $iq({
+      'type': 'get',
+      'to': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.domain
+    }).c('query', {
+      'xmlns': Strophe.NS.REGISTER
+    });
+    const iq_response = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(iq);
+    if (iq_response === null) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Timeout error');
+      return;
+    } else if (sizzle(`error service-unavailable[xmlns="${Strophe.NS.STANZAS}"]`, iq_response).length) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Your server does not support in-band password reset');
+      return;
+    } else if (u.isErrorStanza(iq_response)) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Your server responded with an unknown error');
+      return;
+    }
+    const username = iq_response.querySelector('username').textContent;
+    const data = new FormData(ev.target);
+    const password = data.get('password');
+    const reset_iq = $iq({
+      'type': 'set',
+      'to': _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.domain
+    }).c('query', {
+      'xmlns': Strophe.NS.REGISTER
+    }).c('username', {}, username).c('password', {}, password);
+    const iq_result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.sendIQ(reset_iq);
+    if (iq_result === null) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Timeout error while trying to set your password');
+    } else if (sizzle(`error not-allowed[xmlns="${Strophe.NS.STANZAS}"]`, iq_result).length) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Your server does not allow in-band password reset');
+    } else if (sizzle(`error forbidden[xmlns="${Strophe.NS.STANZAS}"]`, iq_result).length) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('You are not allowed to change your password');
+    } else if (u.isErrorStanza(iq_result)) {
+      this.alert_message = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('You are not allowed to change your password');
+    } else {
+      _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.alert('info', (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Successful'), [(0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Your new password has been set')]);
+    }
+  }
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-change-password-form', PasswordReset);
+
+/***/ }),
+
 /***/ "./src/plugins/profile/statusview.js":
 /*!*******************************************!*\
   !*** ./src/plugins/profile/statusview.js ***!
@@ -43666,19 +43668,19 @@ class Profile extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1__.
     return (0,_templates_profile_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this);
   }
   showProfileModal(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-profile-modal', {
       model: this.model
     }, ev);
   }
   showStatusChangeModal(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-chat-status-modal', {
       model: this.model
     }, ev);
   }
   showUserSettingsModal(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-user-settings-modal', {
       model: this.model,
       _converse: _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse
@@ -43754,6 +43756,69 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/plugins/profile/templates/password-reset.js":
+/*!*********************************************************!*\
+  !*** ./src/plugins/profile/templates/password-reset.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const i18n_submit = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Submit');
+  const i18n_passwords_must_match = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The new passwords must match');
+  const i18n_new_password = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('New password');
+  const i18n_confirm_password = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Confirm new password');
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<form class="converse-form passwordreset-form" method="POST" @submit=${ev => el.onSubmit(ev)}>
+        ${el.alert_message ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="alert alert-danger" role="alert">${el.alert_message}</div>` : ''}
+
+        <div class="form-group">
+            <label for="converse_password_reset_new">${i18n_new_password}</label>
+            <input
+                class="form-control ${el.passwords_mismatched ? 'error' : ''}"
+                type="password"
+                value=""
+                name="password"
+                required="required"
+                id="converse_password_reset_new"
+                autocomplete="new-password"
+                minlength="8"
+                ?disabled="${el.alert_message}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="converse_password_reset_check">${i18n_confirm_password}</label>
+            <input
+                class="form-control ${el.passwords_mismatched ? 'error' : ''}"
+                type="password"
+                value=""
+                name="password_check"
+                required="required"
+                id="converse_password_reset_check"
+                autocomplete="new-password"
+                minlength="8"
+                ?disabled="${el.alert_message}"
+                @input=${ev => el.checkPasswordsMatch(ev)}
+            />
+            ${el.passwords_mismatched ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<span class="error">${i18n_passwords_must_match}</span>` : ''}
+        </div>
+
+        <input class="save-form btn btn-primary"
+               type="submit"
+               value=${i18n_submit}
+               ?disabled="${el.alert_message}" />
+    </form>`;
+});
+
+/***/ }),
+
 /***/ "./src/plugins/profile/templates/profile.js":
 /*!**************************************************!*\
   !*** ./src/plugins/profile/templates/profile.js ***!
@@ -43788,9 +43853,8 @@ function tpl_user_settings_button(o) {
     </a>`;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model$vcard, _el$model$vcard2, _el$model$vcard3, _el$model$vcard4;
   const chat_status = el.model.get('status') || 'offline';
-  const fullname = ((_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.get('fullname')) || ((_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.get('nickname')) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bare_jid;
+  const fullname = el.model.vcard?.get('fullname') || el.model.vcard?.get('nickname') || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bare_jid;
   const status_message = el.model.get('status_message') || (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("I am %1$s", (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.getPrettyStatus)(chat_status));
   const i18n_change_status = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Click to change your chat status');
   const show_settings_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_client_info') || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_adhoc_commands');
@@ -43809,8 +43873,8 @@ function tpl_user_settings_button(o) {
             <div class="controlbox-section profile d-flex">
                 <a class="show-profile" href="#" @click=${el.showProfileModal}>
                     <converse-avatar class="avatar align-self-center"
-                        .data=${(_el$model$vcard3 = el.model.vcard) === null || _el$model$vcard3 === void 0 ? void 0 : _el$model$vcard3.attributes}
-                        nonce=${(_el$model$vcard4 = el.model.vcard) === null || _el$model$vcard4 === void 0 ? void 0 : _el$model$vcard4.get('vcard_updated')}
+                        .data=${el.model.vcard?.attributes}
+                        nonce=${el.model.vcard?.get('vcard_updated')}
                         height="40" width="40"></converse-avatar>
                 </a>
                 <span class="username w-100 align-self-center">${fullname}</span>
@@ -43847,36 +43911,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const omemo_page = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
+const tpl_omemo_page = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
     <div class="tab-pane ${el.tab === 'omemo' ? 'active' : ''}" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">
-        <converse-omemo-profile></converse-omemo-profile>
+        ${el.tab === 'omemo' ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-omemo-profile></converse-omemo-profile>` : ''}
     </div>`;
-const navigation = el => {
-  const i18n_omemo = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OMEMO');
-  const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Profile');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`<ul class="nav nav-pills justify-content-center">
-        <li role="presentation" class="nav-item">
-            <a class="nav-link ${el.tab === "profile" ? "active" : ""}"
-               id="profile-tab"
-               href="#profile-tabpanel"
-               aria-controls="profile-tabpanel" role="tab"
-               @click=${ev => el.switchTab(ev)}
-               data-name="profile"
-               data-toggle="tab">${i18n_profile}</a>
-        </li>
-        <li role="presentation" class="nav-item">
-            <a class="nav-link ${el.tab === "omemo" ? "active" : ""}"
-               id="omemo-tab"
-               href="#omemo-tabpanel"
-               aria-controls="omemo-tabpanel" role="tab"
-               @click=${ev => el.switchTab(ev)}
-               data-name="omemo"
-               data-toggle="tab">${i18n_omemo}</a>
-        </li>
-    </ul>`;
-};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _converse$pluggable$p, _converse$pluggable$p2;
   const o = {
     ...el.model.toJSON(),
     ...el.model.vcard.toJSON()
@@ -43889,8 +43928,43 @@ const navigation = el => {
   const i18n_save = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Save and close');
   const i18n_role_help = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Use commas to separate multiple roles. Your roles are shown next to your name on your chat messages.');
   const i18n_url = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('URL');
+  const i18n_omemo = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OMEMO');
+  const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Profile');
+  const ii18n_reset_password = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Reset Password');
+  const navigation_tabs = [lit__WEBPACK_IMPORTED_MODULE_3__.html`<li role="presentation" class="nav-item">
+            <a class="nav-link ${el.tab === "profile" ? "active" : ""}"
+               id="profile-tab"
+               href="#profile-tabpanel"
+               aria-controls="profile-tabpanel"
+               role="tab"
+               @click=${ev => el.switchTab(ev)}
+               data-name="profile"
+               data-toggle="tab">${i18n_profile}</a>
+            </li>`];
+  navigation_tabs.push(lit__WEBPACK_IMPORTED_MODULE_3__.html`<li role="presentation" class="nav-item">
+                <a class="nav-link ${el.tab === "passwordreset" ? "active" : ""}"
+                id="passwordreset-tab"
+                href="#passwordreset-tabpanel"
+                aria-controls="passwordreset-tabpanel"
+                role="tab"
+                @click=${ev => el.switchTab(ev)}
+                data-name="passwordreset"
+                data-toggle="tab">${ii18n_reset_password}</a>
+        </li>`);
+  if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]?.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse)) {
+    navigation_tabs.push(lit__WEBPACK_IMPORTED_MODULE_3__.html`<li role="presentation" class="nav-item">
+                <a class="nav-link ${el.tab === "omemo" ? "active" : ""}"
+                   id="omemo-tab"
+                   href="#omemo-tabpanel"
+                   aria-controls="omemo-tabpanel"
+                   role="tab"
+                   @click=${ev => el.switchTab(ev)}
+                   data-name="omemo"
+                   data-toggle="tab">${i18n_omemo}</a>
+            </li>`);
+  }
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-        ${(_converse$pluggable$p = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]) !== null && _converse$pluggable$p !== void 0 && _converse$pluggable$p.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? navigation(el) : ''}
+        <ul class="nav nav-pills justify-content-center">${navigation_tabs}</ul>
         <div class="tab-content">
             <div class="tab-pane ${el.tab === 'profile' ? 'active' : ''}" id="profile-tabpanel" role="tabpanel" aria-labelledby="profile-tab">
                 <form class="converse-form converse-form--modal profile-form" action="#" @submit=${ev => el.onFormSubmitted(ev)}>
@@ -43935,9 +44009,14 @@ const navigation = el => {
                     </div>
                 </form>
             </div>
-            ${(_converse$pluggable$p2 = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]) !== null && _converse$pluggable$p2 !== void 0 && _converse$pluggable$p2.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? omemo_page(el) : ''}
+
+            <div class="tab-pane ${el.tab === 'passwordreset' ? 'active' : ''}" id="passwordreset-tabpanel" role="tabpanel" aria-labelledby="passwordreset-tab">
+                ${el.tab === 'passwordreset' ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-change-password-form></converse-change-password-form>` : ''}
+            </div>
+
+            ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins["converse-omemo"]?.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? tpl_omemo_page(el) : ''}
         </div>
-    `;
+    </div>`;
 });
 
 /***/ }),
@@ -43958,6 +44037,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
+const {
+  Strophe,
+  $iq,
+  sizzle,
+  u
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 function getPrettyStatus(stat) {
   if (stat === 'chat') {
     return (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('online');
@@ -43974,7 +44059,7 @@ function getPrettyStatus(stat) {
   }
 }
 async function logOut(ev) {
-  ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+  ev?.preventDefault();
   const result = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Are you sure you want to log out?"));
   if (result) {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.user.logout();
@@ -44221,7 +44306,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('conve
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
-/* harmony import */ var lodash_es_pick__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lodash-es/pick */ "./node_modules/lodash-es/pick.js");
+/* harmony import */ var lodash_es_pick__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lodash-es/pick */ "./node_modules/lodash-es/pick.js");
 /* harmony import */ var templates_form_input_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/form_input.js */ "./src/templates/form_input.js");
 /* harmony import */ var templates_form_url_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! templates/form_url.js */ "./src/templates/form_url.js");
 /* harmony import */ var templates_form_username_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! templates/form_username.js */ "./src/templates/form_username.js");
@@ -44230,8 +44315,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_utils_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/utils/form */ "./src/headless/utils/form.js");
 /* harmony import */ var _converse_skeletor_src_element__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/skeletor/src/element */ "./node_modules/@converse/skeletor/src/element.js");
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_init_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/headless/utils/init.js */ "./src/headless/utils/init.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
 
 
 
@@ -44250,8 +44337,8 @@ const {
   Strophe,
   sizzle,
   $iq
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__.converse.env;
-const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__.converse.env.utils;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__.converse.env;
+const u = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__.converse.env.utils;
 const CHOOSE_PROVIDER = 0;
 const FETCHING_FORM = 1;
 const REGISTRATION_FORM = 2;
@@ -44270,11 +44357,11 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
   };
   initialize() {
     this.reset();
-    const controlbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.chatboxes.get('controlbox');
+    const controlbox = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.chatboxes.get('controlbox');
     this.model = controlbox;
-    this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse, 'connectionInitialized', this.registerHooks);
+    this.listenTo(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse, 'connectionInitialized', this.registerHooks);
     this.listenTo(this.model, 'change:registration_status', this.render);
-    const domain = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__.api.settings.get('registration_domain');
+    const domain = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__.api.settings.get('registration_domain');
     if (domain) {
       this.fetchRegistrationForm(domain);
     } else {
@@ -44282,7 +44369,7 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
     }
   }
   render() {
-    (0,lit__WEBPACK_IMPORTED_MODULE_10__.render)((0,_templates_register_panel_js__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    (0,lit__WEBPACK_IMPORTED_MODULE_11__.render)((0,_templates_register_panel_js__WEBPACK_IMPORTED_MODULE_4__["default"])({
       'domain': this.domain,
       'fields': this.fields,
       'form_fields': this.form_fields,
@@ -44297,7 +44384,7 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
    * requesting the registration fields.
    */
   registerHooks() {
-    const conn = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection;
+    const conn = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection;
     const connect_cb = conn._connect_cb.bind(conn);
     conn._connect_cb = (req, callback, raw) => {
       if (!this._registering) {
@@ -44322,7 +44409,7 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
    * @param { Function } callback - The callback function
    */
   getRegistrationFields(req, _callback) {
-    const conn = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection;
+    const conn = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection;
     conn.connected = true;
     const body = conn._proto._reqToData(req);
     if (!body) {
@@ -44364,11 +44451,11 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
    */
   onRegistrationFields(stanza) {
     if (stanza.getAttribute("type") === "error") {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, (0,i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Something went wrong while establishing a connection with "%1$s". ' + 'Are you sure it exists?', this.domain));
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, (0,i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Something went wrong while establishing a connection with "%1$s". ' + 'Are you sure it exists?', this.domain));
       return false;
     }
     if (stanza.getElementsByTagName("query").length !== 1) {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, "unknown");
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, "unknown");
       return false;
     }
     this.setFields(stanza);
@@ -44390,7 +44477,7 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
     };
     Object.assign(this, defaults);
     if (settings) {
-      Object.assign(this, (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_11__["default"])(settings, Object.keys(defaults)));
+      Object.assign(this, (0,lodash_es_pick__WEBPACK_IMPORTED_MODULE_12__["default"])(settings, Object.keys(defaults)));
     }
   }
 
@@ -44419,7 +44506,7 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
    */
   onProviderChosen(form) {
     const domain_input = form.querySelector('input[name=domain]'),
-      domain = domain_input === null || domain_input === void 0 ? void 0 : domain_input.value;
+      domain = domain_input?.value;
     if (!domain) {
       // TODO: add validation message
       domain_input.classList.add('error');
@@ -44435,17 +44522,16 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
    * @method _converse.RegisterPanel#fetchRegistrationForm
    * @param { String } domain_name - XMPP server domain
    */
-  async fetchRegistrationForm(domain_name) {
-    var _converse$connection;
+  fetchRegistrationForm(domain_name) {
     this.model.set('registration_status', FETCHING_FORM);
     this.reset({
       'domain': Strophe.getDomainFromJid(domain_name),
       '_registering': true
     });
-    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.initConnection(this.domain);
+    (0,_converse_headless_utils_init_js__WEBPACK_IMPORTED_MODULE_10__.initConnection)(this.domain);
     // When testing, the test tears down before the async function
     // above finishes. So we use optional chaining here
-    (_converse$connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection) === null || _converse$connection === void 0 ? void 0 : _converse$connection.connect(this.domain, "", status => this.onConnectStatusChanged(status));
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection?.connect(this.domain, "", status => this.onConnectStatusChanged(status));
     return false;
   }
   giveFeedback(message, klass) {
@@ -44463,7 +44549,7 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
   }
   showSpinner() {
     const form = this.querySelector('form');
-    (0,lit__WEBPACK_IMPORTED_MODULE_10__.render)((0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_5__["default"])(), form);
+    (0,lit__WEBPACK_IMPORTED_MODULE_11__.render)((0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_5__["default"])(), form);
     return this;
   }
 
@@ -44477,23 +44563,23 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
   onConnectStatusChanged(status_code) {
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].debug('converse-register: onConnectStatusChanged');
     if ([Strophe.Status.DISCONNECTED, Strophe.Status.CONNFAIL, Strophe.Status.REGIFAIL, Strophe.Status.NOTACCEPTABLE, Strophe.Status.CONFLICT].includes(status_code)) {
-      _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Problem during registration: Strophe.Status is ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.CONNECTION_STATUS[status_code]}`);
+      _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Problem during registration: Strophe.Status is ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.CONNECTION_STATUS[status_code]}`);
       this.abortRegistration();
     } else if (status_code === Strophe.Status.REGISTERED) {
       _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].debug("Registered successfully.");
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection.reset();
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection.reset();
       this.showSpinner();
-      if (["converse/login", "converse/register"].includes(_converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.router.history.getFragment())) {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.router.navigate('', {
+      if (["converse/login", "converse/register"].includes(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.router.history.getFragment())) {
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.router.navigate('', {
           'replace': true
         });
       }
       if (this.fields.password && this.fields.username) {
         // automatically log the user in
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection.connect(this.fields.username.toLowerCase() + '@' + this.domain.toLowerCase(), this.fields.password, _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.onConnectStatusChanged);
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection.connect(this.fields.username.toLowerCase() + '@' + this.domain.toLowerCase(), this.fields.password, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.onConnectStatusChanged);
         this.giveFeedback((0,i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Now logging you in'), 'info');
       } else {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.giveFeedback((0,i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Registered successfully'));
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.giveFeedback((0,i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Registered successfully'));
       }
       this.reset();
     }
@@ -44585,16 +44671,16 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
     if (ev && ev.preventDefault) {
       ev.preventDefault();
     }
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._proto._abortAllRequests();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection.reset();
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._proto._abortAllRequests();
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection.reset();
     this.render();
   }
   abortRegistration() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._proto._abortAllRequests();
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection.reset();
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._proto._abortAllRequests();
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection.reset();
     if ([FETCHING_FORM, REGISTRATION_FORM].includes(this.model.get('registration_status'))) {
-      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_9__.api.settings.get('registration_domain')) {
-        this.fetchRegistrationForm(_converse_headless_core__WEBPACK_IMPORTED_MODULE_9__.api.settings.get('registration_domain'));
+      if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__.api.settings.get('registration_domain')) {
+        this.fetchRegistrationForm(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__.api.settings.get('registration_domain'));
       }
     } else {
       this.render();
@@ -44636,8 +44722,8 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
     } else {
       inputs.forEach(input => iq.c(input.getAttribute('name'), {}, input.value));
     }
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._addSysHandler(this._onRegisterIQ.bind(this), null, "iq", null, null);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection.send(iq);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._addSysHandler(this._onRegisterIQ.bind(this), null, "iq", null, null);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection.send(iq);
     this.setFields(iq.tree());
   }
 
@@ -44671,14 +44757,12 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
     this.form_type = 'legacy';
   }
   _setFieldsFromXForm(xform) {
-    var _xform$querySelector, _xform$querySelector2;
-    this.title = (_xform$querySelector = xform.querySelector('title')) === null || _xform$querySelector === void 0 ? void 0 : _xform$querySelector.textContent;
-    this.instructions = (_xform$querySelector2 = xform.querySelector('instructions')) === null || _xform$querySelector2 === void 0 ? void 0 : _xform$querySelector2.textContent;
+    this.title = xform.querySelector('title')?.textContent;
+    this.instructions = xform.querySelector('instructions')?.textContent;
     xform.querySelectorAll('field').forEach(field => {
       const _var = field.getAttribute('var');
       if (_var) {
-        var _field$querySelector;
-        this.fields[_var.toLowerCase()] = ((_field$querySelector = field.querySelector('value')) === null || _field$querySelector === void 0 ? void 0 : _field$querySelector.textContent) ?? '';
+        this.fields[_var.toLowerCase()] = field.querySelector('value')?.textContent ?? '';
       } else {
         // TODO: other option seems to be type="fixed"
         _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].warn("Found field we couldn't parse");
@@ -44701,24 +44785,24 @@ class RegisterPanel extends _converse_skeletor_src_element__WEBPACK_IMPORTED_MOD
       this.reportErrors(stanza);
       let error = stanza.getElementsByTagName("error");
       if (error.length !== 1) {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, "unknown");
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, "unknown");
         return false;
       }
       error = error[0].firstElementChild.tagName.toLowerCase();
       if (error === 'conflict') {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.CONFLICT, error);
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.CONFLICT, error);
       } else if (error === 'not-acceptable') {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.NOTACCEPTABLE, error);
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.NOTACCEPTABLE, error);
       } else {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, error);
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGIFAIL, error);
       }
     } else {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGISTERED, null);
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__._converse.connection._changeConnectStatus(Strophe.Status.REGISTERED, null);
     }
     return false;
   }
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_9__.api.elements.define('converse-register-panel', RegisterPanel);
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_9__.api.elements.define('converse-register-panel', RegisterPanel);
 
 /***/ }),
 
@@ -44809,7 +44893,7 @@ const REGISTRATION_FORM = 2;
   return lit__WEBPACK_IMPORTED_MODULE_4__.html`
         <converse-brand-logo></converse-brand-logo>
         ${o.model.get('registration_status') === CHOOSE_PROVIDER ? tpl_choose_provider() : ''}
-        ${o.model.get('registration_status') === FETCHING_FORM ? tpl_form_request(o) : ''}
+        ${o.model.get('registration_status') === FETCHING_FORM ? tpl_form_request() : ''}
         ${o.model.get('registration_status') === REGISTRATION_FORM ? (0,_registration_form_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o) : ''}
     `;
 });
@@ -44992,7 +45076,7 @@ const room_item = o => {
         <div class="list-item controlbox-padded available-chatroom d-flex flex-row ${o.currently_open(o.room) ? 'open' : ''} ${has_unread_msgs ? 'unread-msgs' : ''}"
             data-room-jid="${o.room.get('jid')}">
 
-            ${o.room.get('num_unread') ? unread_indicator(o) : o.room.get('has_activity') ? activity_indicator(o) : ''}
+            ${o.room.get('num_unread') ? unread_indicator(o) : o.room.get('has_activity') ? activity_indicator() : ''}
 
             <a class="list-item-link open-room available-room w-100"
                 data-room-jid="${o.room.get('jid')}"
@@ -45183,8 +45267,7 @@ class RoomsList extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3_
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.addBookmarkViaEvent(ev);
   }
   toggleRoomsList(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     const list_el = this.querySelector('.open-rooms-list');
     if (this.model.get('toggle_state') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.CLOSED) {
       u.slideOut(list_el).then(() => this.model.save({
@@ -45438,13 +45521,11 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
     }
   }
   openChat(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     this.model.openChat();
   }
   async removeContact(ev) {
-    var _ev$preventDefault2;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
+    ev?.preventDefault?.();
     if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('allow_contact_removal')) {
       return;
     }
@@ -45463,8 +45544,7 @@ class RosterContact extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
     }
   }
   async acceptRequest(ev) {
-    var _ev$preventDefault3;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault3 = ev.preventDefault) === null || _ev$preventDefault3 === void 0 ? void 0 : _ev$preventDefault3.call(ev);
+    ev?.preventDefault?.();
     await _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.roster.sendContactAddIQ(this.model.get('jid'), this.model.getFullname(), []);
     this.model.authorize().subscribe();
   }
@@ -45544,9 +45624,8 @@ class RosterFilterView extends shared_components_element_js__WEBPACK_IMPORTED_MO
     });
   }
   changeTypeFilter(ev) {
-    var _ancestor;
     ev && ev.preventDefault();
-    const type = ((_ancestor = (0,utils_html_js__WEBPACK_IMPORTED_MODULE_3__.ancestor)(ev.target, 'converse-icon')) === null || _ancestor === void 0 ? void 0 : _ancestor.dataset.type) || 'contacts';
+    const type = (0,utils_html_js__WEBPACK_IMPORTED_MODULE_3__.ancestor)(ev.target, 'converse-icon')?.dataset.type || 'contacts';
     if (type === 'state') {
       this.model.save({
         'filter_type': type,
@@ -45574,8 +45653,7 @@ class RosterFilterView extends shared_components_element_js__WEBPACK_IMPORTED_MO
     return this.model.get('filter_type') === 'state' || this.model.get('filter_text');
   }
   shouldBeVisible() {
-    var _converse$roster;
-    return ((_converse$roster = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster) === null || _converse$roster === void 0 ? void 0 : _converse$roster.length) >= 5 || this.isActive();
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster?.length >= 5 || this.isActive();
   }
   clearFilter(ev) {
     ev && ev.preventDefault();
@@ -45644,10 +45722,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.converse.plugins.add('conve
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.chatboxes.on('destroy', chatbox => (0,_utils_js__WEBPACK_IMPORTED_MODULE_9__.highlightRosterItem)(chatbox));
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.chatboxes.on('change:hidden', chatbox => (0,_utils_js__WEBPACK_IMPORTED_MODULE_9__.highlightRosterItem)(chatbox));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.listen.on('afterTearDown', () => {
-      var _converse$rotergroups;
-      return (_converse$rotergroups = _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.rotergroups) === null || _converse$rotergroups === void 0 ? void 0 : _converse$rotergroups.off().reset();
-    });
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__.api.listen.on('afterTearDown', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_8__._converse.rotergroups?.off().reset());
   }
 });
 
@@ -45687,10 +45762,7 @@ class AddContactModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1_
     super.initialize();
     this.listenTo(this.model, 'change', () => this.render());
     this.render();
-    this.addEventListener('shown.bs.modal', () => {
-      var _this$querySelector;
-      return (_this$querySelector = this.querySelector('input[name="jid"]')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.focus();
-    }, false);
+    this.addEventListener('shown.bs.modal', () => this.querySelector('input[name="jid"]')?.focus(), false);
   }
   renderModal() {
     return (0,_templates_add_contact_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
@@ -45928,11 +46000,13 @@ class RosterView extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1
     this.model.fetch();
     await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.waitUntil('rosterInitialized');
     const {
+      chatboxes,
       presences,
       roster
     } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse;
     this.listenTo(_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse, 'rosterContactsFetched', () => this.requestUpdate());
     this.listenTo(presences, 'change:show', () => this.requestUpdate());
+    this.listenTo(chatboxes, 'change:hidden', () => this.requestUpdate());
     this.listenTo(roster, 'add', () => this.requestUpdate());
     this.listenTo(roster, 'destroy', () => this.requestUpdate());
     this.listenTo(roster, 'remove', () => this.requestUpdate());
@@ -45970,8 +46044,7 @@ class RosterView extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_1
     this.requestUpdate();
   }
   toggleRoster(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     const list_el = this.querySelector('.list-container.roster-contacts');
     if (this.model.get('toggle_state') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.CLOSED) {
       (0,utils_html_js__WEBPACK_IMPORTED_MODULE_5__.slideOut)(list_el).then(() => this.model.save({
@@ -46272,7 +46345,6 @@ const tpl_remove_link = (el, item) => {
    `;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, item) => {
-  var _el$model$vcard, _el$model$vcard2;
   const show = item.presence.get('show') || 'offline';
   let classes, color;
   if (show === 'online') {
@@ -46293,8 +46365,8 @@ const tpl_remove_link = (el, item) => {
       <span>
          <converse-avatar
             class="avatar"
-            .data=${(_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.attributes}
-            nonce=${(_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.get('vcard_updated')}
+            .data=${el.model.vcard?.attributes}
+            nonce=${el.model.vcard?.get('vcard_updated')}
             height="30" width="30"></converse-avatar>
          <converse-icon
             title="${desc_status}"
@@ -46340,12 +46412,10 @@ function removeContact(contact) {
   });
 }
 function highlightRosterItem(chatbox) {
-  var _converse$roster, _converse$roster$get;
-  (_converse$roster = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster) === null || _converse$roster === void 0 ? void 0 : (_converse$roster$get = _converse$roster.get(chatbox.get('jid'))) === null || _converse$roster$get === void 0 ? void 0 : _converse$roster$get.trigger('highlight');
+  _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster?.get(chatbox.get('jid'))?.trigger('highlight');
 }
 function toggleGroup(ev, name) {
-  var _ev$preventDefault;
-  ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+  ev?.preventDefault?.();
   const collapsed = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.get('collapsed_groups');
   if (collapsed.includes(name)) {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.save('collapsed_groups', collapsed.filter(n => n !== name));
@@ -46391,8 +46461,7 @@ function shouldShowGroup(group) {
   const filter = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster_filter;
   const type = filter.get('filter_type');
   if (type === 'groups') {
-    var _filter$get;
-    const q = (_filter$get = filter.get('filter_text')) === null || _filter$get === void 0 ? void 0 : _filter$get.toLowerCase();
+    const q = filter.get('filter_text')?.toLowerCase();
     if (!q) {
       return true;
     }
@@ -46578,9 +46647,8 @@ class AutoComplete {
     } else if (typeof list === "string" && list.includes(",")) {
       this._list = list.split(/\s*,\s*/);
     } else {
-      var _helpers$getElement;
       // Element or CSS selector
-      const children = ((_helpers$getElement = _utils_js__WEBPACK_IMPORTED_MODULE_1__.helpers.getElement(list)) === null || _helpers$getElement === void 0 ? void 0 : _helpers$getElement.children) || [];
+      const children = _utils_js__WEBPACK_IMPORTED_MODULE_1__.helpers.getElement(list)?.children || [];
       this._list = Array.from(children).filter(el => !el.disabled).map(el => {
         const text = el.textContent.trim();
         const value = el.value || text;
@@ -47156,15 +47224,12 @@ class Avatar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_0__.C
     this.height = 36;
   }
   render() {
-    var _this$data, _this$data2;
-    const image_type = ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.image_type) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.DEFAULT_IMAGE_TYPE;
+    const image_type = this.data?.image_type || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.DEFAULT_IMAGE_TYPE;
     let image;
-    if ((_this$data2 = this.data) !== null && _this$data2 !== void 0 && _this$data2.data_uri) {
-      var _this$data3;
-      image = (_this$data3 = this.data) === null || _this$data3 === void 0 ? void 0 : _this$data3.data_uri;
+    if (this.data?.data_uri) {
+      image = this.data?.data_uri;
     } else {
-      var _this$data4;
-      const image_data = ((_this$data4 = this.data) === null || _this$data4 === void 0 ? void 0 : _this$data4.image) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.DEFAULT_IMAGE;
+      const image_data = this.data?.image || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.DEFAULT_IMAGE;
       image = "data:" + image_type + ";base64," + image_data;
     }
     return (0,_templates_avatar_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
@@ -47248,8 +47313,7 @@ class BaseChatView extends shared_components_element_js__WEBPACK_IMPORTED_MODULE
     }
   }
   close(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     return this.model.close(ev);
   }
   maybeFocus() {
@@ -47311,9 +47375,8 @@ class BaseChatView extends shared_components_element_js__WEBPACK_IMPORTED_MODULE
    * @param { Event } [ev] - An optional event that is the cause for needing to scroll down.
    */
   scrollDown(ev) {
-    var _ev$preventDefault2, _ev$stopPropagation;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation = ev.stopPropagation) === null || _ev$stopPropagation === void 0 ? void 0 : _ev$stopPropagation.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     if (this.model.ui.get('scrolled')) {
       this.model.ui.set({
         'scrolled': false
@@ -47396,7 +47459,6 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     this.requestUpdate();
   }
   render() {
-    var _this$model$ui;
     if (!this.model) {
       return '';
     }
@@ -47408,7 +47470,7 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
                 .model=${this.model}
                 .messages=${[...this.model.messages.models]}>
             </converse-message-history>
-            ${(_this$model$ui = this.model.ui) !== null && _this$model$ui !== void 0 && _this$model$ui.get('chat-content-spinner-top') ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__["default"])() : ''}
+            ${this.model.ui?.get('chat-content-spinner-top') ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__["default"])() : ''}
         `;
   }
   scrollDown() {
@@ -47553,10 +47615,7 @@ class EmojiDropdown extends shared_components_dropdown_js__WEBPACK_IMPORTED_MODU
       await this.updateComplete;
     }
     super.showMenu();
-    setTimeout(() => {
-      var _this$querySelector;
-      return (_this$querySelector = this.querySelector('.emoji-search')) === null || _this$querySelector === void 0 ? void 0 : _this$querySelector.focus();
-    });
+    setTimeout(() => this.querySelector('.emoji-search')?.focus());
   }
 }
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-emoji-dropdown', EmojiDropdown);
@@ -47650,7 +47709,7 @@ class EmojiPickerContent extends shared_components_element_js__WEBPACK_IMPORTED_
     if (intersection_with_selected) {
       current = intersection_with_selected;
     } else {
-      current = entries.reduce((p, c) => c.intersectionRatio >= ((p === null || p === void 0 ? void 0 : p.intersectionRatio) || 0) ? c : p, null);
+      current = entries.reduce((p, c) => c.intersectionRatio >= (p?.intersectionRatio || 0) ? c : p, null);
     }
     if (current && current.isIntersecting) {
       const category = current.target.getAttribute('data-category');
@@ -47854,7 +47913,7 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
   }
   setCategoryForElement(el) {
     const old_category = this.current_category;
-    const category = (el === null || el === void 0 ? void 0 : el.getAttribute('data-category')) || old_category;
+    const category = el?.getAttribute('data-category') || old_category;
     if (old_category !== category) {
       this.model.save({
         'current_category': category
@@ -47974,13 +48033,11 @@ class EmojiPicker extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }
   }
   disableArrowNavigation() {
-    var _this$navigator;
-    (_this$navigator = this.navigator) === null || _this$navigator === void 0 ? void 0 : _this$navigator.disable();
+    this.navigator?.disable();
   }
   enableArrowNavigation(ev) {
-    var _ev$preventDefault, _ev$stopPropagation;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation = ev.stopPropagation) === null || _ev$stopPropagation === void 0 ? void 0 : _ev$stopPropagation.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     this.disableArrowNavigation();
     this.navigator.enable();
     this.navigator.handleKeydown(ev);
@@ -48140,18 +48197,17 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
         `;
   }
   async onMessageEditButtonClicked(ev) {
-    var _u$ancestor, _u$ancestor$querySele;
     ev.preventDefault();
     const currently_correcting = this.model.collection.findWhere('correcting');
     // TODO: Use state intead of DOM querying
     // Then this code can also be put on the model
-    const unsent_text = (_u$ancestor = u.ancestor(this, '.chatbox')) === null || _u$ancestor === void 0 ? void 0 : (_u$ancestor$querySele = _u$ancestor.querySelector('.chat-textarea')) === null || _u$ancestor$querySele === void 0 ? void 0 : _u$ancestor$querySele.value;
+    const unsent_text = u.ancestor(this, '.chatbox')?.querySelector('.chat-textarea')?.value;
     if (unsent_text && (!currently_correcting || currently_correcting.getMessageText() !== unsent_text)) {
       const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('You have an unsent message which will be lost if you continue. Are you sure?'));
       if (!result) return;
     }
     if (currently_correcting !== this.model) {
-      currently_correcting === null || currently_correcting === void 0 ? void 0 : currently_correcting.save('correcting', false);
+      currently_correcting?.save('correcting', false);
       this.model.save('correcting', true);
     } else {
       this.model.save('correcting', false);
@@ -48225,8 +48281,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     }
   }
   onMessageRetractButtonClicked(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     const chatbox = this.model.collection.chatbox;
     if (chatbox.get('type') === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.CHATROOMS_TYPE) {
       this.onMUCMessageRetractButtonClicked();
@@ -48235,8 +48290,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     }
   }
   onMediaToggleClicked(ev) {
-    var _ev$preventDefault2;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
+    ev?.preventDefault?.();
     if (this.hasHiddenMedia(this.getMediaURLs())) {
       this.model.save({
         'hide_url_previews': false,
@@ -48437,10 +48491,7 @@ class MessageBody extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }));
   }
   render() {
-    const callback = () => {
-      var _this$model$collectio;
-      return (_this$model$collectio = this.model.collection) === null || _this$model$collectio === void 0 ? void 0 : _this$model$collectio.trigger('rendered', this.model);
-    };
+    const callback = () => this.model.collection?.trigger('rendered', this.model);
     const offset = 0;
     const options = {
       'media_urls': this.model.get('media_urls'),
@@ -48713,7 +48764,7 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
     return (0,_templates_message_js__WEBPACK_IMPORTED_MODULE_11__["default"])(this, this.getProps());
   }
   shouldShowAvatar() {
-    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.settings.get('show_message_avatar') && !this.model.isMeCommand() && ['chat', 'groupchat'].includes(this.model.get('type'));
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.settings.get('show_message_avatar') && !this.model.isMeCommand() && ['chat', 'groupchat', 'normal'].includes(this.model.get('type'));
   }
   onUnfurlAnimationEnd() {
     if (this.model.get('url_preview_transition') === 'fade-out') {
@@ -48740,12 +48791,10 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
     return is_groupchat && this.model.get('sender') === 'them' && this.chatbox.isUserMentioned(this.model);
   }
   getOccupantAffiliation() {
-    var _this$model$occupant;
-    return (_this$model$occupant = this.model.occupant) === null || _this$model$occupant === void 0 ? void 0 : _this$model$occupant.get('affiliation');
+    return this.model.occupant?.get('affiliation');
   }
   getOccupantRole() {
-    var _this$model$occupant2;
-    return (_this$model$occupant2 = this.model.occupant) === null || _this$model$occupant2 === void 0 ? void 0 : _this$model$occupant2.get('role');
+    return this.model.occupant?.get('role');
   }
   getExtraMessageClasses() {
     const extra_classes = [this.model.isFollowup() ? 'chat-msg--followup' : null, this.model.get('is_delayed') ? 'delayed' : null, this.model.isMeCommand() ? 'chat-msg--action' : null, this.isRetracted() ? 'chat-msg--retracted' : null, this.model.get('type'), this.shouldShowAvatar() ? 'chat-msg--with-avatar' : null].map(c => c);
@@ -48815,7 +48864,7 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
     }, ev);
   }
   toggleSpoilerMessage(ev) {
-    ev === null || ev === void 0 ? void 0 : ev.preventDefault();
+    ev?.preventDefault();
     this.model.save({
       'is_spoiler_visible': !this.model.get('is_spoiler_visible')
     });
@@ -48959,7 +49008,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  var _el$model$vcard, _el$model$vcard2;
   const i18n_uploading = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Uploading file:');
   const filename = el.model.file.name;
   const size = filesize__WEBPACK_IMPORTED_MODULE_1___default()(el.model.file.size);
@@ -48967,8 +49015,8 @@ __webpack_require__.r(__webpack_exports__);
         <div class="message chat-msg">
             ${el.shouldShowAvatar() ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<a class="show-msg-author-modal" @click=${el.showUserModal}>
                     <converse-avatar class="avatar align-self-center"
-                        .data=${(_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.attributes}
-                        nonce=${(_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.get('vcard_updated')}
+                        .data=${el.model.vcard?.attributes}
+                        nonce=${el.model.vcard?.get('vcard_updated')}
                         height="40" width="40"></converse-avatar>
                 </a>` : ''}
             <div class="chat-msg__content">
@@ -49128,7 +49176,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, o) => {
-  var _el$model$vcard, _el$model$vcard2, _el$model$get;
   const i18n_new_messages = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('New messages');
   const is_followup = el.model.isFollowup();
   return lit__WEBPACK_IMPORTED_MODULE_3__.html`
@@ -49145,8 +49192,8 @@ __webpack_require__.r(__webpack_exports__);
             ${o.should_show_avatar && !is_followup ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<a class="show-msg-author-modal" @click=${el.showUserModal}>
                     <converse-avatar
                         class="avatar align-self-center"
-                        .data=${(_el$model$vcard = el.model.vcard) === null || _el$model$vcard === void 0 ? void 0 : _el$model$vcard.attributes}
-                        nonce=${(_el$model$vcard2 = el.model.vcard) === null || _el$model$vcard2 === void 0 ? void 0 : _el$model$vcard2.get('vcard_updated')}
+                        .data=${el.model.vcard?.attributes}
+                        nonce=${el.model.vcard?.get('vcard_updated')}
                         height="40" width="40"></converse-avatar>
                 </a>` : ''}
 
@@ -49171,8 +49218,7 @@ __webpack_require__.r(__webpack_exports__);
                         ?is_retracted=${o.is_retracted}></converse-message-actions>
                 </div>
 
-                ${(_el$model$get = el.model.get('ogp_metadata')) === null || _el$model$get === void 0 ? void 0 : _el$model$get.map(m => {
-    var _el$chatbox;
+                ${el.model.get('ogp_metadata')?.map(m => {
     if (el.model.get('hide_url_previews') === true) {
       return '';
     }
@@ -49182,7 +49228,7 @@ __webpack_require__.r(__webpack_exports__);
     return lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-message-unfurl
                         @animationend="${el.onUnfurlAnimationEnd}"
                         class="${el.model.get('url_preview_transition')}"
-                        jid="${(_el$chatbox = el.chatbox) === null || _el$chatbox === void 0 ? void 0 : _el$chatbox.get('jid')}"
+                        jid="${el.chatbox?.get('jid')}"
                         description="${m['og:description'] || ''}"
                         title="${m['og:title'] || ''}"
                         image="${m['og:image'] || ''}"
@@ -49397,7 +49443,6 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.trigger('renderToolbar', this);
   }
   getButtons() {
-    var _api$settings$get;
     const buttons = [];
     if (this.show_emoji_button) {
       const chatview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxviews.get(this.model.get('jid'));
@@ -49422,7 +49467,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }
     const http_upload_promise = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.disco.supports(Strophe.NS.HTTPUPLOAD, _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.domain);
     buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_7__.until)(http_upload_promise.then(is_supported => this.getHTTPUploadButton(is_supported)), '')}`);
-    if (this.is_groupchat && (_api$settings$get = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('visible_toolbar_buttons')) !== null && _api$settings$get !== void 0 && _api$settings$get.toggle_occupants) {
+    if (this.is_groupchat && _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('visible_toolbar_buttons')?.toggle_occupants) {
       const i18n_hide_occupants = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Hide participants');
       const i18n_show_occupants = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Show participants');
       buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`
@@ -49466,9 +49511,8 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }
   }
   getSpoilerButton() {
-    var _model$presence;
     const model = this.model;
-    if (!this.is_groupchat && !((_model$presence = model.presence) !== null && _model$presence !== void 0 && _model$presence.resources.length)) {
+    if (!this.is_groupchat && !model.presence?.resources.length) {
       return;
     }
     let i18n_toggle_spoiler;
@@ -49496,32 +49540,28 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }
   }
   toggleFileUpload(ev) {
-    var _ev$preventDefault, _ev$stopPropagation;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation = ev.stopPropagation) === null || _ev$stopPropagation === void 0 ? void 0 : _ev$stopPropagation.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     this.querySelector('.fileupload').click();
   }
   onFileSelection(evt) {
     this.model.sendFiles(evt.target.files);
   }
   toggleComposeSpoilerMessage(ev) {
-    var _ev$preventDefault2, _ev$stopPropagation2;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault2 = ev.preventDefault) === null || _ev$preventDefault2 === void 0 ? void 0 : _ev$preventDefault2.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation2 = ev.stopPropagation) === null || _ev$stopPropagation2 === void 0 ? void 0 : _ev$stopPropagation2.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     this.model.set('composing_spoiler', !this.model.get('composing_spoiler'));
   }
   toggleOccupants(ev) {
-    var _ev$preventDefault3, _ev$stopPropagation3;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault3 = ev.preventDefault) === null || _ev$preventDefault3 === void 0 ? void 0 : _ev$preventDefault3.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation3 = ev.stopPropagation) === null || _ev$stopPropagation3 === void 0 ? void 0 : _ev$stopPropagation3.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     this.model.save({
       'hidden_occupants': !this.model.get('hidden_occupants')
     });
   }
   toggleCall(ev) {
-    var _ev$preventDefault4, _ev$stopPropagation4;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault4 = ev.preventDefault) === null || _ev$preventDefault4 === void 0 ? void 0 : _ev$preventDefault4.call(ev);
-    ev === null || ev === void 0 ? void 0 : (_ev$stopPropagation4 = ev.stopPropagation) === null || _ev$stopPropagation4 === void 0 ? void 0 : _ev$stopPropagation4.call(ev);
+    ev?.preventDefault?.();
+    ev?.stopPropagation?.();
     /**
      * When a call button (i.e. with class .toggle-call) on a chatbox has been clicked.
      * @event _converse#callButtonClicked
@@ -49736,8 +49776,7 @@ const markScrolled = lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default()(ev =
  * @param { _converse.Message }
  */
 function getDayIndicator(message) {
-  var _message$collection;
-  const messages = (_message$collection = message.collection) === null || _message$collection === void 0 ? void 0 : _message$collection.models;
+  const messages = message.collection?.models;
   if (!messages) {
     return;
   }
@@ -49754,7 +49793,6 @@ function getDayIndicator(message) {
 }
 function getHats(message) {
   if (message.get('type') === 'groupchat') {
-    var _message$occupant;
     const allowed_hats = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_hats').filter(hat => hat).map(hat => hat.toLowerCase());
     let vcard_roles = [];
     if (allowed_hats.includes('vcard_roles')) {
@@ -49768,7 +49806,7 @@ function getHats(message) {
     const affiliation_role_hats = [...muc_role, ...muc_affiliation].filter(hat => hat).filter(hat => allowed_hats.includes(hat.toLowerCase())).map(hat => ({
       title: hat
     }));
-    const hats = allowed_hats.includes('xep317') ? ((_message$occupant = message.occupant) === null || _message$occupant === void 0 ? void 0 : _message$occupant.get('hats')) || [] : [];
+    const hats = allowed_hats.includes('xep317') ? message.occupant?.get('hats') || [] : [];
     return [...hats, ...vcard_roles, ...affiliation_role_hats];
   }
   return [];
@@ -50077,9 +50115,8 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
     super.disconnectedCallback();
   }
   hideMenu() {
-    var _this$navigator;
     super.hideMenu();
-    (_this$navigator = this.navigator) === null || _this$navigator === void 0 ? void 0 : _this$navigator.disable();
+    this.navigator?.disable();
   }
   initArrowNavigation() {
     if (!this.navigator) {
@@ -50147,10 +50184,9 @@ class DropdownBase extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElemen
     }
   }
   hideMenu() {
-    var _this$button, _this$button2;
     u.removeClass('show', this.menu);
-    (_this$button = this.button) === null || _this$button === void 0 ? void 0 : _this$button.setAttribute('aria-expanded', false);
-    (_this$button2 = this.button) === null || _this$button2 === void 0 ? void 0 : _this$button2.blur();
+    this.button?.setAttribute('aria-expanded', false);
+    this.button?.blur();
   }
   showMenu() {
     u.addClass('show', this.menu);
@@ -50198,9 +50234,8 @@ class CustomElement extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
     return this;
   }
   connectedCallback() {
-    var _this$initialize;
     super.connectedCallback();
-    (_this$initialize = this.initialize) === null || _this$initialize === void 0 ? void 0 : _this$initialize.call(this);
+    this.initialize?.();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -50322,8 +50357,7 @@ class ConverseGIFElement extends shared_components_element_js__WEBPACK_IMPORTED_
     }
   }
   render() {
-    var _this$supergif;
-    return (_this$supergif = this.supergif) !== null && _this$supergif !== void 0 && _this$supergif.load_error && ['url', 'empty'].includes(this.fallback) ? this.renderErrorFallback() : lit__WEBPACK_IMPORTED_MODULE_4__.html`<canvas class="gif-canvas"
+    return this.supergif?.load_error && ['url', 'empty'].includes(this.fallback) ? this.renderErrorFallback() : lit__WEBPACK_IMPORTED_MODULE_4__.html`<canvas class="gif-canvas"
                 @mouseover=${() => this.setHover()}
                 @mouseleave=${() => this.unsetHover()}
                 @click=${ev => this.onControlsClicked(ev)}><img class="gif" src="${this.src}"></a></canvas>`;
@@ -50406,8 +50440,7 @@ class ConverseIcon extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElemen
     return `#icon-${this.class_name.trim().split(" ")[1].replace("fa-", "")}`;
   }
   getStyles() {
-    var _this$color$match;
-    const cssprop = (_this$color$match = this.color.match(/var\((--.*)\)/)) === null || _this$color$match === void 0 ? void 0 : _this$color$match[1];
+    const cssprop = this.color.match(/var\((--.*)\)/)?.[1];
     const color = cssprop ? getComputedStyle(this).getPropertyValue(cssprop) : this.color;
     return `
             ${this.size ? `width: ${this.size};` : ''}
@@ -50838,7 +50871,7 @@ class RichTextDirective extends lit_directive_js__WEBPACK_IMPORTED_MODULE_1__.Di
     // eslint-disable-line class-methods-use-this
     const renderer = new RichTextRenderer(text, offset, options);
     const result = renderer.render();
-    callback === null || callback === void 0 ? void 0 : callback();
+    callback?.();
     return result;
   }
 }
@@ -51398,8 +51431,7 @@ class ConverseGif {
     this.frame_idx = 0;
     this.putFrame(this.frame_idx);
     if (this.options.autoplay) {
-      var _this$frames$this$fra;
-      const delay = (((_this$frames$this$fra = this.frames[this.frame_idx]) === null || _this$frames$this$fra === void 0 ? void 0 : _this$frames$this$fra.delay) ?? 0) * DELAY_FACTOR;
+      const delay = (this.frames[this.frame_idx]?.delay ?? 0) * DELAY_FACTOR;
       setTimeout(() => this.play(), delay);
     }
   }
@@ -51420,9 +51452,8 @@ class ConverseGif {
    * @returns { Boolean } - Returns `true` if the GIF is now paused (i.e. further iterations are not desired)
    */
   onIterationEnd() {
-    var _this$options$onItera, _this$options;
     this.iteration_count++;
-    (_this$options$onItera = (_this$options = this.options).onIterationEnd) === null || _this$options$onItera === void 0 ? void 0 : _this$options$onItera.call(_this$options, this);
+    this.options.onIterationEnd?.(this);
     if (!this.options.loop) {
       this.pause();
       return true;
@@ -51455,7 +51486,6 @@ class ConverseGif {
    * before the currently being shown frame should be replaced by a new one.
    */
   onAnimationFrame(timestamp, previous_timestamp, frame_delay) {
-    var _this$frames$this$fra2;
     if (!this.playing) {
       return;
     }
@@ -51471,7 +51501,7 @@ class ConverseGif {
     }
     this.frame_idx = next_frame;
     this.putFrame(this.frame_idx);
-    const delay = (((_this$frames$this$fra2 = this.frames[this.frame_idx]) === null || _this$frames$this$fra2 === void 0 ? void 0 : _this$frames$this$fra2.delay) || 8) * DELAY_FACTOR;
+    const delay = (this.frames[this.frame_idx]?.delay || 8) * DELAY_FACTOR;
     requestAnimationFrame(ts => this.onAnimationFrame(ts, timestamp, delay));
   }
   setSizes(w, h) {
@@ -51787,7 +51817,7 @@ class ConverseGif {
    */
   withProgress(stream, fn, draw) {
     return block => {
-      fn === null || fn === void 0 ? void 0 : fn(block);
+      fn?.(block);
       this.doDecodeProgress(stream, draw);
     };
   }
@@ -51810,7 +51840,7 @@ class ConverseGif {
     const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_1__.getOpenPromise)();
     const h = new XMLHttpRequest();
     h.open('GET', url, true);
-    h === null || h === void 0 ? void 0 : h.overrideMimeType('text/plain; charset=x-user-defined');
+    h?.overrideMimeType('text/plain; charset=x-user-defined');
     h.onload = () => {
       if (h.status != 200) {
         this.showError('xhr - response');
@@ -52037,7 +52067,7 @@ function parseImg(st, img, callback) {
     // Move
     img.pixels = deinterlace(img.pixels, img.width);
   }
-  callback === null || callback === void 0 ? void 0 : callback(img);
+  callback?.(img);
 }
 
 /**
@@ -52064,7 +52094,7 @@ function parseHeader(st, callback) {
   if (hdr.gctFlag) {
     hdr.gct = parseCT(st, 1 << hdr.gctSize + 1);
   }
-  callback === null || callback === void 0 ? void 0 : callback(hdr);
+  callback?.(hdr);
 }
 function parseExt(st, block, handler) {
   function parseGCExt(block) {
@@ -52077,7 +52107,7 @@ function parseExt(st, block, handler) {
     block.delayTime = st.readUnsigned();
     block.transparencyIndex = st.readByte();
     block.terminator = st.readByte();
-    handler === null || handler === void 0 ? void 0 : handler.gce(block);
+    handler?.gce(block);
   }
   function parseComExt(block) {
     block.comment = readSubBlocks(st);
@@ -52159,11 +52189,11 @@ function parseBlock(st, handler) {
       break;
     case ',':
       block.type = 'img';
-      parseImg(st, block, handler === null || handler === void 0 ? void 0 : handler.img);
+      parseImg(st, block, handler?.img);
       break;
     case ';':
       block.type = 'eof';
-      handler === null || handler === void 0 ? void 0 : handler.eof(block);
+      handler?.eof(block);
       break;
     default:
       throw new Error('Unknown block: 0x' + block.sentinel.toString(16));
@@ -52181,7 +52211,7 @@ function parseBlock(st, handler) {
  */
 function parseGIF(st) {
   let handler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  parseHeader(st, handler === null || handler === void 0 ? void 0 : handler.hdr);
+  parseHeader(st, handler?.hdr);
   setTimeout(() => parseBlock(st, handler), 0);
 }
 
@@ -52331,8 +52361,7 @@ const tpl_footer = el => {
     `;
 };
 const tpl_user_details_modal = el => {
-  var _el$model;
-  const vcard = (_el$model = el.model) === null || _el$model === void 0 ? void 0 : _el$model.vcard;
+  const vcard = el.model?.vcard;
   const vcard_json = vcard ? vcard.toJSON() : {};
   const o = {
     ...el.model.toJSON(),
@@ -52440,8 +52469,7 @@ class UserDetailsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0
     u.removeClass('fa-spin', refresh_icon);
   }
   async removeContact(ev) {
-    var _ev$preventDefault;
-    ev === null || ev === void 0 ? void 0 : (_ev$preventDefault = ev.preventDefault) === null || _ev$preventDefault === void 0 ? void 0 : _ev$preventDefault.call(ev);
+    ev?.preventDefault?.();
     if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('allow_contact_removal')) {
       return;
     }
@@ -52585,20 +52613,20 @@ class RichText extends String {
     let offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     super(text);
-    this.embed_audio = options === null || options === void 0 ? void 0 : options.embed_audio;
-    this.embed_videos = options === null || options === void 0 ? void 0 : options.embed_videos;
-    this.mentions = (options === null || options === void 0 ? void 0 : options.mentions) || [];
-    this.media_urls = options === null || options === void 0 ? void 0 : options.media_urls;
-    this.nick = options === null || options === void 0 ? void 0 : options.nick;
+    this.embed_audio = options?.embed_audio;
+    this.embed_videos = options?.embed_videos;
+    this.mentions = options?.mentions || [];
+    this.media_urls = options?.media_urls;
+    this.nick = options?.nick;
     this.offset = offset;
-    this.onImgClick = options === null || options === void 0 ? void 0 : options.onImgClick;
-    this.onImgLoad = options === null || options === void 0 ? void 0 : options.onImgLoad;
+    this.onImgClick = options?.onImgClick;
+    this.onImgLoad = options?.onImgLoad;
     this.options = options;
     this.payload = [];
     this.references = [];
-    this.render_styling = options === null || options === void 0 ? void 0 : options.render_styling;
-    this.show_images = options === null || options === void 0 ? void 0 : options.show_images;
-    this.hide_media_urls = options === null || options === void 0 ? void 0 : options.hide_media_urls;
+    this.render_styling = options?.render_styling;
+    this.show_images = options?.show_images;
+    this.hide_media_urls = options?.hide_media_urls;
   }
   shouldRenderMedia(url_text, type) {
     let override;
@@ -52689,9 +52717,8 @@ class RichText extends String {
    *  offset from the start of the original message stanza's body text).
    */
   addMentions(text, local_offset) {
-    var _this$mentions;
     const full_offset = local_offset + this.offset;
-    (_this$mentions = this.mentions) === null || _this$mentions === void 0 ? void 0 : _this$mentions.forEach(ref => {
+    this.mentions?.forEach(ref => {
       const begin = Number(ref.begin) - full_offset;
       if (begin < 0 || begin >= full_offset + text.length) {
         return;
@@ -52716,7 +52743,7 @@ class RichText extends String {
    * Look for XEP-0393 styling directives and add templates for rendering them.
    */
   addStyling() {
-    if (!(0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.containsDirectives)(this, this.mentions)) {
+    if (!(0,_styling_js__WEBPACK_IMPORTED_MODULE_5__.containsDirectives)(this)) {
       return;
     }
     const references = [];
@@ -53545,16 +53572,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 const tpl_option = o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<option value="${o.value}" ?selected="${o.selected}">${o.label}</option>`;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  var _o$options;
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
     <div class="form-group">
         <label for="${o.id}">${o.label}</label>
         <select class="form-control" id="${o.id}" name="${o.name}" ?multiple="${o.multiple}">
-            ${(_o$options = o.options) === null || _o$options === void 0 ? void 0 : _o$options.map(o => tpl_option(o))}
+            ${o.options?.map(o => tpl_option(o))}
         </select>
-    </div>`;
-});
+    </div>`);
 
 /***/ }),
 
@@ -53715,9 +53739,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  var _o$classes;
   let o = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  if ((_o$classes = o.classes) !== null && _o$classes !== void 0 && _o$classes.includes('hor_centered')) {
+  if (o.classes?.includes('hor_centered')) {
     return lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="spinner__container"><converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon></div>`;
   } else {
     return lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon>`;
@@ -53901,7 +53924,7 @@ const APPROVED_URL_PROTOCOLS = ['http', 'https', 'xmpp', 'mailto'];
 function getAutoCompleteProperty(name, options) {
   return {
     'muc#roomconfig_lang': 'language',
-    'muc#roomconfig_roomsecret': options !== null && options !== void 0 && options.new_password ? 'new-password' : 'current-password'
+    'muc#roomconfig_roomsecret': options?.new_password ? 'new-password' : 'current-password'
   }[name];
 }
 const XFORM_TYPE_MAP = {
@@ -54288,10 +54311,9 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].fadeIn = function 
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].xForm2TemplateResult = function (field, stanza) {
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   if (field.getAttribute('type') === 'list-single' || field.getAttribute('type') === 'list-multi') {
-    const values = _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].queryChildren(field, 'value').map(el => el === null || el === void 0 ? void 0 : el.textContent);
+    const values = _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].queryChildren(field, 'value').map(el => el?.textContent);
     const options = _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].queryChildren(field, 'option').map(option => {
-      var _option$querySelector;
-      const value = (_option$querySelector = option.querySelector('value')) === null || _option$querySelector === void 0 ? void 0 : _option$querySelector.textContent;
+      const value = option.querySelector('value')?.textContent;
       return {
         'value': value,
         'label': option.getAttribute('label'),
@@ -54308,22 +54330,19 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].xForm2TemplateResu
       'required': !!field.querySelector('required')
     });
   } else if (field.getAttribute('type') === 'fixed') {
-    var _field$querySelector;
-    const text = (_field$querySelector = field.querySelector('value')) === null || _field$querySelector === void 0 ? void 0 : _field$querySelector.textContent;
+    const text = field.querySelector('value')?.textContent;
     return (0,_templates_form_help_js__WEBPACK_IMPORTED_MODULE_5__["default"])({
       text
     });
   } else if (field.getAttribute('type') === 'jid-multi') {
-    var _field$querySelector2;
     return (0,_templates_form_textarea_js__WEBPACK_IMPORTED_MODULE_8__["default"])({
       'name': field.getAttribute('var'),
       'label': field.getAttribute('label') || '',
-      'value': (_field$querySelector2 = field.querySelector('value')) === null || _field$querySelector2 === void 0 ? void 0 : _field$querySelector2.textContent,
+      'value': field.querySelector('value')?.textContent,
       'required': !!field.querySelector('required')
     });
   } else if (field.getAttribute('type') === 'boolean') {
-    var _field$querySelector3;
-    const value = (_field$querySelector3 = field.querySelector('value')) === null || _field$querySelector3 === void 0 ? void 0 : _field$querySelector3.textContent;
+    const value = field.querySelector('value')?.textContent;
     return (0,_templates_form_checkbox_js__WEBPACK_IMPORTED_MODULE_4__["default"])({
       'id': _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].getUniqueId(),
       'name': field.getAttribute('var'),
@@ -54331,28 +54350,25 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].xForm2TemplateResu
       'checked': (value === '1' || value === 'true') && 'checked="1"' || ''
     });
   } else if (field.getAttribute('var') === 'url') {
-    var _field$querySelector4;
     return (0,_templates_form_url_js__WEBPACK_IMPORTED_MODULE_9__["default"])({
       'label': field.getAttribute('label') || '',
-      'value': (_field$querySelector4 = field.querySelector('value')) === null || _field$querySelector4 === void 0 ? void 0 : _field$querySelector4.textContent
+      'value': field.querySelector('value')?.textContent
     });
   } else if (field.getAttribute('var') === 'username') {
-    var _field$querySelector5;
     return (0,_templates_form_username_js__WEBPACK_IMPORTED_MODULE_10__["default"])({
       'domain': ' @' + options.domain,
       'name': field.getAttribute('var'),
       'type': getInputType(field),
       'label': field.getAttribute('label') || '',
-      'value': (_field$querySelector5 = field.querySelector('value')) === null || _field$querySelector5 === void 0 ? void 0 : _field$querySelector5.textContent,
+      'value': field.querySelector('value')?.textContent,
       'required': !!field.querySelector('required')
     });
   } else if (field.getAttribute('var') === 'password') {
-    var _field$querySelector6;
     return (0,_templates_form_input_js__WEBPACK_IMPORTED_MODULE_6__["default"])({
       'name': field.getAttribute('var'),
       'type': 'password',
       'label': field.getAttribute('label') || '',
-      'value': (_field$querySelector6 = field.querySelector('value')) === null || _field$querySelector6 === void 0 ? void 0 : _field$querySelector6.textContent,
+      'value': field.querySelector('value')?.textContent,
       'required': !!field.querySelector('required')
     });
   } else if (field.getAttribute('var') === 'ocr') {
@@ -54362,23 +54378,22 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].xForm2TemplateResu
     return (0,_templates_form_captcha_js__WEBPACK_IMPORTED_MODULE_3__["default"])({
       'label': field.getAttribute('label'),
       'name': field.getAttribute('var'),
-      'data': el === null || el === void 0 ? void 0 : el.textContent,
+      'data': el?.textContent,
       'type': uri.getAttribute('type'),
       'required': !!field.querySelector('required')
     });
   } else {
-    var _field$querySelector7;
     const name = field.getAttribute('var');
     return (0,_templates_form_input_js__WEBPACK_IMPORTED_MODULE_6__["default"])({
       'id': _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].getUniqueId(),
       'label': field.getAttribute('label') || '',
       'name': name,
-      'fixed_username': options === null || options === void 0 ? void 0 : options.fixed_username,
+      'fixed_username': options?.fixed_username,
       'autocomplete': getAutoCompleteProperty(name, options),
       'placeholder': null,
       'required': !!field.querySelector('required'),
       'type': getInputType(field),
-      'value': (_field$querySelector7 = field.querySelector('value')) === null || _field$querySelector7 === void 0 ? void 0 : _field$querySelector7.textContent
+      'value': field.querySelector('value')?.textContent
     });
   }
 };
@@ -56870,68 +56885,55 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
   Author Tobias Koppers @sokra
 */
 module.exports = function (cssWithMappingToString) {
-  var list = []; // return the list of modules as css string
+  var list = [];
 
+  // return the list of modules as css string
   list.toString = function toString() {
     return this.map(function (item) {
       var content = "";
       var needLayer = typeof item[5] !== "undefined";
-
       if (item[4]) {
         content += "@supports (".concat(item[4], ") {");
       }
-
       if (item[2]) {
         content += "@media ".concat(item[2], " {");
       }
-
       if (needLayer) {
         content += "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {");
       }
-
       content += cssWithMappingToString(item);
-
       if (needLayer) {
         content += "}";
       }
-
       if (item[2]) {
         content += "}";
       }
-
       if (item[4]) {
         content += "}";
       }
-
       return content;
     }).join("");
-  }; // import a list of modules into the list
+  };
 
-
+  // import a list of modules into the list
   list.i = function i(modules, media, dedupe, supports, layer) {
     if (typeof modules === "string") {
       modules = [[null, modules, undefined]];
     }
-
     var alreadyImportedModules = {};
-
     if (dedupe) {
       for (var k = 0; k < this.length; k++) {
         var id = this[k][0];
-
         if (id != null) {
           alreadyImportedModules[id] = true;
         }
       }
     }
-
     for (var _k = 0; _k < modules.length; _k++) {
       var item = [].concat(modules[_k]);
-
       if (dedupe && alreadyImportedModules[item[0]]) {
         continue;
       }
-
       if (typeof layer !== "undefined") {
         if (typeof item[5] === "undefined") {
           item[5] = layer;
@@ -56940,7 +56942,6 @@ module.exports = function (cssWithMappingToString) {
           item[5] = layer;
         }
       }
-
       if (media) {
         if (!item[2]) {
           item[2] = media;
@@ -56949,7 +56950,6 @@ module.exports = function (cssWithMappingToString) {
           item[2] = media;
         }
       }
-
       if (supports) {
         if (!item[4]) {
           item[4] = "".concat(supports);
@@ -56958,11 +56958,9 @@ module.exports = function (cssWithMappingToString) {
           item[4] = supports;
         }
       }
-
       list.push(item);
     }
   };
-
   return list;
 };
 
@@ -56980,21 +56978,15 @@ module.exports = function (cssWithMappingToString) {
 module.exports = function (item) {
   var content = item[1];
   var cssMapping = item[3];
-
   if (!cssMapping) {
     return content;
   }
-
   if (typeof btoa === "function") {
     var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping))));
     var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
     var sourceMapping = "/*# ".concat(data, " */");
-    var sourceURLs = cssMapping.sources.map(function (source) {
-      return "/*# sourceURL=".concat(cssMapping.sourceRoot || "").concat(source, " */");
-    });
-    return [content].concat(sourceURLs).concat([sourceMapping]).join("\n");
+    return [content].concat([sourceMapping]).join("\n");
   }
-
   return [content].join("\n");
 };
 
@@ -57626,7 +57618,7 @@ module.exports = webpackAsyncContext;
   \***********************************************/
 /***/ (function(module) {
 
-/*! @license DOMPurify 2.4.0 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.0/LICENSE */
+/*! @license DOMPurify 2.4.1 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.1/LICENSE */
 
 (function (global, factory) {
    true ? module.exports = factory() :
@@ -57756,6 +57748,7 @@ module.exports = webpackAsyncContext;
   var arrayPop = unapply(Array.prototype.pop);
   var arrayPush = unapply(Array.prototype.push);
   var stringToLowerCase = unapply(String.prototype.toLowerCase);
+  var stringToString = unapply(String.prototype.toString);
   var stringMatch = unapply(String.prototype.match);
   var stringReplace = unapply(String.prototype.replace);
   var stringIndexOf = unapply(String.prototype.indexOf);
@@ -57882,6 +57875,7 @@ module.exports = webpackAsyncContext;
   var MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
 
   var ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
+  var TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
   var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
 
   var ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
@@ -57953,7 +57947,7 @@ module.exports = webpackAsyncContext;
      */
 
 
-    DOMPurify.version = '2.4.0';
+    DOMPurify.version = '2.4.1';
     /**
      * Array of elements that DOMPurify removed during sanitation.
      * Empty if nothing was removed.
@@ -58022,6 +58016,7 @@ module.exports = webpackAsyncContext;
     DOMPurify.isSupported = typeof getParentNode === 'function' && implementation && typeof implementation.createHTMLDocument !== 'undefined' && documentMode !== 9;
     var MUSTACHE_EXPR$1 = MUSTACHE_EXPR,
         ERB_EXPR$1 = ERB_EXPR,
+        TMPLIT_EXPR$1 = TMPLIT_EXPR,
         DATA_ATTR$1 = DATA_ATTR,
         ARIA_ATTR$1 = ARIA_ATTR,
         IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA,
@@ -58161,6 +58156,10 @@ module.exports = webpackAsyncContext;
 
     var NAMESPACE = HTML_NAMESPACE;
     var IS_EMPTY_INPUT = false;
+    /* Allowed XHTML+XML namespaces */
+
+    var ALLOWED_NAMESPACES = null;
+    var DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
     /* Parsing of strict XHTML documents */
 
     var PARSER_MEDIA_TYPE;
@@ -58204,13 +58203,12 @@ module.exports = webpackAsyncContext;
       PARSER_MEDIA_TYPE = // eslint-disable-next-line unicorn/prefer-includes
       SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? PARSER_MEDIA_TYPE = DEFAULT_PARSER_MEDIA_TYPE : PARSER_MEDIA_TYPE = cfg.PARSER_MEDIA_TYPE; // HTML tags and attributes are not case-sensitive, converting to lowercase. Keeping XHTML as is.
 
-      transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? function (x) {
-        return x;
-      } : stringToLowerCase;
+      transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? stringToString : stringToLowerCase;
       /* Set configuration parameters */
 
       ALLOWED_TAGS = 'ALLOWED_TAGS' in cfg ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
       ALLOWED_ATTR = 'ALLOWED_ATTR' in cfg ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
+      ALLOWED_NAMESPACES = 'ALLOWED_NAMESPACES' in cfg ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
       URI_SAFE_ATTRIBUTES = 'ADD_URI_SAFE_ATTR' in cfg ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), // eslint-disable-line indent
       cfg.ADD_URI_SAFE_ATTR, // eslint-disable-line indent
       transformCaseFunc // eslint-disable-line indent
@@ -58393,7 +58391,7 @@ module.exports = webpackAsyncContext;
 
       if (!parent || !parent.tagName) {
         parent = {
-          namespaceURI: HTML_NAMESPACE,
+          namespaceURI: NAMESPACE,
           tagName: 'template'
         };
       }
@@ -58401,13 +58399,17 @@ module.exports = webpackAsyncContext;
       var tagName = stringToLowerCase(element.tagName);
       var parentTagName = stringToLowerCase(parent.tagName);
 
+      if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
+        return false;
+      }
+
       if (element.namespaceURI === SVG_NAMESPACE) {
         // The only way to switch from HTML namespace to SVG
         // is via <svg>. If it happens via any other tag, then
         // it should be killed.
         if (parent.namespaceURI === HTML_NAMESPACE) {
           return tagName === 'svg';
-        } // The only way to switch from MathML to SVG is via
+        } // The only way to switch from MathML to SVG is via`
         // svg if parent is either <annotation-xml> or MathML
         // text integration points.
 
@@ -58455,9 +58457,15 @@ module.exports = webpackAsyncContext;
 
 
         return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+      } // For XHTML and XML documents that support custom namespaces
+
+
+      if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && ALLOWED_NAMESPACES[element.namespaceURI]) {
+        return true;
       } // The code should never reach this place (this means
       // that the element somehow got namespace that is not
-      // HTML, SVG or MathML). Return false just in case.
+      // HTML, SVG, MathML or allowed via ALLOWED_NAMESPACES).
+      // Return false just in case.
 
 
       return false;
@@ -58541,7 +58549,7 @@ module.exports = webpackAsyncContext;
         leadingWhitespace = matches && matches[0];
       }
 
-      if (PARSER_MEDIA_TYPE === 'application/xhtml+xml') {
+      if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && NAMESPACE === HTML_NAMESPACE) {
         // Root of XHTML doc must contain xmlns declaration (see https://www.w3.org/TR/xhtml1/normative.html#strict)
         dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
       }
@@ -58604,7 +58612,7 @@ module.exports = webpackAsyncContext;
 
 
     var _isClobbered = function _isClobbered(elm) {
-      return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function');
+      return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function' || typeof elm.hasChildNodes !== 'function');
     };
     /**
      * _isNode
@@ -58746,6 +58754,7 @@ module.exports = webpackAsyncContext;
         content = currentNode.textContent;
         content = stringReplace(content, MUSTACHE_EXPR$1, ' ');
         content = stringReplace(content, ERB_EXPR$1, ' ');
+        content = stringReplace(content, TMPLIT_EXPR$1, ' ');
 
         if (currentNode.textContent !== content) {
           arrayPush(DOMPurify.removed, {
@@ -58894,6 +58903,7 @@ module.exports = webpackAsyncContext;
         if (SAFE_FOR_TEMPLATES) {
           value = stringReplace(value, MUSTACHE_EXPR$1, ' ');
           value = stringReplace(value, ERB_EXPR$1, ' ');
+          value = stringReplace(value, TMPLIT_EXPR$1, ' ');
         }
         /* Is `value` valid for this attribute? */
 
@@ -59189,6 +59199,7 @@ module.exports = webpackAsyncContext;
       if (SAFE_FOR_TEMPLATES) {
         serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR$1, ' ');
         serializedHTML = stringReplace(serializedHTML, ERB_EXPR$1, ' ');
+        serializedHTML = stringReplace(serializedHTML, TMPLIT_EXPR$1, ' ');
       }
 
       return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
@@ -66417,14 +66428,14 @@ module.exports = toNumber;
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * Sizzle CSS Selector Engine v2.3.7
+ * Sizzle CSS Selector Engine v2.3.9
  * https://sizzlejs.com/
  *
  * Copyright JS Foundation and other contributors
  * Released under the MIT license
  * https://js.foundation/
  *
- * Date: 2022-10-03
+ * Date: 2022-12-19
  */
 ( function( window ) {
 var i,
@@ -66785,7 +66796,7 @@ function Sizzle( selector, context, results, seed ) {
 					if ( support.cssSupportsSelector &&
 
 						// eslint-disable-next-line no-undef
-						!CSS.supports( "selector(" + newSelector + ")" ) ) {
+						!CSS.supports( "selector(:is(" + newSelector + "))" ) ) {
 
 						// Support: IE 11+
 						// Throw to get to the same code path as an error directly in qSA.
@@ -67387,9 +67398,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 		// `:has()` uses a forgiving selector list as an argument so our regular
 		// `try-catch` mechanism fails to catch `:has()` with arguments not supported
 		// natively like `:has(:contains("Foo"))`. Where supported & spec-compliant,
-		// we now use `CSS.supports("selector(SELECTOR_TO_BE_TESTED)")` but outside
-		// that, let's mark `:has` as buggy to always use jQuery traversal for
-		// `:has()`.
+		// we now use `CSS.supports("selector(:is(SELECTOR_TO_BE_TESTED))")`, but
+		// outside that we mark `:has` as buggy.
 		rbuggyQSA.push( ":has" );
 	}
 
@@ -67405,7 +67415,14 @@ setDocument = Sizzle.setDocument = function( node ) {
 	// As in, an element does not contain itself
 	contains = hasCompare || rnative.test( docElem.contains ) ?
 		function( a, b ) {
-			var adown = a.nodeType === 9 ? a.documentElement : a,
+
+			// Support: IE <9 only
+			// IE doesn't have `contains` on `document` so we need to check for
+			// `documentElement` presence.
+			// We need to fall back to `a` when `documentElement` is missing
+			// as `ownerDocument` of elements within `<template/>` may have
+			// a null one - a default behavior of all modern browsers.
+			var adown = a.nodeType === 9 && a.documentElement || a,
 				bup = b && b.parentNode;
 			return a === bup || !!( bup && bup.nodeType === 1 && (
 				adown.contains ?
@@ -71612,6 +71629,10 @@ var map = {
 		"./src/i18n/tr/LC_MESSAGES/converse.po",
 		"locales/tr-LC_MESSAGES-converse-po"
 	],
+	"./ug/LC_MESSAGES/converse.po": [
+		"./src/i18n/ug/LC_MESSAGES/converse.po",
+		"locales/ug-LC_MESSAGES-converse-po"
+	],
 	"./uk/LC_MESSAGES/converse.po": [
 		"./src/i18n/uk/LC_MESSAGES/converse.po",
 		"locales/uk-LC_MESSAGES-converse-po"
@@ -71693,9 +71714,11 @@ module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exp
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
   \***************************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+var toPropertyKey = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/toPropertyKey.js");
 function _defineProperty(obj, key, value) {
+  key = toPropertyKey(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -71870,14 +71893,9 @@ function _regeneratorRuntime() {
     };
   }
   function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (undefined === method) {
-      if (context.delegate = null, "throw" === context.method) {
-        if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel;
-        context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method");
-      }
-      return ContinueSentinel;
-    }
+    var methodName = context.method,
+      method = delegate.iterator[methodName];
+    if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel;
     var record = tryCatch(method, delegate.iterator, context.arg);
     if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
     var info = record.arg;
@@ -71906,9 +71924,7 @@ function _regeneratorRuntime() {
       if (!isNaN(iterable.length)) {
         var i = -1,
           next = function next() {
-            for (; ++i < iterable.length;) {
-              if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-            }
+            for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
             return next.value = undefined, next.done = !0, next;
           };
         return next.next = next;
@@ -71954,9 +71970,7 @@ function _regeneratorRuntime() {
   }), exports.keys = function (val) {
     var object = Object(val),
       keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
+    for (var key in object) keys.push(key);
     return keys.reverse(), function next() {
       for (; keys.length;) {
         var key = keys.pop();
@@ -71967,9 +71981,7 @@ function _regeneratorRuntime() {
   }, exports.values = values, Context.prototype = {
     constructor: Context,
     reset: function reset(skipTempReset) {
-      if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) {
-        "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-      }
+      if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
     },
     stop: function stop() {
       this.done = !0;
@@ -72048,6 +72060,43 @@ function _regeneratorRuntime() {
   }, exports;
 }
 module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/toPrimitive.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/toPrimitive.js ***!
+  \************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+function _toPrimitive(input, hint) {
+  if (_typeof(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (_typeof(res) !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+module.exports = _toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/toPropertyKey.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/toPropertyKey.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+var toPrimitive = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/toPrimitive.js");
+function _toPropertyKey(arg) {
+  var key = toPrimitive(arg, "string");
+  return _typeof(key) === "symbol" ? key : String(key);
+}
+module.exports = _toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -72486,8 +72535,8 @@ class ReactiveElement extends HTMLElement {
      */
     static addInitializer(initializer) {
         var _a;
-        (_a = this._initializers) !== null && _a !== void 0 ? _a : (this._initializers = []);
-        this._initializers.push(initializer);
+        this.finalize();
+        ((_a = this._initializers) !== null && _a !== void 0 ? _a : (this._initializers = [])).push(initializer);
     }
     /**
      * Returns a list of attributes corresponding to the registered properties.
@@ -72640,6 +72689,12 @@ class ReactiveElement extends HTMLElement {
         // finalize any superclasses
         const superCtor = Object.getPrototypeOf(this);
         superCtor.finalize();
+        // Create own set of initializers for this class if any exist on the
+        // superclass and copy them down. Note, for a small perf boost, avoid
+        // creating initializers unless needed.
+        if (superCtor._initializers !== undefined) {
+            this._initializers = [...superCtor._initializers];
+        }
         this.elementProperties = new Map(superCtor.elementProperties);
         // initialize Map populated in observedAttributes
         this.__attributeToPropertyMap = new Map();
@@ -73301,7 +73356,7 @@ if (DEV_MODE) {
 }
 // IMPORTANT: do not change the property name or the assignment expression.
 // This line will be used in regexes to search for ReactiveElement usage.
-((_d = global.reactiveElementVersions) !== null && _d !== void 0 ? _d : (global.reactiveElementVersions = [])).push('1.4.1');
+((_d = global.reactiveElementVersions) !== null && _d !== void 0 ? _d : (global.reactiveElementVersions = [])).push('1.5.0');
 if (DEV_MODE && global.reactiveElementVersions.length > 1) {
     issueWarning('multiple-versions', `Multiple versions of Lit loaded. Loading multiple versions ` +
         `is not recommended.`);
@@ -75939,7 +75994,7 @@ const polyfillSupport = DEV_MODE ? global.litHtmlPolyfillSupportDevMode : global
 polyfillSupport === null || polyfillSupport === void 0 ? void 0 : polyfillSupport(Template, ChildPart);
 // IMPORTANT: do not change the property name or the assignment expression.
 // This line will be used in regexes to search for lit-html usage.
-((_d = global.litHtmlVersions) !== null && _d !== void 0 ? _d : global.litHtmlVersions = []).push('2.4.0');
+((_d = global.litHtmlVersions) !== null && _d !== void 0 ? _d : global.litHtmlVersions = []).push('2.5.0');
 if (DEV_MODE && global.litHtmlVersions.length > 1) {
   issueWarning('multiple-versions', `Multiple versions of Lit loaded. ` + `Loading multiple versions is not recommended.`);
 }
@@ -88694,8 +88749,7 @@ function uniqueId(prefix) {
 /******/ 				script.parentNode && script.parentNode.removeChild(script);
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
-/******/ 			}
-/******/ 			;
+/******/ 			};
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);
