@@ -15493,39 +15493,19 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.initialize = funct
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "_converse": () => (/* reexport safe */ _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
-/* harmony export */   "api": () => (/* binding */ api),
-/* harmony export */   "converse": () => (/* binding */ converse),
+/* harmony export */   "api": () => (/* reexport safe */ _shared_api_index_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+/* harmony export */   "converse": () => (/* reexport safe */ _shared_api_public_js__WEBPACK_IMPORTED_MODULE_6__.converse),
 /* harmony export */   "i18n": () => (/* reexport safe */ _shared_i18n__WEBPACK_IMPORTED_MODULE_5__["default"])
 /* harmony export */ });
-/* harmony import */ var urijs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! urijs */ "./node_modules/urijs/src/URI.js");
-/* harmony import */ var urijs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(urijs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _shared_constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./shared/constants.js */ "./src/headless/shared/constants.js");
 /* harmony import */ var _shared_converse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shared/_converse */ "./src/headless/shared/_converse.js");
 /* harmony import */ var dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dayjs/plugin/advancedFormat */ "./node_modules/dayjs/plugin/advancedFormat.js");
 /* harmony import */ var dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _shared_connection_api_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared/connection/api.js */ "./src/headless/shared/connection/api.js");
+/* harmony import */ var _shared_api_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared/api/index.js */ "./src/headless/shared/api/index.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _shared_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./shared/i18n */ "./src/headless/shared/i18n.js");
-/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
-/* harmony import */ var lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lodash-es/isFunction */ "./node_modules/lodash-es/isFunction.js");
-/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./log.js */ "./src/headless/log.js");
-/* harmony import */ var pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! pluggable.js/src/pluggable.js */ "./node_modules/pluggable.js/src/pluggable.js");
-/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
-/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/core.js */ "./src/headless/utils/core.js");
-/* harmony import */ var _shared_constants_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./shared/constants.js */ "./src/headless/shared/constants.js");
-/* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
-/* harmony import */ var _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/skeletor/src/events.js */ "./node_modules/@converse/skeletor/src/events.js");
-/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
-/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
-/* harmony import */ var _shared_errors__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./shared/errors */ "./src/headless/shared/errors.js");
-/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var _shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./shared/settings/utils.js */ "./src/headless/shared/settings/utils.js");
-/* harmony import */ var _shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./shared/settings/api.js */ "./src/headless/shared/settings/api.js");
-/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! sprintf-js */ "./node_modules/sprintf-js/src/sprintf.js");
-/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(sprintf_js__WEBPACK_IMPORTED_MODULE_20__);
-/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./utils/init.js */ "./src/headless/utils/init.js");
+/* harmony import */ var _shared_api_public_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./shared/api/public.js */ "./src/headless/shared/api/public.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -15540,613 +15520,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 dayjs__WEBPACK_IMPORTED_MODULE_4___default().extend((dayjs_plugin_advancedFormat__WEBPACK_IMPORTED_MODULE_2___default()));
-
-// Add Strophe Namespaces
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('ACTIVITY', 'http://jabber.org/protocol/activity');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('CARBONS', 'urn:xmpp:carbons:2');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('CHATSTATES', 'http://jabber.org/protocol/chatstates');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('CSI', 'urn:xmpp:csi:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('DELAY', 'urn:xmpp:delay');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('EME', 'urn:xmpp:eme:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('FASTEN', 'urn:xmpp:fasten:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('FORWARD', 'urn:xmpp:forward:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('HINTS', 'urn:xmpp:hints');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('HTTPUPLOAD', 'urn:xmpp:http:upload:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MAM', 'urn:xmpp:mam:2');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MARKERS', 'urn:xmpp:chat-markers:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MENTIONS', 'urn:xmpp:mmn:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MESSAGE_CORRECT', 'urn:xmpp:message-correct:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('MODERATE', 'urn:xmpp:message-moderate:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('NICK', 'http://jabber.org/protocol/nick');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('OCCUPANTID', 'urn:xmpp:occupant-id:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('OMEMO', 'eu.siacs.conversations.axolotl');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('OUTOFBAND', 'jabber:x:oob');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('PUBSUB', 'http://jabber.org/protocol/pubsub');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RAI', 'urn:xmpp:rai:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RECEIPTS', 'urn:xmpp:receipts');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('REFERENCE', 'urn:xmpp:reference:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('REGISTER', 'jabber:iq:register');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RETRACT', 'urn:xmpp:message-retract:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('ROSTERX', 'http://jabber.org/protocol/rosterx');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('RSM', 'http://jabber.org/protocol/rsm');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('SID', 'urn:xmpp:sid:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('SPOILER', 'urn:xmpp:spoiler:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('STANZAS', 'urn:ietf:params:xml:ns:xmpp-stanzas');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('STYLING', 'urn:xmpp:styling:0');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARD', 'vcard-temp');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XFORM', 'jabber:x:data');
-strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
-_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].VERSION_NAME = "v10.1.2";
-Object.assign(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_12__.Events);
-
-// Make converse pluggable
-pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_7__["default"].enable(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], '_converse', 'pluggable');
-
-/**
- * ### The private API
- *
- * The private API methods are only accessible via the closured {@link _converse}
- * object, which is only available to plugins.
- *
- * These methods are kept private (i.e. not global) because they may return
- * sensitive data which should be kept off-limits to other 3rd-party scripts
- * that might be running in the page.
- *
- * @namespace _converse.api
- * @memberOf _converse
- */
-const api = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].api = {
-  connection: _shared_connection_api_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-  settings: _shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__.settings_api,
-  /**
-   * Lets you trigger events, which can be listened to via
-   * {@link _converse.api.listen.on} or {@link _converse.api.listen.once}
-   * (see [_converse.api.listen](http://localhost:8000/docs/html/api/-_converse.api.listen.html)).
-   *
-   * Some events also double as promises and can be waited on via {@link _converse.api.waitUntil}.
-   *
-   * @method _converse.api.trigger
-   * @param {string} name - The event name
-   * @param {...any} [argument] - Argument to be passed to the event handler
-   * @param {object} [options]
-   * @param {boolean} [options.synchronous] - Whether the event is synchronous or not.
-   *  When a synchronous event is fired, a promise will be returned
-   *  by {@link _converse.api.trigger} which resolves once all the
-   *  event handlers' promises have been resolved.
-   */
-  async trigger(name) {
-    if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events) {
-      return;
-    }
-    const args = Array.from(arguments);
-    const options = args.pop();
-    if (options && options.synchronous) {
-      const events = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events[name] || [];
-      const event_args = args.splice(1);
-      await Promise.all(events.map(e => e.callback.apply(e.ctx, event_args)));
-    } else {
-      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].trigger.apply(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"], arguments);
-    }
-    const promise = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name];
-    if (promise !== undefined) {
-      promise.resolve();
-    }
-  },
-  /**
-   * Triggers a hook which can be intercepted by registered listeners via
-   * {@link _converse.api.listen.on} or {@link _converse.api.listen.once}.
-   * (see [_converse.api.listen](http://localhost:8000/docs/html/api/-_converse.api.listen.html)).
-   * A hook is a special kind of event which allows you to intercept a data
-   * structure in order to modify it, before passing it back.
-   * @async
-   * @param {string} name - The hook name
-   * @param {...any} context - The context to which the hook applies (could be for example, a {@link _converse.ChatBox)).
-   * @param {...any} data - The data structure to be intercepted and modified by the hook listeners.
-   * @returns {Promise<any>} - A promise that resolves with the modified data structure.
-   */
-  hook(name, context, data) {
-    const events = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]._events[name] || [];
-    if (events.length) {
-      // Create a chain of promises, with each one feeding its output to
-      // the next. The first input is a promise with the original data
-      // sent to this hook.
-      return events.reduce((o, e) => o.then(d => e.callback(context, d)), Promise.resolve(data));
-    } else {
-      return data;
-    }
-  },
-  /**
-   * This grouping collects API functions related to the current logged in user.
-   *
-   * @namespace _converse.api.user
-   * @memberOf _converse.api
-   */
-  user: {
-    settings: _shared_settings_api_js__WEBPACK_IMPORTED_MODULE_19__.user_settings_api,
-    /**
-     * @method _converse.api.user.jid
-     * @returns {string} The current user's full JID (Jabber ID)
-     * @example _converse.api.user.jid())
-     */
-    jid() {
-      return _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.jid;
-    },
-    /**
-     * Logs the user in.
-     *
-     * If called without any parameters, Converse will try
-     * to log the user in by calling the `prebind_url` or `credentials_url` depending
-     * on whether prebinding is used or not.
-     *
-     * @method _converse.api.user.login
-     * @param {string} [jid]
-     * @param {string} [password]
-     * @param {boolean} [automatic=false] - An internally used flag that indicates whether
-     *  this method was called automatically once the connection has been
-     *  initialized. It's used together with the `auto_login` configuration flag
-     *  to determine whether Converse should try to log the user in if it
-     *  fails to restore a previous auth'd session.
-     *  @returns  {void}
-     */
-    async login(jid, password) {
-      let automatic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      jid = jid || api.settings.get('jid');
-      if (!_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection?.jid || jid && !_utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].isSameDomain(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.jid, jid)) {
-        (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initConnection)();
-      }
-      if (api.settings.get("connection_options")?.worker && (await _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.restoreWorkerSession())) {
-        return;
-      }
-      if (jid) {
-        jid = await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.setUserJID)(jid);
-      }
-
-      // See whether there is a BOSH session to re-attach to
-      const bosh_plugin = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins["converse-bosh"];
-      if (bosh_plugin?.enabled()) {
-        if (await _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].restoreBOSHSession()) {
-          return;
-        } else if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].PREBIND && (!automatic || api.settings.get("auto_login"))) {
-          return _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].startNewPreboundBOSHSession();
-        }
-      }
-      password = password || api.settings.get("password");
-      const credentials = jid && password ? {
-        jid,
-        password
-      } : null;
-      (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.attemptNonPreboundSession)(credentials, automatic);
-    },
-    /**
-     * Logs the user out of the current XMPP session.
-     * @method _converse.api.user.logout
-     * @example _converse.api.user.logout();
-     */
-    async logout() {
-      /**
-       * Triggered before the user is logged out
-       * @event _converse#beforeLogout
-       */
-      await api.trigger('beforeLogout', {
-        'synchronous': true
-      });
-      const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_16__.getOpenPromise)();
-      const complete = () => {
-        // Recreate all the promises
-        Object.keys(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises).forEach(_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.replacePromise);
-        delete _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].jid;
-
-        // Remove the session JID, otherwise the user would just be logged
-        // in again upon reload. See #2759
-        localStorage.removeItem('conversejs-session-jid');
-
-        /**
-         * Triggered once the user has logged out.
-         * @event _converse#logout
-         */
-        api.trigger('logout');
-        promise.resolve();
-      };
-      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.setDisconnectionCause(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].LOGOUT, undefined, true);
-      if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection !== undefined) {
-        api.listen.once('disconnected', () => complete());
-        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.disconnect();
-      } else {
-        complete();
-      }
-      return promise;
-    }
-  },
-  /**
-   * Converse and its plugins trigger various events which you can listen to via the
-   * {@link _converse.api.listen} namespace.
-   *
-   * Some of these events are also available as [ES2015 Promises](http://es6-features.org/#PromiseUsage)
-   * although not all of them could logically act as promises, since some events
-   * might be fired multpile times whereas promises are to be resolved (or
-   * rejected) only once.
-   *
-   * Events which are also promises include:
-   *
-   * * [cachedRoster](/docs/html/events.html#cachedroster)
-   * * [chatBoxesFetched](/docs/html/events.html#chatBoxesFetched)
-   * * [pluginsInitialized](/docs/html/events.html#pluginsInitialized)
-   * * [roster](/docs/html/events.html#roster)
-   * * [rosterContactsFetched](/docs/html/events.html#rosterContactsFetched)
-   * * [rosterGroupsFetched](/docs/html/events.html#rosterGroupsFetched)
-   * * [rosterInitialized](/docs/html/events.html#rosterInitialized)
-   *
-   * The various plugins might also provide promises, and they do this by using the
-   * `promises.add` api method.
-   *
-   * @namespace _converse.api.promises
-   * @memberOf _converse.api
-   */
-  promises: {
-    /**
-     * By calling `promises.add`, a new [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-     * is made available for other code or plugins to depend on via the
-     * {@link _converse.api.waitUntil} method.
-     *
-     * Generally, it's the responsibility of the plugin which adds the promise to
-     * also resolve it.
-     *
-     * This is done by calling {@link _converse.api.trigger}, which not only resolves the
-     * promise, but also emits an event with the same name (which can be listened to
-     * via {@link _converse.api.listen}).
-     *
-     * @method _converse.api.promises.add
-     * @param {string|array} [name|names] The name or an array of names for the promise(s) to be added
-     * @param {boolean} [replace=true] Whether this promise should be replaced with a new one when the user logs out.
-     * @example _converse.api.promises.add('foo-completed');
-     */
-    add(promises) {
-      let replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      promises = Array.isArray(promises) ? promises : [promises];
-      promises.forEach(name => {
-        const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_16__.getOpenPromise)();
-        promise.replace = replace;
-        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[name] = promise;
-      });
-    }
-  },
-  /**
-   * Converse emits events to which you can subscribe to.
-   *
-   * The `listen` namespace exposes methods for creating event listeners
-   * (aka handlers) for these events.
-   *
-   * @namespace _converse.api.listen
-   * @memberOf _converse
-   */
-  listen: {
-    /**
-     * Lets you listen to an event exactly once.
-     * @method _converse.api.listen.once
-     * @param {string} name The event's name
-     * @param {function} callback The callback method to be called when the event is emitted.
-     * @param {object} [context] The value of the `this` parameter for the callback.
-     * @example _converse.api.listen.once('message', function (messageXML) { ... });
-     */
-    once: _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].once.bind(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
-    /**
-     * Lets you subscribe to an event.
-     * Every time the event fires, the callback method specified by `callback` will be called.
-     * @method _converse.api.listen.on
-     * @param {string} name The event's name
-     * @param {function} callback The callback method to be called when the event is emitted.
-     * @param {object} [context] The value of the `this` parameter for the callback.
-     * @example _converse.api.listen.on('message', function (messageXML) { ... });
-     */
-    on: _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].on.bind(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
-    /**
-     * To stop listening to an event, you can use the `not` method.
-     * @method _converse.api.listen.not
-     * @param {string} name The event's name
-     * @param {function} callback The callback method that is to no longer be called when the event fires
-     * @example _converse.api.listen.not('message', function (messageXML);
-     */
-    not: _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].off.bind(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]),
-    /**
-     * Subscribe to an incoming stanza
-     * Every a matched stanza is received, the callback method specified by
-     * `callback` will be called.
-     * @method _converse.api.listen.stanza
-     * @param {string} name The stanza's name
-     * @param {object} options Matching options (e.g. 'ns' for namespace, 'type' for stanza type, also 'id' and 'from');
-     * @param {function} handler The callback method to be called when the stanza appears
-     */
-    stanza(name, options, handler) {
-      if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__["default"])(options)) {
-        handler = options;
-        options = {};
-      } else {
-        options = options || {};
-      }
-      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.addHandler(handler, options.ns, name, options.type, options.id, options.from, options);
-    }
-  },
-  /**
-   * Wait until a promise is resolved or until the passed in function returns
-   * a truthy value.
-   * @method _converse.api.waitUntil
-   * @param {string|function} condition - The name of the promise to wait for,
-   * or a function which should eventually return a truthy value.
-   * @returns {Promise}
-   */
-  waitUntil(condition) {
-    if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_22__["default"])(condition)) {
-      return _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].waitUntil(condition);
-    } else {
-      const promise = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].promises[condition];
-      if (promise === undefined) {
-        return null;
-      }
-      return promise;
-    }
-  },
-  /**
-   * Allows you to send XML stanzas.
-   * @method _converse.api.send
-   * @param {XMLElement} stanza
-   * @return {void}
-   * @example
-   * const msg = converse.env.$msg({
-   *     'from': 'juliet@example.com/balcony',
-   *     'to': 'romeo@example.net',
-   *     'type':'chat'
-   * });
-   * _converse.api.send(msg);
-   */
-  send(stanza) {
-    if (!api.connection.connected()) {
-      _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].warn("Not sending stanza because we're not connected!");
-      _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].warn(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.serialize(stanza));
-      return;
-    }
-    if (typeof stanza === 'string') {
-      stanza = _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].toStanza(stanza);
-    } else if (stanza?.tree) {
-      stanza = stanza.tree();
-    }
-    if (stanza.tagName === 'iq') {
-      return api.sendIQ(stanza);
-    } else {
-      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.send(stanza);
-      api.trigger('send', stanza);
-    }
-  },
-  /**
-   * Send an IQ stanza
-   * @method _converse.api.sendIQ
-   * @param {XMLElement} stanza
-   * @param {Integer} [timeout=_converse.STANZA_TIMEOUT]
-   * @param {Boolean} [reject=true] - Whether an error IQ should cause the promise
-   *  to be rejected. If `false`, the promise will resolve instead of being rejected.
-   * @returns {Promise} A promise which resolves (or potentially rejected) once we
-   *  receive a `result` or `error` stanza or once a timeout is reached.
-   *  If the IQ stanza being sent is of type `result` or `error`, there's
-   *  nothing to wait for, so an already resolved promise is returned.
-   */
-  sendIQ(stanza) {
-    let timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].STANZA_TIMEOUT;
-    let reject = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-    const {
-      connection
-    } = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
-    let promise;
-    stanza = stanza.tree?.() ?? stanza;
-    if (['get', 'set'].includes(stanza.getAttribute('type'))) {
-      timeout = timeout || _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].STANZA_TIMEOUT;
-      if (reject) {
-        promise = new Promise((resolve, reject) => connection.sendIQ(stanza, resolve, reject, timeout));
-        promise.catch(e => {
-          if (e === null) {
-            throw new _shared_errors__WEBPACK_IMPORTED_MODULE_15__.TimeoutError(`Timeout error after ${timeout}ms for the following IQ stanza: ${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.serialize(stanza)}`);
-          }
-        });
-      } else {
-        promise = new Promise(resolve => connection.sendIQ(stanza, resolve, resolve, timeout));
-      }
-    } else {
-      _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connection.sendIQ(stanza);
-      promise = Promise.resolve();
-    }
-    api.trigger('send', stanza);
-    return promise;
-  }
-};
-_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].shouldClearCache = () => !_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].config.get('trusted') || api.settings.get('clear_cache_on_logout') || _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv();
-_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ConnectionFeedback = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__.Model.extend({
-  defaults: {
-    'connection_status': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe.Status.DISCONNECTED,
-    'message': ''
-  },
-  initialize() {
-    this.on('change', () => api.trigger('connfeedback', _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connfeedback));
-  }
-});
-const converse = window.converse || {};
-
-/**
- * ### The Public API
- *
- * This namespace contains public API methods which are are
- * accessible on the global `converse` object.
- * They are public, because any JavaScript in the
- * page can call them. Public methods therefore don’t expose any sensitive
- * or closured data. To do that, you’ll need to create a plugin, which has
- * access to the private API method.
- *
- * @global
- * @namespace converse
- */
-Object.assign(converse, {
-  CHAT_STATES: _shared_constants_js__WEBPACK_IMPORTED_MODULE_10__.CHAT_STATES,
-  keycodes: _shared_constants_js__WEBPACK_IMPORTED_MODULE_10__.KEYCODES,
-  /**
-   * Public API method which initializes Converse.
-   * This method must always be called when using Converse.
-   * @async
-   * @memberOf converse
-   * @method initialize
-   * @param {object} config A map of [configuration-settings](https://conversejs.org/docs/html/configuration.html#configuration-settings).
-   * @example
-   * converse.initialize({
-   *     auto_list_rooms: false,
-   *     auto_subscribe: false,
-   *     bosh_service_url: 'https://bind.example.com',
-   *     hide_muc_server: false,
-   *     i18n: 'en',
-   *     play_sounds: true,
-   *     show_controlbox_by_default: true,
-   *     debug: false,
-   *     roster_groups: true
-   * });
-   */
-  async initialize(settings) {
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.cleanup)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_9__.setUnloadEvent)();
-    (0,_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_18__.initAppSettings)(settings);
-    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].strict_plugin_dependencies = settings.strict_plugin_dependencies; // Needed by pluggable.js
-    _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].setLogLevel(api.settings.get("loglevel"));
-    if (api.settings.get("authentication") === _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ANONYMOUS) {
-      if (api.settings.get("auto_login") && !api.settings.get('jid')) {
-        throw new Error("Config Error: you need to provide the server's " + "domain via the 'jid' option when using anonymous " + "authentication with auto_login.");
-      }
-    }
-    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].router.route(/^converse\?loglevel=(debug|info|warn|error|fatal)$/, 'loglevel', l => _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].setLogLevel(l));
-    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].connfeedback = new _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].ConnectionFeedback();
-
-    /* When reloading the page:
-     * For new sessions, we need to send out a presence stanza to notify
-     * the server/network that we're online.
-     * When re-attaching to an existing session we don't need to again send out a presence stanza,
-     * because it's as if "we never left" (see onConnectStatusChanged).
-     * https://github.com/conversejs/converse.js/issues/521
-     */
-    _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].send_initial_presence = true;
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initSessionStorage)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initClientConfig)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    await _shared_i18n__WEBPACK_IMPORTED_MODULE_5__["default"].initialize();
-    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.initPlugins)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-
-    // Register all custom elements
-    // XXX: api.elements is defined in the UI part of Converse, outside of @converse/headless.
-    // This line should probably be moved to the UI code as part of a larger refactoring.
-    api.elements?.register();
-    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_21__.registerGlobalEventHandlers)(_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    try {
-      !History.started && _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].router.history.start();
-    } catch (e) {
-      _log_js__WEBPACK_IMPORTED_MODULE_6__["default"].error(e);
-    }
-    const plugins = _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins;
-    if (api.settings.get("auto_login") || api.settings.get("keepalive") && (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_23__["default"])(plugins['converse-bosh'], 'enabled')) {
-      await api.user.login(null, null, true);
-    }
-
-    /**
-     * Triggered once converse.initialize has finished.
-     * @event _converse#initialized
-     */
-    api.trigger('initialized');
-    if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv()) {
-      return _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"];
-    }
-  },
-  /**
-   * Exposes methods for adding and removing plugins. You'll need to write a plugin
-   * if you want to have access to the private API methods defined further down below.
-   *
-   * For more information on plugins, read the documentation on [writing a plugin](/docs/html/plugin_development.html).
-   * @namespace plugins
-   * @memberOf converse
-   */
-  plugins: {
-    /**
-     * Registers a new plugin.
-     * @method converse.plugins.add
-     * @param {string} name The name of the plugin
-     * @param {object} plugin The plugin object
-     * @example
-     *  const plugin = {
-     *      initialize: function () {
-     *          // Gets called as soon as the plugin has been loaded.
-     *
-     *          // Inside this method, you have access to the private
-     *          // API via `_covnerse.api`.
-     *
-     *          // The private _converse object contains the core logic
-     *          // and data-structures of Converse.
-     *      }
-     *  }
-     *  converse.plugins.add('myplugin', plugin);
-     */
-    add(name, plugin) {
-      plugin.__name__ = name;
-      if (_shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins[name] !== undefined) {
-        throw new TypeError(`Error: plugin with name "${name}" has already been ` + 'registered!');
-      } else {
-        _shared_converse__WEBPACK_IMPORTED_MODULE_1__["default"].pluggable.plugins[name] = plugin;
-      }
-    }
-  },
-  /**
-   * Utility methods and globals from bundled 3rd party libraries.
-   * @typedef ConverseEnv
-   * @property {function} converse.env.$build    - Creates a Strophe.Builder, for creating stanza objects.
-   * @property {function} converse.env.$iq       - Creates a Strophe.Builder with an <iq/> element as the root.
-   * @property {function} converse.env.$msg      - Creates a Strophe.Builder with an <message/> element as the root.
-   * @property {function} converse.env.$pres     - Creates a Strophe.Builder with an <presence/> element as the root.
-   * @property {function} converse.env.Promise   - The Promise implementation used by Converse.
-   * @property {function} converse.env.Strophe   - The [Strophe](http://strophe.im/strophejs) XMPP library used by Converse.
-   * @property {function} converse.env.f         - And instance of Lodash with its methods wrapped to produce immutable auto-curried iteratee-first data-last methods.
-   * @property {function} converse.env.sizzle    - [Sizzle](https://sizzlejs.com) CSS selector engine.
-   * @property {function} converse.env.sprintf
-   * @property {object} converse.env._           - The instance of [lodash-es](http://lodash.com) used by Converse.
-   * @property {object} converse.env.dayjs       - [DayJS](https://github.com/iamkun/dayjs) date manipulation library.
-   * @property {object} converse.env.utils       - Module containing common utility methods used by Converse.
-   * @memberOf converse
-   */
-  'env': {
-    $build: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$build,
-    $iq: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$iq,
-    $msg: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$msg,
-    $pres: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.$pres,
-    'utils': _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"],
-    Collection: _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_11__.Collection,
-    Model: _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_13__.Model,
-    Promise,
-    Strophe: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_14__.Strophe,
-    URI: (urijs__WEBPACK_IMPORTED_MODULE_0___default()),
-    dayjs: (dayjs__WEBPACK_IMPORTED_MODULE_4___default()),
-    html: lit__WEBPACK_IMPORTED_MODULE_17__.html,
-    log: _log_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    sizzle: (sizzle__WEBPACK_IMPORTED_MODULE_8___default()),
-    sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_20__.sprintf,
-    stx: _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"].stx,
-    u: _utils_core_js__WEBPACK_IMPORTED_MODULE_9__["default"]
-  }
-});
 
 /***/ }),
 
@@ -16225,12 +15599,15 @@ const LEVELS = {
   'error': 3,
   'fatal': 4
 };
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 const logger = Object.assign({
   'debug': console?.log ? console.log.bind(console) : function noop() {},
   'error': console?.log ? console.log.bind(console) : function noop() {},
   'info': console?.log ? console.log.bind(console) : function noop() {},
   'warn': console?.log ? console.log.bind(console) : function noop() {}
 }, console);
+/* eslint-enable @typescript-eslint/no-empty-function */
 
 /**
  * The log namespace
@@ -16240,7 +15617,7 @@ const log = {
   /**
    * The the log-level, which determines how verbose the logging is.
    * @method log#setLogLevel
-   * @param { integer } level - The loglevel which allows for filtering of log messages
+   * @param { number } level - The loglevel which allows for filtering of log messages
    */
   setLogLevel(level) {
     if (!['debug', 'info', 'warn', 'error', 'fatal'].includes(level)) {
@@ -16256,7 +15633,7 @@ const log = {
    * logged as well.
    * @method log#log
    * @param { string | Error } message - The message to be logged
-   * @param { integer } level - The loglevel which allows for filtering of log messages
+   * @param { number } level - The loglevel which allows for filtering of log messages
    */
   log(message, level) {
     let style = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
@@ -17014,7 +16391,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('converse-bosh', {
       tokens: {
         /**
          * @method api.tokens.get
-         * @param {string} [id] The type of token to return ('rid' or 'sid').
+         * @param { string } [id] The type of token to return ('rid' or 'sid').
          * @returns 'string' A token, either the RID or SID token depending on what's asked for.
          * @example _converse.api.tokens.get('rid');
          */
@@ -17115,7 +16492,7 @@ async function createCapsNode() {
 
 /**
  * Given a stanza, adds a XEP-0115 CAPS element
- * @param { XMLElement } stanza
+ * @param { Element } stanza
  */
 async function addCapsNode(stanza) {
   const caps_el = await createCapsNode();
@@ -17151,7 +16528,7 @@ __webpack_require__.r(__webpack_exports__);
     /**
      * @method api.chats.create
      * @param {string|string[]} jid|jids An jid or array of jids
-     * @param {object} [attrs] An object containing configuration attributes.
+     * @param { object } [attrs] An object containing configuration attributes.
      */
     async create(jids, attrs) {
       if (typeof jids === 'string') {
@@ -17181,9 +16558,9 @@ __webpack_require__.r(__webpack_exports__);
      *
      * @method api.chats.open
      * @param {String|string[]} name - e.g. 'buddy@example.com' or ['buddy1@example.com', 'buddy2@example.com']
-     * @param {Object} [attrs] - Attributes to be set on the _converse.ChatBox model.
-     * @param {Boolean} [attrs.minimized] - Should the chat be created in minimized state.
-     * @param {Boolean} [force=false] - By default, a minimized
+     * @param { Object } [attrs] - Attributes to be set on the _converse.ChatBox model.
+     * @param { Boolean } [attrs.minimized] - Should the chat be created in minimized state.
+     * @param { Boolean } [force=false] - By default, a minimized
      *   chat won't be maximized (in `overlayed` view mode) and in
      *   `fullscreen` view mode a newly opened chat won't replace
      *   another chat already in the foreground.
@@ -17235,8 +16612,8 @@ __webpack_require__.r(__webpack_exports__);
      *
      * @method api.chats.get
      * @param {String|string[]} jids - e.g. 'buddy@example.com' or ['buddy1@example.com', 'buddy2@example.com']
-     * @param {Object} [attrs] - Attributes to be set on the _converse.ChatBox model.
-     * @param {Boolean} [create=false] - Whether the chat should be created if it's not found.
+     * @param { Object } [attrs] - Attributes to be set on the _converse.ChatBox model.
+     * @param { Boolean } [create=false] - Whether the chat should be created if it's not found.
      * @returns { Promise<_converse.ChatBox> }
      *
      * @example
@@ -18863,7 +18240,7 @@ const {
 /**
  * Parses a passed in message stanza and returns an object of attributes.
  * @method st#parseMessage
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @param { _converse } _converse
  * @returns { (MessageAttributes|Error) }
  */
@@ -19041,10 +18418,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "openChat": () => (/* binding */ openChat),
 /* harmony export */   "registerMessageHandlers": () => (/* binding */ registerMessageHandlers)
 /* harmony export */ });
-/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
-/* harmony import */ var _converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/shared/parsers */ "./src/headless/shared/parsers.js");
-/* harmony import */ var _parsers_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./parsers.js */ "./src/headless/plugins/chat/parsers.js");
-/* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
+/* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/shared/parsers */ "./src/headless/shared/parsers.js");
+/* harmony import */ var _parsers_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./parsers.js */ "./src/headless/plugins/chat/parsers.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+
 
 
 
@@ -19052,47 +18431,47 @@ __webpack_require__.r(__webpack_exports__);
 const {
   Strophe,
   u
-} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.converse.env;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 function openChat(jid) {
   if (!u.isValidJID(jid)) {
-    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn(`Invalid JID "${jid}" provided in URL fragment`);
+    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`Invalid JID "${jid}" provided in URL fragment`);
   }
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chats.open(jid);
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.chats.open(jid);
 }
 async function onClearSession() {
-  if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.shouldClearCache()) {
-    await Promise.all(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.chatboxes.map(c => c.messages && c.messages.clearStore({
+  if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_4__.shouldClearCache)()) {
+    await Promise.all(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxes.map(c => c.messages && c.messages.clearStore({
       'silent': true
     })));
-    const filter = o => o.get('type') !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.CONTROLBOX_TYPE;
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.chatboxes.clearStore({
+    const filter = o => o.get('type') !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.CONTROLBOX_TYPE;
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxes.clearStore({
       'silent': true
     }, filter);
   }
 }
 async function handleErrorMessage(stanza) {
   const from_jid = Strophe.getBareJidFromJid(stanza.getAttribute('from'));
-  if (u.isSameBareJID(from_jid, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.bare_jid)) {
+  if (u.isSameBareJID(from_jid, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid)) {
     return;
   }
-  const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chatboxes.get(from_jid);
-  if (chatbox?.get('type') === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.PRIVATE_CHAT_TYPE) {
+  const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.chatboxes.get(from_jid);
+  if (chatbox?.get('type') === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.PRIVATE_CHAT_TYPE) {
     chatbox?.handleErrorMessageStanza(stanza);
   }
 }
 function autoJoinChats() {
   // Automatically join private chats, based on the
   // "auto_join_private_chats" configuration setting.
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('auto_join_private_chats').forEach(jid => {
-    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.chatboxes.where({
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('auto_join_private_chats').forEach(jid => {
+    if (_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.chatboxes.where({
       'jid': jid
     }).length) {
       return;
     }
     if (typeof jid === 'string') {
-      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chats.open(jid);
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.chats.open(jid);
     } else {
-      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error('Invalid jid criteria specified for "auto_join_private_chats"');
+      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error('Invalid jid criteria specified for "auto_join_private_chats"');
     }
   });
   /**
@@ -19103,16 +18482,16 @@ function autoJoinChats() {
    * @example _converse.api.listen.on('privateChatsAutoJoined', () => { ... });
    * @example _converse.api.waitUntil('privateChatsAutoJoined').then(() => { ... });
    */
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.trigger('privateChatsAutoJoined');
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.trigger('privateChatsAutoJoined');
 }
 function registerMessageHandlers() {
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(stanza => {
-    if (['groupchat', 'error'].includes(stanza.getAttribute('type')) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isHeadline)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isServerMessage)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isArchived)(stanza)) {
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.connection.addHandler(stanza => {
+    if (['groupchat', 'error'].includes(stanza.getAttribute('type')) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_2__.isHeadline)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_2__.isServerMessage)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_2__.isArchived)(stanza)) {
       return true;
     }
-    return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.handleMessageStanza(stanza) || true;
+    return _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.handleMessageStanza(stanza) || true;
   }, null, 'message');
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.addHandler(stanza => handleErrorMessage(stanza) || true, null, 'message', 'error');
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.connection.addHandler(stanza => handleErrorMessage(stanza) || true, null, 'message', 'error');
 }
 
 /**
@@ -19121,24 +18500,24 @@ function registerMessageHandlers() {
  */
 async function handleMessageStanza(stanza) {
   stanza = stanza.tree?.() ?? stanza;
-  if ((0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isServerMessage)(stanza)) {
+  if ((0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_2__.isServerMessage)(stanza)) {
     // Prosody sends headline messages with type `chat`, so we need to filter them out here.
     const from = stanza.getAttribute('from');
-    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].info(`handleMessageStanza: Ignoring incoming server message from JID: ${from}`);
+    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].info(`handleMessageStanza: Ignoring incoming server message from JID: ${from}`);
   }
   let attrs;
   try {
-    attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_2__.parseMessage)(stanza);
+    attrs = await (0,_parsers_js__WEBPACK_IMPORTED_MODULE_3__.parseMessage)(stanza);
   } catch (e) {
-    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(e);
+    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
   }
   if (u.isErrorObject(attrs)) {
-    attrs.stanza && _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(attrs.stanza);
-    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(attrs.message);
+    attrs.stanza && _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(attrs.stanza);
+    return _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(attrs.message);
   }
   // XXX: Need to take XEP-428 <fallback> into consideration
   const has_body = !!(attrs.body || attrs.plaintext);
-  const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.chats.get(attrs.contact_jid, {
+  const chatbox = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.chats.get(attrs.contact_jid, {
     'nickname': attrs.nick
   }, has_body);
   await chatbox?.queueMessage(attrs);
@@ -19146,7 +18525,7 @@ async function handleMessageStanza(stanza) {
    * @typedef { Object } MessageData
    * An object containing the original message stanza, as well as the
    * parsed attributes.
-   * @property { XMLElement } stanza
+   * @property { Element } stanza
    * @property { MessageAttributes } stanza
    * @property { ChatBox } chatbox
    */
@@ -19161,7 +18540,7 @@ async function handleMessageStanza(stanza) {
    * @type { object }
    * @property { module:converse-chat~MessageData } data
    */
-  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.trigger('message', data);
+  _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.trigger('message', data);
 }
 
 /**
@@ -19170,26 +18549,26 @@ async function handleMessageStanza(stanza) {
  * @param { Boolean } reconnecting
  */
 async function enableCarbons() {
-  const domain = Strophe.getDomainFromJid(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.bare_jid);
-  const supported = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.disco.supports(Strophe.NS.CARBONS, domain);
+  const domain = Strophe.getDomainFromJid(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.bare_jid);
+  const supported = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.disco.supports(Strophe.NS.CARBONS, domain);
   if (!supported) {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn("Not enabling carbons because it's not supported!");
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn("Not enabling carbons because it's not supported!");
     return;
   }
   const iq = new Strophe.Builder('iq', {
-    'from': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__._converse.connection.jid,
+    'from': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.connection.jid,
     'type': 'set'
   }).c('enable', {
     xmlns: Strophe.NS.CARBONS
   });
-  const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_0__.api.sendIQ(iq, null, false);
+  const result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(iq, null, false);
   if (result === null) {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn(`A timeout occurred while trying to enable carbons`);
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn(`A timeout occurred while trying to enable carbons`);
   } else if (u.isErrorStanza(result)) {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].warn('An error occurred while trying to enable message carbons.');
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].error(result);
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].warn('An error occurred while trying to enable message carbons.');
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(result);
   } else {
-    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_3__["default"].debug('Message carbons have been enabled.');
+    _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].debug('Message carbons have been enabled.');
   }
 }
 
@@ -19283,7 +18662,7 @@ const ChatBoxes = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_0__
      * @event _converse#chatBoxesFetched
      * @type { object }
      * @property { _converse.ChatBox | _converse.ChatRoom } chatbox
-     * @property { XMLElement } stanza
+     * @property { Element } stanza
      * @example _converse.api.listen.on('chatBoxesFetched', obj => { ... });
      * @example _converse.api.waitUntil('chatBoxesFetched').then(() => { ... });
      */
@@ -19442,8 +18821,8 @@ const {
     stream: {
       /**
        * @method api.disco.stream.getFeature
-       * @param {String} name The feature name
-       * @param {String} xmlns The XML namespace
+       * @param { String } name The feature name
+       * @param { String } xmlns The XML namespace
        * @example _converse.api.disco.stream.getFeature('ver', 'urn:xmpp:features:rosterver')
        */
       async getFeature(name, xmlns) {
@@ -19477,10 +18856,10 @@ const {
          * Lets you add new identities for this client (i.e. instance of Converse)
          * @method api.disco.own.identities.add
          *
-         * @param {String} category - server, client, gateway, directory, etc.
-         * @param {String} type - phone, pc, web, etc.
-         * @param {String} name - "Converse"
-         * @param {String} lang - en, el, de, etc.
+         * @param { String } category - server, client, gateway, directory, etc.
+         * @param { String } type - phone, pc, web, etc.
+         * @param { String } name - "Converse"
+         * @param { String } lang - en, el, de, etc.
          *
          * @example _converse.api.disco.own.identities.clear();
          */
@@ -19523,7 +18902,7 @@ const {
         /**
          * Lets you register new disco features for this client (i.e. instance of Converse)
          * @method api.disco.own.features.add
-         * @param {String} name - e.g. http://jabber.org/protocol/caps
+         * @param { String } name - e.g. http://jabber.org/protocol/caps
          * @example _converse.api.disco.own.features.add("http://jabber.org/protocol/caps");
          */
         add(name) {
@@ -19556,8 +18935,8 @@ const {
      * Query for information about an XMPP entity
      *
      * @method api.disco.info
-     * @param {string} jid The Jabber ID of the entity to query
-     * @param {string} [node] A specific node identifier associated with the JID
+     * @param { string } jid The Jabber ID of the entity to query
+     * @param { string } [node] A specific node identifier associated with the JID
      * @returns {promise} Promise which resolves once we have a result from the server.
      */
     info(jid, node) {
@@ -19578,8 +18957,8 @@ const {
      * Query for items associated with an XMPP entity
      *
      * @method api.disco.items
-     * @param {string} jid The Jabber ID of the entity to query for items
-     * @param {string} [node] A specific node identifier associated with the JID
+     * @param { string } jid The Jabber ID of the entity to query for items
+     * @param { string } [node] A specific node identifier associated with the JID
      * @returns {promise} Promise which resolves once we have a result from the server.
      */
     items(jid, node) {
@@ -19606,8 +18985,8 @@ const {
        * Get the corresponding `DiscoEntity` instance.
        *
        * @method api.disco.entities.get
-       * @param {string} jid The Jabber ID of the entity
-       * @param {boolean} [create] Whether the entity should be created if it doesn't exist.
+       * @param { string } jid The Jabber ID of the entity
+       * @param { boolean } [create] Whether the entity should be created if it doesn't exist.
        * @example _converse.api.disco.entities.get(jid);
        */
       async get(jid) {
@@ -19633,7 +19012,7 @@ const {
        * Return any disco items advertised on this entity
        *
        * @method api.disco.entities.items
-       * @param {string} jid The Jabber ID of the entity for which we want to fetch items
+       * @param { string } jid The Jabber ID of the entity for which we want to fetch items
        * @example api.disco.entities.items(jid);
        */
       items(jid) {
@@ -19648,12 +19027,12 @@ const {
        * `ignore_cache: true` in the options parameter.
        *
        * @method api.disco.entities.create
-       * @param {object} data
-       * @param {string} data.jid - The Jabber ID of the entity
-       * @param {string} data.parent_jid - The Jabber ID of the parent entity
-       * @param {string} data.name
-       * @param {object} [options] - Additional options
-       * @param {boolean} [options.ignore_cache]
+       * @param { object } data
+       * @param { string } data.jid - The Jabber ID of the entity
+       * @param { string } data.parent_jid - The Jabber ID of the parent entity
+       * @param { string } data.name
+       * @param { object } [options] - Additional options
+       * @param { boolean } [options.ignore_cache]
        *     If true, fetch all features from the XMPP server instead of restoring them from cache
        * @example _converse.api.disco.entities.create({ jid }, {'ignore_cache': true});
        */
@@ -19670,11 +19049,11 @@ const {
        * Return a given feature of a disco entity
        *
        * @method api.disco.features.get
-       * @param {string} feature The feature that might be
+       * @param { string } feature The feature that might be
        *     supported. In the XML stanza, this is the `var`
        *     attribute of the `<feature>` element. For
        *     example: `http://jabber.org/protocol/muc`
-       * @param {string} jid The JID of the entity
+       * @param { string } jid The JID of the entity
        *     (and its associated items) which should be queried
        * @returns {promise} A promise which resolves with a list containing
        *     _converse.Entity instances representing the entity
@@ -19700,11 +19079,11 @@ const {
        * associated items, supports a given feature.
        *
        * @method api.disco.features.has
-       * @param {string} feature The feature that might be
+       * @param { string } feature The feature that might be
        *     supported. In the XML stanza, this is the `var`
        *     attribute of the `<feature>` element. For
        *     example: `http://jabber.org/protocol/muc`
-       * @param {string} jid The JID of the entity
+       * @param { string } jid The JID of the entity
        *     (and its associated items) which should be queried
        * @returns {Promise} A promise which resolves with a boolean
        * @example
@@ -19729,11 +19108,11 @@ const {
      * Used to determine whether an entity supports a given feature.
      *
      * @method api.disco.supports
-     * @param {string} feature The feature that might be
+     * @param { string } feature The feature that might be
      *     supported. In the XML stanza, this is the `var`
      *     attribute of the `<feature>` element. For
      *     example: `http://jabber.org/protocol/muc`
-     * @param {string} jid The JID of the entity
+     * @param { string } jid The JID of the entity
      *     (and its associated items) which should be queried
      * @returns {promise} A promise which resolves with `true` or `false`.
      * @example
@@ -19750,7 +19129,7 @@ const {
      * Refresh the features, fields and identities associated with a
      * disco entity by refetching them from the server
      * @method api.disco.refresh
-     * @param {string} jid The JID of the entity whose features are refreshed.
+     * @param { string } jid The JID of the entity whose features are refreshed.
      * @returns {promise} A promise which resolves once the features have been refreshed
      * @example
      * await api.disco.refresh('room@conference.example.org');
@@ -19790,7 +19169,7 @@ const {
      * Return all the features associated with a disco entity
      *
      * @method api.disco.getFeatures
-     * @param {string} jid The JID of the entity whose features are returned.
+     * @param { string } jid The JID of the entity whose features are returned.
      * @returns {promise} A promise which resolves with the returned features
      * @example
      * const features = await api.disco.getFeatures('room@conference.example.org');
@@ -19811,7 +19190,7 @@ const {
      * See [XEP-0129: Service Discovery Extensions](https://xmpp.org/extensions/xep-0128.html)
      *
      * @method api.disco.getFields
-     * @param {string} jid The JID of the entity whose fields are returned.
+     * @param { string } jid The JID of the entity whose fields are returned.
      * @example
      * const fields = await api.disco.getFields('room@conference.example.org');
      */
@@ -19833,15 +19212,15 @@ const {
      * XEP-0163: https://xmpp.org/extensions/xep-0163.html#support
      *
      * @method api.disco.getIdentity
-     * @param {string} The identity category.
+     * @param { string } The identity category.
      *     In the XML stanza, this is the `category`
      *     attribute of the `<identity>` element.
      *     For example: 'pubsub'
-     * @param {string} type The identity type.
+     * @param { string } type The identity type.
      *     In the XML stanza, this is the `type`
      *     attribute of the `<identity>` element.
      *     For example: 'pep'
-     * @param {string} jid The JID of the entity which might have the identity
+     * @param { string } jid The JID of the entity which might have the identity
      * @returns {promise} A promise which resolves with a map indicating
      *     whether an identity with a given type is provided by the entity.
      * @example
@@ -20352,9 +19731,10 @@ function clearSession() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
-/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
-/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/emoji/utils.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
 /**
  * @module converse-emoji
  * @copyright 2022, the Converse.js contributors
@@ -20363,19 +19743,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis = {
+
+_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis = {
   'initialized': false,
-  'initialized_promise': (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_2__.getOpenPromise)()
+  'initialized_promise': (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_3__.getOpenPromise)()
 };
-_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('converse-emoji', {
+_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-emoji', {
   initialize() {
     /* The initialize function gets called as soon as the plugin is
      * loaded by converse.js's plugin machinery.
      */
     const {
       ___
-    } = _core_js__WEBPACK_IMPORTED_MODULE_1__._converse;
-    _core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.extend({
+    } = _core_js__WEBPACK_IMPORTED_MODULE_2__._converse;
+    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.extend({
       'emoji_image_path': 'https://twemoji.maxcdn.com/v/12.1.6/',
       'emoji_categories': {
         "smileys": ":grinning:",
@@ -20415,7 +19796,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('converse-emoji', {
      * @namespace _converse.EmojiPicker
      * @memberOf _converse
      */
-    _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.EmojiPicker = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0__.Model.extend({
+    _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.EmojiPicker = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Model.extend({
       defaults: {
         'current_category': 'smileys',
         'current_skintone': '',
@@ -20424,7 +19805,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('converse-emoji', {
     });
 
     // We extend the default converse.js API to add methods specific to MUC groupchats.
-    Object.assign(_core_js__WEBPACK_IMPORTED_MODULE_1__.api, {
+    Object.assign(_core_js__WEBPACK_IMPORTED_MODULE_2__.api, {
       /**
        * @namespace api.emojis
        * @memberOf api
@@ -20436,21 +19817,21 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('converse-emoji', {
          * @returns {Promise}
          */
         async initialize() {
-          if (!_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.initialized) {
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.initialized = true;
+          if (!_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.initialized) {
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.initialized = true;
             const {
               default: json
             } = await __webpack_require__.e(/*! import() | emojis */ "emojis").then(__webpack_require__.t.bind(__webpack_require__, /*! ./emoji.json */ "./src/headless/plugins/emoji/emoji.json", 19));
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.json = json;
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.by_sn = Object.keys(json).reduce((result, cat) => Object.assign(result, json[cat]), {});
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.list = Object.values(_core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.by_sn);
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.list.sort((a, b) => a.sn < b.sn ? -1 : a.sn > b.sn ? 1 : 0);
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.shortnames = _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.list.map(m => m.sn);
-            const getShortNames = () => _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.shortnames.map(s => s.replace(/[+]/g, "\\$&")).join('|');
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.shortnames_regex = new RegExp(getShortNames(), "gi");
-            _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.initialized_promise.resolve();
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.json = json;
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.by_sn = Object.keys(json).reduce((result, cat) => Object.assign(result, json[cat]), {});
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.list = Object.values(_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.by_sn);
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.list.sort((a, b) => a.sn < b.sn ? -1 : a.sn > b.sn ? 1 : 0);
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.shortnames = _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.list.map(m => m.sn);
+            const getShortNames = () => _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.shortnames.map(s => s.replace(/[+]/g, "\\$&")).join('|');
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.shortnames_regex = new RegExp(getShortNames(), "gi");
+            _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.initialized_promise.resolve();
           }
-          return _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.initialized_promise;
+          return _core_js__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.initialized_promise;
         }
       }
     });
@@ -20808,8 +20189,8 @@ __webpack_require__.r(__webpack_exports__);
      *
      * @method api.headlines.get
      * @param {String|String[]} jids - e.g. 'buddy@example.com' or ['buddy1@example.com', 'buddy2@example.com']
-     * @param {Object} [attrs] - Attributes to be set on the _converse.ChatBox model.
-     * @param {Boolean} [create=false] - Whether the chat should be created if it's not found.
+     * @param { Object } [attrs] - Attributes to be set on the _converse.ChatBox model.
+     * @param { Boolean } [create=false] - Whether the chat should be created if it's not found.
      * @returns { Promise<_converse.HeadlinesFeed> }
      */
     async get(jids) {
@@ -20964,7 +20345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /**
  * Handler method for all incoming messages of type "headline".
- * @param { XMLElement } stanza
+ * @param { Element } stanza
  */
 async function onHeadlineMessage(stanza) {
   if ((0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isHeadline)(stanza) || (0,_converse_headless_shared_parsers__WEBPACK_IMPORTED_MODULE_1__.isServerMessage)(stanza)) {
@@ -21588,7 +20969,7 @@ async function handleMAMResult(model, result, query, options, should_page) {
 /**
  * @typedef { Object } MAMOptions
  * A map of MAM related options that may be passed to fetchArchivedMessages
- * @param { integer } [options.max] - The maximum number of items to return.
+ * @param { number } [options.max] - The maximum number of items to return.
  *  Defaults to "archived_messages_page_size"
  * @param { string } [options.after] - The XEP-0359 stanza ID of a message
  *  after which messages should be returned. Implies forward paging.
@@ -21605,7 +20986,7 @@ async function handleMAMResult(model, result, query, options, should_page) {
 
 /**
  * Fetch XEP-0313 archived messages based on the passed in criteria.
- * @param { _converse.ChatBox | _converse.ChatRoom } model
+ * @param { ChatBox | ChatRoom } model
  * @param { MAMOptions } [options]
  * @param { ('forwards'|'backwards'|null)} [should_page=null] - Determines whether
  *  this function should recursively page through the entire result set if a limited
@@ -21857,7 +21238,7 @@ async function getAffiliationList(affiliation, muc_jid) {
 }
 
 /**
- * Given an occupant model, see which affiliations may be assigned to that user.
+ * Given an occupant model, see which affiliations may be assigned by that user
  * @param { Model } occupant
  * @returns { Array<('owner'|'admin'|'member'|'outcast'|'none')> } - An array of assignable affiliations
  */
@@ -21866,9 +21247,9 @@ function getAssignableAffiliations(occupant) {
   if (!Array.isArray(disabled)) {
     disabled = disabled ? _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_0__.AFFILIATIONS : [];
   }
-  if (occupant.get('affiliation') === 'owner') {
+  if (occupant?.get('affiliation') === 'owner') {
     return _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_0__.AFFILIATIONS.filter(a => !disabled.includes(a));
-  } else if (occupant.get('affiliation') === 'admin') {
+  } else if (occupant?.get('affiliation') === 'admin') {
     return _converse_headless_plugins_muc_index_js__WEBPACK_IMPORTED_MODULE_0__.AFFILIATIONS.filter(a => !['owner', 'admin', ...disabled].includes(a));
   } else {
     return [];
@@ -22030,7 +21411,7 @@ const {
      * @method api.rooms.create
      * @param {(string[]|string)} jid|jids The JID or array of
      *     JIDs of the chatroom(s) to create
-     * @param {object} [attrs] attrs The room attributes
+     * @param { object } [attrs] attrs The room attributes
      * @returns {Promise} Promise which resolves with the Model representing the chat.
      */
     create(jids) {
@@ -22054,24 +21435,24 @@ const {
      * Similar to {@link api.chats.open}, but for groupchats.
      *
      * @method api.rooms.open
-     * @param {string} jid The room JID or JIDs (if not specified, all
+     * @param { string } jid The room JID or JIDs (if not specified, all
      *     currently open rooms will be returned).
-     * @param {string} attrs A map  containing any extra room attributes.
-     * @param {string} [attrs.nick] The current user's nickname for the MUC
-     * @param {boolean} [attrs.auto_configure] A boolean, indicating
+     * @param { string } attrs A map  containing any extra room attributes.
+     * @param { string } [attrs.nick] The current user's nickname for the MUC
+     * @param { boolean } [attrs.auto_configure] A boolean, indicating
      *     whether the room should be configured automatically or not.
      *     If set to `true`, then it makes sense to pass in configuration settings.
-     * @param {object} [attrs.roomconfig] A map of configuration settings to be used when the room gets
+     * @param { object } [attrs.roomconfig] A map of configuration settings to be used when the room gets
      *     configured automatically. Currently it doesn't make sense to specify
      *     `roomconfig` values if `auto_configure` is set to `false`.
      *     For a list of configuration values that can be passed in, refer to these values
      *     in the [XEP-0045 MUC specification](https://xmpp.org/extensions/xep-0045.html#registrar-formtype-owner).
      *     The values should be named without the `muc#roomconfig_` prefix.
-     * @param {boolean} [attrs.minimized] A boolean, indicating whether the room should be opened minimized or not.
-     * @param {boolean} [attrs.bring_to_foreground] A boolean indicating whether the room should be
+     * @param { boolean } [attrs.minimized] A boolean, indicating whether the room should be opened minimized or not.
+     * @param { boolean } [attrs.bring_to_foreground] A boolean indicating whether the room should be
      *     brought to the foreground and therefore replace the currently shown chat.
      *     If there is no chat currently open, then this option is ineffective.
-     * @param {Boolean} [force=false] - By default, a minimized
+     * @param { Boolean } [force=false] - By default, a minimized
      *   room won't be maximized (in `overlayed` view mode) and in
      *   `fullscreen` view mode a newly opened room won't replace
      *   another chat already in the foreground.
@@ -22506,10 +21887,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../log */ "./src/headless/log.js");
-/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
-/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
-
+/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 
 
 
@@ -22530,6 +21909,7 @@ const ChatRoomMessageMixin = {
     // If `type` changes from `error` to `groupchat`, we want to set the occupant. See #2733
     this.on('change:type', () => this.setOccupant());
     this.on('change:is_ephemeral', () => this.setTimerForEphemeralMessage());
+    this.chatbox = this.collection?.chatbox;
     this.setTimerForEphemeralMessage();
     this.setOccupant();
     /**
@@ -22538,7 +21918,7 @@ const ChatRoomMessageMixin = {
      * @type { _converse.ChatRoomMessages}
      * @example _converse.api.listen.on('chatRoomMessageInitialized', model => { ... });
      */
-    _core_js__WEBPACK_IMPORTED_MODULE_2__.api.trigger('chatRoomMessageInitialized', this);
+    _core_js__WEBPACK_IMPORTED_MODULE_1__.api.trigger('chatRoomMessageInitialized', this);
   },
   getDisplayName() {
     return this.occupant?.getDisplayName() || this.get('nick');
@@ -22557,33 +21937,25 @@ const ChatRoomMessageMixin = {
       // reflected yet, which means we won't have a XEP-0359 stanza id.
       return;
     }
-    return ['all', 'moderator'].includes(_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_message_retraction')) && this.get(`stanza_id ${this.get('from_muc')}`) && this.collection.chatbox.canModerateMessages();
+    return ['all', 'moderator'].includes(_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_message_retraction')) && this.get(`stanza_id ${this.get('from_muc')}`) && this.chatbox.canModerateMessages();
   },
   checkValidity() {
-    const result = _core_js__WEBPACK_IMPORTED_MODULE_2__._converse.Message.prototype.checkValidity.call(this);
-    !result && this.collection.chatbox.debouncedRejoin();
+    const result = _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.Message.prototype.checkValidity.call(this);
+    !result && this.chatbox.debouncedRejoin();
     return result;
   },
   onOccupantRemoved() {
     this.stopListening(this.occupant);
     delete this.occupant;
-    const chatbox = this?.collection?.chatbox;
-    if (!chatbox) {
-      return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not get collection.chatbox for message: ${JSON.stringify(this.toJSON())}`);
-    }
-    this.listenTo(chatbox.occupants, 'add', this.onOccupantAdded);
+    this.listenTo(this.chatbox.occupants, 'add', this.onOccupantAdded);
   },
   onOccupantAdded(occupant) {
     if (this.get('occupant_id')) {
       if (occupant.get('occupant_id') !== this.get('occupant_id')) {
         return;
       }
-    } else if (occupant.get('nick') !== strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__.Strophe.getResourceFromJid(this.get('from'))) {
+    } else if (occupant.get('nick') !== strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.getResourceFromJid(this.get('from'))) {
       return;
-    }
-    const chatbox = this?.collection?.chatbox;
-    if (!chatbox) {
-      return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not get collection.chatbox for message: ${JSON.stringify(this.toJSON())}`);
     }
     this.occupant = occupant;
     if (occupant.get('jid')) {
@@ -22591,36 +21963,35 @@ const ChatRoomMessageMixin = {
     }
     this.trigger('occupantAdded');
     this.listenTo(this.occupant, 'destroy', this.onOccupantRemoved);
-    this.stopListening(chatbox.occupants, 'add', this.onOccupantAdded);
+    this.stopListening(this.chatbox.occupants, 'add', this.onOccupantAdded);
+  },
+  getOccupant() {
+    if (this.occupant) return this.occupant;
+    this.setOccupant();
+    return this.occupant;
   },
   setOccupant() {
     if (this.get('type') !== 'groupchat' || this.isEphemeral() || this.occupant) {
       return;
     }
-    const chatbox = this?.collection?.chatbox;
-    if (!chatbox) {
-      return _log__WEBPACK_IMPORTED_MODULE_0__["default"].error(`Could not get collection.chatbox for message: ${JSON.stringify(this.toJSON())}`);
-    }
-    const nick = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_1__.Strophe.getResourceFromJid(this.get('from'));
+    const nick = strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.getResourceFromJid(this.get('from'));
     const occupant_id = this.get('occupant_id');
-    this.occupant = chatbox.occupants.findOccupant({
+    this.occupant = this.chatbox.occupants.findOccupant({
       nick,
       occupant_id
     });
-    if (!this.occupant && _core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_send_probes')) {
-      this.occupant = chatbox.occupants.create({
+    if (!this.occupant) {
+      this.occupant = this.chatbox.occupants.create({
         nick,
         occupant_id,
-        'type': 'unavailable'
+        jid: this.get('from_real_jid')
       });
-      const jid = `${chatbox.get('jid')}/${nick}`;
-      _core_js__WEBPACK_IMPORTED_MODULE_2__.api.user.presence.send('probe', jid);
+      if (_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('muc_send_probes')) {
+        const jid = `${this.chatbox.get('jid')}/${nick}`;
+        _core_js__WEBPACK_IMPORTED_MODULE_1__.api.user.presence.send('probe', jid);
+      }
     }
-    if (this.occupant) {
-      this.listenTo(this.occupant, 'destroy', this.onOccupantRemoved);
-    } else {
-      this.listenTo(chatbox.occupants, 'add', this.onOccupantAdded);
-    }
+    this.listenTo(this.occupant, 'destroy', this.onOccupantRemoved);
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatRoomMessageMixin);
@@ -22639,7 +22010,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
-/* harmony import */ var lodash_es_invoke__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lodash-es/invoke */ "./node_modules/lodash-es/invoke.js");
 /* harmony import */ var lodash_es_isElement__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lodash-es/isElement */ "./node_modules/lodash-es/isElement.js");
 /* harmony import */ var _log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../log */ "./src/headless/log.js");
 /* harmony import */ var _utils_parse_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/parse-helpers */ "./src/headless/utils/parse-helpers.js");
@@ -22658,7 +22028,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _parsers_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./parsers.js */ "./src/headless/plugins/muc/parsers.js");
 /* harmony import */ var _shared_actions_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../shared/actions.js */ "./src/headless/shared/actions.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./constants.js */ "./src/headless/plugins/muc/constants.js");
-
 
 
 
@@ -22865,7 +22234,7 @@ const ChatRoomMixin = {
      * *Hook* which allows plugins to update an outgoing MUC join presence stanza
      * @event _converse#constructedMUCPresence
      * @param { _converse.ChatRoom } - The MUC from which this message stanza is being sent.
-     * @param { XMLElement } stanza - The stanza which will be sent out
+     * @param { Element } stanza - The stanza which will be sent out
      */
     stanza = await _core_js__WEBPACK_IMPORTED_MODULE_5__.api.hook('constructedMUCPresence', this, stanza);
     return stanza;
@@ -23123,7 +22492,7 @@ const ChatRoomMixin = {
    * Handles incoming message stanzas from the service that hosts this MUC
    * @private
    * @method _converse.ChatRoom#handleMessageFromMUCHost
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   handleMessageFromMUCHost(stanza) {
     if (this.isEntered()) {
@@ -23144,7 +22513,7 @@ const ChatRoomMixin = {
    * Handles XEP-0452 MUC Mention Notification messages
    * @private
    * @method _converse.ChatRoom#handleForwardedMentions
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   handleForwardedMentions(stanza) {
     if (this.isEntered()) {
@@ -23174,7 +22543,7 @@ const ChatRoomMixin = {
    * Parses an incoming message stanza and queues it for processing.
    * @private
    * @method _converse.ChatRoom#handleMessageStanza
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   async handleMessageStanza(stanza) {
     stanza = stanza.tree?.() ?? stanza;
@@ -23284,8 +22653,8 @@ const ChatRoomMixin = {
    * or error message within a specific timeout period.
    * @private
    * @method _converse.ChatRoom#sendTimedMessage
-   * @param { _converse.Message|XMLElement } message
-   * @returns { Promise<XMLElement>|Promise<_converse.TimeoutError> } Returns a promise
+   * @param { _converse.Message|Element } message
+   * @returns { Promise<Element>|Promise<_converse.TimeoutError> } Returns a promise
    *  which resolves with the reflected message stanza or with an error stanza or {@link _converse.TimeoutError}.
    */
   sendTimedMessage(el) {
@@ -23364,7 +22733,7 @@ const ChatRoomMixin = {
    * Retract someone else's message in this groupchat.
    * @private
    * @method _converse.ChatRoom#retractOtherMessage
-   * @param { _converse.Message } message - The message which we're retracting.
+   * @param { _converse.ChatRoomMessage } message - The message which we're retracting.
    * @param { string } [reason] - The reason for retracting the message.
    * @example
    *  const room = await api.rooms.get(jid);
@@ -23398,7 +22767,7 @@ const ChatRoomMixin = {
    * Sends an IQ stanza to the XMPP server to retract a message in this groupchat.
    * @private
    * @method _converse.ChatRoom#sendRetractionIQ
-   * @param { _converse.Message } message - The message which we're retracting.
+   * @param { _converse.ChatRoomMessage } message - The message which we're retracting.
    * @param { string } [reason] - The reason for retracting the message.
    */
   sendRetractionIQ(message, reason) {
@@ -23804,7 +23173,7 @@ const ChatRoomMixin = {
    * 'roomconfig' data.
    * @private
    * @method _converse.ChatRoom#autoConfigureChatRoom
-   * @returns { Promise<XMLElement> }
+   * @returns { Promise<Element> }
    * Returns a promise which resolves once a response IQ has
    * been received.
    */
@@ -23822,7 +23191,7 @@ const ChatRoomMixin = {
    * has been received.
    * @private
    * @method _converse.ChatRoom#fetchRoomConfiguration
-   * @returns { Promise<XMLElement> }
+   * @returns { Promise<Element> }
    */
   fetchRoomConfiguration() {
     return _core_js__WEBPACK_IMPORTED_MODULE_5__.api.sendIQ((0,strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.$iq)({
@@ -23837,7 +23206,7 @@ const ChatRoomMixin = {
    * @private
    * @method _converse.ChatRoom#sendConfiguration
    * @param { Array } config - The groupchat configuration
-   * @returns { Promise<XMLElement> } - A promise which resolves with
+   * @returns { Promise<Element> } - A promise which resolves with
    * the `result` stanza received from the XMPP server.
    */
   sendConfiguration() {
@@ -24302,7 +23671,7 @@ const ChatRoomMixin = {
    * Given a presence stanza, update the occupant model based on its contents.
    * @private
    * @method _converse.ChatRoom#updateOccupantsOnPresence
-   * @param { XMLElement } pres - The presence stanza
+   * @param { Element } pres - The presence stanza
    */
   updateOccupantsOnPresence(pres) {
     const data = (0,_parsers_js__WEBPACK_IMPORTED_MODULE_12__.parseMUCPresence)(pres, this);
@@ -24474,7 +23843,7 @@ const ChatRoomMixin = {
    * the `from` attribute. Doesn't check the `type` attribute.
    * @private
    * @method _converse.ChatRoom#isOwnMessage
-   * @param { Object|XMLElement|_converse.Message } msg
+   * @param { Object|Element|_converse.Message } msg
    * @returns { boolean }
    */
   isOwnMessage(msg) {
@@ -24704,7 +24073,7 @@ const ChatRoomMixin = {
     }, '');
   },
   /**
-   * @param {String} actor - The nickname of the actor that caused the notification
+   * @param { String } actor - The nickname of the actor that caused the notification
    * @param {String|Array<String>} states - The state or states representing the type of notificcation
    */
   removeNotification(actor, states) {
@@ -24727,8 +24096,8 @@ const ChatRoomMixin = {
    *
    * The state can be a XEP-0085 Chat State or a XEP-0045 join/leave
    * state.
-   * @param {String} actor - The nickname of the actor that causes the notification
-   * @param {String} state - The state representing the type of notificcation
+   * @param { String } actor - The nickname of the actor that causes the notification
+   * @param { String } state - The state representing the type of notificcation
    */
   updateNotifications(actor, state) {
     const actors_per_state = this.notifications.toJSON();
@@ -24776,7 +24145,7 @@ const ChatRoomMixin = {
   /**
    * Given {@link MessageAttributes} look for XEP-0316 Room Notifications and create info
    * messages for them.
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   handleMEPNotification(attrs) {
     if (attrs.from !== this.get('jid') || !attrs.activities) {
@@ -24864,7 +24233,7 @@ const ChatRoomMixin = {
   },
   /**
    * Handle a presence stanza that disconnects the user from the MUC
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   handleDisconnection(stanza) {
     const is_self = stanza.querySelector("status[code='110']") !== null;
@@ -24884,7 +24253,7 @@ const ChatRoomMixin = {
     // each <x/> element pertains to a single user.
     const item = x.querySelector('item');
     const reason = item ? item.querySelector('reason')?.textContent : undefined;
-    const actor = item ? (0,lodash_es_invoke__WEBPACK_IMPORTED_MODULE_18__["default"])(item.querySelector('actor'), 'getAttribute', 'nick') : undefined;
+    const actor = item ? item.querySelector('actor')?.getAttribute('nick') : undefined;
     const message = _core_js__WEBPACK_IMPORTED_MODULE_5__._converse.muc.disconnect_messages[codes[0]];
     const status = codes.includes('301') ? _constants_js__WEBPACK_IMPORTED_MODULE_14__.ROOMSTATUS.BANNED : _constants_js__WEBPACK_IMPORTED_MODULE_14__.ROOMSTATUS.DISCONNECTED;
     this.setDisconnectionState(message, reason, actor, status);
@@ -24976,7 +24345,7 @@ const ChatRoomMixin = {
    * @private
    * @method _converse.ChatRoom#createInfoMessage
    * @param { string } code - The MUC status code
-   * @param { XMLElement } stanza - The original stanza that contains the code
+   * @param { Element } stanza - The original stanza that contains the code
    * @param { Boolean } is_self - Whether this stanza refers to our own presence
    */
   createInfoMessage(code, stanza, is_self) {
@@ -25020,7 +24389,7 @@ const ChatRoomMixin = {
    * Create info messages based on a received presence or message stanza
    * @private
    * @method _converse.ChatRoom#createInfoMessages
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   createInfoMessages(stanza) {
     const codes = sizzle__WEBPACK_IMPORTED_MODULE_2___default()(`x[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.MUC_USER}"] status`, stanza).map(s => s.getAttribute('code'));
@@ -25038,7 +24407,7 @@ const ChatRoomMixin = {
    *  implied by) the server.
    * @param { String } reason - The reason provided for the disconnection
    * @param { String } actor - The person (if any) responsible for this disconnection
-   * @param { Integer } status - The status code (see `ROOMSTATUS`)
+   * @param { number } status - The status code (see `ROOMSTATUS`)
    */
   setDisconnectionState(message, reason, actor) {
     let status = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _constants_js__WEBPACK_IMPORTED_MODULE_14__.ROOMSTATUS.DISCONNECTED;
@@ -25074,7 +24443,7 @@ const ChatRoomMixin = {
    * `connection_status` value for this {@link _converse.ChatRoom} as
    * well as any additional output that can be shown to the user.
    * @private
-   * @param { XMLElement } stanza - The presence stanza
+   * @param { Element } stanza - The presence stanza
    */
   onErrorPresence(stanza) {
     const __ = _core_js__WEBPACK_IMPORTED_MODULE_5__._converse.__;
@@ -25138,7 +24507,7 @@ const ChatRoomMixin = {
    * Listens for incoming presence stanzas from the service that hosts this MUC
    * @private
    * @method _converse.ChatRoom#onPresenceFromMUCHost
-   * @param { XMLElement } stanza - The presence stanza
+   * @param { Element } stanza - The presence stanza
    */
   onPresenceFromMUCHost(stanza) {
     if (stanza.getAttribute('type') === 'error') {
@@ -25156,7 +24525,7 @@ const ChatRoomMixin = {
    * Handles incoming presence stanzas coming from the MUC
    * @private
    * @method _converse.ChatRoom#onPresence
-   * @param { XMLElement } stanza
+   * @param { Element } stanza
    */
   onPresence(stanza) {
     if (stanza.getAttribute('type') === 'error') {
@@ -25185,7 +24554,7 @@ const ChatRoomMixin = {
    * user is the groupchat's owner.
    * @private
    * @method _converse.ChatRoom#onOwnPresence
-   * @param { XMLElement } pres - The stanza
+   * @param { Element } pres - The stanza
    */
   async onOwnPresence(stanza) {
     await this.occupants.fetched;
@@ -25287,9 +24656,9 @@ class ChatRoomOccupant extends _converse_skeletor_src_model_js__WEBPACK_IMPORTED
   defaults() {
     // eslint-disable-line class-methods-use-this
     return {
-      'hats': [],
-      'show': 'offline',
-      'states': []
+      hats: [],
+      show: 'offline',
+      states: []
     };
   }
   save(key, val, options) {
@@ -25505,7 +24874,7 @@ const {
 
 /**
  * Parses a message stanza for XEP-0317 MEP notification data
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @returns { Array } Returns an array of objects representing <activity> elements.
  */
 function getMEPActivities(stanza) {
@@ -25544,7 +24913,7 @@ function getMEPActivities(stanza) {
  * Note, this function doesn't check whether this is actually a MAM archived stanza.
  *
  * @private
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @returns { Object }
  */
 function getJIDFromMUCUserData(stanza) {
@@ -25554,8 +24923,8 @@ function getJIDFromMUCUserData(stanza) {
 
 /**
  * @private
- * @param { XMLElement } stanza - The message stanza
- * @param { XMLElement } original_stanza - The original stanza, that contains the
+ * @param { Element } stanza - The message stanza
+ * @param { Element } original_stanza - The original stanza, that contains the
  *  message stanza, if it was contained, otherwise it's the message stanza itself.
  * @returns { Object }
  */
@@ -25621,8 +24990,8 @@ function getSender(attrs, chatbox) {
 
 /**
  * Parses a passed in message stanza and returns an object of attributes.
- * @param { XMLElement } stanza - The message stanza
- * @param { XMLElement } original_stanza - The original stanza, that contains the
+ * @param { Element } stanza - The message stanza
+ * @param { Element } original_stanza - The original stanza, that contains the
  *  message stanza, if it was contained, otherwise it's the message stanza itself.
  * @param { _converse.ChatRoom } chatbox
  * @param { _converse } _converse
@@ -25797,7 +25166,7 @@ function parseMemberListIQ(iq) {
 /**
  * Parses a passed in MUC presence stanza and returns an object of attributes.
  * @method parseMUCPresence
- * @param { XMLElement } stanza - The presence stanza
+ * @param { Element } stanza - The presence stanza
  * @param { _converse.ChatRoom } chatbox
  * @returns { MUCPresenceAttributes }
  */
@@ -25971,12 +25340,9 @@ async function openChatRoom(jid, settings) {
  * See XEP-0249: Direct MUC invitations.
  * @private
  * @method _converse.ChatRoom#onDirectMUCInvitation
- * @param { XMLElement } message - The message stanza containing the invitation.
+ * @param { Element } message - The message stanza containing the invitation.
  */
 async function onDirectMUCInvitation(message) {
-  const {
-    __
-  } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse;
   const x_el = sizzle('x[xmlns="jabber:x:conference"]', message).pop(),
     from = Strophe.getBareJidFromJid(message.getAttribute('from')),
     room_jid = x_el.getAttribute('jid'),
@@ -25986,13 +25352,22 @@ async function onDirectMUCInvitation(message) {
     result = true;
   } else {
     // Invite request might come from someone not your roster list
-    let contact = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.roster.get(from);
-    contact = contact ? contact.getDisplayName() : from;
-    if (!reason) {
-      result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.confirm(__('%1$s has invited you to join a groupchat: %2$s', contact, room_jid));
-    } else {
-      result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.confirm(__('%1$s has invited you to join a groupchat: %2$s, and left the following reason: "%3$s"', contact, room_jid, reason));
-    }
+    const contact = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.roster.get(from)?.getDisplayName() ?? from;
+
+    /**
+     * *Hook* which is used to gather confirmation whether a direct MUC
+     * invitation should be accepted or not.
+     *
+     * It's meant for consumers of `@converse/headless` to subscribe to
+     * this hook and then ask the user to confirm.
+     *
+     * @event _converse#confirmDirectMUCInvitation
+     */
+    result = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.hook('confirmDirectMUCInvitation', {
+      contact,
+      reason,
+      jid: room_jid
+    }, false);
   }
   if (result) {
     const chatroom = await openChatRoom(room_jid, {
@@ -26137,7 +25512,7 @@ const {
    * @method api.ping
    * @param { String } [jid] - The JID of the service to ping
    *  If the ping is sent out to the user's bare JID and no response is received it will attempt to reconnect.
-   * @param { Integer } [timeout] - The amount of time in
+   * @param { number } [timeout] - The amount of time in
    *  milliseconds to wait for a response. The default is 10000;
    * @returns { Boolean | null }
    *  Whether the pinged entity responded with a non-error IQ stanza.
@@ -26349,12 +25724,12 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.converse.plugins.add('converse-pubsub', {
          * Publshes an item to a PubSub node
          *
          * @method _converse.api.pubsub.publish
-         * @param {string} jid The JID of the pubsub service where the node resides.
-         * @param {string} node The node being published to
+         * @param { string } jid The JID of the pubsub service where the node resides.
+         * @param { string } node The node being published to
          * @param {Strophe.Builder} item The Strophe.Builder representation of the XML element being published
-         * @param {object} options An object representing the publisher options
+         * @param { object } options An object representing the publisher options
          *      (see https://xmpp.org/extensions/xep-0060.html#publisher-publish-options)
-         * @param {boolean} strict_options Indicates whether the publisher
+         * @param { boolean } strict_options Indicates whether the publisher
          *      options are a strict requirement or not. If they're NOT
          *      strict, then Converse will publish to the node even if
          *      the publish options precondication cannot be met.
@@ -26478,8 +25853,8 @@ const {
      * Add a contact.
      *
      * @method _converse.api.contacts.add
-     * @param {string} jid The JID of the contact to be added
-     * @param {string} [name] A custom name to show the user by in the roster
+     * @param { string } jid The JID of the contact to be added
+     * @param { string } [name] A custom name to show the user by in the roster
      * @example
      *     _converse.api.contacts.add('buddy@example.com')
      * @example
@@ -26508,10 +25883,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
+/* harmony import */ var _converse_headless_plugins_status_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/plugins/status/api.js */ "./src/headless/plugins/status/api.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/roster/utils.js");
+
 
 
 
@@ -26520,24 +25897,24 @@ const {
   Strophe,
   $iq,
   $pres
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env;
 
 /**
  * @class
  * @namespace RosterContact
  */
-const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0__.Model.extend({
+const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Model.extend({
   idAttribute: 'jid',
   defaults: {
     'chat_state': undefined,
     'groups': [],
-    'image': _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.DEFAULT_IMAGE,
-    'image_type': _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.DEFAULT_IMAGE_TYPE,
+    'image': _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.DEFAULT_IMAGE,
+    'image_type': _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.DEFAULT_IMAGE_TYPE,
     'num_unread': 0,
     'status': undefined
   },
   async initialize(attributes) {
-    this.initialized = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_2__.getOpenPromise)();
+    this.initialized = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_3__.getOpenPromise)();
     this.setPresence();
     const {
       jid
@@ -26556,27 +25933,27 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
      * @type { _converse.RosterContact }
      * @example _converse.api.listen.on('contactPresenceChanged', contact => { ... });
      */
-    this.listenTo(this.presence, 'change:show', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.trigger('contactPresenceChanged', this));
+    this.listenTo(this.presence, 'change:show', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('contactPresenceChanged', this));
     this.listenTo(this.presence, 'change:show', () => this.trigger('presenceChanged'));
     /**
      * Synchronous event which provides a hook for further initializing a RosterContact
      * @event _converse#rosterContactInitialized
      * @param { _converse.RosterContact } contact
      */
-    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.trigger('rosterContactInitialized', this, {
+    await _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('rosterContactInitialized', this, {
       'Synchronous': true
     });
     this.initialized.resolve();
   },
   setPresence() {
     const jid = this.get('jid');
-    this.presence = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.presences.findWhere(jid) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.presences.create({
+    this.presence = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.presences.findWhere(jid) || _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.presences.create({
       jid
     });
   },
   openChat() {
     const attrs = this.attributes;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.chats.open(attrs.jid, attrs, true);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.chats.open(attrs.jid, attrs, true);
   },
   /**
    * Return a string of tab-separated values that are to be used when
@@ -26608,26 +25985,12 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
   },
   /**
    * Send a presence subscription request to this roster contact
-   * @private
    * @method _converse.RosterContacts#subscribe
    * @param { String } message - An optional message to explain the
    *      reason for the subscription request.
    */
   subscribe(message) {
-    const pres = $pres({
-      to: this.get('jid'),
-      type: "subscribe"
-    });
-    if (message && message !== "") {
-      pres.c("status").t(message).up();
-    }
-    const nick = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.xmppstatus.getNickname() || _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.xmppstatus.getFullname();
-    if (nick) {
-      pres.c('nick', {
-        'xmlns': Strophe.NS.NICK
-      }).t(nick).up();
-    }
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.send(pres);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.user.presence.send('subscribe', this.get('jid'), message);
     this.save('ask', "subscribe"); // ask === 'subscribe' Means we have asked to subscribe to them.
     return this;
   },
@@ -26640,7 +26003,7 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
    * @method _converse.RosterContacts#ackSubscribe
    */
   ackSubscribe() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.send($pres({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.send($pres({
       'type': 'subscribe',
       'to': this.get('jid')
     }));
@@ -26653,10 +26016,9 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
    * send notification of the subscription state change to the user.
    * @private
    * @method _converse.RosterContacts#ackUnsubscribe
-   * @param { String } jid - The Jabber ID of the user who is unsubscribing
    */
   ackUnsubscribe() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.send($pres({
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.send($pres({
       'type': 'unsubscribe',
       'to': this.get('jid')
     }));
@@ -26670,7 +26032,7 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
    * @param { String } message - Optional message to send to the person being unauthorized
    */
   unauthorize(message) {
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.rejectPresenceSubscription)(this.get('jid'), message);
+    (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.rejectPresenceSubscription)(this.get('jid'), message);
     return this;
   },
   /**
@@ -26687,7 +26049,7 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
     if (message && message !== "") {
       pres.c("status").t(message);
     }
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.send(pres);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.send(pres);
     return this;
   },
   /**
@@ -26705,7 +26067,7 @@ const RosterContact = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0
       jid: this.get('jid'),
       subscription: "remove"
     });
-    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.sendIQ(iq);
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.sendIQ(iq);
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RosterContact);
@@ -26833,7 +26195,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
    * @method _converse.RosterContacts#addAndSubscribe
    * @param { String } jid - The Jabber ID of the user being added and subscribed to.
    * @param { String } name - The name of that user
-   * @param { Array.String } groups - Any roster groups the user might belong to
+   * @param { Array<String> } groups - Any roster groups the user might belong to
    * @param { String } message - An optional message to explain the reason for the subscription request.
    * @param { Object } attributes - Any additional attributes to be stored on the user's model.
    */
@@ -26848,9 +26210,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
    * @method _converse.RosterContacts#sendContactAddIQ
    * @param { String } jid - The Jabber ID of the user being added
    * @param { String } name - The name of that user
-   * @param { Array.String } groups - Any roster groups the user might belong to
-   * @param { Function } callback - A function to call once the IQ is returned
-   * @param { Function } errback - A function to call if an error occurred
+   * @param { Array<String> } groups - Any roster groups the user might belong to
    */
   sendContactAddIQ(jid, name, groups) {
     name = name ? name : null;
@@ -26872,7 +26232,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
    * @method _converse.RosterContacts#addContactToRoster
    * @param { String } jid - The Jabber ID of the user being added and subscribed to.
    * @param { String } name - The name of that user
-   * @param { Array.String } groups - Any roster groups the user might belong to
+   * @param { Array<String> } groups - Any roster groups the user might belong to
    * @param { Object } attributes - Any additional attributes to be stored on the user's model.
    */
   async addContactToRoster(jid, name, groups, attributes) {
@@ -26918,7 +26278,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
    * Handle roster updates from the XMPP server.
    * See: https://xmpp.org/rfcs/rfc6121.html#roster-syntax-actions-push
    * @method _converse.RosterContacts#onRosterPush
-   * @param { XMLElement } IQ - The IQ stanza received from the XMPP server.
+   * @param { Element } iq - The IQ stanza received from the XMPP server.
    */
   onRosterPush(iq) {
     const id = iq.getAttribute('id');
@@ -26954,7 +26314,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
     /**
      * When the roster receives a push event from server (i.e. new entry in your contacts roster).
      * @event _converse#rosterPush
-     * @type { XMLElement }
+     * @type { Element }
      * @example _converse.api.listen.on('rosterPush', iq => { ... });
      */
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('rosterPush', iq);
@@ -27006,7 +26366,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
      * See also the `cachedRoster` event further up, which gets called instead of
      * `roster` if its already in `sessionStorage`.
      * @event _converse#roster
-     * @type { XMLElement }
+     * @type { Element }
      * @example _converse.api.listen.on('roster', iq => { ... });
      * @example _converse.api.waitUntil('roster').then(iq => { ... });
      */
@@ -27015,7 +26375,7 @@ const RosterContacts = _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODUL
   /**
    * Update or create RosterContact models based on the given `item` XML
    * node received in the resulting IQ stanza from the server.
-   * @param { XMLElement } item
+   * @param { Element } item
    */
   updateContact(item) {
     const jid = item.getAttribute('jid');
@@ -27330,7 +26690,7 @@ const Presence = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Mo
    * from the passed in presence stanza.
    * Also updates the presence if the resource has higher priority (and is newer).
    * @private
-   * @param { XMLElement } presence: The presence stanza
+   * @param { Element } presence: The presence stanza
    */
   addResource(presence) {
     const jid = presence.getAttribute('from'),
@@ -27395,6 +26755,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_plugins_roster_filter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/roster/filter.js */ "./src/headless/plugins/roster/filter.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+
 
 
 
@@ -27478,7 +26840,7 @@ async function clearPresences() {
  */
 async function onClearSession() {
   await clearPresences();
-  if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.shouldClearCache()) {
+  if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__.shouldClearCache)()) {
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.rostergroups) {
       await _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.rostergroups.clearStore();
       delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__._converse.rostergroups;
@@ -27910,35 +27272,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   /**
-   * @namespace _converse.api.user.presence
-   * @memberOf _converse.api.user
-   */
-  presence: {
-    /**
-     * Send out a presence stanza
-     * @method _converse.api.user.presence.send
-     * @param { String } type
-     * @param { String } to
-     * @param { String } [status] - An optional status message
-     * @param { Element[]|Strophe.Builder[]|Element|Strophe.Builder } [child_nodes]
-     *  Nodes(s) to be added as child nodes of the `presence` XML element.
-     */
-    async send(type, to, status, child_nodes) {
-      await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.waitUntil('statusInitialized');
-      if (child_nodes && !Array.isArray(child_nodes)) {
-        child_nodes = [child_nodes];
-      }
-      const model = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.xmppstatus;
-      const presence = await model.constructPresence(type, to, status);
-      child_nodes?.map(c => c?.tree() ?? c).forEach(c => presence.cnode(c).up());
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.send(presence);
-      if (['away', 'chat', 'dnd', 'online', 'xa', undefined].includes(type)) {
-        const mucs = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.rooms.get();
-        mucs.forEach(muc => muc.sendStatusPresence(type, status, child_nodes));
-      }
-    }
-  },
-  /**
    * Set and get the user's chat status, also called their *availability*.
    * @namespace _converse.api.user.status
    * @memberOf _converse.api.user
@@ -27959,8 +27292,8 @@ __webpack_require__.r(__webpack_exports__);
      *
      * @async
      * @method _converse.api.user.status.set
-     * @param {string} value The user's chat status (e.g. 'away', 'dnd', 'offline', 'online', 'unavailable' or 'xa')
-     * @param {string} [message] A custom status message
+     * @param { string } value The user's chat status (e.g. 'away', 'dnd', 'offline', 'online', 'unavailable' or 'xa')
+     * @param { string } [message] A custom status message
      *
      * @example _converse.api.user.status.set('dnd');
      * @example _converse.api.user.status.set('dnd', 'In a meeting');
@@ -27988,7 +27321,7 @@ __webpack_require__.r(__webpack_exports__);
       /**
        * @async
        * @method _converse.api.user.status.message.get
-       * @returns {string} The status message
+       * @returns { Promise<string> } The status message
        * @example const message = _converse.api.user.status.message.get()
        */
       async get() {
@@ -27998,7 +27331,7 @@ __webpack_require__.r(__webpack_exports__);
       /**
        * @async
        * @method _converse.api.user.status.message.set
-       * @param {string} status The status message
+       * @param { string } status The status message
        * @example _converse.api.user.status.message.set('In a meeting');
        */
       async set(status) {
@@ -28024,11 +27357,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./status.js */ "./src/headless/plugins/status/status.js");
 /* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.js */ "./src/headless/plugins/status/api.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/status/utils.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/headless/plugins/status/utils.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
+
 
 
 
@@ -28053,10 +27388,10 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('conve
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.promises.add(['statusInitialized']);
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.XMPPStatus = _status_js__WEBPACK_IMPORTED_MODULE_0__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.onUserActivity = _utils_js__WEBPACK_IMPORTED_MODULE_3__.onUserActivity;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.onEverySecond = _utils_js__WEBPACK_IMPORTED_MODULE_3__.onEverySecond;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.sendCSI = _utils_js__WEBPACK_IMPORTED_MODULE_3__.sendCSI;
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.registerIntervalHandler = _utils_js__WEBPACK_IMPORTED_MODULE_3__.registerIntervalHandler;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.onUserActivity = _utils_js__WEBPACK_IMPORTED_MODULE_4__.onUserActivity;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.onEverySecond = _utils_js__WEBPACK_IMPORTED_MODULE_4__.onEverySecond;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.sendCSI = _utils_js__WEBPACK_IMPORTED_MODULE_4__.sendCSI;
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.registerIntervalHandler = _utils_js__WEBPACK_IMPORTED_MODULE_4__.registerIntervalHandler;
     Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.api.user, _api_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get("idle_presence_timeout") > 0) {
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('addClientFeatures', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.disco.own.features.add(Strophe.NS.IDLE));
@@ -28067,15 +27402,15 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('conve
       }
     });
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('clearSession', () => {
-      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.shouldClearCache() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.xmppstatus) {
+      if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_3__.shouldClearCache)() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.xmppstatus) {
         _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.xmppstatus.destroy();
         delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.xmppstatus;
         _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.promises.add(['statusInitialized']);
       }
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('connected', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.initStatus)(false));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('reconnected', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.initStatus)(true));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('constructedMUCPresence', _utils_js__WEBPACK_IMPORTED_MODULE_3__.addStatusToMUCJoinPresence);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('connected', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.initStatus)(false));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('reconnected', () => (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__.initStatus)(true));
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('constructedMUCPresence', _utils_js__WEBPACK_IMPORTED_MODULE_4__.addStatusToMUCJoinPresence);
   }
 });
 
@@ -28127,39 +27462,68 @@ const XMPPStatus = _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_0__.
     // Gets overridden in converse-vcard
     return '';
   },
+  /** Constructs a presence stanza
+   * @param { string } [type]
+   * @param { string } [to] - The JID to which this presence should be sent
+   * @param { string } [status_message]
+   */
   async constructPresence(type) {
     let to = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     let status_message = arguments.length > 2 ? arguments[2] : undefined;
     type = typeof type === 'string' ? type : this.get('status') || _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get("default_state");
     status_message = typeof status_message === 'string' ? status_message : this.get('status_message');
     let presence;
-    const attrs = {
-      to
-    };
-    if (type === 'unavailable' || type === 'probe' || type === 'error' || type === 'unsubscribe' || type === 'unsubscribed' || type === 'subscribe' || type === 'subscribed') {
-      attrs['type'] = type;
-      presence = $pres(attrs);
+    if (type === 'subscribe') {
+      presence = $pres({
+        to,
+        type
+      });
+      const {
+        xmppstatus
+      } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse;
+      const nick = xmppstatus.getNickname();
+      if (nick) presence.c('nick', {
+        'xmlns': Strophe.NS.NICK
+      }).t(nick).up();
+    } else if (type === 'unavailable' || type === 'probe' || type === 'error' || type === 'unsubscribe' || type === 'unsubscribed' || type === 'subscribed') {
+      presence = $pres({
+        to,
+        type
+      });
     } else if (type === 'offline') {
-      attrs['type'] = 'unavailable';
-      presence = $pres(attrs);
+      presence = $pres({
+        to,
+        type: 'unavailable'
+      });
     } else if (type === 'online') {
-      presence = $pres(attrs);
+      presence = $pres({
+        to
+      });
     } else {
-      presence = $pres(attrs).c('show').t(type).up();
+      presence = $pres({
+        to
+      }).c('show').t(type).up();
     }
-    if (status_message) {
-      presence.c('status').t(status_message).up();
-    }
+    if (status_message) presence.c('status').t(status_message).up();
     const priority = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get("priority");
     presence.c('priority').t((0,lodash_es_isNaN__WEBPACK_IMPORTED_MODULE_3__["default"])(Number(priority)) ? 0 : priority).up();
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.idle) {
+    const {
+      idle,
+      idle_seconds
+    } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse;
+    if (idle) {
       const idle_since = new Date();
-      idle_since.setSeconds(idle_since.getSeconds() - _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.idle_seconds);
+      idle_since.setSeconds(idle_since.getSeconds() - idle_seconds);
       presence.c('idle', {
         xmlns: Strophe.NS.IDLE,
         since: idle_since.toISOString()
       });
     }
+
+    /**
+     * *Hook* which allows plugins to modify a presence stanza
+     * @event _converse#constructedPresence
+     */
     presence = await _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.hook('constructedPresence', null, presence);
     return presence;
   }
@@ -28364,8 +27728,8 @@ const {
      * for the passed in JID.
      *
      * @method _converse.api.vcard.set
-     * @param {string} jid The JID for which the VCard should be set
-     * @param {object} data A map of VCard keys and values
+     * @param { string } jid The JID for which the VCard should be set
+     * @param { object } data A map of VCard keys and values
      * @example
      * let jid = _converse.bare_jid;
      * _converse.api.vcard.set( jid, {
@@ -28408,7 +27772,7 @@ const {
      * @param {Model|string} model Either a `Model` instance, or a string JID.
      *     If a `Model` instance is passed in, then it must have either a `jid`
      *     attribute or a `muc_jid` attribute.
-     * @param {boolean} [force] A boolean indicating whether the vcard should be
+     * @param { boolean } [force] A boolean indicating whether the vcard should be
      *     fetched from the server even if it's been fetched before.
      * @returns {promise} A Promise which resolves with the VCard data for a particular JID or for
      *     a `Model` instance which represents an entity with a JID (such as a roster contact,
@@ -28446,8 +27810,8 @@ const {
      * returned VCard data.
      *
      * @method _converse.api.vcard.update
-     * @param {Model} model A `Model` instance
-     * @param {boolean} [force] A boolean indicating whether the vcard should be
+     * @param { Model } model A `Model` instance
+     * @param { boolean } [force] A boolean indicating whether the vcard should be
      *     fetched again even if it's been fetched before.
      * @returns {promise} A promise which resolves once the update has completed.
      * @example
@@ -28598,6 +27962,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
 /* harmony import */ var _converse_headless_utils_storage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+
 
 
 
@@ -28761,7 +28127,7 @@ async function initVCardCollection() {
   _core_js__WEBPACK_IMPORTED_MODULE_1__.api.trigger('VCardsInitialized');
 }
 function clearVCardsSession() {
-  if (_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.shouldClearCache()) {
+  if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_3__.shouldClearCache)()) {
     _core_js__WEBPACK_IMPORTED_MODULE_1__.api.promises.add('VCardsInitialized');
     if (_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.vcards) {
       _core_js__WEBPACK_IMPORTED_MODULE_1__._converse.vcards.clearStore();
@@ -28853,12 +28219,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./i18n.js */ "./src/headless/shared/i18n.js");
 /* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../log.js */ "./src/headless/log.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/headless/shared/constants.js");
-/* harmony import */ var _converse_skeletor_src_router_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/router.js */ "./node_modules/@converse/skeletor/src/router.js");
-/* harmony import */ var _errors_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./errors.js */ "./src/headless/shared/errors.js");
-/* harmony import */ var _utils_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/storage.js */ "./src/headless/utils/storage.js");
-/* harmony import */ var _settings_utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./settings/utils.js */ "./src/headless/shared/settings/utils.js");
-/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! pluggable.js/src/pluggable.js */ "./node_modules/pluggable.js/src/pluggable.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./src/headless/shared/constants.js");
+/* harmony import */ var _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/skeletor/src/events.js */ "./node_modules/@converse/skeletor/src/events.js");
+/* harmony import */ var _converse_skeletor_src_router_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/skeletor/src/router.js */ "./node_modules/@converse/skeletor/src/router.js");
+/* harmony import */ var _errors_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./errors.js */ "./src/headless/shared/errors.js");
+/* harmony import */ var _utils_storage_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/storage.js */ "./src/headless/utils/storage.js");
+/* harmony import */ var _settings_utils_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./settings/utils.js */ "./src/headless/shared/settings/utils.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/core.js */ "./src/headless/utils/core.js");
+
+
+
 
 
 
@@ -28876,10 +28248,14 @@ __webpack_require__.r(__webpack_exports__);
  */
 const _converse = {
   log: _log_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-  CONNECTION_STATUS: _constants__WEBPACK_IMPORTED_MODULE_2__.CONNECTION_STATUS,
+  shouldClearCache: _utils_core_js__WEBPACK_IMPORTED_MODULE_10__.shouldClearCache,
+  // TODO: Should be moved to utils with next major release
+
+  CONNECTION_STATUS: _constants__WEBPACK_IMPORTED_MODULE_3__.CONNECTION_STATUS,
+  VERSION_NAME: _constants__WEBPACK_IMPORTED_MODULE_3__.VERSION_NAME,
   templates: {},
   promises: {
-    'initialized': (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_7__.getOpenPromise)()
+    'initialized': (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_9__.getOpenPromise)()
   },
   STATUS_WEIGHTS: {
     'offline': 6,
@@ -28900,7 +28276,7 @@ const _converse = {
   PREBIND: 'prebind',
   /**
    * @constant
-   * @type { integer }
+   * @type { number }
    */
   STANZA_TIMEOUT: 20000,
   SUCCESS: 'success',
@@ -28928,13 +28304,13 @@ const _converse = {
   default_connection_options: {
     'explicitResourceBinding': true
   },
-  router: new _converse_skeletor_src_router_js__WEBPACK_IMPORTED_MODULE_3__.Router(),
-  TimeoutError: _errors_js__WEBPACK_IMPORTED_MODULE_4__.TimeoutError,
+  router: new _converse_skeletor_src_router_js__WEBPACK_IMPORTED_MODULE_5__.Router(),
+  TimeoutError: _errors_js__WEBPACK_IMPORTED_MODULE_6__.TimeoutError,
   isTestEnv: () => {
-    return (0,_settings_utils_js__WEBPACK_IMPORTED_MODULE_6__.getInitSettings)()['bosh_service_url'] === 'montague.lit/http-bind';
+    return (0,_settings_utils_js__WEBPACK_IMPORTED_MODULE_8__.getInitSettings)()['bosh_service_url'] === 'montague.lit/http-bind';
   },
-  getDefaultStore: _utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.getDefaultStore,
-  createStore: _utils_storage_js__WEBPACK_IMPORTED_MODULE_5__.createStore,
+  getDefaultStore: _utils_storage_js__WEBPACK_IMPORTED_MODULE_7__.getDefaultStore,
+  createStore: _utils_storage_js__WEBPACK_IMPORTED_MODULE_7__.createStore,
   /**
    * Translate the given string based on the current locale.
    * @method __
@@ -28963,6 +28339,12 @@ const _converse = {
    */
   '___': str => str
 };
+
+// Make _converse an event emitter
+Object.assign(_converse, _converse_skeletor_src_events_js__WEBPACK_IMPORTED_MODULE_4__.Events);
+
+// Make _converse pluggable
+pluggable_js_src_pluggable_js__WEBPACK_IMPORTED_MODULE_2__["default"].enable(_converse, '_converse', 'pluggable');
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_converse);
 
 /***/ }),
@@ -29022,6 +28404,783 @@ function sendMarker(to_jid, id, type, msg_type) {
   });
   _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.send(stanza);
 }
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/events.js":
+/*!*******************************************!*\
+  !*** ./src/headless/shared/api/events.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _converse_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_converse.js */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/core.js */ "./src/headless/utils/core.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  /**
+   * Lets you trigger events, which can be listened to via
+   * {@link _converse.api.listen.on} or {@link _converse.api.listen.once}
+   * (see [_converse.api.listen](http://localhost:8000/docs/html/api/-_converse.api.listen.html)).
+   *
+   * Some events also double as promises and can be waited on via {@link _converse.api.waitUntil}.
+   *
+   * @method _converse.api.trigger
+   * @param { string } name - The event name
+   * @param {...any} [argument] - Argument to be passed to the event handler
+   * @param { object } [options]
+   * @param { boolean } [options.synchronous] - Whether the event is synchronous or not.
+   *  When a synchronous event is fired, a promise will be returned
+   *  by {@link _converse.api.trigger} which resolves once all the
+   *  event handlers' promises have been resolved.
+   */
+  async trigger(name) {
+    if (!_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]._events) {
+      return;
+    }
+    const args = Array.from(arguments);
+    const options = args.pop();
+    if (options && options.synchronous) {
+      const events = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]._events[name] || [];
+      const event_args = args.splice(1);
+      await Promise.all(events.map(e => e.callback.apply(e.ctx, event_args)));
+    } else {
+      _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].trigger.apply(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"], arguments);
+    }
+    const promise = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].promises[name];
+    if (promise !== undefined) {
+      promise.resolve();
+    }
+  },
+  /**
+   * Triggers a hook which can be intercepted by registered listeners via
+   * {@link _converse.api.listen.on} or {@link _converse.api.listen.once}.
+   * (see [_converse.api.listen](http://localhost:8000/docs/html/api/-_converse.api.listen.html)).
+   * A hook is a special kind of event which allows you to intercept a data
+   * structure in order to modify it, before passing it back.
+   * @async
+   * @param { string } name - The hook name
+   * @param {...any} context - The context to which the hook applies (could be for example, a {@link _converse.ChatBox)).
+   * @param {...any} data - The data structure to be intercepted and modified by the hook listeners.
+   * @returns {Promise<any>} - A promise that resolves with the modified data structure.
+   */
+  hook(name, context, data) {
+    const events = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]._events[name] || [];
+    if (events.length) {
+      // Create a chain of promises, with each one feeding its output to
+      // the next. The first input is a promise with the original data
+      // sent to this hook.
+      return events.reduce((o, e) => o.then(d => e.callback(context, d)), Promise.resolve(data));
+    } else {
+      return data;
+    }
+  },
+  /**
+   * Converse emits events to which you can subscribe to.
+   *
+   * The `listen` namespace exposes methods for creating event listeners
+   * (aka handlers) for these events.
+   *
+   * @namespace _converse.api.listen
+   * @memberOf _converse
+   */
+  listen: {
+    /**
+     * Lets you listen to an event exactly once.
+     * @method _converse.api.listen.once
+     * @param { string } name The event's name
+     * @param { function } callback The callback method to be called when the event is emitted.
+     * @param { object } [context] The value of the `this` parameter for the callback.
+     * @example _converse.api.listen.once('message', function (messageXML) { ... });
+     */
+    once: _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].once.bind(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
+    /**
+     * Lets you subscribe to an event.
+     * Every time the event fires, the callback method specified by `callback` will be called.
+     * @method _converse.api.listen.on
+     * @param { string } name The event's name
+     * @param { function } callback The callback method to be called when the event is emitted.
+     * @param { object } [context] The value of the `this` parameter for the callback.
+     * @example _converse.api.listen.on('message', function (messageXML) { ... });
+     */
+    on: _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].on.bind(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
+    /**
+     * To stop listening to an event, you can use the `not` method.
+     * @method _converse.api.listen.not
+     * @param { string } name The event's name
+     * @param { function } callback The callback method that is to no longer be called when the event fires
+     * @example _converse.api.listen.not('message', function (messageXML);
+     */
+    not: _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].off.bind(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
+    /**
+     * Subscribe to an incoming stanza
+     * Every a matched stanza is received, the callback method specified by
+     * `callback` will be called.
+     * @method _converse.api.listen.stanza
+     * @param { string } name The stanza's name
+     * @param { object } options Matching options (e.g. 'ns' for namespace, 'type' for stanza type, also 'id' and 'from');
+     * @param { function } handler The callback method to be called when the stanza appears
+     */
+    stanza(name, options, handler) {
+      if ((0,_utils_core_js__WEBPACK_IMPORTED_MODULE_1__["default"])(options)) {
+        handler = options;
+        options = {};
+      } else {
+        options = options || {};
+      }
+      _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.addHandler(handler, options.ns, name, options.type, options.id, options.from, options);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/index.js":
+/*!******************************************!*\
+  !*** ./src/headless/shared/api/index.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _converse_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_converse.js */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _connection_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../connection/api.js */ "./src/headless/shared/connection/api.js");
+/* harmony import */ var _api_events_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/events.js */ "./src/headless/shared/api/events.js");
+/* harmony import */ var _api_promise_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/promise.js */ "./src/headless/shared/api/promise.js");
+/* harmony import */ var _api_send_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/send.js */ "./src/headless/shared/api/send.js");
+/* harmony import */ var _api_user_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api/user.js */ "./src/headless/shared/api/user.js");
+/* harmony import */ var _settings_api_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../settings/api.js */ "./src/headless/shared/settings/api.js");
+
+
+
+
+
+
+
+
+/**
+ * ### The private API
+ *
+ * The private API methods are only accessible via the closured {@link _converse}
+ * object, which is only available to plugins.
+ *
+ * These methods are kept private (i.e. not global) because they may return
+ * sensitive data which should be kept off-limits to other 3rd-party scripts
+ * that might be running in the page.
+ *
+ * @namespace _converse.api
+ * @memberOf _converse
+ */
+const api = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].api = {
+  connection: _connection_api_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  settings: _settings_api_js__WEBPACK_IMPORTED_MODULE_6__.settings_api,
+  ..._api_send_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+  ..._api_user_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+  ..._api_events_js__WEBPACK_IMPORTED_MODULE_2__["default"],
+  ..._api_promise_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/presence.js":
+/*!*********************************************!*\
+  !*** ./src/headless/shared/api/presence.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../core.js */ "./src/headless/core.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  /**
+   * @namespace _converse.api.user.presence
+   * @memberOf _converse.api.user
+   */
+  presence: {
+    /**
+     * Send out a presence stanza
+     * @method _converse.api.user.presence.send
+     * @param { String } type
+     * @param { String } to
+     * @param { String } [status] - An optional status message
+     * @param { Array<Element>|Array<Strophe.Builder>|Element|Strophe.Builder } [child_nodes]
+     *  Nodes(s) to be added as child nodes of the `presence` XML element.
+     */
+    async send(type, to, status, child_nodes) {
+      await _core_js__WEBPACK_IMPORTED_MODULE_0__.api.waitUntil('statusInitialized');
+      if (child_nodes && !Array.isArray(child_nodes)) {
+        child_nodes = [child_nodes];
+      }
+      const model = _core_js__WEBPACK_IMPORTED_MODULE_0__._converse.xmppstatus;
+      const presence = await model.constructPresence(type, to, status);
+      child_nodes?.map(c => c?.tree() ?? c).forEach(c => presence.cnode(c).up());
+      _core_js__WEBPACK_IMPORTED_MODULE_0__.api.send(presence);
+      if (['away', 'chat', 'dnd', 'online', 'xa', undefined].includes(type)) {
+        const mucs = await _core_js__WEBPACK_IMPORTED_MODULE_0__.api.rooms.get();
+        mucs.forEach(muc => muc.sendStatusPresence(type, status, child_nodes));
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/promise.js":
+/*!********************************************!*\
+  !*** ./src/headless/shared/api/promise.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/shared/_converse.js */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/core.js */ "./src/headless/utils/core.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  /**
+   * Converse and its plugins trigger various events which you can listen to via the
+   * {@link _converse.api.listen} namespace.
+   *
+   * Some of these events are also available as [ES2015 Promises](http://es6-features.org/#PromiseUsage)
+   * although not all of them could logically act as promises, since some events
+   * might be fired multpile times whereas promises are to be resolved (or
+   * rejected) only once.
+   *
+   * Events which are also promises include:
+   *
+   * * [cachedRoster](/docs/html/events.html#cachedroster)
+   * * [chatBoxesFetched](/docs/html/events.html#chatBoxesFetched)
+   * * [pluginsInitialized](/docs/html/events.html#pluginsInitialized)
+   * * [roster](/docs/html/events.html#roster)
+   * * [rosterContactsFetched](/docs/html/events.html#rosterContactsFetched)
+   * * [rosterGroupsFetched](/docs/html/events.html#rosterGroupsFetched)
+   * * [rosterInitialized](/docs/html/events.html#rosterInitialized)
+   *
+   * The various plugins might also provide promises, and they do this by using the
+   * `promises.add` api method.
+   *
+   * @namespace _converse.api.promises
+   * @memberOf _converse.api
+   */
+  promises: {
+    /**
+     * By calling `promises.add`, a new [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+     * is made available for other code or plugins to depend on via the
+     * {@link _converse.api.waitUntil} method.
+     *
+     * Generally, it's the responsibility of the plugin which adds the promise to
+     * also resolve it.
+     *
+     * This is done by calling {@link _converse.api.trigger}, which not only resolves the
+     * promise, but also emits an event with the same name (which can be listened to
+     * via {@link _converse.api.listen}).
+     *
+     * @method _converse.api.promises.add
+     * @param {string|array} [name|names] The name or an array of names for the promise(s) to be added
+     * @param { boolean } [replace=true] Whether this promise should be replaced with a new one when the user logs out.
+     * @example _converse.api.promises.add('foo-completed');
+     */
+    add(promises) {
+      let replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      promises = Array.isArray(promises) ? promises : [promises];
+      promises.forEach(name => {
+        const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_1__.getOpenPromise)();
+        promise.replace = replace;
+        _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].promises[name] = promise;
+      });
+    }
+  },
+  /**
+   * Wait until a promise is resolved or until the passed in function returns
+   * a truthy value.
+   * @method _converse.api.waitUntil
+   * @param {string|function} condition - The name of the promise to wait for,
+   * or a function which should eventually return a truthy value.
+   * @returns {Promise}
+   */
+  waitUntil(condition) {
+    if ((0,_utils_core_js__WEBPACK_IMPORTED_MODULE_2__.isFunction)(condition)) {
+      return (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_2__.waitUntil)(condition);
+    } else {
+      const promise = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].promises[condition];
+      if (promise === undefined) {
+        return null;
+      }
+      return promise;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/public.js":
+/*!*******************************************!*\
+  !*** ./src/headless/shared/api/public.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "converse": () => (/* binding */ converse)
+/* harmony export */ });
+/* harmony import */ var _connection_feedback_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../connection/feedback.js */ "./src/headless/shared/connection/feedback.js");
+/* harmony import */ var urijs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! urijs */ "./node_modules/urijs/src/URI.js");
+/* harmony import */ var urijs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(urijs__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _converse_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../_converse.js */ "./src/headless/shared/_converse.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../i18n */ "./src/headless/shared/i18n.js");
+/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../log.js */ "./src/headless/log.js");
+/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! sizzle */ "./node_modules/sizzle/dist/sizzle.js");
+/* harmony import */ var sizzle__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(sizzle__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../constants.js */ "./src/headless/shared/constants.js");
+/* harmony import */ var _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/skeletor/src/collection */ "./node_modules/@converse/skeletor/src/collection.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _settings_utils_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../settings/utils.js */ "./src/headless/shared/settings/utils.js");
+/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! sprintf-js */ "./node_modules/sprintf-js/src/sprintf.js");
+/* harmony import */ var sprintf_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(sprintf_js__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../utils/init.js */ "./src/headless/utils/init.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * ### The Public API
+ *
+ * This namespace contains public API methods which are are
+ * accessible on the global `converse` object.
+ * They are public, because any JavaScript in the
+ * page can call them. Public methods therefore don’t expose any sensitive
+ * or closured data. To do that, you’ll need to create a plugin, which has
+ * access to the private API method.
+ *
+ * @global
+ * @namespace converse
+ */
+const converse = Object.assign(window.converse || {}, {
+  CHAT_STATES: _constants_js__WEBPACK_IMPORTED_MODULE_8__.CHAT_STATES,
+  keycodes: _constants_js__WEBPACK_IMPORTED_MODULE_8__.KEYCODES,
+  /**
+   * Public API method which initializes Converse.
+   * This method must always be called when using Converse.
+   * @async
+   * @memberOf converse
+   * @method initialize
+   * @param { object } config A map of [configuration-settings](https://conversejs.org/docs/html/configuration.html#configuration-settings).
+   * @example
+   * converse.initialize({
+   *     auto_list_rooms: false,
+   *     auto_subscribe: false,
+   *     bosh_service_url: 'https://bind.example.com',
+   *     hide_muc_server: false,
+   *     i18n: 'en',
+   *     play_sounds: true,
+   *     show_controlbox_by_default: true,
+   *     debug: false,
+   *     roster_groups: true
+   * });
+   */
+  async initialize(settings) {
+    const {
+      api
+    } = _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"];
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_15__.cleanup)(_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_7__.setUnloadEvent)();
+    (0,_settings_utils_js__WEBPACK_IMPORTED_MODULE_13__.initAppSettings)(settings);
+    _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].strict_plugin_dependencies = settings.strict_plugin_dependencies; // Needed by pluggable.js
+    _log_js__WEBPACK_IMPORTED_MODULE_5__["default"].setLogLevel(api.settings.get("loglevel"));
+    if (api.settings.get("authentication") === _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].ANONYMOUS) {
+      if (api.settings.get("auto_login") && !api.settings.get('jid')) {
+        throw new Error("Config Error: you need to provide the server's " + "domain via the 'jid' option when using anonymous " + "authentication with auto_login.");
+      }
+    }
+    _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].router.route(/^converse\?loglevel=(debug|info|warn|error|fatal)$/, 'loglevel', l => _log_js__WEBPACK_IMPORTED_MODULE_5__["default"].setLogLevel(l));
+    _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].connfeedback = new _connection_feedback_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+    /* When reloading the page:
+     * For new sessions, we need to send out a presence stanza to notify
+     * the server/network that we're online.
+     * When re-attaching to an existing session we don't need to again send out a presence stanza,
+     * because it's as if "we never left" (see onConnectStatusChanged).
+     * https://github.com/conversejs/converse.js/issues/521
+     */
+    _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].send_initial_presence = true;
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_15__.initSessionStorage)(_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_15__.initClientConfig)(_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    await _i18n__WEBPACK_IMPORTED_MODULE_4__["default"].initialize();
+    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_15__.initPlugins)(_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+    // Register all custom elements
+    // XXX: api.elements is defined in the UI part of Converse, outside of @converse/headless.
+    // This line should probably be moved to the UI code as part of a larger refactoring.
+    api.elements?.register();
+    (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_15__.registerGlobalEventHandlers)(_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    try {
+      !History.started && _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].router.history.start();
+    } catch (e) {
+      _log_js__WEBPACK_IMPORTED_MODULE_5__["default"].error(e);
+    }
+    const plugins = _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].pluggable.plugins;
+    if (api.settings.get("auto_login") || api.settings.get("keepalive") && plugins['converse-bosh']?.enabled()) {
+      await api.user.login(null, null, true);
+    }
+
+    /**
+     * Triggered once converse.initialize has finished.
+     * @event _converse#initialized
+     */
+    api.trigger('initialized');
+    if (_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].isTestEnv()) {
+      return _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"];
+    }
+  },
+  /**
+   * Exposes methods for adding and removing plugins. You'll need to write a plugin
+   * if you want to have access to the private API methods defined further down below.
+   *
+   * For more information on plugins, read the documentation on [writing a plugin](/docs/html/plugin_development.html).
+   * @namespace plugins
+   * @memberOf converse
+   */
+  plugins: {
+    /**
+     * Registers a new plugin.
+     * @method converse.plugins.add
+     * @param { string } name The name of the plugin
+     * @param { object } plugin The plugin object
+     * @example
+     *  const plugin = {
+     *      initialize: function () {
+     *          // Gets called as soon as the plugin has been loaded.
+     *
+     *          // Inside this method, you have access to the private
+     *          // API via `_covnerse.api`.
+     *
+     *          // The private _converse object contains the core logic
+     *          // and data-structures of Converse.
+     *      }
+     *  }
+     *  converse.plugins.add('myplugin', plugin);
+     */
+    add(name, plugin) {
+      plugin.__name__ = name;
+      if (_converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].pluggable.plugins[name] !== undefined) {
+        throw new TypeError(`Error: plugin with name "${name}" has already been ` + 'registered!');
+      } else {
+        _converse_js__WEBPACK_IMPORTED_MODULE_2__["default"].pluggable.plugins[name] = plugin;
+      }
+    }
+  },
+  /**
+   * Utility methods and globals from bundled 3rd party libraries.
+   * @typedef ConverseEnv
+   * @property {function} converse.env.$build    - Creates a Strophe.Builder, for creating stanza objects.
+   * @property {function} converse.env.$iq       - Creates a Strophe.Builder with an <iq/> element as the root.
+   * @property {function} converse.env.$msg      - Creates a Strophe.Builder with an <message/> element as the root.
+   * @property {function} converse.env.$pres     - Creates a Strophe.Builder with an <presence/> element as the root.
+   * @property {function} converse.env.Promise   - The Promise implementation used by Converse.
+   * @property {function} converse.env.Strophe   - The [Strophe](http://strophe.im/strophejs) XMPP library used by Converse.
+   * @property {function} converse.env.f         - And instance of Lodash with its methods wrapped to produce immutable auto-curried iteratee-first data-last methods.
+   * @property {function} converse.env.sizzle    - [Sizzle](https://sizzlejs.com) CSS selector engine.
+   * @property {function} converse.env.sprintf
+   * @property {object} converse.env._           - The instance of [lodash-es](http://lodash.com) used by Converse.
+   * @property {object} converse.env.dayjs       - [DayJS](https://github.com/iamkun/dayjs) date manipulation library.
+   * @property {object} converse.env.utils       - Module containing common utility methods used by Converse.
+   * @memberOf converse
+   */
+  'env': {
+    $build: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_11__.$build,
+    $iq: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_11__.$iq,
+    $msg: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_11__.$msg,
+    $pres: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_11__.$pres,
+    'utils': _utils_core_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+    Collection: _converse_skeletor_src_collection__WEBPACK_IMPORTED_MODULE_9__.Collection,
+    Model: _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_10__.Model,
+    Promise,
+    Strophe: strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_11__.Strophe,
+    URI: (urijs__WEBPACK_IMPORTED_MODULE_1___default()),
+    dayjs: (dayjs__WEBPACK_IMPORTED_MODULE_3___default()),
+    html: lit__WEBPACK_IMPORTED_MODULE_12__.html,
+    log: _log_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+    sizzle: (sizzle__WEBPACK_IMPORTED_MODULE_6___default()),
+    sprintf: sprintf_js__WEBPACK_IMPORTED_MODULE_14__.sprintf,
+    stx: _utils_core_js__WEBPACK_IMPORTED_MODULE_7__["default"].stx,
+    u: _utils_core_js__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/send.js":
+/*!*****************************************!*\
+  !*** ./src/headless/shared/api/send.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/shared/_converse.js */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../log.js */ "./src/headless/log.js");
+/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
+/* harmony import */ var _errors_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../errors.js */ "./src/headless/shared/errors.js");
+/* harmony import */ var _utils_stanza_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/stanza.js */ "./src/headless/utils/stanza.js");
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  /**
+   * Allows you to send XML stanzas.
+   * @method _converse.api.send
+   * @param { Element | Stanza } stanza
+   * @return { void }
+   * @example
+   * const msg = converse.env.$msg({
+   *     'from': 'juliet@example.com/balcony',
+   *     'to': 'romeo@example.net',
+   *     'type':'chat'
+   * });
+   * _converse.api.send(msg);
+   */
+  send(stanza) {
+    const {
+      api
+    } = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+    if (!api.connection.connected()) {
+      _log_js__WEBPACK_IMPORTED_MODULE_1__["default"].warn("Not sending stanza because we're not connected!");
+      _log_js__WEBPACK_IMPORTED_MODULE_1__["default"].warn(strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_2__.Strophe.serialize(stanza));
+      return;
+    }
+    if (typeof stanza === 'string') {
+      stanza = (0,_utils_stanza_js__WEBPACK_IMPORTED_MODULE_4__.toStanza)(stanza);
+    } else if (stanza?.tree) {
+      stanza = stanza.tree();
+    }
+    if (stanza.tagName === 'iq') {
+      return api.sendIQ(stanza);
+    } else {
+      _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.send(stanza);
+      api.trigger('send', stanza);
+    }
+  },
+  /**
+   * Send an IQ stanza
+   * @method _converse.api.sendIQ
+   * @param { Element } stanza
+   * @param { number } [timeout=_converse.STANZA_TIMEOUT]
+   * @param { Boolean } [reject=true] - Whether an error IQ should cause the promise
+   *  to be rejected. If `false`, the promise will resolve instead of being rejected.
+   * @returns { Promise } A promise which resolves (or potentially rejected) once we
+   *  receive a `result` or `error` stanza or once a timeout is reached.
+   *  If the IQ stanza being sent is of type `result` or `error`, there's
+   *  nothing to wait for, so an already resolved promise is returned.
+   */
+  sendIQ(stanza) {
+    let timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].STANZA_TIMEOUT;
+    let reject = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+    const {
+      api,
+      connection
+    } = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+    let promise;
+    stanza = stanza.tree?.() ?? stanza;
+    if (['get', 'set'].includes(stanza.getAttribute('type'))) {
+      timeout = timeout || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].STANZA_TIMEOUT;
+      if (reject) {
+        promise = new Promise((resolve, reject) => connection.sendIQ(stanza, resolve, reject, timeout));
+        promise.catch(e => {
+          if (e === null) {
+            throw new _errors_js__WEBPACK_IMPORTED_MODULE_3__.TimeoutError(`Timeout error after ${timeout}ms for the following IQ stanza: ${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_2__.Strophe.serialize(stanza)}`);
+          }
+        });
+      } else {
+        promise = new Promise(resolve => connection.sendIQ(stanza, resolve, resolve, timeout));
+      }
+    } else {
+      _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.sendIQ(stanza);
+      promise = Promise.resolve();
+    }
+    api.trigger('send', stanza);
+    return promise;
+  }
+});
+
+/***/ }),
+
+/***/ "./src/headless/shared/api/user.js":
+/*!*****************************************!*\
+  !*** ./src/headless/shared/api/user.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _converse_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_converse.js */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _presence_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./presence.js */ "./src/headless/shared/api/presence.js");
+/* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_init_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/init.js */ "./src/headless/utils/init.js");
+/* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
+/* harmony import */ var _settings_api_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../settings/api.js */ "./src/headless/shared/settings/api.js");
+
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  /**
+   * This grouping collects API functions related to the current logged in user.
+   *
+   * @namespace _converse.api.user
+   * @memberOf _converse.api
+   */
+  user: {
+    settings: _settings_api_js__WEBPACK_IMPORTED_MODULE_5__.user_settings_api,
+    ..._presence_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+    /**
+     * @method _converse.api.user.jid
+     * @returns {string} The current user's full JID (Jabber ID)
+     * @example _converse.api.user.jid())
+     */
+    jid() {
+      return _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.jid;
+    },
+    /**
+     * Logs the user in.
+     *
+     * If called without any parameters, Converse will try
+     * to log the user in by calling the `prebind_url` or `credentials_url` depending
+     * on whether prebinding is used or not.
+     *
+     * @method _converse.api.user.login
+     * @param { string } [jid]
+     * @param { string } [password]
+     * @param { boolean } [automatic=false] - An internally used flag that indicates whether
+     *  this method was called automatically once the connection has been
+     *  initialized. It's used together with the `auto_login` configuration flag
+     *  to determine whether Converse should try to log the user in if it
+     *  fails to restore a previous auth'd session.
+     *  @returns  { Promise<void> }
+     */
+    async login(jid, password) {
+      let automatic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      const {
+        api
+      } = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+      jid = jid || api.settings.get('jid');
+      if (!_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection?.jid || jid && !_utils_core_js__WEBPACK_IMPORTED_MODULE_2__["default"].isSameDomain(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.jid, jid)) {
+        (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_3__.initConnection)();
+      }
+      if (api.settings.get("connection_options")?.worker && (await _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.restoreWorkerSession())) {
+        return;
+      }
+      if (jid) {
+        jid = await (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_3__.setUserJID)(jid);
+      }
+
+      // See whether there is a BOSH session to re-attach to
+      const bosh_plugin = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].pluggable.plugins["converse-bosh"];
+      if (bosh_plugin?.enabled()) {
+        if (await _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].restoreBOSHSession()) {
+          return;
+        } else if (api.settings.get("authentication") === _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].PREBIND && (!automatic || api.settings.get("auto_login"))) {
+          return _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].startNewPreboundBOSHSession();
+        }
+      }
+      password = password || api.settings.get("password");
+      const credentials = jid && password ? {
+        jid,
+        password
+      } : null;
+      (0,_utils_init_js__WEBPACK_IMPORTED_MODULE_3__.attemptNonPreboundSession)(credentials, automatic);
+    },
+    /**
+     * Logs the user out of the current XMPP session.
+     * @method _converse.api.user.logout
+     * @example _converse.api.user.logout();
+     */
+    async logout() {
+      const {
+        api
+      } = _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+      /**
+       * Triggered before the user is logged out
+       * @event _converse#beforeLogout
+       */
+      await api.trigger('beforeLogout', {
+        'synchronous': true
+      });
+      const promise = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_4__.getOpenPromise)();
+      const complete = () => {
+        // Recreate all the promises
+        Object.keys(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].promises).forEach(_utils_core_js__WEBPACK_IMPORTED_MODULE_2__.replacePromise);
+        delete _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].jid;
+
+        // Remove the session JID, otherwise the user would just be logged
+        // in again upon reload. See #2759
+        localStorage.removeItem('conversejs-session-jid');
+
+        /**
+         * Triggered once the user has logged out.
+         * @event _converse#logout
+         */
+        api.trigger('logout');
+        promise.resolve();
+      };
+      _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.setDisconnectionCause(_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].LOGOUT, undefined, true);
+      if (_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection !== undefined) {
+        api.listen.once('disconnected', () => complete());
+        _converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.disconnect();
+      } else {
+        complete();
+      }
+      return promise;
+    }
+  }
+});
 
 /***/ }),
 
@@ -29245,6 +29404,38 @@ __webpack_require__.r(__webpack_exports__);
     return _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_0__["default"].connection.isType(type);
   }
 });
+
+/***/ }),
+
+/***/ "./src/headless/shared/connection/feedback.js":
+/*!****************************************************!*\
+  !*** ./src/headless/shared/connection/feedback.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _converse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_converse */ "./src/headless/shared/_converse.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_1__.Model.extend({
+  defaults: {
+    'connection_status': strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_2__.Strophe.Status.DISCONNECTED,
+    'message': ''
+  },
+  initialize() {
+    const {
+      api
+    } = _converse__WEBPACK_IMPORTED_MODULE_0__["default"];
+    this.on('change', () => api.trigger('connfeedback', _converse__WEBPACK_IMPORTED_MODULE_0__["default"].connfeedback));
+  }
+}));
 
 /***/ }),
 
@@ -29713,11 +29904,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "CONNECTION_STATUS": () => (/* binding */ CONNECTION_STATUS),
 /* harmony export */   "CORE_PLUGINS": () => (/* binding */ CORE_PLUGINS),
 /* harmony export */   "KEYCODES": () => (/* binding */ KEYCODES),
-/* harmony export */   "URL_PARSE_OPTIONS": () => (/* binding */ URL_PARSE_OPTIONS)
+/* harmony export */   "URL_PARSE_OPTIONS": () => (/* binding */ URL_PARSE_OPTIONS),
+/* harmony export */   "VERSION_NAME": () => (/* binding */ VERSION_NAME)
 /* harmony export */ });
 /* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
 
 const BOSH_WAIT = 59;
+const VERSION_NAME = "v10.1.2";
 const CONNECTION_STATUS = {};
 CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.Status.ATTACHED] = 'ATTACHED';
 CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.Status.AUTHENTICATING] = 'AUTHENTICATING';
@@ -29730,6 +29923,43 @@ CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.St
 CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.Status.ERROR] = 'ERROR';
 CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.Status.RECONNECTING] = 'RECONNECTING';
 CONNECTION_STATUS[strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.Status.REDIRECT] = 'REDIRECT';
+
+// Add Strophe Namespaces
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('ACTIVITY', 'http://jabber.org/protocol/activity');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('CARBONS', 'urn:xmpp:carbons:2');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('CHATSTATES', 'http://jabber.org/protocol/chatstates');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('CSI', 'urn:xmpp:csi:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('DELAY', 'urn:xmpp:delay');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('EME', 'urn:xmpp:eme:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('FASTEN', 'urn:xmpp:fasten:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('FORWARD', 'urn:xmpp:forward:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('HINTS', 'urn:xmpp:hints');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('HTTPUPLOAD', 'urn:xmpp:http:upload:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('MAM', 'urn:xmpp:mam:2');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('MARKERS', 'urn:xmpp:chat-markers:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('MENTIONS', 'urn:xmpp:mmn:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('MESSAGE_CORRECT', 'urn:xmpp:message-correct:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('MODERATE', 'urn:xmpp:message-moderate:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('NICK', 'http://jabber.org/protocol/nick');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('OCCUPANTID', 'urn:xmpp:occupant-id:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('OMEMO', 'eu.siacs.conversations.axolotl');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('OUTOFBAND', 'jabber:x:oob');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('PUBSUB', 'http://jabber.org/protocol/pubsub');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('RAI', 'urn:xmpp:rai:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('RECEIPTS', 'urn:xmpp:receipts');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('REFERENCE', 'urn:xmpp:reference:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('REGISTER', 'jabber:iq:register');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('RETRACT', 'urn:xmpp:message-retract:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('ROSTERX', 'http://jabber.org/protocol/rosterx');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('RSM', 'http://jabber.org/protocol/rsm');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('SID', 'urn:xmpp:sid:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('SPOILER', 'urn:xmpp:spoiler:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('STANZAS', 'urn:ietf:params:xml:ns:xmpp-stanzas');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('STYLING', 'urn:xmpp:styling:0');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('VCARD', 'vcard-temp');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('XFORM', 'jabber:x:data');
+strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__.Strophe.addNamespace('XHTML', 'http://www.w3.org/1999/xhtml');
 
 // Core plugins are whitelisted automatically
 // These are just the @converse/headless plugins, for the full converse,
@@ -29887,7 +30117,7 @@ class StanzaParseError extends Error {
  * Extract the XEP-0359 stanza IDs from the passed in stanza
  * and return a map containing them.
  * @private
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @returns { Object }
  */
 function getStanzaIDs(stanza, original_stanza) {
@@ -29930,8 +30160,8 @@ function getEncryptionAttributes(stanza) {
 
 /**
  * @private
- * @param { XMLElement } stanza - The message stanza
- * @param { XMLElement } original_stanza - The original stanza, that contains the
+ * @param { Element } stanza - The message stanza
+ * @param { Element } original_stanza - The original stanza, that contains the
  *  message stanza, if it was contained, otherwise it's the message stanza itself.
  * @returns { Object }
  */
@@ -30073,7 +30303,7 @@ function getOutOfBandAttributes(stanza) {
 /**
  * Returns the human readable error message contained in a `groupchat` message stanza of type `error`.
  * @private
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  */
 function getErrorAttributes(stanza) {
   if (stanza.getAttribute('type') === 'error') {
@@ -30091,7 +30321,7 @@ function getErrorAttributes(stanza) {
 
 /**
  * Given a message stanza, find and return any XEP-0372 references
- * @param { XMLElement } stana - The message stanza
+ * @param { Element } stana - The message stanza
  * @returns { Reference }
  */
 function getReferences(stanza) {
@@ -30130,7 +30360,7 @@ function getReceiptId(stanza) {
 /**
  * Determines whether the passed in stanza is a XEP-0280 Carbon
  * @private
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @returns { Boolean }
  */
 function isCarbon(stanza) {
@@ -30141,7 +30371,7 @@ function isCarbon(stanza) {
 /**
  * Returns the XEP-0085 chat state contained in a message stanza
  * @private
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  */
 function getChatState(stanza) {
   return sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`
@@ -30158,7 +30388,7 @@ function isValidReceiptRequest(stanza, attrs) {
 /**
  * Check whether the passed-in stanza is a forwarded message that is "bare",
  * i.e. it's not forwarded as part of a larger protocol, like MAM.
- * @param { XMLElement } stanza
+ * @param { Element } stanza
  */
 function throwErrorIfInvalidForward(stanza) {
   const bare_forward = sizzle__WEBPACK_IMPORTED_MODULE_3___default()(`message > forwarded[xmlns="${strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.FORWARD}"]`, stanza).length;
@@ -30173,7 +30403,7 @@ function throwErrorIfInvalidForward(stanza) {
  * Determines whether the passed in stanza is a XEP-0333 Chat Marker
  * @private
  * @method getChatMarker
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @returns { Boolean }
  */
 function getChatMarker(stanza) {
@@ -30206,7 +30436,7 @@ function isServerMessage(stanza) {
  * Determines whether the passed in stanza is a XEP-0313 MAM stanza
  * @private
  * @method isArchived
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @returns { Boolean }
  */
 function isArchived(original_stanza) {
@@ -30216,7 +30446,7 @@ function isArchived(original_stanza) {
 /**
  * Returns an object containing all attribute names and values for a particular element.
  * @method getAttributes
- * @param { XMLElement } stanza
+ * @param { Element } stanza
  * @returns { Object }
  */
 function getAttributes(stanza) {
@@ -30264,8 +30494,8 @@ Strophe.addNamespace('RSM', 'http://jabber.org/protocol/rsm');
  * [XEP-0059 RSM](https://xmpp.org/extensions/xep-0059.html) Attributes that can be used to filter query results
  * @property { String } [after] - The XEP-0359 stanza ID of a message after which messages should be returned. Implies forward paging.
  * @property { String } [before] - The XEP-0359 stanza ID of a message before which messages should be returned. Implies backward paging.
- * @property { Integer } [index=0] - The index of the results page to return.
- * @property { Integer } [max] - The maximum number of items to return.
+ * @property { number } [index=0] - The index of the results page to return.
+ * @property { number } [max] - The maximum number of items to return.
  */
 
 const RSM_QUERY_PARAMETERS = ['after', 'before', 'index', 'max'];
@@ -30324,7 +30554,7 @@ class RSM {
    * Returns a `<set>` XML element that confirms to XEP-0059 Result Set Management.
    * The element is constructed based on the {@link module:converse-rsm~RSMQueryParameters}
    * that are set on this RSM instance.
-   * @returns { XMLElement }
+   * @returns { Element }
    */
   toXML() {
     const xml = $build('set', {
@@ -30392,7 +30622,7 @@ const settings_api = {
    * `converse.initialize`.
    *
    * @method _converse.api.settings.extend
-   * @param {object} settings The configuration settings
+   * @param { object } settings The configuration settings
    * @example
    * _converse.api.settings.extend({
    *    'enable_foo': true
@@ -30427,9 +30657,10 @@ const settings_api = {
    * running and you want to change the configuration on-the-fly.
    *
    * @method _converse.api.settings.set
-   * @param {Object} [settings] An object containing configuration settings.
-   * @param {string} [key] Alternatively to passing in an object, you can pass in a key and a value.
-   * @param {string} [value]
+   * @param { Object | string } [settings_or_key]
+   *  An object containing configuration settings.
+   *  Alternatively to passing in an object, you can pass in a key and a value.
+   * @param { string } [value]
    * @example _converse.api.settings.set("play_sounds", true);
    * @example
    * _converse.api.settings.set({
@@ -30437,8 +30668,8 @@ const settings_api = {
    *     "hide_offline_users": true
    * });
    */
-  set(key, val) {
-    (0,_converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_1__.updateAppSettings)(key, val);
+  set(settings_or_key, value) {
+    (0,_converse_headless_shared_settings_utils_js__WEBPACK_IMPORTED_MODULE_1__.updateAppSettings)(settings_or_key, value);
   },
   /**
    * The `listen` namespace exposes methods for creating event listeners
@@ -30465,7 +30696,7 @@ const settings_api = {
      * To stop listening to an event, you can use the `not` method.
      * @method _converse.api.settings.listen.not
      * @param { String } name The event's name
-     * @param { Function } callback The callback method that is to no longer be called when the event fires
+     * @param { Function } handler The callback method that is to no longer be called when the event fires
      * @example _converse.api.settings.listen.not('change', callback);
      */
     not(name, handler) {
@@ -30495,7 +30726,7 @@ const user_settings_api = {
   /**
    * Get the value of a particular user setting.
    * @method _converse.api.user.settings.get
-   * @param {String} key - The setting name
+   * @param { String } key - The setting name
    * @param {*} [fallback] - An optional fallback value if the user setting is undefined
    * @returns {Promise} Promise which resolves with the value of the particular configuration setting.
    * @example _converse.api.user.settings.get("foo");
@@ -30508,9 +30739,9 @@ const user_settings_api = {
    * Set one or many user settings.
    * @async
    * @method _converse.api.user.settings.set
-   * @param {Object} [settings] An object containing configuration settings.
-   * @param {string} [key] Alternatively to passing in an object, you can pass in a key and a value.
-   * @param {string} [value]
+   * @param { Object } [settings] An object containing configuration settings.
+   * @param { string } [key] Alternatively to passing in an object, you can pass in a key and a value.
+   * @param { string } [value]
    * @example _converse.api.user.settings.set("foo", "bar");
    * @example
    * _converse.api.user.settings.set({
@@ -30850,6 +31081,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isElement": () => (/* binding */ isElement),
 /* harmony export */   "isEmptyMessage": () => (/* binding */ isEmptyMessage),
 /* harmony export */   "isError": () => (/* binding */ isError),
+/* harmony export */   "isErrorObject": () => (/* binding */ isErrorObject),
+/* harmony export */   "isFunction": () => (/* binding */ isFunction),
 /* harmony export */   "isUniView": () => (/* binding */ isUniView),
 /* harmony export */   "isValidJID": () => (/* binding */ isValidJID),
 /* harmony export */   "merge": () => (/* binding */ merge),
@@ -30858,7 +31091,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "safeSave": () => (/* binding */ safeSave),
 /* harmony export */   "saveWindowState": () => (/* binding */ saveWindowState),
 /* harmony export */   "setUnloadEvent": () => (/* binding */ setUnloadEvent),
-/* harmony export */   "tearDown": () => (/* binding */ tearDown)
+/* harmony export */   "shouldClearCache": () => (/* binding */ shouldClearCache),
+/* harmony export */   "tearDown": () => (/* binding */ tearDown),
+/* harmony export */   "waitUntil": () => (/* binding */ waitUntil)
 /* harmony export */ });
 /* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
 /* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
@@ -30897,6 +31132,9 @@ function isElement(el) {
 function isError(obj) {
   return Object.prototype.toString.call(obj) === "[object Error]";
 }
+function isFunction(val) {
+  return typeof val === 'function';
+}
 function isEmptyMessage(attrs) {
   if (attrs instanceof _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_4__.Model) {
     attrs = attrs.attributes;
@@ -30911,6 +31149,12 @@ function isEmptyMessage(attrs) {
  */
 function isUniView() {
   return ['mobile', 'fullscreen', 'embedded'].includes(_converse_headless_shared_settings_api_js__WEBPACK_IMPORTED_MODULE_7__.settings_api.get("view_mode"));
+}
+function shouldClearCache() {
+  const {
+    api
+  } = _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+  return !_converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].config.get('trusted') || api.settings.get('clear_cache_on_logout') || _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].isTestEnv();
 }
 async function tearDown() {
   await _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].api.trigger('beforeTearDown', {
@@ -30928,7 +31172,7 @@ async function tearDown() {
 function clearSession() {
   _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].session?.destroy();
   delete _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].session;
-  _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].shouldClearCache() && _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].api.user.settings.clear();
+  shouldClearCache() && _converse_headless_shared_converse_js__WEBPACK_IMPORTED_MODULE_1__["default"].api.user.settings.clear();
   /**
    * Synchronouse event triggered once the user session has been cleared,
    * for example when the user has logged out or when Converse has
@@ -31026,9 +31270,9 @@ u.shouldCreateGroupchatMessage = function (attrs) {
 u.isChatRoom = function (model) {
   return model && model.get('type') === 'chatroom';
 };
-u.isErrorObject = function (o) {
+function isErrorObject(o) {
   return o instanceof Error;
-};
+}
 u.isErrorStanza = function (stanza) {
   if (!isElement(stanza)) {
     return false;
@@ -31094,7 +31338,7 @@ u.stringToElement = function (s) {
  * Checks whether the DOM element matches the given selector.
  * @private
  * @method u#matchesSelector
- * @param { DOMElement } el - The DOM element
+ * @param { Element } el - The DOM element
  * @param { String } selector - The selector
  */
 u.matchesSelector = function (el, selector) {
@@ -31106,7 +31350,7 @@ u.matchesSelector = function (el, selector) {
  * Returns a list of children of the DOM element that match the selector.
  * @private
  * @method u#queryChildren
- * @param { DOMElement } el - the DOM element
+ * @param { Element } el - the DOM element
  * @param { String } selector - the selector they should be matched against
  */
 u.queryChildren = function (el, selector) {
@@ -31213,10 +31457,10 @@ u.siblingIndex = function (el) {
 /**
  * Returns the current word being written in the input element
  * @method u#getCurrentWord
- * @param {HTMLElement} input - The HTMLElement in which text is being entered
- * @param {integer} [index] - An optional rightmost boundary index. If given, the text
+ * @param { HTMLElement } input - The HTMLElement in which text is being entered
+ * @param { number } [index] - An optional rightmost boundary index. If given, the text
  *  value of the input element will only be considered up until this index.
- * @param {string} [delineator] - An optional string delineator to
+ * @param { string } [delineator] - An optional string delineator to
  *  differentiate between words.
  * @private
  */
@@ -31290,8 +31534,8 @@ function getUniqueId(suffix) {
 /**
  * Clears the specified timeout and interval.
  * @method u#clearTimers
- * @param {number} timeout - Id if the timeout to clear.
- * @param {number} interval - Id of the interval to clear.
+ * @param { number } timeout - Id if the timeout to clear.
+ * @param { number } interval - Id of the interval to clear.
  * @private
  * @copyright Simen Bekkhus 2016
  * @license MIT
@@ -31305,16 +31549,16 @@ function clearTimers(timeout, interval) {
  * Creates a {@link Promise} that resolves if the passed in function returns a truthy value.
  * Rejects if it throws or does not return truthy within the given max_wait.
  * @method u#waitUntil
- * @param {Function} func - The function called every check_delay,
+ * @param { Function } func - The function called every check_delay,
  *  and the result of which is the resolved value of the promise.
- * @param {number} [max_wait=300] - The time to wait before rejecting the promise.
- * @param {number} [check_delay=3] - The time to wait before each invocation of {func}.
+ * @param { number } [max_wait=300] - The time to wait before rejecting the promise.
+ * @param { number } [check_delay=3] - The time to wait before each invocation of {func}.
  * @returns {Promise} A promise resolved with the value of func,
  *  or rejected with the exception thrown by it or it times out.
  * @copyright Simen Bekkhus 2016
  * @license MIT
  */
-u.waitUntil = function (func) {
+function waitUntil(func) {
   let max_wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
   let check_delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
   // Run the function once without setting up any listeners in case it's already true
@@ -31350,7 +31594,8 @@ u.waitUntil = function (func) {
   }
   const max_wait_timeout = setTimeout(handler, max_wait);
   return promise;
-};
+}
+;
 function setUnloadEvent() {
   if ('onpagehide' in window) {
     // Pagehide gets thrown in more cases than unload. Specifically it
@@ -31419,6 +31664,10 @@ function saveWindowState(ev) {
   });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Object.assign({
+  shouldClearCache,
+  waitUntil,
+  // TODO: remove. Only the API should be used
+  isErrorObject,
   getRandomInt,
   getUniqueId,
   isElement,
@@ -31458,7 +31707,7 @@ const tplXformValue = value => `<value>${value}</value>`;
  * Takes an HTML DOM and turns it into an XForm field.
  * @private
  * @method u#webForm2xForm
- * @param { DOMElement } field - the field to convert
+ * @param { Element } field - the field to convert
  */
 function webForm2xForm(field) {
   const name = field.getAttribute('name');
@@ -32860,7 +33109,7 @@ class MUCBookmarkForm extends shared_components_element__WEBPACK_IMPORTED_MODULE
   onBookmarkFormSubmitted(ev) {
     ev.preventDefault();
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.bookmarks.createBookmark({
-      'jid': this.model.get('jid'),
+      'jid': this.jid,
       'autojoin': ev.target.querySelector('input[name="autojoin"]')?.checked || false,
       'name': ev.target.querySelector('input[name=name]')?.value,
       'nick': ev.target.querySelector('input[name=nick]')?.value
@@ -32983,7 +33232,7 @@ __webpack_require__.r(__webpack_exports__);
                 <input class="form-control" type="text" name="nick" value="${nick || ''}" id="converse_muc_bookmark_nick"/>
             </fieldset>
             <fieldset class="form-group form-check">
-                <input class="form-check-input" id="converse_muc_bookmark_autojoin" type="checkbox" name="autojoin"/>
+                <input class="form-check-input" id="converse_muc_bookmark_autojoin" type="checkbox" ?checked=${el.bookmark?.get('autojoin')} name="autojoin"/>
                 <label class="form-check-label" for="converse_muc_bookmark_autojoin">${i18n_autojoin}</label>
             </fieldset>
             <fieldset class="form-group">
@@ -34083,12 +34332,12 @@ class MessageForm extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MO
 
   /**
    * Insert a particular string value into the textarea of this chat box.
-   * @param {string} value - The value to be inserted.
+   * @param { string } value - The value to be inserted.
    * @param {(boolean|string)} [replace] - Whether an existing value
    *  should be replaced. If set to `true`, the entire textarea will
    *  be replaced with the new value. If set to a string, then only
    *  that string will be replaced *if* a position is also specified.
-   * @param {integer} [position] - The end index of the string to be
+   * @param { number } [position] - The end index of the string to be
    *  replaced with the new value.
    */
   insertIntoTextArea(value) {
@@ -35737,9 +35986,9 @@ function onStartDiagonalResize(ev) {
  * Applies some resistance to `value` around the `default_value`.
  * If value is close enough to `default_value`, then it is returned, otherwise
  * `value` is returned.
- * @param { Integer } value
- * @param { Integer } default_value
- * @returns { Integer }
+ * @param { number } value
+ * @param { number } default_value
+ * @returns { number }
  */
 function applyDragResistance(value, default_value) {
   if (value === undefined) {
@@ -37375,13 +37624,13 @@ class BaseModal extends _converse_skeletor_src_element_js__WEBPACK_IMPORTED_MODU
     // Allow properties to be set via passed in options
     Object.assign(this, options);
     setTimeout(() => this.insertIntoDOM());
+    this.addEventListener('hide.bs.modal', () => this.onHide(), false);
   }
   initialize() {
     this.modal = new (bootstrap_native__WEBPACK_IMPORTED_MODULE_0___default().Modal)(this, {
       backdrop: true,
       keyboard: true
     });
-    this.addEventListener('hide.bs.modal', () => this.onHide(), false);
     this.initialized.resolve();
     this.render();
   }
@@ -37569,6 +37818,102 @@ const tplField = f => lit__WEBPACK_IMPORTED_MODULE_0__.html`
             </div>
         </form>`;
 });
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/affiliation-form.js":
+/*!***************************************************!*\
+  !*** ./src/plugins/muc-views/affiliation-form.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _templates_affiliation_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/affiliation-form.js */ "./src/plugins/muc-views/templates/affiliation-form.js");
+/* harmony import */ var shared_components_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element */ "./src/shared/components/element.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/plugins/muc/affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
+
+
+
+
+
+
+const {
+  Strophe,
+  sizzle
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+class AffiliationForm extends shared_components_element__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
+  static get properties() {
+    return {
+      muc: {
+        type: Object
+      },
+      jid: {
+        type: String
+      },
+      affiliation: {
+        type: String
+      },
+      alert_message: {
+        type: String,
+        attribute: false
+      },
+      alert_type: {
+        type: String,
+        attribute: false
+      }
+    };
+  }
+  render() {
+    return (0,_templates_affiliation_form_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+  }
+  alert(message, type) {
+    this.alert_message = message;
+    this.alert_type = type;
+  }
+  async assignAffiliation(ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.alert(); // clear alert messages
+
+    const data = new FormData(ev.target);
+    const affiliation = data.get('affiliation');
+    const attrs = {
+      jid: this.jid,
+      reason: data.get('reason')
+    };
+    const muc_jid = this.muc.get('jid');
+    try {
+      await (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_5__.setAffiliation)(affiliation, muc_jid, [attrs]);
+    } catch (e) {
+      if (e === null) {
+        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Timeout error while trying to set the affiliation'), 'danger');
+      } else if (sizzle(`not-allowed[xmlns="${Strophe.NS.STANZAS}"]`, e).length) {
+        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Sorry, you're not allowed to make that change"), 'danger');
+      } else {
+        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, something went wrong while trying to set the affiliation'), 'danger');
+      }
+      _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
+      return;
+    }
+    await this.muc.occupants.fetchMembers();
+
+    /**
+     * @event affiliationChanged
+     * @example
+     *  const el = document.querySelector('converse-muc-affiliation-form');
+     *  el.addEventListener('affiliationChanged', () => { ... });
+     */
+    const event = new CustomEvent('affiliationChanged', {
+      bubbles: true
+    });
+    this.dispatchEvent(event);
+  }
+}
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-muc-affiliation-form', AffiliationForm);
 
 /***/ }),
 
@@ -38180,10 +38525,12 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_7__.api.elements.define('con
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chatboxviews_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../chatboxviews/index.js */ "./src/plugins/chatboxviews/index.js");
-/* harmony import */ var _muc_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./muc.js */ "./src/plugins/muc-views/muc.js");
-/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/muc-views/utils.js");
-/* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/muc-views/styles/index.scss");
+/* harmony import */ var _affiliation_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./affiliation-form.js */ "./src/plugins/muc-views/affiliation-form.js");
+/* harmony import */ var _role_form_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./role-form.js */ "./src/plugins/muc-views/role-form.js");
+/* harmony import */ var _muc_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./muc.js */ "./src/plugins/muc-views/muc.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/muc-views/utils.js");
+/* harmony import */ var _styles_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/index.scss */ "./src/plugins/muc-views/styles/index.scss");
 /**
  * @copyright The Converse.js developers
  * @description XEP-0045 Multi-User Chat Views
@@ -38193,14 +38540,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 const {
   Strophe
-} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.env;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.env;
 
-_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.MUC.VIEWS = {
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.MUC.VIEWS = {
   CONFIG: 'config-form'
 };
-_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('converse-muc-views', {
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.plugins.add('converse-muc-views', {
   /* Dependencies are other plugins which might be
    * overridden or relied upon, and therefore need to be loaded before
    * this plugin. They are "optional" because they might not be
@@ -38223,7 +38572,7 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('co
     // ====================================
     // Refer to docs/source/configuration.rst for explanations of these
     // configuration settings.
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.extend({
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.extend({
       'auto_list_rooms': false,
       'cache_muc_messages': true,
       'locked_muc_nickname': false,
@@ -38240,10 +38589,10 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('co
         'toggle_occupants': true
       }
     });
-    _converse.ChatRoomView = _muc_js__WEBPACK_IMPORTED_MODULE_1__["default"];
-    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_domain')) {
+    _converse.ChatRoomView = _muc_js__WEBPACK_IMPORTED_MODULE_3__["default"];
+    if (!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('muc_domain')) {
       // Use service discovery to get the default MUC domain
-      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('serviceDiscovered', async feature => {
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('serviceDiscovered', async feature => {
         if (feature?.get('var') === Strophe.NS.MUC) {
           if (feature.entity.get('jid').includes('@')) {
             // Ignore full JIDs, we're only looking for a MUC service, not a room
@@ -38251,12 +38600,12 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('co
           }
           const identity = await feature.entity.getIdentity('conference', 'text');
           if (identity) {
-            _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.set('muc_domain', Strophe.getDomainFromJid(feature.get('from')));
+            _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.set('muc_domain', Strophe.getDomainFromJid(feature.get('from')));
           }
         }
       });
     }
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('clearsession', () => {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('clearsession', () => {
       const view = _converse.chatboxviews.get('controlbox');
       if (view && view.roomspanel) {
         view.roomspanel.model.destroy();
@@ -38264,12 +38613,13 @@ _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.plugins.add('co
         delete view.roomspanel;
       }
     });
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('chatBoxClosed', model => {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('chatBoxClosed', model => {
       if (model.get('type') === _converse.CHATROOMS_TYPE) {
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.clearHistory)(model.get('jid'));
+        (0,_utils_js__WEBPACK_IMPORTED_MODULE_5__.clearHistory)(model.get('jid'));
       }
     });
-    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_3__.parseMessageForMUCCommands);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('parseMessageForCommands', _utils_js__WEBPACK_IMPORTED_MODULE_5__.parseMessageForMUCCommands);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.listen.on('confirmDirectMUCInvitation', _utils_js__WEBPACK_IMPORTED_MODULE_5__.confirmDirectMUCInvitation);
   }
 });
 
@@ -38639,7 +38989,7 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_6__.converse.env.util
 /* Insert groupchat info (based on returned #disco IQ stanza)
  * @function insertRoomInfo
  * @param { HTMLElement } el - The HTML DOM element that contains the info.
- * @param { XMLElement } stanza - The IQ stanza containing the groupchat info.
+ * @param { Element } stanza - The IQ stanza containing the groupchat info.
  */
 function insertRoomInfo(el, stanza) {
   // All MUC features found here: https://xmpp.org/registrar/disco-features.html
@@ -38836,13 +39186,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plugins/modal/modal.js */ "./src/plugins/modal/modal.js");
 /* harmony import */ var _templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/occupant.js */ "./src/plugins/muc-views/modals/templates/occupant.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/skeletor/src/model.js */ "./node_modules/@converse/skeletor/src/model.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
 
 
+
+const {
+  u
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.env;
 class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+    this.addEventListener("affiliationChanged", () => this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Affiliation changed')));
+    this.addEventListener("roleChanged", () => this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('role changed')));
+  }
   initialize() {
     super.initialize();
     const model = this.model ?? this.message;
@@ -38853,7 +39213,7 @@ class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__[
      * @type { Object }
      * @example _converse.api.listen.on('occupantModalInitialized', data);
      */
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('occupantModalInitialized', {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.trigger('occupantModalInitialized', {
       'model': this.model,
       'message': this.message
     });
@@ -38864,7 +39224,7 @@ class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__[
       return model.vcard;
     }
     const jid = model?.get('jid') || model?.get('from');
-    return jid ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.vcards.get(jid) : null;
+    return jid ? _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.vcards.get(jid) : null;
   }
   renderModal() {
     return (0,_templates_occupant_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
@@ -38876,16 +39236,24 @@ class OccupantModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__[
   addToContacts() {
     const model = this.model ?? this.message;
     const jid = model.get('jid');
-    if (jid) {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.modal.show('converse-add-contact-modal', {
-        'model': new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_3__.Model({
-          jid
-        })
-      });
+    if (jid) _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.modal.show('converse-add-contact-modal', {
+      'model': new _converse_skeletor_src_model_js__WEBPACK_IMPORTED_MODULE_2__.Model({
+        jid
+      })
+    });
+  }
+  toggleForm(ev) {
+    const toggle = u.ancestor(ev.target, '.toggle-form');
+    const form = toggle.getAttribute('data-form');
+    if (form === 'row-form') {
+      this.show_role_form = !this.show_role_form;
+    } else {
+      this.show_affiliation_form = !this.show_affiliation_form;
     }
+    this.render();
   }
 }
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('converse-muc-occupant-modal', OccupantModal);
+_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-muc-occupant-modal', OccupantModal);
 
 /***/ }),
 
@@ -39134,6 +39502,8 @@ __webpack_require__.r(__webpack_exports__);
   const affiliation = el.model?.get('affiliation');
   const hats = el.model?.get('hats')?.length ? el.model.get('hats') : null;
   const muc = el.model.collection.chatroom;
+  const allowed_commands = muc.getAllowedCommands();
+  const may_moderate = allowed_commands.includes('modtools');
   const i18n_add_to_contacts = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add to Contacts');
   const can_see_real_jids = muc.features.get('nonanonymous') || muc.getOwnRole() === 'moderator';
   const not_me = jid != _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid;
@@ -39156,10 +39526,30 @@ __webpack_require__.r(__webpack_exports__);
                         ${jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${jid}</div>` : ''}
                     </li>
                     <li>
-                        ${affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div><div class="row">${affiliation}</div>` : ''}
+                        <div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div>
+                        <div class="row">${affiliation}&nbsp;
+                            ${may_moderate ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                                <a href="#"
+                                data-form="affiliation-form"
+                                class="toggle-form right"
+                                color="var(--subdued-color)"
+                                @click=${ev => el.toggleForm(ev)}><converse-icon class="fa fa-wrench" size="1em"></converse-icon>
+                                </a>
+                                ${el.show_affiliation_form ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-affiliation-form jid=${jid} .muc=${muc} affiliation=${affiliation}></converse-muc-affiliation-form>` : ''}` : ''}
+                        </div>
                     </li>
                     <li>
-                        ${role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Roles')}:</strong></div><div class="row">${role}</div>` : ''}
+                        <div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Role')}:</strong></div>
+                        <div class="row">${role}&nbsp;
+                            ${may_moderate && role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                                <a href="#"
+                                   data-form="row-form"
+                                   class="toggle-form right"
+                                   color="var(--subdued-color)"
+                                   @click=${ev => el.toggleForm(ev)}><converse-icon class="fa fa-wrench" size="1em"></converse-icon>
+                                </a>
+                                ${el.show_role_form ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-role-form jid=${jid} .muc=${muc} role=${role}></converse-muc-role-form>` : ''}` : ''}
+                        </div>
                     </li>
                     <li>
                         ${hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${hats}</div>` : ''}
@@ -39187,15 +39577,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ ModeratorTools)
 /* harmony export */ });
-/* harmony import */ var _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log.js */ "./src/headless/log.js");
-/* harmony import */ var _templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/moderator-tools.js */ "./src/plugins/muc-views/templates/moderator-tools.js");
-/* harmony import */ var _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/muc/constants.js */ "./src/headless/plugins/muc/constants.js");
-/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
-/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/moderator-tools.js */ "./src/plugins/muc-views/templates/moderator-tools.js");
+/* harmony import */ var _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/plugins/muc/constants.js */ "./src/headless/plugins/muc/constants.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/plugins/muc/affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
 /* harmony import */ var _converse_headless_plugins_muc_utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @converse/headless/plugins/muc/utils.js */ "./src/headless/plugins/muc/utils.js");
 /* harmony import */ var _converse_openpromise__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @converse/openpromise */ "./node_modules/@converse/openpromise/openpromise.js");
-/* harmony import */ var _converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @converse/headless/plugins/muc/affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
+/* harmony import */ var _styles_moderator_tools_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles/moderator-tools.scss */ "./src/plugins/muc-views/styles/moderator-tools.scss");
 
 
 
@@ -39206,11 +39596,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const {
-  Strophe,
-  sizzle,
   u
-} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.converse.env;
-class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_3__.CustomElement {
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
   static get properties() {
     return {
       affiliation: {
@@ -39262,6 +39650,15 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     this.affiliations_filter = '';
     this.role = '';
     this.roles_filter = '';
+    this.addEventListener("affiliationChanged", () => {
+      this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Affiliation changed'), 'primary');
+      this.onSearchAffiliationChange();
+      this.requestUpdate();
+    });
+    this.addEventListener("roleChanged", () => {
+      this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Role changed'), 'primary');
+      this.requestUpdate();
+    });
   }
   updated(changed) {
     changed.has('role') && this.onSearchRoleChange();
@@ -39270,31 +39667,28 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
   }
   async initialize() {
     this.initialized = (0,_converse_openpromise__WEBPACK_IMPORTED_MODULE_7__.getOpenPromise)();
-    const muc = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.rooms.get(this.jid);
+    const muc = await _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.rooms.get(this.jid);
     await muc.initialized;
     this.muc = muc;
     this.initialized.resolve();
   }
   render() {
     if (this.muc?.occupants) {
-      const occupant = this.muc.occupants.findWhere({
-        'jid': _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__._converse.bare_jid
-      });
-      return (0,_templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
+      const occupant = this.muc.occupants.getOwnOccupant();
+      return (0,_templates_moderator_tools_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this, {
         'affiliations_filter': this.affiliations_filter,
         'alert_message': this.alert_message,
         'alert_type': this.alert_type,
-        'assignAffiliation': ev => this.assignAffiliation(ev),
         'assignRole': ev => this.assignRole(ev),
-        'assignable_affiliations': (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_8__.getAssignableAffiliations)(occupant),
+        'assignable_affiliations': (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_5__.getAssignableAffiliations)(occupant),
         'assignable_roles': (0,_converse_headless_plugins_muc_utils_js__WEBPACK_IMPORTED_MODULE_6__.getAssignableRoles)(occupant),
         'filterAffiliationResults': ev => this.filterAffiliationResults(ev),
         'filterRoleResults': ev => this.filterRoleResults(ev),
         'loading_users_with_affiliation': this.loading_users_with_affiliation,
         'queryAffiliation': ev => this.queryAffiliation(ev),
         'queryRole': ev => this.queryRole(ev),
-        'queryable_affiliations': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__.AFFILIATIONS.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
-        'queryable_roles': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_2__.ROLES.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('modtools_disable_query').includes(a)),
+        'queryable_affiliations': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_1__.AFFILIATIONS.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('modtools_disable_query').includes(a)),
+        'queryable_roles': _converse_headless_plugins_muc_constants_js__WEBPACK_IMPORTED_MODULE_1__.ROLES.filter(a => !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('modtools_disable_query').includes(a)),
         'roles_filter': this.roles_filter,
         'switchTab': ev => this.switchTab(ev),
         'tab': this.tab,
@@ -39313,15 +39707,13 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     this.requestUpdate();
   }
   async onSearchAffiliationChange() {
-    if (!this.affiliation) {
-      return;
-    }
+    if (!this.affiliation) return;
     await this.initialized;
     this.clearAlert();
     this.loading_users_with_affiliation = true;
     this.users_with_affiliation = null;
     if (this.shouldFetchAffiliationsList()) {
-      const result = await (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_8__.getAffiliationList)(this.affiliation, this.jid);
+      const result = await (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_5__.getAffiliationList)(this.affiliation, this.jid);
       if (result instanceof Error) {
         this.alert(result.message, 'danger');
         this.users_with_affiliation = [];
@@ -39353,13 +39745,14 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
       return true;
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
   toggleForm(ev) {
-    // eslint-disable-line class-methods-use-this
     ev.stopPropagation();
     ev.preventDefault();
     const toggle = u.ancestor(ev.target, '.toggle-form');
-    const form_class = toggle.getAttribute('data-form');
-    const form = u.ancestor(toggle, '.list-group-item').querySelector(`.${form_class}`);
+    const sel = toggle.getAttribute('data-form');
+    const form = u.ancestor(toggle, '.list-group-item').querySelector(sel);
     if (u.hasClass('hidden', form)) {
       u.removeClass('hidden', form);
     } else {
@@ -39397,62 +39790,8 @@ class ModeratorTools extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     this.alert_message = undefined;
     this.alert_type = undefined;
   }
-  async assignAffiliation(ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-    this.clearAlert();
-    const data = new FormData(ev.target);
-    const affiliation = data.get('affiliation');
-    const attrs = {
-      'jid': data.get('jid'),
-      'reason': data.get('reason')
-    };
-    const current_affiliation = this.affiliation;
-    const muc_jid = this.muc.get('jid');
-    try {
-      await (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_8__.setAffiliation)(affiliation, muc_jid, [attrs]);
-    } catch (e) {
-      if (e === null) {
-        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Timeout error while trying to set the affiliation'), 'danger');
-      } else if (sizzle(`not-allowed[xmlns="${Strophe.NS.STANZAS}"]`, e).length) {
-        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Sorry, you're not allowed to make that change"), 'danger');
-      } else {
-        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Sorry, something went wrong while trying to set the affiliation'), 'danger');
-      }
-      _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
-      return;
-    }
-    await this.muc.occupants.fetchMembers();
-    this.affiliation = null;
-    this.affiliation = current_affiliation;
-    this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Affiliation changed'), 'primary');
-  }
-  assignRole(ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-    this.clearAlert();
-    const data = new FormData(ev.target);
-    const occupant = this.muc.getOccupant(data.get('jid') || data.get('nick'));
-    const role = data.get('role');
-    const reason = data.get('reason');
-    const current_role = this.role;
-    this.muc.setRole(occupant, role, reason, () => {
-      this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Role changed'), 'primary');
-      this.role = null;
-      this.role = current_role;
-    }, e => {
-      if (sizzle(`not-allowed[xmlns="${Strophe.NS.STANZAS}"]`, e).length) {
-        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("You're not allowed to make that change"), 'danger');
-      } else {
-        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Sorry, something went wrong while trying to set the role'), 'danger');
-        if (u.isErrorObject(e)) {
-          _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
-        }
-      }
-    });
-  }
 }
-_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_5__.api.elements.define('converse-modtools', ModeratorTools);
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-modtools', ModeratorTools);
 
 /***/ }),
 
@@ -39628,6 +39967,93 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.elements.define('conver
 
 /***/ }),
 
+/***/ "./src/plugins/muc-views/role-form.js":
+/*!********************************************!*\
+  !*** ./src/plugins/muc-views/role-form.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
+/* harmony import */ var _templates_role_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/role-form.js */ "./src/plugins/muc-views/templates/role-form.js");
+/* harmony import */ var shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! shared/components/element.js */ "./src/shared/components/element.js");
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+
+
+
+
+
+
+const {
+  Strophe,
+  sizzle
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.converse.env;
+class RoleForm extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
+  static get properties() {
+    return {
+      muc: {
+        type: Object
+      },
+      jid: {
+        type: String
+      },
+      role: {
+        type: String
+      },
+      alert_message: {
+        type: String,
+        attribute: false
+      },
+      alert_type: {
+        type: String,
+        attribute: false
+      }
+    };
+  }
+  render() {
+    return (0,_templates_role_form_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this);
+  }
+  alert(message, type) {
+    this.alert_message = message;
+    this.alert_type = type;
+  }
+  assignRole(ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.alert(); // clear alert
+
+    const data = new FormData(ev.target);
+    const occupant = this.muc.getOccupant(data.get('jid') || data.get('nick'));
+    const role = data.get('role');
+    const reason = data.get('reason');
+    this.muc.setRole(occupant, role, reason, () => {
+      /**
+       * @event roleChanged
+       * @example
+       *  const el = document.querySelector('converse-muc-role-form');
+       *  el.addEventListener('roleChanged', () => { ... });
+       */
+      const event = new CustomEvent('roleChanged', {
+        bubbles: true
+      });
+      this.dispatchEvent(event);
+    }, e => {
+      if (sizzle(`not-allowed[xmlns="${Strophe.NS.STANZAS}"]`, e).length) {
+        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("You're not allowed to make that change"), 'danger');
+      } else {
+        this.alert((0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sorry, something went wrong while trying to set the role'), 'danger');
+        if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_5__.isErrorObject)(e)) _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].error(e);
+      }
+    });
+  }
+}
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_4__.api.elements.define('converse-muc-role-form', RoleForm);
+
+/***/ }),
+
 /***/ "./src/plugins/muc-views/search.js":
 /*!*****************************************!*\
   !*** ./src/plugins/muc-views/search.js ***!
@@ -39778,6 +40204,57 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('conver
 
 /***/ }),
 
+/***/ "./src/plugins/muc-views/templates/affiliation-form.js":
+/*!*************************************************************!*\
+  !*** ./src/plugins/muc-views/templates/affiliation-form.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/muc/affiliations/utils.js */ "./src/headless/plugins/muc/affiliations/utils.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const i18n_change_affiliation = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Change affiliation');
+  const i18n_new_affiliation = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('New affiliation');
+  const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reason');
+  const occupant = el.muc.getOwnOccupant();
+  const assignable_affiliations = (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAssignableAffiliations)(occupant);
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+        <form class="affiliation-form" @submit=${ev => el.assignAffiliation(ev)}>
+            ${el.alert_message ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="alert alert-${el.alert_type}" role="alert">${el.alert_message}</div>` : ''}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label><strong>${i18n_new_affiliation}:</strong></label>
+                        <select class="custom-select select-affiliation" name="affiliation">
+                            ${assignable_affiliations.map(aff => lit__WEBPACK_IMPORTED_MODULE_1__.html`<option value="${aff}" ?selected=${aff === el.affiliation}>${aff}</option>`)}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label><strong>${i18n_reason}:</strong></label>
+                        <input class="form-control" type="text" name="reason"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col">
+                    <input type="submit" class="btn btn-primary" name="change" value="${i18n_change_affiliation}"/>
+                </div>
+            </div>
+        </form>
+    `;
+});
+
+/***/ }),
+
 /***/ "./src/plugins/muc-views/templates/mep-message.js":
 /*!********************************************************!*\
   !*** ./src/plugins/muc-views/templates/mep-message.js ***!
@@ -39922,39 +40399,11 @@ const affiliation_option = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
             ?selected=${o.item === o.affiliation}
             title="${getAffiliationHelpText(o.item)}">${o.item}</option>
 `;
-const tplSetRoleForm = o => {
-  const i18n_change_role = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Change role');
-  const i18n_new_role = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('New Role');
-  const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Reason');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <form class="role-form hidden" @submit=${o.assignRole}>
-            <div class="form-group">
-                <input type="hidden" name="jid" value="${o.item.jid}"/>
-                <input type="hidden" name="nick" value="${o.item.nick}"/>
-                <div class="row">
-                    <div class="col">
-                        <label><strong>${i18n_new_role}:</strong></label>
-                        <select class="custom-select select-role" name="role">
-                            ${o.assignable_roles.map(role => lit__WEBPACK_IMPORTED_MODULE_2__.html`<option value="${role}" ?selected=${role === o.item.role}>${role}</option>`)}
-                        </select>
-                    </div>
-                    <div class="col">
-                        <label><strong>${i18n_reason}:</strong></label>
-                        <input class="form-control" type="text" name="reason"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="${i18n_change_role}"/>
-            </div>
-        </form>
-    `;
-};
-const role_form_toggle = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
-    <a href="#" data-form="role-form" class="toggle-form right" color="var(--subdued-color)" @click=${o.toggleForm}>
+const tplRoleFormToggle = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+    <a href="#" data-form="converse-muc-role-form" class="toggle-form right" color="var(--subdued-color)" @click=${o.toggleForm}>
         <converse-icon class="fa fa-wrench" size="1em"></converse-icon>
     </a>`;
-const role_list_item = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const tplRoleListItem = (el, o) => lit__WEBPACK_IMPORTED_MODULE_2__.html`
     <li class="list-group-item" data-nick="${o.item.nick}">
         <ul class="list-group">
             <li class="list-group-item active">
@@ -39964,45 +40413,17 @@ const role_list_item = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
                 <div><strong>Nickname:</strong> ${o.item.nick}</div>
             </li>
             <li class="list-group-item">
-                <div><strong>Role:</strong> ${o.item.role} ${o.assignable_roles.length ? role_form_toggle(o) : ''}</div>
-                ${o.assignable_roles.length ? tplSetRoleForm(o) : ''}
+                <div><strong>Role:</strong> ${o.item.role} ${o.assignable_roles.length ? tplRoleFormToggle(o) : ''}</div>
+                ${o.assignable_roles.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-role-form class="hidden" .muc=${el.muc} jid=${o.item.jid} role=${o.item.role}></converse-muc-role-form>` : ''}
             </li>
         </ul>
     </li>
 `;
-const tplSetAffiliationForm = o => {
-  const i18n_change_affiliation = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Change affiliation');
-  const i18n_new_affiliation = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('New affiliation');
-  const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Reason');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        <form class="affiliation-form hidden" @submit=${o.assignAffiliation}>
-            <div class="form-group">
-                <input type="hidden" name="jid" value="${o.item.jid}"/>
-                <input type="hidden" name="nick" value="${o.item.nick}"/>
-                <div class="row">
-                    <div class="col">
-                        <label><strong>${i18n_new_affiliation}:</strong></label>
-                        <select class="custom-select select-affiliation" name="affiliation">
-                            ${o.assignable_affiliations.map(aff => lit__WEBPACK_IMPORTED_MODULE_2__.html`<option value="${aff}" ?selected=${aff === o.item.affiliation}>${aff}</option>`)}
-                        </select>
-                    </div>
-                    <div class="col">
-                        <label><strong>${i18n_reason}:</strong></label>
-                        <input class="form-control" type="text" name="reason"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" name="change" value="${i18n_change_affiliation}"/>
-            </div>
-        </form>
-    `;
-};
 const affiliation_form_toggle = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
-    <a href="#" data-form="affiliation-form" class="toggle-form right" color="var(--subdued-color)" @click=${o.toggleForm}>
+    <a href="#" data-form="converse-muc-affiliation-form" class="toggle-form right" color="var(--subdued-color)" @click=${o.toggleForm}>
         <converse-icon class="fa fa-wrench" size="1em"></converse-icon>
     </a>`;
-const affiliation_list_item = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const affiliation_list_item = (el, o) => lit__WEBPACK_IMPORTED_MODULE_2__.html`
     <li class="list-group-item" data-nick="${o.item.nick}">
         <ul class="list-group">
             <li class="list-group-item active">
@@ -40013,7 +40434,7 @@ const affiliation_list_item = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
             </li>
             <li class="list-group-item">
                 <div><strong>Affiliation:</strong> ${o.item.affiliation} ${o.assignable_affiliations.length ? affiliation_form_toggle(o) : ''}</div>
-                ${o.assignable_affiliations.length ? tplSetAffiliationForm(o) : ''}
+                ${o.assignable_affiliations.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-affiliation-form class="hidden" .muc=${el.muc} jid=${o.item.jid} affiliation=${o.item.affiliation}></converse-muc-affiliation-form>` : ''}
             </li>
         </ul>
     </li>
@@ -40040,7 +40461,7 @@ const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
         </li>
     </ul>
 `;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, o) => {
   const i18n_affiliation = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation');
   const i18n_no_users_with_aff = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No users with that affiliation found.');
   const i18n_no_users_with_role = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No users with that role found.');
@@ -40090,7 +40511,7 @@ const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
                         ${o.loading_users_with_affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])()} </li>` : ''}
                         ${Array.isArray(o.users_with_affiliation) && o.users_with_affiliation.length === 0 ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${i18n_no_users_with_aff}</li>` : ''}
 
-                        ${o.users_with_affiliation instanceof Error ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${o.users_with_affiliation.message}</li>` : (o.users_with_affiliation || []).map(item => (item.nick || item.jid).match(new RegExp(o.affiliations_filter, 'i')) ? affiliation_list_item(Object.assign({
+                        ${o.users_with_affiliation instanceof Error ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${o.users_with_affiliation.message}</li>` : (o.users_with_affiliation || []).map(item => (item.nick || item.jid).match(new RegExp(o.affiliations_filter, 'i')) ? affiliation_list_item(el, Object.assign({
     item
   }, o)) : '')}
                     </ul>
@@ -40128,7 +40549,7 @@ const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
                     <ul class="list-group list-group--users">
                         ${o.loading_users_with_role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])()} </li>` : ''}
                         ${o.users_with_role && o.users_with_role.length === 0 ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${i18n_no_users_with_role}</li>` : ''}
-                        ${(o.users_with_role || []).map(item => item.nick.match(o.roles_filter) ? role_list_item(Object.assign({
+                        ${(o.users_with_role || []).map(item => item.nick.match(o.roles_filter) ? tplRoleListItem(el, Object.assign({
     item
   }, o)) : '')}
                     </ul>
@@ -40847,6 +41268,58 @@ const occupant_title = o => {
 
 /***/ }),
 
+/***/ "./src/plugins/muc-views/templates/role-form.js":
+/*!******************************************************!*\
+  !*** ./src/plugins/muc-views/templates/role-form.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _converse_headless_plugins_muc_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/plugins/muc/utils.js */ "./src/headless/plugins/muc/utils.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const i18n_change_role = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Change role');
+  const i18n_new_role = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('New Role');
+  const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reason');
+  const occupant = el.muc.getOwnOccupant();
+  const assignable_roles = (0,_converse_headless_plugins_muc_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAssignableRoles)(occupant);
+  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+        <form class="role-form" @submit=${el.assignRole}>
+            <div class="form-group">
+                <input type="hidden" name="jid" value="${el.jid}"/>
+                <input type="hidden" name="nick" value="${el.nick}"/>
+                <div class="row">
+                    <div class="col">
+                        <label><strong>${i18n_new_role}:</strong></label>
+                        <select class="custom-select select-role" name="role">
+                        ${assignable_roles.map(role => lit__WEBPACK_IMPORTED_MODULE_1__.html`<option value="${role}" ?selected=${role === el.role}>${role}</option>`)}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label><strong>${i18n_reason}:</strong></label>
+                        <input class="form-control" type="text" name="reason"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col">
+                    <input type="submit" class="btn btn-primary" value="${i18n_change_role}"/>
+                </div>
+            </div>
+        </form>
+    `;
+});
+
+/***/ }),
+
 /***/ "./src/plugins/muc-views/utils.js":
 /*!****************************************!*\
   !*** ./src/plugins/muc-views/utils.js ***!
@@ -40857,6 +41330,7 @@ const occupant_title = o => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "clearHistory": () => (/* binding */ clearHistory),
+/* harmony export */   "confirmDirectMUCInvitation": () => (/* binding */ confirmDirectMUCInvitation),
 /* harmony export */   "destroyMUC": () => (/* binding */ destroyMUC),
 /* harmony export */   "getAutoCompleteList": () => (/* binding */ getAutoCompleteList),
 /* harmony export */   "getAutoCompleteListItem": () => (/* binding */ getAutoCompleteListItem),
@@ -40900,6 +41374,24 @@ const COMMAND_TO_ROLE = {
   'op': 'moderator',
   'voice': 'participant'
 };
+
+/**
+ * Presents a confirmation modal to the user asking them to accept or decline a
+ * MUC invitation.
+ * @async
+ */
+function confirmDirectMUCInvitation(_ref) {
+  let {
+    contact,
+    jid,
+    reason
+  } = _ref;
+  if (!reason) {
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('%1$s has invited you to join a groupchat: %2$s', contact, jid));
+  } else {
+    return _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.confirm((0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('%1$s has invited you to join a groupchat: %2$s, and left the following reason: "%3$s"', contact, jid, reason));
+  }
+}
 function clearHistory(jid) {
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.router.history.getFragment() === `converse/room?jid=${jid}`) {
     _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.router.navigate('');
@@ -41210,7 +41702,7 @@ _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.plugins.add('conve
       // ^ a list of JIDs to ignore concerning chat state notifications
       chatstate_notification_blacklist: [],
       notification_delay: 5000,
-      notification_icon: 'logo/conversejs-filled.svg',
+      notification_icon: '/images/logo/conversejs-filled.svg',
       notify_all_room_messages: false,
       notify_nicknames_without_references: false,
       play_sounds: true,
@@ -42085,8 +42577,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store.js */ "./src/plugins/omemo/store.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./api.js */ "./src/plugins/omemo/api.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
+/* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
+/* harmony import */ var _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @converse/headless/utils/core.js */ "./src/headless/utils/core.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils.js */ "./src/plugins/omemo/utils.js");
 /**
  * @copyright The Converse.js contributors
  * @license Mozilla Public License (MPLv2)
@@ -42104,68 +42597,69 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const {
   Strophe
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.converse.env;
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.converse.env.omemo = _utils_js__WEBPACK_IMPORTED_MODULE_12__.omemo;
+} = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.converse.env;
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.converse.env.omemo = _utils_js__WEBPACK_IMPORTED_MODULE_13__.omemo;
 Strophe.addNamespace('OMEMO_DEVICELIST', Strophe.NS.OMEMO + '.devicelist');
 Strophe.addNamespace('OMEMO_VERIFICATION', Strophe.NS.OMEMO + '.verification');
 Strophe.addNamespace('OMEMO_WHITELISTED', Strophe.NS.OMEMO + '.whitelisted');
 Strophe.addNamespace('OMEMO_BUNDLES', Strophe.NS.OMEMO + '.bundles');
-_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.converse.plugins.add('converse-omemo', {
+_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.converse.plugins.add('converse-omemo', {
   enabled(_converse) {
-    return window.libsignal && _converse.config.get('trusted') && !_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get('blacklisted_plugins').includes('converse-omemo');
+    return window.libsignal && _converse.config.get('trusted') && !_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get('blacklisted_plugins').includes('converse-omemo');
   },
   dependencies: ['converse-chatview', 'converse-pubsub', 'converse-profile'],
   initialize() {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.settings.extend({
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.settings.extend({
       'omemo_default': false
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.promises.add(['OMEMOInitialized']);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.NUM_PREKEYS = 100; // Set here so that tests can override
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.promises.add(['OMEMOInitialized']);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.NUM_PREKEYS = 100; // Set here so that tests can override
 
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse, _mixins_converse_js__WEBPACK_IMPORTED_MODULE_3__["default"]);
-    Object.assign(_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_10__["default"]);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.OMEMOStore = _store_js__WEBPACK_IMPORTED_MODULE_8__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.Device = _device_js__WEBPACK_IMPORTED_MODULE_4__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.Devices = _devices_js__WEBPACK_IMPORTED_MODULE_7__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.DeviceList = _devicelist_js__WEBPACK_IMPORTED_MODULE_5__["default"];
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.DeviceLists = _devicelists_js__WEBPACK_IMPORTED_MODULE_6__["default"];
+    Object.assign(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse, _mixins_converse_js__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    Object.assign(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.api, _api_js__WEBPACK_IMPORTED_MODULE_10__["default"]);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.OMEMOStore = _store_js__WEBPACK_IMPORTED_MODULE_8__["default"];
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.Device = _device_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.Devices = _devices_js__WEBPACK_IMPORTED_MODULE_7__["default"];
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.DeviceList = _devicelist_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.DeviceLists = _devicelists_js__WEBPACK_IMPORTED_MODULE_6__["default"];
 
     /******************** Event Handlers ********************/
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.waitUntil('chatBoxesInitialized').then(_utils_js__WEBPACK_IMPORTED_MODULE_12__.onChatBoxesInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('getOutgoingMessageAttributes', _utils_js__WEBPACK_IMPORTED_MODULE_12__.getOutgoingMessageAttributes);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('createMessageStanza', async (chat, data) => {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.waitUntil('chatBoxesInitialized').then(_utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatBoxesInitialized);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('getOutgoingMessageAttributes', _utils_js__WEBPACK_IMPORTED_MODULE_13__.getOutgoingMessageAttributes);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('createMessageStanza', async (chat, data) => {
       try {
-        data = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.createOMEMOMessageStanza)(chat, data);
+        data = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.createOMEMOMessageStanza)(chat, data);
       } catch (e) {
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.handleMessageSendError)(e, chat);
+        (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.handleMessageSendError)(e, chat);
       }
       return data;
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('afterFileUploaded', (msg, attrs) => msg.file.xep454_ivkey ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.setEncryptedFileURL)(msg, attrs) : attrs);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('beforeFileUpload', (chat, file) => chat.get('omemo_active') ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_12__.encryptFile)(file) : file);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('parseMessage', _utils_js__WEBPACK_IMPORTED_MODULE_12__.parseEncryptedMessage);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('parseMUCMessage', _utils_js__WEBPACK_IMPORTED_MODULE_12__.parseEncryptedMessage);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('chatBoxViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_12__.onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('chatRoomViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_12__.onChatInitialized);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_12__.registerPEPPushHandler);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('getToolbarButtons', _utils_js__WEBPACK_IMPORTED_MODULE_12__.getOMEMOToolbarButton);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_12__.initOMEMO);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('addClientFeatures', () => _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.disco.own.features.add(`${Strophe.NS.OMEMO_DEVICELIST}+notify`));
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('afterMessageBodyTransformed', _utils_js__WEBPACK_IMPORTED_MODULE_12__.handleEncryptedFiles);
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('userDetailsModalInitialized', contact => {
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('afterFileUploaded', (msg, attrs) => msg.file.xep454_ivkey ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.setEncryptedFileURL)(msg, attrs) : attrs);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('beforeFileUpload', (chat, file) => chat.get('omemo_active') ? (0,_utils_js__WEBPACK_IMPORTED_MODULE_13__.encryptFile)(file) : file);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('parseMessage', _utils_js__WEBPACK_IMPORTED_MODULE_13__.parseEncryptedMessage);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('parseMUCMessage', _utils_js__WEBPACK_IMPORTED_MODULE_13__.parseEncryptedMessage);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('chatBoxViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatInitialized);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('chatRoomViewInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.onChatInitialized);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('connected', _utils_js__WEBPACK_IMPORTED_MODULE_13__.registerPEPPushHandler);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('getToolbarButtons', _utils_js__WEBPACK_IMPORTED_MODULE_13__.getOMEMOToolbarButton);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('statusInitialized', _utils_js__WEBPACK_IMPORTED_MODULE_13__.initOMEMO);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('addClientFeatures', () => _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.disco.own.features.add(`${Strophe.NS.OMEMO_DEVICELIST}+notify`));
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('afterMessageBodyTransformed', _utils_js__WEBPACK_IMPORTED_MODULE_13__.handleEncryptedFiles);
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('userDetailsModalInitialized', contact => {
       const jid = contact.get('jid');
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.generateFingerprints(jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__["default"].error(e));
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.generateFingerprints(jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__["default"].error(e));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('profileModalInitialized', () => {
-      _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.generateFingerprints(_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.bare_jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__["default"].error(e));
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('profileModalInitialized', () => {
+      _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.generateFingerprints(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.bare_jid).catch(e => _converse_headless_log__WEBPACK_IMPORTED_MODULE_9__["default"].error(e));
     });
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('clearSession', () => {
-      delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.omemo_store;
-      if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.shouldClearCache() && _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists) {
-        _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists.clearStore();
-        delete _converse_headless_core__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists;
+    _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__.api.listen.on('clearSession', () => {
+      delete _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.omemo_store;
+      if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_12__.shouldClearCache)() && _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists) {
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists.clearStore();
+        delete _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_11__._converse.devicelists;
       }
     });
   }
@@ -43015,7 +43509,7 @@ function handleEncryptedFiles(richtext) {
  * Hook handler for { @link parseMessage } and { @link parseMUCMessage }, which
  * parses the passed in `message` stanza for OMEMO attributes and then sets
  * them on the attrs object.
- * @param { XMLElement } stanza - The message stanza
+ * @param { Element } stanza - The message stanza
  * @param { (MUCMessageAttributes|MessageAttributes) } attrs
  * @returns (MUCMessageAttributes|MessageAttributes)
  */
@@ -44852,7 +45346,7 @@ class RegisterPanel extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
   /**
    * Handler for {@link _converse.RegisterPanel#getRegistrationFields}
    * @method _converse.RegisterPanel#onRegistrationFields
-   * @param { XMLElement } stanza - The query stanza.
+   * @param { Element } stanza - The query stanza.
    */
   onRegistrationFields(stanza) {
     if (stanza.getAttribute("type") === "error") {
@@ -44931,7 +45425,7 @@ class RegisterPanel extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
    * Callback function called by Strophe whenever the connection status changes.
    * Passed to Strophe specifically during a registration attempt.
    * @method _converse.RegisterPanel#onConnectStatusChanged
-   * @param { integer } status_code - The Strophe.Status status code
+   * @param { number } status_code - The Strophe.Status status code
    */
   onConnectStatusChanged(status_code) {
     _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__["default"].debug('converse-register: onConnectStatusChanged');
@@ -44999,7 +45493,7 @@ class RegisterPanel extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
    * Renders the registration form based on the XForm fields
    * received from the XMPP server.
    * @method _converse.RegisterPanel#renderRegistrationForm
-   * @param { XMLElement } stanza - The IQ stanza received from the XMPP server.
+   * @param { Element } stanza - The IQ stanza received from the XMPP server.
    */
   renderRegistrationForm(stanza) {
     this.form_fields = this.getFormFields(stanza);
@@ -45010,7 +45504,7 @@ class RegisterPanel extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
    * Report back to the user any error messages received from the
    * XMPP server after attempted registration.
    * @method _converse.RegisterPanel#reportErrors
-   * @param { XMLElement } stanza - The IQ stanza received from the XMPP server
+   * @param { Element } stanza - The IQ stanza received from the XMPP server
    */
   reportErrors(stanza) {
     const errors = Array.from(stanza.querySelectorAll('error'));
@@ -45070,7 +45564,7 @@ class RegisterPanel extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
   /**
    * Stores the values that will be sent to the XMPP server during attempted registration.
    * @method _converse.RegisterPanel#setFields
-   * @param { XMLElement } stanza - the IQ stanza that will be sent to the XMPP server.
+   * @param { Element } stanza - the IQ stanza that will be sent to the XMPP server.
    */
   setFields(stanza) {
     const query = stanza.querySelector('query');
@@ -45116,7 +45610,7 @@ class RegisterPanel extends shared_components_element_js__WEBPACK_IMPORTED_MODUL
    * is received from the XMPP server, after attempting to
    * register a new user.
    * @method _converse.RegisterPanel#reportErrors
-   * @param { XMLElement } stanza - The IQ stanza.
+   * @param { Element } stanza - The IQ stanza.
    */
   _onRegisterIQ(stanza) {
     if (stanza.getAttribute("type") === "error") {
@@ -49218,7 +49712,7 @@ class Message extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_15__
     } else if (this.model.get('type') === 'groupchat') {
       ev.preventDefault();
       _converse_headless_core__WEBPACK_IMPORTED_MODULE_17__.api.modal.show('converse-muc-occupant-modal', {
-        'model': this.model.occupant,
+        'model': this.model.getOccupant(),
         'message': this.model
       }, ev);
     } else {
@@ -50041,13 +50535,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "onScrolledDown": () => (/* binding */ onScrolledDown),
 /* harmony export */   "shortnamesToEmojis": () => (/* binding */ shortnamesToEmojis)
 /* harmony export */ });
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js");
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _templates_new_day_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/new-day.js */ "./src/shared/chat/templates/new-day.js");
-/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
-/* harmony import */ var _converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @converse/headless/plugins/emoji/utils.js */ "./src/headless/plugins/emoji/utils.js");
+/* harmony import */ var lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash-es/debounce */ "./node_modules/lodash-es/debounce.js");
+/* harmony import */ var _templates_new_day_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./templates/new-day.js */ "./src/shared/chat/templates/new-day.js");
+/* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_directives_until_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit/directives/until.js */ "./node_modules/lit/directives/until.js");
+/* harmony import */ var _converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @converse/headless/plugins/emoji/utils.js */ "./src/headless/plugins/emoji/utils.js");
 
 
 
@@ -50057,10 +50550,10 @@ __webpack_require__.r(__webpack_exports__);
 const {
   dayjs,
   u
-} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env;
+} = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 async function getHeadingDropdownItem(promise_or_data) {
   const data = await promise_or_data;
-  return data ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return data ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
               <a href="#" class="dropdown-item ${data.a_class}" @click=${data.handler} title="${data.i18n_title}">
                   <converse-icon
                       size="1em"
@@ -50072,7 +50565,7 @@ async function getHeadingDropdownItem(promise_or_data) {
 }
 async function getHeadingStandaloneButton(promise_or_data) {
   const data = await promise_or_data;
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
         <a
             href="#"
             class="chatbox-btn ${data.a_class}"
@@ -50087,20 +50580,20 @@ async function getHeadingStandaloneButton(promise_or_data) {
     `;
 }
 function getStandaloneButtons(promise) {
-  return promise.then(btns => btns.filter(b => b.standalone).map(b => getHeadingStandaloneButton(b)).reverse().map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(b, '')));
+  return promise.then(btns => btns.filter(b => b.standalone).map(b => getHeadingStandaloneButton(b)).reverse().map(b => (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_3__.until)(b, '')));
 }
 function getDropdownButtons(promise) {
   return promise.then(btns => {
     const dropdown_btns = btns.filter(b => !b.standalone).map(b => getHeadingDropdownItem(b));
-    return dropdown_btns.length ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-dropdown class="chatbox-btn dropleft" .items=${dropdown_btns}></converse-dropdown>` : '';
+    return dropdown_btns.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-dropdown class="chatbox-btn dropleft" .items=${dropdown_btns}></converse-dropdown>` : '';
   });
 }
 function onScrolledDown(model) {
   if (!model.isHidden()) {
-    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_url_history_change')) {
+    if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_url_history_change')) {
       // Clear location hash if set to one of the messages in our history
       const hash = window.location.hash;
-      hash && model.messages.get(hash.slice(1)) && _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.router.history.navigate();
+      hash && model.messages.get(hash.slice(1)) && _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.router.history.navigate();
     }
   }
 }
@@ -50132,7 +50625,7 @@ function _markScrolled(ev) {
      * @property { _converse.ChatBoxView | _converse.ChatRoomView } view
      * @example _converse.api.listen.on('chatBoxScrolledUp', obj => { ... });
      */
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.trigger('chatBoxScrolledUp', el);
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.trigger('chatBoxScrolledUp', el);
   }
   if (el.model.get('scolled') !== scrolled) {
     el.model.ui.set({
@@ -50140,7 +50633,7 @@ function _markScrolled(ev) {
     });
   }
 }
-const markScrolled = lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default()(ev => _markScrolled(ev), 50);
+const markScrolled = (0,lodash_es_debounce__WEBPACK_IMPORTED_MODULE_5__["default"])(ev => _markScrolled(ev), 50);
 
 /**
  * Given a message object, returns a TemplateResult indicating a new day if
@@ -50156,7 +50649,7 @@ function getDayIndicator(message) {
   const prev_message = messages[idx - 1];
   if (!prev_message || dayjs(message.get('time')).isAfter(dayjs(prev_message.get('time')), 'day')) {
     const day_date = dayjs(message.get('time')).startOf('day');
-    return (0,_templates_new_day_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
+    return (0,_templates_new_day_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
       'type': 'date',
       'time': day_date.toISOString(),
       'datestring': day_date.format("dddd MMM Do YYYY")
@@ -50165,7 +50658,7 @@ function getDayIndicator(message) {
 }
 function getHats(message) {
   if (message.get('type') === 'groupchat') {
-    const allowed_hats = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_hats').filter(hat => hat).map(hat => hat.toLowerCase());
+    const allowed_hats = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('muc_hats').filter(hat => hat).map(hat => hat.toLowerCase());
     let vcard_roles = [];
     if (allowed_hats.includes('vcard_roles')) {
       vcard_roles = message.vcard ? message.vcard.get('role') : null;
@@ -50187,10 +50680,10 @@ function unique(arr) {
   return [...new Set(arr)];
 }
 function getTonedEmojis() {
-  if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.toned) {
-    _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.toned = unique(Object.values(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.json.people).filter(person => person.sn.includes('_tone')).map(person => person.sn.replace(/_tone[1-5]/, '')));
+  if (!_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.toned) {
+    _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.toned = unique(Object.values(_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.json.people).filter(person => person.sn.includes('_tone')).map(person => person.sn.replace(/_tone[1-5]/, '')));
   }
-  return _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.toned;
+  return _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.toned;
 }
 function getEmojiMarkup(data) {
   let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
@@ -50202,15 +50695,15 @@ function getEmojiMarkup(data) {
   if (emoji) {
     if (options.unicode_only) {
       return emoji;
-    } else if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('use_system_emojis')) {
+    } else if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('use_system_emojis')) {
       if (options.add_title_wrapper) {
-        return shortname ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<span title="${shortname}">${emoji}</span>` : emoji;
+        return shortname ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span title="${shortname}">${emoji}</span>` : emoji;
       } else {
         return emoji;
       }
     } else {
-      const path = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('emoji_image_path');
-      return lit__WEBPACK_IMPORTED_MODULE_3__.html`<img class="emoji"
+      const path = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('emoji_image_path');
+      return lit__WEBPACK_IMPORTED_MODULE_2__.html`<img class="emoji"
                 loading="lazy"
                 draggable="false"
                 title="${shortname}"
@@ -50220,17 +50713,17 @@ function getEmojiMarkup(data) {
   } else if (options.unicode_only) {
     return shortname;
   } else {
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`<img class="emoji"
+    return lit__WEBPACK_IMPORTED_MODULE_2__.html`<img class="emoji"
             loading="lazy"
             draggable="false"
             title="${shortname}"
             alt="${shortname}"
-            src="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.emojis.by_sn[shortname].url}">`;
+            src="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.by_sn[shortname].url}">`;
   }
 }
 function addEmojisMarkup(text, options) {
   let list = [text];
-  [...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__.getShortnameReferences)(text), ...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__.getCodePointReferences)(text)].sort((a, b) => b.begin - a.begin).forEach(ref => {
+  [...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__.getShortnameReferences)(text), ...(0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__.getCodePointReferences)(text)].sort((a, b) => b.begin - a.begin).forEach(ref => {
     const text = list.shift();
     const emoji = getEmojiMarkup(ref, options);
     if (typeof emoji === 'string') {
@@ -50274,7 +50767,7 @@ function shortnamesToEmojis(str) {
     unicode_only: false,
     add_title_wrapper: false
   };
-  str = (0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_5__.convertASCII2Emoji)(str);
+  str = (0,_converse_headless_plugins_emoji_utils_js__WEBPACK_IMPORTED_MODULE_4__.convertASCII2Emoji)(str);
   return addEmojisMarkup(str, options);
 }
 Object.assign(u, {
@@ -50958,7 +51451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _element_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element.js */ "./src/shared/components/element.js");
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
+/* harmony import */ var i18n_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! i18n/index.js */ "./src/i18n/index.js");
 /* harmony import */ var _styles_message_versions_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/message-versions.scss */ "./src/shared/components/styles/message-versions.scss");
 
 
@@ -50972,18 +51465,22 @@ const tplOlderVersion = (k, older_versions) => lit__WEBPACK_IMPORTED_MODULE_2__.
 class MessageVersions extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElement {
   static get properties() {
     return {
-      'model': {
+      model: {
         type: Object
       }
     };
+  }
+  constructor() {
+    super();
+    this.model = null;
   }
   render() {
     const older_versions = this.model.get('older_versions');
     const keys = Object.keys(older_versions);
     return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-            ${keys.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Older versions')}</h4> ${keys.map(k => tplOlderVersion(k, older_versions))}` : lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('No older versions found')}</h4>`}
+            ${keys.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('Older versions')}</h4> ${keys.map(k => tplOlderVersion(k, older_versions))}` : lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('No older versions found')}</h4>`}
             <hr/>
-            <h4>${(0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Current version')}</h4>
+            <h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('Current version')}</h4>
             <p><time>${dayjs(this.model.get('time')).format('MMM D, YYYY, HH:mm:ss')}</time>: ${this.model.getMessageText()}</p>`;
   }
 }
@@ -52870,20 +53367,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 const registry = {};
-function define(name, constructor) {
-  this.registry[name] = constructor;
-}
-function register() {
-  Object.keys(registry).forEach(name => {
-    if (!customElements.get(name)) {
-      customElements.define(name, registry[name]);
-    }
-  });
-}
+
+/**
+ * The "elements" namespace groups methods relevant to registering custom
+ * HTML elements.
+ * @namespace api.elements
+ * @memberOf api
+ */
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.elements = {
   registry,
-  define,
-  register
+  /**
+   * Defines a new custom HTML element.
+   *
+   * By using this API instead of `customElements.define` from the DOM,
+   * we can allow custom elements to be overwritten.
+   *
+   * Once `converse.initialize()` is called, `api.elements.register()`
+   * will get called and all custom elements will be registered to the DOM,
+   * from which point onward they cannot be overwritten.
+   *
+   * @method api.elements.define
+   * @param { string } name
+   * @param { object } constructor
+   */
+  define(name, constructor) {
+    this.registry[name] = constructor;
+  },
+  /**
+   * Registers all previously defined custom HTML elements
+   * @method api.elements.register
+   */
+  register() {
+    Object.keys(registry).forEach(name => {
+      if (!customElements.get(name)) {
+        customElements.define(name, registry[name]);
+      }
+    });
+  }
 };
 
 /***/ }),
@@ -52954,7 +53474,7 @@ class RichText extends String {
   /**
    * Create a new {@link RichText} instance.
    * @param { String } text - The text to be annotated
-   * @param { Integer } offset - The offset of this particular piece of text
+   * @param { number } offset - The offset of this particular piece of text
    *  from the start of the original message text. This is necessary because
    *  RichText instances can be nested when templates call directives
    *  which create new RichText instances (as happens with XEP-393 styling directives).
@@ -53018,7 +53538,7 @@ class RichText extends String {
   /**
    * Look for `http` URIs and return templates that render them as URL links
    * @param { String } text
-   * @param { Integer } local_offset - The index of the passed in text relative to
+   * @param { number } local_offset - The index of the passed in text relative to
    *  the start of this RichText instance (which is not necessarily the same as the
    *  offset from the start of the original message stanza's body text).
    */
@@ -53054,7 +53574,7 @@ class RichText extends String {
   /**
    * Look for `geo` URIs and return templates that render them as URL links
    * @param { String } text
-   * @param { Integer } offset - The index of the passed in text relative to
+   * @param { number } offset - The index of the passed in text relative to
    *  the start of the message body text.
    */
   addMapURLs(text, offset) {
@@ -53068,7 +53588,7 @@ class RichText extends String {
   /**
    * Look for emojis (shortnames or unicode) and add templates for rendering them.
    * @param { String } text
-   * @param { Integer } offset - The index of the passed in text relative to
+   * @param { number } offset - The index of the passed in text relative to
    *  the start of the message body text.
    */
   addEmojis(text, offset) {
@@ -53084,7 +53604,7 @@ class RichText extends String {
    * Look for mentions included as XEP-0372 references and add templates for
    * rendering them.
    * @param { String } text
-   * @param { Integer } local_offset - The index of the passed in text relative to
+   * @param { number } local_offset - The index of the passed in text relative to
    *  the start of this RichText instance (which is not necessarily the same as the
    *  offset from the start of the original message stanza's body text).
    */
@@ -54260,7 +54780,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "slideIn": () => (/* binding */ slideIn),
 /* harmony export */   "slideOut": () => (/* binding */ slideOut)
 /* harmony export */ });
-/* harmony import */ var lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lodash-es/isFunction */ "./node_modules/lodash-es/isFunction.js");
 /* harmony import */ var _converse_headless_log__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @converse/headless/log */ "./src/headless/log.js");
 /* harmony import */ var templates_audio_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! templates/audio.js */ "./src/templates/audio.js");
 /* harmony import */ var templates_file_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! templates/file.js */ "./src/templates/file.js");
@@ -54283,7 +54802,6 @@ __webpack_require__.r(__webpack_exports__);
  * @license Mozilla Public License (MPLv2)
  * @description This is the DOM/HTML utilities module.
  */
-
 
 
 
@@ -54350,8 +54868,8 @@ const serializer = new XMLSerializer();
 
 /**
  * Given two XML or HTML elements, determine if they're equal
- * @param { XMLElement | HTMLElement } actual
- * @param { XMLElement | HTMLElement } expected
+ * @param { Element } actual
+ * @param { Element } expected
  * @returns { Boolean }
  */
 function isEqualNode(actual, expected) {
@@ -54446,7 +54964,7 @@ function getFileName(url) {
  * (such as a video, image or audio file).
  * @method u#getOOBURLMarkup
  * @param { String } url
- * @returns { String }
+ * @returns { TemplateResult }
  */
 function getOOBURLMarkup(url) {
   const uri = (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_15__.getURI)(url);
@@ -54468,8 +54986,8 @@ function getOOBURLMarkup(url) {
  * Return the height of the passed in DOM element,
  * based on the heights of its children.
  * @method u#calculateElementHeight
- * @param {HTMLElement} el
- * @returns {integer}
+ * @param { HTMLElement } el
+ * @returns {number}
  */
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].calculateElementHeight = function (el) {
   return Array.from(el.children).reduce((result, child) => result + child.offsetHeight, 0);
@@ -54516,8 +55034,8 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].toggleClass = func
 /**
  * Add a class to an element.
  * @method u#addClass
- * @param {string} className
- * @param {Element} el
+ * @param { string } className
+ * @param { Element } el
  */
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].addClass = function (className, el) {
   el instanceof Element && el.classList.add(className);
@@ -54527,8 +55045,8 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].addClass = functio
 /**
  * Remove a class from an element.
  * @method u#removeClass
- * @param {string} className
- * @param {Element} el
+ * @param { string } className
+ * @param { Element } el
  */
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].removeClass = function (className, el) {
   el instanceof Element && el.classList.remove(className);
@@ -54643,7 +55161,7 @@ function slideOut(el) {
     const marker = el.getAttribute('data-slider-marker');
     if (marker) {
       el.removeAttribute('data-slider-marker');
-      window.cancelAnimationFrame(marker);
+      cancelAnimationFrame(marker);
     }
     const end_height = _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].calculateElementHeight(el);
     if (window.converse_disable_effects) {
@@ -54663,7 +55181,7 @@ function slideOut(el) {
       height += end_height / steps;
       if (height < end_height) {
         el.style.height = height + 'px';
-        el.setAttribute('data-slider-marker', window.requestAnimationFrame(draw));
+        el.setAttribute('data-slider-marker', requestAnimationFrame(draw).toString());
       } else {
         // We recalculate the height to work around an apparent
         // browser bug where browsers don't know the correct
@@ -54679,7 +55197,7 @@ function slideOut(el) {
     el.style.overflow = 'hidden';
     el.classList.remove('hidden');
     el.classList.remove('collapsed');
-    el.setAttribute('data-slider-marker', window.requestAnimationFrame(draw));
+    el.setAttribute('data-slider-marker', requestAnimationFrame(draw).toString());
   });
 }
 
@@ -54707,7 +55225,7 @@ function slideIn(el) {
     const marker = el.getAttribute('data-slider-marker');
     if (marker) {
       el.removeAttribute('data-slider-marker');
-      window.cancelAnimationFrame(marker);
+      cancelAnimationFrame(marker);
     }
     const original_height = el.offsetHeight,
       steps = duration / 17; // We assume 17ms per animation which is ~60FPS
@@ -54717,7 +55235,7 @@ function slideIn(el) {
       height -= original_height / steps;
       if (height > 0) {
         el.style.height = height + 'px';
-        el.setAttribute('data-slider-marker', window.requestAnimationFrame(draw));
+        el.setAttribute('data-slider-marker', requestAnimationFrame(draw).toString());
       } else {
         el.removeAttribute('data-slider-marker');
         el.classList.add('collapsed');
@@ -54725,14 +55243,12 @@ function slideIn(el) {
         resolve(el);
       }
     }
-    el.setAttribute('data-slider-marker', window.requestAnimationFrame(draw));
+    el.setAttribute('data-slider-marker', requestAnimationFrame(draw).toString());
   });
 }
 function afterAnimationEnds(el, callback) {
   el.classList.remove('visible');
-  if ((0,lodash_es_isFunction__WEBPACK_IMPORTED_MODULE_17__["default"])(callback)) {
-    callback();
-  }
+  callback?.();
 }
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].isInDOM = function (el) {
   return document.querySelector('body').contains(el);
@@ -54770,8 +55286,8 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].fadeIn = function 
  * Takes an XML field in XMPP XForm (XEP-004: Data Forms) format returns a
  * [TemplateResult](https://lit.polymer-project.org/api/classes/_lit_html_.templateresult.html).
  * @method u#xForm2TemplateResult
- * @param { XMLElement } field - the field to convert
- * @param { XMLElement } stanza - the containing stanza
+ * @param { Element } field - the field to convert
+ * @param { Element } stanza - the containing stanza
  * @param { Object } options
  * @returns { TemplateResult }
  */
@@ -56259,10 +56775,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56286,10 +56802,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatboxviews/styles/chats.scss":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatboxviews/styles/chats.scss ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatboxviews/styles/chats.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatboxviews/styles/chats.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56313,10 +56829,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-bottom-panel.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-bottom-panel.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-bottom-panel.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-bottom-panel.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56340,10 +56856,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-head.scss":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-head.scss ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-head.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-head.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56367,10 +56883,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/index.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/index.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/index.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/index.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56394,10 +56910,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/_controlbox.scss":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/_controlbox.scss ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/_controlbox.scss":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/_controlbox.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56421,10 +56937,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56448,10 +56964,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56475,10 +56991,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56502,10 +57018,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines.scss":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines.scss ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines.scss":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56529,10 +57045,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/mam-views/styles/placeholder.scss":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/mam-views/styles/placeholder.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/mam-views/styles/placeholder.scss":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/mam-views/styles/placeholder.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56556,10 +57072,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/minimize/styles/minimize.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/minimize/styles/minimize.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/minimize/styles/minimize.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/minimize/styles/minimize.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56583,10 +57099,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56610,10 +57126,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56637,10 +57153,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/index.scss":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/index.scss ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/index.scss":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/index.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56664,10 +57180,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/moderator-tools.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/moderator-tools.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56691,10 +57207,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56718,10 +57234,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-head.scss":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-head.scss ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56745,10 +57261,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-occupants.scss":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-occupants.scss ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-head.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-head.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56772,10 +57288,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/nickname-form.scss":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/nickname-form.scss ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-occupants.scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-occupants.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56799,10 +57315,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/register/styles/register.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/register/styles/register.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/nickname-form.scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/nickname-form.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56826,10 +57342,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rootview/styles/root.scss":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rootview/styles/root.scss ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/register/styles/register.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/register/styles/register.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56853,10 +57369,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rootview/styles/root.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rootview/styles/root.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56880,10 +57396,37 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/singleton/singleton.scss":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/singleton/singleton.scss ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/singleton/singleton.scss":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/singleton/singleton.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56907,10 +57450,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/autocomplete/styles/_autocomplete.scss":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/autocomplete/styles/_autocomplete.scss ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/autocomplete/styles/_autocomplete.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/autocomplete/styles/_autocomplete.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56934,10 +57477,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/avatar/avatar.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/avatar/avatar.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/avatar/avatar.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/avatar/avatar.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56961,10 +57504,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/chat-content.scss":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/chat-content.scss ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/chat-content.scss":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/chat-content.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -56988,10 +57531,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/emoji.scss":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/emoji.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/emoji.scss":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/emoji.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57015,10 +57558,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-actions.scss":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-actions.scss ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-actions.scss":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-actions.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57042,10 +57585,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-body.scss":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-body.scss ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-body.scss":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-body.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57069,10 +57612,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/retraction.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/retraction.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/retraction.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/retraction.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57096,10 +57639,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/toolbar.scss":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/toolbar.scss ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/toolbar.scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/toolbar.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57123,10 +57666,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/unfurl.scss":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/unfurl.scss ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/unfurl.scss":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/unfurl.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57150,10 +57693,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/dropdown.scss":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/dropdown.scss ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/dropdown.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/dropdown.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57177,10 +57720,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/gif.scss":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/gif.scss ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/gif.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/gif.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57204,10 +57747,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57231,10 +57774,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57258,10 +57801,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57285,10 +57828,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57312,10 +57855,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/index.scss":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/index.scss ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/index.scss":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/index.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57339,10 +57882,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/status.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/status.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/status.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/status.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -65989,666 +66532,6 @@ module.exports = localforage_js;
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_Symbol.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/_Symbol.js ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var root = __webpack_require__(/*! ./_root */ "./node_modules/lodash/_root.js");
-
-/** Built-in value references. */
-var Symbol = root.Symbol;
-
-module.exports = Symbol;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_baseGetTag.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash/_baseGetTag.js ***!
-  \********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var Symbol = __webpack_require__(/*! ./_Symbol */ "./node_modules/lodash/_Symbol.js"),
-    getRawTag = __webpack_require__(/*! ./_getRawTag */ "./node_modules/lodash/_getRawTag.js"),
-    objectToString = __webpack_require__(/*! ./_objectToString */ "./node_modules/lodash/_objectToString.js");
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-  if (value == null) {
-    return value === undefined ? undefinedTag : nullTag;
-  }
-  return (symToStringTag && symToStringTag in Object(value))
-    ? getRawTag(value)
-    : objectToString(value);
-}
-
-module.exports = baseGetTag;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_baseTrim.js":
-/*!******************************************!*\
-  !*** ./node_modules/lodash/_baseTrim.js ***!
-  \******************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var trimmedEndIndex = __webpack_require__(/*! ./_trimmedEndIndex */ "./node_modules/lodash/_trimmedEndIndex.js");
-
-/** Used to match leading whitespace. */
-var reTrimStart = /^\s+/;
-
-/**
- * The base implementation of `_.trim`.
- *
- * @private
- * @param {string} string The string to trim.
- * @returns {string} Returns the trimmed string.
- */
-function baseTrim(string) {
-  return string
-    ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '')
-    : string;
-}
-
-module.exports = baseTrim;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_freeGlobal.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash/_freeGlobal.js ***!
-  \********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof __webpack_require__.g == 'object' && __webpack_require__.g && __webpack_require__.g.Object === Object && __webpack_require__.g;
-
-module.exports = freeGlobal;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_getRawTag.js":
-/*!*******************************************!*\
-  !*** ./node_modules/lodash/_getRawTag.js ***!
-  \*******************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var Symbol = __webpack_require__(/*! ./_Symbol */ "./node_modules/lodash/_Symbol.js");
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto.toString;
-
-/** Built-in value references. */
-var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
- */
-function getRawTag(value) {
-  var isOwn = hasOwnProperty.call(value, symToStringTag),
-      tag = value[symToStringTag];
-
-  try {
-    value[symToStringTag] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag] = tag;
-    } else {
-      delete value[symToStringTag];
-    }
-  }
-  return result;
-}
-
-module.exports = getRawTag;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_objectToString.js":
-/*!************************************************!*\
-  !*** ./node_modules/lodash/_objectToString.js ***!
-  \************************************************/
-/***/ ((module) => {
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto.toString;
-
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-function objectToString(value) {
-  return nativeObjectToString.call(value);
-}
-
-module.exports = objectToString;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_root.js":
-/*!**************************************!*\
-  !*** ./node_modules/lodash/_root.js ***!
-  \**************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ "./node_modules/lodash/_freeGlobal.js");
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-module.exports = root;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_trimmedEndIndex.js":
-/*!*************************************************!*\
-  !*** ./node_modules/lodash/_trimmedEndIndex.js ***!
-  \*************************************************/
-/***/ ((module) => {
-
-/** Used to match a single whitespace character. */
-var reWhitespace = /\s/;
-
-/**
- * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
- * character of `string`.
- *
- * @private
- * @param {string} string The string to inspect.
- * @returns {number} Returns the index of the last non-whitespace character.
- */
-function trimmedEndIndex(string) {
-  var index = string.length;
-
-  while (index-- && reWhitespace.test(string.charAt(index))) {}
-  return index;
-}
-
-module.exports = trimmedEndIndex;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/debounce.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/debounce.js ***!
-  \*****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var isObject = __webpack_require__(/*! ./isObject */ "./node_modules/lodash/isObject.js"),
-    now = __webpack_require__(/*! ./now */ "./node_modules/lodash/now.js"),
-    toNumber = __webpack_require__(/*! ./toNumber */ "./node_modules/lodash/toNumber.js");
-
-/** Error message constants. */
-var FUNC_ERROR_TEXT = 'Expected a function';
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeMax = Math.max,
-    nativeMin = Math.min;
-
-/**
- * Creates a debounced function that delays invoking `func` until after `wait`
- * milliseconds have elapsed since the last time the debounced function was
- * invoked. The debounced function comes with a `cancel` method to cancel
- * delayed `func` invocations and a `flush` method to immediately invoke them.
- * Provide `options` to indicate whether `func` should be invoked on the
- * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
- * with the last arguments provided to the debounced function. Subsequent
- * calls to the debounced function return the result of the last `func`
- * invocation.
- *
- * **Note:** If `leading` and `trailing` options are `true`, `func` is
- * invoked on the trailing edge of the timeout only if the debounced function
- * is invoked more than once during the `wait` timeout.
- *
- * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
- * until to the next tick, similar to `setTimeout` with a timeout of `0`.
- *
- * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
- * for details over the differences between `_.debounce` and `_.throttle`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Function
- * @param {Function} func The function to debounce.
- * @param {number} [wait=0] The number of milliseconds to delay.
- * @param {Object} [options={}] The options object.
- * @param {boolean} [options.leading=false]
- *  Specify invoking on the leading edge of the timeout.
- * @param {number} [options.maxWait]
- *  The maximum time `func` is allowed to be delayed before it's invoked.
- * @param {boolean} [options.trailing=true]
- *  Specify invoking on the trailing edge of the timeout.
- * @returns {Function} Returns the new debounced function.
- * @example
- *
- * // Avoid costly calculations while the window size is in flux.
- * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
- *
- * // Invoke `sendMail` when clicked, debouncing subsequent calls.
- * jQuery(element).on('click', _.debounce(sendMail, 300, {
- *   'leading': true,
- *   'trailing': false
- * }));
- *
- * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
- * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
- * var source = new EventSource('/stream');
- * jQuery(source).on('message', debounced);
- *
- * // Cancel the trailing debounced invocation.
- * jQuery(window).on('popstate', debounced.cancel);
- */
-function debounce(func, wait, options) {
-  var lastArgs,
-      lastThis,
-      maxWait,
-      result,
-      timerId,
-      lastCallTime,
-      lastInvokeTime = 0,
-      leading = false,
-      maxing = false,
-      trailing = true;
-
-  if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  wait = toNumber(wait) || 0;
-  if (isObject(options)) {
-    leading = !!options.leading;
-    maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
-    trailing = 'trailing' in options ? !!options.trailing : trailing;
-  }
-
-  function invokeFunc(time) {
-    var args = lastArgs,
-        thisArg = lastThis;
-
-    lastArgs = lastThis = undefined;
-    lastInvokeTime = time;
-    result = func.apply(thisArg, args);
-    return result;
-  }
-
-  function leadingEdge(time) {
-    // Reset any `maxWait` timer.
-    lastInvokeTime = time;
-    // Start the timer for the trailing edge.
-    timerId = setTimeout(timerExpired, wait);
-    // Invoke the leading edge.
-    return leading ? invokeFunc(time) : result;
-  }
-
-  function remainingWait(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime,
-        timeWaiting = wait - timeSinceLastCall;
-
-    return maxing
-      ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke)
-      : timeWaiting;
-  }
-
-  function shouldInvoke(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime;
-
-    // Either this is the first call, activity has stopped and we're at the
-    // trailing edge, the system time has gone backwards and we're treating
-    // it as the trailing edge, or we've hit the `maxWait` limit.
-    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
-      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
-  }
-
-  function timerExpired() {
-    var time = now();
-    if (shouldInvoke(time)) {
-      return trailingEdge(time);
-    }
-    // Restart the timer.
-    timerId = setTimeout(timerExpired, remainingWait(time));
-  }
-
-  function trailingEdge(time) {
-    timerId = undefined;
-
-    // Only invoke if we have `lastArgs` which means `func` has been
-    // debounced at least once.
-    if (trailing && lastArgs) {
-      return invokeFunc(time);
-    }
-    lastArgs = lastThis = undefined;
-    return result;
-  }
-
-  function cancel() {
-    if (timerId !== undefined) {
-      clearTimeout(timerId);
-    }
-    lastInvokeTime = 0;
-    lastArgs = lastCallTime = lastThis = timerId = undefined;
-  }
-
-  function flush() {
-    return timerId === undefined ? result : trailingEdge(now());
-  }
-
-  function debounced() {
-    var time = now(),
-        isInvoking = shouldInvoke(time);
-
-    lastArgs = arguments;
-    lastThis = this;
-    lastCallTime = time;
-
-    if (isInvoking) {
-      if (timerId === undefined) {
-        return leadingEdge(lastCallTime);
-      }
-      if (maxing) {
-        // Handle invocations in a tight loop.
-        clearTimeout(timerId);
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
-      }
-    }
-    if (timerId === undefined) {
-      timerId = setTimeout(timerExpired, wait);
-    }
-    return result;
-  }
-  debounced.cancel = cancel;
-  debounced.flush = flush;
-  return debounced;
-}
-
-module.exports = debounce;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/isObject.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/isObject.js ***!
-  \*****************************************/
-/***/ ((module) => {
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return value != null && (type == 'object' || type == 'function');
-}
-
-module.exports = isObject;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/isObjectLike.js":
-/*!*********************************************!*\
-  !*** ./node_modules/lodash/isObjectLike.js ***!
-  \*********************************************/
-/***/ ((module) => {
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-module.exports = isObjectLike;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/isSymbol.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/isSymbol.js ***!
-  \*****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "./node_modules/lodash/_baseGetTag.js"),
-    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/lodash/isObjectLike.js");
-
-/** `Object#toString` result references. */
-var symbolTag = '[object Symbol]';
-
-/**
- * Checks if `value` is classified as a `Symbol` primitive or object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
- * @example
- *
- * _.isSymbol(Symbol.iterator);
- * // => true
- *
- * _.isSymbol('abc');
- * // => false
- */
-function isSymbol(value) {
-  return typeof value == 'symbol' ||
-    (isObjectLike(value) && baseGetTag(value) == symbolTag);
-}
-
-module.exports = isSymbol;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/now.js":
-/*!************************************!*\
-  !*** ./node_modules/lodash/now.js ***!
-  \************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var root = __webpack_require__(/*! ./_root */ "./node_modules/lodash/_root.js");
-
-/**
- * Gets the timestamp of the number of milliseconds that have elapsed since
- * the Unix epoch (1 January 1970 00:00:00 UTC).
- *
- * @static
- * @memberOf _
- * @since 2.4.0
- * @category Date
- * @returns {number} Returns the timestamp.
- * @example
- *
- * _.defer(function(stamp) {
- *   console.log(_.now() - stamp);
- * }, _.now());
- * // => Logs the number of milliseconds it took for the deferred invocation.
- */
-var now = function() {
-  return root.Date.now();
-};
-
-module.exports = now;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/toNumber.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/toNumber.js ***!
-  \*****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var baseTrim = __webpack_require__(/*! ./_baseTrim */ "./node_modules/lodash/_baseTrim.js"),
-    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/lodash/isObject.js"),
-    isSymbol = __webpack_require__(/*! ./isSymbol */ "./node_modules/lodash/isSymbol.js");
-
-/** Used as references for various `Number` constants. */
-var NAN = 0 / 0;
-
-/** Used to detect bad signed hexadecimal string values. */
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-/** Used to detect binary string values. */
-var reIsBinary = /^0b[01]+$/i;
-
-/** Used to detect octal string values. */
-var reIsOctal = /^0o[0-7]+$/i;
-
-/** Built-in method references without a dependency on `root`. */
-var freeParseInt = parseInt;
-
-/**
- * Converts `value` to a number.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to process.
- * @returns {number} Returns the number.
- * @example
- *
- * _.toNumber(3.2);
- * // => 3.2
- *
- * _.toNumber(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toNumber(Infinity);
- * // => Infinity
- *
- * _.toNumber('3.2');
- * // => 3.2
- */
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject(other) ? (other + '') : other;
-  }
-  if (typeof value != 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = baseTrim(value);
-  var isBinary = reIsBinary.test(value);
-  return (isBinary || reIsOctal.test(value))
-    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-    : (reIsBadHex.test(value) ? NAN : +value);
-}
-
-module.exports = toNumber;
-
-
-/***/ }),
-
 /***/ "./node_modules/sizzle/dist/sizzle.js":
 /*!********************************************!*\
   !*** ./node_modules/sizzle/dist/sizzle.js ***!
@@ -69193,7 +69076,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./bookmarks.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./bookmarks.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/bookmark-views/styles/bookmarks.scss");
 
       
       
@@ -69215,12 +69098,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_bookmarks_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69248,7 +69131,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chats.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatboxviews/styles/chats.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chats.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatboxviews/styles/chats.scss");
 
       
       
@@ -69270,12 +69153,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chats_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69303,7 +69186,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chat-bottom-panel.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-bottom-panel.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chat-bottom-panel.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-bottom-panel.scss");
 
       
       
@@ -69325,12 +69208,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69358,7 +69241,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chat-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-head.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chat-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/chat-head.scss");
 
       
       
@@ -69380,12 +69263,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69413,7 +69296,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./index.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/index.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./index.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/chatview/styles/index.scss");
 
       
       
@@ -69435,12 +69318,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69468,7 +69351,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./_controlbox.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/_controlbox.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./_controlbox.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/_controlbox.scss");
 
       
       
@@ -69490,12 +69373,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69523,7 +69406,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./controlbox-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./controlbox-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/controlbox/styles/controlbox-head.scss");
 
       
       
@@ -69545,12 +69428,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_controlbox_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69578,7 +69461,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./fullscreen.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./fullscreen.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/fullscreen/styles/fullscreen.scss");
 
       
       
@@ -69600,12 +69483,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_fullscreen_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69633,7 +69516,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./headlines-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./headlines-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines-head.scss");
 
       
       
@@ -69655,12 +69538,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69688,7 +69571,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./headlines.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./headlines.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/headlines-view/styles/headlines.scss");
 
       
       
@@ -69710,12 +69593,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_headlines_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69743,7 +69626,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./placeholder.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/mam-views/styles/placeholder.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./placeholder.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/mam-views/styles/placeholder.scss");
 
       
       
@@ -69765,12 +69648,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_placeholder_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69798,7 +69681,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./minimize.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/minimize/styles/minimize.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./minimize.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/minimize/styles/minimize.scss");
 
       
       
@@ -69820,12 +69703,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_minimize_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69853,7 +69736,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./_modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./_modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/modal/styles/_modal.scss");
 
       
       
@@ -69875,12 +69758,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69908,7 +69791,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./add-muc-modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./add-muc-modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/add-muc-modal.scss");
 
       
       
@@ -69930,12 +69813,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_add_muc_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -69963,7 +69846,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./index.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/index.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./index.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/index.scss");
 
       
       
@@ -69985,12 +69868,67 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/plugins/muc-views/styles/moderator-tools.scss":
+/*!***********************************************************!*\
+  !*** ./src/plugins/muc-views/styles/moderator-tools.scss ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_moderator_tools_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./moderator-tools.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/moderator-tools.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_moderator_tools_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_moderator_tools_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_moderator_tools_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_moderator_tools_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70018,7 +69956,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-bottom-panel.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-bottom-panel.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-bottom-panel.scss");
 
       
       
@@ -70040,12 +69978,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_bottom_panel_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70073,7 +70011,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-details-modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-details-modal.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-details-modal.scss");
 
       
       
@@ -70095,12 +70033,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_details_modal_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70128,7 +70066,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-head.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-head.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-head.scss");
 
       
       
@@ -70150,12 +70088,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_head_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70183,7 +70121,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-occupants.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-occupants.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./muc-occupants.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/muc-occupants.scss");
 
       
       
@@ -70205,12 +70143,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_muc_occupants_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70238,7 +70176,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./nickname-form.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/nickname-form.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./nickname-form.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/muc-views/styles/nickname-form.scss");
 
       
       
@@ -70260,12 +70198,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_nickname_form_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70293,7 +70231,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./register.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/register/styles/register.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./register.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/register/styles/register.scss");
 
       
       
@@ -70315,12 +70253,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_register_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70348,7 +70286,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./root.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rootview/styles/root.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./root.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rootview/styles/root.scss");
 
       
       
@@ -70370,12 +70308,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_root_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70403,7 +70341,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./roster.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./roster.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss");
 
       
       
@@ -70425,12 +70363,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_roster_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70458,7 +70396,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./singleton.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/singleton/singleton.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./singleton.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/singleton/singleton.scss");
 
       
       
@@ -70480,12 +70418,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_singleton_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70513,7 +70451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./_autocomplete.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/autocomplete/styles/_autocomplete.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./_autocomplete.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/autocomplete/styles/_autocomplete.scss");
 
       
       
@@ -70535,12 +70473,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_autocomplete_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70568,7 +70506,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./avatar.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/avatar/avatar.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./avatar.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/avatar/avatar.scss");
 
       
       
@@ -70590,12 +70528,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_avatar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70623,7 +70561,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chat-content.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/chat-content.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./chat-content.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/chat-content.scss");
 
       
       
@@ -70645,12 +70583,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_chat_content_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70678,7 +70616,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./emoji.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/emoji.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./emoji.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/emoji.scss");
 
       
       
@@ -70700,12 +70638,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_emoji_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70733,7 +70671,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-actions.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-actions.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-actions.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-actions.scss");
 
       
       
@@ -70755,12 +70693,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_actions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70788,7 +70726,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-body.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-body.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-body.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/message-body.scss");
 
       
       
@@ -70810,12 +70748,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_body_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70843,7 +70781,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./retraction.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/retraction.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./retraction.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/retraction.scss");
 
       
       
@@ -70865,12 +70803,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_retraction_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70898,7 +70836,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./toolbar.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/toolbar.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./toolbar.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/toolbar.scss");
 
       
       
@@ -70920,12 +70858,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_toolbar_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -70953,7 +70891,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./unfurl.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/unfurl.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./unfurl.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/chat/styles/unfurl.scss");
 
       
       
@@ -70975,12 +70913,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_unfurl_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71008,7 +70946,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./dropdown.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/dropdown.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./dropdown.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/dropdown.scss");
 
       
       
@@ -71030,12 +70968,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_dropdown_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71063,7 +71001,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./gif.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/gif.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./gif.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/gif.scss");
 
       
       
@@ -71085,12 +71023,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_gif_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71118,7 +71056,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./icon.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./icon.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/icon.scss");
 
       
       
@@ -71140,12 +71078,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_icon_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71173,7 +71111,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-versions.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./message-versions.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/message-versions.scss");
 
       
       
@@ -71195,12 +71133,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_message_versions_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71228,7 +71166,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./rich-text.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./rich-text.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/components/styles/rich-text.scss");
 
       
       
@@ -71250,12 +71188,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_rich_text_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71283,7 +71221,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./image.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./image.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/modals/styles/image.scss");
 
       
       
@@ -71305,12 +71243,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_image_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71338,7 +71276,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./index.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/index.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./index.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/index.scss");
 
       
       
@@ -71360,12 +71298,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_index_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -71393,7 +71331,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./status.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/status.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!../../../node_modules/mini-css-extract-plugin/dist/loader.js!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./status.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/shared/styles/status.scss");
 
       
       
@@ -71415,12 +71353,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_2_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_2_use_3_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_5_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_5_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_5_use_3_status_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -86114,47 +86052,6 @@ var invert = (0,_createInverter_js__WEBPACK_IMPORTED_MODULE_0__["default"])(func
 
 /***/ }),
 
-/***/ "./node_modules/lodash-es/invoke.js":
-/*!******************************************!*\
-  !*** ./node_modules/lodash-es/invoke.js ***!
-  \******************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _baseInvoke_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_baseInvoke.js */ "./node_modules/lodash-es/_baseInvoke.js");
-/* harmony import */ var _baseRest_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_baseRest.js */ "./node_modules/lodash-es/_baseRest.js");
-
-
-
-/**
- * Invokes the method at `path` of `object`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Object
- * @param {Object} object The object to query.
- * @param {Array|string} path The path of the method to invoke.
- * @param {...*} [args] The arguments to invoke the method with.
- * @returns {*} Returns the result of the invoked method.
- * @example
- *
- * var object = { 'a': [{ 'b': { 'c': [1, 2, 3, 4] } }] };
- *
- * _.invoke(object, 'a[0].b.c.slice', 1, 3);
- * // => [2, 3]
- */
-var invoke = (0,_baseRest_js__WEBPACK_IMPORTED_MODULE_0__["default"])(_baseInvoke_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (invoke);
-
-
-/***/ }),
-
 /***/ "./node_modules/lodash-es/invokeMap.js":
 /*!*********************************************!*\
   !*** ./node_modules/lodash-es/invokeMap.js ***!
@@ -89192,7 +89089,7 @@ const converse = {
    *
    * @memberOf converse
    * @method load
-   * @param {object} settings A map of configuration-settings that are needed at load time.
+   * @param { object } settings A map of configuration-settings that are needed at load time.
    * @example
    * converse.load({assets_path: '/path/to/assets/'});
    */
