@@ -27,10 +27,11 @@
 				}		
             });			
 			
-            _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
-            {					
-				if (text.trim().startsWith("MASTODON:")) {	
-					const strings = [text.substr(9)];
+            _converse.api.listen.on('beforeMessageBodyTransformed', function(text) {					
+				const pos = text.indexOf(":MASTODON:");
+				
+				if (pos > -1) {	
+					const strings = [text.substr(pos + 10)];
 					strings.raw = strings;								
 					text.addTemplateResult(0, text.length, html(strings));
 				}				
@@ -145,7 +146,7 @@
 				footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href='${json.card.url}'>${json.card.title}</a></p>`
 			}
 			const from = "converse-mastodon@" + _converse.connection.domain;			
-			const body = 'MASTODON:' + header + json.content + footer;			
+			const body = ':MASTODON:' + header + json.content + footer;			
 			const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time, is_unstyled: true};  
 			chatbox = await _converse.api.chats.get(from, {}, true);
 			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));						
