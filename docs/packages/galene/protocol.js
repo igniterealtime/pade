@@ -107,6 +107,12 @@ function ServerConnection() {
      */
     this.socket = null;
     /**
+     * The negotiated protocol version.
+     *
+     * @type {string}
+     */
+    this.version = null;
+    /**
      * The set of all up streams, indexed by their id.
      *
      * @type {Object<string,Stream>}
@@ -140,6 +146,12 @@ function ServerConnection() {
 
     /* Callbacks */
 
+    /** BAO
+     * onhandshake is called when the connection handshake has been recieved
+     *
+     * @type{(this: ServerConnection) => void}
+     */
+    this.onhandshake = null;
     /**
      * onconnected is called when the connection has been established
      *
@@ -173,7 +185,7 @@ function ServerConnection() {
      *
      * kind is one of 'join', 'fail', 'change' or 'leave'.
      *
-     * @type{(this: ServerConnection, kind: string, group: string, permissions: Array<string>, status: Object<string,any>, data: Object<string,any>, message: string) => void}
+     * @type{(this: ServerConnection, kind: string, group: string, permissions: Array<string>, status: Object<string,any>, data: Object<string,any>, error: string, message: string) => void}
      */
     this.onjoined = null;
     /**
@@ -187,7 +199,7 @@ function ServerConnection() {
     /**
      * onchat is called whenever a new chat message is received.
      *
-     * @type {(this: ServerConnection, id: string, dest: string, username: string, time: number, privileged: boolean, history: boolean, kind: string, message: unknown) => void}
+     * @type {(this: ServerConnection, id: string, dest: string, username: string, time: Date, privileged: boolean, history: boolean, kind: string, message: unknown) => void}
      */
     this.onchat = null;
     /**
@@ -199,7 +211,7 @@ function ServerConnection() {
      * 'id' is non-null, 'privileged' indicates whether the message was
      * sent by an operator.
      *
-     * @type {(this: ServerConnection, id: string, dest: string, username: string, time: number, privileged: boolean, kind: string, message: unknown) => void}
+     * @type {(this: ServerConnection, id: string, dest: string, username: string, time: Date, privileged: boolean, kind: string, error: string, message: unknown) => void}
      */
     this.onusermessage = null;
     /**
@@ -225,6 +237,7 @@ function ServerConnection() {
   * @property {string} type
   * @property {Array<string>} [version]
   * @property {string} [kind]
+  * @property {string} [error]
   * @property {string} [id]
   * @property {string} [replace]
   * @property {string} [source]
@@ -239,6 +252,7 @@ function ServerConnection() {
   * @property {string} [group]
   * @property {unknown} [value]
   * @property {boolean} [noecho]
+  * @property {string|number} [time]
   * @property {string} [sdp]
   * @property {RTCIceCandidate} [candidate]
   * @property {string} [label]
@@ -274,15 +288,17 @@ ServerConnection.prototype.send = function(m) {
  * @returns {Promise<ServerConnection>}
  * @function
  */
- // BAO
-ServerConnection.prototype.connect = async function(connection, host) {	
+// BAO
+ServerConnection.prototype.connect = async function(connection, host) {
     let sc = this;
     if(sc.socket) {
         sc.socket.close(1000, 'Reconnecting');
         sc.socket = null;
     }
+
+    //sc.socket = new WebSocket(url);
 	// BAO
-	sc.socket = new GaleneSocket(connection, host);
+	sc.socket = new GaleneSocket(connection, host);	
 
     return await new Promise((resolve, reject) => {
         this.socket.onerror = function(e) {
@@ -291,7 +307,7 @@ ServerConnection.prototype.connect = async function(connection, host) {
         this.socket.onopen = function(e) {
             sc.send({
                 type: 'handshake',
-                version: ["1"],
+                version: ["2", "1"],
                 id: sc.id,
             });
             if(sc.onconnected)
@@ -314,7 +330,7 @@ ServerConnection.prototype.connect = async function(connection, host) {
                     sc.onuser.call(sc, id, 'delete');
             }
             if(sc.group && sc.onjoined)
-                sc.onjoined.call(sc, 'leave', sc.group, [], {}, {}, '');
+                sc.onjoined.call(sc, 'leave', sc.group, [], {}, {}, '', '');
             sc.group = null;
             sc.username = null;
             if(sc.onclose)
@@ -323,11 +339,27 @@ ServerConnection.prototype.connect = async function(connection, host) {
         };
         this.socket.onmessage = function(e) {
             let m = JSON.parse(e.data);
+			console.debug("socket.onmessage", m);			
             switch(m.type) {
-            case 'handshake':
-                if(!m.version || !m.version.includes('1'))
-                    console.warn(`Unexpected protocol version ${m.version}.`);
+            case 'handshake': {
+                /** @type {string} */
+                let v;
+                if(!m.version || !(m.version instanceof Array) ||
+                   m.version.length < 1 || typeof(m.version[0]) !== 'string') {
+                    v = null;
+                } else {
+                    v = m.version[0];
+                }
+                if(v === "1" || v === "2") {
+                    sc.version = v;
+                } else {
+                    console.warn(`Unknown protocol version ${v || m.version}`);
+                    sc.version = "1"
+                }
+				if(sc.onhandshake) // BAO
+					sc.onhandshake.call(sc);				
                 break;
+            }
             case 'offer':
                 sc.gotOffer(m.id, m.label, m.source, m.username,
                             m.sdp, m.replace);
@@ -348,28 +380,32 @@ ServerConnection.prototype.connect = async function(connection, host) {
                 sc.gotRemoteIce(m.id, m.candidate);
                 break;
             case 'joined':
-                if(sc.group) {
-                    if(m.group !== sc.group) {
-                        throw new Error('Joined multiple groups');
-                    }
-                } else {
-                    sc.group = m.group;
-                }
-                sc.username = m.username;
-                sc.permissions = m.permissions || [];
-                sc.rtcConfiguration = m.rtcConfiguration || null;
-                if(m.kind == 'leave') {
+                if(m.kind === 'leave' || m.kind === 'fail') {
                     for(let id in sc.users) {
                         delete(sc.users[id]);
                         if(sc.onuser)
                             sc.onuser.call(sc, id, 'delete');
                     }
+                    sc.username = null;
+                    sc.permissions = [];
+                    sc.rtcConfiguration = null;
+                } else if(m.kind === 'join' || m.kind == 'change') {
+                    if(m.kind === 'join' && sc.group) {
+                        throw new Error('Joined multiple groups');
+                    } else if(m.kind === 'change' && m.group != sc.group) {
+                        console.warn('join(change) for inconsistent group');
+                        break;
+                    }
+                    sc.group = m.group;
+                    sc.username = m.username;
+                    sc.permissions = m.permissions || [];
+                    sc.rtcConfiguration = m.rtcConfiguration || null;
                 }
                 if(sc.onjoined)
                     sc.onjoined.call(sc, m.kind, m.group,
                                      m.permissions || [],
                                      m.status, m.data,
-                                     m.value || null);
+                                     m.error || null, m.value || null);
                 break;
             case 'user':
                 switch(m.kind) {
@@ -419,8 +455,8 @@ ServerConnection.prototype.connect = async function(connection, host) {
             case 'chathistory':
                 if(sc.onchat)
                     sc.onchat.call(
-                        sc, m.source, m.dest, m.username, m.time, m.privileged,
-                        m.type === 'chathistory', m.kind, m.value,
+                        sc, m.source, m.dest, m.username, parseTime(m.time),
+                        m.privileged, m.type === 'chathistory', m.kind, m.value,
                     );
                 break;
             case 'usermessage':
@@ -428,8 +464,8 @@ ServerConnection.prototype.connect = async function(connection, host) {
                     sc.fileTransfer(m.source, m.username, m.value);
                 else if(sc.onusermessage)
                     sc.onusermessage.call(
-                        sc, m.source, m.dest, m.username, m.time,
-                        m.privileged, m.kind, m.value,
+                        sc, m.source, m.dest, m.username, parseTime(m.time),
+                        m.privileged, m.kind, m.error, m.value,
                     );
                 break;
             case 'ping':
@@ -449,6 +485,25 @@ ServerConnection.prototype.connect = async function(connection, host) {
 };
 
 /**
+ * Protocol version 1 uses integers for dates, later versions use dates in
+ * ISO 8601 format.  This function takes a date in either format and
+ * returns a Date object.
+ *
+ * @param {string|number} value
+ * @returns {Date}
+ */
+function parseTime(value) {
+    if(!value)
+        return null;
+    try {
+        return new Date(value);
+    } catch(e) {
+        console.warn(`Couldn't parse ${value}:`, e);
+        return null;
+    }
+}
+
+/**
  * join requests to join a group.  The onjoined callback will be called
  * when we've effectively joined.
  *
@@ -462,8 +517,10 @@ ServerConnection.prototype.join = async function(group, username, credentials, d
         type: 'join',
         kind: 'join',
         group: group,
-        username: username,
     };
+    if(typeof username !== 'undefined' && username !== null)
+        m.username = username;
+
     if((typeof credentials) === 'string') {
         m.password = credentials;
     } else {
@@ -713,16 +770,15 @@ ServerConnection.prototype.userMessage = function(kind, dest, value, noecho) {
  * groupAction sends a request to act on the current group.
  *
  * @param {string} kind
- *     - One of 'clearchat', 'lock', 'unlock', 'record' or 'unrecord'.
- * @param {string} [message] - An optional user-readable message.
+ * @param {any} [data]
  */
-ServerConnection.prototype.groupAction = function(kind, message) {
+ServerConnection.prototype.groupAction = function(kind, data) {
     this.send({
         type: 'groupaction',
         source: this.id,
         kind: kind,
         username: this.username,
-        value: message,
+        value: data,
     });
 };
 
@@ -1647,7 +1703,8 @@ TransferredFile.prototype.close = function() {
 }
 
 /**
- * Buffer a chunk of data received during a file transfer.  Do not call this.
+ * Buffer a chunk of data received during a file transfer.
+ * Do not call this, it is called automatically when data is received.
  *
  * @param {Blob|ArrayBuffer} data
  */
@@ -1846,7 +1903,8 @@ TransferredFile.prototype.receive = async function() {
 }
 
 /**
- * Negotiate a file transfer on the sender side.  Don't call this.
+ * Negotiate a file transfer on the sender side.
+ * Don't call this, it is called automatically we receive an offer.
  *
  * @param {string} sdp
  */
@@ -1936,6 +1994,7 @@ TransferredFile.prototype.send = async function() {
 
     f.dc.bufferedAmountLowThreshold = 65536;
 
+    /** @param {Uint8Array} a */
     async function write(a) {
         while(f.dc.bufferedAmount > f.dc.bufferedAmountLowThreshold) {
             await new Promise((resolve, reject) => {
@@ -1974,9 +2033,7 @@ TransferredFile.prototype.send = async function() {
             await write(data);
         } else {
             for(let i = 0; i < v.value.length; i += 16384) {
-                let d = new Uint8Array(
-                    data.buffer, i, Math.min(16384, data.length - i),
-                );
+                let d = data.subarray(i, Math.min(i + 16384, data.length));
                 await write(d);
             }
         }
@@ -2018,13 +2075,19 @@ TransferredFile.prototype.receiveData = async function(data) {
     f.dc.onmessage = null;
 
     if(f.datalen != f.size) {
-        f.cancel('unexpected file size');
+        f.cancel('extra data at end of file');
         return;
     }
 
     let blob = f.getBufferedData();
+    if(blob.size != f.size) {
+        f.cancel("inconsistent data size (this shouldn't happen)");
+        return;
+    }
     f.event('done', blob);
 
+    // we've received the whole file.  Send the final handshake, but don't
+    // complain if the peer has closed the channel in the meantime.
     await new Promise((resolve, reject) => {
         let timer = setTimeout(function(e) { resolve(); }, 2000);
         f.dc.onclose = function(e) {
@@ -2062,8 +2125,10 @@ ServerConnection.prototype.fileTransfer = function(id, username, message) {
         try {
             if(sc.onfiletransfer)
                 sc.onfiletransfer.call(sc, f);
-            else
+            else {
                 f.cancel('this client does not implement file transfer');
+                return;
+            }
         } catch(e) {
             f.cancel(e);
             return;
@@ -2117,7 +2182,7 @@ ServerConnection.prototype.fileTransfer = function(id, username, message) {
             console.error(`Unexpected ${message.type} for file transfer`);
             return;
         }
-        f.event('cancelled');
+        f.event('cancelled', message.value || null);
         f.close();
         break;
     }

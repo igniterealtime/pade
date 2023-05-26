@@ -32,6 +32,9 @@ let groupStatus = {};
 /** @type {string} */
 let token = null;
 
+/** @type {boolean} */
+let connectingAgain = false;
+
 /**
  * @typedef {Object} settings
  * @property {boolean} [localMute]
@@ -289,28 +292,39 @@ function setConnected(connected) {
     } else {
         userbox.classList.add('invisible');
         connectionbox.classList.remove('invisible');
-        displayError('Disconnected', 'error');
+        if(!connectingAgain)
+            displayError('Disconnected', 'error');
         hideVideo();
         window.onresize = null;
     }
 }
 
 /**
-  * @this {ServerConnection}
-  * @param {string} [username]
-  */
-async function gotConnected(username) {
+ * @this {ServerConnection}
+ */
+async function gotConnected() {
+    setConnected(true);
+    let again = connectingAgain;
+    connectingAgain = false;
+    await join(again);
+}
+
+/**
+ * @param {boolean} again
+ */
+async function join(again) {
+    let username = getInputElement('username').value.trim();
     let credentials;
     if(token) {
         credentials = {
             type: 'token',
             token: token,
         };
-        token = null;
+        if(!again)
+            // the first time around, we need to join with no username in
+            // order to give the server a chance to reply with 'need-username'.
+            username = null;
     } else {
-        setConnected(true);
-
-        username = getInputElement('username').value.trim();
         let pw = getInputElement('password').value;
         getInputElement('password').value = '';
         if(!groupStatus.authServer)
@@ -325,7 +339,7 @@ async function gotConnected(username) {
     }
 
     try {
-        await this.join(group, username, credentials);
+        await serverConnection.join(group, username, credentials);
     } catch(e) {
         console.error(e);
         displayError(e);
@@ -606,9 +620,6 @@ function mapRequest(what) {
         break;
     case 'audio':
         return {'': ['audio']};
-        break;
-    case 'screenshare-low':
-        return {screenshare: ['audio','video-low'], '': ['audio']};
         break;
     case 'screenshare':
         return {screenshare: ['audio','video'], '': ['audio']};
@@ -1227,7 +1238,7 @@ function setUpStream(c, stream) {
             let bps = getMaxVideoThroughput();
             // Firefox doesn't like us setting the RID if we're not
             // simulcasting.
-            if(simulcast) {
+            if(simulcast && c.label !== 'screenshare') {
                 encodings.push({
                     rid: 'h',
                     maxBitrate: bps || unlimitedRate,
@@ -1255,23 +1266,15 @@ function setUpStream(c, stream) {
             sendEncodings: encodings,
         });
 
-        // Firefox workaround
-        function match(a, b) {
-            if(!a || !b)
-                return false;
-            if(a.length !== b.length)
-                return false;
-            for(let i = 0; i < a.length; i++) {
-                if(a.maxBitrate !== b.maxBitrate)
-                    return false;
+        // Firefox before 110 does not implement sendEncodings, and
+        // requires this hack, which throws an exception on Chromium.
+        try {
+            let p = tr.sender.getParameters();
+            if(!p.encodings) {
+                p.encodings = encodings;
+                tr.sender.setParameters(p);
             }
-            return true;
-        }
-
-        let p = tr.sender.getParameters();
-        if(!p || !match(p.encodings, encodings)) {
-            p.encodings = encodings;
-            tr.sender.setParameters(p);
+        } catch(e) {
         }
     }
 
@@ -2092,6 +2095,88 @@ function stringCompare(a, b) {
 }
 
 /**
+ * @param {string} v
+ */
+function dateFromInput(v) {
+    let d = new Date(v);
+    if(d.toString() === 'Invalid Date')
+        throw new Error('Invalid date');
+    return d;
+}
+
+/**
+ * @param {Date} d
+ */
+function dateToInput(d) {
+    let dd = new Date(d);
+    dd.setMinutes(dd.getMinutes() - dd.getTimezoneOffset());
+    return dd.toISOString().slice(0, -1);
+}
+
+function inviteMenu() {
+    let d = /** @type {HTMLDialogElement} */
+        (document.getElementById('invite-dialog'));
+    if(!('HTMLDialogElement' in window) || !d.showModal) {
+        makeToken();
+        return;
+    }
+    d.returnValue = '';
+    let c = getButtonElement('invite-cancel');
+    c.onclick = function(e) { d.close('cancel'); };
+    let u = getInputElement('invite-username');
+    u.value = '';
+    let now = new Date();
+    now.setMilliseconds(0);
+    now.setSeconds(0);
+    let nb = getInputElement('invite-not-before');
+    nb.min = dateToInput(now);
+    let ex = getInputElement('invite-expires');
+    let expires = new Date(now);
+    expires.setDate(expires.getDate() + 2);
+    ex.min = dateToInput(expires);
+    ex.value = dateToInput(expires);
+    d.showModal();
+}
+
+document.getElementById('invite-dialog').onclose = function(e) {
+    if(!(this instanceof HTMLDialogElement))
+        throw new Error('Unexpected type for this');
+    let dialog = /** @type {HTMLDialogElement} */(this);
+    if(dialog.returnValue !== 'invite')
+        return;
+    let u = getInputElement('invite-username');
+    let username = u.value.trim() || null;
+    let nb = getInputElement('invite-not-before');
+    let notBefore = null;
+    if(nb.value) {
+        try {
+            notBefore = dateFromInput(nb.value);
+        } catch(e) {
+            displayError(`Couldn't parse ${nb.value}: ${e}`);
+            return;
+        }
+    }
+    let ex = getInputElement('invite-expires');
+    let expires = null;
+    if(ex.value) {
+        try {
+            expires = dateFromInput(ex.value);
+        } catch(e) {
+            displayError(`Couldn't parse ${nb.value}: ${e}`);
+            return;
+        }
+    }
+    let template = {}
+    if(username)
+        template.username = username;
+    if(notBefore)
+        template['not-before'] = notBefore;
+    if(expires)
+        template.expires = expires;
+    makeToken(template);
+};
+
+/**
  * @param {HTMLElement} elt
  */
 function userMenu(elt) {
@@ -2116,7 +2201,13 @@ function userMenu(elt) {
                     'setdata', serverConnection.id, {'raisehand': true},
                 );
             }});
-        if(serverConnection.permissions.indexOf('present')>= 0 && canFile())
+        if(serverConnection.version !== "1" &&
+           serverConnection.permissions.indexOf('token') >= 0) {
+            items.push({label: 'Invite user', onClick: () => {
+                inviteMenu();
+            }});
+        }
+        if(serverConnection.permissions.indexOf('present') >= 0 && canFile())
             items.push({label: 'Broadcast file', onClick: presentFile});
         items.push({label: 'Restart media', onClick: renegotiateStreams});
     } else {
@@ -2318,29 +2409,42 @@ function setTitle(title) {
  * @param {Array<string>} perms
  * @param {Object<string,any>} status
  * @param {Object<string,any>} data
+ * @param {string} error
  * @param {string} message
  */
-async function gotJoined(kind, group, perms, status, data, message) {
+async function gotJoined(kind, group, perms, status, data, error, message) {
     let present = presentRequested;
     presentRequested = null;
 
     switch(kind) {
     case 'fail':
-        displayError('The server said: ' + message);
+        if(error === 'need-username' || error === 'duplicate-username') {
+            setVisibility('passwordform', false);
+            connectingAgain = true;
+        } else {
+            token = null;
+        }
+        if(error !== 'need-username')
+            displayError('The server said: ' + message);
         this.close();
         setButtonsVisibility();
         return;
     case 'redirect':
         this.close();
+        token = null;
         document.location.href = message;
         return;
     case 'leave':
         this.close();
+        token = null;
         setButtonsVisibility();
         return;
     case 'join':
     case 'change':
-        groupStatus = status;
+        token = null;
+        // don't discard endPoint and friends
+        for(let key in status)
+            groupStatus[key] = status[key];
         setTitle((status && status.displayName) || capitalise(group));
         displayUsername();
         setButtonsVisibility();
@@ -2348,10 +2452,13 @@ async function gotJoined(kind, group, perms, status, data, message) {
             return;
         break;
     default:
+        token = null;
         displayError('Unknown join message');
         this.close();
         return;
     }
+
+    token = null;
 
     let input = /** @type{HTMLTextAreaElement} */
         (document.getElementById('input'));
@@ -2419,12 +2526,15 @@ function gotFileTransfer(f) {
         f.cancel();
     };
     bno.id = "bno-" + f.fullid();
-    let status = document.createElement('div');
+    let status = document.createElement('span');
     status.id = 'status-' + f.fullid();
     if(!f.up) {
         status.textContent =
             '(Choosing "Accept" will disclose your IP address.)';
     }
+    let statusp = document.createElement('p');
+    statusp.id = 'statusp-' + f.fullid();
+    statusp.appendChild(status);
     let div = document.createElement('div');
     div.id = 'file-' + f.fullid();
     div.appendChild(p);
@@ -2432,7 +2542,7 @@ function gotFileTransfer(f) {
         div.appendChild(byes);
     if(bno)
         div.appendChild(bno);
-    div.appendChild(status);
+    div.appendChild(statusp);
     div.classList.add('message');
     div.classList.add('message-private');
     div.classList.add('message-row');
@@ -2444,28 +2554,74 @@ function gotFileTransfer(f) {
 /**
  * @param {TransferredFile} f
  * @param {string} status
- * @param {boolean} [delyes]
- * @param {boolean} [delno]
+ * @param {number} [value]
  */
-function setFileStatus(f, status, delyes, delno) {
-    let statusdiv = document.getElementById('status-' + f.fullid());
-    if(!statusdiv)
-        throw new Error("Couldn't find statusdiv");
-    statusdiv.textContent = status;
-    if(delyes || delno) {
-        let div = document.getElementById('file-' + f.fullid());
-        if(!div)
-            throw new Error("Couldn't find file div");
-        if(delyes) {
-            let byes = document.getElementById('byes-' + f.fullid())
-            if(byes)
-                div.removeChild(byes);
-        }
-        if(delno) {
-            let bno = document.getElementById('bno-' + f.fullid())
-            if(bno)
-                div.removeChild(bno);
-        }
+function setFileStatus(f, status, value) {
+    let statuselt = document.getElementById('status-' + f.fullid());
+    if(!statuselt)
+        throw new Error("Couldn't find statusp");
+    statuselt.textContent = status;
+    if(value) {
+        let progress = document.getElementById('progress-' + f.fullid());
+         if(!progress || !(progress instanceof HTMLProgressElement))
+            throw new Error("Couldn't find progress element");
+        progress.value = value;
+        let label = document.getElementById('progresstext-' + f.fullid());
+        let percent = Math.round(100 * value / progress.max);
+        label.textContent = `${percent}%`;
+    }
+}
+
+/**
+ * @param {TransferredFile} f
+ * @param {number} [max]
+ */
+function createFileProgress(f, max) {
+    let statusp = document.getElementById('statusp-' + f.fullid());
+    if(!statusp)
+        throw new Error("Couldn't find status div");
+    /** @type HTMLProgressElement */
+    let progress = document.createElement('progress');
+    progress.id = 'progress-' + f.fullid();
+    progress.classList.add('file-progress');
+    progress.max = max;
+    progress.value = 0;
+    statusp.appendChild(progress);
+    let progresstext = document.createElement('span');
+    progresstext.id = 'progresstext-' + f.fullid();
+    progresstext.textContent = '0%';
+    statusp.appendChild(progresstext);
+}
+
+/**
+ * @param {TransferredFile} f
+ * @param {boolean} delyes
+ * @param {boolean} delno
+ * @param {boolean} [delprogress]
+ */
+function delFileStatusButtons(f, delyes, delno, delprogress) {
+    let div = document.getElementById('file-' + f.fullid());
+    if(!div)
+        throw new Error("Couldn't find file div");
+    if(delyes) {
+        let byes = document.getElementById('byes-' + f.fullid())
+        if(byes)
+            div.removeChild(byes);
+    }
+    if(delno) {
+        let bno = document.getElementById('bno-' + f.fullid())
+        if(bno)
+            div.removeChild(bno);
+    }
+    if(delprogress) {
+        let statusp = document.getElementById('statusp-' + f.fullid());
+        let progress = document.getElementById('progress-' + f.fullid());
+        let progresstext =
+            document.getElementById('progresstext-' + f.fullid());
+        if(progress)
+            statusp.removeChild(progress);
+        if(progresstext)
+            statusp.removeChild(progresstext);
     }
 }
 
@@ -2480,16 +2636,16 @@ function gotFileTransferEvent(state, data) {
     case 'inviting':
         break;
     case 'connecting':
-        setFileStatus(f, 'Connecting...', true);
+        delFileStatusButtons(f, true, false);
+        setFileStatus(f, 'Connecting...');
+        createFileProgress(f, f.size);
         break;
     case 'connected':
-        if(f.up)
-            setFileStatus(f, `Sending... ${f.datalen}/${f.size}`);
-        else
-            setFileStatus(f, `Receiving... ${f.datalen}/${f.size}`);
+        setFileStatus(f, f.up ? 'Sending...' : 'Receiving...', f.datalen);
         break;
     case 'done':
-        setFileStatus(f, 'Done.', true, true);
+        delFileStatusButtons(f, true, true, true);
+        setFileStatus(f, 'Done.');
         if(!f.up) {
             let url = URL.createObjectURL(data);
             let a = document.createElement('a');
@@ -2502,10 +2658,11 @@ function gotFileTransferEvent(state, data) {
         }
         break;
     case 'cancelled':
+        delFileStatusButtons(f, true, true, true);
         if(data)
-            setFileStatus(f, `Cancelled: ${data.toString()}.`, true, true);
+            setFileStatus(f, `Cancelled: ${data.toString()}.`);
         else
-            setFileStatus(f, 'Cancelled.', true, true);
+            setFileStatus(f, 'Cancelled.');
         break;
     case 'closed':
         break;
@@ -2520,38 +2677,83 @@ function gotFileTransferEvent(state, data) {
  * @param {string} id
  * @param {string} dest
  * @param {string} username
- * @param {number} time
+ * @param {Date} time
  * @param {boolean} privileged
  * @param {string} kind
+ * @param {string} error
  * @param {any} message
  */
-function gotUserMessage(id, dest, username, time, privileged, kind, message) {
+function gotUserMessage(id, dest, username, time, privileged, kind, error, message) {
     switch(kind) {
     case 'kicked':
     case 'error':
     case 'warning':
     case 'info':
-        let from = id ? (username || 'Anonymous') : 'The Server';
-        if(privileged)
-            displayError(`${from} said: ${message}`, kind);
-        else
+        if(!privileged) {
             console.error(`Got unprivileged message of kind ${kind}`);
+            return;
+        }
+        let from = id ? (username || 'Anonymous') : 'The Server';
+        displayError(`${from} said: ${message}`, kind);
         break;
     case 'mute':
-        if(privileged) {
-            setLocalMute(true, true);
-            let by = username ? ' by ' + username : '';
-            displayWarning(`You have been muted${by}`);
-        } else {
+        if(!privileged) {
             console.error(`Got unprivileged message of kind ${kind}`);
+            return;
         }
+        setLocalMute(true, true);
+        let by = username ? ' by ' + username : '';
+        displayWarning(`You have been muted${by}`);
         break;
     case 'clearchat':
-        if(privileged) {
-            clearChat();
-        } else {
+        if(!privileged) {
             console.error(`Got unprivileged message of kind ${kind}`);
+            return;
         }
+        clearChat();
+        break;
+    case 'token':
+        if(!privileged) {
+            console.error(`Got unprivileged message of kind ${kind}`);
+            return;
+        }
+        if(error) {
+            displayError(`Token operation failed: ${message}`)
+            return
+        }
+        if(typeof message != 'object') {
+            displayError('Unexpected type for token');
+            return;
+        }
+        let f = formatToken(message, false);
+        localMessage(f[0] + ': ' + f[1]);
+        if('share' in navigator) {
+            try {
+                navigator.share({
+                    title: `Invitation to Galene group ${message.group}`,
+                    text: f[0],
+                    url: f[1],
+                });
+            } catch(e) {
+                console.warn("Share failed", e);
+            }
+        }
+        break;
+    case 'tokenlist':
+        if(!privileged) {
+            console.error(`Got unprivileged message of kind ${kind}`);
+            return;
+        }
+        if(error) {
+            displayError(`Token operation failed: ${message}`)
+            return
+        }
+        let s = '';
+        for(let i = 0; i < message.length; i++) {
+            let f = formatToken(message[i], true);
+            s = s + f[0] + ': ' + f[1] + "\n";
+        }
+        localMessage(s);
         break;
     default:
         console.warn(`Got unknown user message ${kind}`);
@@ -2559,6 +2761,48 @@ function gotUserMessage(id, dest, username, time, privileged, kind, message) {
     }
 };
 
+/**
+ * @param {Object} token
+ * @param {boolean} [details]
+ */
+function formatToken(token, details) {
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams();
+    params.append('token', token.token);
+    url.search = params.toString();
+    let foruser = '', by = '', togroup = '';
+    if(token.username)
+        foruser = ` for user ${token.username}`;
+    if(details) {
+        if(token.issuedBy)
+            by = ' issued by ' + token.issuedBy;
+        if(token.issuedAt) {
+            if(by === '')
+                by = ' issued at ' + token.issuedAt;
+            else
+                by = by + ' at ' + (new Date(token.issuedAt)).toLocaleString();
+        }
+    } else {
+        if(token.group)
+            togroup = ' to group ' + token.group;
+    }
+    let since = '';
+    if(token["not-before"])
+        since = ` since ${(new Date(token['not-before'])).toLocaleString()}`
+    /** @type{Date} */
+    let expires = null;
+    let until = '';
+    if(token.expires) {
+        expires = new Date(token.expires)
+        until = ` until ${expires.toLocaleString()}`;
+    }
+    return [
+        (expires && (expires >= new Date())) ?
+            `Invitation${foruser}${togroup}${by} valid${since}${until}` :
+            `Expired invitation${foruser}${togroup}${by}`,
+        url.toString(),
+    ];
+}
 
 const urlRegexp = /https?:\/\/[-a-zA-Z0-9@:%/._\\+~#&()=?]+[-a-zA-Z0-9@:%/_\\+~#&()=]/g;
 
@@ -2605,16 +2849,15 @@ function formatLines(lines) {
 }
 
 /**
- * @param {number} time
+ * @param {Date} time
  * @returns {string}
  */
 function formatTime(time) {
-    let delta = Date.now() - time;
-    let date = new Date(time);
-    let m = date.getMinutes();
+    let delta = Date.now() - time.getTime();
+    let m = time.getMinutes();
     if(delta > -30000)
-        return date.getHours() + ':' + ((m < 10) ? '0' : '') + m;
-    return date.toLocaleString();
+        return time.getHours() + ':' + ((m < 10) ? '0' : '') + m;
+    return time.toLocaleString();
 }
 
 /**
@@ -2622,7 +2865,7 @@ function formatTime(time) {
  * @property {string} [nick]
  * @property {string} [peerId]
  * @property {string} [dest]
- * @property {number} [time]
+ * @property {Date} [time]
  */
 
 /** @type {lastMessage} */
@@ -2632,7 +2875,7 @@ let lastMessage = {};
  * @param {string} peerId
  * @param {string} dest
  * @param {string} nick
- * @param {number} time
+ * @param {Date} time
  * @param {boolean} privileged
  * @param {boolean} history
  * @param {string} kind
@@ -2662,7 +2905,7 @@ function addToChatbox(peerId, dest, nick, time, privileged, history, kind, messa
            !time || !lastMessage.time) {
             doHeader = true;
         } else {
-            let delta = time - lastMessage.time;
+            let delta = time.getTime() - lastMessage.time.getTime();
             doHeader = delta < 0 || delta > 60000;
         }
 
@@ -2725,7 +2968,7 @@ function addToChatbox(peerId, dest, nick, time, privileged, history, kind, messa
  * @param {string} message
  */
 function localMessage(message) {
-    return addToChatbox(null, null, null, Date.now(), false, false, '', message);
+    return addToChatbox(null, null, null, new Date(), false, false, '', message);
 }
 
 function clearChat() {
@@ -2878,6 +3121,151 @@ commands.subgroups = {
     }
 };
 
+/**
+ * @type {Object<string,number>}
+ */
+const units = {
+    s: 1000,
+    min: 60 * 1000,
+    h: 60 * 60 * 1000,
+    d: 24 * 60 * 60 * 1000,
+    mon: 31 * 24 * 60 * 60 * 1000,
+    yr: 365 * 24 * 60 * 60 * 1000,
+};
+
+/**
+ * @param {string} s
+ * @returns {Date|number}
+ */
+function parseExpiration(s) {
+    if(!s)
+        return null;
+    let re = /^([0-9]+)(s|min|h|d|yr)$/
+    let e = re.exec(s)
+    if(e) {
+        let unit = units[e[2]];
+        if(!unit)
+            throw new Error(`Couldn't find unit ${e[2]}`);
+        return parseInt(e[1]) * unit;
+    }
+    let d = new Date(s);
+    if(d.toString() === 'Invalid Date')
+        throw new Error("Couldn't parse expiration date");
+    return d;
+}
+
+function protocol2Predicate() {
+    if(serverConnection.version === "1")
+        return "This server is too old";
+    return null;
+}
+
+function makeTokenPredicate() {
+    return protocol2Predicate() ||
+        (serverConnection.permissions.indexOf('token') < 0 ?
+         "You don't have permission to create tokens" : null);
+}
+
+function editTokenPredicate() {
+    return protocol2Predicate() ||
+        (serverConnection.permissions.indexOf('token') < 0 ||
+         serverConnection.permissions.indexOf('op') < 0 ?
+         "You don't have permission to edit or list tokens" : null);
+}
+
+/**
+ * @param {Object} [template]
+ */
+function makeToken(template) {
+    if(!template)
+        template = {};
+    let v = {
+        group: group,
+    }
+    if('username' in template)
+        v.username = template.username;
+    if('expires' in template)
+        v.expires = template.expires;
+    else
+        v.expires = units.d;
+    if('not-before' in template)
+        v["not-before"] = template["not-before"];
+    if('permissions' in template)
+        v.permissions = template.permissions;
+    else if(serverConnection.permissions.indexOf('present') >= 0)
+        v.permissions = ['present'];
+    else
+        v.permissions = [];
+    serverConnection.groupAction('maketoken', v);
+}
+
+commands.invite = {
+    predicate: makeTokenPredicate,
+    description: "create an invitation link",
+    parameters: "[username] [expiration]",
+    f: (c, r) => {
+        let p = parseCommand(r);
+        let template = {};
+        if(p[0])
+            template.username = p[0];
+        let expires = parseExpiration(p[1]);
+        if(expires)
+            template.expires = expires;
+        makeToken(template);
+    }
+}
+
+/**
+ * @param {string} t
+ */
+function parseToken(t) {
+    let m = /^https?:\/\/.*?token=([^?]+)/.exec(t);
+    if(m) {
+        return m[1];
+    } else if(!/^https?:\/\//.exec(t)) {
+        return t
+    } else {
+        throw new Error("Couldn't parse link");
+    }
+}
+
+commands.reinvite = {
+    predicate: editTokenPredicate,
+    description: "extend an invitation link",
+    parameters: "link [expiration]",
+    f: (c, r) => {
+        let p = parseCommand(r);
+        let v = {}
+        v.token = parseToken(p[0]);
+        if(p[1])
+            v.expires = parseExpiration(p[1]);
+        else
+            v.expires = units.d;
+        serverConnection.groupAction('edittoken', v);
+    }
+}
+
+commands.revoke = {
+    predicate: editTokenPredicate,
+    description: "revoke an invitation link",
+    parameters: "link",
+    f: (c, r) => {
+        let token = parseToken(r);
+        serverConnection.groupAction('edittoken', {
+            token: token,
+            expires: -units.s,
+        });
+    }
+}
+
+commands.listtokens = {
+    predicate: editTokenPredicate,
+    description: "list invitation links",
+    f: (c, r) => {
+        serverConnection.groupAction('listtokens');
+    }
+}
+
 function renegotiateStreams() {
     for(let id in serverConnection.up)
         serverConnection.up[id].restartIce();
@@ -2960,7 +3348,7 @@ commands.msg = {
             throw new Error(`Unknown user ${p[0]}`);
         serverConnection.chat('', id, p[1]);
         addToChatbox(serverConnection.id, id, serverConnection.username,
-                     Date.now(), false, false, '', p[1]);
+                     new Date(), false, false, '', p[1]);
     }
 };
 
@@ -3395,12 +3783,8 @@ document.getElementById('userform').onsubmit = async function(e) {
     e.preventDefault();
     if(connecting)
         return;
-    connecting = true;
-    try {
-        await serverConnect();
-    } finally {
-        connecting = false;
-    }
+
+    setVisibility('passwordform', true);
 
     if(getInputElement('presentboth').checked)
         presentRequested = 'both';
@@ -3408,8 +3792,15 @@ document.getElementById('userform').onsubmit = async function(e) {
         presentRequested = 'mike';
     else
         presentRequested = null;
-
     getInputElement('presentoff').checked = true;
+
+    // Connect to the server, gotConnected will join.
+    connecting = true;
+    try {
+        await serverConnect();
+    } finally {
+        connecting = false;
+    }
 };
 
 document.getElementById('disconnectbutton').onclick = function(e) {
@@ -3489,7 +3880,7 @@ async function serverConnect() {
     serverConnection.onusermessage = gotUserMessage;
     serverConnection.onfiletransfer = gotFileTransfer;
 
-    let url = null; //groupStatus.endpoint;
+    let url = groupStatus.endpoint;
     if(!url) {
         console.warn("no endpoint in status");
         url = `ws${location.protocol === 'https:' ? 's' : ''}://${location.host}/ws`;
@@ -3532,20 +3923,23 @@ async function start() {
     addFilters();
     setMediaChoices(false).then(e => reflectSettings());
 
-    if(parms.has('token')) {
+    if(parms.has('token'))
         token = parms.get('token');
+
+    if(token) {
         await serverConnect();
     } else if(groupStatus.authPortal) {
         window.location.href = groupStatus.authPortal;
     } else {
-        let container = document.getElementById("login-container");
-        container.classList.remove('invisible');
+        setVisibility('login-container', true);
+        document.getElementById('username').focus()
     }
     setViewportHeight();
 }
 
 // BAO
 //start();
+
 
 let connection = window.top?.connection, standalone = false;
 
@@ -3589,7 +3983,7 @@ window.onload = async function() {
     if(serverConnection && serverConnection.socket)
         serverConnection.close();
     serverConnection = new ServerConnection();
-    serverConnection.onconnected = amConnected;
+    serverConnection.onhandshake = amConnected;
     serverConnection.onpeerconnection = onPeerConnection;
     serverConnection.onclose = gotClose;
     serverConnection.ondownstream = gotDownStream;
@@ -3597,8 +3991,9 @@ window.onload = async function() {
     serverConnection.onjoined = gotJoined;
     serverConnection.onchat = addToChatbox;
     serverConnection.onusermessage = gotUserMessage;
+    serverConnection.onfiletransfer = gotFileTransfer;	
 	
-	group = "public/" + urlParam("group");	
+	group = urlParam("group") ? "public/" + urlParam("group") : "public";	
 	setTitle(capitalise(group));
     addFilters();
     setMediaChoices(false).then(e => reflectSettings());	
@@ -3617,7 +4012,7 @@ async function handleConnection() {
 		
 	} else {
 		standalone = true;
-		connection = new Strophe.Connection(location.protocol + "//" + location.host + "/http-bind/");
+		connection = new Strophe.Connection((location.protocol == "https:" ? "wss:" : "ws:") + "//" + location.host + "/ws/");
 		
 		connection.connect(host, null, async function (status) {
 			console.debug("onload xmpp.connect", status);
@@ -3648,17 +4043,20 @@ function urlParam (name) {
 }
 
 async function amConnected() {
-	console.debug("amConnected");		
+	console.debug("amConnected");	
+    setConnected(true);	
+	connectingAgain = false;
+	
 	const username = urlParam("username") || localStorage.getItem("galene_username") || prompt("Enter username");
 	const pw = "";
-
-    try {
-        await serverConnection.join(group, username, pw);
+	
+	try {
+		await serverConnection.join(group, username, pw);
 		localStorage.setItem("galene_username", username);
-    } catch(e) {
-        console.error(e);
-        serverConnection.close();
-    }
+	} catch(e) {
+		console.error(e);
+		serverConnection.close();
+	}
 }
 
 function closeConnection() {
@@ -3667,3 +4065,4 @@ function closeConnection() {
 		location.href = "about:blank";		
 	}, 1000);	
 }
+

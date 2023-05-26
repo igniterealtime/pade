@@ -127,9 +127,10 @@
                 console.debug("connected", server);
 				
 				const features = await _converse.api.disco.getFeatures(server);
-                console.debug("connected", features);
+                console.debug("connected features", features);
 				
 				features.each(feature => {
+					console.debug("connected feature", feature);					
 					const fieldname = feature.get('var');
 					
 					if (fieldname == "urn:xmpp:sfu:galene:0") {
@@ -268,7 +269,7 @@
 	function connectMedia(callId, headers) {
 		if (!serverConnection) {
 			serverConnection = new ServerConnection();
-			serverConnection.onconnected = gotConnected;
+			serverConnection.onhandshake = gotHandshake;
 			serverConnection.onpeerconnection = onPeerConnection;
 			serverConnection.onclose = gotClose;
 			serverConnection.ondownstream = gotDownStream;
@@ -445,8 +446,8 @@
 		}		
 	}
 
-	async function gotConnected() {
-		console.debug("gotConnected");	
+	async function gotHandshake() {
+		console.debug("gotHandshake");	
 		
 		const username = Strophe.getNodeFromJid(_converse.connection.jid);
 		const pw = "";
