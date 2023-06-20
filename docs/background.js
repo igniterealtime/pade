@@ -20,6 +20,7 @@ self.addEventListener('install', function(event) {
 });
 self.addEventListener('activate', function (event) {
     console.debug('activate', event);
+	openPadeConverseWindow();	
 });
 
 self.addEventListener('fetch', function(event) {
@@ -148,58 +149,6 @@ self.addEventListener('notificationclick', function(event) {
 // -------------------------------------------------------
 
 if (location.protocol == "chrome-extension:") {
-
-	const createPadeConverseWindow = () => {
-		console.debug("createPadeConverseWindow");		
-		const data = {url: chrome.runtime.getURL("index.html"), type: "popup"};
-		
-		chrome.windows.create(data, (win) => {
-			chrome.storage.local.set({converseWin: win.id});			
-			chrome.windows.update(win.id, {width: 1500, height: 900});
-		});	
-	}
-
-	const doExtensionPage = (url) => {
-		chrome.tabs.query({}, (tabs) =>
-		{
-			const setupUrl = chrome.runtime.getURL(url);
-
-			if (tabs) {
-				const option_tab = tabs.filter(function(t) { return t.url === setupUrl; });
-
-				if (option_tab.length) {
-					chrome.tabs.update(option_tab[0].id, {highlighted: true, active: true});
-				} else {
-					chrome.tabs.create({url: setupUrl, active: true});
-				}
-			}
-		});
-	}	
-
-
-	const openPadeConverseWindow = () => {	
-		chrome.storage.local.get('converseWin', (data) => 
-		{	
-			if (data.converseWin) {
-				chrome.windows.getAll((windows) => {
-					let window = null;
-
-					for (let win of windows) {
-						if (data.converseWin == win.id) window = win;
-					}
-					
-					if (window) {
-						chrome.windows.update(window.id, {focused: true});			
-					} else {
-						createPadeConverseWindow();
-					}					
-				});	
-			} else {
-				createPadeConverseWindow();
-			}
-		});		
-	}
-	
 	chrome.runtime.onInstalled.addListener((details) => {
 		console.debug("onInstalled");
 		
@@ -216,12 +165,11 @@ if (location.protocol == "chrome-extension:") {
 				doExtensionPage("changelog.html");
 			}
 		}
-		openPadeConverseWindow();	
 	});
 
 	chrome.runtime.onStartup.addListener(() => {
 		console.debug("onStartup");	
-		openPadeConverseWindow();
+		openPadeConverseWindow();		
 	});
 
 	chrome.action.onClicked.addListener(() => {
@@ -261,3 +209,52 @@ if (location.protocol == "chrome-extension:") {
 //
 // -------------------------------------------------------
 
+const doExtensionPage = (url) => {
+	chrome.tabs.query({}, (tabs) =>
+	{
+		const setupUrl = chrome.runtime.getURL(url);
+
+		if (tabs) {
+			const option_tab = tabs.filter(function(t) { return t.url === setupUrl; });
+
+			if (option_tab.length) {
+				chrome.tabs.update(option_tab[0].id, {highlighted: true, active: true});
+			} else {
+				chrome.tabs.create({url: setupUrl, active: true});
+			}
+		}
+	});
+}
+
+const createPadeConverseWindow = () => {
+	console.debug("createPadeConverseWindow");		
+	const data = {url: chrome.runtime.getURL("index.html"), type: "popup"};
+	
+	chrome.windows.create(data, (win) => {
+		chrome.storage.local.set({converseWin: win.id});			
+		chrome.windows.update(win.id, {width: 1500, height: 900});
+	});	
+}
+	
+const openPadeConverseWindow = () => {	
+	chrome.storage.local.get('converseWin', (data) => 
+	{	
+		if (data.converseWin) {
+			chrome.windows.getAll((windows) => {
+				let window = null;
+
+				for (let win of windows) {
+					if (data.converseWin == win.id) window = win;
+				}
+				
+				if (window) {
+					chrome.windows.update(window.id, {focused: true});			
+				} else {
+					createPadeConverseWindow();
+				}					
+			});	
+		} else {
+			createPadeConverseWindow();
+		}
+	});		
+}

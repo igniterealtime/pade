@@ -2769,6 +2769,8 @@ function formatToken(token, details) {
     let url = new URL(window.location.href);
     let params = new URLSearchParams();
     params.append('token', token.token);
+	params.append('room', token.group); // BAO
+	params.append('username', token.username); // BAO	
     url.search = params.toString();
     let foruser = '', by = '', togroup = '';
     if(token.username)
@@ -3992,19 +3994,24 @@ window.onload = async function() {
     serverConnection.onchat = addToChatbox;
     serverConnection.onusermessage = gotUserMessage;
     serverConnection.onfiletransfer = gotFileTransfer;	
-	
-	group = urlParam("group") ? "public/" + urlParam("group") : "public";	
+
+    token = urlParam("token");		
+	group = urlParam("room") ? urlParam("room") : "public";	
 	setTitle(capitalise(group));
     addFilters();
-    setMediaChoices(false).then(e => reflectSettings());	
+    setMediaChoices(false).then(e => reflectSettings());
+	
 	handleConnection();
 }
 
 async function handleConnection() {
 	const host = urlParam("host") || location.hostname;
+	const server = urlParam("server") || location.host;
 	const username = urlParam("username");	
+	const password = urlParam("password");	
+	const jid = (username && password) ? username + "@" + host : host;
 	
-	console.debug("handleConnection", connection, host, username);	
+	console.debug("handleConnection", connection, jid);	
 	
 	if (connection) {
 		await serverConnection.connect(connection, host);
@@ -4012,9 +4019,9 @@ async function handleConnection() {
 		
 	} else {
 		standalone = true;
-		connection = new Strophe.Connection((location.protocol == "https:" ? "wss:" : "ws:") + "//" + location.host + "/ws/");
+		connection = new Strophe.Connection((location.protocol == "http:" ? "ws:" : "wss:") + "//" + server + "/ws/");
 		
-		connection.connect(host, null, async function (status) {
+		connection.connect(jid, password, async function (status) {
 			console.debug("onload xmpp.connect", status);
 
 			if (status === Strophe.Status.CONNECTED) {
@@ -4044,15 +4051,30 @@ function urlParam (name) {
 
 async function amConnected() {
 	console.debug("amConnected");	
+	const server = urlParam("server") || ((location.protocol == "http:" ? "http:" : "https:") + "//" + location.host + "/galene");	
     setConnected(true);	
 	connectingAgain = false;
 	
-	const username = urlParam("username") || localStorage.getItem("galene_username") || prompt("Enter username");
-	const pw = "";
+	let username, credentials;
+	
+	if (token) {
+		username = urlParam("username") || "";
+        credentials = {type: 'token', token: token };	
+	} 
+	else
+		
+	if (urlParam("room")) {
+		username =  urlParam("username") || connection.jid.split("@")[0] || "";
+		credentials = {
+			type: 'authServer',
+			authServer: server + "/auth-server",
+			location: location.href,
+			password: urlParam("password") || connection.pass || ""
+		};		
+	}
 	
 	try {
-		await serverConnection.join(group, username, pw);
-		localStorage.setItem("galene_username", username);
+		await serverConnection.join(group, username, credentials);
 	} catch(e) {
 		console.error(e);
 		serverConnection.close();

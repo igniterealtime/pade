@@ -687,6 +687,13 @@ this.manifest = {
             "label": i18n.get("Enable Galene for Webinars")
         },
         {
+            "tab": i18n.get("Webinar"),        
+            "group": i18n.get("General"),
+            "name": "enableRayo",
+            "type": "checkbox",
+            "label": i18n.get("Enable Rayo using Galene")
+        },		
+        {
             "tab": i18n.get("Webinar"),
             "group": i18n.get("Connection"),
             "name": "galeneServer",

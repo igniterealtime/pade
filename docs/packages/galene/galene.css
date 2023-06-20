@@ -119,7 +119,7 @@
     align-items: center;
     -webkit-box-pack: justify;
     justify-content: space-between;
-    background: #610a86;
+    background: #616a86;  /* BAO */
 }
 .navbar {
     position: relative;
@@ -274,7 +274,7 @@
 .users-header {
     height: 3.5rem;
     padding: 10px;
-    background: #610a86;
+    background: #616a86;  /* BAO */
     font-size: .95rem;
     font-weight: 500;
 }
@@ -902,7 +902,7 @@ h1 {
 }
 
 .peer-active {
-    border: 2px solid #610a86;
+    border: 2px solid #616a86;  /* BAO */
 }
 
 .peer-hidden {
@@ -1333,7 +1333,7 @@ header .collapse:hover {
 }
 
 .file-progress {
-    accent-color: #610a86;
+    accent-color: #616a86;  /* BAO */
     margin-left: 10px;
     margin-right: 10px;
 }

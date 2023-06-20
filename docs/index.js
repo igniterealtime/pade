@@ -789,7 +789,7 @@ function startConverse(credential) {
 			check: getSetting("mastodonFeedCheck", 30),	
 			title: getSetting("mastodonFeedTitle", "Mastodon Feed")
 		},		
-		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableGalene", false), 'clear': true },
+		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableRayo", false), 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
