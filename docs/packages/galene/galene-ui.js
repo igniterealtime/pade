@@ -4051,7 +4051,7 @@ function urlParam (name) {
 
 async function amConnected() {
 	console.debug("amConnected");	
-	const server = urlParam("server") || ((location.protocol == "http:" ? "http:" : "https:") + "//" + location.host + "/galene");	
+	const server = urlParam("server") || ((location.protocol == "http:" ? "http:" : "https:") + "//" + location.host);	
     setConnected(true);	
 	connectingAgain = false;
 	
@@ -4067,7 +4067,7 @@ async function amConnected() {
 		username =  urlParam("username") || connection.jid.split("@")[0] || "";
 		credentials = {
 			type: 'authServer',
-			authServer: server + "/auth-server",
+			authServer: server + "/galene/auth-server",
 			location: location.href,
 			password: urlParam("password") || connection.pass || ""
 		};		
