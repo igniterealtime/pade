@@ -2766,7 +2766,9 @@ function gotUserMessage(id, dest, username, time, privileged, kind, error, messa
  * @param {boolean} [details]
  */
 function formatToken(token, details) {
-    let url = new URL(window.location.href);
+	// BAO
+	const galneUrl = urlParam("server") || ((location.protocol == "http:" ? "http:" : "https:") + "//" + location.host + "/galene");	
+    let url = new URL(galneUrl);
     let params = new URLSearchParams();
     params.append('token', token.token);
 	params.append('room', token.group); // BAO
@@ -3951,7 +3953,9 @@ window.onload = async function() {
 		e.preventDefault();
 		console.debug("closebutton - click");
 		
-		await serverConnection.leave(group);
+		try {
+			await serverConnection.leave(group);
+		} catch (e) { }
 		closeConnection();
 	};
 
@@ -4055,7 +4059,7 @@ async function amConnected() {
     setConnected(true);	
 	connectingAgain = false;
 	
-	let username, credentials;
+	let username = "", credentials = "";
 	
 	if (token) {
 		username = urlParam("username") || "";
@@ -4069,7 +4073,7 @@ async function amConnected() {
 			type: 'authServer',
 			authServer: server + "/auth-server",
 			location: location.href,
-			password: urlParam("password") || connection.pass || ""
+			password: connection.jid
 		};		
 	}
 	
