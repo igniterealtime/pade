@@ -1,6 +1,211 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/abab/index.js":
+/*!************************************!*\
+  !*** ./node_modules/abab/index.js ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+const atob = __webpack_require__(/*! ./lib/atob */ "./node_modules/abab/lib/atob.js");
+const btoa = __webpack_require__(/*! ./lib/btoa */ "./node_modules/abab/lib/btoa.js");
+
+module.exports = {
+  atob,
+  btoa
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/abab/lib/atob.js":
+/*!***************************************!*\
+  !*** ./node_modules/abab/lib/atob.js ***!
+  \***************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Implementation of atob() according to the HTML and Infra specs, except that
+ * instead of throwing INVALID_CHARACTER_ERR we return null.
+ */
+function atob(data) {
+  if (arguments.length === 0) {
+    throw new TypeError("1 argument required, but only 0 present.");
+  }
+
+  // Web IDL requires DOMStrings to just be converted using ECMAScript
+  // ToString, which in our case amounts to using a template literal.
+  data = `${data}`;
+  // "Remove all ASCII whitespace from data."
+  data = data.replace(/[ \t\n\f\r]/g, "");
+  // "If data's length divides by 4 leaving no remainder, then: if data ends
+  // with one or two U+003D (=) code points, then remove them from data."
+  if (data.length % 4 === 0) {
+    data = data.replace(/==?$/, "");
+  }
+  // "If data's length divides by 4 leaving a remainder of 1, then return
+  // failure."
+  //
+  // "If data contains a code point that is not one of
+  //
+  // U+002B (+)
+  // U+002F (/)
+  // ASCII alphanumeric
+  //
+  // then return failure."
+  if (data.length % 4 === 1 || /[^+/0-9A-Za-z]/.test(data)) {
+    return null;
+  }
+  // "Let output be an empty byte sequence."
+  let output = "";
+  // "Let buffer be an empty buffer that can have bits appended to it."
+  //
+  // We append bits via left-shift and or.  accumulatedBits is used to track
+  // when we've gotten to 24 bits.
+  let buffer = 0;
+  let accumulatedBits = 0;
+  // "Let position be a position variable for data, initially pointing at the
+  // start of data."
+  //
+  // "While position does not point past the end of data:"
+  for (let i = 0; i < data.length; i++) {
+    // "Find the code point pointed to by position in the second column of
+    // Table 1: The Base 64 Alphabet of RFC 4648. Let n be the number given in
+    // the first cell of the same row.
+    //
+    // "Append to buffer the six bits corresponding to n, most significant bit
+    // first."
+    //
+    // atobLookup() implements the table from RFC 4648.
+    buffer <<= 6;
+    buffer |= atobLookup(data[i]);
+    accumulatedBits += 6;
+    // "If buffer has accumulated 24 bits, interpret them as three 8-bit
+    // big-endian numbers. Append three bytes with values equal to those
+    // numbers to output, in the same order, and then empty buffer."
+    if (accumulatedBits === 24) {
+      output += String.fromCharCode((buffer & 0xff0000) >> 16);
+      output += String.fromCharCode((buffer & 0xff00) >> 8);
+      output += String.fromCharCode(buffer & 0xff);
+      buffer = accumulatedBits = 0;
+    }
+    // "Advance position by 1."
+  }
+  // "If buffer is not empty, it contains either 12 or 18 bits. If it contains
+  // 12 bits, then discard the last four and interpret the remaining eight as
+  // an 8-bit big-endian number. If it contains 18 bits, then discard the last
+  // two and interpret the remaining 16 as two 8-bit big-endian numbers. Append
+  // the one or two bytes with values equal to those one or two numbers to
+  // output, in the same order."
+  if (accumulatedBits === 12) {
+    buffer >>= 4;
+    output += String.fromCharCode(buffer);
+  } else if (accumulatedBits === 18) {
+    buffer >>= 2;
+    output += String.fromCharCode((buffer & 0xff00) >> 8);
+    output += String.fromCharCode(buffer & 0xff);
+  }
+  // "Return output."
+  return output;
+}
+/**
+ * A lookup table for atob(), which converts an ASCII character to the
+ * corresponding six-bit number.
+ */
+
+const keystr =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+function atobLookup(chr) {
+  const index = keystr.indexOf(chr);
+  // Throw exception if character is not in the lookup string; should not be hit in tests
+  return index < 0 ? undefined : index;
+}
+
+module.exports = atob;
+
+
+/***/ }),
+
+/***/ "./node_modules/abab/lib/btoa.js":
+/*!***************************************!*\
+  !*** ./node_modules/abab/lib/btoa.js ***!
+  \***************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * btoa() as defined by the HTML and Infra specs, which mostly just references
+ * RFC 4648.
+ */
+function btoa(s) {
+  if (arguments.length === 0) {
+    throw new TypeError("1 argument required, but only 0 present.");
+  }
+
+  let i;
+  // String conversion as required by Web IDL.
+  s = `${s}`;
+  // "The btoa() method must throw an "InvalidCharacterError" DOMException if
+  // data contains any character whose code point is greater than U+00FF."
+  for (i = 0; i < s.length; i++) {
+    if (s.charCodeAt(i) > 255) {
+      return null;
+    }
+  }
+  let out = "";
+  for (i = 0; i < s.length; i += 3) {
+    const groupsOfSix = [undefined, undefined, undefined, undefined];
+    groupsOfSix[0] = s.charCodeAt(i) >> 2;
+    groupsOfSix[1] = (s.charCodeAt(i) & 0x03) << 4;
+    if (s.length > i + 1) {
+      groupsOfSix[1] |= s.charCodeAt(i + 1) >> 4;
+      groupsOfSix[2] = (s.charCodeAt(i + 1) & 0x0f) << 2;
+    }
+    if (s.length > i + 2) {
+      groupsOfSix[2] |= s.charCodeAt(i + 2) >> 6;
+      groupsOfSix[3] = s.charCodeAt(i + 2) & 0x3f;
+    }
+    for (let j = 0; j < groupsOfSix.length; j++) {
+      if (typeof groupsOfSix[j] === "undefined") {
+        out += "=";
+      } else {
+        out += btoaLookup(groupsOfSix[j]);
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Lookup table for btoa(), which converts a six-bit number into the
+ * corresponding ASCII character.
+ */
+const keystr =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+function btoaLookup(index) {
+  if (index >= 0 && index < 64) {
+    return keystr[index];
+  }
+
+  // Throw INVALID_CHARACTER_ERR exception here -- won't be hit in the tests.
+  return undefined;
+}
+
+module.exports = btoa;
+
+
+/***/ }),
+
 /***/ "./node_modules/@converse/localforage-getitems/dist/localforage-getitems.js":
 /*!**********************************************************************************!*\
   !*** ./node_modules/@converse/localforage-getitems/dist/localforage-getitems.js ***!
@@ -6617,7 +6822,7 @@ __webpack_require__.r(__webpack_exports__);
     Copyright 2006-2008, OGG, LLC
 */
 
-/* global ActiveXObject */
+/* global ActiveXObject, XMLHttpRequest, sessionStorage, globalThis */
 
 
 
@@ -6687,21 +6892,23 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request = class Request {
     let node = null;
     if (this.xhr.responseXML && this.xhr.responseXML.documentElement) {
       node = this.xhr.responseXML.documentElement;
-      if (node.tagName === "parsererror") {
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("invalid response received");
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("responseText: " + this.xhr.responseText);
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("responseXML: " + _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.serialize(this.xhr.responseXML));
-        throw new Error("parsererror");
+      if (node.tagName === 'parsererror') {
+        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('invalid response received');
+        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('responseText: ' + this.xhr.responseText);
+        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('responseXML: ' + _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.serialize(this.xhr.responseXML));
+        throw new Error('parsererror');
       }
     } else if (this.xhr.responseText) {
-      // In React Native, we may get responseText but no responseXML.  We can try to parse it manually.
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("Got responseText but no responseXML; attempting to parse it with DOMParser...");
+      // In Node (with xhr2) or React Native, we may get responseText but no responseXML.
+      // We can try to parse it manually.
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('Got responseText but no responseXML; attempting to parse it with DOMParser...');
       node = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(this.xhr.responseText, 'application/xml').documentElement;
-      if (!node) {
-        throw new Error('Parsing produced null node');
-      } else if (node.querySelector('parsererror')) {
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("invalid response received: " + node.querySelector('parsererror').textContent);
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("responseText: " + this.xhr.responseText);
+      const parserError = node?.querySelector('parsererror');
+      if (!node || parserError) {
+        if (parserError) {
+          _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('invalid response received: ' + parserError.textContent);
+          _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('responseText: ' + this.xhr.responseText);
+        }
         const error = new Error();
         error.name = _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.ErrorCondition.BAD_FORMAT;
         throw error;
@@ -6720,13 +6927,13 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request = class Request {
    */
   _newXHR() {
     let xhr = null;
-    if (window.XMLHttpRequest) {
+    if (globalThis.XMLHttpRequest) {
       xhr = new XMLHttpRequest();
       if (xhr.overrideMimeType) {
-        xhr.overrideMimeType("text/xml; charset=utf-8");
+        xhr.overrideMimeType('text/xml; charset=utf-8');
       }
-    } else if (window.ActiveXObject) {
-      xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    } else if (globalThis.ActiveXObject) {
+      xhr = new ActiveXObject('Microsoft.XMLHTTP');
     }
     // use Function.bind() to prepend ourselves as an argument
     xhr.onreadystatechange = this.func.bind(null, this);
@@ -6808,7 +7015,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     this.sid = null;
     this.errors = 0;
     if (this._conn._sessionCachingSupported()) {
-      window.sessionStorage.removeItem('strophe-bosh-session');
+      sessionStorage.removeItem('strophe-bosh-session');
     }
     this._conn.nextValidRid(this.rid);
   }
@@ -6823,14 +7030,14 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     this.hold = hold || this.hold;
     this.errors = 0;
     const body = this._buildBody().attrs({
-      "to": this._conn.domain,
-      "xml:lang": "en",
-      "wait": this.wait,
-      "hold": this.hold,
-      "content": "text/xml; charset=utf-8",
-      "ver": "1.6",
-      "xmpp:version": "1.0",
-      "xmlns:xmpp": _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.BOSH
+      'to': this._conn.domain,
+      'xml:lang': 'en',
+      'wait': this.wait,
+      'hold': this.hold,
+      'content': 'text/xml; charset=utf-8',
+      'ver': '1.6',
+      'xmpp:version': '1.0',
+      'xmlns:xmpp': _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.BOSH
     });
     if (route) {
       body.attrs({
@@ -6838,7 +7045,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
       });
     }
     const _connect_cb = this._conn._connect_cb;
-    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, _connect_cb.bind(this._conn)), body.tree().getAttribute("rid")));
+    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, _connect_cb.bind(this._conn)), body.tree().getAttribute('rid')));
     this._throttledRequestHandler();
   }
 
@@ -6900,16 +7107,16 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    *      allowed range of request ids that are valid.  The default is 5.
    */
   _restore(jid, callback, wait, hold, wind) {
-    const session = JSON.parse(window.sessionStorage.getItem('strophe-bosh-session'));
-    if (typeof session !== "undefined" && session !== null && session.rid && session.sid && session.jid && (typeof jid === "undefined" || jid === null || _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.getBareJidFromJid(session.jid) === _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.getBareJidFromJid(jid) ||
+    const session = JSON.parse(sessionStorage.getItem('strophe-bosh-session'));
+    if (typeof session !== 'undefined' && session !== null && session.rid && session.sid && session.jid && (typeof jid === 'undefined' || jid === null || _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.getBareJidFromJid(session.jid) === _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.getBareJidFromJid(jid) ||
     // If authcid is null, then it's an anonymous login, so
     // we compare only the domains:
     _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.getNodeFromJid(jid) === null && _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.getDomainFromJid(session.jid) === jid)) {
       this._conn.restored = true;
       this._attach(session.jid, session.sid, session.rid, callback, wait, hold, wind);
     } else {
-      const error = new Error("_restore: no restoreable session.");
-      error.name = "StropheSessionError";
+      const error = new Error('_restore: no restoreable session.');
+      error.name = 'StropheSessionError';
       throw error;
     }
   }
@@ -6924,14 +7131,14 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
   _cacheSession() {
     if (this._conn.authenticated) {
       if (this._conn.jid && this.rid && this.sid) {
-        window.sessionStorage.setItem('strophe-bosh-session', JSON.stringify({
+        sessionStorage.setItem('strophe-bosh-session', JSON.stringify({
           'jid': this._conn.jid,
           'rid': this.rid,
           'sid': this.sid
         }));
       }
     } else {
-      window.sessionStorage.removeItem('strophe-bosh-session');
+      sessionStorage.removeItem('strophe-bosh-session');
     }
   }
 
@@ -6943,19 +7150,19 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    *    (Strophe.Request) bodyWrap - The received stanza.
    */
   _connect_cb(bodyWrap) {
-    const typ = bodyWrap.getAttribute("type");
-    if (typ !== null && typ === "terminate") {
+    const typ = bodyWrap.getAttribute('type');
+    if (typ !== null && typ === 'terminate') {
       // an error occurred
-      let cond = bodyWrap.getAttribute("condition");
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("BOSH-Connection failed: " + cond);
-      const conflict = bodyWrap.getElementsByTagName("conflict");
+      let cond = bodyWrap.getAttribute('condition');
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('BOSH-Connection failed: ' + cond);
+      const conflict = bodyWrap.getElementsByTagName('conflict');
       if (cond !== null) {
-        if (cond === "remote-stream-error" && conflict.length > 0) {
-          cond = "conflict";
+        if (cond === 'remote-stream-error' && conflict.length > 0) {
+          cond = 'conflict';
         }
         this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, cond);
       } else {
-        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "unknown");
+        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'unknown');
       }
       this._conn._doDisconnect(cond);
       return _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL;
@@ -6964,7 +7171,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     // check to make sure we don't overwrite these if _connect_cb is
     // called multiple times in the case of missing stream:features
     if (!this.sid) {
-      this.sid = bodyWrap.getAttribute("sid");
+      this.sid = bodyWrap.getAttribute('sid');
     }
     const wind = bodyWrap.getAttribute('requests');
     if (wind) {
@@ -7003,7 +7210,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     this.sid = null;
     this.rid = Math.floor(Math.random() * 4294967295);
     if (this._conn._sessionCachingSupported()) {
-      window.sessionStorage.removeItem('strophe-bosh-session');
+      sessionStorage.removeItem('strophe-bosh-session');
     }
     this._conn.nextValidRid(this.rid);
   }
@@ -7044,7 +7251,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    */
   _hitError(reqStatus) {
     this.errors++;
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("request errored, status: " + reqStatus + ", number of errors: " + this.errors);
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn('request errored, status: ' + reqStatus + ', number of errors: ' + this.errors);
     if (this.errors > 4) {
       this._conn._onDisconnectTimeout();
     }
@@ -7056,14 +7263,14 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    * has been received and sends a blank poll request.
    */
   _no_auth_received(callback) {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Server did not yet offer a supported authentication " + "mechanism. Sending a blank poll request.");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn('Server did not yet offer a supported authentication ' + 'mechanism. Sending a blank poll request.');
     if (callback) {
       callback = callback.bind(this._conn);
     } else {
       callback = this._conn._connect_cb.bind(this._conn);
     }
     const body = this._buildBody();
-    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, callback), body.tree().getAttribute("rid")));
+    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, callback), body.tree().getAttribute('rid')));
     this._throttledRequestHandler();
   }
 
@@ -7097,7 +7304,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     const data = this._conn._data;
     // if no requests are in progress, poll
     if (this._conn.authenticated && this._requests.length === 0 && data.length === 0 && !this._conn.disconnecting) {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("no requests during idle cycle, sending blank request");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('no requests during idle cycle, sending blank request');
       data.push(null);
     }
     if (this._conn.paused) {
@@ -7107,12 +7314,12 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
       const body = this._buildBody();
       for (let i = 0; i < data.length; i++) {
         if (data[i] !== null) {
-          if (data[i] === "restart") {
+          if (data[i] === 'restart') {
             body.attrs({
-              "to": this._conn.domain,
-              "xml:lang": "en",
-              "xmpp:restart": "true",
-              "xmlns:xmpp": _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.BOSH
+              'to': this._conn.domain,
+              'xml:lang': 'en',
+              'xmpp:restart': 'true',
+              'xmlns:xmpp': _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.BOSH
             });
           } else {
             body.cnode(data[i]).up();
@@ -7121,7 +7328,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
       }
       delete this._conn._data;
       this._conn._data = [];
-      this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute("rid")));
+      this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute('rid')));
       this._throttledRequestHandler();
     }
     if (this._requests.length > 0) {
@@ -7132,7 +7339,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
         }
       }
       if (time_elapsed > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.TIMEOUT * this.wait)) {
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Request " + this._requests[0].id + " timed out, over " + Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.TIMEOUT * this.wait) + " seconds since last activity");
+        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn('Request ' + this._requests[0].id + ' timed out, over ' + Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.TIMEOUT * this.wait) + ' seconds since last activity');
         this._throttledRequestHandler();
       }
     }
@@ -7155,10 +7362,10 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
       } catch (e) {
         // ignore errors from undefined status attribute. Works
         // around a browser bug
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Caught an error while retrieving a request's status, " + "reqStatus: " + reqStatus);
+        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Caught an error while retrieving a request's status, " + 'reqStatus: ' + reqStatus);
       }
     }
-    if (typeof reqStatus === "undefined") {
+    if (typeof reqStatus === 'undefined') {
       reqStatus = typeof def === 'number' ? def : 0;
     }
     return reqStatus;
@@ -7177,7 +7384,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    *    (Strophe.Request) req - The request that is changing readyState.
    */
   _onRequestStateChange(func, req) {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("request id " + req.id + "." + req.sends + " state changed to " + req.xhr.readyState);
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('request id ' + req.id + '.' + req.sends + ' state changed to ' + req.xhr.readyState);
     if (req.abort) {
       req.abort = false;
       return;
@@ -7200,7 +7407,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     if (valid_request || too_many_retries) {
       // remove from internal queue
       this._removeRequest(req);
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("request id " + req.id + " should now be removed");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('request id ' + req.id + ' should now be removed');
     }
     if (reqStatus === 200) {
       // request succeeded
@@ -7212,12 +7419,12 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
         this._restartRequest(0);
       }
       this._conn.nextValidRid(Number(req.rid) + 1);
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("request id " + req.id + "." + req.sends + " got 200");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('request id ' + req.id + '.' + req.sends + ' got 200');
       func(req); // call handler
       this.errors = 0;
     } else if (reqStatus === 0 || reqStatus >= 400 && reqStatus < 600 || reqStatus >= 12000) {
       // request failed
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("request id " + req.id + "." + req.sends + " error " + reqStatus + " happened");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('request id ' + req.id + '.' + req.sends + ' error ' + reqStatus + ' happened');
       this._hitError(reqStatus);
       this._callProtocolErrorHandlers(req);
       if (reqStatus >= 400 && reqStatus < 500) {
@@ -7225,12 +7432,12 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
         this._conn._doDisconnect();
       }
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("request id " + req.id + "." + req.sends + " error " + reqStatus + " happened");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('request id ' + req.id + '.' + req.sends + ' error ' + reqStatus + ' happened');
     }
     if (!valid_request && !too_many_retries) {
       this._throttledRequestHandler();
     } else if (too_many_retries && !this._conn.connected) {
-      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "giving-up");
+      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'giving-up');
     }
   }
 
@@ -7268,21 +7475,21 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
       req = this._requests[i];
     }
     if (req.xhr.readyState === 0) {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("request id " + req.id + "." + req.sends + " posting");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('request id ' + req.id + '.' + req.sends + ' posting');
       try {
-        const content_type = this._conn.options.contentType || "text/xml; charset=utf-8";
-        req.xhr.open("POST", this._conn.service, this._conn.options.sync ? false : true);
+        const content_type = this._conn.options.contentType || 'text/xml; charset=utf-8';
+        req.xhr.open('POST', this._conn.service, this._conn.options.sync ? false : true);
         if (typeof req.xhr.setRequestHeader !== 'undefined') {
           // IE9 doesn't have setRequestHeader
-          req.xhr.setRequestHeader("Content-Type", content_type);
+          req.xhr.setRequestHeader('Content-Type', content_type);
         }
         if (this._conn.options.withCredentials) {
           req.xhr.withCredentials = true;
         }
       } catch (e2) {
-        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("XHR open failed: " + e2.toString());
+        _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('XHR open failed: ' + e2.toString());
         if (!this._conn.connected) {
-          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "bad-service");
+          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'bad-service');
         }
         this._conn.disconnect();
         return;
@@ -7328,7 +7535,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
         this._conn.rawOutput(req.data);
       }
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("_processRequest: " + (i === 0 ? "first" : "second") + " request has readyState of " + req.xhr.readyState);
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('_processRequest: ' + (i === 0 ? 'first' : 'second') + ' request has readyState of ' + req.xhr.readyState);
     }
   }
 
@@ -7339,7 +7546,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    *    (Strophe.Request) req - The request to remove.
    */
   _removeRequest(req) {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("removing request");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('removing request');
     for (let i = this._requests.length - 1; i >= 0; i--) {
       if (req === this._requests[i]) {
         this._requests.splice(i, 1);
@@ -7380,10 +7587,10 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
     try {
       return req.getResponse();
     } catch (e) {
-      if (e.message !== "parsererror") {
+      if (e.message !== 'parsererror') {
         throw e;
       }
-      this._conn.disconnect("strophe-parsererror");
+      this._conn.disconnect('strophe-parsererror');
     }
   }
 
@@ -7395,14 +7602,14 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    *  presence if authentication has completed.
    */
   _sendTerminate(pres) {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("_sendTerminate was called");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('_sendTerminate was called');
     const body = this._buildBody().attrs({
-      type: "terminate"
+      type: 'terminate'
     });
     if (pres) {
       body.cnode(pres.tree());
     }
-    const req = new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute("rid"));
+    const req = new _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute('rid'));
     this._requests.push(req);
     this._throttledRequestHandler();
   }
@@ -7436,9 +7643,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh = class Bosh {
    */
   _throttledRequestHandler() {
     if (!this._requests) {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("_throttledRequestHandler called with " + "undefined requests");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('_throttledRequestHandler called with ' + 'undefined requests');
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("_throttledRequestHandler called with " + this._requests.length + " requests");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('_throttledRequestHandler called with ' + this._requests.length + ' requests');
     }
     if (!this._requests || this._requests.length === 0) {
       return;
@@ -7467,10 +7674,10 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Bosh.prototype.strip = null;
 
 /***/ }),
 
-/***/ "./node_modules/strophe.js/src/core.js":
-/*!*********************************************!*\
-  !*** ./node_modules/strophe.js/src/core.js ***!
-  \*********************************************/
+/***/ "./node_modules/strophe.js/src/builder.js":
+/*!************************************************!*\
+  !*** ./node_modules/strophe.js/src/builder.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7480,42 +7687,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   $iq: () => (/* binding */ $iq),
 /* harmony export */   $msg: () => (/* binding */ $msg),
 /* harmony export */   $pres: () => (/* binding */ $pres),
-/* harmony export */   Strophe: () => (/* binding */ Strophe),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Builder)
 /* harmony export */ });
-/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./shims */ "./src/strophe-shims.js");
-/* harmony import */ var _sasl_anon_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sasl-anon.js */ "./node_modules/strophe.js/src/sasl-anon.js");
-/* harmony import */ var _sasl_external_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sasl-external.js */ "./node_modules/strophe.js/src/sasl-external.js");
-/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
-/* harmony import */ var _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sasl-oauthbearer.js */ "./node_modules/strophe.js/src/sasl-oauthbearer.js");
-/* harmony import */ var _sasl_plain_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sasl-plain.js */ "./node_modules/strophe.js/src/sasl-plain.js");
-/* harmony import */ var _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sasl-sha1.js */ "./node_modules/strophe.js/src/sasl-sha1.js");
-/* harmony import */ var _sasl_sha256_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sasl-sha256.js */ "./node_modules/strophe.js/src/sasl-sha256.js");
-/* harmony import */ var _sasl_sha384_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./sasl-sha384.js */ "./node_modules/strophe.js/src/sasl-sha384.js");
-/* harmony import */ var _sasl_sha512_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./sasl-sha512.js */ "./node_modules/strophe.js/src/sasl-sha512.js");
-/* harmony import */ var _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./sasl-xoauth2.js */ "./node_modules/strophe.js/src/sasl-xoauth2.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
-/*
-    This program is distributed under the terms of the MIT license.
-    Please see the LICENSE file for details.
-
-    Copyright 2006-2018, OGG, LLC
-*/
-/*global define, document, sessionStorage, setTimeout, clearTimeout, ActiveXObject, DOMParser, btoa, atob */
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./node_modules/strophe.js/src/constants.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils.js */ "./node_modules/strophe.js/src/utils.js");
 
 
-
-
-
-
-
-
-
-
-
-
-
-//import { atob, btoa } from 'abab'
 
 /** Function: $build
  *  Create a Strophe.Builder.
@@ -7529,7 +7706,7 @@ __webpack_require__.r(__webpack_exports__);
  *    A new Strophe.Builder object.
  */
 function $build(name, attrs) {
-  return new Strophe.Builder(name, attrs);
+  return new Builder(name, attrs);
 }
 
 /** Function: $msg
@@ -7542,7 +7719,7 @@ function $build(name, attrs) {
  *    A new Strophe.Builder object.
  */
 function $msg(attrs) {
-  return new Strophe.Builder("message", attrs);
+  return new Builder('message', attrs);
 }
 
 /** Function: $iq
@@ -7555,7 +7732,7 @@ function $msg(attrs) {
  *    A new Strophe.Builder object.
  */
 function $iq(attrs) {
-  return new Strophe.Builder("iq", attrs);
+  return new Builder('iq', attrs);
 }
 
 /** Function: $pres
@@ -7568,771 +7745,8 @@ function $iq(attrs) {
  *    A new Strophe.Builder object.
  */
 function $pres(attrs) {
-  return new Strophe.Builder("presence", attrs);
+  return new Builder('presence', attrs);
 }
-
-/** Class: Strophe
- *  An object container for all Strophe library functions.
- *
- *  This class is just a container for all the objects and constants
- *  used in the library.  It is not meant to be instantiated, but to
- *  provide a namespace for library objects, constants, and functions.
- */
-const Strophe = {
-  /** Constant: VERSION */
-  VERSION: "1.6.0",
-  /** Constants: XMPP Namespace Constants
-   *  Common namespace constants from the XMPP RFCs and XEPs.
-   *
-   *  NS.HTTPBIND - HTTP BIND namespace from XEP 124.
-   *  NS.BOSH - BOSH namespace from XEP 206.
-   *  NS.CLIENT - Main XMPP client namespace.
-   *  NS.AUTH - Legacy authentication namespace.
-   *  NS.ROSTER - Roster operations namespace.
-   *  NS.PROFILE - Profile namespace.
-   *  NS.DISCO_INFO - Service discovery info namespace from XEP 30.
-   *  NS.DISCO_ITEMS - Service discovery items namespace from XEP 30.
-   *  NS.MUC - Multi-User Chat namespace from XEP 45.
-   *  NS.SASL - XMPP SASL namespace from RFC 3920.
-   *  NS.STREAM - XMPP Streams namespace from RFC 3920.
-   *  NS.BIND - XMPP Binding namespace from RFC 3920 and RFC 6120.
-   *  NS.SESSION - XMPP Session namespace from RFC 3920.
-   *  NS.XHTML_IM - XHTML-IM namespace from XEP 71.
-   *  NS.XHTML - XHTML body namespace from XEP 71.
-   */
-  NS: {
-    HTTPBIND: "http://jabber.org/protocol/httpbind",
-    BOSH: "urn:xmpp:xbosh",
-    CLIENT: "jabber:client",
-    AUTH: "jabber:iq:auth",
-    ROSTER: "jabber:iq:roster",
-    PROFILE: "jabber:iq:profile",
-    DISCO_INFO: "http://jabber.org/protocol/disco#info",
-    DISCO_ITEMS: "http://jabber.org/protocol/disco#items",
-    MUC: "http://jabber.org/protocol/muc",
-    SASL: "urn:ietf:params:xml:ns:xmpp-sasl",
-    STREAM: "http://etherx.jabber.org/streams",
-    FRAMING: "urn:ietf:params:xml:ns:xmpp-framing",
-    BIND: "urn:ietf:params:xml:ns:xmpp-bind",
-    SESSION: "urn:ietf:params:xml:ns:xmpp-session",
-    VERSION: "jabber:iq:version",
-    STANZAS: "urn:ietf:params:xml:ns:xmpp-stanzas",
-    XHTML_IM: "http://jabber.org/protocol/xhtml-im",
-    XHTML: "http://www.w3.org/1999/xhtml"
-  },
-  /** Constants: XHTML_IM Namespace
-   *  contains allowed tags, tag attributes, and css properties.
-   *  Used in the createHtml function to filter incoming html into the allowed XHTML-IM subset.
-   *  See http://xmpp.org/extensions/xep-0071.html#profile-summary for the list of recommended
-   *  allowed tags and their attributes.
-   */
-  XHTML: {
-    tags: ['a', 'blockquote', 'br', 'cite', 'em', 'img', 'li', 'ol', 'p', 'span', 'strong', 'ul', 'body'],
-    attributes: {
-      'a': ['href'],
-      'blockquote': ['style'],
-      'br': [],
-      'cite': ['style'],
-      'em': [],
-      'img': ['src', 'alt', 'style', 'height', 'width'],
-      'li': ['style'],
-      'ol': ['style'],
-      'p': ['style'],
-      'span': ['style'],
-      'strong': [],
-      'ul': ['style'],
-      'body': []
-    },
-    css: ['background-color', 'color', 'font-family', 'font-size', 'font-style', 'font-weight', 'margin-left', 'margin-right', 'text-align', 'text-decoration'],
-    /** Function: XHTML.validTag
-     *
-     * Utility method to determine whether a tag is allowed
-     * in the XHTML_IM namespace.
-     *
-     * XHTML tag names are case sensitive and must be lower case.
-     */
-    validTag(tag) {
-      for (let i = 0; i < Strophe.XHTML.tags.length; i++) {
-        if (tag === Strophe.XHTML.tags[i]) {
-          return true;
-        }
-      }
-      return false;
-    },
-    /** Function: XHTML.validAttribute
-     *
-     * Utility method to determine whether an attribute is allowed
-     * as recommended per XEP-0071
-     *
-     * XHTML attribute names are case sensitive and must be lower case.
-     */
-    validAttribute(tag, attribute) {
-      if (typeof Strophe.XHTML.attributes[tag] !== 'undefined' && Strophe.XHTML.attributes[tag].length > 0) {
-        for (let i = 0; i < Strophe.XHTML.attributes[tag].length; i++) {
-          if (attribute === Strophe.XHTML.attributes[tag][i]) {
-            return true;
-          }
-        }
-      }
-      return false;
-    },
-    validCSS(style) {
-      for (let i = 0; i < Strophe.XHTML.css.length; i++) {
-        if (style === Strophe.XHTML.css[i]) {
-          return true;
-        }
-      }
-      return false;
-    }
-  },
-  /** Constants: Connection Status Constants
-   *  Connection status constants for use by the connection handler
-   *  callback.
-   *
-   *  Status.ERROR - An error has occurred
-   *  Status.CONNECTING - The connection is currently being made
-   *  Status.CONNFAIL - The connection attempt failed
-   *  Status.AUTHENTICATING - The connection is authenticating
-   *  Status.AUTHFAIL - The authentication attempt failed
-   *  Status.CONNECTED - The connection has succeeded
-   *  Status.DISCONNECTED - The connection has been terminated
-   *  Status.DISCONNECTING - The connection is currently being terminated
-   *  Status.ATTACHED - The connection has been attached
-   *  Status.REDIRECT - The connection has been redirected
-   *  Status.CONNTIMEOUT - The connection has timed out
-   */
-  Status: {
-    ERROR: 0,
-    CONNECTING: 1,
-    CONNFAIL: 2,
-    AUTHENTICATING: 3,
-    AUTHFAIL: 4,
-    CONNECTED: 5,
-    DISCONNECTED: 6,
-    DISCONNECTING: 7,
-    ATTACHED: 8,
-    REDIRECT: 9,
-    CONNTIMEOUT: 10,
-    BINDREQUIRED: 11,
-    ATTACHFAIL: 12
-  },
-  ErrorCondition: {
-    BAD_FORMAT: "bad-format",
-    CONFLICT: "conflict",
-    MISSING_JID_NODE: "x-strophe-bad-non-anon-jid",
-    NO_AUTH_MECH: "no-auth-mech",
-    UNKNOWN_REASON: "unknown"
-  },
-  /** Constants: Log Level Constants
-   *  Logging level indicators.
-   *
-   *  LogLevel.DEBUG - Debug output
-   *  LogLevel.INFO - Informational output
-   *  LogLevel.WARN - Warnings
-   *  LogLevel.ERROR - Errors
-   *  LogLevel.FATAL - Fatal errors
-   */
-  LogLevel: {
-    DEBUG: 0,
-    INFO: 1,
-    WARN: 2,
-    ERROR: 3,
-    FATAL: 4
-  },
-  /** PrivateConstants: DOM Element Type Constants
-   *  DOM element types.
-   *
-   *  ElementType.NORMAL - Normal element.
-   *  ElementType.TEXT - Text data element.
-   *  ElementType.FRAGMENT - XHTML fragment element.
-   */
-  ElementType: {
-    NORMAL: 1,
-    TEXT: 3,
-    CDATA: 4,
-    FRAGMENT: 11
-  },
-  /** PrivateConstants: Timeout Values
-   *  Timeout values for error states.  These values are in seconds.
-   *  These should not be changed unless you know exactly what you are
-   *  doing.
-   *
-   *  TIMEOUT - Timeout multiplier. A waiting request will be considered
-   *      failed after Math.floor(TIMEOUT * wait) seconds have elapsed.
-   *      This defaults to 1.1, and with default wait, 66 seconds.
-   *  SECONDARY_TIMEOUT - Secondary timeout multiplier. In cases where
-   *      Strophe can detect early failure, it will consider the request
-   *      failed if it doesn't return after
-   *      Math.floor(SECONDARY_TIMEOUT * wait) seconds have elapsed.
-   *      This defaults to 0.1, and with default wait, 6 seconds.
-   */
-  TIMEOUT: 1.1,
-  SECONDARY_TIMEOUT: 0.1,
-  /** Function: addNamespace
-   *  This function is used to extend the current namespaces in
-   *  Strophe.NS.  It takes a key and a value with the key being the
-   *  name of the new namespace, with its actual value.
-   *  For example:
-   *  Strophe.addNamespace('PUBSUB', "http://jabber.org/protocol/pubsub");
-   *
-   *  Parameters:
-   *    (String) name - The name under which the namespace will be
-   *      referenced under Strophe.NS
-   *    (String) value - The actual namespace.
-   */
-  addNamespace(name, value) {
-    Strophe.NS[name] = value;
-  },
-  /** Function: forEachChild
-   *  Map a function over some or all child elements of a given element.
-   *
-   *  This is a small convenience function for mapping a function over
-   *  some or all of the children of an element.  If elemName is null, all
-   *  children will be passed to the function, otherwise only children
-   *  whose tag names match elemName will be passed.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - The element to operate on.
-   *    (String) elemName - The child element tag name filter.
-   *    (Function) func - The function to apply to each child.  This
-   *      function should take a single argument, a DOM element.
-   */
-  forEachChild(elem, elemName, func) {
-    for (let i = 0; i < elem.childNodes.length; i++) {
-      const childNode = elem.childNodes[i];
-      if (childNode.nodeType === Strophe.ElementType.NORMAL && (!elemName || this.isTagEqual(childNode, elemName))) {
-        func(childNode);
-      }
-    }
-  },
-  /** Function: isTagEqual
-   *  Compare an element's tag name with a string.
-   *
-   *  This function is case sensitive.
-   *
-   *  Parameters:
-   *    (XMLElement) el - A DOM element.
-   *    (String) name - The element name.
-   *
-   *  Returns:
-   *    true if the element's tag name matches _el_, and false
-   *    otherwise.
-   */
-  isTagEqual(el, name) {
-    return el.tagName === name;
-  },
-  /** PrivateVariable: _xmlGenerator
-   *  _Private_ variable that caches a DOM document to
-   *  generate elements.
-   */
-  _xmlGenerator: null,
-  /** Function: xmlGenerator
-   *  Get the DOM document to generate elements.
-   *
-   *  Returns:
-   *    The currently used DOM document.
-   */
-  xmlGenerator() {
-    if (!Strophe._xmlGenerator) {
-      Strophe._xmlGenerator = _shims__WEBPACK_IMPORTED_MODULE_0__.getDummyXMLDOMDocument();
-    }
-    return Strophe._xmlGenerator;
-  },
-  /** Function: xmlElement
-   *  Create an XML DOM element.
-   *
-   *  This function creates an XML DOM element correctly across all
-   *  implementations. Note that these are not HTML DOM elements, which
-   *  aren't appropriate for XMPP stanzas.
-   *
-   *  Parameters:
-   *    (String) name - The name for the element.
-   *    (Array|Object) attrs - An optional array or object containing
-   *      key/value pairs to use as element attributes. The object should
-   *      be in the format {'key': 'value'} or {key: 'value'}. The array
-   *      should have the format [['key1', 'value1'], ['key2', 'value2']].
-   *    (String) text - The text child data for the element.
-   *
-   *  Returns:
-   *    A new XML DOM element.
-   */
-  xmlElement(name) {
-    if (!name) {
-      return null;
-    }
-    const node = Strophe.xmlGenerator().createElement(name);
-    // FIXME: this should throw errors if args are the wrong type or
-    // there are more than two optional args
-    for (let a = 1; a < arguments.length; a++) {
-      const arg = arguments[a];
-      if (!arg) {
-        continue;
-      }
-      if (typeof arg === "string" || typeof arg === "number") {
-        node.appendChild(Strophe.xmlTextNode(arg));
-      } else if (typeof arg === "object" && typeof arg.sort === "function") {
-        for (let i = 0; i < arg.length; i++) {
-          const attr = arg[i];
-          if (typeof attr === "object" && typeof attr.sort === "function" && attr[1] !== undefined && attr[1] !== null) {
-            node.setAttribute(attr[0], attr[1]);
-          }
-        }
-      } else if (typeof arg === "object") {
-        for (const k in arg) {
-          if (Object.prototype.hasOwnProperty.call(arg, k) && arg[k] !== undefined && arg[k] !== null) {
-            node.setAttribute(k, arg[k]);
-          }
-        }
-      }
-    }
-    return node;
-  },
-  /*  Function: xmlescape
-   *  Excapes invalid xml characters.
-   *
-   *  Parameters:
-   *     (String) text - text to escape.
-   *
-   *  Returns:
-   *      Escaped text.
-   */
-  xmlescape(text) {
-    text = text.replace(/\&/g, "&amp;");
-    text = text.replace(/</g, "&lt;");
-    text = text.replace(/>/g, "&gt;");
-    text = text.replace(/'/g, "&apos;");
-    text = text.replace(/"/g, "&quot;");
-    return text;
-  },
-  /*  Function: xmlunescape
-  *  Unexcapes invalid xml characters.
-  *
-  *  Parameters:
-  *     (String) text - text to unescape.
-  *
-  *  Returns:
-  *      Unescaped text.
-  */
-  xmlunescape(text) {
-    text = text.replace(/\&amp;/g, "&");
-    text = text.replace(/&lt;/g, "<");
-    text = text.replace(/&gt;/g, ">");
-    text = text.replace(/&apos;/g, "'");
-    text = text.replace(/&quot;/g, "\"");
-    return text;
-  },
-  /** Function: xmlTextNode
-   *  Creates an XML DOM text node.
-   *
-   *  Provides a cross implementation version of document.createTextNode.
-   *
-   *  Parameters:
-   *    (String) text - The content of the text node.
-   *
-   *  Returns:
-   *    A new XML DOM text node.
-   */
-  xmlTextNode(text) {
-    return Strophe.xmlGenerator().createTextNode(text);
-  },
-  /** Function: xmlHtmlNode
-   *  Creates an XML DOM html node.
-   *
-   *  Parameters:
-   *    (String) html - The content of the html node.
-   *
-   *  Returns:
-   *    A new XML DOM text node.
-   */
-  xmlHtmlNode(html) {
-    let node;
-    //ensure text is escaped
-    if (_shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser) {
-      const parser = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser();
-      node = parser.parseFromString(html, "text/xml");
-    } else {
-      node = new ActiveXObject("Microsoft.XMLDOM");
-      node.async = "false";
-      node.loadXML(html);
-    }
-    return node;
-  },
-  /** Function: getText
-   *  Get the concatenation of all text children of an element.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - A DOM element.
-   *
-   *  Returns:
-   *    A String with the concatenated text of all text element children.
-   */
-  getText(elem) {
-    if (!elem) {
-      return null;
-    }
-    let str = "";
-    if (elem.childNodes.length === 0 && elem.nodeType === Strophe.ElementType.TEXT) {
-      str += elem.nodeValue;
-    }
-    for (let i = 0; i < elem.childNodes.length; i++) {
-      if (elem.childNodes[i].nodeType === Strophe.ElementType.TEXT) {
-        str += elem.childNodes[i].nodeValue;
-      }
-    }
-    return Strophe.xmlescape(str);
-  },
-  /** Function: copyElement
-   *  Copy an XML DOM element.
-   *
-   *  This function copies a DOM element and all its descendants and returns
-   *  the new copy.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - A DOM element.
-   *
-   *  Returns:
-   *    A new, copied DOM element tree.
-   */
-  copyElement(elem) {
-    let el;
-    if (elem.nodeType === Strophe.ElementType.NORMAL) {
-      el = Strophe.xmlElement(elem.tagName);
-      for (let i = 0; i < elem.attributes.length; i++) {
-        el.setAttribute(elem.attributes[i].nodeName, elem.attributes[i].value);
-      }
-      for (let i = 0; i < elem.childNodes.length; i++) {
-        el.appendChild(Strophe.copyElement(elem.childNodes[i]));
-      }
-    } else if (elem.nodeType === Strophe.ElementType.TEXT) {
-      el = Strophe.xmlGenerator().createTextNode(elem.nodeValue);
-    }
-    return el;
-  },
-  /** Function: createHtml
-   *  Copy an HTML DOM element into an XML DOM.
-   *
-   *  This function copies a DOM element and all its descendants and returns
-   *  the new copy.
-   *
-   *  Parameters:
-   *    (HTMLElement) elem - A DOM element.
-   *
-   *  Returns:
-   *    A new, copied DOM element tree.
-   */
-  createHtml(elem) {
-    let el;
-    if (elem.nodeType === Strophe.ElementType.NORMAL) {
-      const tag = elem.nodeName.toLowerCase(); // XHTML tags must be lower case.
-      if (Strophe.XHTML.validTag(tag)) {
-        try {
-          el = Strophe.xmlElement(tag);
-          for (let i = 0; i < Strophe.XHTML.attributes[tag].length; i++) {
-            const attribute = Strophe.XHTML.attributes[tag][i];
-            let value = elem.getAttribute(attribute);
-            if (typeof value === 'undefined' || value === null || value === '' || value === false || value === 0) {
-              continue;
-            }
-            if (attribute === 'style' && typeof value === 'object' && typeof value.cssText !== 'undefined') {
-              value = value.cssText; // we're dealing with IE, need to get CSS out
-            }
-            // filter out invalid css styles
-            if (attribute === 'style') {
-              const css = [];
-              const cssAttrs = value.split(';');
-              for (let j = 0; j < cssAttrs.length; j++) {
-                const attr = cssAttrs[j].split(':');
-                const cssName = attr[0].replace(/^\s*/, "").replace(/\s*$/, "").toLowerCase();
-                if (Strophe.XHTML.validCSS(cssName)) {
-                  const cssValue = attr[1].replace(/^\s*/, "").replace(/\s*$/, "");
-                  css.push(cssName + ': ' + cssValue);
-                }
-              }
-              if (css.length > 0) {
-                value = css.join('; ');
-                el.setAttribute(attribute, value);
-              }
-            } else {
-              el.setAttribute(attribute, value);
-            }
-          }
-          for (let i = 0; i < elem.childNodes.length; i++) {
-            el.appendChild(Strophe.createHtml(elem.childNodes[i]));
-          }
-        } catch (e) {
-          // invalid elements
-          el = Strophe.xmlTextNode('');
-        }
-      } else {
-        el = Strophe.xmlGenerator().createDocumentFragment();
-        for (let i = 0; i < elem.childNodes.length; i++) {
-          el.appendChild(Strophe.createHtml(elem.childNodes[i]));
-        }
-      }
-    } else if (elem.nodeType === Strophe.ElementType.FRAGMENT) {
-      el = Strophe.xmlGenerator().createDocumentFragment();
-      for (let i = 0; i < elem.childNodes.length; i++) {
-        el.appendChild(Strophe.createHtml(elem.childNodes[i]));
-      }
-    } else if (elem.nodeType === Strophe.ElementType.TEXT) {
-      el = Strophe.xmlTextNode(elem.nodeValue);
-    }
-    return el;
-  },
-  /** Function: escapeNode
-   *  Escape the node part (also called local part) of a JID.
-   *
-   *  Parameters:
-   *    (String) node - A node (or local part).
-   *
-   *  Returns:
-   *    An escaped node (or local part).
-   */
-  escapeNode(node) {
-    if (typeof node !== "string") {
-      return node;
-    }
-    return node.replace(/^\s+|\s+$/g, '').replace(/\\/g, "\\5c").replace(/ /g, "\\20").replace(/\"/g, "\\22").replace(/\&/g, "\\26").replace(/\'/g, "\\27").replace(/\//g, "\\2f").replace(/:/g, "\\3a").replace(/</g, "\\3c").replace(/>/g, "\\3e").replace(/@/g, "\\40");
-  },
-  /** Function: unescapeNode
-   *  Unescape a node part (also called local part) of a JID.
-   *
-   *  Parameters:
-   *    (String) node - A node (or local part).
-   *
-   *  Returns:
-   *    An unescaped node (or local part).
-   */
-  unescapeNode(node) {
-    if (typeof node !== "string") {
-      return node;
-    }
-    return node.replace(/\\20/g, " ").replace(/\\22/g, '"').replace(/\\26/g, "&").replace(/\\27/g, "'").replace(/\\2f/g, "/").replace(/\\3a/g, ":").replace(/\\3c/g, "<").replace(/\\3e/g, ">").replace(/\\40/g, "@").replace(/\\5c/g, "\\");
-  },
-  /** Function: getNodeFromJid
-   *  Get the node portion of a JID String.
-   *
-   *  Parameters:
-   *    (String) jid - A JID.
-   *
-   *  Returns:
-   *    A String containing the node.
-   */
-  getNodeFromJid(jid) {
-    if (jid.indexOf("@") < 0) {
-      return null;
-    }
-    return jid.split("@")[0];
-  },
-  /** Function: getDomainFromJid
-   *  Get the domain portion of a JID String.
-   *
-   *  Parameters:
-   *    (String) jid - A JID.
-   *
-   *  Returns:
-   *    A String containing the domain.
-   */
-  getDomainFromJid(jid) {
-    const bare = Strophe.getBareJidFromJid(jid);
-    if (bare.indexOf("@") < 0) {
-      return bare;
-    } else {
-      const parts = bare.split("@");
-      parts.splice(0, 1);
-      return parts.join('@');
-    }
-  },
-  /** Function: getResourceFromJid
-   *  Get the resource portion of a JID String.
-   *
-   *  Parameters:
-   *    (String) jid - A JID.
-   *
-   *  Returns:
-   *    A String containing the resource.
-   */
-  getResourceFromJid(jid) {
-    if (!jid) {
-      return null;
-    }
-    const s = jid.split("/");
-    if (s.length < 2) {
-      return null;
-    }
-    s.splice(0, 1);
-    return s.join('/');
-  },
-  /** Function: getBareJidFromJid
-   *  Get the bare JID from a JID String.
-   *
-   *  Parameters:
-   *    (String) jid - A JID.
-   *
-   *  Returns:
-   *    A String containing the bare JID.
-   */
-  getBareJidFromJid(jid) {
-    return jid ? jid.split("/")[0] : null;
-  },
-  /** PrivateFunction: _handleError
-   *  _Private_ function that properly logs an error to the console
-   */
-  _handleError(e) {
-    if (typeof e.stack !== "undefined") {
-      Strophe.fatal(e.stack);
-    }
-    if (e.sourceURL) {
-      Strophe.fatal("error: " + this.handler + " " + e.sourceURL + ":" + e.line + " - " + e.name + ": " + e.message);
-    } else if (e.fileName) {
-      Strophe.fatal("error: " + this.handler + " " + e.fileName + ":" + e.lineNumber + " - " + e.name + ": " + e.message);
-    } else {
-      Strophe.fatal("error: " + e.message);
-    }
-  },
-  /** Function: log
-   *  User overrideable logging function.
-   *
-   *  This function is called whenever the Strophe library calls any
-   *  of the logging functions.  The default implementation of this
-   *  function logs only fatal errors.  If client code wishes to handle the logging
-   *  messages, it should override this with
-   *  > Strophe.log = function (level, msg) {
-   *  >   (user code here)
-   *  > };
-   *
-   *  Please note that data sent and received over the wire is logged
-   *  via Strophe.Connection.rawInput() and Strophe.Connection.rawOutput().
-   *
-   *  The different levels and their meanings are
-   *
-   *    DEBUG - Messages useful for debugging purposes.
-   *    INFO - Informational messages.  This is mostly information like
-   *      'disconnect was called' or 'SASL auth succeeded'.
-   *    WARN - Warnings about potential problems.  This is mostly used
-   *      to report transient connection errors like request timeouts.
-   *    ERROR - Some error occurred.
-   *    FATAL - A non-recoverable fatal error occurred.
-   *
-   *  Parameters:
-   *    (Integer) level - The log level of the log message.  This will
-   *      be one of the values in Strophe.LogLevel.
-   *    (String) msg - The log message.
-   */
-  log(level, msg) {
-    if (level === this.LogLevel.FATAL) {
-      console?.error(msg);
-    }
-  },
-  /** Function: debug
-   *  Log a message at the Strophe.LogLevel.DEBUG level.
-   *
-   *  Parameters:
-   *    (String) msg - The log message.
-   */
-  debug(msg) {
-    this.log(this.LogLevel.DEBUG, msg);
-  },
-  /** Function: info
-   *  Log a message at the Strophe.LogLevel.INFO level.
-   *
-   *  Parameters:
-   *    (String) msg - The log message.
-   */
-  info(msg) {
-    this.log(this.LogLevel.INFO, msg);
-  },
-  /** Function: warn
-   *  Log a message at the Strophe.LogLevel.WARN level.
-   *
-   *  Parameters:
-   *    (String) msg - The log message.
-   */
-  warn(msg) {
-    this.log(this.LogLevel.WARN, msg);
-  },
-  /** Function: error
-   *  Log a message at the Strophe.LogLevel.ERROR level.
-   *
-   *  Parameters:
-   *    (String) msg - The log message.
-   */
-  error(msg) {
-    this.log(this.LogLevel.ERROR, msg);
-  },
-  /** Function: fatal
-   *  Log a message at the Strophe.LogLevel.FATAL level.
-   *
-   *  Parameters:
-   *    (String) msg - The log message.
-   */
-  fatal(msg) {
-    this.log(this.LogLevel.FATAL, msg);
-  },
-  /** Function: serialize
-   *  Render a DOM element and all descendants to a String.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - A DOM element.
-   *
-   *  Returns:
-   *    The serialized element tree as a String.
-   */
-  serialize(elem) {
-    if (!elem) {
-      return null;
-    }
-    if (typeof elem.tree === "function") {
-      elem = elem.tree();
-    }
-    const names = [...Array(elem.attributes.length).keys()].map(i => elem.attributes[i].nodeName);
-    names.sort();
-    let result = names.reduce((a, n) => `${a} ${n}="${Strophe.xmlescape(elem.attributes.getNamedItem(n).value)}"`, `<${elem.nodeName}`);
-    if (elem.childNodes.length > 0) {
-      result += ">";
-      for (let i = 0; i < elem.childNodes.length; i++) {
-        const child = elem.childNodes[i];
-        switch (child.nodeType) {
-          case Strophe.ElementType.NORMAL:
-            // normal element, so recurse
-            result += Strophe.serialize(child);
-            break;
-          case Strophe.ElementType.TEXT:
-            // text element to escape values
-            result += Strophe.xmlescape(child.nodeValue);
-            break;
-          case Strophe.ElementType.CDATA:
-            // cdata section so don't escape values
-            result += "<![CDATA[" + child.nodeValue + "]]>";
-        }
-      }
-      result += "</" + elem.nodeName + ">";
-    } else {
-      result += "/>";
-    }
-    return result;
-  },
-  /** PrivateVariable: _requestId
-   *  _Private_ variable that keeps track of the request ids for
-   *  connections.
-   */
-  _requestId: 0,
-  /** PrivateVariable: Strophe.connectionPlugins
-   *  _Private_ variable Used to store plugin names that need
-   *  initialization on Strophe.Connection construction.
-   */
-  _connectionPlugins: {},
-  /** Function: addConnectionPlugin
-   *  Extends the Strophe.Connection object with the given plugin.
-   *
-   *  Parameters:
-   *    (String) name - The name of the extension.
-   *    (Object) ptype - The plugin's prototype.
-   */
-  addConnectionPlugin(name, ptype) {
-    Strophe._connectionPlugins[name] = ptype;
-  }
-};
 
 /** Class: Strophe.Builder
  *  XML DOM builder.
@@ -8377,20 +7791,20 @@ const Strophe = {
  *    A new Strophe.Builder.
  */
 
-Strophe.Builder = class Builder {
+class Builder {
   constructor(name, attrs) {
     // Set correct namespace for jabber:client elements
-    if (name === "presence" || name === "message" || name === "iq") {
+    if (name === 'presence' || name === 'message' || name === 'iq') {
       if (attrs && !attrs.xmlns) {
-        attrs.xmlns = Strophe.NS.CLIENT;
+        attrs.xmlns = _constants_js__WEBPACK_IMPORTED_MODULE_0__.NS.CLIENT;
       } else if (!attrs) {
         attrs = {
-          xmlns: Strophe.NS.CLIENT
+          xmlns: _constants_js__WEBPACK_IMPORTED_MODULE_0__.NS.CLIENT
         };
       }
     }
     // Holds the tree being built.
-    this.nodeTree = Strophe.xmlElement(name, attrs);
+    this.nodeTree = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.xmlElement)(name, attrs);
     // Points to the current operation node.
     this.node = this.nodeTree;
   }
@@ -8419,7 +7833,7 @@ Strophe.Builder = class Builder {
    *    The serialized DOM tree in a String.
    */
   toString() {
-    return Strophe.serialize(this.nodeTree);
+    return (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.serialize)(this.nodeTree);
   }
 
   /** Function: up
@@ -8494,9 +7908,9 @@ Strophe.Builder = class Builder {
    *    The Strophe.Builder object.
    */
   c(name, attrs, text) {
-    const child = Strophe.xmlElement(name, attrs, text);
+    const child = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.xmlElement)(name, attrs, text);
     this.node.appendChild(child);
-    if (typeof text !== "string" && typeof text !== "number") {
+    if (typeof text !== 'string' && typeof text !== 'number') {
       this.node = child;
     }
     return this;
@@ -8518,13 +7932,13 @@ Strophe.Builder = class Builder {
    */
   cnode(elem) {
     let impNode;
-    const xmlGen = Strophe.xmlGenerator();
+    const xmlGen = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.xmlGenerator)();
     try {
       impNode = xmlGen.importNode !== undefined;
     } catch (e) {
       impNode = false;
     }
-    const newElem = impNode ? xmlGen.importNode(elem, true) : Strophe.copyElement(elem);
+    const newElem = impNode ? xmlGen.importNode(elem, true) : (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.copyElement)(elem);
     this.node.appendChild(newElem);
     this.node = newElem;
     return this;
@@ -8543,7 +7957,7 @@ Strophe.Builder = class Builder {
    *    The Strophe.Builder object.
    */
   t(text) {
-    const child = Strophe.xmlTextNode(text);
+    const child = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.xmlTextNode)(text);
     this.node.appendChild(child);
     return this;
   }
@@ -8560,224 +7974,48 @@ Strophe.Builder = class Builder {
    *    The Strophe.Builder object.
    */
   h(html) {
-    const fragment = Strophe.xmlGenerator().createElement('body');
+    const fragment = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.xmlGenerator)().createElement('body');
     // force the browser to try and fix any invalid HTML tags
     fragment.innerHTML = html;
     // copy cleaned html into an xml dom
-    const xhtml = Strophe.createHtml(fragment);
+    const xhtml = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.createHtml)(fragment);
     while (xhtml.childNodes.length > 0) {
       this.node.appendChild(xhtml.childNodes[0]);
     }
     return this;
   }
-};
+}
 
-/** PrivateClass: Strophe.Handler
- *  _Private_ helper class for managing stanza handlers.
- *
- *  A Strophe.Handler encapsulates a user provided callback function to be
- *  executed when matching stanzas are received by the connection.
- *  Handlers can be either one-off or persistant depending on their
- *  return value. Returning true will cause a Handler to remain active, and
- *  returning false will remove the Handler.
- *
- *  Users will not use Strophe.Handler objects directly, but instead they
- *  will use Strophe.Connection.addHandler() and
- *  Strophe.Connection.deleteHandler().
- */
+/***/ }),
 
-/** PrivateConstructor: Strophe.Handler
- *  Create and initialize a new Strophe.Handler.
- *
- *  Parameters:
- *    (Function) handler - A function to be executed when the handler is run.
- *    (String) ns - The namespace to match.
- *    (String) name - The element name to match.
- *    (String) type - The element type to match.
- *    (String) id - The element id attribute to match.
- *    (String) from - The element from attribute to match.
- *    (Object) options - Handler options
- *
- *  Returns:
- *    A new Strophe.Handler object.
- */
-Strophe.Handler = function (handler, ns, name, type, id, from, options) {
-  this.handler = handler;
-  this.ns = ns;
-  this.name = name;
-  this.type = type;
-  this.id = id;
-  this.options = options || {
-    'matchBareFromJid': false,
-    'ignoreNamespaceFragment': false
-  };
-  // BBB: Maintain backward compatibility with old `matchBare` option
-  if (this.options.matchBare) {
-    Strophe.warn('The "matchBare" option is deprecated, use "matchBareFromJid" instead.');
-    this.options.matchBareFromJid = this.options.matchBare;
-    delete this.options.matchBare;
-  }
-  if (this.options.matchBareFromJid) {
-    this.from = from ? Strophe.getBareJidFromJid(from) : null;
-  } else {
-    this.from = from;
-  }
-  // whether the handler is a user handler or a system handler
-  this.user = true;
-};
-Strophe.Handler.prototype = {
-  /** PrivateFunction: getNamespace
-   *  Returns the XML namespace attribute on an element.
-   *  If `ignoreNamespaceFragment` was passed in for this handler, then the
-   *  URL fragment will be stripped.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - The XML element with the namespace.
-   *
-   *  Returns:
-   *    The namespace, with optionally the fragment stripped.
-   */
-  getNamespace(elem) {
-    let elNamespace = elem.getAttribute("xmlns");
-    if (elNamespace && this.options.ignoreNamespaceFragment) {
-      elNamespace = elNamespace.split('#')[0];
-    }
-    return elNamespace;
-  },
-  /** PrivateFunction: namespaceMatch
-   *  Tests if a stanza matches the namespace set for this Strophe.Handler.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - The XML element to test.
-   *
-   *  Returns:
-   *    true if the stanza matches and false otherwise.
-   */
-  namespaceMatch(elem) {
-    let nsMatch = false;
-    if (!this.ns) {
-      return true;
-    } else {
-      Strophe.forEachChild(elem, null, elem => {
-        if (this.getNamespace(elem) === this.ns) {
-          nsMatch = true;
-        }
-      });
-      return nsMatch || this.getNamespace(elem) === this.ns;
-    }
-  },
-  /** PrivateFunction: isMatch
-   *  Tests if a stanza matches the Strophe.Handler.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - The XML element to test.
-   *
-   *  Returns:
-   *    true if the stanza matches and false otherwise.
-   */
-  isMatch(elem) {
-    let from = elem.getAttribute('from');
-    if (this.options.matchBareFromJid) {
-      from = Strophe.getBareJidFromJid(from);
-    }
-    const elem_type = elem.getAttribute("type");
-    if (this.namespaceMatch(elem) && (!this.name || Strophe.isTagEqual(elem, this.name)) && (!this.type || (Array.isArray(this.type) ? this.type.indexOf(elem_type) !== -1 : elem_type === this.type)) && (!this.id || elem.getAttribute("id") === this.id) && (!this.from || from === this.from)) {
-      return true;
-    }
-    return false;
-  },
-  /** PrivateFunction: run
-   *  Run the callback on a matching stanza.
-   *
-   *  Parameters:
-   *    (XMLElement) elem - The DOM element that triggered the
-   *      Strophe.Handler.
-   *
-   *  Returns:
-   *    A boolean indicating if the handler should remain active.
-   */
-  run(elem) {
-    let result = null;
-    try {
-      result = this.handler(elem);
-    } catch (e) {
-      Strophe._handleError(e);
-      throw e;
-    }
-    return result;
-  },
-  /** PrivateFunction: toString
-   *  Get a String representation of the Strophe.Handler object.
-   *
-   *  Returns:
-   *    A String.
-   */
-  toString() {
-    return "{Handler: " + this.handler + "(" + this.name + "," + this.id + "," + this.ns + ")}";
-  }
-};
+/***/ "./node_modules/strophe.js/src/connection.js":
+/*!***************************************************!*\
+  !*** ./node_modules/strophe.js/src/connection.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-/** PrivateClass: Strophe.TimedHandler
- *  _Private_ helper class for managing timed handlers.
- *
- *  A Strophe.TimedHandler encapsulates a user provided callback that
- *  should be called after a certain period of time or at regular
- *  intervals.  The return value of the callback determines whether the
- *  Strophe.TimedHandler will continue to fire.
- *
- *  Users will not use Strophe.TimedHandler objects directly, but instead
- *  they will use Strophe.Connection.addTimedHandler() and
- *  Strophe.Connection.deleteTimedHandler().
- */
-Strophe.TimedHandler = class TimedHandler {
-  /** PrivateConstructor: Strophe.TimedHandler
-   *  Create and initialize a new Strophe.TimedHandler object.
-   *
-   *  Parameters:
-   *    (Integer) period - The number of milliseconds to wait before the
-   *      handler is called.
-   *    (Function) handler - The callback to run when the handler fires.  This
-   *      function should take no arguments.
-   *
-   *  Returns:
-   *    A new Strophe.TimedHandler object.
-   */
-  constructor(period, handler) {
-    this.period = period;
-    this.handler = handler;
-    this.lastCalled = new Date().getTime();
-    this.user = true;
-  }
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Connection)
+/* harmony export */ });
+/* harmony import */ var _handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./handler */ "./node_modules/strophe.js/src/handler.js");
+/* harmony import */ var _timed_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timed-handler */ "./node_modules/strophe.js/src/timed-handler.js");
+/* harmony import */ var _builder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./builder */ "./node_modules/strophe.js/src/builder.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./node_modules/strophe.js/src/constants.js");
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./core */ "./node_modules/strophe.js/src/core.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
+/* harmony import */ var abab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! abab */ "./node_modules/abab/index.js");
+/* harmony import */ var abab__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(abab__WEBPACK_IMPORTED_MODULE_6__);
+/*sessionStorage, setTimeout, clearTimeout */
 
-  /** PrivateFunction: run
-   *  Run the callback for the Strophe.TimedHandler.
-   *
-   *  Returns:
-   *    true if the Strophe.TimedHandler should be called again, and false
-   *      otherwise.
-   */
-  run() {
-    this.lastCalled = new Date().getTime();
-    return this.handler();
-  }
 
-  /** PrivateFunction: reset
-   *  Reset the last called time for the Strophe.TimedHandler.
-   */
-  reset() {
-    this.lastCalled = new Date().getTime();
-  }
 
-  /** PrivateFunction: toString
-   *  Get a string representation of the Strophe.TimedHandler object.
-   *
-   *  Returns:
-   *    The string representation.
-   */
-  toString() {
-    return "{TimedHandler: " + this.handler + "(" + this.period + ")}";
-  }
-};
+
+
+
+
+
 
 /** Class: Strophe.Connection
  *  XMPP Connection manager.
@@ -8946,7 +8184,7 @@ Strophe.TimedHandler = class TimedHandler {
  *    A new Strophe.Connection object.
  */
 
-Strophe.Connection = class Connection {
+class Connection {
   constructor(service, options) {
     // The service URL
     this.service = service;
@@ -8955,7 +8193,7 @@ Strophe.Connection = class Connection {
     this.setProtocol();
 
     /* The connected JID. */
-    this.jid = "";
+    this.jid = '';
     /* the JIDs domain */
     this.domain = null;
     /* stream:features */
@@ -8997,7 +8235,7 @@ Strophe.Connection = class Connection {
 
     // Call onIdle callback every 1/10th of a second
     this._idleTimeout = setTimeout(() => this._onIdle(), 100);
-    _utils__WEBPACK_IMPORTED_MODULE_11__["default"].addCookies(this.options.cookies);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_5__.addCookies)(this.options.cookies);
     this.registerSASLMechanisms(this.options.mechanisms);
 
     // A client must always respond to incoming IQ "set" and "get" stanzas.
@@ -9005,20 +8243,20 @@ Strophe.Connection = class Connection {
     //
     // This is a fallback handler which gets called when no other handler
     // was called for a received IQ "set" or "get".
-    this.iqFallbackHandler = new Strophe.Handler(iq => this.send($iq({
+    this.iqFallbackHandler = new _handler__WEBPACK_IMPORTED_MODULE_0__["default"](iq => this.send((0,_builder__WEBPACK_IMPORTED_MODULE_2__.$iq)({
       type: 'error',
       id: iq.getAttribute('id')
     }).c('error', {
       'type': 'cancel'
     }).c('service-unavailable', {
-      'xmlns': Strophe.NS.STANZAS
+      'xmlns': _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.STANZAS
     })), null, 'iq', ['get', 'set']);
 
     // initialize plugins
-    for (const k in Strophe._connectionPlugins) {
-      if (Object.prototype.hasOwnProperty.call(Strophe._connectionPlugins, k)) {
+    for (const k in _core__WEBPACK_IMPORTED_MODULE_4__.Strophe._connectionPlugins) {
+      if (Object.prototype.hasOwnProperty.call(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe._connectionPlugins, k)) {
         const F = function () {};
-        F.prototype = Strophe._connectionPlugins[k];
+        F.prototype = _core__WEBPACK_IMPORTED_MODULE_4__.Strophe._connectionPlugins[k];
         this[k] = new F();
         this[k].init(this);
       }
@@ -9029,13 +8267,13 @@ Strophe.Connection = class Connection {
    *  Select protocal based on this.options or this.service
    */
   setProtocol() {
-    const proto = this.options.protocol || "";
+    const proto = this.options.protocol || '';
     if (this.options.worker) {
-      this._proto = new Strophe.WorkerWebsocket(this);
-    } else if (this.service.indexOf("ws:") === 0 || this.service.indexOf("wss:") === 0 || proto.indexOf("ws") === 0) {
-      this._proto = new Strophe.Websocket(this);
+      this._proto = new _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.WorkerWebsocket(this);
+    } else if (this.service.indexOf('ws:') === 0 || this.service.indexOf('wss:') === 0 || proto.indexOf('ws') === 0) {
+      this._proto = new _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Websocket(this);
     } else {
-      this._proto = new Strophe.Bosh(this);
+      this._proto = new _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Bosh(this);
     }
   }
 
@@ -9112,17 +8350,17 @@ Strophe.Connection = class Connection {
    *  Returns:
    *    A unique string to be used for the id attribute.
    */
+  // eslint-disable-next-line class-methods-use-this
   getUniqueId(suffix) {
-    // eslint-disable-line class-methods-use-this
     const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = Math.random() * 16 | 0,
         v = c === 'x' ? r : r & 0x3 | 0x8;
       return v.toString(16);
     });
-    if (typeof suffix === "string" || typeof suffix === "number") {
-      return uuid + ":" + suffix;
+    if (typeof suffix === 'string' || typeof suffix === 'number') {
+      return uuid + ':' + suffix;
     } else {
-      return uuid + "";
+      return uuid + '';
     }
   }
 
@@ -9209,12 +8447,12 @@ Strophe.Connection = class Connection {
     /** Variable: authzid
      *  Authorization identity.
      */
-    this.authzid = Strophe.getBareJidFromJid(this.jid);
+    this.authzid = _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getBareJidFromJid(this.jid);
 
     /** Variable: authcid
      *  Authentication identity (User name).
      */
-    this.authcid = authcid || Strophe.getNodeFromJid(this.jid);
+    this.authcid = authcid || _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getNodeFromJid(this.jid);
 
     /** Variable: pass
      *  Authentication identity (User password).
@@ -9236,8 +8474,8 @@ Strophe.Connection = class Connection {
     this.disconnection_timeout = disconnection_timeout;
 
     // parse jid for domain
-    this.domain = Strophe.getDomainFromJid(this.jid);
-    this._changeConnectStatus(Strophe.Status.CONNECTING, null);
+    this.domain = _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getDomainFromJid(this.jid);
+    this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNECTING, null);
     this._proto._connect(wait, hold, route);
   }
 
@@ -9317,7 +8555,7 @@ Strophe.Connection = class Connection {
    * using BOSH.
    */
   _sessionCachingSupported() {
-    if (this._proto instanceof Strophe.Bosh) {
+    if (this._proto instanceof _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Bosh) {
       if (!JSON) {
         return false;
       }
@@ -9350,8 +8588,8 @@ Strophe.Connection = class Connection {
    *  Parameters:
    *    (XMLElement) elem - The XML data received by the connection.
    */
+  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   xmlInput(elem) {
-    // eslint-disable-line
     return;
   }
 
@@ -9373,8 +8611,8 @@ Strophe.Connection = class Connection {
    *  Parameters:
    *    (XMLElement) elem - The XMLdata sent by the connection.
    */
+  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   xmlOutput(elem) {
-    // eslint-disable-line
     return;
   }
 
@@ -9390,8 +8628,8 @@ Strophe.Connection = class Connection {
    *  Parameters:
    *    (String) data - The data received by the connection.
    */
+  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   rawInput(data) {
-    // eslint-disable-line
     return;
   }
 
@@ -9407,8 +8645,8 @@ Strophe.Connection = class Connection {
    *  Parameters:
    *    (String) data - The data sent by the connection.
    */
+  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   rawOutput(data) {
-    // eslint-disable-line
     return;
   }
 
@@ -9423,8 +8661,8 @@ Strophe.Connection = class Connection {
    *  Parameters:
    *    (Number) rid - The next valid rid
    */
+  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   nextValidRid(rid) {
-    // eslint-disable-line
     return;
   }
 
@@ -9444,11 +8682,11 @@ Strophe.Connection = class Connection {
     if (elem === null) {
       return;
     }
-    if (typeof elem.sort === "function") {
+    if (typeof elem.sort === 'function') {
       for (let i = 0; i < elem.length; i++) {
         this._queueData(elem[i]);
       }
-    } else if (typeof elem.tree === "function") {
+    } else if (typeof elem.tree === 'function') {
       this._queueData(elem.tree());
     } else {
       this._queueData(elem);
@@ -9489,16 +8727,16 @@ Strophe.Connection = class Connection {
    */
   sendPresence(elem, callback, errback, timeout) {
     let timeoutHandler = null;
-    if (typeof elem.tree === "function") {
+    if (typeof elem.tree === 'function') {
       elem = elem.tree();
     }
     let id = elem.getAttribute('id');
     if (!id) {
       // inject id if not found
-      id = this.getUniqueId("sendPresence");
-      elem.setAttribute("id", id);
+      id = this.getUniqueId('sendPresence');
+      elem.setAttribute('id', id);
     }
-    if (typeof callback === "function" || typeof errback === "function") {
+    if (typeof callback === 'function' || typeof errback === 'function') {
       const handler = this.addHandler(stanza => {
         // remove timeout handler if there is one
         if (timeoutHandler) {
@@ -9543,19 +8781,19 @@ Strophe.Connection = class Connection {
    *
    *  Returns:
    *    The id used to send the IQ.
-  */
+   */
   sendIQ(elem, callback, errback, timeout) {
     let timeoutHandler = null;
-    if (typeof elem.tree === "function") {
+    if (typeof elem.tree === 'function') {
       elem = elem.tree();
     }
     let id = elem.getAttribute('id');
     if (!id) {
       // inject id if not found
-      id = this.getUniqueId("sendIQ");
-      elem.setAttribute("id", id);
+      id = this.getUniqueId('sendIQ');
+      elem.setAttribute('id', id);
     }
-    if (typeof callback === "function" || typeof errback === "function") {
+    if (typeof callback === 'function' || typeof errback === 'function') {
       const handler = this.addHandler(stanza => {
         // remove timeout handler if there is one
         if (timeoutHandler) {
@@ -9572,7 +8810,7 @@ Strophe.Connection = class Connection {
           }
         } else {
           const error = new Error(`Got bad IQ type of ${iqtype}`);
-          error.name = "StropheError";
+          error.name = 'StropheError';
           throw error;
         }
       }, null, 'iq', ['error', 'result'], id);
@@ -9600,8 +8838,8 @@ Strophe.Connection = class Connection {
    */
   _queueData(element) {
     if (element === null || !element.tagName || !element.childNodes) {
-      const error = new Error("Cannot queue non-DOMElement.");
-      error.name = "StropheError";
+      const error = new Error('Cannot queue non-DOMElement.');
+      error.name = 'StropheError';
       throw error;
     }
     this._data.push(element);
@@ -9611,7 +8849,7 @@ Strophe.Connection = class Connection {
    *  Send an xmpp:restart stanza.
    */
   _sendRestart() {
-    this._data.push("restart");
+    this._data.push('restart');
     this._proto._sendRestart();
     this._idleTimeout = setTimeout(() => this._onIdle(), 100);
   }
@@ -9639,7 +8877,7 @@ Strophe.Connection = class Connection {
    *    A reference to the handler that can be used to remove it.
    */
   addTimedHandler(period, handler) {
-    const thand = new Strophe.TimedHandler(period, handler);
+    const thand = new _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.TimedHandler(period, handler);
     this.addTimeds.push(thand);
     return thand;
   }
@@ -9725,7 +8963,7 @@ Strophe.Connection = class Connection {
    *    A reference to the handler that can be used to remove it.
    */
   addHandler(handler, ns, name, type, id, from, options) {
-    const hand = new Strophe.Handler(handler, ns, name, type, id, from, options);
+    const hand = new _handler__WEBPACK_IMPORTED_MODULE_0__["default"](handler, ns, name, type, id, from, options);
     this.addHandlers.push(hand);
     return hand;
   }
@@ -9738,7 +8976,7 @@ Strophe.Connection = class Connection {
    *  but is the reference returned from addHandler().
    *
    *  Parameters:
-   *    (Strophe.Handler) handRef - The handler reference.
+   *    (Handler) handRef - The handler reference.
    */
   deleteHandler(handRef) {
     // this must be done in the Idle loop so that we don't change
@@ -9763,7 +9001,7 @@ Strophe.Connection = class Connection {
    */
   registerSASLMechanisms(mechanisms) {
     this.mechanisms = {};
-    mechanisms = mechanisms || [Strophe.SASLAnonymous, Strophe.SASLExternal, Strophe.SASLOAuthBearer, Strophe.SASLXOAuth2, Strophe.SASLPlain, Strophe.SASLSHA1, Strophe.SASLSHA256, Strophe.SASLSHA384, Strophe.SASLSHA512];
+    mechanisms = mechanisms || [_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLAnonymous, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLExternal, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLOAuthBearer, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLXOAuth2, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLPlain, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLSHA1, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLSHA256, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLSHA384, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.SASLSHA512];
     mechanisms.forEach(m => this.registerSASLMechanism(m));
   }
 
@@ -9797,18 +9035,18 @@ Strophe.Connection = class Connection {
    *    (String) reason - The reason the disconnect is occuring.
    */
   disconnect(reason) {
-    this._changeConnectStatus(Strophe.Status.DISCONNECTING, reason);
+    this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.DISCONNECTING, reason);
     if (reason) {
-      Strophe.warn("Disconnect was called because: " + reason);
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.warn('Disconnect was called because: ' + reason);
     } else {
-      Strophe.info("Disconnect was called");
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.info('Disconnect was called');
     }
     if (this.connected) {
       let pres = false;
       this.disconnecting = true;
       if (this.authenticated) {
-        pres = $pres({
-          'xmlns': Strophe.NS.CLIENT,
+        pres = (0,_builder__WEBPACK_IMPORTED_MODULE_2__.$pres)({
+          'xmlns': _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.CLIENT,
           'type': 'unavailable'
         });
       }
@@ -9816,7 +9054,7 @@ Strophe.Connection = class Connection {
       this._disconnectTimeout = this._addSysTimedHandler(this.disconnection_timeout, this._onDisconnectTimeout.bind(this));
       this._proto._disconnect(pres);
     } else {
-      Strophe.warn("Disconnect was called before Strophe connected to the server");
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.warn('Disconnect was called before Strophe connected to the server');
       this._proto._abortAllRequests();
       this._doDisconnect();
     }
@@ -9834,14 +9072,14 @@ Strophe.Connection = class Connection {
    */
   _changeConnectStatus(status, condition, elem) {
     // notify all plugins listening for status changes
-    for (const k in Strophe._connectionPlugins) {
-      if (Object.prototype.hasOwnProperty.call(Strophe._connectionPlugins, k)) {
+    for (const k in _core__WEBPACK_IMPORTED_MODULE_4__.Strophe._connectionPlugins) {
+      if (Object.prototype.hasOwnProperty.call(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe._connectionPlugins, k)) {
         const plugin = this[k];
         if (plugin.statusChanged) {
           try {
             plugin.statusChanged(status, condition);
           } catch (err) {
-            Strophe.error(`${k} plugin caused an exception changing status: ${err}`);
+            _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.error(`${k} plugin caused an exception changing status: ${err}`);
           }
         }
       }
@@ -9851,8 +9089,8 @@ Strophe.Connection = class Connection {
       try {
         this.connect_callback(status, condition, elem);
       } catch (e) {
-        Strophe._handleError(e);
-        Strophe.error(`User connection callback caused an exception: ${e}`);
+        _core__WEBPACK_IMPORTED_MODULE_4__.Strophe._handleError(e);
+        _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.error(`User connection callback caused an exception: ${e}`);
       }
     }
   }
@@ -9864,7 +9102,7 @@ Strophe.Connection = class Connection {
    *  connection and alerts the user's connection callback.
    */
   _doDisconnect(condition) {
-    if (typeof this._idleTimeout === "number") {
+    if (typeof this._idleTimeout === 'number') {
       clearTimeout(this._idleTimeout);
     }
 
@@ -9873,7 +9111,7 @@ Strophe.Connection = class Connection {
       this.deleteTimedHandler(this._disconnectTimeout);
       this._disconnectTimeout = null;
     }
-    Strophe.debug("_doDisconnect was called");
+    _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.debug('_doDisconnect was called');
     this._proto._doDisconnect();
     this.authenticated = false;
     this.disconnecting = false;
@@ -9888,7 +9126,7 @@ Strophe.Connection = class Connection {
     this.addHandlers = [];
 
     // tell the parent we disconnected
-    this._changeConnectStatus(Strophe.Status.DISCONNECTED, condition);
+    this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.DISCONNECTED, condition);
     this.connected = false;
   }
 
@@ -9909,18 +9147,18 @@ Strophe.Connection = class Connection {
     if (elem === null) {
       return;
     }
-    if (this.xmlInput !== Strophe.Connection.prototype.xmlInput) {
+    if (this.xmlInput !== _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Connection.prototype.xmlInput) {
       if (elem.nodeName === this._proto.strip && elem.childNodes.length) {
         this.xmlInput(elem.childNodes[0]);
       } else {
         this.xmlInput(elem);
       }
     }
-    if (this.rawInput !== Strophe.Connection.prototype.rawInput) {
+    if (this.rawInput !== _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Connection.prototype.rawInput) {
       if (raw) {
         this.rawInput(raw);
       } else {
-        this.rawInput(Strophe.serialize(elem));
+        this.rawInput(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.serialize(elem));
       }
     }
 
@@ -9943,29 +9181,29 @@ Strophe.Connection = class Connection {
       this._doDisconnect();
       return;
     }
-    const type = elem.getAttribute("type");
-    if (type !== null && type === "terminate") {
+    const type = elem.getAttribute('type');
+    if (type !== null && type === 'terminate') {
       // Don't process stanzas that come in after disconnect
       if (this.disconnecting) {
         return;
       }
       // an error occurred
-      let cond = elem.getAttribute("condition");
-      const conflict = elem.getElementsByTagName("conflict");
+      let cond = elem.getAttribute('condition');
+      const conflict = elem.getElementsByTagName('conflict');
       if (cond !== null) {
-        if (cond === "remote-stream-error" && conflict.length > 0) {
-          cond = "conflict";
+        if (cond === 'remote-stream-error' && conflict.length > 0) {
+          cond = 'conflict';
         }
-        this._changeConnectStatus(Strophe.Status.CONNFAIL, cond);
+        this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNFAIL, cond);
       } else {
-        this._changeConnectStatus(Strophe.Status.CONNFAIL, Strophe.ErrorCondition.UNKOWN_REASON);
+        this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNFAIL, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.UNKOWN_REASON);
       }
       this._doDisconnect(cond);
       return;
     }
 
     // send each incoming stanza through the handler chain
-    Strophe.forEachChild(elem, null, child => {
+    _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.forEachChild(elem, null, child => {
       const matches = [];
       this.handlers = this.handlers.reduce((handlers, handler) => {
         try {
@@ -9979,7 +9217,7 @@ Strophe.Connection = class Connection {
           }
         } catch (e) {
           // if the handler throws an exception, we consider it as false
-          Strophe.warn('Removing Strophe handlers due to uncaught exception: ' + e.message);
+          _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.warn('Removing Strophe handlers due to uncaught exception: ' + e.message);
         }
         return handlers;
       }, []);
@@ -10009,54 +9247,54 @@ Strophe.Connection = class Connection {
    *      want to do something special).
    */
   _connect_cb(req, _callback, raw) {
-    Strophe.debug("_connect_cb was called");
+    _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.debug('_connect_cb was called');
     this.connected = true;
     let bodyWrap;
     try {
       bodyWrap = this._proto._reqToData(req);
     } catch (e) {
-      if (e.name !== Strophe.ErrorCondition.BAD_FORMAT) {
+      if (e.name !== _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.BAD_FORMAT) {
         throw e;
       }
-      this._changeConnectStatus(Strophe.Status.CONNFAIL, Strophe.ErrorCondition.BAD_FORMAT);
-      this._doDisconnect(Strophe.ErrorCondition.BAD_FORMAT);
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNFAIL, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.BAD_FORMAT);
+      this._doDisconnect(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.BAD_FORMAT);
     }
     if (!bodyWrap) {
       return;
     }
-    if (this.xmlInput !== Strophe.Connection.prototype.xmlInput) {
+    if (this.xmlInput !== _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Connection.prototype.xmlInput) {
       if (bodyWrap.nodeName === this._proto.strip && bodyWrap.childNodes.length) {
         this.xmlInput(bodyWrap.childNodes[0]);
       } else {
         this.xmlInput(bodyWrap);
       }
     }
-    if (this.rawInput !== Strophe.Connection.prototype.rawInput) {
+    if (this.rawInput !== _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.Connection.prototype.rawInput) {
       if (raw) {
         this.rawInput(raw);
       } else {
-        this.rawInput(Strophe.serialize(bodyWrap));
+        this.rawInput(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.serialize(bodyWrap));
       }
     }
     const conncheck = this._proto._connect_cb(bodyWrap);
-    if (conncheck === Strophe.Status.CONNFAIL) {
+    if (conncheck === _constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNFAIL) {
       return;
     }
 
     // Check for the stream:features tag
     let hasFeatures;
     if (bodyWrap.getElementsByTagNameNS) {
-      hasFeatures = bodyWrap.getElementsByTagNameNS(Strophe.NS.STREAM, "features").length > 0;
+      hasFeatures = bodyWrap.getElementsByTagNameNS(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.STREAM, 'features').length > 0;
     } else {
-      hasFeatures = bodyWrap.getElementsByTagName("stream:features").length > 0 || bodyWrap.getElementsByTagName("features").length > 0;
+      hasFeatures = bodyWrap.getElementsByTagName('stream:features').length > 0 || bodyWrap.getElementsByTagName('features').length > 0;
     }
     if (!hasFeatures) {
       this._proto._no_auth_received(_callback);
       return;
     }
-    const matched = Array.from(bodyWrap.getElementsByTagName("mechanism")).map(m => this.mechanisms[m.textContent]).filter(m => m);
+    const matched = Array.from(bodyWrap.getElementsByTagName('mechanism')).map(m => this.mechanisms[m.textContent]).filter(m => m);
     if (matched.length === 0) {
-      if (bodyWrap.getElementsByTagName("auth").length === 0) {
+      if (bodyWrap.getElementsByTagName('auth').length === 0) {
         // There are no matching SASL mechanisms and also no legacy
         // auth available.
         this._proto._no_auth_received(_callback);
@@ -10077,8 +9315,8 @@ Strophe.Connection = class Connection {
    *    (Array) mechanisms - Array of SASL mechanisms.
    *
    */
+  // eslint-disable-next-line  class-methods-use-this
   sortMechanismsByPriority(mechanisms) {
-    // eslint-disable-line class-methods-use-this
     // Sorting mechanisms according to priority.
     for (let i = 0; i < mechanisms.length - 1; ++i) {
       let higher = i;
@@ -10135,18 +9373,18 @@ Strophe.Connection = class Connection {
       if (!mechanisms[i].test(this)) {
         continue;
       }
-      this._sasl_success_handler = this._addSysHandler(this._sasl_success_cb.bind(this), null, "success", null, null);
-      this._sasl_failure_handler = this._addSysHandler(this._sasl_failure_cb.bind(this), null, "failure", null, null);
-      this._sasl_challenge_handler = this._addSysHandler(this._sasl_challenge_cb.bind(this), null, "challenge", null, null);
+      this._sasl_success_handler = this._addSysHandler(this._sasl_success_cb.bind(this), null, 'success', null, null);
+      this._sasl_failure_handler = this._addSysHandler(this._sasl_failure_cb.bind(this), null, 'failure', null, null);
+      this._sasl_challenge_handler = this._addSysHandler(this._sasl_challenge_cb.bind(this), null, 'challenge', null, null);
       this._sasl_mechanism = mechanisms[i];
       this._sasl_mechanism.onStart(this);
-      const request_auth_exchange = $build("auth", {
-        'xmlns': Strophe.NS.SASL,
+      const request_auth_exchange = (0,_builder__WEBPACK_IMPORTED_MODULE_2__.$build)('auth', {
+        'xmlns': _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.SASL,
         'mechanism': this._sasl_mechanism.mechname
       });
       if (this._sasl_mechanism.isClientFirst) {
         const response = this._sasl_mechanism.clientChallenge(this);
-        request_auth_exchange.t(btoa(response));
+        request_auth_exchange.t((0,abab__WEBPACK_IMPORTED_MODULE_6__.btoa)(response));
       }
       this.send(request_auth_exchange.tree());
       mechanism_found = true;
@@ -10160,13 +9398,13 @@ Strophe.Connection = class Connection {
    *
    */
   async _sasl_challenge_cb(elem) {
-    const challenge = atob(Strophe.getText(elem));
+    const challenge = (0,abab__WEBPACK_IMPORTED_MODULE_6__.atob)((0,_utils__WEBPACK_IMPORTED_MODULE_5__.getText)(elem));
     const response = await this._sasl_mechanism.onChallenge(this, challenge);
-    const stanza = $build('response', {
-      'xmlns': Strophe.NS.SASL
+    const stanza = (0,_builder__WEBPACK_IMPORTED_MODULE_2__.$build)('response', {
+      'xmlns': _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.SASL
     });
-    if (response !== "") {
-      stanza.t(btoa(response));
+    if (response !== '') {
+      stanza.t((0,abab__WEBPACK_IMPORTED_MODULE_6__.btoa)(response));
     }
     this.send(stanza.tree());
     return true;
@@ -10177,22 +9415,22 @@ Strophe.Connection = class Connection {
    *  Attempt legacy (i.e. non-SASL) authentication.
    */
   _attemptLegacyAuth() {
-    if (Strophe.getNodeFromJid(this.jid) === null) {
+    if (_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getNodeFromJid(this.jid) === null) {
       // we don't have a node, which is required for non-anonymous
       // client connections
-      this._changeConnectStatus(Strophe.Status.CONNFAIL, Strophe.ErrorCondition.MISSING_JID_NODE);
-      this.disconnect(Strophe.ErrorCondition.MISSING_JID_NODE);
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNFAIL, _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.MISSING_JID_NODE);
+      this.disconnect(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.MISSING_JID_NODE);
     } else {
       // Fall back to legacy authentication
-      this._changeConnectStatus(Strophe.Status.AUTHENTICATING, null);
-      this._addSysHandler(this._onLegacyAuthIQResult.bind(this), null, null, null, "_auth_1");
-      this.send($iq({
-        'type': "get",
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHENTICATING, null);
+      this._addSysHandler(this._onLegacyAuthIQResult.bind(this), null, null, null, '_auth_1');
+      this.send((0,_builder__WEBPACK_IMPORTED_MODULE_2__.$iq)({
+        'type': 'get',
         'to': this.domain,
-        'id': "_auth_1"
-      }).c("query", {
-        xmlns: Strophe.NS.AUTH
-      }).c("username", {}).t(Strophe.getNodeFromJid(this.jid)).tree());
+        'id': '_auth_1'
+      }).c('query', {
+        xmlns: _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.AUTH
+      }).c('username', {}).t(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getNodeFromJid(this.jid)).tree());
     }
   }
 
@@ -10210,23 +9448,23 @@ Strophe.Connection = class Connection {
    *  Returns:
    *    false to remove the handler.
    */
+  // eslint-disable-next-line no-unused-vars
   _onLegacyAuthIQResult(elem) {
-    // eslint-disable-line no-unused-vars
     // build plaintext auth iq
-    const iq = $iq({
-      type: "set",
-      id: "_auth_2"
+    const iq = (0,_builder__WEBPACK_IMPORTED_MODULE_2__.$iq)({
+      type: 'set',
+      id: '_auth_2'
     }).c('query', {
-      xmlns: Strophe.NS.AUTH
-    }).c('username', {}).t(Strophe.getNodeFromJid(this.jid)).up().c('password').t(this.pass);
-    if (!Strophe.getResourceFromJid(this.jid)) {
+      xmlns: _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.AUTH
+    }).c('username', {}).t(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getNodeFromJid(this.jid)).up().c('password').t(this.pass);
+    if (!_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getResourceFromJid(this.jid)) {
       // since the user has not supplied a resource, we pick
       // a default one here.  unlike other auth methods, the server
       // cannot do this for us.
-      this.jid = Strophe.getBareJidFromJid(this.jid) + '/strophe';
+      this.jid = _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getBareJidFromJid(this.jid) + '/strophe';
     }
-    iq.up().c('resource', {}).t(Strophe.getResourceFromJid(this.jid));
-    this._addSysHandler(this._auth2_cb.bind(this), null, null, null, "_auth_2");
+    iq.up().c('resource', {}).t(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getResourceFromJid(this.jid));
+    this._addSysHandler(this._auth2_cb.bind(this), null, null, null, '_auth_2');
     this.send(iq.tree());
     return false;
   }
@@ -10241,15 +9479,15 @@ Strophe.Connection = class Connection {
    *    false to remove the handler.
    */
   _sasl_success_cb(elem) {
-    if (this._sasl_data["server-signature"]) {
+    if (this._sasl_data['server-signature']) {
       let serverSignature;
-      const success = atob(Strophe.getText(elem));
+      const success = (0,abab__WEBPACK_IMPORTED_MODULE_6__.atob)((0,_utils__WEBPACK_IMPORTED_MODULE_5__.getText)(elem));
       const attribMatch = /([a-z]+)=([^,]+)(,|$)/;
       const matches = success.match(attribMatch);
-      if (matches[1] === "v") {
+      if (matches[1] === 'v') {
         serverSignature = matches[2];
       }
-      if (serverSignature !== this._sasl_data["server-signature"]) {
+      if (serverSignature !== this._sasl_data['server-signature']) {
         // remove old handlers
         this.deleteHandler(this._sasl_failure_handler);
         this._sasl_failure_handler = null;
@@ -10261,7 +9499,7 @@ Strophe.Connection = class Connection {
         return this._sasl_failure_cb(null);
       }
     }
-    Strophe.info("SASL authentication succeeded.");
+    _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.info('SASL authentication succeeded.');
     if (this._sasl_data.keys) {
       this.scram_keys = this._sasl_data.keys;
     }
@@ -10283,8 +9521,8 @@ Strophe.Connection = class Connection {
       this._onStreamFeaturesAfterSASL(elem);
       return false;
     };
-    streamfeature_handlers.push(this._addSysHandler(elem => wrapper(streamfeature_handlers, elem), null, "stream:features", null, null));
-    streamfeature_handlers.push(this._addSysHandler(elem => wrapper(streamfeature_handlers, elem), Strophe.NS.STREAM, "features", null, null));
+    streamfeature_handlers.push(this._addSysHandler(elem => wrapper(streamfeature_handlers, elem), null, 'stream:features', null, null));
+    streamfeature_handlers.push(this._addSysHandler(elem => wrapper(streamfeature_handlers, elem), _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.STREAM, 'features', null, null));
 
     // we must send an xmpp:restart now
     this._sendRestart();
@@ -10311,12 +9549,12 @@ Strophe.Connection = class Connection {
       }
     }
     if (!this.do_bind) {
-      this._changeConnectStatus(Strophe.Status.AUTHFAIL, null);
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHFAIL, null);
       return false;
     } else if (!this.options.explicitResourceBinding) {
       this.bind();
     } else {
-      this._changeConnectStatus(Strophe.Status.BINDREQUIRED, null);
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.BINDREQUIRED, null);
     }
     return false;
   }
@@ -10336,24 +9574,24 @@ Strophe.Connection = class Connection {
    */
   bind() {
     if (!this.do_bind) {
-      Strophe.log(Strophe.LogLevel.INFO, `Strophe.Connection.prototype.bind called but "do_bind" is false`);
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.log(_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.LogLevel.INFO, `Strophe.Connection.prototype.bind called but "do_bind" is false`);
       return;
     }
-    this._addSysHandler(this._onResourceBindResultIQ.bind(this), null, null, null, "_bind_auth_2");
-    const resource = Strophe.getResourceFromJid(this.jid);
+    this._addSysHandler(this._onResourceBindResultIQ.bind(this), null, null, null, '_bind_auth_2');
+    const resource = _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.getResourceFromJid(this.jid);
     if (resource) {
-      this.send($iq({
-        type: "set",
-        id: "_bind_auth_2"
+      this.send((0,_builder__WEBPACK_IMPORTED_MODULE_2__.$iq)({
+        type: 'set',
+        id: '_bind_auth_2'
       }).c('bind', {
-        xmlns: Strophe.NS.BIND
+        xmlns: _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.BIND
       }).c('resource', {}).t(resource).tree());
     } else {
-      this.send($iq({
-        type: "set",
-        id: "_bind_auth_2"
+      this.send((0,_builder__WEBPACK_IMPORTED_MODULE_2__.$iq)({
+        type: 'set',
+        id: '_bind_auth_2'
       }).c('bind', {
-        xmlns: Strophe.NS.BIND
+        xmlns: _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.BIND
       }).tree());
     }
   }
@@ -10368,32 +9606,32 @@ Strophe.Connection = class Connection {
    *    false to remove the handler.
    */
   _onResourceBindResultIQ(elem) {
-    if (elem.getAttribute("type") === "error") {
-      Strophe.warn("Resource binding failed.");
-      const conflict = elem.getElementsByTagName("conflict");
+    if (elem.getAttribute('type') === 'error') {
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.warn('Resource binding failed.');
+      const conflict = elem.getElementsByTagName('conflict');
       let condition;
       if (conflict.length > 0) {
-        condition = Strophe.ErrorCondition.CONFLICT;
+        condition = _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.ErrorCondition.CONFLICT;
       }
-      this._changeConnectStatus(Strophe.Status.AUTHFAIL, condition, elem);
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHFAIL, condition, elem);
       return false;
     }
     // TODO - need to grab errors
-    const bind = elem.getElementsByTagName("bind");
+    const bind = elem.getElementsByTagName('bind');
     if (bind.length > 0) {
-      const jidNode = bind[0].getElementsByTagName("jid");
+      const jidNode = bind[0].getElementsByTagName('jid');
       if (jidNode.length > 0) {
         this.authenticated = true;
-        this.jid = Strophe.getText(jidNode[0]);
+        this.jid = (0,_utils__WEBPACK_IMPORTED_MODULE_5__.getText)(jidNode[0]);
         if (this.do_session) {
           this._establishSession();
         } else {
-          this._changeConnectStatus(Strophe.Status.CONNECTED, null);
+          this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNECTED, null);
         }
       }
     } else {
-      Strophe.warn("Resource binding failed.");
-      this._changeConnectStatus(Strophe.Status.AUTHFAIL, null, elem);
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.warn('Resource binding failed.');
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHFAIL, null, elem);
       return false;
     }
   }
@@ -10408,14 +9646,14 @@ Strophe.Connection = class Connection {
    */
   _establishSession() {
     if (!this.do_session) {
-      throw new Error(`Strophe.Connection.prototype._establishSession ` + `called but apparently ${Strophe.NS.SESSION} wasn't advertised by the server`);
+      throw new Error(`Strophe.Connection.prototype._establishSession ` + `called but apparently ${_core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.SESSION} wasn't advertised by the server`);
     }
-    this._addSysHandler(this._onSessionResultIQ.bind(this), null, null, null, "_session_auth_2");
-    this.send($iq({
-      type: "set",
-      id: "_session_auth_2"
+    this._addSysHandler(this._onSessionResultIQ.bind(this), null, null, null, '_session_auth_2');
+    this.send((0,_builder__WEBPACK_IMPORTED_MODULE_2__.$iq)({
+      type: 'set',
+      id: '_session_auth_2'
     }).c('session', {
-      xmlns: Strophe.NS.SESSION
+      xmlns: _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.NS.SESSION
     }).tree());
   }
 
@@ -10438,13 +9676,13 @@ Strophe.Connection = class Connection {
    *    false to remove the handler.
    */
   _onSessionResultIQ(elem) {
-    if (elem.getAttribute("type") === "result") {
+    if (elem.getAttribute('type') === 'result') {
       this.authenticated = true;
-      this._changeConnectStatus(Strophe.Status.CONNECTED, null);
-    } else if (elem.getAttribute("type") === "error") {
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNECTED, null);
+    } else if (elem.getAttribute('type') === 'error') {
       this.authenticated = false;
-      Strophe.warn("Session creation failed.");
-      this._changeConnectStatus(Strophe.Status.AUTHFAIL, null, elem);
+      _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.warn('Session creation failed.');
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHFAIL, null, elem);
       return false;
     }
     return false;
@@ -10470,7 +9708,7 @@ Strophe.Connection = class Connection {
       this._sasl_challenge_handler = null;
     }
     if (this._sasl_mechanism) this._sasl_mechanism.onFailure();
-    this._changeConnectStatus(Strophe.Status.AUTHFAIL, null, elem);
+    this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHFAIL, null, elem);
     return false;
   }
 
@@ -10487,11 +9725,11 @@ Strophe.Connection = class Connection {
    *    false to remove the handler.
    */
   _auth2_cb(elem) {
-    if (elem.getAttribute("type") === "result") {
+    if (elem.getAttribute('type') === 'result') {
       this.authenticated = true;
-      this._changeConnectStatus(Strophe.Status.CONNECTED, null);
-    } else if (elem.getAttribute("type") === "error") {
-      this._changeConnectStatus(Strophe.Status.AUTHFAIL, null, elem);
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNECTED, null);
+    } else if (elem.getAttribute('type') === 'error') {
+      this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.AUTHFAIL, null, elem);
       this.disconnect('authentication failed');
     }
     return false;
@@ -10509,7 +9747,7 @@ Strophe.Connection = class Connection {
    *    (Function) handler - The callback function.
    */
   _addSysTimedHandler(period, handler) {
-    const thand = new Strophe.TimedHandler(period, handler);
+    const thand = new _timed_handler__WEBPACK_IMPORTED_MODULE_1__["default"](period, handler);
     thand.user = false;
     this.addTimeds.push(thand);
     return thand;
@@ -10518,7 +9756,7 @@ Strophe.Connection = class Connection {
   /** PrivateFunction: _addSysHandler
    *  _Private_ function to add a system level stanza handler.
    *
-   *  This function is used to add a Strophe.Handler for the
+   *  This function is used to add a Handler for the
    *  library code.  System stanza handlers are allowed to run before
    *  authentication is complete.
    *
@@ -10530,7 +9768,7 @@ Strophe.Connection = class Connection {
    *    (String) id - The stanza id attribute to match.
    */
   _addSysHandler(handler, ns, name, type, id) {
-    const hand = new Strophe.Handler(handler, ns, name, type, id);
+    const hand = new _handler__WEBPACK_IMPORTED_MODULE_0__["default"](handler, ns, name, type, id);
     hand.user = false;
     this.addHandlers.push(hand);
     return hand;
@@ -10546,8 +9784,8 @@ Strophe.Connection = class Connection {
    *    false to remove the handler.
    */
   _onDisconnectTimeout() {
-    Strophe.debug("_onDisconnectTimeout was called");
-    this._changeConnectStatus(Strophe.Status.CONNTIMEOUT, null);
+    _core__WEBPACK_IMPORTED_MODULE_4__.Strophe.debug('_onDisconnectTimeout was called');
+    this._changeConnectStatus(_constants__WEBPACK_IMPORTED_MODULE_3__.Status.CONNTIMEOUT, null);
     this._proto._onDisconnectTimeout();
     // actually disconnect
     this._doDisconnect();
@@ -10602,8 +9840,396 @@ Strophe.Connection = class Connection {
       this._idleTimeout = setTimeout(() => this._onIdle(), 100);
     }
   }
+}
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/constants.js":
+/*!**************************************************!*\
+  !*** ./node_modules/strophe.js/src/constants.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ElementType: () => (/* binding */ ElementType),
+/* harmony export */   ErrorCondition: () => (/* binding */ ErrorCondition),
+/* harmony export */   LogLevel: () => (/* binding */ LogLevel),
+/* harmony export */   NS: () => (/* binding */ NS),
+/* harmony export */   SECONDARY_TIMEOUT: () => (/* binding */ SECONDARY_TIMEOUT),
+/* harmony export */   Status: () => (/* binding */ Status),
+/* harmony export */   TIMEOUT: () => (/* binding */ TIMEOUT),
+/* harmony export */   XHTML: () => (/* binding */ XHTML)
+/* harmony export */ });
+/** Constants: XMPP Namespace Constants
+ *  Common namespace constants from the XMPP RFCs and XEPs.
+ *
+ *  Strophe.NS.HTTPBIND - HTTP BIND namespace from XEP 124.
+ *  Strophe.NS.BOSH - BOSH namespace from XEP 206.
+ *  Strophe.NS.CLIENT - Main XMPP client namespace.
+ *  Strophe.NS.AUTH - Legacy authentication namespace.
+ *  Strophe.NS.ROSTER - Roster operations namespace.
+ *  Strophe.NS.PROFILE - Profile namespace.
+ *  Strophe.NS.DISCO_INFO - Service discovery info namespace from XEP 30.
+ *  Strophe.NS.DISCO_ITEMS - Service discovery items namespace from XEP 30.
+ *  Strophe.NS.MUC - Multi-User Chat namespace from XEP 45.
+ *  Strophe.NS.SASL - XMPP SASL namespace from RFC 3920.
+ *  Strophe.NS.STREAM - XMPP Streams namespace from RFC 3920.
+ *  Strophe.NS.BIND - XMPP Binding namespace from RFC 3920 and RFC 6120.
+ *  Strophe.NS.SESSION - XMPP Session namespace from RFC 3920.
+ *  Strophe.NS.XHTML_IM - XHTML-IM namespace from XEP 71.
+ *  Strophe.NS.XHTML - XHTML body namespace from XEP 71.
+ */
+const NS = {
+  HTTPBIND: 'http://jabber.org/protocol/httpbind',
+  BOSH: 'urn:xmpp:xbosh',
+  CLIENT: 'jabber:client',
+  AUTH: 'jabber:iq:auth',
+  ROSTER: 'jabber:iq:roster',
+  PROFILE: 'jabber:iq:profile',
+  DISCO_INFO: 'http://jabber.org/protocol/disco#info',
+  DISCO_ITEMS: 'http://jabber.org/protocol/disco#items',
+  MUC: 'http://jabber.org/protocol/muc',
+  SASL: 'urn:ietf:params:xml:ns:xmpp-sasl',
+  STREAM: 'http://etherx.jabber.org/streams',
+  FRAMING: 'urn:ietf:params:xml:ns:xmpp-framing',
+  BIND: 'urn:ietf:params:xml:ns:xmpp-bind',
+  SESSION: 'urn:ietf:params:xml:ns:xmpp-session',
+  VERSION: 'jabber:iq:version',
+  STANZAS: 'urn:ietf:params:xml:ns:xmpp-stanzas',
+  XHTML_IM: 'http://jabber.org/protocol/xhtml-im',
+  XHTML: 'http://www.w3.org/1999/xhtml'
 };
-Strophe.SASLMechanism = _sasl_js__WEBPACK_IMPORTED_MODULE_3__["default"];
+
+/** Constants: XHTML_IM Namespace
+ *  contains allowed tags, tag attributes, and css properties.
+ *  Used in the createHtml function to filter incoming html into the allowed XHTML-IM subset.
+ *  See http://xmpp.org/extensions/xep-0071.html#profile-summary for the list of recommended
+ *  allowed tags and their attributes.
+ */
+const XHTML = {
+  tags: ['a', 'blockquote', 'br', 'cite', 'em', 'img', 'li', 'ol', 'p', 'span', 'strong', 'ul', 'body'],
+  attributes: {
+    'a': ['href'],
+    'blockquote': ['style'],
+    'br': [],
+    'cite': ['style'],
+    'em': [],
+    'img': ['src', 'alt', 'style', 'height', 'width'],
+    'li': ['style'],
+    'ol': ['style'],
+    'p': ['style'],
+    'span': ['style'],
+    'strong': [],
+    'ul': ['style'],
+    'body': []
+  },
+  css: ['background-color', 'color', 'font-family', 'font-size', 'font-style', 'font-weight', 'margin-left', 'margin-right', 'text-align', 'text-decoration']
+};
+
+/** Constants: Connection Status Constants
+ *  Connection status constants for use by the connection handler
+ *  callback.
+ *
+ *  Strophe.Status.ERROR - An error has occurred
+ *  Strophe.Status.CONNECTING - The connection is currently being made
+ *  Strophe.Status.CONNFAIL - The connection attempt failed
+ *  Strophe.Status.AUTHENTICATING - The connection is authenticating
+ *  Strophe.Status.AUTHFAIL - The authentication attempt failed
+ *  Strophe.Status.CONNECTED - The connection has succeeded
+ *  Strophe.Status.DISCONNECTED - The connection has been terminated
+ *  Strophe.Status.DISCONNECTING - The connection is currently being terminated
+ *  Strophe.Status.ATTACHED - The connection has been attached
+ *  Strophe.Status.REDIRECT - The connection has been redirected
+ *  Strophe.Status.CONNTIMEOUT - The connection has timed out
+ */
+const Status = {
+  ERROR: 0,
+  CONNECTING: 1,
+  CONNFAIL: 2,
+  AUTHENTICATING: 3,
+  AUTHFAIL: 4,
+  CONNECTED: 5,
+  DISCONNECTED: 6,
+  DISCONNECTING: 7,
+  ATTACHED: 8,
+  REDIRECT: 9,
+  CONNTIMEOUT: 10,
+  BINDREQUIRED: 11,
+  ATTACHFAIL: 12
+};
+const ErrorCondition = {
+  BAD_FORMAT: 'bad-format',
+  CONFLICT: 'conflict',
+  MISSING_JID_NODE: 'x-strophe-bad-non-anon-jid',
+  NO_AUTH_MECH: 'no-auth-mech',
+  UNKNOWN_REASON: 'unknown'
+};
+
+/** Constants: Log Level Constants
+ *  Logging level indicators.
+ *
+ *  Strophe.LogLevel.DEBUG - Debug output
+ *  Strophe.LogLevel.INFO - Informational output
+ *  Strophe.LogLevel.WARN - Warnings
+ *  Strophe.LogLevel.ERROR - Errors
+ *  Strophe.LogLevel.FATAL - Fatal errors
+ */
+const LogLevel = {
+  DEBUG: 0,
+  INFO: 1,
+  WARN: 2,
+  ERROR: 3,
+  FATAL: 4
+};
+
+/** PrivateConstants: DOM Element Type Constants
+ *  DOM element types.
+ *
+ *  ElementType.NORMAL - Normal element.
+ *  ElementType.TEXT - Text data element.
+ *  ElementType.FRAGMENT - XHTML fragment element.
+ */
+const ElementType = {
+  NORMAL: 1,
+  TEXT: 3,
+  CDATA: 4,
+  FRAGMENT: 11
+};
+
+/** PrivateConstants: Timeout Values
+ *  Timeout values for error states.  These values are in seconds.
+ *  These should not be changed unless you know exactly what you are
+ *  doing.
+ *
+ *  TIMEOUT - Timeout multiplier. A waiting request will be considered
+ *      failed after Math.floor(TIMEOUT * wait) seconds have elapsed.
+ *      This defaults to 1.1, and with default wait, 66 seconds.
+ *  SECONDARY_TIMEOUT - Secondary timeout multiplier. In cases where
+ *      Strophe can detect early failure, it will consider the request
+ *      failed if it doesn't return after
+ *      Math.floor(SECONDARY_TIMEOUT * wait) seconds have elapsed.
+ *      This defaults to 0.1, and with default wait, 6 seconds.
+ */
+const TIMEOUT = 1.1;
+const SECONDARY_TIMEOUT = 0.1;
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/core.js":
+/*!*********************************************!*\
+  !*** ./node_modules/strophe.js/src/core.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   $build: () => (/* reexport safe */ _builder_js__WEBPACK_IMPORTED_MODULE_1__.$build),
+/* harmony export */   $iq: () => (/* reexport safe */ _builder_js__WEBPACK_IMPORTED_MODULE_1__.$iq),
+/* harmony export */   $msg: () => (/* reexport safe */ _builder_js__WEBPACK_IMPORTED_MODULE_1__.$msg),
+/* harmony export */   $pres: () => (/* reexport safe */ _builder_js__WEBPACK_IMPORTED_MODULE_1__.$pres),
+/* harmony export */   Strophe: () => (/* binding */ Strophe),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
+/* harmony import */ var _builder_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./builder.js */ "./node_modules/strophe.js/src/builder.js");
+/* harmony import */ var _connection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./connection.js */ "./node_modules/strophe.js/src/connection.js");
+/* harmony import */ var _handler_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./handler.js */ "./node_modules/strophe.js/src/handler.js");
+/* harmony import */ var _sasl_anon_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sasl-anon.js */ "./node_modules/strophe.js/src/sasl-anon.js");
+/* harmony import */ var _sasl_external_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sasl-external.js */ "./node_modules/strophe.js/src/sasl-external.js");
+/* harmony import */ var _sasl_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sasl.js */ "./node_modules/strophe.js/src/sasl.js");
+/* harmony import */ var _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sasl-oauthbearer.js */ "./node_modules/strophe.js/src/sasl-oauthbearer.js");
+/* harmony import */ var _sasl_plain_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./sasl-plain.js */ "./node_modules/strophe.js/src/sasl-plain.js");
+/* harmony import */ var _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./sasl-sha1.js */ "./node_modules/strophe.js/src/sasl-sha1.js");
+/* harmony import */ var _sasl_sha256_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./sasl-sha256.js */ "./node_modules/strophe.js/src/sasl-sha256.js");
+/* harmony import */ var _sasl_sha384_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./sasl-sha384.js */ "./node_modules/strophe.js/src/sasl-sha384.js");
+/* harmony import */ var _sasl_sha512_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./sasl-sha512.js */ "./node_modules/strophe.js/src/sasl-sha512.js");
+/* harmony import */ var _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./sasl-xoauth2.js */ "./node_modules/strophe.js/src/sasl-xoauth2.js");
+/* harmony import */ var _timed_handler_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./timed-handler.js */ "./node_modules/strophe.js/src/timed-handler.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./constants.js */ "./node_modules/strophe.js/src/constants.js");
+/*
+    This program is distributed under the terms of the MIT license.
+    Please see the LICENSE file for details.
+
+    Copyright 2006-2018, OGG, LLC
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** Class: Strophe
+ *  An object container for all Strophe library functions.
+ *
+ *  This class is just a container for all the objects and constants
+ *  used in the library.  It is not meant to be instantiated, but to
+ *  provide a namespace for library objects, constants, and functions.
+ */
+const Strophe = {
+  /** Constant: VERSION */
+  VERSION: '1.6.1',
+  Builder: _builder_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  Connection: _connection_js__WEBPACK_IMPORTED_MODULE_2__["default"],
+  ElementType: _constants_js__WEBPACK_IMPORTED_MODULE_15__.ElementType,
+  ErrorCondition: _constants_js__WEBPACK_IMPORTED_MODULE_15__.ErrorCondition,
+  Handler: _handler_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+  LogLevel: _constants_js__WEBPACK_IMPORTED_MODULE_15__.LogLevel,
+  NS: _constants_js__WEBPACK_IMPORTED_MODULE_15__.NS,
+  SASLMechanism: _sasl_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+  Status: _constants_js__WEBPACK_IMPORTED_MODULE_15__.Status,
+  TimedHandler: _timed_handler_js__WEBPACK_IMPORTED_MODULE_14__["default"],
+  ..._utils__WEBPACK_IMPORTED_MODULE_0__,
+  XHTML: {
+    ..._constants_js__WEBPACK_IMPORTED_MODULE_15__.XHTML,
+    validTag: _utils__WEBPACK_IMPORTED_MODULE_0__.validTag,
+    validCSS: _utils__WEBPACK_IMPORTED_MODULE_0__.validCSS,
+    validAttribute: _utils__WEBPACK_IMPORTED_MODULE_0__.validAttribute
+  },
+  /** Function: addNamespace
+   *  This function is used to extend the current namespaces in
+   *  Strophe.NS.  It takes a key and a value with the key being the
+   *  name of the new namespace, with its actual value.
+   *  For example:
+   *  Strophe.addNamespace('PUBSUB', "http://jabber.org/protocol/pubsub");
+   *
+   *  Parameters:
+   *    (String) name - The name under which the namespace will be
+   *      referenced under Strophe.NS
+   *    (String) value - The actual namespace.
+   */
+  addNamespace(name, value) {
+    Strophe.NS[name] = value;
+  },
+  /** PrivateFunction: _handleError
+   *  _Private_ function that properly logs an error to the console
+   */
+  _handleError(e) {
+    if (typeof e.stack !== 'undefined') {
+      Strophe.fatal(e.stack);
+    }
+    if (e.sourceURL) {
+      Strophe.fatal('error: ' + this.handler + ' ' + e.sourceURL + ':' + e.line + ' - ' + e.name + ': ' + e.message);
+    } else if (e.fileName) {
+      Strophe.fatal('error: ' + this.handler + ' ' + e.fileName + ':' + e.lineNumber + ' - ' + e.name + ': ' + e.message);
+    } else {
+      Strophe.fatal('error: ' + e.message);
+    }
+  },
+  /** Function: log
+   *  User overrideable logging function.
+   *
+   *  This function is called whenever the Strophe library calls any
+   *  of the logging functions.  The default implementation of this
+   *  function logs only fatal errors.  If client code wishes to handle the logging
+   *  messages, it should override this with
+   *  > Strophe.log = function (level, msg) {
+   *  >   (user code here)
+   *  > };
+   *
+   *  Please note that data sent and received over the wire is logged
+   *  via Strophe.Connection.rawInput() and Strophe.Connection.rawOutput().
+   *
+   *  The different levels and their meanings are
+   *
+   *    DEBUG - Messages useful for debugging purposes.
+   *    INFO - Informational messages.  This is mostly information like
+   *      'disconnect was called' or 'SASL auth succeeded'.
+   *    WARN - Warnings about potential problems.  This is mostly used
+   *      to report transient connection errors like request timeouts.
+   *    ERROR - Some error occurred.
+   *    FATAL - A non-recoverable fatal error occurred.
+   *
+   *  Parameters:
+   *    (Integer) level - The log level of the log message.  This will
+   *      be one of the values in Strophe.LogLevel.
+   *    (String) msg - The log message.
+   */
+  log(level, msg) {
+    if (level === this.LogLevel.FATAL) {
+      console?.error(msg);
+    }
+  },
+  /** Function: debug
+   *  Log a message at the Strophe.LogLevel.DEBUG level.
+   *
+   *  Parameters:
+   *    (String) msg - The log message.
+   */
+  debug(msg) {
+    this.log(this.LogLevel.DEBUG, msg);
+  },
+  /** Function: info
+   *  Log a message at the Strophe.LogLevel.INFO level.
+   *
+   *  Parameters:
+   *    (String) msg - The log message.
+   */
+  info(msg) {
+    this.log(this.LogLevel.INFO, msg);
+  },
+  /** Function: warn
+   *  Log a message at the Strophe.LogLevel.WARN level.
+   *
+   *  Parameters:
+   *    (String) msg - The log message.
+   */
+  warn(msg) {
+    this.log(this.LogLevel.WARN, msg);
+  },
+  /** Function: error
+   *  Log a message at the Strophe.LogLevel.ERROR level.
+   *
+   *  Parameters:
+   *    (String) msg - The log message.
+   */
+  error(msg) {
+    this.log(this.LogLevel.ERROR, msg);
+  },
+  /** Function: fatal
+   *  Log a message at the Strophe.LogLevel.FATAL level.
+   *
+   *  Parameters:
+   *    (String) msg - The log message.
+   */
+  fatal(msg) {
+    this.log(this.LogLevel.FATAL, msg);
+  },
+  /** PrivateVariable: _requestId
+   *  _Private_ variable that keeps track of the request ids for
+   *  connections.
+   */
+  _requestId: 0,
+  /** PrivateVariable: Strophe.connectionPlugins
+   *  _Private_ variable Used to store plugin names that need
+   *  initialization on Strophe.Connection construction.
+   */
+  _connectionPlugins: {},
+  /** Function: addConnectionPlugin
+   *  Extends the Strophe.Connection object with the given plugin.
+   *
+   *  Parameters:
+   *    (String) name - The name of the extension.
+   *    (Object) ptype - The plugin's prototype.
+   */
+  addConnectionPlugin(name, ptype) {
+    Strophe._connectionPlugins[name] = ptype;
+  }
+};
 
 /** Constants: SASL mechanisms
  *  Available authentication mechanisms
@@ -10618,22 +10244,192 @@ Strophe.SASLMechanism = _sasl_js__WEBPACK_IMPORTED_MODULE_3__["default"];
  *  Strophe.SASLExternal    - SASL EXTERNAL authentication
  *  Strophe.SASLXOAuth2     - SASL X-OAuth2 authentication
  */
-Strophe.SASLAnonymous = _sasl_anon_js__WEBPACK_IMPORTED_MODULE_1__["default"];
-Strophe.SASLPlain = _sasl_plain_js__WEBPACK_IMPORTED_MODULE_5__["default"];
-Strophe.SASLSHA1 = _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_6__["default"];
-Strophe.SASLSHA256 = _sasl_sha256_js__WEBPACK_IMPORTED_MODULE_7__["default"];
-Strophe.SASLSHA384 = _sasl_sha384_js__WEBPACK_IMPORTED_MODULE_8__["default"];
-Strophe.SASLSHA512 = _sasl_sha512_js__WEBPACK_IMPORTED_MODULE_9__["default"];
-Strophe.SASLOAuthBearer = _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_4__["default"];
-Strophe.SASLExternal = _sasl_external_js__WEBPACK_IMPORTED_MODULE_2__["default"];
-Strophe.SASLXOAuth2 = _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_10__["default"];
+Strophe.SASLAnonymous = _sasl_anon_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+Strophe.SASLPlain = _sasl_plain_js__WEBPACK_IMPORTED_MODULE_8__["default"];
+Strophe.SASLSHA1 = _sasl_sha1_js__WEBPACK_IMPORTED_MODULE_9__["default"];
+Strophe.SASLSHA256 = _sasl_sha256_js__WEBPACK_IMPORTED_MODULE_10__["default"];
+Strophe.SASLSHA384 = _sasl_sha384_js__WEBPACK_IMPORTED_MODULE_11__["default"];
+Strophe.SASLSHA512 = _sasl_sha512_js__WEBPACK_IMPORTED_MODULE_12__["default"];
+Strophe.SASLOAuthBearer = _sasl_oauthbearer_js__WEBPACK_IMPORTED_MODULE_7__["default"];
+Strophe.SASLExternal = _sasl_external_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+Strophe.SASLXOAuth2 = _sasl_xoauth2_js__WEBPACK_IMPORTED_MODULE_13__["default"];
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   'Strophe': Strophe,
-  '$build': $build,
-  '$iq': $iq,
-  '$msg': $msg,
-  '$pres': $pres
+  '$build': _builder_js__WEBPACK_IMPORTED_MODULE_1__.$build,
+  '$iq': _builder_js__WEBPACK_IMPORTED_MODULE_1__.$iq,
+  '$msg': _builder_js__WEBPACK_IMPORTED_MODULE_1__.$msg,
+  '$pres': _builder_js__WEBPACK_IMPORTED_MODULE_1__.$pres
 });
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/handler.js":
+/*!************************************************!*\
+  !*** ./node_modules/strophe.js/src/handler.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Handler)
+/* harmony export */ });
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./node_modules/strophe.js/src/core.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/strophe.js/src/utils.js");
+
+
+
+/** PrivateClass: Strophe.Handler
+ *  _Private_ helper class for managing stanza handlers.
+ *
+ *  A Strophe.Handler encapsulates a user provided callback function to be
+ *  executed when matching stanzas are received by the connection.
+ *  Handlers can be either one-off or persistant depending on their
+ *  return value. Returning true will cause a Handler to remain active, and
+ *  returning false will remove the Handler.
+ *
+ *  Users will not use Strophe.Handler objects directly, but instead they
+ *  will use Strophe.Connection.addHandler() and
+ *  Strophe.Connection.deleteHandler().
+ */
+
+/** PrivateConstructor: Strophe.Handler
+ *  Create and initialize a new Strophe.Handler.
+ *
+ *  Parameters:
+ *    (Function) handler - A function to be executed when the handler is run.
+ *    (String) ns - The namespace to match.
+ *    (String) name - The element name to match.
+ *    (String) type - The element type to match.
+ *    (String) id - The element id attribute to match.
+ *    (String) from - The element from attribute to match.
+ *    (Object) options - Handler options
+ *
+ *  Returns:
+ *    A new Strophe.Handler object.
+ */
+
+class Handler {
+  constructor(handler, ns, name, type, id, from, options) {
+    this.handler = handler;
+    this.ns = ns;
+    this.name = name;
+    this.type = type;
+    this.id = id;
+    this.options = options || {
+      'matchBareFromJid': false,
+      'ignoreNamespaceFragment': false
+    };
+    // BBB: Maintain backward compatibility with old `matchBare` option
+    if (this.options.matchBare) {
+      _core__WEBPACK_IMPORTED_MODULE_0__.Strophe.warn('The "matchBare" option is deprecated, use "matchBareFromJid" instead.');
+      this.options.matchBareFromJid = this.options.matchBare;
+      delete this.options.matchBare;
+    }
+    if (this.options.matchBareFromJid) {
+      this.from = from ? (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getBareJidFromJid)(from) : null;
+    } else {
+      this.from = from;
+    }
+    // whether the handler is a user handler or a system handler
+    this.user = true;
+  }
+
+  /** PrivateFunction: getNamespace
+   *  Returns the XML namespace attribute on an element.
+   *  If `ignoreNamespaceFragment` was passed in for this handler, then the
+   *  URL fragment will be stripped.
+   *
+   *  Parameters:
+   *    (XMLElement) elem - The XML element with the namespace.
+   *
+   *  Returns:
+   *    The namespace, with optionally the fragment stripped.
+   */
+  getNamespace(elem) {
+    let elNamespace = elem.getAttribute('xmlns');
+    if (elNamespace && this.options.ignoreNamespaceFragment) {
+      elNamespace = elNamespace.split('#')[0];
+    }
+    return elNamespace;
+  }
+
+  /** PrivateFunction: namespaceMatch
+   *  Tests if a stanza matches the namespace set for this Strophe.Handler.
+   *
+   *  Parameters:
+   *    (XMLElement) elem - The XML element to test.
+   *
+   *  Returns:
+   *    true if the stanza matches and false otherwise.
+   */
+  namespaceMatch(elem) {
+    let nsMatch = false;
+    if (!this.ns) {
+      return true;
+    } else {
+      (0,_utils__WEBPACK_IMPORTED_MODULE_1__.forEachChild)(elem, null, elem => {
+        if (this.getNamespace(elem) === this.ns) {
+          nsMatch = true;
+        }
+      });
+      return nsMatch || this.getNamespace(elem) === this.ns;
+    }
+  }
+
+  /** PrivateFunction: isMatch
+   *  Tests if a stanza matches the Strophe.Handler.
+   *
+   *  Parameters:
+   *    (XMLElement) elem - The XML element to test.
+   *
+   *  Returns:
+   *    true if the stanza matches and false otherwise.
+   */
+  isMatch(elem) {
+    let from = elem.getAttribute('from');
+    if (this.options.matchBareFromJid) {
+      from = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getBareJidFromJid)(from);
+    }
+    const elem_type = elem.getAttribute('type');
+    if (this.namespaceMatch(elem) && (!this.name || _core__WEBPACK_IMPORTED_MODULE_0__.Strophe.isTagEqual(elem, this.name)) && (!this.type || (Array.isArray(this.type) ? this.type.indexOf(elem_type) !== -1 : elem_type === this.type)) && (!this.id || elem.getAttribute('id') === this.id) && (!this.from || from === this.from)) {
+      return true;
+    }
+    return false;
+  }
+
+  /** PrivateFunction: run
+   *  Run the callback on a matching stanza.
+   *
+   *  Parameters:
+   *    (XMLElement) elem - The DOM element that triggered the
+   *      Strophe.Handler.
+   *
+   *  Returns:
+   *    A boolean indicating if the handler should remain active.
+   */
+  run(elem) {
+    let result = null;
+    try {
+      result = this.handler(elem);
+    } catch (e) {
+      _core__WEBPACK_IMPORTED_MODULE_0__.Strophe._handleError(e);
+      throw e;
+    }
+    return result;
+  }
+
+  /** PrivateFunction: toString
+   *  Get a String representation of the Strophe.Handler object.
+   *
+   *  Returns:
+   *    A String.
+   */
+  toString() {
+    return '{Handler: ' + this.handler + '(' + this.name + ',' + this.id + ',' + this.ns + ')}';
+  }
+}
 
 /***/ }),
 
@@ -10663,8 +10459,9 @@ class SASLAnonymous extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.authcid === null;
   }
 }
@@ -10699,8 +10496,9 @@ class SASLExternal extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   onChallenge(connection) {
-    // eslint-disable-line class-methods-use-this
     /** According to XEP-178, an authzid SHOULD NOT be presented when the
      * authcid contained or implied in the client certificate is the JID (i.e.
      * authzid) with which the user wants to log in as.
@@ -10739,22 +10537,24 @@ class SASLOAuthBearer extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 40;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.pass !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   onChallenge(connection) {
-    // eslint-disable-line class-methods-use-this
     let auth_str = 'n,';
     if (connection.authcid !== null) {
       auth_str = auth_str + 'a=' + connection.authzid;
     }
     auth_str = auth_str + ',';
-    auth_str = auth_str + "\u0001";
+    auth_str = auth_str + '\u0001';
     auth_str = auth_str + 'auth=Bearer ';
     auth_str = auth_str + connection.pass;
-    auth_str = auth_str + "\u0001";
-    auth_str = auth_str + "\u0001";
+    auth_str = auth_str + '\u0001';
+    auth_str = auth_str + '\u0001';
     return _utils__WEBPACK_IMPORTED_MODULE_1__["default"].utf16to8(auth_str);
   }
 }
@@ -10786,12 +10586,14 @@ class SASLPlain extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.authcid !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   onChallenge(connection) {
-    // eslint-disable-line class-methods-use-this
     const {
       authcid,
       authzid,
@@ -10799,14 +10601,14 @@ class SASLPlain extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
       pass
     } = connection;
     if (!domain) {
-      throw new Error("SASLPlain onChallenge: domain is not defined!");
+      throw new Error('SASLPlain onChallenge: domain is not defined!');
     }
     // Only include authzid if it differs from authcid.
     // See: https://tools.ietf.org/html/rfc6120#section-6.3.8
     let auth_str = authzid !== `${authcid}@${domain}` ? authzid : '';
-    auth_str = auth_str + "\u0000";
+    auth_str = auth_str + '\u0000';
     auth_str = auth_str + authcid;
-    auth_str = auth_str + "\u0000";
+    auth_str = auth_str + '\u0000';
     auth_str = auth_str + pass;
     return _utils__WEBPACK_IMPORTED_MODULE_1__["default"].utf16to8(auth_str);
   }
@@ -10839,16 +10641,19 @@ class SASLSHA1 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 60;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.authcid !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   async onChallenge(connection, challenge) {
-    // eslint-disable-line class-methods-use-this, require-await
-    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-1", 160);
+    return await _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, 'SHA-1', 160);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   clientChallenge(connection, test_cnonce) {
-    // eslint-disable-line class-methods-use-this
     return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
   }
 }
@@ -10880,16 +10685,19 @@ class SASLSHA256 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 70;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.authcid !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   async onChallenge(connection, challenge) {
-    // eslint-disable-line class-methods-use-this, require-await
-    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-256", 256);
+    return await _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, 'SHA-256', 256);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   clientChallenge(connection, test_cnonce) {
-    // eslint-disable-line class-methods-use-this
     return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
   }
 }
@@ -10921,16 +10729,19 @@ class SASLSHA384 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 71;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.authcid !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   async onChallenge(connection, challenge) {
-    // eslint-disable-line class-methods-use-this, require-await
-    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-384", 384);
+    return await _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, 'SHA-384', 384);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   clientChallenge(connection, test_cnonce) {
-    // eslint-disable-line class-methods-use-this
     return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
   }
 }
@@ -10962,16 +10773,19 @@ class SASLSHA512 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 72;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.authcid !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   async onChallenge(connection, challenge) {
-    // eslint-disable-line class-methods-use-this, require-await
-    return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, "SHA-512", 512);
+    return await _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].scramResponse(connection, challenge, 'SHA-512', 512);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   clientChallenge(connection, test_cnonce) {
-    // eslint-disable-line class-methods-use-this
     return _scram_js__WEBPACK_IMPORTED_MODULE_1__["default"].clientChallenge(connection, test_cnonce);
   }
 }
@@ -11003,17 +10817,19 @@ class SASLXOAuth2 extends _sasl_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let priority = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 30;
     super(mechname, isClientFirst, priority);
   }
+
+  // eslint-disable-next-line class-methods-use-this
   test(connection) {
-    // eslint-disable-line class-methods-use-this
     return connection.pass !== null;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   onChallenge(connection) {
-    // eslint-disable-line class-methods-use-this
     let auth_str = '\u0000';
     if (connection.authcid !== null) {
       auth_str = auth_str + connection.authzid;
     }
-    auth_str = auth_str + "\u0000";
+    auth_str = auth_str + '\u0000';
     auth_str = auth_str + connection.pass;
     return _utils__WEBPACK_IMPORTED_MODULE_1__["default"].utf16to8(auth_str);
   }
@@ -11110,8 +10926,8 @@ class SASLMechanism {
    *  Returns:
    *    (Boolean) If mechanism was able to run.
    */
+  // eslint-disable-next-line class-methods-use-this
   test() {
-    // eslint-disable-line class-methods-use-this
     return true;
   }
 
@@ -11139,9 +10955,9 @@ class SASLMechanism {
    *  Returns:
    *    (String) Mechanism response.
    */
+  // eslint-disable-next-line no-unused-vars, class-methods-use-this
   onChallenge(connection, challenge) {
-    // eslint-disable-line
-    throw new Error("You should implement challenge handling!");
+    throw new Error('You should implement challenge handling!');
   }
 
   /** PrivateFunction: clientChallenge
@@ -11156,7 +10972,7 @@ class SASLMechanism {
    */
   clientChallenge(connection) {
     if (!this.isClientFirst) {
-      throw new Error("clientChallenge should not be called if isClientFirst is false!");
+      throw new Error('clientChallenge should not be called if isClientFirst is false!');
     }
     return this.onChallenge(connection);
   }
@@ -11194,11 +11010,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 async function scramClientProof(authMessage, clientKey, hashName) {
-  const storedKey = await window.crypto.subtle.importKey("raw", await window.crypto.subtle.digest(hashName, clientKey), {
-    "name": "HMAC",
-    "hash": hashName
-  }, false, ["sign"]);
-  const clientSignature = await window.crypto.subtle.sign("HMAC", storedKey, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(authMessage));
+  const storedKey = await crypto.subtle.importKey('raw', await crypto.subtle.digest(hashName, clientKey), {
+    'name': 'HMAC',
+    'hash': hashName
+  }, false, ['sign']);
+  const clientSignature = await crypto.subtle.sign('HMAC', storedKey, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(authMessage));
   return _utils__WEBPACK_IMPORTED_MODULE_0__["default"].xorArrayBuffers(clientKey, clientSignature);
 }
 
@@ -11215,15 +11031,15 @@ function scramParseChallenge(challenge) {
   const attribMatch = /([a-z]+)=([^,]+)(,|$)/;
   while (challenge.match(attribMatch)) {
     const matches = challenge.match(attribMatch);
-    challenge = challenge.replace(matches[0], "");
+    challenge = challenge.replace(matches[0], '');
     switch (matches[1]) {
-      case "r":
+      case 'r':
         nonce = matches[2];
         break;
-      case "s":
+      case 's':
         salt = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(matches[2]);
         break;
-      case "i":
+      case 'i':
         iter = parseInt(matches[2], 10);
         break;
       default:
@@ -11234,17 +11050,17 @@ function scramParseChallenge(challenge) {
   // Consider iteration counts less than 4096 insecure, as reccommended by
   // RFC 5802
   if (isNaN(iter) || iter < 4096) {
-    _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied iteration count < 4096.");
+    _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn('Failing SCRAM authentication because server supplied iteration count < 4096.');
     return undefined;
   }
   if (!salt) {
-    _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied incorrect salt.");
+    _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn('Failing SCRAM authentication because server supplied incorrect salt.');
     return undefined;
   }
   return {
-    "nonce": nonce,
-    "salt": salt,
-    "iter": iter
+    'nonce': nonce,
+    'salt': salt,
+    'iter': iter
   };
 }
 
@@ -11256,29 +11072,29 @@ function scramParseChallenge(challenge) {
  * }
  */
 async function scramDeriveKeys(password, salt, iter, hashName, hashBits) {
-  const saltedPasswordBits = await window.crypto.subtle.deriveBits({
-    "name": "PBKDF2",
-    "salt": salt,
-    "iterations": iter,
-    "hash": {
-      "name": hashName
+  const saltedPasswordBits = await crypto.subtle.deriveBits({
+    'name': 'PBKDF2',
+    'salt': salt,
+    'iterations': iter,
+    'hash': {
+      'name': hashName
     }
-  }, await window.crypto.subtle.importKey("raw", _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(password), "PBKDF2", false, ["deriveBits"]), hashBits);
-  const saltedPassword = await window.crypto.subtle.importKey("raw", saltedPasswordBits, {
-    "name": "HMAC",
-    "hash": hashName
-  }, false, ["sign"]);
+  }, await crypto.subtle.importKey('raw', _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(password), 'PBKDF2', false, ['deriveBits']), hashBits);
+  const saltedPassword = await crypto.subtle.importKey('raw', saltedPasswordBits, {
+    'name': 'HMAC',
+    'hash': hashName
+  }, false, ['sign']);
   return {
-    "ck": await window.crypto.subtle.sign("HMAC", saltedPassword, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf("Client Key")),
-    "sk": await window.crypto.subtle.sign("HMAC", saltedPassword, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf("Server Key"))
+    'ck': await crypto.subtle.sign('HMAC', saltedPassword, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf('Client Key')),
+    'sk': await crypto.subtle.sign('HMAC', saltedPassword, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf('Server Key'))
   };
 }
 async function scramServerSign(authMessage, sk, hashName) {
-  const serverKey = await window.crypto.subtle.importKey("raw", sk, {
-    "name": "HMAC",
-    "hash": hashName
-  }, false, ["sign"]);
-  return window.crypto.subtle.sign("HMAC", serverKey, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(authMessage));
+  const serverKey = await crypto.subtle.importKey('raw', sk, {
+    'name': 'HMAC',
+    'hash': hashName
+  }, false, ['sign']);
+  return crypto.subtle.sign('HMAC', serverKey, _utils__WEBPACK_IMPORTED_MODULE_0__["default"].stringToArrayBuf(authMessage));
 }
 
 // Generate an ASCII nonce (not containing the ',' character)
@@ -11304,7 +11120,7 @@ const scram = {
     // The RFC requires that we verify the (server) nonce has the client
     // nonce as an initial substring.
     if (!challengeData && challengeData?.nonce.slice(0, cnonce.length) !== cnonce) {
-      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Failing SCRAM authentication because server supplied incorrect nonce.");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn('Failing SCRAM authentication because server supplied incorrect nonce.');
       connection._sasl_data = {};
       return connection._sasl_failure_cb();
     }
@@ -11314,26 +11130,26 @@ const scram = {
     if (connection.pass?.name === hashName && connection.pass?.salt === _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt) && connection.pass?.iter === challengeData.iter) {
       clientKey = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(connection.pass.ck);
       serverKey = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].base64ToArrayBuf(connection.pass.sk);
-    } else if (typeof connection.pass === "string" || connection.pass instanceof String) {
+    } else if (typeof connection.pass === 'string' || connection.pass instanceof String) {
       const keys = await scramDeriveKeys(connection.pass, challengeData.salt, challengeData.iter, hashName, hashBits);
       clientKey = keys.ck;
       serverKey = keys.sk;
     } else {
       return connection._sasl_failure_cb();
     }
-    const clientFirstMessageBare = connection._sasl_data["client-first-message-bare"];
+    const clientFirstMessageBare = connection._sasl_data['client-first-message-bare'];
     const serverFirstMessage = challenge;
     const clientFinalMessageBare = `c=biws,r=${challengeData.nonce}`;
     const authMessage = `${clientFirstMessageBare},${serverFirstMessage},${clientFinalMessageBare}`;
     const clientProof = await scramClientProof(authMessage, clientKey, hashName);
     const serverSignature = await scramServerSign(authMessage, serverKey, hashName);
-    connection._sasl_data["server-signature"] = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(serverSignature);
+    connection._sasl_data['server-signature'] = _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(serverSignature);
     connection._sasl_data.keys = {
-      "name": hashName,
-      "iter": challengeData.iter,
-      "salt": _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt),
-      "ck": _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(clientKey),
-      "sk": _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(serverKey)
+      'name': hashName,
+      'iter': challengeData.iter,
+      'salt': _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(challengeData.salt),
+      'ck': _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(clientKey),
+      'sk': _utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(serverKey)
     };
     return `${clientFinalMessageBare},p=${_utils__WEBPACK_IMPORTED_MODULE_0__["default"].arrayBufToBase64(clientProof)}`;
   },
@@ -11342,7 +11158,7 @@ const scram = {
     const cnonce = test_cnonce || generate_cnonce();
     const client_first_message_bare = `n=${connection.authcid},r=${cnonce}`;
     connection._sasl_data.cnonce = cnonce;
-    connection._sasl_data["client-first-message-bare"] = client_first_message_bare;
+    connection._sasl_data['client-first-message-bare'] = client_first_message_bare;
     return `n,,${client_first_message_bare}`;
   }
 };
@@ -11369,7 +11185,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _websocket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./websocket */ "./node_modules/strophe.js/src/websocket.js");
 /* harmony import */ var _worker_websocket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./worker-websocket */ "./node_modules/strophe.js/src/worker-websocket.js");
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./core */ "./node_modules/strophe.js/src/core.js");
+/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shims */ "./src/strophe-shims.js");
 /*global global*/
+
 
 
 
@@ -11380,7 +11198,83 @@ __webpack_require__.g.$iq = _core__WEBPACK_IMPORTED_MODULE_3__["default"].$iq;
 __webpack_require__.g.$msg = _core__WEBPACK_IMPORTED_MODULE_3__["default"].$msg;
 __webpack_require__.g.$pres = _core__WEBPACK_IMPORTED_MODULE_3__["default"].$pres;
 __webpack_require__.g.Strophe = _core__WEBPACK_IMPORTED_MODULE_3__["default"].Strophe;
+__webpack_require__.g.Strophe.shims = _shims__WEBPACK_IMPORTED_MODULE_4__;
 
+
+/***/ }),
+
+/***/ "./node_modules/strophe.js/src/timed-handler.js":
+/*!******************************************************!*\
+  !*** ./node_modules/strophe.js/src/timed-handler.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TimedHandler)
+/* harmony export */ });
+/** PrivateClass: Strophe.TimedHandler
+ *  _Private_ helper class for managing timed handlers.
+ *
+ *  A Strophe.TimedHandler encapsulates a user provided callback that
+ *  should be called after a certain period of time or at regular
+ *  intervals.  The return value of the callback determines whether the
+ *  Strophe.TimedHandler will continue to fire.
+ *
+ *  Users will not use Strophe.TimedHandler objects directly, but instead
+ *  they will use Strophe.Connection.addTimedHandler() and
+ *  Strophe.Connection.deleteTimedHandler().
+ */
+class TimedHandler {
+  /** PrivateConstructor: Strophe.TimedHandler
+   *  Create and initialize a new Strophe.TimedHandler object.
+   *
+   *  Parameters:
+   *    (Integer) period - The number of milliseconds to wait before the
+   *      handler is called.
+   *    (Function) handler - The callback to run when the handler fires.  This
+   *      function should take no arguments.
+   *
+   *  Returns:
+   *    A new Strophe.TimedHandler object.
+   */
+  constructor(period, handler) {
+    this.period = period;
+    this.handler = handler;
+    this.lastCalled = new Date().getTime();
+    this.user = true;
+  }
+
+  /** PrivateFunction: run
+   *  Run the callback for the Strophe.TimedHandler.
+   *
+   *  Returns:
+   *    true if the Strophe.TimedHandler should be called again, and false
+   *      otherwise.
+   */
+  run() {
+    this.lastCalled = new Date().getTime();
+    return this.handler();
+  }
+
+  /** PrivateFunction: reset
+   *  Reset the last called time for the Strophe.TimedHandler.
+   */
+  reset() {
+    this.lastCalled = new Date().getTime();
+  }
+
+  /** PrivateFunction: toString
+   *  Get a string representation of the Strophe.TimedHandler object.
+   *
+   *  Returns:
+   *    The string representation.
+   */
+  toString() {
+    return '{TimedHandler: ' + this.handler + '(' + this.period + ')}';
+  }
+}
 
 /***/ }),
 
@@ -11393,92 +11287,630 @@ __webpack_require__.g.Strophe = _core__WEBPACK_IMPORTED_MODULE_3__["default"].St
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ utils)
+/* harmony export */   addCookies: () => (/* binding */ addCookies),
+/* harmony export */   arrayBufToBase64: () => (/* binding */ arrayBufToBase64),
+/* harmony export */   base64ToArrayBuf: () => (/* binding */ base64ToArrayBuf),
+/* harmony export */   copyElement: () => (/* binding */ copyElement),
+/* harmony export */   createHtml: () => (/* binding */ createHtml),
+/* harmony export */   "default": () => (/* binding */ utils),
+/* harmony export */   escapeNode: () => (/* binding */ escapeNode),
+/* harmony export */   forEachChild: () => (/* binding */ forEachChild),
+/* harmony export */   getBareJidFromJid: () => (/* binding */ getBareJidFromJid),
+/* harmony export */   getDomainFromJid: () => (/* binding */ getDomainFromJid),
+/* harmony export */   getNodeFromJid: () => (/* binding */ getNodeFromJid),
+/* harmony export */   getResourceFromJid: () => (/* binding */ getResourceFromJid),
+/* harmony export */   getText: () => (/* binding */ getText),
+/* harmony export */   isTagEqual: () => (/* binding */ isTagEqual),
+/* harmony export */   serialize: () => (/* binding */ serialize),
+/* harmony export */   stringToArrayBuf: () => (/* binding */ stringToArrayBuf),
+/* harmony export */   unescapeNode: () => (/* binding */ unescapeNode),
+/* harmony export */   utf16to8: () => (/* binding */ utf16to8),
+/* harmony export */   validAttribute: () => (/* binding */ validAttribute),
+/* harmony export */   validCSS: () => (/* binding */ validCSS),
+/* harmony export */   validTag: () => (/* binding */ validTag),
+/* harmony export */   xmlElement: () => (/* binding */ xmlElement),
+/* harmony export */   xmlGenerator: () => (/* binding */ xmlGenerator),
+/* harmony export */   xmlHtmlNode: () => (/* binding */ xmlHtmlNode),
+/* harmony export */   xmlTextNode: () => (/* binding */ xmlTextNode),
+/* harmony export */   xmlescape: () => (/* binding */ xmlescape),
+/* harmony export */   xmlunescape: () => (/* binding */ xmlunescape),
+/* harmony export */   xorArrayBuffers: () => (/* binding */ xorArrayBuffers)
 /* harmony export */ });
-const utils = {
-  utf16to8(str) {
-    let out = "";
-    const len = str.length;
-    for (let i = 0; i < len; i++) {
-      const c = str.charCodeAt(i);
-      if (c >= 0x0000 && c <= 0x007F) {
-        out += str.charAt(i);
-      } else if (c > 0x07FF) {
-        out += String.fromCharCode(0xE0 | c >> 12 & 0x0F);
-        out += String.fromCharCode(0x80 | c >> 6 & 0x3F);
-        out += String.fromCharCode(0x80 | c >> 0 & 0x3F);
-      } else {
-        out += String.fromCharCode(0xC0 | c >> 6 & 0x1F);
-        out += String.fromCharCode(0x80 | c >> 0 & 0x3F);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./node_modules/strophe.js/src/core.js");
+/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shims */ "./src/strophe-shims.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants.js */ "./node_modules/strophe.js/src/constants.js");
+/* global btoa, ActiveXObject */
+
+
+
+function utf16to8(str) {
+  let out = '';
+  const len = str.length;
+  for (let i = 0; i < len; i++) {
+    const c = str.charCodeAt(i);
+    if (c >= 0x0000 && c <= 0x007f) {
+      out += str.charAt(i);
+    } else if (c > 0x07ff) {
+      out += String.fromCharCode(0xe0 | c >> 12 & 0x0f);
+      out += String.fromCharCode(0x80 | c >> 6 & 0x3f);
+      out += String.fromCharCode(0x80 | c >> 0 & 0x3f);
+    } else {
+      out += String.fromCharCode(0xc0 | c >> 6 & 0x1f);
+      out += String.fromCharCode(0x80 | c >> 0 & 0x3f);
+    }
+  }
+  return out;
+}
+function xorArrayBuffers(x, y) {
+  const xIntArray = new Uint8Array(x);
+  const yIntArray = new Uint8Array(y);
+  const zIntArray = new Uint8Array(x.byteLength);
+  for (let i = 0; i < x.byteLength; i++) {
+    zIntArray[i] = xIntArray[i] ^ yIntArray[i];
+  }
+  return zIntArray.buffer;
+}
+function arrayBufToBase64(buffer) {
+  // This function is due to mobz (https://stackoverflow.com/users/1234628/mobz)
+  // and Emmanuel (https://stackoverflow.com/users/288564/emmanuel)
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+function base64ToArrayBuf(str) {
+  return Uint8Array.from(atob(str), c => c.charCodeAt(0))?.buffer;
+}
+function stringToArrayBuf(str) {
+  const bytes = new TextEncoder('utf-8').encode(str);
+  return bytes.buffer;
+}
+function addCookies(cookies) {
+  if (typeof document === 'undefined') {
+    _core__WEBPACK_IMPORTED_MODULE_0__.Strophe.log(_core__WEBPACK_IMPORTED_MODULE_0__.Strophe.LogLevel.ERROR, `addCookies: not adding any cookies, since there's no document object`);
+  }
+
+  /* Parameters:
+   *  (Object) cookies - either a map of cookie names
+   *    to string values or to maps of cookie values.
+   *
+   * For example:
+   * { "myCookie": "1234" }
+   *
+   * or:
+   * { "myCookie": {
+   *      "value": "1234",
+   *      "domain": ".example.org",
+   *      "path": "/",
+   *      "expires": expirationDate
+   *      }
+   *  }
+   *
+   *  These values get passed to Strophe.Connection via
+   *   options.cookies
+   */
+  cookies = cookies || {};
+  for (const cookieName in cookies) {
+    if (Object.prototype.hasOwnProperty.call(cookies, cookieName)) {
+      let expires = '';
+      let domain = '';
+      let path = '';
+      const cookieObj = cookies[cookieName];
+      const isObj = typeof cookieObj === 'object';
+      const cookieValue = escape(unescape(isObj ? cookieObj.value : cookieObj));
+      if (isObj) {
+        expires = cookieObj.expires ? ';expires=' + cookieObj.expires : '';
+        domain = cookieObj.domain ? ';domain=' + cookieObj.domain : '';
+        path = cookieObj.path ? ';path=' + cookieObj.path : '';
       }
+      document.cookie = cookieName + '=' + cookieValue + expires + domain + path;
     }
-    return out;
-  },
-  xorArrayBuffers(x, y) {
-    const xIntArray = new Uint8Array(x);
-    const yIntArray = new Uint8Array(y);
-    const zIntArray = new Uint8Array(x.byteLength);
-    for (let i = 0; i < x.byteLength; i++) {
-      zIntArray[i] = xIntArray[i] ^ yIntArray[i];
+  }
+}
+let _xmlGenerator = null;
+
+/** Function: Strophe.xmlGenerator
+ *  Get the DOM document to generate elements.
+ *
+ *  Returns:
+ *    The currently used DOM document.
+ */
+function xmlGenerator() {
+  if (!_xmlGenerator) {
+    _xmlGenerator = _shims__WEBPACK_IMPORTED_MODULE_1__.getDummyXMLDOMDocument();
+  }
+  return _xmlGenerator;
+}
+
+/** Function: Strophe.xmlTextNode
+ *  Creates an XML DOM text node.
+ *
+ *  Provides a cross implementation version of document.createTextNode.
+ *
+ *  Parameters:
+ *    (String) text - The content of the text node.
+ *
+ *  Returns:
+ *    A new XML DOM text node.
+ */
+function xmlTextNode(text) {
+  return xmlGenerator().createTextNode(text);
+}
+
+/** Function: Strophe.xmlHtmlNode
+ *  Creates an XML DOM html node.
+ *
+ *  Parameters:
+ *    (String) html - The content of the html node.
+ *
+ *  Returns:
+ *    A new XML DOM text node.
+ */
+function xmlHtmlNode(html) {
+  let node;
+  //ensure text is escaped
+  if (_shims__WEBPACK_IMPORTED_MODULE_1__.DOMParser) {
+    const parser = new _shims__WEBPACK_IMPORTED_MODULE_1__.DOMParser();
+    node = parser.parseFromString(html, 'text/xml');
+  } else {
+    node = new ActiveXObject('Microsoft.XMLDOM');
+    node.async = 'false';
+    node.loadXML(html);
+  }
+  return node;
+}
+
+/** Function: Strophe.xmlElement
+ *  Create an XML DOM element.
+ *
+ *  This function creates an XML DOM element correctly across all
+ *  implementations. Note that these are not HTML DOM elements, which
+ *  aren't appropriate for XMPP stanzas.
+ *
+ *  Parameters:
+ *    (String) name - The name for the element.
+ *    (Array|Object) attrs - An optional array or object containing
+ *      key/value pairs to use as element attributes. The object should
+ *      be in the format {'key': 'value'} or {key: 'value'}. The array
+ *      should have the format [['key1', 'value1'], ['key2', 'value2']].
+ *    (String) text - The text child data for the element.
+ *
+ *  Returns:
+ *    A new XML DOM element.
+ */
+function xmlElement(name) {
+  if (!name) {
+    return null;
+  }
+  const node = xmlGenerator().createElement(name);
+  // FIXME: this should throw errors if args are the wrong type or
+  // there are more than two optional args
+  for (let a = 1; a < arguments.length; a++) {
+    const arg = arguments[a];
+    if (!arg) {
+      continue;
     }
-    return zIntArray.buffer;
-  },
-  arrayBufToBase64(buffer) {
-    // This function is due to mobz (https://stackoverflow.com/users/1234628/mobz)
-    //  and Emmanuel (https://stackoverflow.com/users/288564/emmanuel)
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  },
-  base64ToArrayBuf(str) {
-    return Uint8Array.from(atob(str), c => c.charCodeAt(0))?.buffer;
-  },
-  stringToArrayBuf(str) {
-    const bytes = new TextEncoder("utf-8").encode(str);
-    return bytes.buffer;
-  },
-  addCookies(cookies) {
-    /* Parameters:
-     *  (Object) cookies - either a map of cookie names
-     *    to string values or to maps of cookie values.
-     *
-     * For example:
-     * { "myCookie": "1234" }
-     *
-     * or:
-     * { "myCookie": {
-     *      "value": "1234",
-     *      "domain": ".example.org",
-     *      "path": "/",
-     *      "expires": expirationDate
-     *      }
-     *  }
-     *
-     *  These values get passed to Strophe.Connection via
-     *   options.cookies
-     */
-    cookies = cookies || {};
-    for (const cookieName in cookies) {
-      if (Object.prototype.hasOwnProperty.call(cookies, cookieName)) {
-        let expires = '';
-        let domain = '';
-        let path = '';
-        const cookieObj = cookies[cookieName];
-        const isObj = typeof cookieObj === "object";
-        const cookieValue = escape(unescape(isObj ? cookieObj.value : cookieObj));
-        if (isObj) {
-          expires = cookieObj.expires ? ";expires=" + cookieObj.expires : '';
-          domain = cookieObj.domain ? ";domain=" + cookieObj.domain : '';
-          path = cookieObj.path ? ";path=" + cookieObj.path : '';
+    if (typeof arg === 'string' || typeof arg === 'number') {
+      node.appendChild(xmlTextNode(arg));
+    } else if (typeof arg === 'object' && typeof arg.sort === 'function') {
+      for (let i = 0; i < arg.length; i++) {
+        const attr = arg[i];
+        if (typeof attr === 'object' && typeof attr.sort === 'function' && attr[1] !== undefined && attr[1] !== null) {
+          node.setAttribute(attr[0], attr[1]);
         }
-        document.cookie = cookieName + '=' + cookieValue + expires + domain + path;
+      }
+    } else if (typeof arg === 'object') {
+      for (const k in arg) {
+        if (Object.prototype.hasOwnProperty.call(arg, k) && arg[k] !== undefined && arg[k] !== null) {
+          node.setAttribute(k, arg[k]);
+        }
       }
     }
   }
+  return node;
+}
+
+/** Function: Strophe.XHTML.validTag
+ *
+ * Utility method to determine whether a tag is allowed
+ * in the XHTML_IM namespace.
+ *
+ * XHTML tag names are case sensitive and must be lower case.
+ */
+function validTag(tag) {
+  for (let i = 0; i < _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.tags.length; i++) {
+    if (tag === _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.tags[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Function: Strophe.XHTML.validAttribute
+ *
+ * Utility method to determine whether an attribute is allowed
+ * as recommended per XEP-0071
+ *
+ * XHTML attribute names are case sensitive and must be lower case.
+ */
+function validAttribute(tag, attribute) {
+  if (typeof _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.attributes[tag] !== 'undefined' && _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.attributes[tag].length > 0) {
+    for (let i = 0; i < _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.attributes[tag].length; i++) {
+      if (attribute === _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.attributes[tag][i]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/** Function: Strophe.XHTML.validCSS */
+function validCSS(style) {
+  for (let i = 0; i < _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.css.length; i++) {
+    if (style === _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.css[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Function: Strophe.createHtml
+ *
+ *  Copy an HTML DOM element into an XML DOM.
+ *
+ *  This function copies a DOM element and all its descendants and returns
+ *  the new copy.
+ *
+ *  Parameters:
+ *    (HTMLElement) elem - A DOM element.
+ *
+ *  Returns:
+ *    A new, copied DOM element tree.
+ */
+function createHtml(elem) {
+  let el;
+  if (elem.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.NORMAL) {
+    const tag = elem.nodeName.toLowerCase(); // XHTML tags must be lower case.
+    if (validTag(tag)) {
+      try {
+        el = xmlElement(tag);
+        for (let i = 0; i < _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.attributes[tag].length; i++) {
+          const attribute = _constants_js__WEBPACK_IMPORTED_MODULE_2__.XHTML.attributes[tag][i];
+          let value = elem.getAttribute(attribute);
+          if (typeof value === 'undefined' || value === null || value === '' || value === false || value === 0) {
+            continue;
+          }
+          if (attribute === 'style' && typeof value === 'object' && typeof value.cssText !== 'undefined') {
+            value = value.cssText; // we're dealing with IE, need to get CSS out
+          }
+          // filter out invalid css styles
+          if (attribute === 'style') {
+            const css = [];
+            const cssAttrs = value.split(';');
+            for (let j = 0; j < cssAttrs.length; j++) {
+              const attr = cssAttrs[j].split(':');
+              const cssName = attr[0].replace(/^\s*/, '').replace(/\s*$/, '').toLowerCase();
+              if (validCSS(cssName)) {
+                const cssValue = attr[1].replace(/^\s*/, '').replace(/\s*$/, '');
+                css.push(cssName + ': ' + cssValue);
+              }
+            }
+            if (css.length > 0) {
+              value = css.join('; ');
+              el.setAttribute(attribute, value);
+            }
+          } else {
+            el.setAttribute(attribute, value);
+          }
+        }
+        for (let i = 0; i < elem.childNodes.length; i++) {
+          el.appendChild(createHtml(elem.childNodes[i]));
+        }
+      } catch (e) {
+        // invalid elements
+        el = xmlTextNode('');
+      }
+    } else {
+      el = xmlGenerator().createDocumentFragment();
+      for (let i = 0; i < elem.childNodes.length; i++) {
+        el.appendChild(createHtml(elem.childNodes[i]));
+      }
+    }
+  } else if (elem.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.FRAGMENT) {
+    el = xmlGenerator().createDocumentFragment();
+    for (let i = 0; i < elem.childNodes.length; i++) {
+      el.appendChild(createHtml(elem.childNodes[i]));
+    }
+  } else if (elem.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.TEXT) {
+    el = xmlTextNode(elem.nodeValue);
+  }
+  return el;
+}
+
+/** Function: Strophe.copyElement
+ *  Copy an XML DOM element.
+ *
+ *  This function copies a DOM element and all its descendants and returns
+ *  the new copy.
+ *
+ *  Parameters:
+ *    (XMLElement) elem - A DOM element.
+ *
+ *  Returns:
+ *    A new, copied DOM element tree.
+ */
+function copyElement(elem) {
+  let el;
+  if (elem.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.NORMAL) {
+    el = xmlElement(elem.tagName);
+    for (let i = 0; i < elem.attributes.length; i++) {
+      el.setAttribute(elem.attributes[i].nodeName, elem.attributes[i].value);
+    }
+    for (let i = 0; i < elem.childNodes.length; i++) {
+      el.appendChild(copyElement(elem.childNodes[i]));
+    }
+  } else if (elem.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.TEXT) {
+    el = xmlGenerator().createTextNode(elem.nodeValue);
+  }
+  return el;
+}
+
+/*  Function: Strophe.xmlescape
+ *  Excapes invalid xml characters.
+ *
+ *  Parameters:
+ *     (String) text - text to escape.
+ *
+ *  Returns:
+ *      Escaped text.
+ */
+function xmlescape(text) {
+  text = text.replace(/\&/g, '&amp;');
+  text = text.replace(/</g, '&lt;');
+  text = text.replace(/>/g, '&gt;');
+  text = text.replace(/'/g, '&apos;');
+  text = text.replace(/"/g, '&quot;');
+  return text;
+}
+
+/*  Function: Strophe.xmlunescape
+ *  Unexcapes invalid xml characters.
+ *
+ *  Parameters:
+ *     (String) text - text to unescape.
+ *
+ *  Returns:
+ *      Unescaped text.
+ */
+function xmlunescape(text) {
+  text = text.replace(/\&amp;/g, '&');
+  text = text.replace(/&lt;/g, '<');
+  text = text.replace(/&gt;/g, '>');
+  text = text.replace(/&apos;/g, "'");
+  text = text.replace(/&quot;/g, '"');
+  return text;
+}
+
+/** Function: Strophe.serialize
+ *  Render a DOM element and all descendants to a String.
+ *
+ *  Parameters:
+ *    (XMLElement) elem - A DOM element.
+ *
+ *  Returns:
+ *    The serialized element tree as a String.
+ */
+function serialize(elem) {
+  if (!elem) {
+    return null;
+  }
+  if (typeof elem.tree === 'function') {
+    elem = elem.tree();
+  }
+  const names = [...Array(elem.attributes.length).keys()].map(i => elem.attributes[i].nodeName);
+  names.sort();
+  let result = names.reduce((a, n) => `${a} ${n}="${xmlescape(elem.attributes.getNamedItem(n).value)}"`, `<${elem.nodeName}`);
+  if (elem.childNodes.length > 0) {
+    result += '>';
+    for (let i = 0; i < elem.childNodes.length; i++) {
+      const child = elem.childNodes[i];
+      switch (child.nodeType) {
+        case _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.NORMAL:
+          // normal element, so recurse
+          result += serialize(child);
+          break;
+        case _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.TEXT:
+          // text element to escape values
+          result += xmlescape(child.nodeValue);
+          break;
+        case _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.CDATA:
+          // cdata section so don't escape values
+          result += '<![CDATA[' + child.nodeValue + ']]>';
+      }
+    }
+    result += '</' + elem.nodeName + '>';
+  } else {
+    result += '/>';
+  }
+  return result;
+}
+
+/** Function: Strophe.forEachChild
+ *  Map a function over some or all child elements of a given element.
+ *
+ *  This is a small convenience function for mapping a function over
+ *  some or all of the children of an element.  If elemName is null, all
+ *  children will be passed to the function, otherwise only children
+ *  whose tag names match elemName will be passed.
+ *
+ *  Parameters:
+ *    (XMLElement) elem - The element to operate on.
+ *    (String) elemName - The child element tag name filter.
+ *    (Function) func - The function to apply to each child.  This
+ *      function should take a single argument, a DOM element.
+ */
+function forEachChild(elem, elemName, func) {
+  for (let i = 0; i < elem.childNodes.length; i++) {
+    const childNode = elem.childNodes[i];
+    if (childNode.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.NORMAL && (!elemName || this.isTagEqual(childNode, elemName))) {
+      func(childNode);
+    }
+  }
+}
+
+/** Function: Strophe.isTagEqual
+ *  Compare an element's tag name with a string.
+ *
+ *  This function is case sensitive.
+ *
+ *  Parameters:
+ *    (XMLElement) el - A DOM element.
+ *    (String) name - The element name.
+ *
+ *  Returns:
+ *    true if the element's tag name matches _el_, and false
+ *    otherwise.
+ */
+function isTagEqual(el, name) {
+  return el.tagName === name;
+}
+
+/** Function: Strophe.getText
+ *  Get the concatenation of all text children of an element.
+ *
+ *  Parameters:
+ *    (XMLElement) elem - A DOM element.
+ *
+ *  Returns:
+ *    A String with the concatenated text of all text element children.
+ */
+function getText(elem) {
+  if (!elem) {
+    return null;
+  }
+  let str = '';
+  if (!elem.childNodes?.length && elem.nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.TEXT) {
+    str += elem.nodeValue;
+  }
+  for (let i = 0; i < elem.childNodes?.length ?? 0; i++) {
+    if (elem.childNodes[i].nodeType === _constants_js__WEBPACK_IMPORTED_MODULE_2__.ElementType.TEXT) {
+      str += elem.childNodes[i].nodeValue;
+    }
+  }
+  return xmlescape(str);
+}
+
+/** Function: Strophe.escapeNode
+ *  Escape the node part (also called local part) of a JID.
+ *
+ *  Parameters:
+ *    (String) node - A node (or local part).
+ *
+ *  Returns:
+ *    An escaped node (or local part).
+ */
+function escapeNode(node) {
+  if (typeof node !== 'string') {
+    return node;
+  }
+  return node.replace(/^\s+|\s+$/g, '').replace(/\\/g, '\\5c').replace(/ /g, '\\20').replace(/\"/g, '\\22').replace(/\&/g, '\\26').replace(/\'/g, '\\27').replace(/\//g, '\\2f').replace(/:/g, '\\3a').replace(/</g, '\\3c').replace(/>/g, '\\3e').replace(/@/g, '\\40');
+}
+
+/** Function: Strophe.unescapeNode
+ *  Unescape a node part (also called local part) of a JID.
+ *
+ *  Parameters:
+ *    (String) node - A node (or local part).
+ *
+ *  Returns:
+ *    An unescaped node (or local part).
+ */
+function unescapeNode(node) {
+  if (typeof node !== 'string') {
+    return node;
+  }
+  return node.replace(/\\20/g, ' ').replace(/\\22/g, '"').replace(/\\26/g, '&').replace(/\\27/g, "'").replace(/\\2f/g, '/').replace(/\\3a/g, ':').replace(/\\3c/g, '<').replace(/\\3e/g, '>').replace(/\\40/g, '@').replace(/\\5c/g, '\\');
+}
+
+/** Function: Strophe.getNodeFromJid
+ *  Get the node portion of a JID String.
+ *
+ *  Parameters:
+ *    (String) jid - A JID.
+ *
+ *  Returns:
+ *    A String containing the node.
+ */
+function getNodeFromJid(jid) {
+  if (jid.indexOf('@') < 0) {
+    return null;
+  }
+  return jid.split('@')[0];
+}
+
+/** Function: Strophe.getDomainFromJid
+ *  Get the domain portion of a JID String.
+ *
+ *  Parameters:
+ *    (String) jid - A JID.
+ *
+ *  Returns:
+ *    A String containing the domain.
+ */
+function getDomainFromJid(jid) {
+  const bare = getBareJidFromJid(jid);
+  if (bare.indexOf('@') < 0) {
+    return bare;
+  } else {
+    const parts = bare.split('@');
+    parts.splice(0, 1);
+    return parts.join('@');
+  }
+}
+
+/** Function: Strophe.getResourceFromJid
+ *  Get the resource portion of a JID String.
+ *
+ *  Parameters:
+ *    (String) jid - A JID.
+ *
+ *  Returns:
+ *    A String containing the resource.
+ */
+function getResourceFromJid(jid) {
+  if (!jid) {
+    return null;
+  }
+  const s = jid.split('/');
+  if (s.length < 2) {
+    return null;
+  }
+  s.splice(0, 1);
+  return s.join('/');
+}
+
+/** Function: Strophe.getBareJidFromJid
+ *  Get the bare JID from a JID String.
+ *
+ *  Parameters:
+ *    (String) jid - A JID.
+ *
+ *  Returns:
+ *    A String containing the bare JID.
+ */
+function getBareJidFromJid(jid) {
+  return jid ? jid.split('/')[0] : null;
+}
+const utils = {
+  utf16to8,
+  xorArrayBuffers,
+  arrayBufToBase64,
+  base64ToArrayBuf,
+  stringToArrayBuf,
+  addCookies
 };
 
 
@@ -11501,7 +11933,7 @@ __webpack_require__.r(__webpack_exports__);
     Copyright 2006-2008, OGG, LLC
 */
 
-/* global window, clearTimeout, WebSocket, DOMParser */
+/* global clearTimeout, location */
 
 
 
@@ -11537,20 +11969,20 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    */
   constructor(connection) {
     this._conn = connection;
-    this.strip = "wrapper";
+    this.strip = 'wrapper';
     const service = connection.service;
-    if (service.indexOf("ws:") !== 0 && service.indexOf("wss:") !== 0) {
+    if (service.indexOf('ws:') !== 0 && service.indexOf('wss:') !== 0) {
       // If the service is not an absolute URL, assume it is a path and put the absolute
       // URL together from options, current URL and the path.
-      let new_service = "";
-      if (connection.options.protocol === "ws" && window.location.protocol !== "https:") {
-        new_service += "ws";
+      let new_service = '';
+      if (connection.options.protocol === 'ws' && location.protocol !== 'https:') {
+        new_service += 'ws';
       } else {
-        new_service += "wss";
+        new_service += 'wss';
       }
-      new_service += "://" + window.location.host;
-      if (service.indexOf("/") !== 0) {
-        new_service += window.location.pathname + service;
+      new_service += '://' + location.host;
+      if (service.indexOf('/') !== 0) {
+        new_service += location.pathname + service;
       } else {
         new_service += service;
       }
@@ -11565,10 +11997,10 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    *    A Strophe.Builder with a <stream> element.
    */
   _buildStream() {
-    return (0,_core__WEBPACK_IMPORTED_MODULE_1__.$build)("open", {
-      "xmlns": _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING,
-      "to": this._conn.domain,
-      "version": '1.0'
+    return (0,_core__WEBPACK_IMPORTED_MODULE_1__.$build)('open', {
+      'xmlns': _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING,
+      'to': this._conn.domain,
+      'version': '1.0'
     });
   }
 
@@ -11584,36 +12016,36 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
   _checkStreamError(bodyWrap, connectstatus) {
     let errors;
     if (bodyWrap.getElementsByTagNameNS) {
-      errors = bodyWrap.getElementsByTagNameNS(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.STREAM, "error");
+      errors = bodyWrap.getElementsByTagNameNS(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.STREAM, 'error');
     } else {
-      errors = bodyWrap.getElementsByTagName("stream:error");
+      errors = bodyWrap.getElementsByTagName('stream:error');
     }
     if (errors.length === 0) {
       return false;
     }
     const error = errors[0];
-    let condition = "";
-    let text = "";
-    const ns = "urn:ietf:params:xml:ns:xmpp-streams";
+    let condition = '';
+    let text = '';
+    const ns = 'urn:ietf:params:xml:ns:xmpp-streams';
     for (let i = 0; i < error.childNodes.length; i++) {
       const e = error.childNodes[i];
-      if (e.getAttribute("xmlns") !== ns) {
+      if (e.getAttribute('xmlns') !== ns) {
         break;
       }
-      if (e.nodeName === "text") {
+      if (e.nodeName === 'text') {
         text = e.textContent;
       } else {
         condition = e.nodeName;
       }
     }
-    let errorString = "WebSocket stream error: ";
+    let errorString = 'WebSocket stream error: ';
     if (condition) {
       errorString += condition;
     } else {
-      errorString += "unknown";
+      errorString += 'unknown';
     }
     if (text) {
-      errorString += " - " + text;
+      errorString += ' - ' + text;
     }
     _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error(errorString);
 
@@ -11629,8 +12061,8 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    *  This function is called by the reset function of the Strophe Connection.
    *  Is not needed by WebSockets.
    */
+  // eslint-disable-next-line class-methods-use-this
   _reset() {
-    // eslint-disable-line class-methods-use-this
     return;
   }
 
@@ -11643,7 +12075,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
   _connect() {
     // Ensure that there is no open WebSocket from a previous Connection.
     this._closeSocket();
-    this.socket = new _shims__WEBPACK_IMPORTED_MODULE_0__.WebSocket(this._conn.service, "xmpp");
+    this.socket = new _shims__WEBPACK_IMPORTED_MODULE_0__.WebSocket(this._conn.service, 'xmpp');
     this.socket.onopen = () => this._onOpen();
     this.socket.onerror = e => this._onError(e);
     this.socket.onclose = e => this._onClose(e);
@@ -11678,17 +12110,17 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
     let error = false;
 
     // Check for errors in the <open /> tag
-    const ns = message.getAttribute("xmlns");
-    if (typeof ns !== "string") {
-      error = "Missing xmlns in <open />";
+    const ns = message.getAttribute('xmlns');
+    if (typeof ns !== 'string') {
+      error = 'Missing xmlns in <open />';
     } else if (ns !== _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING) {
-      error = "Wrong xmlns in <open />: " + ns;
+      error = 'Wrong xmlns in <open />: ' + ns;
     }
-    const ver = message.getAttribute("version");
-    if (typeof ver !== "string") {
-      error = "Missing version in <open />";
-    } else if (ver !== "1.0") {
-      error = "Wrong version in <open />: " + ver;
+    const ver = message.getAttribute('version');
+    if (typeof ver !== 'string') {
+      error = 'Missing version in <open />';
+    } else if (ver !== '1.0') {
+      error = 'Wrong version in <open />: ' + ver;
     }
     if (error) {
       this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, error);
@@ -11705,11 +12137,11 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    * message handler. On receiving a stream error the connection is terminated.
    */
   _onInitialMessage(message) {
-    if (message.data.indexOf("<open ") === 0 || message.data.indexOf("<?xml") === 0) {
+    if (message.data.indexOf('<open ') === 0 || message.data.indexOf('<?xml') === 0) {
       // Strip the XML Declaration, if there is one
-      const data = message.data.replace(/^(<\?.*?\?>\s*)*/, "");
+      const data = message.data.replace(/^(<\?.*?\?>\s*)*/, '');
       if (data === '') return;
-      const streamStart = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(data, "text/xml").documentElement;
+      const streamStart = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(data, 'text/xml').documentElement;
       this._conn.xmlInput(streamStart);
       this._conn.rawInput(message.data);
 
@@ -11718,32 +12150,32 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
         //_connect_cb will check for stream:error and disconnect on error
         this._connect_cb(streamStart);
       }
-    } else if (message.data.indexOf("<close ") === 0) {
+    } else if (message.data.indexOf('<close ') === 0) {
       // <close xmlns="urn:ietf:params:xml:ns:xmpp-framing />
       // Parse the raw string to an XML element
-      const parsedMessage = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(message.data, "text/xml").documentElement;
+      const parsedMessage = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(message.data, 'text/xml').documentElement;
       // Report this input to the raw and xml handlers
       this._conn.xmlInput(parsedMessage);
       this._conn.rawInput(message.data);
-      const see_uri = parsedMessage.getAttribute("see-other-uri");
+      const see_uri = parsedMessage.getAttribute('see-other-uri');
       if (see_uri) {
         const service = this._conn.service;
         // Valid scenarios: WSS->WSS, WS->ANY
-        const isSecureRedirect = service.indexOf("wss:") >= 0 && see_uri.indexOf("wss:") >= 0 || service.indexOf("ws:") >= 0;
+        const isSecureRedirect = service.indexOf('wss:') >= 0 && see_uri.indexOf('wss:') >= 0 || service.indexOf('ws:') >= 0;
         if (isSecureRedirect) {
-          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.REDIRECT, "Received see-other-uri, resetting connection");
+          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.REDIRECT, 'Received see-other-uri, resetting connection');
           this._conn.reset();
           this._conn.service = see_uri;
           this._connect();
         }
       } else {
-        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "Received closing stream");
+        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'Received closing stream');
         this._conn._doDisconnect();
       }
     } else {
       this._replaceMessageHandler();
       const string = this._streamWrap(message.data);
-      const elem = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(string, "text/xml").documentElement;
+      const elem = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(string, 'text/xml').documentElement;
       this._conn._connect_cb(elem, null, message.data);
     }
   }
@@ -11772,8 +12204,8 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
       if (pres) {
         this._conn.send(pres);
       }
-      const close = (0,_core__WEBPACK_IMPORTED_MODULE_1__.$build)("close", {
-        "xmlns": _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING
+      const close = (0,_core__WEBPACK_IMPORTED_MODULE_1__.$build)('close', {
+        'xmlns': _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING
       });
       this._conn.xmlOutput(close.tree());
       const closeString = _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.serialize(close);
@@ -11784,7 +12216,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
         _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.warn("Couldn't send <close /> tag.");
       }
     }
-    setTimeout(() => this._conn._doDisconnect, 0);
+    setTimeout(() => this._conn._doDisconnect(), 0);
   }
 
   /** PrivateFunction: _doDisconnect
@@ -11793,7 +12225,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    *  Just closes the Socket for WebSockets
    */
   _doDisconnect() {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("WebSockets _doDisconnect was called");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('WebSockets _doDisconnect was called');
     this._closeSocket();
   }
 
@@ -11801,9 +12233,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    *  _Private_ helper function to wrap a stanza in a <stream> tag.
    *  This is used so Strophe can process stanzas from WebSockets like BOSH
    */
+  // eslint-disable-next-line class-methods-use-this
   _streamWrap(stanza) {
-    // eslint-disable-line class-methods-use-this
-    return "<wrapper>" + stanza + '</wrapper>';
+    return '<wrapper>' + stanza + '</wrapper>';
   }
 
   /** PrivateFunction: _closeSocket
@@ -11831,8 +12263,8 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    *  Returns:
    *    True, because WebSocket messages are send immediately after queueing.
    */
+  // eslint-disable-next-line class-methods-use-this
   _emptyQueue() {
-    // eslint-disable-line class-methods-use-this
     return true;
   }
 
@@ -11841,18 +12273,18 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    */
   _onClose(e) {
     if (this._conn.connected && !this._conn.disconnecting) {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Websocket closed unexpectedly");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('Websocket closed unexpectedly');
       this._conn._doDisconnect();
     } else if (e && e.code === 1006 && !this._conn.connected && this.socket) {
       // in case the onError callback was not called (Safari 10 does not
       // call onerror when the initial connection fails) we need to
       // dispatch a CONNFAIL status update to be consistent with the
       // behavior on other browsers.
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Websocket closed unexcectedly");
-      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('Websocket closed unexcectedly');
+      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'The WebSocket connection could not be established or was disconnected.');
       this._conn._doDisconnect();
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("Websocket closed");
+      _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('Websocket closed');
     }
   }
 
@@ -11862,7 +12294,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    * has been received.
    */
   _no_auth_received(callback) {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Server did not offer a supported authentication mechanism");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('Server did not offer a supported authentication mechanism');
     this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.ErrorCondition.NO_AUTH_MECH);
     if (callback) {
       callback.call(this._conn);
@@ -11889,8 +12321,8 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    * (Object) error - The websocket error.
    */
   _onError(error) {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Websocket error " + JSON.stringify(error));
-    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('Websocket error ' + JSON.stringify(error));
+    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'The WebSocket connection could not be established or was disconnected.');
     this._disconnect();
   }
 
@@ -11905,7 +12337,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
       for (let i = 0; i < data.length; i++) {
         if (data[i] !== null) {
           let stanza;
-          if (data[i] === "restart") {
+          if (data[i] === 'restart') {
             stanza = this._buildStream().tree();
           } else {
             stanza = data[i];
@@ -11954,22 +12386,22 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
         this._conn._doDisconnect();
       }
       return;
-    } else if (message.data.search("<open ") === 0) {
+    } else if (message.data.search('<open ') === 0) {
       // This handles stream restarts
-      elem = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(message.data, "text/xml").documentElement;
+      elem = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(message.data, 'text/xml').documentElement;
       if (!this._handleStreamStart(elem)) {
         return;
       }
     } else {
       const data = this._streamWrap(message.data);
-      elem = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(data, "text/xml").documentElement;
+      elem = new _shims__WEBPACK_IMPORTED_MODULE_0__.DOMParser().parseFromString(data, 'text/xml').documentElement;
     }
     if (this._checkStreamError(elem, _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.ERROR)) {
       return;
     }
 
     //handle unavailable presence stanza before disconnecting
-    if (this._conn.disconnecting && elem.firstChild.nodeName === "presence" && elem.firstChild.getAttribute("type") === "unavailable") {
+    if (this._conn.disconnecting && elem.firstChild.nodeName === 'presence' && elem.firstChild.getAttribute('type') === 'unavailable') {
       this._conn.xmlInput(elem);
       this._conn.rawInput(_core__WEBPACK_IMPORTED_MODULE_1__.Strophe.serialize(elem));
       // if we are already disconnecting we will ignore the unavailable stanza and
@@ -11985,7 +12417,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    * The opening stream tag is sent here.
    */
   _onOpen() {
-    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("Websocket open");
+    _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('Websocket open');
     const start = this._buildStream();
     this._conn.xmlOutput(start.tree());
     const startString = _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.serialize(start);
@@ -12004,8 +12436,8 @@ _core__WEBPACK_IMPORTED_MODULE_1__.Strophe.Websocket = class Websocket {
    *  Returns:
    *    The stanza that was passed.
    */
+  // eslint-disable-next-line class-methods-use-this
   _reqToData(stanza) {
-    // eslint-disable-line class-methods-use-this
     return stanza;
   }
 
@@ -12112,8 +12544,8 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.WorkerWebsocket = class WorkerWebs
   }
   _disconnect(readyState, pres) {
     pres && this._conn.send(pres);
-    const close = (0,_core_js__WEBPACK_IMPORTED_MODULE_1__.$build)("close", {
-      "xmlns": _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING
+    const close = (0,_core_js__WEBPACK_IMPORTED_MODULE_1__.$build)('close', {
+      'xmlns': _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.NS.FRAMING
     });
     this._conn.xmlOutput(close.tree());
     const closeString = _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.serialize(close);
@@ -12123,18 +12555,18 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.WorkerWebsocket = class WorkerWebs
   }
   _onClose(e) {
     if (this._conn.connected && !this._conn.disconnecting) {
-      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Websocket closed unexpectedly");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('Websocket closed unexpectedly');
       this._conn._doDisconnect();
     } else if (e && e.code === 1006 && !this._conn.connected) {
       // in case the onError callback was not called (Safari 10 does not
       // call onerror when the initial connection fails) we need to
       // dispatch a CONNFAIL status update to be consistent with the
       // behavior on other browsers.
-      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.error("Websocket closed unexcectedly");
-      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.error('Websocket closed unexcectedly');
+      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.Status.CONNFAIL, 'The WebSocket connection could not be established or was disconnected.');
       this._conn._doDisconnect();
     } else {
-      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug("Websocket closed");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__.Strophe.debug('Websocket closed');
     }
   }
   _closeSocket() {
@@ -29631,7 +30063,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var strophe_js_src_strophe__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! strophe.js/src/strophe */ "./node_modules/strophe.js/src/strophe.js");
 
 const BOSH_WAIT = 59;
-const VERSION_NAME = 'v10.1.2';
+const VERSION_NAME = "v10.1.5";
 const STATUS_WEIGHTS = {
   offline: 6,
   unavailable: 5,
@@ -32348,45 +32780,43 @@ __webpack_require__.r(__webpack_exports__);
 const {
   dayjs
 } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.converse.env;
-function detectLocale(library_check) {
-  /* Determine which locale is supported by the user's system as well
-   * as by the relevant library (e.g. converse.js or dayjs).
-   * @param { Function } library_check - Returns a boolean indicating whether
-   *   the locale is supported.
-   */
-  let locale;
-  if (window.navigator.userLanguage) {
-    locale = isLocaleAvailable(window.navigator.userLanguage, library_check);
-  }
-  if (window.navigator.languages && !locale) {
-    for (let i = 0; i < window.navigator.languages.length && !locale; i++) {
-      locale = isLocaleAvailable(window.navigator.languages[i], library_check);
-    }
-  }
-  if (window.navigator.browserLanguage && !locale) {
-    locale = isLocaleAvailable(window.navigator.browserLanguage, library_check);
-  }
-  if (window.navigator.language && !locale) {
-    locale = isLocaleAvailable(window.navigator.language, library_check);
-  }
-  if (window.navigator.systemLanguage && !locale) {
-    locale = isLocaleAvailable(window.navigator.systemLanguage, library_check);
-  }
-  return locale || 'en';
-}
+let jed_instance;
+
+/**
+ * @private
+ * @param { string } locale
+ * @param { string[] } supported_locales
+ */
 function isConverseLocale(locale, supported_locales) {
   return typeof locale === 'string' && supported_locales.includes(locale);
 }
+
+/**
+ * Determines which locale is supported by the user's system as well
+ * as by the relevant library (e.g. converse.js or dayjs).
+ * @private
+ * @param { string } preferred_locale
+ * @param { Function } isSupportedByLibrary - Returns a boolean indicating whether
+ *   the locale is supported.
+ * @returns { string }
+ */
 function getLocale(preferred_locale, isSupportedByLibrary) {
-  if (typeof preferred_locale === 'string') {
-    if (preferred_locale === 'en' || isSupportedByLibrary(preferred_locale)) {
-      return preferred_locale;
-    }
+  if (preferred_locale === 'en' || isSupportedByLibrary(preferred_locale)) {
+    return preferred_locale;
   }
-  return detectLocale(isSupportedByLibrary) || 'en';
+  const {
+    languages
+  } = window.navigator;
+  let locale;
+  for (let i = 0; i < languages.length && !locale; i++) {
+    locale = isLocaleAvailable(languages[i], isSupportedByLibrary);
+  }
+  return locale || 'en';
 }
 
-/* Check whether the locale or sub locale (e.g. en-US, en) is supported.
+/**
+ * Check whether the locale or sub locale (e.g. en-US, en) is supported.
+ * @private
  * @param { String } locale - The locale to check for
  * @param { Function } available - Returns a boolean indicating whether the locale is supported
  */
@@ -32394,29 +32824,35 @@ function isLocaleAvailable(locale, available) {
   if (available(locale)) {
     return locale;
   } else {
-    var sublocale = locale.split("-")[0];
+    var sublocale = locale.split('-')[0];
     if (sublocale !== locale && available(sublocale)) {
       return sublocale;
     }
   }
 }
+
+/**
+ * Given a locale, return the closest locale returned by dayJS
+ * @private
+ * @param { string } locale
+ */
 function getDayJSLocale(locale) {
   const dayjs_locale = locale.toLowerCase().replace('_', '-');
   return dayjs_locale === 'ug' ? 'ug-cn' : dayjs_locale;
 }
 
-/* Fetch the translations for the given local at the given URL.
+/**
+ * Fetch the translations for the given local at the given URL.
  * @private
- * @method i18n#fetchTranslations
- * @param { _converse }
+ * @returns { Jed }
  */
-async function fetchTranslations(_converse) {
+async function fetchTranslations() {
   const {
     api,
     locale
-  } = _converse;
+  } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse;
   const dayjs_locale = getDayJSLocale(locale);
-  if (!isConverseLocale(locale, api.settings.get("locales")) || locale === 'en') {
+  if (!isConverseLocale(locale, api.settings.get('locales')) || locale === 'en') {
     return;
   }
   const {
@@ -32424,17 +32860,23 @@ async function fetchTranslations(_converse) {
   } = await __webpack_require__("./src/i18n lazy recursive ^\\.\\/.*\\/LC_MESSAGES\\/converse\\.po$ referencedExports: default")(`./${locale}/LC_MESSAGES/converse.po`);
   await __webpack_require__("./node_modules/dayjs/locale lazy recursive ^\\.\\/.*\\.js$")(`./${dayjs_locale}.js`);
   dayjs.locale(getLocale(dayjs_locale, l => dayjs.locale(l)));
-  jed_instance = new (jed__WEBPACK_IMPORTED_MODULE_0___default())(data);
+  return new (jed__WEBPACK_IMPORTED_MODULE_0___default())(data);
 }
-let jed_instance;
 
 /**
  * @namespace i18n
  */
 Object.assign(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.i18n, {
+  /**
+   * @param { string } preferred_locale
+   * @param { string[] } available_locales
+   */
   getLocale(preferred_locale, available_locales) {
     return getLocale(preferred_locale, preferred => isConverseLocale(preferred, available_locales));
   },
+  /**
+   * @param { string } str - The string to be translated
+   */
   translate(str) {
     if (!jed_instance) {
       return jed__WEBPACK_IMPORTED_MODULE_0___default().sprintf.apply((jed__WEBPACK_IMPORTED_MODULE_0___default()), arguments);
@@ -32452,8 +32894,8 @@ Object.assign(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.i18n, {
     } else {
       try {
         const preferred_locale = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('i18n');
-        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.locale = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.i18n.getLocale(preferred_locale, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get("locales"));
-        await fetchTranslations(_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse);
+        _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.locale = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.i18n.getLocale(preferred_locale, _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('locales'));
+        jed_instance = await fetchTranslations();
       } catch (e) {
         _converse_headless_log_js__WEBPACK_IMPORTED_MODULE_1__["default"].fatal(e.message);
         _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse.locale = 'en';
@@ -32811,12 +33253,12 @@ const action_map = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, command) => {
   const i18n_cancel = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Cancel');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <span> <!-- Don't remove this <span>,
                     this is a workaround for a lit bug where a <form> cannot be removed
                     if it contains an <input> with name "remove" -->
             <form>
-            ${command.alert ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="alert alert-${command.alert_type}" role="alert">${command.alert}</div>` : ''}
+            ${command.alert ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="alert alert-${command.alert_type}" role="alert">${command.alert}</div>` : ''}
             <fieldset class="form-group">
                 <input type="hidden" name="command_node" value="${command.node}"/>
                 <input type="hidden" name="command_jid" value="${command.jid}"/>
@@ -32825,7 +33267,7 @@ const action_map = {
                 ${command.fields}
             </fieldset>
             <fieldset>
-                ${command.actions.map(action => lit__WEBPACK_IMPORTED_MODULE_1__.html`<input data-action="${action}"
+                ${command.actions.map(action => (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<input data-action="${action}"
                         @click=${ev => el.executeAction(ev)}
                         type="button"
                         class="btn btn-primary"
@@ -32856,7 +33298,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ad_hoc_command_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ad-hoc-command-form.js */ "./src/plugins/adhoc-views/templates/ad-hoc-command-form.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, command) => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, command) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <li class="room-item list-group-item">
         <div class="available-chatroom d-flex flex-row">
             <a class="open-room available-room w-100"
@@ -32901,9 +33343,9 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_fetch_commands = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('List available commands');
   const i18n_jid_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('XMPP Address');
   const i18n_no_commands_found = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('No commands found');
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`
-        ${el.alert ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<div class="alert alert-${el.alert_type}" role="alert">${el.alert}</div>` : ''}
-        ${el.note ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<p class="form-help">${el.note}</p>` : ''}
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
+        ${el.alert ? (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<div class="alert alert-${el.alert_type}" role="alert">${el.alert}</div>` : ''}
+        ${el.note ? (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<p class="form-help">${el.note}</p>` : ''}
 
         <form class="converse-form" @submit=${el.fetchCommands}>
             <fieldset class="form-group">
@@ -32919,9 +33361,9 @@ __webpack_require__.r(__webpack_exports__);
                 </label>
             </fieldset>
             <fieldset class="form-group">
-                ${el.fetching ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__["default"])() : lit__WEBPACK_IMPORTED_MODULE_4__.html`<input type="submit" class="btn btn-primary" value="${i18n_fetch_commands}">`}
+                ${el.fetching ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__["default"])() : (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<input type="submit" class="btn btn-primary" value="${i18n_fetch_commands}">`}
             </fieldset>
-            ${el.view === 'list-commands' ? lit__WEBPACK_IMPORTED_MODULE_4__.html`
+            ${el.view === 'list-commands' ? (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
             <fieldset class="form-group">
                 <ul class="list-group">
                     <li class="list-group-item active">${el.commands.length ? i18n_commands_found : i18n_no_commands_found}:</li>
@@ -33083,7 +33525,7 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_name = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('The name for this bookmark:');
   const i18n_nick = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('What should your nickname for this groupchat be?');
   const i18n_submit = el.bookmark ? (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Update') : (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Save');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <form class="converse-form chatroom-form" @submit=${ev => el.onBookmarkFormSubmitted(ev)}>
             <legend>${i18n_heading}</legend>
             <fieldset class="form-group">
@@ -33100,7 +33542,7 @@ __webpack_require__.r(__webpack_exports__);
             </fieldset>
             <fieldset class="form-group">
                 <input class="btn btn-primary" type="submit" value="${i18n_submit}">
-                    ${el.bookmark ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<input class="btn btn-secondary button-remove" type="button" value="${i18n_remove}" @click=${ev => el.removeBookmark(ev)}>` : ''}
+                    ${el.bookmark ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<input class="btn btn-secondary button-remove" type="button" value="${i18n_remove}" @click=${ev => el.removeBookmark(ev)}>` : ''}
             </fieldset>
         </form>
     `;
@@ -33129,7 +33571,7 @@ __webpack_require__.r(__webpack_exports__);
   const jid = bm.get('jid');
   const info_remove_bookmark = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Unbookmark this groupchat');
   const open_title = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to open this groupchat');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="list-item room-item available-chatroom d-flex flex-row" data-room-jid="${jid}">
             <a class="list-item-link open-room w-100" data-room-jid="${jid}"
                 title="${open_title}"
@@ -33175,7 +33617,7 @@ const filterBookmark = (b, text) => b.get('name')?.includes(text) || b.get('jid'
     bookmarks
   } = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__._converse;
   const shown_bookmarks = filter_text ? bookmarks.filter(b => filterBookmark(b, filter_text)) : bookmarks;
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <form class="converse-form bookmarks-filter">
             <div class="btn-group w-100">
                 <input
@@ -33339,7 +33781,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class BookmarkFormModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   renderModal() {
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
             <converse-muc-bookmark-form class="muc-form-container" jid="${this.jid}">
             </converse-muc-bookmark-form>`;
   }
@@ -33376,7 +33818,7 @@ __webpack_require__.r(__webpack_exports__);
 class BookmarkListModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   renderModal() {
     // eslint-disable-line class-methods-use-this
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-bookmarks></converse-bookmarks>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-bookmarks></converse-bookmarks>`;
   }
   getModalTitle() {
     // eslint-disable-line class-methods-use-this
@@ -33626,27 +34068,27 @@ function shouldShowChat(c) {
   const view_mode = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('view_mode');
   const connection = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse?.connection;
   const logged_out = !connection?.connected || !connection?.authenticated || connection?.disconnecting;
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
-        ${!logged_out && view_mode === 'overlayed' ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-minimized-chats></converse-minimized-chats>` : ''}
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+        ${!logged_out && view_mode === 'overlayed' ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<converse-minimized-chats></converse-minimized-chats>` : ''}
         ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_1__.repeat)(chatboxes.filter(shouldShowChat), m => m.get('jid'), m => {
     if (m.get('type') === CONTROLBOX_TYPE) {
-      return lit__WEBPACK_IMPORTED_MODULE_0__.html`
-                    ${view_mode === 'overlayed' ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-controlbox-toggle class="${!m.get('closed') ? 'hidden' : ''}"></converse-controlbox-toggle>` : ''}
+      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+                    ${view_mode === 'overlayed' ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<converse-controlbox-toggle class="${!m.get('closed') ? 'hidden' : ''}"></converse-controlbox-toggle>` : ''}
                     <converse-controlbox
                         id="controlbox"
                         class="chatbox ${view_mode === 'overlayed' && m.get('closed') ? 'hidden' : ''} ${logged_out ? 'logged-out' : ''}"
                         style="${m.get('width') ? `width: ${m.get('width')}` : ''}"></converse-controlbox>
                 `;
     } else if (m.get('type') === CHATROOMS_TYPE) {
-      return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
                     <converse-muc jid="${m.get('jid')}" class="chatbox chatroom"></converse-muc>
                 `;
     } else if (m.get('type') === HEADLINES_TYPE) {
-      return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
                     <converse-headlines jid="${m.get('jid')}" class="chatbox headlines"></converse-headlines>
                 `;
     } else {
-      return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
                     <converse-chat jid="${m.get('jid')}" class="chatbox"></converse-chat>
                 `;
     }
@@ -34398,9 +34840,9 @@ __webpack_require__.r(__webpack_exports__);
   const show_send_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('show_send_button');
   const show_spoiler_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('visible_toolbar_buttons').spoiler;
   const show_toolbar = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('show_toolbar');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        ${o.model.ui.get('scrolled') && o.model.get('num_unread') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="new-msgs-indicator" @click=${ev => o.viewUnreadMessages(ev)}>▼ ${unread_msgs} ▼</div>` : ''}
-        ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('show_toolbar') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
+        ${o.model.ui.get('scrolled') && o.model.get('num_unread') ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="new-msgs-indicator" @click=${ev => o.viewUnreadMessages(ev)}>▼ ${unread_msgs} ▼</div>` : ''}
+        ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('show_toolbar') ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
             <converse-chat-toolbar
                 class="chat-toolbar no-text-select"
                 .model=${o.model}
@@ -34440,20 +34882,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)("The User's Profile Image");
-  const avatar = lit__WEBPACK_IMPORTED_MODULE_3__.html`<span title="${i18n_profile}">
+  const avatar = (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<span title="${i18n_profile}">
         <converse-avatar
             class="avatar chat-msg__avatar"
             .data=${o.model.vcard?.attributes}
             nonce=${o.model.vcard?.get('vcard_updated')}
             height="40" width="40"></converse-avatar></span>`;
   const display_name = o.model.getDisplayName();
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <div class="chatbox-title ${o.status ? '' : "chatbox-title--no-desc"}">
             <div class="chatbox-title--row">
-                ${!_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.api.settings.get("singleton") ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
-                ${o.type !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<a class="show-msg-author-modal" @click=${o.showUserDetailsModal}>${avatar}</a>` : ''}
+                ${!_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.api.settings.get("singleton") ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
+                ${o.type !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<a class="show-msg-author-modal" @click=${o.showUserDetailsModal}>${avatar}</a>` : ''}
                 <div class="chatbox-title__text" title="${o.jid}">
-                    ${o.type !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<a class="user show-msg-author-modal" @click=${o.showUserDetailsModal}>${display_name}</a>` : display_name}
+                    ${o.type !== _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<a class="user show-msg-author-modal" @click=${o.showUserDetailsModal}>${display_name}</a>` : display_name}
                 </div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
@@ -34461,7 +34903,7 @@ __webpack_require__.r(__webpack_exports__);
                 ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_2__.getStandaloneButtons)(o.heading_buttons_promise), '')}
             </div>
         </div>
-        ${o.status ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p class="chat-head__desc">${o.status}</p>` : ''}
+        ${o.status ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p class="chat-head__desc">${o.status}</p>` : ''}
     `;
 });
 
@@ -34482,10 +34924,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core */ "./src/headless/core.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="flyout box-flyout">
         <converse-dragresize></converse-dragresize>
-        ${o.model ? lit__WEBPACK_IMPORTED_MODULE_0__.html`
+        ${o.model ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
             <converse-chat-heading jid="${o.jid}" class="chat-head chat-head-chatbox row no-gutters"></converse-chat-heading>
             <div class="chat-body">
                 <div class="chat-content ${o.show_send_button ? 'chat-content-sendbutton' : ''}" aria-live="polite">
@@ -34493,7 +34935,7 @@ __webpack_require__.r(__webpack_exports__);
                         class="chat-content__messages"
                         jid="${o.jid}"></converse-chat-content>
 
-                    ${o.show_help_messages ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="chat-content__help">
+                    ${o.show_help_messages ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="chat-content__help">
                             <converse-chat-help
                                 .model=${o.model}
                                 .messages=${o.help_messages}
@@ -34533,7 +34975,7 @@ __webpack_require__.r(__webpack_exports__);
   const label_message = o.composing_spoiler ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Hidden message') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Message');
   const label_spoiler_hint = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Optional hint');
   const show_send_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('show_send_button');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <form class="sendXMPPMessage">
             <input type="text"
                    enterkeyhint="send"
@@ -35131,18 +35573,18 @@ function whenNotConnected(o) {
     return (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
   }
   if (o['active-form'] === 'register') {
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-register-panel></converse-register-panel>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-register-panel></converse-register-panel>`;
   }
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-login-form id="converse-login-panel" class="controlbox-pane fade-in row no-gutters"></converse-login-form>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-login-form id="converse-login-panel" class="controlbox-pane fade-in row no-gutters"></converse-login-form>`;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const o = el.model.toJSON();
   const sticky_controlbox = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('sticky_controlbox');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="flyout box-flyout">
             <converse-dragresize></converse-dragresize>
             <div class="chat-head controlbox-head">
-                ${sticky_controlbox ? '' : lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                ${sticky_controlbox ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
                         <a class="chatbox-btn close-chatbox-button" @click=${ev => el.close(ev)}>
                             <converse-icon class="fa fa-times" size="1em"></converse-icon>
                         </a>
@@ -35150,11 +35592,11 @@ function whenNotConnected(o) {
             </div>
             <div class="controlbox-panes">
                 <div class="controlbox-pane">
-                    ${o.connected ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                    ${o.connected ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
                             <converse-user-profile></converse-user-profile>
                             <converse-headlines-feeds-list class="controlbox-section"></converse-headlines-feeds-list>
                             <div id="chatrooms" class="controlbox-section"><converse-rooms-list></converse-rooms-list></div>
-                            ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get("authentication") === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.ANONYMOUS ? '' : lit__WEBPACK_IMPORTED_MODULE_2__.html`<div id="converse-roster" class="controlbox-section"><converse-roster></converse-roster></div>`}` : whenNotConnected(o)}
+                            ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get("authentication") === _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__._converse.ANONYMOUS ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div id="converse-roster" class="controlbox-section"><converse-roster></converse-roster></div>`}` : whenNotConnected(o)}
                 </div>
             </div>
         </div>`;
@@ -35190,7 +35632,7 @@ __webpack_require__.r(__webpack_exports__);
 const trust_checkbox = checked => {
   const i18n_hint_trusted = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('To improve performance, we cache your data in this browser. ' + 'Uncheck this box if this is a public computer or if you want your data to be deleted when you log out. ' + "It's important that you explicitly log out, otherwise not all cached data might be deleted. " + 'Please note, when using an untrusted device, OMEMO encryption is NOT available.');
   const i18n_trusted = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This is a trusted device');
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
         <div class="form-group form-check login-trusted">
             <input
                 id="converse-login-trusted"
@@ -35216,7 +35658,7 @@ const connection_url_input = () => {
   const i18n_connection_url = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Connection URL');
   const i18n_form_help = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('HTTP or websocket URL that is used to connect to your XMPP server');
   const i18n_placeholder = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('e.g. wss://example.org/xmpp-websocket');
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
         <div class="form-group fade-in">
             <label for="converse-conn-url">${i18n_connection_url}</label>
             <p class="form-help instructions">${i18n_form_help}</p>
@@ -35232,7 +35674,7 @@ const connection_url_input = () => {
 };
 const password_input = () => {
   const i18n_password = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Password');
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
         <div class="form-group">
             <label for="converse-login-password">${i18n_password}</label>
             <input
@@ -35250,7 +35692,7 @@ const password_input = () => {
 const tplRegisterLink = () => {
   const i18n_create_account = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Create an account');
   const i18n_hint_no_account = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Don't have a chat account?");
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
         <fieldset class="switch-form">
             <p>${i18n_hint_no_account}</p>
             <p>
@@ -35270,7 +35712,7 @@ const auth_fields = el => {
   const default_domain = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('default_domain');
   const placeholder_username = (locked_domain || default_domain) && (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Username') || (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('user@domain');
   const show_trust_checkbox = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('allow_user_trust_override');
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
         <div class="form-group">
             <label for="converse-login-jid">${i18n_xmpp_address}:</label>
             <input
@@ -35298,10 +35740,10 @@ const form_fields = el => {
   const authentication = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('authentication');
   const i18n_disconnected = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Disconnected');
   const i18n_anon_login = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Click here to log in anonymously');
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
         ${authentication == _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.LOGIN || authentication == _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.EXTERNAL ? auth_fields(el) : ''}
-        ${authentication == _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ANONYMOUS ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<input class="btn btn-primary login-anon" type="submit" value="${i18n_anon_login}" />` : ''}
-        ${authentication == _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.PREBIND ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<p>${i18n_disconnected}</p>` : ''}
+        ${authentication == _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ANONYMOUS ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<input class="btn btn-primary login-anon" type="submit" value="${i18n_anon_login}" />` : ''}
+        ${authentication == _converse_headless_shared_constants__WEBPACK_IMPORTED_MODULE_2__.PREBIND ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<p>${i18n_disconnected}</p>` : ''}
     `;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
@@ -35312,7 +35754,7 @@ const form_fields = el => {
     feedback_class = _constants_js__WEBPACK_IMPORTED_MODULE_3__.CONNECTION_STATUS_CSS_CLASS[connection_status];
   }
   const conn_feedback_message = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.connfeedback.get('message');
-  return lit__WEBPACK_IMPORTED_MODULE_6__.html` <converse-brand-heading></converse-brand-heading>
+  return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)` <converse-brand-heading></converse-brand-heading>
         <form id="converse-login" class="converse-form" method="post" @submit=${el.onLoginFormSubmitted}>
             <div class="conn-feedback fade-in ${!pretty_status ? 'hidden' : feedback_class}">
                 <p class="feedback-subject">${pretty_status}</p>
@@ -35342,7 +35784,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (jid => {
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-icon size="1em" class="fa fa-arrow-left" @click=${() => (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.navigateToControlBox)(jid)}></converse-icon>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<converse-icon size="1em" class="fa fa-arrow-left" @click=${() => (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.navigateToControlBox)(jid)}></converse-icon>`;
 });
 
 /***/ }),
@@ -35366,7 +35808,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const i18n_toggle = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.connection.connected() ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Chat Contacts') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Toggle chat');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<a id="toggle-controlbox" class="toggle-controlbox ${o.hide ? 'hidden' : ''}" @click=${o.onClick}><span class="toggle-feedback">${i18n_toggle}</span></a>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<a id="toggle-controlbox" class="toggle-controlbox ${o.hide ? 'hidden' : ''}" @click=${o.onClick}><span class="toggle-feedback">${i18n_toggle}</span></a>`;
 });
 
 /***/ }),
@@ -35797,7 +36239,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./src/plugins/dragresize/utils.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="dragresize dragresize-top" @mousedown="${_utils_js__WEBPACK_IMPORTED_MODULE_1__.onStartVerticalResize}"></div>
     <div class="dragresize dragresize-topleft" @mousedown="${_utils_js__WEBPACK_IMPORTED_MODULE_1__.onStartDiagonalResize}"></div>
     <div class="dragresize dragresize-left" @mousedown="${_utils_js__WEBPACK_IMPORTED_MODULE_1__.onStartHorizontalResize}"></div>
@@ -36166,10 +36608,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="chatbox-title ${o.status ? '' : "chatbox-title--no-desc"}">
             <div class="chatbox-title--row">
-                ${!_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.api.settings.get("singleton") ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
+                ${!_converse_headless_core__WEBPACK_IMPORTED_MODULE_0__._converse.api.settings.get("singleton") ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
                 <div class="chatbox-title__text" title="${o.jid}">${o.display_name}</div>
             </div>
             <div class="chatbox-title__buttons row no-gutters">
@@ -36177,7 +36619,7 @@ __webpack_require__.r(__webpack_exports__);
                 ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_3__.getStandaloneButtons)(o.heading_buttons_promise), '')}
             </div>
         </div>
-        ${o.status ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<p class="chat-head__desc">${o.status}</p>` : ''}
+        ${o.status ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="chat-head__desc">${o.status}</p>` : ''}
     `;
 });
 
@@ -36202,7 +36644,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function tplHeadlinesFeedsListItem(el, feed) {
   const open_title = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to open this server message');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="list-item controlbox-padded d-flex flex-row"
             data-headline-jid="${feed.get('jid')}">
         <a class="list-item-link open-headline available-room w-100"
@@ -36216,7 +36658,7 @@ function tplHeadlinesFeedsListItem(el, feed) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const feeds = el.model.filter(m => m.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.HEADLINES_TYPE);
   const heading_headline = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Announcements');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="controlbox-section" id="headline">
             <div class="d-flex controlbox-padded ${feeds.length ? '' : 'hidden'}">
                 <span class="w-100 controlbox-heading controlbox-heading--headline">${heading_headline}</span>
@@ -36246,10 +36688,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => lit__WEBPACK_IMPORTED_MODULE_1__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (model => (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
     <div class="flyout box-flyout">
         <converse-dragresize></converse-dragresize>
-        ${model ? lit__WEBPACK_IMPORTED_MODULE_1__.html`
+        ${model ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
             <converse-headlines-heading jid="${model.get('jid')}" class="chat-head chat-head-chatbox row no-gutters">
             </converse-headlines-heading>
             <div class="chat-body">
@@ -36417,7 +36859,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   return el.model.get('fetching') ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
     'classes': 'hor_centered'
-  }) : lit_html_js__WEBPACK_IMPORTED_MODULE_2__.html`<a @click="${ev => el.fetchMissingMessages(ev)}" title="${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Click to load missing messages')}">
+  }) : (0,lit_html_js__WEBPACK_IMPORTED_MODULE_2__.html)`<a @click="${ev => el.fetchMissingMessages(ev)}" title="${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Click to load missing messages')}">
             <div class="message mam-placeholder"></div>
         </a>`;
 });
@@ -36448,7 +36890,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function getPlaceholderTemplate(message, tpl) {
   if (message instanceof _converse_headless_plugins_mam_placeholder_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
-    return lit_html_js__WEBPACK_IMPORTED_MODULE_4__.html`<converse-mam-placeholder .model=${message}></converse-mam-placeholder>`;
+    return (0,lit_html_js__WEBPACK_IMPORTED_MODULE_4__.html)`<converse-mam-placeholder .model=${message}></converse-mam-placeholder>`;
   } else {
     return tpl;
   }
@@ -36673,13 +37115,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<div id="minimized-chats" class="${o.chats.length ? '' : 'hidden'}">
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div id="minimized-chats" class="${o.chats.length ? '' : 'hidden'}">
         <a id="toggle-minimized-chats" class="row no-gutters" @click=${o.toggle}>
             ${o.num_minimized} ${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Minimized')}
             <span class="unread-message-count ${!o.num_unread ? 'unread-message-count-hidden' : ''}" href="#">${o.num_unread}</span>
         </a>
         <div class="flyout minimized-chats-flyout row no-gutters ${o.collapsed ? 'hidden' : ''}">
-            ${o.chats.map(chat => lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-minimized-chat
+            ${o.chats.map(chat => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<converse-minimized-chat
                         .model=${chat}
                         title=${chat.getDisplayName()}
                         type=${chat.get('type')}
@@ -36714,10 +37156,10 @@ __webpack_require__.r(__webpack_exports__);
   } else {
     close_color = "var(--chat-head-text-color)";
   }
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="chat-head-${o.type} chat-head row no-gutters">
         <a class="restore-chat w-100 align-self-center" title="${i18n_tooltip}" @click=${o.restore}>
-            ${o.num_unread ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<span class="message-count badge badge-light">${o.num_unread}</span>` : ''}
+            ${o.num_unread ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<span class="message-count badge badge-light">${o.num_unread}</span>` : ''}
             ${o.title}
         </a>
         <a class="chatbox-btn close-chatbox-button" @click=${o.close}>
@@ -37347,7 +37789,7 @@ const BaseModal = _converse_skeletor_src_view_js__WEBPACK_IMPORTED_MODULE_5__.Vi
     this.el.addEventListener('hide.bs.modal', () => this.onHide(), false);
   },
   onHide() {
-    u.removeClass('selected', this.trigger_el);
+    (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.removeClass)('selected', this.trigger_el);
     !this.persistent && _converse_headless_shared_api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].modal.remove(this);
   },
   insertIntoDOM() {
@@ -37358,8 +37800,8 @@ const BaseModal = _converse_skeletor_src_view_js__WEBPACK_IMPORTED_MODULE_5__.Vi
     ev.stopPropagation();
     ev.preventDefault();
     sizzle__WEBPACK_IMPORTED_MODULE_3___default()('.nav-link.active', this.el).forEach(el => {
-      removeClass('active', this.el.querySelector(el.getAttribute('href')));
-      removeClass('active', el);
+      (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.removeClass)('active', this.el.querySelector(el.getAttribute('href')));
+      (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.removeClass)('active', el);
     });
     (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.addClass)('active', ev.target);
     (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.addClass)('active', this.el.querySelector(ev.target.getAttribute('href')));
@@ -37387,7 +37829,7 @@ const BaseModal = _converse_skeletor_src_view_js__WEBPACK_IMPORTED_MODULE_5__.Vi
     if (ev) {
       ev.preventDefault();
       this.trigger_el = ev.target;
-      !hasClass('chat-image', this.trigger_el) && (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.addClass)('selected', this.trigger_el);
+      !(0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.hasClass)('chat-image', this.trigger_el) && (0,_utils_html_js__WEBPACK_IMPORTED_MODULE_6__.addClass)('selected', this.trigger_el);
     }
     this.modal.show();
   }
@@ -37594,10 +38036,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="modal-body">
         <span class="modal-alert"></span>
-        ${o.messages.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
+        ${o.messages.map(message => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<p>${message}</p>`)}
     </div>`);
 
 /***/ }),
@@ -37618,8 +38060,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 
-const modal_close_button = lit__WEBPACK_IMPORTED_MODULE_1__.html`<button type="button" class="btn btn-secondary" data-dismiss="modal">${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Close')}</button>`;
-const modal_header_close_button = lit__WEBPACK_IMPORTED_MODULE_1__.html`<button type="button" class="close" data-dismiss="modal" aria-label="${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Close')}"><span aria-hidden="true">×</span></button>`;
+const modal_close_button = (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<button type="button" class="btn btn-secondary" data-dismiss="modal">${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Close')}</button>`;
+const modal_header_close_button = (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<button type="button" class="close" data-dismiss="modal" aria-label="${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Close')}"><span aria-hidden="true">×</span></button>`;
 
 /***/ }),
 
@@ -37636,7 +38078,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="alert ${o.type}" role="alert"><p>${o.message}</p></div>`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="alert ${o.type}" role="alert"><p>${o.message}</p></div>`);
 
 /***/ }),
 
@@ -37660,7 +38102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const alert = el.model?.get('alert');
   const level = el.model?.get('level') ?? '';
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="modal-dialog" role="document" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
                 <div class="modal-header ${level}">
@@ -37676,7 +38118,7 @@ __webpack_require__.r(__webpack_exports__);
                     </span>
                     ${el.renderModal?.() ?? ''}
                 </div>
-                ${el.renderModalFooter?.() ?? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>`}
+                ${el.renderModalFooter?.() ?? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="modal-footer">${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_2__.modal_close_button}</div>`}
             </div>
         </div>
     `;
@@ -37699,7 +38141,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18n */ "./src/i18n/index.js");
 
 
-const tplField = f => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+const tplField = f => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="form-group">
         <label>
             ${f.label || ''}
@@ -37712,10 +38154,10 @@ const tplField = f => lit__WEBPACK_IMPORTED_MODULE_0__.html`
     </div>
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <form class="converse-form converse-form--modal confirm" action="#" @submit=${ev => el.onConfimation(ev)}>
             <div class="form-group">
-                ${el.model.get('messages')?.map(message => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p>${message}</p>`)}
+                ${el.model.get('messages')?.map(message => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<p>${message}</p>`)}
             </div>
             ${el.model.get('fields')?.map(f => tplField(f))}
             <div class="form-group">
@@ -38742,7 +39184,7 @@ class ModeratorToolsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODUL
     this.id = "converse-modtools-modal";
   }
   renderModal() {
-    return lit__WEBPACK_IMPORTED_MODULE_4__.html`<converse-modtools jid=${this.jid} affiliation=${this.affiliation}></converse-modtools>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<converse-modtools jid=${this.jid} affiliation=${this.affiliation}></converse-modtools>`;
   }
   getModalTitle() {
     // eslint-disable-line class-methods-use-this
@@ -39068,7 +39510,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class MUCNicknameModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   renderModal() {
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-muc-nickname-form jid="${this.model.get('jid')}"></converse-muc-nickname-form>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-muc-nickname-form jid="${this.model.get('jid')}"></converse-muc-nickname-form>`;
   }
   getModalTitle() {
     // eslint-disable-line class-methods-use-this
@@ -39190,7 +39632,7 @@ __webpack_require__.r(__webpack_exports__);
 const nickname_input = el => {
   const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname');
   const i18n_required_field = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This field is required');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
             <div class="form-group" >
                 <label for="nickname">${i18n_nickname}:</label>
                 <input type="text"
@@ -39212,11 +39654,11 @@ const nickname_input = el => {
   const label_room_address = muc_domain ? (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Groupchat name') : (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Groupchat address');
   const muc_roomid_policy_error_msg = el.muc_roomid_policy_error_msg;
   const muc_roomid_policy_hint = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('muc_roomid_policy_hint');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <form class="converse-form add-chatroom" @submit=${ev => el.openChatRoom(ev)}>
             <div class="form-group">
                 <label for="chatroom">${label_room_address}:</label>
-                ${muc_roomid_policy_error_msg ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<label class="roomid-policy-error">${muc_roomid_policy_error_msg}</label>` : ''}
+                ${muc_roomid_policy_error_msg ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<label class="roomid-policy-error">${muc_roomid_policy_error_msg}</label>` : ''}
                 <converse-autocomplete
                     .getAutoCompleteList=${_search_js__WEBPACK_IMPORTED_MODULE_5__.getAutoCompleteList}
                     ?autofocus=${true}
@@ -39227,7 +39669,7 @@ const nickname_input = el => {
                     name="chatroom">
                 </converse-autocomplete>
             </div>
-            ${muc_roomid_policy_hint ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<div class="form-group">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(muc_roomid_policy_hint, {
+            ${muc_roomid_policy_hint ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="form-group">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_4__.unsafeHTML)(dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(muc_roomid_policy_hint, {
     'ALLOWED_TAGS': ['b', 'br', 'em']
   }))}</div>` : ''}
             ${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('locked_muc_nickname') ? nickname_input(el) : ''}
@@ -39256,7 +39698,7 @@ __webpack_require__.r(__webpack_exports__);
 const subject = o => {
   const i18n_topic = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Topic');
   const i18n_topic_author = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Topic author');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <p class="room-info"><strong>${i18n_topic}</strong>: <converse-rich-text text=${o.subject.text} render_styling></converse-rich-text></p>
         <p class="room-info"><strong>${i18n_topic_author}</strong>: ${o.subject && o.subject.author}</p>
     `;
@@ -39296,7 +39738,7 @@ const subject = o => {
   const i18n_semi_anon_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Only moderators can see your XMPP address');
   const i18n_temporary = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Temporary');
   const i18n_temporary_help = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat will disappear once the last person leaves');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="room-info">
             <p class="room-info"><strong>${i18n_name}</strong>: ${o.name}</p>
             <p class="room-info"><strong>${i18n_address}</strong>: <converse-rich-text text="xmpp:${o.jid}?join"></converse-rich-text></p>
@@ -39306,19 +39748,19 @@ const subject = o => {
             <p class="room-info"><strong>${i18n_features}</strong>:
                 <div class="chatroom-features">
                 <ul class="features-list">
-                    ${features.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon>${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
-                    ${features.unsecured ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon>${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
-                    ${features.hidden ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon>${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
-                    ${features.public_room ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon>${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
-                    ${features.membersonly ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon>${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
-                    ${features.open ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon>${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
-                    ${features.persistent ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon>${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
-                    ${features.temporary ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake"></converse-icon>${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
-                    ${features.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon>${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
-                    ${features.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon>${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
-                    ${features.moderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon>${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
-                    ${features.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon>${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
-                    ${features.mam_enabled ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon>${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
+                    ${features.passwordprotected ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-lock"></converse-icon>${i18n_password_protected} - <em>${i18n_password_help}</em></li>` : ''}
+                    ${features.unsecured ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-unlock"></converse-icon>${i18n_no_password_required} - <em>${i18n_no_pass_help}</em></li>` : ''}
+                    ${features.hidden ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-eye-slash"></converse-icon>${i18n_hidden} - <em>${i18n_hidden_help}</em></li>` : ''}
+                    ${features.public_room ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-eye"></converse-icon>${i18n_public} - <em>${o.__('This groupchat is publicly searchable')}</em></li>` : ''}
+                    ${features.membersonly ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-address-book"></converse-icon>${i18n_members_only} - <em>${i18n_members_help}</em></li>` : ''}
+                    ${features.open ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-globe"></converse-icon>${i18n_open} - <em>${i18n_open_help}</em></li>` : ''}
+                    ${features.persistent ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-save"></converse-icon>${i18n_persistent} - <em>${i18n_persistent_help}</em></li>` : ''}
+                    ${features.temporary ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-snowflake"></converse-icon>${i18n_temporary} - <em>${i18n_temporary_help}</em></li>` : ''}
+                    ${features.nonanonymous ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-id-card"></converse-icon>${i18n_not_anonymous} - <em>${i18n_not_anonymous_help}</em></li>` : ''}
+                    ${features.semianonymous ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-user-secret"></converse-icon>${i18n_semi_anon} - <em>${i18n_semi_anon_help}</em></li>` : ''}
+                    ${features.moderated ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-gavel"></converse-icon>${i18n_moderated} - <em>${i18n_moderated_help}</em></li>` : ''}
+                    ${features.unmoderated ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-info-circle"></converse-icon>${i18n_not_moderated} - <em>${i18n_not_moderated_help}</em></li>` : ''}
+                    ${features.mam_enabled ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="feature" ><converse-icon size="1em" class="fa fa-database"></converse-icon>${i18n_archiving} - <em>${i18n_archiving_help}</em></li>` : ''}
                 </ul>
                 </div>
             </p>
@@ -39348,11 +39790,11 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_error_message = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Please enter a valid XMPP address');
   const i18n_invite_label = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address');
   const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Optional reason for the invitation');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <form class="converse-form" @submit=${ev => el.submitInviteForm(ev)}>
             <div class="form-group">
                 <label class="clearfix" for="invitee_jids">${i18n_invite_label}:</label>
-                ${el.model.get('invalid_invite_jid') ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="error error-feedback">${i18n_error_message}</div>` : ''}
+                ${el.model.get('invalid_invite_jid') ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="error error-feedback">${i18n_error_message}</div>` : ''}
                 <converse-autocomplete
                     .getAutoCompleteList=${() => el.getAutoCompleteList()}
                     ?autofocus=${true}
@@ -39413,8 +39855,8 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_add_to_contacts = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add to Contacts');
   const can_see_real_jids = muc.features.get('nonanonymous') || muc.getOwnRole() === 'moderator';
   const not_me = jid != _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__._converse.bare_jid;
-  const add_to_contacts = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.contacts.get(jid).then(contact => !contact && not_me && can_see_real_jids).then(add => add ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li><button class="btn btn-primary" type="button" @click=${() => el.addToContacts()}>${i18n_add_to_contacts}</button></li>` : '');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  const add_to_contacts = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.contacts.get(jid).then(contact => !contact && not_me && can_see_real_jids).then(add => add ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<li><button class="btn btn-primary" type="button" @click=${() => el.addToContacts()}>${i18n_add_to_contacts}</button></li>` : '');
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="row">
             <div class="col-auto">
                 <converse-avatar
@@ -39426,42 +39868,42 @@ __webpack_require__.r(__webpack_exports__);
             <div class="col">
                 <ul class="occupant-details">
                     <li>
-                        ${nick ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${nick}</div>` : ''}
+                        ${nick ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nickname')}:</strong></div><div class="row">${nick}</div>` : ''}
                     </li>
                     <li>
-                        ${jid ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${jid}</div>` : ''}
+                        ${jid ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('XMPP Address')}:</strong></div><div class="row">${jid}</div>` : ''}
                     </li>
                     <li>
                         <div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Affiliation')}:</strong></div>
                         <div class="row">${affiliation}&nbsp;
-                            ${may_moderate ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                            ${may_moderate ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
                                 <a href="#"
                                 data-form="affiliation-form"
                                 class="toggle-form right"
                                 color="var(--subdued-color)"
                                 @click=${ev => el.toggleForm(ev)}><converse-icon class="fa fa-wrench" size="1em"></converse-icon>
                                 </a>
-                                ${el.show_affiliation_form ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-affiliation-form jid=${jid} .muc=${muc} affiliation=${affiliation}></converse-muc-affiliation-form>` : ''}` : ''}
+                                ${el.show_affiliation_form ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-muc-affiliation-form jid=${jid} .muc=${muc} affiliation=${affiliation}></converse-muc-affiliation-form>` : ''}` : ''}
                         </div>
                     </li>
                     <li>
                         <div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Role')}:</strong></div>
                         <div class="row">${role}&nbsp;
-                            ${may_moderate && role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                            ${may_moderate && role ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
                                 <a href="#"
                                    data-form="row-form"
                                    class="toggle-form right"
                                    color="var(--subdued-color)"
                                    @click=${ev => el.toggleForm(ev)}><converse-icon class="fa fa-wrench" size="1em"></converse-icon>
                                 </a>
-                                ${el.show_role_form ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-role-form jid=${jid} .muc=${muc} role=${role}></converse-muc-role-form>` : ''}` : ''}
+                                ${el.show_role_form ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-muc-role-form jid=${jid} .muc=${muc} role=${role}></converse-muc-role-form>` : ''}` : ''}
                         </div>
                     </li>
                     <li>
-                        ${hats ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${hats}</div>` : ''}
+                        ${hats ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hats')}:</strong></div><div class="row">${hats}</div>` : ''}
                     </li>
                     <li>
-                        ${occupant_id ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${occupant_id}</div>` : ''}
+                        ${occupant_id ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="row"><strong>${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Occupant Id')}:</strong></div><div class="row">${occupant_id}</div>` : ''}
                     </li>
                     ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_3__.until)(add_to_contacts, '')}
                 </ul>
@@ -40133,15 +40575,15 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reason');
   const occupant = el.muc.getOwnOccupant();
   const assignable_affiliations = (0,_converse_headless_plugins_muc_affiliations_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAssignableAffiliations)(occupant);
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <form class="affiliation-form" @submit=${ev => el.assignAffiliation(ev)}>
-            ${el.alert_message ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="alert alert-${el.alert_type}" role="alert">${el.alert_message}</div>` : ''}
+            ${el.alert_message ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="alert alert-${el.alert_type}" role="alert">${el.alert_message}</div>` : ''}
             <div class="form-group">
                 <div class="row">
                     <div class="col">
                         <label><strong>${i18n_new_affiliation}:</strong></label>
                         <select class="custom-select select-affiliation" name="affiliation">
-                            ${assignable_affiliations.map(aff => lit__WEBPACK_IMPORTED_MODULE_1__.html`<option value="${aff}" ?selected=${aff === el.affiliation}>${aff}</option>`)}
+                            ${assignable_affiliations.map(aff => (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<option value="${aff}" ?selected=${aff === el.affiliation}>${aff}</option>`)}
                         </select>
                     </div>
                     <div class="col">
@@ -40181,7 +40623,7 @@ const {
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.converse.env;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const isodate = dayjs(el.model.get('time')).toISOString();
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="message chat-info message--mep ${el.getExtraMessageClasses()}"
             data-isodate="${isodate}"
             data-type="${el.data_name}"
@@ -40190,13 +40632,13 @@ const {
             <div class="chat-msg__content">
                 <div class="chat-msg__body chat-msg__body--${el.model.get('type')} ${el.model.get('is_delayed') ? 'chat-msg__body--delayed' : ''}">
                     <div class="chat-info__message">
-                        ${el.isRetracted() ? el.renderRetraction() : lit__WEBPACK_IMPORTED_MODULE_1__.html`
+                        ${el.isRetracted() ? el.renderRetraction() : (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
                             <converse-rich-text
                                 .mentions=${el.model.get('references')}
                                 render_styling
                                 text=${el.model.getMessageText()}>
                             </converse-rich-text>
-                            ${el.model.get('reason') ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<q class="reason"><converse-rich-text text=${el.model.get('reason')}></converse-rich-text></q>` : ``}
+                            ${el.model.get('reason') ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<q class="reason"><converse-rich-text text=${el.model.get('reason')}></converse-rich-text></q>` : ``}
                         `}
                     </div>
                     <converse-message-actions
@@ -40232,7 +40674,7 @@ __webpack_require__.r(__webpack_exports__);
   const label_message = o.composing_spoiler ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Hidden message') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Message');
   const label_spoiler_hint = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Optional hint');
   const show_send_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('show_send_button');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <form class="setNicknameButtonForm hidden">
             <input type="submit" class="btn btn-primary" name="join" value="Join"/>
         </form>
@@ -40295,21 +40737,21 @@ function getAffiliationHelpText(aff) {
     return (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("To ban a user, you give them the affiliation of \"outcast\".");
   }
 }
-const role_option = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const role_option = o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <option value="${o.item || ''}"
             ?selected=${o.item === o.role}
             title="${getRoleHelpText(o.item)}">${o.item}</option>
 `;
-const affiliation_option = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const affiliation_option = o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <option value="${o.item || ''}"
             ?selected=${o.item === o.affiliation}
             title="${getAffiliationHelpText(o.item)}">${o.item}</option>
 `;
-const tplRoleFormToggle = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const tplRoleFormToggle = o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <a href="#" data-form="converse-muc-role-form" class="toggle-form right" color="var(--subdued-color)" @click=${o.toggleForm}>
         <converse-icon class="fa fa-wrench" size="1em"></converse-icon>
     </a>`;
-const tplRoleListItem = (el, o) => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const tplRoleListItem = (el, o) => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <li class="list-group-item" data-nick="${o.item.nick}">
         <ul class="list-group">
             <li class="list-group-item active">
@@ -40320,16 +40762,16 @@ const tplRoleListItem = (el, o) => lit__WEBPACK_IMPORTED_MODULE_2__.html`
             </li>
             <li class="list-group-item">
                 <div><strong>Role:</strong> ${o.item.role} ${o.assignable_roles.length ? tplRoleFormToggle(o) : ''}</div>
-                ${o.assignable_roles.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-role-form class="hidden" .muc=${el.muc} jid=${o.item.jid} role=${o.item.role}></converse-muc-role-form>` : ''}
+                ${o.assignable_roles.length ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-muc-role-form class="hidden" .muc=${el.muc} jid=${o.item.jid} role=${o.item.role}></converse-muc-role-form>` : ''}
             </li>
         </ul>
     </li>
 `;
-const affiliation_form_toggle = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const affiliation_form_toggle = o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <a href="#" data-form="converse-muc-affiliation-form" class="toggle-form right" color="var(--subdued-color)" @click=${o.toggleForm}>
         <converse-icon class="fa fa-wrench" size="1em"></converse-icon>
     </a>`;
-const affiliation_list_item = (el, o) => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const affiliation_list_item = (el, o) => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <li class="list-group-item" data-nick="${o.item.nick}">
         <ul class="list-group">
             <li class="list-group-item active">
@@ -40340,12 +40782,12 @@ const affiliation_list_item = (el, o) => lit__WEBPACK_IMPORTED_MODULE_2__.html`
             </li>
             <li class="list-group-item">
                 <div><strong>Affiliation:</strong> ${o.item.affiliation} ${o.assignable_affiliations.length ? affiliation_form_toggle(o) : ''}</div>
-                ${o.assignable_affiliations.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-muc-affiliation-form class="hidden" .muc=${el.muc} jid=${o.item.jid} affiliation=${o.item.affiliation}></converse-muc-affiliation-form>` : ''}
+                ${o.assignable_affiliations.length ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-muc-affiliation-form class="hidden" .muc=${el.muc} jid=${o.item.jid} affiliation=${o.item.affiliation}></converse-muc-affiliation-form>` : ''}
             </li>
         </ul>
     </li>
 `;
-const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const tplNavigation = o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <ul class="nav nav-pills justify-content-center">
         <li role="presentation" class="nav-item">
             <a class="nav-link ${o.tab === "affiliations" ? "active" : ""}"
@@ -40377,13 +40819,13 @@ const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
   const i18n_helptext_role = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Roles are assigned to users to grant or deny them certain abilities in a multi-user chat. " + "They're assigned either explicitly or implicitly as part of an affiliation. " + "A role that's not due to an affiliation, is only valid for the duration of the user's session.");
   const i18n_helptext_affiliation = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)("An affiliation is a long-lived entitlement which typically implies a certain role and which " + "grants privileges and responsibilities. For example admins and owners automatically have the " + "moderator role.");
   const show_both_tabs = o.queryable_roles.length && o.queryable_affiliations.length;
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-        ${o.alert_message ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="alert alert-${o.alert_type}" role="alert">${o.alert_message}</div>` : ''}
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
+        ${o.alert_message ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="alert alert-${o.alert_type}" role="alert">${o.alert_message}</div>` : ''}
         ${show_both_tabs ? tplNavigation(o) : ''}
 
         <div class="tab-content">
 
-            ${o.queryable_affiliations.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+            ${o.queryable_affiliations.length ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
             <div class="tab-pane tab-pane--columns ${o.tab === 'affiliations' ? 'active' : ''}" id="affiliations-tabpanel" role="tabpanel" aria-labelledby="affiliations-tab">
                 <form class="converse-form query-affiliation" @submit=${o.queryAffiliation}>
                     <p class="helptext pb-3">${i18n_helptext_affiliation}</p>
@@ -40405,26 +40847,26 @@ const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
                         </div>
                         <div class="row">
                             <div class="col mt-3">
-                                ${Array.isArray(o.users_with_affiliation) && o.users_with_affiliation.length > 5 ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<input class="form-control" .value="${o.affiliations_filter}" @keyup=${o.filterAffiliationResults} type="text" name="filter" placeholder="${i18n_filter}"/>` : ''}
+                                ${Array.isArray(o.users_with_affiliation) && o.users_with_affiliation.length > 5 ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<input class="form-control" .value="${o.affiliations_filter}" @keyup=${o.filterAffiliationResults} type="text" name="filter" placeholder="${i18n_filter}"/>` : ''}
                             </div>
                         </div>
 
-                        ${getAffiliationHelpText(o.affiliation) ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><div class="col pt-2"><p class="helptext pb-3">${getAffiliationHelpText(o.affiliation)}</p></div></div>` : ''}
+                        ${getAffiliationHelpText(o.affiliation) ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="row"><div class="col pt-2"><p class="helptext pb-3">${getAffiliationHelpText(o.affiliation)}</p></div></div>` : ''}
                     </div>
                 </form>
                 <div class="scrollable-container">
                     <ul class="list-group list-group--users">
-                        ${o.loading_users_with_affiliation ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])()} </li>` : ''}
-                        ${Array.isArray(o.users_with_affiliation) && o.users_with_affiliation.length === 0 ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${i18n_no_users_with_aff}</li>` : ''}
+                        ${o.loading_users_with_affiliation ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])()} </li>` : ''}
+                        ${Array.isArray(o.users_with_affiliation) && o.users_with_affiliation.length === 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<li class="list-group-item">${i18n_no_users_with_aff}</li>` : ''}
 
-                        ${o.users_with_affiliation instanceof Error ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${o.users_with_affiliation.message}</li>` : (o.users_with_affiliation || []).map(item => (item.nick || item.jid).match(new RegExp(o.affiliations_filter, 'i')) ? affiliation_list_item(el, Object.assign({
+                        ${o.users_with_affiliation instanceof Error ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<li class="list-group-item">${o.users_with_affiliation.message}</li>` : (o.users_with_affiliation || []).map(item => (item.nick || item.jid).match(new RegExp(o.affiliations_filter, 'i')) ? affiliation_list_item(el, Object.assign({
     item
   }, o)) : '')}
                     </ul>
                 </div>
             </div>` : ''}
 
-            ${o.queryable_roles.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+            ${o.queryable_roles.length ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
             <div class="tab-pane tab-pane--columns ${o.tab === 'roles' ? 'active' : ''}" id="roles-tabpanel" role="tabpanel" aria-labelledby="roles-tab">
                 <form class="converse-form query-role" @submit=${o.queryRole}>
                     <p class="helptext pb-3">${i18n_helptext_role}</p>
@@ -40444,17 +40886,17 @@ const tplNavigation = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`
                         </div>
                         <div class="row">
                             <div class="col mt-3">
-                                ${Array.isArray(o.users_with_role) && o.users_with_role.length > 5 ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<input class="form-control" .value="${o.roles_filter}" @keyup=${o.filterRoleResults} type="text" name="filter" placeholder="${i18n_filter}"/>` : ''}
+                                ${Array.isArray(o.users_with_role) && o.users_with_role.length > 5 ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<input class="form-control" .value="${o.roles_filter}" @keyup=${o.filterRoleResults} type="text" name="filter" placeholder="${i18n_filter}"/>` : ''}
                             </div>
                         </div>
 
-                        ${getRoleHelpText(o.role) ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="row"><div class="col pt-2"><p class="helptext pb-3">${getRoleHelpText(o.role)}</p></div></div>` : ''}
+                        ${getRoleHelpText(o.role) ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="row"><div class="col pt-2"><p class="helptext pb-3">${getRoleHelpText(o.role)}</p></div></div>` : ''}
                     </div>
                 </form>
                 <div class="scrollable-container">
                     <ul class="list-group list-group--users">
-                        ${o.loading_users_with_role ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])()} </li>` : ''}
-                        ${o.users_with_role && o.users_with_role.length === 0 ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<li class="list-group-item">${i18n_no_users_with_role}</li>` : ''}
+                        ${o.loading_users_with_role ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])()} </li>` : ''}
+                        ${o.users_with_role && o.users_with_role.length === 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<li class="list-group-item">${i18n_no_users_with_role}</li>` : ''}
                         ${(o.users_with_role || []).map(item => item.nick.match(o.roles_filter) ? tplRoleListItem(el, Object.assign({
     item
   }, o)) : '')}
@@ -40497,9 +40939,9 @@ const tplCanEdit = o => {
   const show_send_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('show_send_button');
   const show_spoiler_button = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('visible_toolbar_buttons').spoiler;
   const show_toolbar = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('show_toolbar');
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
-        ${o.model.ui.get('scrolled') && o.model.get('num_unread') ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<div class="new-msgs-indicator" @click=${ev => o.viewUnreadMessages(ev)}>▼ ${unread_msgs} ▼</div>` : ''}
-        ${show_toolbar ? lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
+        ${o.model.ui.get('scrolled') && o.model.get('num_unread') ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div class="new-msgs-indicator" @click=${ev => o.viewUnreadMessages(ev)}>▼ ${unread_msgs} ▼</div>` : ''}
+        ${show_toolbar ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
             <converse-chat-toolbar
                 class="chat-toolbar no-text-select"
                 .model=${o.model}
@@ -40518,12 +40960,12 @@ const tplCanEdit = o => {
   const conn_status = o.model.session.get('connection_status');
   const i18n_not_allowed = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("You're not allowed to send messages in this room");
   if (conn_status === _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.ROOMSTATUS.ENTERED) {
-    return lit__WEBPACK_IMPORTED_MODULE_5__.html`
-            ${o.model.ui.get('scrolled') && o.model.get('num_unread_general') ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<div class="new-msgs-indicator" @click=${ev => o.viewUnreadMessages(ev)}>▼ ${unread_msgs} ▼</div>` : ''}
-            ${o.can_edit ? tplCanEdit(o) : lit__WEBPACK_IMPORTED_MODULE_5__.html`<span class="muc-bottom-panel muc-bottom-panel--muted">${i18n_not_allowed}</span>`}`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
+            ${o.model.ui.get('scrolled') && o.model.get('num_unread_general') ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div class="new-msgs-indicator" @click=${ev => o.viewUnreadMessages(ev)}>▼ ${unread_msgs} ▼</div>` : ''}
+            ${o.can_edit ? tplCanEdit(o) : (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<span class="muc-bottom-panel muc-bottom-panel--muted">${i18n_not_allowed}</span>`}`;
   } else if (conn_status == _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.converse.ROOMSTATUS.NICKNAME_REQUIRED) {
     if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('muc_show_logs_before_join')) {
-      return lit__WEBPACK_IMPORTED_MODULE_5__.html`<span class="muc-bottom-panel muc-bottom-panel--nickname">
+      return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<span class="muc-bottom-panel muc-bottom-panel--nickname">
                 <converse-muc-nickname-form jid="${o.model.get('jid')}"></converse-muc-nickname-form>
             </span>`;
     }
@@ -40557,14 +40999,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_5__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
     <div class="chat-area">
         <div class="chat-content ${o.show_send_button ? 'chat-content-sendbutton' : ''}" aria-live="polite">
             <converse-chat-content
                 class="chat-content__messages"
                 jid="${o.jid}"></converse-chat-content>
 
-            ${o.model?.get('show_help_messages') ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<div class="chat-content__help">
+            ${o.model?.get('show_help_messages') ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div class="chat-content__help">
                     <converse-chat-help
                         .model=${o.model}
                         .messages=${o.getHelpMessages()}
@@ -40575,7 +41017,7 @@ __webpack_require__.r(__webpack_exports__);
         <converse-muc-bottom-panel jid="${o.jid}" class="bottom-panel"></converse-muc-bottom-panel>
     </div>
     <div class="disconnect-container hidden"></div>
-    ${o.model ? lit__WEBPACK_IMPORTED_MODULE_5__.html`
+    ${o.model ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <converse-muc-sidebar
             class="occupants col-md-3 col-4 ${o.shouldShowSidebar() ? '' : 'hidden'}"
             style="flex: 0 0 ${o.model.get('occupants_width')}px"
@@ -40633,19 +41075,19 @@ const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.converse.env.util
   }
   const i18n_save = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Save');
   const i18n_cancel = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <form class="converse-form chatroom-form ${fields.length ? '' : 'converse-form--spinner'}"
                 autocomplete="off"
                 @submit=${o.submitConfigForm}>
 
             <fieldset class="form-group">
                 <legend class="centered">${title}</legend>
-                ${title !== instructions ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p class="form-help">${instructions}</p>` : ''}
+                ${title !== instructions ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p class="form-help">${instructions}</p>` : ''}
                 ${fields.length ? fields : (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
     'classes': 'hor_centered'
   })}
             </fieldset>
-            ${fields.length ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+            ${fields.length ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                 <fieldset>
                     <input type="submit" class="btn btn-primary" value="${i18n_save}">
                     <input type="button" class="btn btn-secondary button-cancel" value="${i18n_cancel}" @click=${o.closeConfigForm}>
@@ -40687,24 +41129,24 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_semi_anon = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Semi-anonymous');
   const i18n_temp_room = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Temporary');
   const i18n_unmoderated = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unmoderated');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="room-info">
         <p class="room-info"><strong>${i18n_jid}</strong> ${o.jid}</p>
         <p class="room-info"><strong>${i18n_desc}</strong> ${o.desc}</p>
         <p class="room-info"><strong>${i18n_occ}</strong> ${o.occ}</p>
         <p class="room-info"><strong>${i18n_features}</strong>
             <ul>
-                ${o.passwordprotected ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info locked">${i18n_requires_auth}</li>` : ''}
-                ${o.hidden ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_hidden}</li>` : ''}
-                ${o.membersonly ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_requires_invite}</li>` : ''}
-                ${o.moderated ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_moderated}</li>` : ''}
-                ${o.nonanonymous ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_non_anon}</li>` : ''}
-                ${o.open ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_open_room}</li>` : ''}
-                ${o.persistent ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_permanent_room}</li>` : ''}
-                ${o.publicroom ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_public}</li>` : ''}
-                ${o.semianonymous ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_semi_anon}</li>` : ''}
-                ${o.temporary ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_temp_room}</li>` : ''}
-                ${o.unmoderated ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<li class="room-info">${i18n_unmoderated}</li>` : ''}
+                ${o.passwordprotected ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info locked">${i18n_requires_auth}</li>` : ''}
+                ${o.hidden ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_hidden}</li>` : ''}
+                ${o.membersonly ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_requires_invite}</li>` : ''}
+                ${o.moderated ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_moderated}</li>` : ''}
+                ${o.nonanonymous ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_non_anon}</li>` : ''}
+                ${o.open ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_open_room}</li>` : ''}
+                ${o.persistent ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_permanent_room}</li>` : ''}
+                ${o.publicroom ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_public}</li>` : ''}
+                ${o.semianonymous ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_semi_anon}</li>` : ''}
+                ${o.temporary ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_temp_room}</li>` : ''}
+                ${o.unmoderated ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<li class="room-info">${i18n_unmoderated}</li>` : ''}
             </ul>
         </p>
     </div>
@@ -40730,7 +41172,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const tplMoved = o => {
   const i18n_moved = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The conversation has moved to a new address. Click the link below to enter.');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <p class="moved-label">${i18n_moved}</p>
         <p class="moved-link">
             <a class="switch-chat" @click=${ev => o.onSwitch(ev)}>${o.moved_jid}</a>
@@ -40739,11 +41181,11 @@ const tplMoved = o => {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const i18n_non_existent = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This groupchat no longer exists');
   const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The following reason was given: "%1$s"', o.reason || '');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="alert alert-danger">
             <h3 class="alert-heading disconnect-msg">${i18n_non_existent}</h3>
         </div>
-        ${o.reason ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<p class="destroyed-reason">${i18n_reason}</p>` : ''}
+        ${o.reason ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="destroyed-reason">${i18n_reason}</p>` : ''}
         ${o.moved_jid ? tplMoved(o) : ''}
     `;
 });
@@ -40764,10 +41206,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (messages => {
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <div class="alert alert-danger">
             <h3 class="alert-heading disconnect-msg">${messages[0]}</h3>
-            ${messages.slice(1).map(m => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p class="disconnect-msg">${m}</p>`)}
+            ${messages.slice(1).map(m => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<p class="disconnect-msg">${m}</p>`)}
         </div>`;
 });
 
@@ -40807,19 +41249,19 @@ __webpack_require__.r(__webpack_exports__);
   const subject = o.subject ? o.subject.text : '';
   const show_subject = subject && !subject_hidden;
   const muc_vcard = el.model.vcard?.get('image');
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <div class="chatbox-title ${show_subject ? '' : "chatbox-title--no-desc"}">
 
-            ${muc_vcard && muc_vcard !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.DEFAULT_IMAGE ? lit__WEBPACK_IMPORTED_MODULE_5__.html`
+            ${muc_vcard && muc_vcard !== _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.DEFAULT_IMAGE ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
                 <converse-avatar class="avatar align-self-center"
                     .data=${el.model.vcard?.attributes}
                     nonce=${el.model.vcard?.get('vcard_updated')}
                     height="40" width="40"></converse-avatar>` : ''}
 
             <div class="chatbox-title--row">
-                ${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.api.settings.get("singleton") ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
+                ${!_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__._converse.api.settings.get("singleton") ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : ''}
                 <div class="chatbox-title__text" title="${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_3__.api.settings.get('locked_muc_domain') !== 'hidden' ? o.jid : ''}">${el.model.getDisplayName()}
-                ${o.bookmarked ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<converse-icon
+                ${o.bookmarked ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<converse-icon
                             class="fa fa-bookmark chatbox-title__text--bookmarked"
                             size="1em"
                             color="var(--chatroom-head-color)"
@@ -40832,7 +41274,7 @@ __webpack_require__.r(__webpack_exports__);
                 ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)((0,shared_chat_utils_js__WEBPACK_IMPORTED_MODULE_4__.getDropdownButtons)(heading_buttons_promise), '')}
             </div>
         </div>
-        ${show_subject ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<p class="chat-head__desc" title="${i18n_hide_topic}">
+        ${show_subject ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<p class="chat-head__desc" title="${i18n_hide_topic}">
             <converse-rich-text text=${subject} render_styling></converse-rich-text>
           </p>` : ''}
     `;
@@ -40862,7 +41304,7 @@ __webpack_require__.r(__webpack_exports__);
 const form = o => {
   const i18n_query = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Show groupchats');
   const i18n_server_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Server address');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <form class="converse-form list-chatrooms"
             @submit=${o.submitForm}>
             <div class="form-group">
@@ -40883,7 +41325,7 @@ const form = o => {
 const tplItem = (o, item) => {
   const i18n_info_title = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Show more information on this groupchat');
   const i18n_open_title = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to open this groupchat');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <li class="room-item list-group-item">
             <div class="available-chatroom d-flex flex-row">
                 <a class="open-room available-room w-100"
@@ -40902,11 +41344,11 @@ const tplItem = (o, item) => {
     `;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         ${o.show_form ? form(o) : ''}
         <ul class="available-chatrooms list-group">
-            ${o.loading_items ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__["default"])()} </li>` : ''}
-            ${o.feedback_text ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item active">${o.feedback_text}</li>` : ''}
+            ${o.loading_items ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="list-group-item"> ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__["default"])()} </li>` : ''}
+            ${o.feedback_text ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="list-group-item active">${o.feedback_text}</li>` : ''}
             ${(0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_2__.repeat)(o.items, item => item.jid, item => tplItem(o, item))}
         </ul>
     `;
@@ -40936,7 +41378,7 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_join = el.model?.isEntered() ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Change nickname') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter groupchat');
   const i18n_heading = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('muc_show_logs_before_join') ? (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Choose a nickname to enter') : (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please choose your nickname');
   const validation_message = el.model?.get('nickname_validation_message');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="chatroom-form-container muc-nickname-form">
                 <form class="converse-form chatroom-form converse-centered-form"
                         @submit=${ev => el.submitNickname(ev)}>
@@ -40981,7 +41423,7 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_heading = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This groupchat requires a password');
   const i18n_password = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Password: ');
   const i18n_submit = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Submit');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <form class="converse-form chatroom-form converse-centered-form" @submit=${o.submitPassword}>
             <fieldset class="form-group">
                 <label>${i18n_heading}</label>
@@ -41023,7 +41465,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const i18n_participants = o.occupants.length === 1 ? (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Participant') : (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Participants');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="occupants-header">
             <div class="occupants-header--title">
                 <span class="occupants-heading">${o.occupants.length} ${i18n_participants}</span>
@@ -41069,10 +41511,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
-  return lit__WEBPACK_IMPORTED_MODULE_7__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_7__.html)`
         <div class="flyout box-flyout">
             <converse-dragresize></converse-dragresize>
-            ${o.model ? lit__WEBPACK_IMPORTED_MODULE_7__.html`
+            ${o.model ? (0,lit__WEBPACK_IMPORTED_MODULE_7__.html)`
                 <converse-muc-heading jid="${o.model.get('jid')}" class="chat-head chat-head-chatroom row no-gutters">
                 </converse-muc-heading>
                 <div class="chat-body chatroom-body row no-gutters">${(0,_utils_js__WEBPACK_IMPORTED_MODULE_8__.getChatRoomBodyTemplate)(o)}</div>
@@ -41139,7 +41581,7 @@ const occupant_title = o => {
   } else {
     [classes, color] = ['fa fa-circle', 'subdued-color'];
   }
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <li class="occupant" id="${o.id}" title="${occupant_title(o)}">
             <div class="row no-gutters">
                 <div class="col-auto">
@@ -41160,11 +41602,11 @@ const occupant_title = o => {
                 <div class="col occupant-nick-badge">
                     <span class="occupant-nick" @click=${chat.onOccupantClicked}>${o.getDisplayName()}</span>
                     <span class="occupant-badges">
-                        ${affiliation === "owner" ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="badge badge-groupchat">${i18n_owner}</span>` : ''}
-                        ${affiliation === "admin" ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="badge badge-info">${i18n_admin}</span>` : ''}
-                        ${affiliation === "member" ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="badge badge-info">${i18n_member}</span>` : ''}
-                        ${role === "moderator" ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="badge badge-info">${i18n_moderator}</span>` : ''}
-                        ${role === "visitor" ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="badge badge-secondary">${i18n_visitor}</span>` : ''}
+                        ${affiliation === "owner" ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="badge badge-groupchat">${i18n_owner}</span>` : ''}
+                        ${affiliation === "admin" ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="badge badge-info">${i18n_admin}</span>` : ''}
+                        ${affiliation === "member" ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="badge badge-info">${i18n_member}</span>` : ''}
+                        ${role === "moderator" ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="badge badge-info">${i18n_moderator}</span>` : ''}
+                        ${role === "visitor" ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="badge badge-secondary">${i18n_visitor}</span>` : ''}
                     </span>
                 </div>
             </div>
@@ -41197,7 +41639,7 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_reason = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reason');
   const occupant = el.muc.getOwnOccupant();
   const assignable_roles = (0,_converse_headless_plugins_muc_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAssignableRoles)(occupant);
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <form class="role-form" @submit=${el.assignRole}>
             <div class="form-group">
                 <input type="hidden" name="jid" value="${el.jid}"/>
@@ -41206,7 +41648,7 @@ __webpack_require__.r(__webpack_exports__);
                     <div class="col">
                         <label><strong>${i18n_new_role}:</strong></label>
                         <select class="custom-select select-role" name="role">
-                        ${assignable_roles.map(role => lit__WEBPACK_IMPORTED_MODULE_1__.html`<option value="${role}" ?selected=${role === el.role}>${role}</option>`)}
+                        ${assignable_roles.map(role => (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<option value="${role}" ?selected=${role === el.role}>${role}</option>`)}
                         </select>
                     </div>
                     <div class="col">
@@ -41332,9 +41774,9 @@ async function destroyMUC(model) {
 function getNicknameRequiredTemplate(model) {
   const jid = model.get('jid');
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('muc_show_logs_before_join')) {
-    return lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-chatarea jid="${jid}"></converse-muc-chatarea>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-chatarea jid="${jid}"></converse-muc-chatarea>`;
   } else {
-    return lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-nickname-form jid="${jid}"></converse-muc-nickname-form>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-nickname-form jid="${jid}"></converse-muc-nickname-form>`;
   }
 }
 function getChatRoomBodyTemplate(o) {
@@ -41343,16 +41785,16 @@ function getChatRoomBodyTemplate(o) {
   const RS = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.ROOMSTATUS;
   const conn_status = o.model.session.get('connection_status');
   if (view === _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.converse.MUC.VIEWS.CONFIG) {
-    return lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-config-form class="muc-form-container" jid="${jid}"></converse-muc-config-form>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-config-form class="muc-form-container" jid="${jid}"></converse-muc-config-form>`;
   } else {
-    return lit__WEBPACK_IMPORTED_MODULE_6__.html`
-            ${conn_status == RS.PASSWORD_REQUIRED ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-password-form class="muc-form-container" jid="${jid}"></converse-muc-password-form>` : ''}
-            ${conn_status == RS.ENTERED ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-chatarea jid="${jid}"></converse-muc-chatarea>` : ''}
+    return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
+            ${conn_status == RS.PASSWORD_REQUIRED ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-password-form class="muc-form-container" jid="${jid}"></converse-muc-password-form>` : ''}
+            ${conn_status == RS.ENTERED ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-chatarea jid="${jid}"></converse-muc-chatarea>` : ''}
             ${conn_status == RS.CONNECTING ? (0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_3__["default"])() : ''}
             ${conn_status == RS.NICKNAME_REQUIRED ? getNicknameRequiredTemplate(o.model) : ''}
-            ${conn_status == RS.DISCONNECTED ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-disconnected jid="${jid}"></converse-muc-disconnected>` : ''}
-            ${conn_status == RS.BANNED ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-disconnected jid="${jid}"></converse-muc-disconnected>` : ''}
-            ${conn_status == RS.DESTROYED ? lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-muc-destroyed jid="${jid}"></converse-muc-destroyed>` : ''}
+            ${conn_status == RS.DISCONNECTED ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-disconnected jid="${jid}"></converse-muc-disconnected>` : ''}
+            ${conn_status == RS.BANNED ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-disconnected jid="${jid}"></converse-muc-disconnected>` : ''}
+            ${conn_status == RS.DESTROYED ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-muc-destroyed jid="${jid}"></converse-muc-destroyed>` : ''}
         `;
   }
 }
@@ -43005,7 +43447,7 @@ const device_fingerprint = (el, device) => {
   const i18n_trusted = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Trusted');
   const i18n_untrusted = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Untrusted');
   if (device.get('bundle') && device.get('bundle').fingerprint) {
-    return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
             <li class="list-group-item">
                 <form class="fingerprint-trust">
                     <div class="btn-group btn-group-toggle">
@@ -43032,11 +43474,11 @@ const device_fingerprint = (el, device) => {
   const i18n_fingerprints = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('OMEMO Fingerprints');
   const i18n_no_devices = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)("No OMEMO-enabled devices found");
   const devices = el.devicelist.devices;
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <hr/>
         <ul class="list-group fingerprints">
             <li class="list-group-item active">${i18n_fingerprints}</li>
-            ${devices.length ? devices.map(device => device_fingerprint(el, device)) : lit__WEBPACK_IMPORTED_MODULE_1__.html`<li class="list-group-item"> ${i18n_no_devices} </li>`}
+            ${devices.length ? devices.map(device => device_fingerprint(el, device)) : (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<li class="list-group-item"> ${i18n_no_devices} </li>`}
         </ul>
     `;
 });
@@ -43062,11 +43504,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const fingerprint = el => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const fingerprint = el => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     <span class="fingerprint">${(0,plugins_omemo_utils_js__WEBPACK_IMPORTED_MODULE_1__.formatFingerprint)(el.current_device.get('bundle').fingerprint)}</span>`;
 const device_with_fingerprint = el => {
   const i18n_fingerprint_checkbox_label = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Checkbox for selecting the following fingerprint');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <li class="fingerprint-removal-item list-group-item">
             <label>
             <input type="checkbox" value="${el.device.get('id')}"
@@ -43079,7 +43521,7 @@ const device_with_fingerprint = el => {
 const device_without_fingerprint = el => {
   const i18n_device_without_fingerprint = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Device without a fingerprint');
   const i18n_fingerprint_checkbox_label = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Checkbox for selecting the following device');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <li class="fingerprint-removal-item list-group-item">
             <label>
             <input type="checkbox" value="${el.device.get('id')}"
@@ -43089,7 +43531,7 @@ const device_without_fingerprint = el => {
         </li>
     `;
 };
-const device_item = el => lit__WEBPACK_IMPORTED_MODULE_2__.html`
+const device_item = el => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
     ${el.device.get('bundle') && el.device.get('bundle').fingerprint ? device_with_fingerprint(el) : device_without_fingerprint(el)}
 `;
 const device_list = el => {
@@ -43097,7 +43539,7 @@ const device_list = el => {
   const i18n_other_devices_label = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Checkbox to select fingerprints of all other OMEMO devices');
   const i18n_remove_devices = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove checked devices and close');
   const i18n_select_all = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Select all');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <ul class="list-group fingerprints">
             <li class="list-group-item active">
                 <label>
@@ -43115,7 +43557,7 @@ const device_list = el => {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const i18n_fingerprint = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)("This device's OMEMO fingerprint");
   const i18n_generate = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Generate new keys and fingerprint');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <form class="converse-form fingerprint-removal" @submit=${el.removeSelectedFingerprints}>
             <ul class="list-group fingerprints">
                 <li class="list-group-item active">${i18n_fingerprint}</li>
@@ -43362,7 +43804,7 @@ async function getAndDecryptFile(uri) {
 }
 function getTemplateForObjectURL(uri, obj_url, richtext) {
   if ((0,_converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_11__.isError)(obj_url)) {
-    return lit__WEBPACK_IMPORTED_MODULE_9__.html`<p class="error">${obj_url.message}</p>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_9__.html)`<p class="error">${obj_url.message}</p>`;
   }
   const file_url = uri.toString();
   if ((0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__.isImageURL)(file_url)) {
@@ -43400,7 +43842,7 @@ function addEncryptedFiles(text, offset, richtext) {
   objs.forEach(o => {
     const uri = (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_12__.getURI)(text.slice(o.start, o.end));
     const promise = getAndDecryptFile(uri).then(obj_url => getTemplateForObjectURL(uri, obj_url, richtext));
-    const template = lit__WEBPACK_IMPORTED_MODULE_9__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_13__.until)(promise, '')}`;
+    const template = (0,lit__WEBPACK_IMPORTED_MODULE_9__.html)`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_13__.until)(promise, '')}`;
     richtext.addTemplateResult(o.start + offset, o.end + offset, template);
   });
 }
@@ -43909,7 +44351,7 @@ function getOMEMOToolbarButton(toolbar_el, buttons) {
   } else {
     color = `var(--muc-toolbar-btn-disabled-color)`;
   }
-  buttons.push(lit__WEBPACK_IMPORTED_MODULE_9__.html`
+  buttons.push((0,lit__WEBPACK_IMPORTED_MODULE_9__.html)`
         <button class="toggle-omemo" title="${title}" data-disabled=${!model.get('omemo_supported')} @click=${toggleOMEMO}>
             <converse-icon
                 class="fa ${model.get('omemo_active') ? `fa-lock` : `fa-unlock`}"
@@ -44250,7 +44692,7 @@ __webpack_require__.r(__webpack_exports__);
 const tplNavigation = el => {
   const i18n_about = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('About');
   const i18n_commands = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Commands');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <ul class="nav nav-pills justify-content-center">
             <li role="presentation" class="nav-item">
                 <a class="nav-link ${el.tab === "about" ? "active" : ""}"
@@ -44281,11 +44723,11 @@ const tplNavigation = el => {
   const show_client_info = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('show_client_info');
   const allow_adhoc_commands = _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_adhoc_commands');
   const show_both_tabs = show_client_info && allow_adhoc_commands;
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         ${show_both_tabs ? tplNavigation(el) : ''}
 
         <div class="tab-content">
-            ${show_client_info ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+            ${show_client_info ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                 <div class="tab-pane tab-pane--columns ${el.tab === 'about' ? 'active' : ''}"
                         id="about-tabpanel" role="tabpanel" aria-labelledby="about-tab">
 
@@ -44299,7 +44741,7 @@ const tplNavigation = el => {
                     </div>
                 </div>` : ''}
 
-            ${allow_adhoc_commands ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+            ${allow_adhoc_commands ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                 <div class="tab-pane tab-pane--columns ${el.tab === 'commands' ? 'active' : ''}"
                         id="commands-tabpanel"
                         role="tabpanel"
@@ -44525,7 +44967,7 @@ __webpack_require__.r(__webpack_exports__);
   const placeholder_status_message = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Personal status message');
   const status = el.model.get('status');
   const status_message = el.model.get('status_message');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <form class="converse-form set-xmpp-status" id="set-xmpp-status" @submit=${ev => el.onFormSubmitted(ev)}>
         <div class="form-group">
             <div class="custom-control custom-radio">
@@ -44586,8 +45028,8 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_passwords_must_match = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The new passwords must match');
   const i18n_new_password = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('New password');
   const i18n_confirm_password = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Confirm new password');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<form class="converse-form passwordreset-form" method="POST" @submit=${ev => el.onSubmit(ev)}>
-        ${el.alert_message ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<div class="alert alert-danger" role="alert">${el.alert_message}</div>` : ''}
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<form class="converse-form passwordreset-form" method="POST" @submit=${ev => el.onSubmit(ev)}>
+        ${el.alert_message ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="alert alert-danger" role="alert">${el.alert_message}</div>` : ''}
 
         <div class="form-group">
             <label for="converse_password_reset_new">${i18n_new_password}</label>
@@ -44617,7 +45059,7 @@ __webpack_require__.r(__webpack_exports__);
                 ?disabled="${el.alert_message}"
                 @input=${ev => el.checkPasswordsMatch(ev)}
             />
-            ${el.passwords_mismatched ? lit__WEBPACK_IMPORTED_MODULE_1__.html`<span class="error">${i18n_passwords_must_match}</span>` : ''}
+            ${el.passwords_mismatched ? (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="error">${i18n_passwords_must_match}</span>` : ''}
         </div>
 
         <input class="save-form btn btn-primary"
@@ -44652,13 +45094,13 @@ __webpack_require__.r(__webpack_exports__);
 
 function tplSignout() {
   const i18n_logout = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Log out');
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`<a class="controlbox-heading__btn logout align-self-center" title="${i18n_logout}" @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.logOut}>
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<a class="controlbox-heading__btn logout align-self-center" title="${i18n_logout}" @click=${_utils_js__WEBPACK_IMPORTED_MODULE_3__.logOut}>
         <converse-icon class="fa fa-sign-out-alt" size="1em"></converse-icon>
     </a>`;
 }
 function tplUserSettingsButton(o) {
   const i18n_details = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show details about this chat client');
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`<a class="controlbox-heading__btn show-client-info align-self-center" title="${i18n_details}" @click=${o.showUserSettingsModal}>
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<a class="controlbox-heading__btn show-client-info align-self-center" title="${i18n_details}" @click=${o.showUserSettingsModal}>
         <converse-icon class="fa fa-cog" size="1em"></converse-icon>
     </a>`;
 }
@@ -44677,7 +45119,7 @@ function tplUserSettingsButton(o) {
   } else {
     [classes, color] = ['fa fa-circle chat-status', 'subdued-color'];
   }
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
         <div class="userinfo controlbox-padded">
             <div class="controlbox-section profile d-flex">
                 <a class="show-profile" href="#" @click=${el.showProfileModal}>
@@ -44720,9 +45162,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const tplOmemoPage = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
+const tplOmemoPage = el => (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
     <div class="tab-pane ${el.tab === 'omemo' ? 'active' : ''}" id="omemo-tabpanel" role="tabpanel" aria-labelledby="omemo-tab">
-        ${el.tab === 'omemo' ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-omemo-profile></converse-omemo-profile>` : ''}
+        ${el.tab === 'omemo' ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-omemo-profile></converse-omemo-profile>` : ''}
     </div>`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const o = {
@@ -44740,7 +45182,7 @@ const tplOmemoPage = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
   const i18n_omemo = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OMEMO');
   const i18n_profile = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Profile');
   const ii18n_reset_password = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Reset Password');
-  const navigation_tabs = [lit__WEBPACK_IMPORTED_MODULE_3__.html`<li role="presentation" class="nav-item">
+  const navigation_tabs = [(0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<li role="presentation" class="nav-item">
             <a class="nav-link ${el.tab === "profile" ? "active" : ""}"
                id="profile-tab"
                href="#profile-tabpanel"
@@ -44750,7 +45192,7 @@ const tplOmemoPage = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
                data-name="profile"
                data-toggle="tab">${i18n_profile}</a>
             </li>`];
-  navigation_tabs.push(lit__WEBPACK_IMPORTED_MODULE_3__.html`<li role="presentation" class="nav-item">
+  navigation_tabs.push((0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<li role="presentation" class="nav-item">
                 <a class="nav-link ${el.tab === "passwordreset" ? "active" : ""}"
                 id="passwordreset-tab"
                 href="#passwordreset-tabpanel"
@@ -44761,7 +45203,7 @@ const tplOmemoPage = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
                 data-toggle="tab">${ii18n_reset_password}</a>
         </li>`);
   if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins['converse-omemo']?.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse)) {
-    navigation_tabs.push(lit__WEBPACK_IMPORTED_MODULE_3__.html`<li role="presentation" class="nav-item">
+    navigation_tabs.push((0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<li role="presentation" class="nav-item">
                 <a class="nav-link ${el.tab === "omemo" ? "active" : ""}"
                    id="omemo-tab"
                    href="#omemo-tabpanel"
@@ -44772,7 +45214,7 @@ const tplOmemoPage = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
                    data-toggle="tab">${i18n_omemo}</a>
             </li>`);
   }
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <ul class="nav nav-pills justify-content-center">${navigation_tabs}</ul>
         <div class="tab-content">
             <div class="tab-pane ${el.tab === 'profile' ? 'active' : ''}" id="profile-tabpanel" role="tabpanel" aria-labelledby="profile-tab">
@@ -44820,7 +45262,7 @@ const tplOmemoPage = el => lit__WEBPACK_IMPORTED_MODULE_3__.html`
             </div>
 
             <div class="tab-pane ${el.tab === 'passwordreset' ? 'active' : ''}" id="passwordreset-tabpanel" role="tabpanel" aria-labelledby="passwordreset-tab">
-                ${el.tab === 'passwordreset' ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-change-password-form></converse-change-password-form>` : ''}
+                ${el.tab === 'passwordreset' ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-change-password-form></converse-change-password-form>` : ''}
             </div>
 
             ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.pluggable.plugins['converse-omemo']?.enabled(_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse) ? tplOmemoPage(el) : ''}
@@ -45574,12 +46016,12 @@ __webpack_require__.r(__webpack_exports__);
 const tplFormRequest = el => {
   const default_domain = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('registration_domain');
   const i18n_cancel = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Cancel');
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <form id="converse-register" class="converse-form no-scrolling" @submit=${ev => el.onFormSubmission(ev)}>
             ${(0,templates_spinner_js__WEBPACK_IMPORTED_MODULE_1__["default"])({
     'classes': 'hor_centered'
   })}
-            ${default_domain ? '' : lit__WEBPACK_IMPORTED_MODULE_5__.html`
+            ${default_domain ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
                     <button class="btn btn-secondary button-cancel hor_centered"
                             @click=${ev => el.renderProviderChoiceForm(ev)}>${i18n_cancel}</button>
                   `}
@@ -45591,7 +46033,7 @@ const tplDomainInput = () => {
   const i18n_providers = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Tip: A list of public XMPP providers is available');
   const i18n_providers_link = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('here');
   const href_providers = _converse_headless_core__WEBPACK_IMPORTED_MODULE_4__.api.settings.get('providers_link');
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <input class="form-control" required="required" type="text" name="domain" placeholder="${domain_placeholder}" />
         <p class="form-text text-muted">
             ${i18n_providers}
@@ -45603,7 +46045,7 @@ const tplFetchFormButtons = () => {
   const i18n_register = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Fetch registration form');
   const i18n_existing_account = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Already have a chat account?');
   const i18n_login = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Log in here');
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <fieldset class="form-group buttons">
             <input class="btn btn-primary" type="submit" value="${i18n_register}" />
         </fieldset>
@@ -45618,7 +46060,7 @@ const tplChooseProvider = el => {
   const i18n_create_account = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Create your account');
   const i18n_choose_provider = (0,i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Please enter the XMPP provider to register with:');
   const show_form_buttons = !default_domain && el.status === CHOOSE_PROVIDER;
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <form id="converse-register" class="converse-form" @submit=${ev => el.onFormSubmission(ev)}>
             <legend class="col-form-label">${i18n_create_account}</legend>
             <div class="form-group">
@@ -45635,9 +46077,9 @@ const FETCHING_FORM = 1;
 const REGISTRATION_FORM = 2;
 const REGISTRATION_FORM_ERROR = 3;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
         <converse-brand-logo></converse-brand-logo>
-        ${el.alert_message ? lit__WEBPACK_IMPORTED_MODULE_5__.html`<div class="alert alert-${el.alert_type}" role="alert">${el.alert_message}</div>` : ''}
+        ${el.alert_message ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div class="alert alert-${el.alert_type}" role="alert">${el.alert_message}</div>` : ''}
         ${el.status === CHOOSE_PROVIDER ? tplChooseProvider(el) : ''}
         ${el.status === FETCHING_FORM ? tplFormRequest(el) : ''}
         ${el.status === REGISTRATION_FORM ? (0,_registration_form_js__WEBPACK_IMPORTED_MODULE_0__["default"])(el) : ''}
@@ -45671,7 +46113,7 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_legend = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Account Registration:');
   const i18n_register = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Register');
   const registration_domain = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('registration_domain');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <form id="converse-register" class="converse-form" @submit=${ev => el.onFormSubmission(ev)}>
             <legend class="col-form-label">${i18n_legend} ${el.domain}</legend>
             <p class="title">${el.title}</p>
@@ -45680,10 +46122,10 @@ __webpack_require__.r(__webpack_exports__);
             ${el.form_fields}
 
             <fieldset class="buttons form-group">
-                ${el.fields ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                ${el.fields ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                           <input type="submit" class="btn btn-primary" value="${i18n_register}" />
                       ` : ''}
-                ${registration_domain ? '' : lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                ${registration_domain ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                           <input
                               type="button"
                               class="btn btn-secondary button-cancel"
@@ -45717,7 +46159,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
   const i18n_has_account = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Already have a chat account?');
   const i18n_login = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Log in here');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="switch-form">
             <p>${i18n_has_account}</p>
             <p><a class="login-here toggle-register-login" href="#converse/login">${i18n_login}</a></p>
@@ -45847,7 +46289,7 @@ function isCurrentlyOpen(room) {
 function tplBookmark(room) {
   const bm = room.get('bookmarked') ?? false;
   const i18n_bookmark = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Bookmark');
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
         <a class="list-item-action add-bookmark"
             data-room-jid="${room.get('jid')}"
             data-bookmark-name="${room.getDisplayName()}"
@@ -45859,12 +46301,12 @@ function tplBookmark(room) {
                            color="${isCurrentlyOpen(room) ? 'var(--inverse-link-color)' : ''}"></converse-icon>
         </a>`;
 }
-const tplUnreadIndicator = room => lit__WEBPACK_IMPORTED_MODULE_4__.html`<span class="list-item-badge badge badge--muc msgs-indicator">${room.get('num_unread')}</span>`;
-const tplActivityIndicator = () => lit__WEBPACK_IMPORTED_MODULE_4__.html`<span class="list-item-badge badge badge--muc msgs-indicator"></span>`;
+const tplUnreadIndicator = room => (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<span class="list-item-badge badge badge--muc msgs-indicator">${room.get('num_unread')}</span>`;
+const tplActivityIndicator = () => (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<span class="list-item-badge badge badge--muc msgs-indicator"></span>`;
 function tplRoomItem(el, room) {
   const i18n_leave_room = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Leave this groupchat');
   const has_unread_msgs = room.get('num_unread_general') || room.get('has_activity');
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
         <div class="list-item controlbox-padded available-chatroom d-flex flex-row ${isCurrentlyOpen(room) ? 'open' : ''} ${has_unread_msgs ? 'unread-msgs' : ''}"
             data-room-jid="${room.get('jid')}">
 
@@ -45908,7 +46350,7 @@ function tplRoomItem(el, room) {
   const i18n_title_new_room = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add a new groupchat');
   const i18n_show_bookmarks = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Show bookmarked groupchats');
   const is_closed = el.model.get('toggle_state') === CLOSED;
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
         <div class="d-flex controlbox-padded">
             <span class="w-100 controlbox-heading controlbox-heading--groupchats">
                 <a class="list-toggle open-rooms-toggle" title="${i18n_desc_rooms}" @click=${ev => el.toggleRoomsList(ev)}>
@@ -46171,7 +46613,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
   const extra_classes = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('singleton') ? ['converse-singleton'] : [];
   extra_classes.push(`converse-${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('view_mode')}`);
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <converse-chats class="converse-chatboxes row no-gutters ${extra_classes.join(' ')}"></converse-chats>
         <div id="converse-modals" class="modals"></div>
         <converse-fontawesome></converse-fontawesome>
@@ -46702,7 +47144,7 @@ __webpack_require__.r(__webpack_exports__);
   const i18n_group = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Group');
   const i18n_nickname = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Name');
   const i18n_xmpp_address = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('XMPP Address');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <form class="converse-form add-xmpp-contact" @submit=${ev => el.addContactFromForm(ev)}>
             <div class="modal-body">
                 <span class="modal-alert"></span>
@@ -46899,7 +47341,7 @@ function renderContact(contact) {
     extra_classes.push(subscription);
     extra_classes.push(contact.presence.get('show'));
   }
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <li class="list-item d-flex controlbox-padded ${extra_classes.join(' ')}" data-status="${contact.presence.get('show')}">
             <converse-roster-contact .model=${contact}></converse-roster-contact>
         </li>`;
@@ -46907,7 +47349,7 @@ function renderContact(contact) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const i18n_title = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Click to hide these contacts');
   const collapsed = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.roster.state.get('collapsed_groups');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <div class="roster-group" data-group="${o.name}">
             <a href="#" class="list-toggle group-toggle controlbox-padded" title="${i18n_title}" @click=${ev => (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.toggleGroup)(ev, o.name)}>
                 <converse-icon color="var(--chat-head-color-dark)" size="1em" class="fa ${collapsed.includes(o.name) ? 'fa-caret-right' : 'fa-caret-down'}"></converse-icon> ${o.name}
@@ -46933,7 +47375,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
    <a class="open-chat w-100" href="#" @click=${o.openChat}>
       <span class="req-contact-name w-100" title="JID: ${o.jid}">${o.display_name}</span>
    </a>
@@ -46988,7 +47430,7 @@ __webpack_require__.r(__webpack_exports__);
   const groupnames = Object.keys(contacts_map).filter(_utils_js__WEBPACK_IMPORTED_MODULE_6__.shouldShowGroup);
   const is_closed = el.model.get('toggle_state') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CLOSED;
   groupnames.sort(_converse_headless_plugins_roster_utils_js__WEBPACK_IMPORTED_MODULE_3__.groupsComparator);
-  return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
         <div class="d-flex controlbox-padded">
             <span class="w-100 controlbox-heading controlbox-heading--contacts">
                 <a class="list-toggle open-contacts-toggle" title="${i18n_toggle_contacts}" @click=${el.toggleRoster}>
@@ -47005,7 +47447,7 @@ __webpack_require__.r(__webpack_exports__);
 
                 <converse-icon class="fa fa-sync right ${el.syncing_contacts ? 'fa-spin' : ''}" size="1em"></converse-icon>
             </a>
-            ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_contact_requests') ? lit__WEBPACK_IMPORTED_MODULE_4__.html`
+            ${_converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_contact_requests') ? (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
                 <a class="controlbox-heading__btn add-contact"
                     @click=${ev => el.showAddContactModal(ev)}
                     title="${i18n_title_add_contact}"
@@ -47059,7 +47501,7 @@ __webpack_require__.r(__webpack_exports__);
   const label_away = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Away');
   const label_xa = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Extended Away');
   const label_offline = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Offline');
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <form class="controlbox-padded roster-filter-form input-button-group ${!o.visible ? 'hidden' : 'fade-in'}"
             @submit=${o.submitFilter}>
             <div class="form-inline flex-nowrap">
@@ -47116,7 +47558,7 @@ __webpack_require__.r(__webpack_exports__);
 const tplRemoveLink = (el, item) => {
   const display_name = item.getDisplayName();
   const i18n_remove = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to remove %1$s as a contact', display_name);
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
       <a class="list-item-action remove-xmpp-contact" @click=${el.removeContact} title="${i18n_remove}" href="#">
          <converse-icon class="fa fa-trash-alt" size="1.5em"></converse-icon>
       </a>
@@ -47138,7 +47580,7 @@ const tplRemoveLink = (el, item) => {
   const num_unread = item.get('num_unread') || 0;
   const display_name = item.getDisplayName();
   const i18n_chat = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Click to chat with %1$s (XMPP address: %2$s)', display_name, el.model.get('jid'));
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
    <a class="list-item-link cbox-list-item open-chat ${num_unread ? 'unread-msgs' : ''}" title="${i18n_chat}" href="#" @click=${el.openChat}>
       <span>
          <converse-avatar
@@ -47152,7 +47594,7 @@ const tplRemoveLink = (el, item) => {
             size="1em"
             class="${classes} chat-status chat-status--avatar"></converse-icon>
       </span>
-      ${num_unread ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span class="msgs-indicator">${num_unread}</span>` : ''}
+      ${num_unread ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="msgs-indicator">${num_unread}</span>` : ''}
       <span class="contact-name contact-name--${el.show} ${num_unread ? 'unread-msgs' : ''}">${display_name}</span>
    </a>
    ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('allow_contact_removal') ? tplRemoveLink(el, item) : ''}`;
@@ -47748,7 +48190,7 @@ class AutoCompleteComponent extends shared_components_element_js__WEBPACK_IMPORT
   }
   render() {
     const position_class = `suggestion-box__results--${this.position}`;
-    return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
             <div class="suggestion-box suggestion-box__name">
                 <ul class="suggestion-box__results ${position_class}" hidden=""></ul>
                 <input
@@ -48041,7 +48483,7 @@ const getImgHref = (image, image_type) => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   if (o.image) {
-    return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
             <svg xmlns="http://www.w3.org/2000/svg" class="avatar ${o.classes}" width="${o.width}" height="${o.height}">
                 <image width="${o.width}" height="${o.height}" preserveAspectRatio="xMidYMid meet" href="${getImgHref(o.image, o.image_type)}"/>
             </svg>`;
@@ -48242,7 +48684,7 @@ class ChatContent extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     }
     // This element has "flex-direction: reverse", so elements here are
     // shown in reverse order.
-    return lit__WEBPACK_IMPORTED_MODULE_4__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`
             <div class="chat-content__notifications">${this.model.getNotificationsText()}</div>
             <converse-message-history
                 .model=${this.model}
@@ -48342,7 +48784,7 @@ class EmojiDropdown extends shared_components_dropdown_js__WEBPACK_IMPORTED_MODU
   render() {
     const is_groupchat = this.chatview.model.get('type') === _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__._converse.CHATROOMS_TYPE;
     const color = is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
             <div class="dropup">
                 <button class="toggle-emojis"
                         title="${(0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Insert emojis')}"
@@ -48356,7 +48798,7 @@ class EmojiDropdown extends shared_components_dropdown_js__WEBPACK_IMPORTED_MODU
                         size="1em"></converse-icon>
                 </button>
                 <div class="dropdown-menu">
-                    ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_5__.until)(this.initModel().then(() => lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                    ${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_5__.until)(this.initModel().then(() => (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                         <converse-emoji-picker
                                 .chatview=${this.chatview}
                                 .model=${this.model}
@@ -48452,7 +48894,7 @@ class EmojiPickerContent extends shared_components_element_js__WEBPACK_IMPORTED_
       'search_results': this.search_results,
       'shouldBeHidden': shortname => this.shouldBeHidden(shortname)
     };
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
           <div class="emoji-picker__lists">
               ${(0,_templates_emoji_picker_js__WEBPACK_IMPORTED_MODULE_3__.tplSearchResults)(props)}
               ${(0,_templates_emoji_picker_js__WEBPACK_IMPORTED_MODULE_3__.tplAllEmojis)(props)}
@@ -48868,7 +49310,7 @@ class ChatHelp extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__
   }
   render() {
     const isodate = new Date().toISOString();
-    return [lit__WEBPACK_IMPORTED_MODULE_4__.html`<converse-icon class="fas fa-times close-chat-help"
+    return [(0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<converse-icon class="fas fa-times close-chat-help"
                     @click=${this.close}
                     path-prefix="${_converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.settings.get("assets_path")}"
                     size="1em"></converse-icon>`, ...this.messages.map(m => this.renderHelpMessage({
@@ -48884,7 +49326,7 @@ class ChatHelp extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_2__
     });
   }
   renderHelpMessage(o) {
-    return lit__WEBPACK_IMPORTED_MODULE_4__.html`<div class="message chat-${this.type}" data-isodate="${o.isodate}">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__.unsafeHTML)(o.markup)}</div>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<div class="message chat-${this.type}" data-isodate="${o.isodate}">${(0,lit_directives_unsafe_html_js__WEBPACK_IMPORTED_MODULE_5__.unsafeHTML)(o.markup)}</div>`;
   }
 }
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-chat-help', ChatHelp);
@@ -48943,7 +49385,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     this.listenTo(this.model, 'change', () => this.requestUpdate());
   }
   render() {
-    return lit__WEBPACK_IMPORTED_MODULE_6__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_8__.until)(this.renderActions(), '')}`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_8__.until)(this.renderActions(), '')}`;
   }
   async renderActions() {
     // We want to let the message actions menu drop upwards if we're at the
@@ -48954,7 +49396,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     const buttons = await this.getActionButtons();
     const items = buttons.map(b => MessageActions.getActionsDropdownItem(b));
     if (items.length) {
-      return lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-dropdown
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-dropdown
                 class="chat-msg__actions ${should_drop_up ? 'dropup dropup--left' : 'dropleft'}"
                 .items=${items}
             ></converse-dropdown>`;
@@ -48963,7 +49405,7 @@ class MessageActions extends shared_components_element_js__WEBPACK_IMPORTED_MODU
     }
   }
   static getActionsDropdownItem(o) {
-    return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
             <button class="chat-msg__action ${o.button_class}" @click=${o.handler}>
                 <converse-icon
                     class="${o.icon_class}"
@@ -49335,7 +49777,7 @@ class MessageHistory extends shared_components_element_js__WEBPACK_IMPORTED_MODU
   render() {
     const msgs = this.messages;
     if (msgs.length) {
-      return (0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(msgs, m => m.get('id'), m => lit__WEBPACK_IMPORTED_MODULE_4__.html`${this.renderMessage(m)}`);
+      return (0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(msgs, m => m.get('id'), m => (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`${this.renderMessage(m)}`);
     } else {
       return '';
     }
@@ -49349,7 +49791,7 @@ class MessageHistory extends shared_components_element_js__WEBPACK_IMPORTED_MODU
       const template_promise = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.hook(template_hook, model, '');
       return (0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_6__.until)(template_promise, '');
     } else {
-      const template = lit__WEBPACK_IMPORTED_MODULE_4__.html`<converse-chat-message
+      const template = (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<converse-chat-message
                 jid="${this.model.get('jid')}"
                 mid="${model.get('id')}"></converse-chat-message>`;
       const day = (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__.getDayIndicator)(model);
@@ -49673,7 +50115,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const u = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env.utils;
 const emoji_category = o => {
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <li data-category="${o.category}"
             class="emoji-category ${o.category} ${o.current_category === o.category ? 'picked' : ''}"
             title="${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)(_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('emoji_category_labels')[o.category])}">
@@ -49691,10 +50133,10 @@ const emoji_picker_header = o => {
     'category': c,
     'emoji': o.sn2Emoji(cats[c])
   }, o)) : '';
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<ul>${Object.keys(cats).map(transform)}</ul>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<ul>${Object.keys(cats).map(transform)}</ul>`;
 };
 const emoji_item = o => {
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <li class="emoji insert-emoji ${o.shouldBeHidden(o.emoji.sn) ? 'hidden' : ''}" data-emoji="${o.emoji.sn}" title="${o.emoji.sn}">
             <a href="#" @click=${o.insertEmoji} data-emoji="${o.emoji.sn}">${u.shortnamesToEmojis(o.emoji.sn)}</a>
         </li>
@@ -49702,7 +50144,7 @@ const emoji_item = o => {
 };
 const tplSearchResults = o => {
   const i18n_search_results = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Search results');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <span ?hidden=${!o.query} class="emoji-lists__container emojis-lists__container--search">
         <a id="emoji-picker-search-results" class="emoji-category__heading">${i18n_search_results}</a>
         <ul class="emoji-picker">
@@ -49714,7 +50156,7 @@ const tplSearchResults = o => {
     `;
 };
 const emojis_for_category = o => {
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <a id="emoji-picker-${o.category}" class="emoji-category__heading" data-category="${o.category}">${(0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)(_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('emoji_category_labels')[o.category])}</a>
         <ul class="emoji-picker" data-category="${o.category}">
             ${Object.values(_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.emojis.json[o.category]).map(emoji => emoji_item(Object.assign({
@@ -49724,7 +50166,7 @@ const emojis_for_category = o => {
 };
 const tplAllEmojis = o => {
   const cats = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('emoji_categories');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <span ?hidden=${o.query} class="emoji-lists__container emoji-lists__container--browse">
             ${Object.keys(cats).map(c => cats[c] ? emojis_for_category(Object.assign({
     'category': c
@@ -49732,7 +50174,7 @@ const tplAllEmojis = o => {
         </span>`;
 };
 const skintone_emoji = o => {
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <li data-skintone="${o.skintone}" class="emoji-skintone ${o.current_skintone === o.skintone ? 'picked' : ''}">
             <a class="pick-skintone" href="#" data-skintone="${o.skintone}" @click=${o.onSkintonePicked}>${u.shortnamesToEmojis(':' + o.skintone + ':')}</a>
         </li>`;
@@ -49740,7 +50182,7 @@ const skintone_emoji = o => {
 const tplEmojiPicker = o => {
   const i18n_search = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Search');
   const skintones = ['tone1', 'tone2', 'tone3', 'tone4', 'tone5'];
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="emoji-picker__header">
             <input class="form-control emoji-search" name="emoji-search" placeholder="${i18n_search}"
                 .value=${o.query || ''}
@@ -49749,7 +50191,7 @@ const tplEmojiPicker = o => {
                 @focus=${o.onSearchInputFocus}>
             ${o.query ? '' : emoji_picker_header(o)}
         </div>
-        ${o.render_emojis ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-emoji-picker-content
+        ${o.render_emojis ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-emoji-picker-content
                 .chatview=${o.chatview}
                 .model=${o.model}
                 .search_results="${o.search_results}"
@@ -49791,9 +50233,9 @@ const {
   const i18n_uploading = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Uploading file:');
   const filename = el.model.file.name;
   const size = filesize(el.model.file.size);
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <div class="message chat-msg">
-            ${el.shouldShowAvatar() ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<a class="show-msg-author-modal" @click=${el.showUserModal}>
+            ${el.shouldShowAvatar() ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<a class="show-msg-author-modal" @click=${el.showUserModal}>
                     <converse-avatar class="avatar align-self-center"
                         .data=${el.model.vcard?.attributes}
                         nonce=${el.model.vcard?.get('vcard_updated')}
@@ -49831,7 +50273,7 @@ const {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const isodate = dayjs(el.model.get('time')).toISOString();
   const i18n_retry = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Retry');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="message chat-info chat-${el.model.get('type')}"
             data-isodate="${isodate}"
             data-type="${el.data_name}"
@@ -49844,9 +50286,9 @@ const {
                     text=${el.model.getMessageText()}>
                 </converse-rich-text>
             </div>
-            ${el.model.get('reason') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<q class="reason">${el.model.get('reason')}</q>` : ``}
-            ${el.model.get('error_text') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<q class="reason">${el.model.get('error_text')}</q>` : ``}
-            ${el.model.get('retry_event_id') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<a class="retry" @click=${el.onRetryClicked}>${i18n_retry}</a>` : ''}
+            ${el.model.get('reason') ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<q class="reason">${el.model.get('reason')}</q>` : ``}
+            ${el.model.get('error_text') ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<q class="reason">${el.model.get('error_text')}</q>` : ``}
+            ${el.model.get('retry_event_id') ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<a class="retry" @click=${el.onRetryClicked}>${i18n_retry}</a>` : ''}
         </div>`;
 });
 
@@ -49869,7 +50311,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (counter => {
   const i18n_chars_remaining = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Message characters remaining');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<span class="message-limit ${counter < 1 ? 'error' : ''}" title="${i18n_chars_remaining}">${counter}</span>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="message-limit ${counter < 1 ? 'error' : ''}" title="${i18n_chars_remaining}">${counter}</span>`;
 });
 
 /***/ }),
@@ -49893,16 +50335,16 @@ __webpack_require__.r(__webpack_exports__);
 
 const tplEditedIcon = el => {
   const i18n_edited = (0,i18n_index_js__WEBPACK_IMPORTED_MODULE_0__.__)('This message has been edited');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-icon title="${i18n_edited}" class="fa fa-edit chat-msg__edit-modal" @click=${el.showMessageVersionsModal} size="1em"></converse-icon>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-icon title="${i18n_edited}" class="fa fa-edit chat-msg__edit-modal" @click=${el.showMessageVersionsModal} size="1em"></converse-icon>`;
 };
 const tplCheckmark = () => {
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-icon size="1em" color="var(--chat-color)" class="fa fa-check chat-msg__receipt"></converse-icon>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-icon size="1em" color="var(--chat-color)" class="fa fa-check chat-msg__receipt"></converse-icon>`;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const i18n_show = (0,i18n_index_js__WEBPACK_IMPORTED_MODULE_0__.__)('Show more');
   const is_groupchat_message = el.model.get('type') === 'groupchat';
   const i18n_show_less = (0,i18n_index_js__WEBPACK_IMPORTED_MODULE_0__.__)('Show less');
-  const tplSpoilerHint = lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  const tplSpoilerHint = (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <div class="chat-msg__spoiler-hint">
             <span class="spoiler-hint">${el.model.get('spoiler_hint')}</span>
             <a class="badge badge-info spoiler-toggle" href="#" @click=${el.toggleSpoilerMessage}>
@@ -49914,9 +50356,9 @@ const tplCheckmark = () => {
   const spoiler_classes = el.model.get('is_spoiler') ? `spoiler ${el.model.get('is_spoiler_visible') ? '' : 'hidden'}` : '';
   const text = el.model.getMessageText();
   const show_oob = el.model.get('oob_url') && text !== el.model.get('oob_url');
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         ${el.model.get('is_spoiler') ? tplSpoilerHint : ''}
-        ${el.model.get('subject') ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="chat-msg__subject">${el.model.get('subject')}</div>` : ''}
+        ${el.model.get('subject') ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="chat-msg__subject">${el.model.get('subject')}</div>` : ''}
         <span class="chat-msg__body--wrapper">
             <converse-chat-message-body
                 class="chat-msg__text ${el.model.get('is_only_emojis') ? 'chat-msg__text--larger' : ''} ${spoiler_classes}"
@@ -49927,7 +50369,7 @@ const tplCheckmark = () => {
             ${el.model.get('received') && !el.model.isMeCommand() && !is_groupchat_message ? tplCheckmark() : ''}
             ${el.model.get('edited') ? tplEditedIcon(el) : ''}
         </span>
-        ${show_oob ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="chat-msg__media">${(0,utils_html_js__WEBPACK_IMPORTED_MODULE_1__.getOOBURLMarkup)(el.model.get('oob_url'))}</div>` : ''}
+        ${show_oob ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="chat-msg__media">${(0,utils_html_js__WEBPACK_IMPORTED_MODULE_1__.getOOBURLMarkup)(el.model.get('oob_url'))}</div>` : ''}
         <div class="chat-msg__error">${el.model.get('error_text') || el.model.get('error')}</div>
     `;
 });
@@ -49958,8 +50400,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((el, o) => {
   const i18n_new_messages = (0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('New messages');
   const is_followup = el.model.isFollowup();
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
-        ${o.is_first_unread ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<div class="message separator"><hr class="separator"><span class="separator-text">${i18n_new_messages}</span></div>` : ''}
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
+        ${o.is_first_unread ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="message separator"><hr class="separator"><span class="separator-text">${i18n_new_messages}</span></div>` : ''}
         <div class="message chat-msg ${el.getExtraMessageClasses()}"
                 data-isodate="${o.time}"
                 data-msgid="${o.msgid}"
@@ -49969,7 +50411,7 @@ __webpack_require__.r(__webpack_exports__);
             <!-- Anchor to allow us to scroll the message into view -->
             <a id="${o.msgid}"></a>
 
-            ${o.should_show_avatar && !is_followup ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<a class="show-msg-author-modal" @click=${el.showUserModal}>
+            ${o.should_show_avatar && !is_followup ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<a class="show-msg-author-modal" @click=${el.showUserModal}>
                     <converse-avatar
                         class="avatar align-self-center"
                         .data=${el.model.vcard?.attributes}
@@ -49978,17 +50420,17 @@ __webpack_require__.r(__webpack_exports__);
                 </a>` : ''}
 
             <div class="chat-msg__content chat-msg__content--${o.sender} ${o.is_me_message ? 'chat-msg__content--action' : ''}">
-                ${!o.is_me_message && !is_followup ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                ${!o.is_me_message && !is_followup ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                     <span class="chat-msg__heading">
                         <span class="chat-msg__author"><a class="show-msg-author-modal" @click=${el.showUserModal}>${o.username}</a></span>
-                        ${o.hats.map(h => lit__WEBPACK_IMPORTED_MODULE_3__.html`<span class="badge badge-secondary">${h.title}</span>`)}
+                        ${o.hats.map(h => (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<span class="badge badge-secondary">${h.title}</span>`)}
                         <time timestamp="${el.model.get('edited') || el.model.get('time')}" class="chat-msg__time">${o.pretty_time}</time>
-                        ${o.is_encrypted ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-icon class="fa fa-lock" size="1.1em"></converse-icon>` : ''}
+                        ${o.is_encrypted ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-icon class="fa fa-lock" size="1.1em"></converse-icon>` : ''}
                     </span>` : ''}
 
                 <div class="chat-msg__body chat-msg__body--${o.message_type} ${o.received ? 'chat-msg__body--received' : ''} ${o.is_delayed ? 'chat-msg__body--delayed' : ''}">
                     <div class="chat-msg__message">
-                        ${o.is_me_message ? lit__WEBPACK_IMPORTED_MODULE_3__.html`
+                        ${o.is_me_message ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
                             <time timestamp="${o.edited || o.time}" class="chat-msg__time">${o.pretty_time}</time>&nbsp;
                             <span class="chat-msg__author">${o.is_me_message ? '**' : ''}${o.username}</span>&nbsp;` : ''}
                         ${o.is_retracted ? el.renderRetraction() : el.renderMessageText()}
@@ -50005,7 +50447,7 @@ __webpack_require__.r(__webpack_exports__);
     if (!(0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_4__.shouldRenderMediaFromURL)(m['og:image'], 'image')) {
       return '';
     }
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-message-unfurl
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-message-unfurl
                         @animationend="${el.onUnfurlAnimationEnd}"
                         class="${el.model.get('url_preview_transition')}"
                         jid="${el.chatbox?.get('jid')}"
@@ -50033,7 +50475,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="message date-separator" data-isodate="${o.time}">
         <hr class="separator"/>
         <time class="separator-text" datetime="${o.time}"><span>${o.datestring}</span></time>
@@ -50059,9 +50501,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const retraction_text = el.isRetracted() ? el.getRetractionText() : null;
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <div class="retraction">${retraction_text}</div>
-        ${el.model.get('moderation_reason') ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<q class="chat-msg--retracted__reason">${el.model.get('moderation_reason')}</q>` : ''}`;
+        ${el.model.get('moderation_reason') ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<q class="chat-msg--retracted__reason">${el.model.get('moderation_reason')}</q>` : ''}`;
 });
 
 /***/ }),
@@ -50085,12 +50527,12 @@ __webpack_require__.r(__webpack_exports__);
 
 function tplSendButton() {
   const i18n_send_message = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Send the message');
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<button type="submit" class="btn send-button" title="${i18n_send_message}">
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<button type="submit" class="btn send-button" title="${i18n_send_message}">
         <converse-icon color="var(--toolbar-btn-text-color)" class="fa fa-paper-plane" size="1em"></converse-icon>
     </button>`;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
         <span class="toolbar-buttons">${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_2__.until)(el.getButtons(), '')}</span>
         ${el.show_send_button ? tplSendButton() : ''}
     `;
@@ -50122,20 +50564,20 @@ function isValidURL(url) {
 function isValidImage(image) {
   return image && (0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_1__.isDomainAllowed)(image, 'allowed_image_domains') && isValidURL(image);
 }
-const tplUrlWrapper = (o, wrapped_template) => o.url && isValidURL(o.url) && !(0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_1__.isGIFURL)(o.image) ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<a href="${o.url}" target="_blank" rel="noopener">${wrapped_template(o)}</a>` : wrapped_template(o);
-const tplImage = o => lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-image class="card-img-top hor_centered" href="${o.url}" src="${o.image}" .onImgLoad=${o.onload}></converse-image>`;
+const tplUrlWrapper = (o, wrapped_template) => o.url && isValidURL(o.url) && !(0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_1__.isGIFURL)(o.image) ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<a href="${o.url}" target="_blank" rel="noopener">${wrapped_template(o)}</a>` : wrapped_template(o);
+const tplImage = o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-image class="card-img-top hor_centered" href="${o.url}" src="${o.image}" .onImgLoad=${o.onload}></converse-image>`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const show_image = isValidImage(o.image);
   const has_body_info = o.title || o.description || o.url;
   if (show_image || has_body_info) {
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`<div class="card card--unfurl">
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="card card--unfurl">
             ${show_image ? tplImage(o) : ''}
-            ${has_body_info ? lit__WEBPACK_IMPORTED_MODULE_2__.html` <div class="card-body">
-                      ${o.title ? tplUrlWrapper(o, o => lit__WEBPACK_IMPORTED_MODULE_2__.html`<h5 class="card-title">${o.title}</h5>`) : ''}
-                      ${o.description ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p class="card-text">
+            ${has_body_info ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)` <div class="card-body">
+                      ${o.title ? tplUrlWrapper(o, o => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<h5 class="card-title">${o.title}</h5>`) : ''}
+                      ${o.description ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<p class="card-text">
                                 <converse-rich-text text=${o.description}></converse-rich-text>
                             </p>` : ''}
-                      ${o.url ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<p class="card-text">
+                      ${o.url ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<p class="card-text">
                                 <a href="${o.url}" target="_blank" rel="noopener">${(0,_converse_headless_utils_url_js__WEBPACK_IMPORTED_MODULE_1__.getURI)(o.url).domain()}</a>
                             </p>` : ''}
                   </div>` : ''}
@@ -50226,19 +50668,19 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     const buttons = [];
     if (this.show_emoji_button) {
       const chatview = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.chatboxviews.get(this.model.get('jid'));
-      buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`<converse-emoji-dropdown .chatview=${chatview}></converse-emoji-dropdown>`);
+      buttons.push((0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`<converse-emoji-dropdown .chatview=${chatview}></converse-emoji-dropdown>`);
     }
     if (this.show_call_button) {
       const color = this.is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
       const i18n_start_call = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Start a call');
-      buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`
+      buttons.push((0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
                 <button class="toggle-call" @click=${this.toggleCall} title="${i18n_start_call}">
                     <converse-icon color="var(${color})" class="fa fa-phone" size="1em"></converse-icon>
                 </button>`);
     }
     const message_limit = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('message_limit');
     if (message_limit) {
-      buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`
+      buttons.push((0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
                 <converse-message-limit-indicator .model=${this.model} class="right">
                 </converse-message-limit-indicator>`);
     }
@@ -50246,11 +50688,11 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       buttons.push(this.getSpoilerButton());
     }
     const http_upload_promise = _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.disco.supports(Strophe.NS.HTTPUPLOAD, _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__._converse.domain);
-    buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_7__.until)(http_upload_promise.then(is_supported => this.getHTTPUploadButton(is_supported)), '')}`);
+    buttons.push((0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_7__.until)(http_upload_promise.then(is_supported => this.getHTTPUploadButton(is_supported)), '')}`);
     if (this.is_groupchat && _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.settings.get('visible_toolbar_buttons')?.toggle_occupants) {
       const i18n_hide_occupants = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Hide participants');
       const i18n_show_occupants = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Show participants');
-      buttons.push(lit__WEBPACK_IMPORTED_MODULE_6__.html`
+      buttons.push((0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
                 <button class="toggle_occupants right"
                         title="${this.hidden_occupants ? i18n_show_occupants : i18n_hide_occupants}"
                         @click=${this.toggleOccupants}>
@@ -50278,7 +50720,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     if (is_supported) {
       const i18n_choose_file = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Choose a file to send');
       const color = this.is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
-      return lit__WEBPACK_IMPORTED_MODULE_6__.html`
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
                 <button title="${i18n_choose_file}" @click=${this.toggleFileUpload}>
                     <converse-icon
                         color="var(${color})"
@@ -50302,7 +50744,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
       i18n_toggle_spoiler = (0,i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Click to write your message as a spoiler");
     }
     const color = this.is_groupchat ? '--muc-toolbar-btn-color' : '--chat-toolbar-btn-color';
-    const markup = lit__WEBPACK_IMPORTED_MODULE_6__.html`
+    const markup = (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`
             <button class="toggle-compose-spoiler"
                     title="${i18n_toggle_spoiler}"
                     @click=${this.toggleComposeSpoilerMessage}>
@@ -50316,7 +50758,7 @@ class ChatToolbar extends shared_components_element_js__WEBPACK_IMPORTED_MODULE_
     } else {
       const contact_jid = model.get('jid');
       const spoilers_promise = Promise.all(model.presence.resources.map(r => _converse_headless_core__WEBPACK_IMPORTED_MODULE_5__.api.disco.supports(Strophe.NS.SPOILER, `${contact_jid}/${r.get('name')}`))).then(results => results.reduce((acc, val) => acc && val, true));
-      return lit__WEBPACK_IMPORTED_MODULE_6__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_7__.until)(spoilers_promise.then(() => markup), '')}`;
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_7__.until)(spoilers_promise.then(() => markup), '')}`;
     }
   }
   toggleFileUpload(ev) {
@@ -50467,7 +50909,7 @@ const {
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 async function getHeadingDropdownItem(promise_or_data) {
   const data = await promise_or_data;
-  return data ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return data ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
               <a href="#" class="dropdown-item ${data.a_class}" @click=${data.handler} title="${data.i18n_title}">
                   <converse-icon
                       size="1em"
@@ -50479,7 +50921,7 @@ async function getHeadingDropdownItem(promise_or_data) {
 }
 async function getHeadingStandaloneButton(promise_or_data) {
   const data = await promise_or_data;
-  return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
         <a
             href="#"
             class="chatbox-btn ${data.a_class}"
@@ -50499,7 +50941,7 @@ function getStandaloneButtons(promise) {
 function getDropdownButtons(promise) {
   return promise.then(btns => {
     const dropdown_btns = btns.filter(b => !b.standalone).map(b => getHeadingDropdownItem(b));
-    return dropdown_btns.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<converse-dropdown class="chatbox-btn dropleft" .items=${dropdown_btns}></converse-dropdown>` : '';
+    return dropdown_btns.length ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<converse-dropdown class="chatbox-btn dropleft" .items=${dropdown_btns}></converse-dropdown>` : '';
   });
 }
 function onScrolledDown(model) {
@@ -50611,13 +51053,13 @@ function getEmojiMarkup(data) {
       return emoji;
     } else if (_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('use_system_emojis')) {
       if (options.add_title_wrapper) {
-        return shortname ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<span title="${shortname}">${emoji}</span>` : emoji;
+        return shortname ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<span title="${shortname}">${emoji}</span>` : emoji;
       } else {
         return emoji;
       }
     } else {
       const path = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('emoji_image_path');
-      return lit__WEBPACK_IMPORTED_MODULE_2__.html`<img class="emoji"
+      return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<img class="emoji"
                 loading="lazy"
                 draggable="false"
                 title="${shortname}"
@@ -50627,7 +51069,7 @@ function getEmojiMarkup(data) {
   } else if (options.unicode_only) {
     return shortname;
   } else {
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`<img class="emoji"
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<img class="emoji"
             loading="lazy"
             draggable="false"
             title="${shortname}"
@@ -50711,8 +51153,8 @@ class ConverseBrandByline extends _element_js__WEBPACK_IMPORTED_MODULE_0__.Custo
   render() {
     // eslint-disable-line class-methods-use-this
     const is_fullscreen = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('view_mode') === 'fullscreen';
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-            ${is_fullscreen ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
+            ${is_fullscreen ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
                     <p class="brand-subtitle">${_converse_headless_core__WEBPACK_IMPORTED_MODULE_1__._converse.VERSION_NAME}</p>
                     <p class="brand-subtitle">
                         <a target="_blank" rel="nofollow" href="https://conversejs.org">Open Source</a> XMPP chat client
@@ -50756,7 +51198,7 @@ __webpack_require__.r(__webpack_exports__);
 class ConverseBrandHeading extends _element_js__WEBPACK_IMPORTED_MODULE_2__.CustomElement {
   render() {
     // eslint-disable-line class-methods-use-this
-    return lit_html_js__WEBPACK_IMPORTED_MODULE_4__.html`
+    return (0,lit_html_js__WEBPACK_IMPORTED_MODULE_4__.html)`
             <converse-brand-logo></converse-brand-logo>
             <converse-brand-byline></converse-brand-byline>
         `;
@@ -50787,7 +51229,7 @@ class ConverseBrandLogo extends _element_js__WEBPACK_IMPORTED_MODULE_1__.CustomE
   render() {
     // eslint-disable-line class-methods-use-this
     const is_fullscreen = _converse_headless_core__WEBPACK_IMPORTED_MODULE_0__.api.settings.get('view_mode') === 'fullscreen';
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
             <a class="brand-heading" href="https://conversejs.org" target="_blank" rel="noopener">
                 <span class="brand-name-wrapper ${is_fullscreen ? 'brand-name-wrapper--fullscreen' : ''}">
                     <svg
@@ -50815,7 +51257,7 @@ class ConverseBrandLogo extends _element_js__WEBPACK_IMPORTED_MODULE_1__.CustomE
                     </svg>
                     <span class="brand-name">
                         <span class="brand-name__text">converse<span class="subdued">.js</span></span>
-                        ${is_fullscreen ? lit__WEBPACK_IMPORTED_MODULE_2__.html`
+                        ${is_fullscreen ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
                                 <p class="byline">messaging freedom</p>
                             ` : ''}
                     </span>
@@ -50871,7 +51313,7 @@ class Dropdown extends shared_components_dropdownbase_js__WEBPACK_IMPORTED_MODUL
     this.icon_classes = 'fa fa-bars';
   }
   render() {
-    return lit__WEBPACK_IMPORTED_MODULE_5__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
             <button type="button" class="btn btn--transparent btn--standalone" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <converse-icon size="1em" class="${this.icon_classes}">
             </button>
@@ -51136,7 +51578,7 @@ class ConverseGIFElement extends shared_components_element_js__WEBPACK_IMPORTED_
     }
   }
   render() {
-    return this.supergif?.load_error && ['url', 'empty'].includes(this.fallback) ? this.renderErrorFallback() : lit__WEBPACK_IMPORTED_MODULE_4__.html`<canvas class="gif-canvas"
+    return this.supergif?.load_error && ['url', 'empty'].includes(this.fallback) ? this.renderErrorFallback() : (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<canvas class="gif-canvas"
                 @mouseover=${() => this.setHover()}
                 @mouseleave=${() => this.unsetHover()}
                 @click=${ev => this.onControlsClicked(ev)}><img class="gif" src="${this.src}"></a></canvas>`;
@@ -51229,7 +51671,7 @@ class ConverseIcon extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElemen
         `;
   }
   render() {
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`<svg .style="${this.getStyles()}"> <use href="${this.getSource()}"> </use> </svg>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<svg .style="${this.getStyles()}"> <use href="${this.getSource()}"> </use> </svg>`;
   }
 }
 _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.elements.define("converse-icon", ConverseIcon);
@@ -51271,7 +51713,7 @@ class ImagePicker extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElement
     };
   }
   render() {
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
             <a class="change-avatar" @click=${this.openFileSelection} title="${i18n_profile_picture}">
                 <converse-avatar class="avatar" .data=${this.data} height="${this.height}" width="${this.width}"></converse-avatar>
             </a>
@@ -51375,7 +51817,7 @@ __webpack_require__.r(__webpack_exports__);
 const {
   dayjs
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
-const tplOlderVersion = (k, older_versions) => lit__WEBPACK_IMPORTED_MODULE_2__.html`<p class="older-msg"><time>${dayjs(k).format('MMM D, YYYY, HH:mm:ss')}</time>: ${older_versions[k]}</p>`;
+const tplOlderVersion = (k, older_versions) => (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<p class="older-msg"><time>${dayjs(k).format('MMM D, YYYY, HH:mm:ss')}</time>: ${older_versions[k]}</p>`;
 class MessageVersions extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomElement {
   static get properties() {
     return {
@@ -51391,8 +51833,8 @@ class MessageVersions extends _element_js__WEBPACK_IMPORTED_MODULE_0__.CustomEle
   render() {
     const older_versions = this.model.get('older_versions');
     const keys = Object.keys(older_versions);
-    return lit__WEBPACK_IMPORTED_MODULE_2__.html`
-            ${keys.length ? lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('Older versions')}</h4> ${keys.map(k => tplOlderVersion(k, older_versions))}` : lit__WEBPACK_IMPORTED_MODULE_2__.html`<h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('No older versions found')}</h4>`}
+    return (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`
+            ${keys.length ? (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('Older versions')}</h4> ${keys.map(k => tplOlderVersion(k, older_versions))}` : (0,lit__WEBPACK_IMPORTED_MODULE_2__.html)`<h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('No older versions found')}</h4>`}
             <hr/>
             <h4>${(0,i18n_index_js__WEBPACK_IMPORTED_MODULE_3__.__)('Current version')}</h4>
             <p><time>${dayjs(this.model.get('time')).format('MMM D, YYYY, HH:mm:ss')}</time>: ${this.model.getMessageText()}</p>`;
@@ -51570,10 +52012,10 @@ const {
 } = _converse_headless_core__WEBPACK_IMPORTED_MODULE_1__.converse.env;
 class ImageDirective extends lit_async_directive_js__WEBPACK_IMPORTED_MODULE_0__.AsyncDirective {
   render(src, href, onLoad, onClick) {
-    return href ? lit__WEBPACK_IMPORTED_MODULE_4__.html`<a href="${href}" class="chat-image__link" target="_blank" rel="noopener">${this.renderImage(src, href, onLoad, onClick)}</a>` : this.renderImage(src, href, onLoad, onClick);
+    return href ? (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<a href="${href}" class="chat-image__link" target="_blank" rel="noopener">${this.renderImage(src, href, onLoad, onClick)}</a>` : this.renderImage(src, href, onLoad, onClick);
   }
   renderImage(src, href, onLoad, onClick) {
-    return lit__WEBPACK_IMPORTED_MODULE_4__.html`<img class="chat-image img-thumbnail"
+    return (0,lit__WEBPACK_IMPORTED_MODULE_4__.html)`<img class="chat-image img-thumbnail"
                 loading="lazy"
                 src="${src}"
                 @click=${onClick}
@@ -51646,7 +52088,7 @@ class RichTextRenderer {
     return text.payload;
   }
   render() {
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(this.transform(), lit__WEBPACK_IMPORTED_MODULE_3__.html`${this.text}`)}`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(this.transform(), (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`${this.text}`)}`;
   }
 }
 class RichTextDirective extends lit_directive_js__WEBPACK_IMPORTED_MODULE_1__.Directive {
@@ -51700,7 +52142,7 @@ class StylingDirective extends lit_directive_js__WEBPACK_IMPORTED_MODULE_1__.Dir
       'embed_videos': false,
       'embed_audio': false
     }));
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(transform(t), lit__WEBPACK_IMPORTED_MODULE_3__.html`${t}`)}`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`${(0,lit_directives_until_js__WEBPACK_IMPORTED_MODULE_4__.until)(transform(t), (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`${t}`)}`;
   }
 }
 const renderStylingDirectiveBody = (0,lit_directive_js__WEBPACK_IMPORTED_MODULE_1__.directive)(StylingDirective);
@@ -53032,7 +53474,7 @@ class ImageModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_0__["de
     });
   }
   getModalTitle() {
-    return lit__WEBPACK_IMPORTED_MODULE_5__.html`${(0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Image: ')}<a target="_blank" rel="noopener" href="${this.src}">${(0,utils_html_js__WEBPACK_IMPORTED_MODULE_4__.getFileName)(this.src)}</a>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`${(0,i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Image: ')}<a target="_blank" rel="noopener" href="${this.src}">${(0,utils_html_js__WEBPACK_IMPORTED_MODULE_4__.getFileName)(this.src)}</a>`;
   }
 }
 _converse_headless_core__WEBPACK_IMPORTED_MODULE_3__.api.elements.define('converse-image-modal', ImageModal);
@@ -53062,7 +53504,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class MessageVersionsModal extends plugins_modal_modal_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   renderModal() {
-    return lit__WEBPACK_IMPORTED_MODULE_3__.html`<converse-message-versions .model=${this.model}></converse-message-versions>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<converse-message-versions .model=${this.model}></converse-message-versions>`;
   }
   getModalTitle() {
     // eslint-disable-line class-methods-use-this
@@ -53086,7 +53528,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<img class="chat-image chat-image--modal" src="${o.src}">`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<img class="chat-image chat-image--modal" src="${o.src}">`);
 
 /***/ }),
 
@@ -53114,7 +53556,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const remove_button = el => {
   const i18n_remove_contact = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Remove as contact');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <button type="button" @click="${ev => el.removeContact(ev)}" class="btn btn-danger remove-contact">
             <converse-icon
                 class="fas fa-trash-alt"
@@ -53129,7 +53571,7 @@ const tplFooter = el => {
   const is_roster_contact = el.model.contact !== undefined;
   const i18n_refresh = (0,i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Refresh');
   const allow_contact_removal = _converse_headless_core__WEBPACK_IMPORTED_MODULE_2__.api.settings.get('allow_contact_removal');
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <div class="modal-footer">
             ${plugins_modal_templates_buttons_js__WEBPACK_IMPORTED_MODULE_4__.modal_close_button}
             <button type="button" class="btn btn-info refresh-contact" @click=${ev => el.refreshContact(ev)}>
@@ -53163,15 +53605,15 @@ const tplUserDetailsModal = el => {
     'height': '120',
     'width': '120'
   };
-  return lit__WEBPACK_IMPORTED_MODULE_3__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
         <div class="modal-body">
-            ${o.image ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<div class="mb-4">${(0,shared_avatar_templates_avatar_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(o, avatar_data))}</div>` : ''}
-            ${o.fullname ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p><label>${i18n_full_name}:</label> ${o.fullname}</p>` : ''}
+            ${o.image ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="mb-4">${(0,shared_avatar_templates_avatar_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.assign(o, avatar_data))}</div>` : ''}
+            ${o.fullname ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p><label>${i18n_full_name}:</label> ${o.fullname}</p>` : ''}
             <p><label>${i18n_address}:</label> <a href="xmpp:${o.jid}">${o.jid}</a></p>
-            ${o.nickname ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p><label>${i18n_nickname}:</label> ${o.nickname}</p>` : ''}
-            ${o.url ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p><label>${i18n_url}:</label> <a target="_blank" rel="noopener" href="${o.url}">${o.url}</a></p>` : ''}
-            ${o.email ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p><label>${i18n_email}:</label> <a href="mailto:${o.email}">${o.email}</a></p>` : ''}
-            ${o.role ? lit__WEBPACK_IMPORTED_MODULE_3__.html`<p><label>${i18n_role}:</label> ${o.role}</p>` : ''}
+            ${o.nickname ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p><label>${i18n_nickname}:</label> ${o.nickname}</p>` : ''}
+            ${o.url ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p><label>${i18n_url}:</label> <a target="_blank" rel="noopener" href="${o.url}">${o.url}</a></p>` : ''}
+            ${o.email ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p><label>${i18n_email}:</label> <a href="mailto:${o.email}">${o.email}</a></p>` : ''}
+            ${o.role ? (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<p><label>${i18n_role}:</label> ${o.role}</p>` : ''}
 
             <converse-omemo-fingerprints jid=${o.jid}></converse-omemo-fingerprints>
         </div>
@@ -53364,8 +53806,8 @@ const isString = s => typeof s === 'string';
 // We don't render more than two line-breaks, replace extra line-breaks with
 // the zero-width whitespace character
 const collapseLineBreaks = text => text.replace(/\n\n+/g, m => `\n${'\u200B'.repeat(m.length - 2)}\n`);
-const tplMentionWithNick = o => lit__WEBPACK_IMPORTED_MODULE_12__.html`<span class="mention mention--self badge badge-info" data-uri="${o.uri}">${o.mention}</span>`;
-const tplMention = o => lit__WEBPACK_IMPORTED_MODULE_12__.html`<span class="mention" data-uri="${o.uri}">${o.mention}</span>`;
+const tplMentionWithNick = o => (0,lit__WEBPACK_IMPORTED_MODULE_12__.html)`<span class="mention mention--self badge badge-info" data-uri="${o.uri}">${o.mention}</span>`;
+const tplMention = o => (0,lit__WEBPACK_IMPORTED_MODULE_12__.html)`<span class="mention" data-uri="${o.uri}">${o.mention}</span>`;
 
 /**
  * @class RichText
@@ -53767,12 +54209,12 @@ const dont_escape = ['_', '>', '`', '~'];
 const styling_templates = {
   // m is the chatbox model
   // i is the offset of this directive relative to the start of the original message
-  'emphasis': (txt, i, options) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<span class="styling-directive">_</span><i>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</i><span class="styling-directive">_</span>`,
-  'preformatted': txt => lit__WEBPACK_IMPORTED_MODULE_0__.html`<span class="styling-directive">\`</span><code>${txt}</code><span class="styling-directive">\`</span>`,
-  'preformatted_block': txt => lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="styling-directive">\`\`\`</div><code class="block">${txt}</code><div class="styling-directive">\`\`\`</div>`,
-  'quote': (txt, i, options) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<blockquote>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</blockquote>`,
-  'strike': (txt, i, options) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<span class="styling-directive">~</span><del>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</del><span class="styling-directive">~</span>`,
-  'strong': (txt, i, options) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<span class="styling-directive">*</span><b>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</b><span class="styling-directive">*</span>`
+  'emphasis': (txt, i, options) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<span class="styling-directive">_</span><i>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</i><span class="styling-directive">_</span>`,
+  'preformatted': txt => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<span class="styling-directive">\`</span><code>${txt}</code><span class="styling-directive">\`</span>`,
+  'preformatted_block': txt => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="styling-directive">\`\`\`</div><code class="block">${txt}</code><div class="styling-directive">\`\`\`</div>`,
+  'quote': (txt, i, options) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<blockquote>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</blockquote>`,
+  'strike': (txt, i, options) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<span class="styling-directive">~</span><del>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</del><span class="styling-directive">~</span>`,
+  'strong': (txt, i, options) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<span class="styling-directive">*</span><b>${(0,shared_directives_styling_js__WEBPACK_IMPORTED_MODULE_1__.renderStylingDirectiveBody)(txt, i, options)}</b><span class="styling-directive">*</span>`
 };
 
 /**
@@ -53914,7 +54356,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <?xml version="1.0" encoding="UTF-8"?>
     <!--
     Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com
@@ -54179,7 +54621,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, hide_url) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<audio controls src="${url}"></audio>${hide_url ? '' : lit__WEBPACK_IMPORTED_MODULE_0__.html`<a target="_blank" rel="noopener" href="${url}">${url}</a>`}`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, hide_url) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<audio controls src="${url}"></audio>${hide_url ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<a target="_blank" rel="noopener" href="${url}">${url}</a>`}`);
 
 /***/ }),
 
@@ -54198,7 +54640,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @converse/headless/core.js */ "./src/headless/core.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="inner-content converse-brand row">
         <div class="converse-brand__padding"></div>
         <div class="converse-brand__heading">
@@ -54243,7 +54685,7 @@ __webpack_require__.r(__webpack_exports__);
                 <p class="byline">messaging freedom</p>
             </span>
         </div>
-        ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('view_mode') === 'overlayed' ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="converse-brand__padding"></div>` : ''}
+        ${_converse_headless_core_js__WEBPACK_IMPORTED_MODULE_1__.api.settings.get('view_mode') === 'overlayed' ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="converse-brand__padding"></div>` : ''}
     </div>`);
 
 /***/ }),
@@ -54265,7 +54707,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, name) => {
   const i18n_download = (0,i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Download file "%1$s"', name);
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<a target="_blank" rel="noopener" href="${url}">${i18n_download}</a>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<a target="_blank" rel="noopener" href="${url}">${i18n_download}</a>`;
 });
 
 /***/ }),
@@ -54283,9 +54725,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <fieldset class="form-group">
-        ${o.label ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<label>${o.label}</label>` : ''}
+        ${o.label ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<label>${o.label}</label>` : ''}
         <img src="data:${o.type};base64,${o.data}">
         <input name="${o.name}" type="text" ?required="${o.required}" />
     </fieldset>
@@ -54306,7 +54748,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <fieldset class="form-group">
         <input id="${o.id}" name="${o.name}" type="checkbox" ?checked=${o.checked} ?required=${o.required} />
         <label class="form-check-label" for="${o.id}">${o.label}</label>
@@ -54327,7 +54769,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<p class="form-help">${o.text}</p>`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<p class="form-help">${o.text}</p>`);
 
 /***/ }),
 
@@ -54344,13 +54786,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="form-group">
-        ${o.type !== 'hidden' ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<label for="${o.id}">${o.label}</label>` : ''}
+        ${o.type !== 'hidden' ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<label for="${o.id}">${o.label}</label>` : ''}
 
         <!-- This is a hack to prevent Chrome from auto-filling the username in
              any of the other input fields in the MUC configuration form. -->
-        ${o.type === 'password' && o.fixed_username ? lit__WEBPACK_IMPORTED_MODULE_0__.html`
+        ${o.type === 'password' && o.fixed_username ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
             <input class="hidden-username" type="text" autocomplete="username" value="${o.fixed_username}"></input>
         ` : ''}
 
@@ -54380,8 +54822,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-const tplOption = o => lit__WEBPACK_IMPORTED_MODULE_0__.html`<option value="${o.value}" ?selected="${o.selected}">${o.label}</option>`;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+const tplOption = o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<option value="${o.value}" ?selected="${o.selected}">${o.label}</option>`;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="form-group">
         <label for="${o.id}">${o.label}</label>
         <select class="form-control" id="${o.id}" name="${o.name}" ?multiple="${o.multiple}">
@@ -54408,7 +54850,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => {
   const id = _converse_headless_utils_core_js__WEBPACK_IMPORTED_MODULE_1__["default"].getUniqueId();
-  return lit__WEBPACK_IMPORTED_MODULE_0__.html`
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
         <div class="form-group">
             <label class="label-ta" for="${id}">${o.label}</label>
             <textarea name="${o.name}" id="${id}" class="form-control">${o.value}</textarea>
@@ -54431,7 +54873,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <label>${o.label}
         <a class="form-url" target="_blank" rel="noopener" href="${o.value}">${o.value}</a>
     </label>`);
@@ -54451,9 +54893,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     <div class="form-group">
-        ${o.label ? lit__WEBPACK_IMPORTED_MODULE_0__.html`<label>${o.label}</label>` : ''}
+        ${o.label ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<label>${o.label}</label>` : ''}
         <div class="input-group">
                 <input name="${o.name}"
                        class="form-control"
@@ -54483,7 +54925,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_components_gif_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/components/gif.js */ "./src/shared/components/gif.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, hide_url) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-gif autoplay noloop fallback='empty' src=${url}></converse-gif>${hide_url ? '' : lit__WEBPACK_IMPORTED_MODULE_0__.html`<a target="_blank" rel="noopener" href="${url}">${url}</a>`}`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, hide_url) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<converse-gif autoplay noloop fallback='empty' src=${url}></converse-gif>${hide_url ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<a target="_blank" rel="noopener" href="${url}">${url}</a>`}`);
 
 /***/ }),
 
@@ -54512,13 +54954,13 @@ function onClickXMPPURI(ev) {
     href_text = 'http://' + href_text;
   }
   if (uri._parts.protocol === 'xmpp' && uri._parts.query === 'join') {
-    return lit__WEBPACK_IMPORTED_MODULE_1__.html`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
             <a target="_blank"
                rel="noopener"
                @click=${onClickXMPPURI}
                href="${href_text}">${url_text}</a>`;
   }
-  return lit__WEBPACK_IMPORTED_MODULE_1__.html`<a target="_blank" rel="noopener" href="${href_text}">${url_text}</a>`;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`<a target="_blank" rel="noopener" href="${href_text}">${url_text}</a>`;
 });
 
 /***/ }),
@@ -54538,7 +54980,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var shared_directives_image_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! shared/directives/image.js */ "./src/shared/directives/image.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => lit__WEBPACK_IMPORTED_MODULE_0__.html`${(0,shared_directives_image_js__WEBPACK_IMPORTED_MODULE_1__.renderImage)(o.src || o.url, o.href, o.onLoad, o.onClick)}`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (o => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`${(0,shared_directives_image_js__WEBPACK_IMPORTED_MODULE_1__.renderImage)(o.src || o.url, o.href, o.onLoad, o.onClick)}`);
 
 /***/ }),
 
@@ -54558,9 +55000,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
   let o = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   if (o.classes?.includes('hor_centered')) {
-    return lit__WEBPACK_IMPORTED_MODULE_0__.html`<div class="spinner__container"><converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon></div>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="spinner__container"><converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon></div>`;
   } else {
-    return lit__WEBPACK_IMPORTED_MODULE_0__.html`<converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon>`;
+    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<converse-icon size="1em" class="fa fa-spinner spinner centered ${o.classes || ''}"></converse-icon>`;
   }
 });
 
@@ -54579,7 +55021,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, hide_url) => lit__WEBPACK_IMPORTED_MODULE_0__.html`<video controls preload="metadata" src="${url}"></video>${hide_url ? '' : lit__WEBPACK_IMPORTED_MODULE_0__.html`<a target="_blank" rel="noopener" href="${url}">${url}</a>`}`);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((url, hide_url) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<video controls preload="metadata" src="${url}"></video>${hide_url ? '' : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<a target="_blank" rel="noopener" href="${url}">${url}</a>`}`);
 
 /***/ }),
 
@@ -54692,6 +55134,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getHyperlinkTemplate: () => (/* binding */ getHyperlinkTemplate),
 /* harmony export */   getNameAndValue: () => (/* binding */ getNameAndValue),
 /* harmony export */   getOOBURLMarkup: () => (/* binding */ getOOBURLMarkup),
+/* harmony export */   hasClass: () => (/* binding */ hasClass),
 /* harmony export */   removeClass: () => (/* binding */ removeClass),
 /* harmony export */   removeElement: () => (/* binding */ removeElement),
 /* harmony export */   slideIn: () => (/* binding */ slideIn),
@@ -54941,12 +55384,19 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].getLastChildElemen
   }
   return last_el;
 };
-_headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].hasClass = function (className, el) {
-  return el instanceof Element && el.classList.contains(className);
-};
 _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].toggleClass = function (className, el) {
   _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].hasClass(className, el) ? removeClass(className, el) : addClass(className, el);
 };
+
+/**
+ * Has an element a class?
+ * @method u#hasClass
+ * @param { string } className
+ * @param { Element } el
+ */
+function hasClass(className, el) {
+  return el instanceof Element && el.classList.contains(className);
+}
 
 /**
  * Add a class to an element.
@@ -55304,6 +55754,7 @@ _headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"].xForm2TemplateResu
   }
 };
 Object.assign(_headless_utils_core__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  hasClass,
   addClass,
   ancestor,
   getOOBURLMarkup,
@@ -89005,6 +89456,7 @@ function uniqueId(prefix) {
 /******/ 					script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 				}
 /******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 		
 /******/ 				script.src = url;
 /******/ 			}
 /******/ 			inProgress[url] = [done];
