@@ -350,7 +350,7 @@
         const group = (isChatBox ? "public/" : "") +  Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "/" + Math.random().toString(36).substr(2,9);
         const url = _converse.api.settings.get("galene_url") + '/?room=' + group + "&host=" + host;
 
-        console.debug("doVideo", isChatBox, group, url, view);
+        console.debug("doVideo", isChatBox, group, url, view.model);
 
         view.model.sendMessage({'body': url});	
         doLocalVideo(view, group, galene_invitation, host);
@@ -359,7 +359,7 @@
     function doLocalVideo(view, group, label, host)
     {
         const chatModel = view.model;
-        console.debug("doLocalVideo", view, group, label, host);
+        console.debug("doLocalVideo", chatModel, group, label, host);
 		
 		if (!host) host = _converse.api.settings.get("galene_host");
 		const server =  _converse.api.settings.get("galene_url");
@@ -424,7 +424,7 @@
 
 			galeneFrame.__jid = jid;
 			galeneFrame.addEventListener("load", galeneIframeCloseHandler);
-			galeneFrame.setAttribute("src", "./packages/galene/index.html?room=" + group + "&username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=" + _converse.connection.pass + "&host=" + host + "&server=" + server);
+			galeneFrame.setAttribute("src", "./packages/galene/index.html?room=" + group + "&username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=" + _converse.connection.jid + "&host=" + host + "&server=" + server);
 			galeneFrame.setAttribute("class", "galene");
 			galeneFrame.setAttribute("allow", "microphone; camera;");
 			galeneFrame.setAttribute("frameborder", "0");
