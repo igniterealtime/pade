@@ -1,5 +1,5 @@
 const padeName = chrome.i18n ? chrome.i18n.getMessage('manifest_extensionName') : "Pade Converse";
-const padeVersion = chrome.i18n ? chrome.runtime.getManifest().version : "2.0.7";
+const padeVersion = chrome.i18n ? chrome.runtime.getManifest().version : "2.1.4";
 
 this.manifest = {
     "name": padeName + " | " + padeVersion,
