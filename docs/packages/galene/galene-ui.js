@@ -3994,7 +3994,7 @@ window.onload = async function() {
     serverConnection.onclose = gotClose;
     serverConnection.ondownstream = gotDownStream;
     serverConnection.onuser = gotUser;
-    serverConnection.onjoined = amJoined.bind(serverConnection);
+    serverConnection.onjoined = gotJoined;
     serverConnection.onchat = addToChatbox;
     serverConnection.onusermessage = gotUserMessage;
     serverConnection.onfiletransfer = gotFileTransfer;	
@@ -4007,7 +4007,6 @@ window.onload = async function() {
 	
 	handleConnection();
 }
-
 
 async function handleConnection() {
 	const host = urlParam("host") || location.hostname;
@@ -4054,18 +4053,6 @@ function urlParam (name) {
 	return unescape(results[1] || undefined);
 }
 
-function amJoined(kind, grp, perms, status, data, error, message) {
-	console.debug("amJoined", kind, group, perms, status, data, error, message);	
-	
-	if (kind == 'fail' && message == 'group does not exist') {
-		group = 'public/' + grp.split("/")[0];
-		amConnected();
-		
-	} else {
-		gotJoined.call(this, kind, group, perms, status, data, error, message);
-	}
-}
-
 async function amConnected() {
 	console.debug("amConnected");	
 	const server = urlParam("server") || ((location.protocol == "http:" ? "http:" : "https:") + "//" + location.host + "/galene");	
@@ -4082,12 +4069,15 @@ async function amConnected() {
 		
 	if (urlParam("room")) {
 		username =  urlParam("username") || connection.jid.split("@")[0] || "";
-		credentials = {
-			type: 'authServer',
-			authServer: server + "/auth-server",
-			location: location.href,
-			password: connection.jid
-		};		
+		
+		if (group.indexOf("public") != 0) {
+			credentials = {
+				type: 'authServer',
+				authServer: server + "/auth-server",
+				location: location.href,
+				password: urlParam("password") || connection.jid
+			};	
+		}			
 	}
 	
 	try {

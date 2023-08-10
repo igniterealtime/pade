@@ -205,11 +205,29 @@ window.addEventListener("unload", function() {
     }
 });
 
+window.addEventListener('online', function() {
+	console.debug("window.online");
+	restartApp();
+})
+
+window.addEventListener('offline', function() {
+	console.debug("window.offline");
+})
+
 // -------------------------------------------------------
 //
 //  Setup
 //
 // -------------------------------------------------------	
+
+function restartApp() {
+	if (!isOnline()) {
+		setTimeout(restartApp, 1000);		
+		return;
+	}
+	
+	window.location.reload();	
+}
 
 function loadBranding() {
 	var defaults = Object.getOwnPropertyNames(branding);
@@ -1588,6 +1606,24 @@ function addSelfBot() {
 //  Utility Functions
 //
 // -------------------------------------------------------	
+
+async function isOnline() {
+    try {
+        if (!self.navigator.onLine) //false is always reliable that no network. true might lie
+            return false;
+
+		const domain = getSetting("domain", location.hostname);
+		const server = getSetting("server", location.host);		
+		const url = (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server;	
+			
+        const request = new URL(url);
+        request.searchParams.set('rand', Date.now().toString()); // random value to prevent cached responses
+        const response = await fetch(request.toString(), { method: 'HEAD' });
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
 
 function showOutgoingNotification() {		
 	const options = {
