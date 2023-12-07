@@ -13,7 +13,7 @@ func main() {
 		log.Fatalln("Failed to load webview.")
 	}
 	defer w.Destroy();
-	w.SetTitle("Pade Converse | 2.1.4");
+	w.SetTitle("Pade Converse | 2.1.5");
 	w.SetSize(1500, 900, webview2.HintFixed);
 	w.Navigate("https://igniterealtime.github.io/pade/");
 	w.Run();

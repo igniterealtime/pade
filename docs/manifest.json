@@ -3,7 +3,7 @@
 	"short_name": "__MSG_manifest_shortExtensionName__",
 	"name": "__MSG_manifest_extensionName__",
 	"description": "__MSG_manifest_extensionDescription__",	
-	"version": "2.1.3",
+	"version": "2.1.5",
 	"homepage_url": "https://igniterealtime.github.io/pade/help",
     "manifest_version": 3,
     "permissions": [

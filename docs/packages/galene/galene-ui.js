@@ -4075,7 +4075,7 @@ async function amConnected() {
 				type: 'authServer',
 				authServer: server + "/auth-server",
 				location: location.href,
-				password: urlParam("password") || connection.jid
+				password: connection.jid
 			};	
 		}			
 	}

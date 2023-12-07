@@ -1659,13 +1659,37 @@ function loadCSS(name) {
 }
 	
 async function parseStanza(stanza, attrs) {
-    const reactions = stanza.querySelector('reactions');
-
+    const reactions = stanza.querySelector('reactions');	
+		
     if (reactions) {
 		attrs.reaction_id = reactions.getAttribute('id');
 		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
 		//console.log("parseStanza", stanza, attrs);		
     }
+
+	const textarea = document.querySelector("textarea");	
+	
+	if (textarea) {
+		const rtt = stanza.querySelector('rtt');
+
+		if (rtt) {
+			//console.debug("parseStanza RTT", rtt, attrs);	
+			const text = rtt.querySelector('t').innerHTML;	
+			
+			let old = textarea.getAttribute("placeholder");
+			if (old == "Message") old = "";
+
+			textarea.setAttribute("placeholder",  old + text);
+			
+		}
+
+		const body = stanza.querySelector('body');
+
+		if (body) {
+			textarea.setAttribute("placeholder", "Message");
+		}
+	}
+	
 	return attrs;
 }
 
