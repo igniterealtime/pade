@@ -1184,7 +1184,7 @@ function addPadeUI() {
 		setTimeout(() => {
 			addControlFeatures();
 			setupMUCAvatars();			
-		}, 3000);
+		}, 5000);
 	}
 }
 
