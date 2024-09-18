@@ -3306,7 +3306,7 @@
 
           case "pdfobjectnewwindow":
             if (Object.prototype.toString.call(global) === "[object Window]") {
-              var pdfObjectUrl = options.pdfObjectUrl || "https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js";
+              var pdfObjectUrl = options.pdfObjectUrl || "/packages/search/pdfobject.min.js";
               var htmlForNewWindow = "<html>" + '<style>html, body { padding: 0; margin: 0; } iframe { width: 100%; height: 100%; border: 0;}  </style><body><script src="' + pdfObjectUrl + '"></script><script >PDFObject.embed("' + this.output("dataurlstring") + '", ' + JSON.stringify(options) + ");</script></body></html>";
               var nW = global.open();
 
