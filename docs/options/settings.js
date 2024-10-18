@@ -541,7 +541,7 @@ function doDefaults(background)
     setDefaultSetting("converseTheme", "concord");
     setDefaultSetting("enableHomePage", true);
     setDefaultSetting("homePageView", "fullscreen");
-    setDefaultSetting("homePage", "https://igniterealtime.github.io/pade/help");
+    setDefaultSetting("homePage", "https://igniterealtime.github.io/openfire-pade-plugin/help");
     setDefaultSetting("converseOpenState", "online");
     setDefaultSetting("converseCloseState", "online");
     setDefaultSetting("enableBookmarks", true);
