@@ -1038,10 +1038,11 @@ function setupPadeRoot() {
 			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
 				
 				if (el.model.get('body')) {
-				   buttons.push({'i18n_text': __('Pin'),   	 'handler': ev => handlePinAction(el), 								'button_class': 'chat-msg__action-pin',         'icon_class': 'fa fa-paperclip',   'name': 'pade-pin'});			   
+				   buttons.push({'i18n_text': __('Pin'),   	 'handler': ev => handlePinAction(el), 								'button_class': 'chat-msg__action-pin',         'icon_class': 'fa fa-paperclip',    'name': 'pade-pin'});			   
 				   buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el),                    		'button_class': 'chat-msg__action-reply',       'icon_class': 'fas fa-arrow-left',  'name': 'pade-reply'});			   
 				   buttons.push({'i18n_text': __('Like'),    'handler': ev => handleReactionAction(el.model, ':smiley:'),   	'button_class': 'chat-msg__action-thumbsup',    'icon_class': 'fa fa-check',   		'name': 'pade-thumbsup'});	
 				   buttons.push({'i18n_text': __('Dislike'), 'handler': ev => handleReactionAction(el.model, ':disappointed:'), 'button_class': 'chat-msg__action-thumbsdownp', 'icon_class': 'fa fa-times', 		'name': 'pade-thumbsdown'});			   
+				   buttons.push({'i18n_text': __('Summarize'), 'handler': ev => handleSummarizeAction(el),                'button_class': 'chat-msg__action-summarize',   'icon_class': 'fa fa-info-circle', 	'name': 'pade-summarize'});			   
 				}
 				return buttons;
 			});	
@@ -1703,6 +1704,71 @@ function handleReplyAction(el) {
 	replyChat(el.model, prefix + ' : ' + selectedText);
 }
 
+function handleSummarizeAction(el) {
+	const timestamp = el.model.get('time');	
+	const timeAgo = timeago.format(new Date(timestamp));	
+	const msgId = el.model.get('msgid');	
+	const messages = el.model.collection.models;	
+	console.debug('handleSummarizeAction', el.model, timestamp, timeAgo, msgId, messages);
+	
+	let firstMsg = 0;
+	const msg = document.querySelector('[data-msgid="' + msgId + '"]');
+
+	for (let i=0; i<messages.length; i++)	
+	{
+		if (messages[i].get("msgid") == msgId) {
+			console.debug("start message collection", i);
+			firstMsg = i;
+			break;
+		}
+	}
+
+	let detail = "";
+
+	for (var i=firstMsg; i<messages.length; i++) {
+		const body = messages[i].get('message');
+		const from = messages[i].get('from');
+		const pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
+
+		if (body && !body.startsWith('>')) {
+			detail = detail + pretty_from + ": " + body + "\n";
+		}
+	}
+	
+	const llama = _converse.roster.findWhere({'jid': "llama@pade.chat"});
+	
+	if (llama) {
+		const llamaJid = getSetting("llamaAddress", "llama@" + _converse.connection.domain) + "/" + llama.presence.resources.models[0].get('name');
+		const promptText = "summarize this:" + "\n\n" + detail;	
+		console.debug("handleSummarizeAction summary text\n", promptText, llamaJid);	
+		
+		const stanza = $iq({'to': llamaJid, 'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "urn:xmpp:gen-ai:0"}).t(promptText);					
+		
+		_converse.connection.sendIQ(stanza, function(iq) {		
+			const response = iq.querySelector('response')?.innerHTML;	
+			console.debug("handleSummarizeAction response", response, iq);		
+			injectMessage(el.model.chatbox, "Summary from " + timeAgo, response);		
+
+		}, function(error){
+			console.error("handleSummarizeAction error", error);
+		});	
+	}		
+}
+
+function injectMessage(model, title, body) {
+	const msgId = 'inject-' + Math.random().toString(36).substr(2,9);
+	const type = model.get("type") == "chatbox" ? "chat" : "groupchat";
+	const from = model.get("jid");
+
+	let attrs = {message: body, body, id: msgId, msgId, type, from: _converse.jid}; 
+	
+	if (type == "groupchat") {
+		attrs = {message: body, body, id: msgId, msgId, type, from_muc: from, from: from + '/' + title, nick: title};  
+	}
+	
+	model.queueMessage(attrs);		
+}
+
 function handlePinAction(el) {
 	const msgId = el.model.get('msgid');
 	const message = el.model.get('message');
@@ -1779,7 +1845,6 @@ function getSelectedChatBox() {
 	}
 	return view;
 }
-
 
 function replyInverseChat(text) {
 	var box = getSelectedChatBox();

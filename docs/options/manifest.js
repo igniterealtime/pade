@@ -290,6 +290,14 @@ this.manifest = {
         },
         {
             "tab": i18n.get("General"),
+            "group": i18n.get("Preferences"),
+            "name": "llamaAddress",
+            "type": "text",
+            "text": i18n.get("Enter xmpp address for LLaMA AI Assistant"),
+            "label": i18n.get("LLaMA Address")
+        },		
+        {
+            "tab": i18n.get("General"),
             "group": i18n.get("Fastpath (Workgroups)"),
             "name": "wgEnabled",
             "type": "checkbox",

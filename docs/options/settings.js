@@ -505,6 +505,7 @@ function doDefaults(background)
 	setDefaultSetting("renderMedia", true);
 	setDefaultSetting("notifyAllMessages", true);
 	setDefaultSetting("useUpDownCursorKeys", true);
+	setDefaultSetting("llamaAddress", "llama@pade.chat");
 
     // config
     setDefaultSetting("startBitrate", 800);
