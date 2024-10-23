@@ -1662,7 +1662,7 @@ function loadCSS(name) {
 async function parseStanza(stanza, attrs) {
     const reactions = stanza.querySelector('reactions');	
 		
-    if (reactions) {
+    if (reactions && reactions.querySelector('reaction')) {
 		attrs.reaction_id = reactions.getAttribute('id');
 		attrs.reaction_emoji = reactions.querySelector('reaction').innerHTML;		
 		//console.log("parseStanza", stanza, attrs);		
