@@ -1747,7 +1747,7 @@ function handleSummarizeAction(el) {
 		_converse.connection.sendIQ(stanza, function(iq) {		
 			const response = iq.querySelector('response')?.innerHTML;	
 			console.debug("handleSummarizeAction response", response, iq);		
-			injectMessage(el.model.chatbox, "Summary from " + timeAgo, response);		
+			injectMessage(el.model.chatbox || el.model.collection.chatbox, "Summary from " + timeAgo, response);		
 
 		}, function(error){
 			console.error("handleSummarizeAction error", error);
