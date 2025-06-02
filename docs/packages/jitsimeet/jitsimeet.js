@@ -160,10 +160,18 @@
                     const tab_label = jitsimeet_tab_invitation;
 
                     text.references = [];
-                    text.addTemplateResult(0, text.length, html`<a 
-                        @click=${clickVideo} data-room="${link_room}" data-url="${url}"
-                        href="#">${link_label} ${link_room}</a><br/><a target="_blank" rel="noopener noreferrer"
-                        href="${url}">${tab_label} ${url}</a>`);
+						
+					text.addTemplateResult(0, text.length,	html`
+							<p>${__('A new meeting started:')} ${link_room}</p>
+							<button type="button"
+								class="btn btn-primary"
+								@click="${clickVideo}"
+								data-room="${link_room}"
+								data-url="${url}">Open Meeting</button>
+							<button type="button"
+								class="btn btn-secondary"
+								@click="${() => window.open(url, '_blank')}">Open Meeting in New tab</button>`
+					);						
                 }
             });
 
