@@ -1,4 +1,4 @@
-let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect, streamChannel, simpleView;
+let Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, converseConn, _converse, html, _, __, Model, BootstrapModal, serviceWorkerRegistration, BrowserDetect, streamChannel, simpleView;
 const nickColors = {}
 const whitelistedPlugins = [];
 
@@ -425,8 +425,8 @@ function loadPlugins() {
 		whitelistedPlugins.push("toolbar-utilities");
 		loadJS("./packages/toolbar-utilities/toolbar-utilities.js");
 
-		whitelistedPlugins.push("jitsimeet");
-		loadJS("./packages/jitsimeet/jitsimeet.js");
+		whitelistedPlugins.push("olmeet");
+		loadJS("./packages/olmeet/olmeet.js");
 		
 		whitelistedPlugins.push("search");
 		loadCSS("./packages/search/search.css");
@@ -779,7 +779,7 @@ function startConverse(credential) {
 		show_chat_state_notifications: getSetting("notifyChatState", false),		
 		singleton: (autoJoinRooms && autoJoinRooms.length == 1),			  
 		sounds_path: "./dist/sounds/",
-		theme: getSetting('converseTheme', 'concord'),					  
+		theme: "nordic", //getSetting('converseTheme', 'concord'),					  
 		view_mode: "fullscreen",
 		voicechat: {
 			hosts: {
@@ -795,10 +795,10 @@ function startConverse(credential) {
 			started: 'has started speaking',
 			stopped: 'has stopped speaking'				
 		},	
-		jitsimeet_start_option: getSetting("ofmeetDisplayOptions", "into_chat_window"),
-		jitsimeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),
-		jitsimeet_modal: !getSetting("converseEmbedOfMeet", true),		
-		jitsimeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
+		olmeet_start_option: getSetting("ofmeetDisplayOptions", "into_chat_window"),
+		olmeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),
+		olmeet_modal: !getSetting("converseEmbedOfMeet", true),		
+		olmeet_url: getSetting("ofmeetUrl", (domain == "localhost" || location.protocol == "http:" ? "http://" : "https://") + server + "/ofmeet"),
 		mastodon: {
 			url: getSetting("mastodonAccessUrl", "https://toot.igniterealtime.org"), 
 			token: getSetting("mastodonAccessToken", ""),
@@ -809,7 +809,7 @@ function startConverse(credential) {
 		},		
 		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableRayo", false), 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
-		whitelisted_plugins: whitelistedPlugins		
+		whitelisted_plugins: ["paderoot", "olmeet", "toolbar-utilities"] //whitelistedPlugins		
 	}
 
     if (getSetting("showToolbarIcons", true))  {	
@@ -843,7 +843,7 @@ function setupPadeRoot() {
 
 			console.debug("setupPadeRoot - _converse", _converse);			
 
-			class PadeBrandLogo extends _converse.CustomElement 
+			/*class PadeBrandLogo extends _converse.CustomElement 
 			{
 				render () {
 					const is_fullscreen = _converse.api.settings.get('view_mode') === 'fullscreen';
@@ -858,7 +858,8 @@ function setupPadeRoot() {
 				}		
 			}
 			
-			_converse.api.elements.define('converse-brand-logo', PadeBrandLogo);
+			_converse.api.elements.define('converse-brand-logo', PadeBrandLogo);			
+			*/
 			
 			if (chrome.i18n) {
 				document.title = chrome.i18n.getMessage('manifest_shortExtensionName') + " Converse | " + chrome.runtime.getManifest().version;
@@ -900,9 +901,10 @@ function setupPadeRoot() {
 				console.error('waiting for controlBoxInitialized error', err);
 			});		
 					
-			_converse.api.listen.on('connected', function() {				
-				const myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);
-				console.debug("bookmarksInitialized", myNick);					
+			_converse.api.listen.on('connected', async function() {	
+				converseConn = await _converse.api.connection.get();		
+				const myNick = _converse.nickname || Strophe.getNodeFromJid(_converse.bare_jid);				
+				console.debug("bookmarksInitialized", myNick, converseConn);					
 				
 				var bookmarkRoom = function bookmarkRoom(json)
 				{
@@ -922,11 +924,25 @@ function setupPadeRoot() {
 					bookmark = _converse.bookmarks.findWhere({'jid': json.jid});
 					_converse.bookmarks.markRoomAsBookmarked(bookmark);
 				}
-
+				
+				if (!getSetting("disablePadeStyling", false)) {						
+					addControlFeatures();					
+					setupTimer();
+					addSelfBot();
+					
+					_converse.api.waitUntil('rosterContactsFetched').then(() => {
+						if (getSetting("enableRssFeeds", false)) {					
+							createFeedItem("pade-rss@" + converseConn.domain);
+						}						
+					});
+				}
+				
+				
 				if (getSetting("enableBookmarks", true)) {
-					const stanza = $iq({'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });					
-					_converse.connection.sendIQ(stanza, function(iq) {
-
+					const stanza = $iq({'from': converseConn.jid, 'type': 'get'}).c('query', { 'xmlns': "jabber:iq:private"}).c('storage', { 'xmlns': 'storage:bookmarks' });					
+					const iq = await _converse.api.sendIQ(stanza);					
+					
+					if (iq) {
 						iq.querySelectorAll('conference').forEach(function(conf)
 						{
 							var jid = conf.getAttribute("jid");
@@ -940,34 +956,18 @@ function setupPadeRoot() {
 							if (_converse.bookmarks) bookmarkRoom(json);
 
 						});
-
-					}, function(error){
-						console.error("bookmarks error", error);
-					});
-				}
-				
-				if (!getSetting("disablePadeStyling", false)) {						
-					setupMUCAvatars();
-					addControlFeatures();					
-					setupTimer();
-					addSelfBot();
-					
-					_converse.api.waitUntil('rosterContactsFetched').then(() => {
-						if (getSetting("enableRssFeeds", false)) {					
-							createFeedItem("pade-rss@" + _converse.connection.domain);
-						}						
-					});
+					}
 				}					
 
-				if (_converse.connection.pass) {
-					const username = Strophe.getNodeFromJid(_converse.connection.jid);
+				if (converseConn.pass) {
+					const username = Strophe.getNodeFromJid(converseConn.jid);
 					setSetting("username", username);
 					
-					setupServiceWorker(_converse.connection.pass);	
-					storeCredentials(_converse.connection.pass);
+					setupServiceWorker(converseConn.pass);	
+					storeCredentials(converseConn.pass);
 				}			
 
-			   _converse.connection.addHandler(message => {
+			   /*converseConn.addHandler(message => {
 				   console.debug("muc invite handler", message);
 					if (_converse.api.settings.get('auto_join_on_invite')) return;
 					
@@ -1027,8 +1027,8 @@ function setupPadeRoot() {
 					
 					return true;
 					
-			   }, 'jabber:x:conference', 'message');
-  
+			   }, 'jabber:x:conference', 'message'); */
+			   
 			});
 
 			_converse.api.listen.on('rosterContactInitialized', function(contact) {
@@ -1051,7 +1051,7 @@ function setupPadeRoot() {
             {
                 console.debug("chatRoomViewInitialized", view);
 				addPadeUI();
-				addPadeOccupantsUI(view);											
+				//addPadeOccupantsUI(view);											
 			});
 			
             _converse.api.listen.on('chatBoxViewInitialized', function (view)
@@ -1183,8 +1183,7 @@ function addPadeOccupantsUI(view) {
 function addPadeUI() {
 	if (!getSetting("disablePadeStyling", false)) {			
 		setTimeout(() => {
-			addControlFeatures();
-			setupMUCAvatars();			
+			addControlFeatures();		
 		}, 5000);
 	}
 }
@@ -1274,43 +1273,6 @@ function renderReactions() {
 			reactionDiv.innerHTML = div;	
 		}
 	}
-}
-
-function setupMUCAvatars() {
-	let elements = document.querySelectorAll('.list-item.controlbox-padded');	
-	console.debug("setupMUCAvatars", elements);	
-		
-	for (let i=0; i < elements.length; i++)
-	{
-		if (!elements[i].querySelector('.pade-avatar')) {		
-			const jid = elements[i].getAttribute('data-room-jid') || elements[i].getAttribute('data-headline-jid');
-			//console.debug("setupMUCAvatars", jid);		
-			
-			if (jid) {
-				const img = createAvatar(jid);
-				const avatar = newElement('span', null, '<img style="border-radius: var(--avatar-border-radius); margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
-				elements[i].prepend(avatar);
-			}
-		}			
-	}
-
-/*
-	elements = document.querySelectorAll('.chat-head-chatroom .chatbox-title__text');	
-		
-	for (let i=0; i < elements.length; i++)
-	{
-		if (!elements[i].querySelector('.pade-avatar')) {		
-			const jid = elements[i].getAttribute('title');
-			//console.debug("setupMUCAvatars", jid);		
-			
-			if (jid) {
-				const img = createAvatar(jid);
-				const avatar = newElement('span', null, '<img style="border-radius: var(--avatar-border-radius); margin-right: 10px;" src="' + img + '" class="avatar avatar" width="30" height="30" />', 'pade-avatar');
-				elements[i].prepend(avatar);
-			}
-		}			
-	}
-*/	
 }
 
 function addControlFeatures() {
@@ -1598,7 +1560,7 @@ function setActiveConversationsBadge(chatbox, value, newMessage) {
 function addSelfBot() {
 	// add self for testing
 	setTimeout(function() {
-		openChat(Strophe.getBareJidFromJid(_converse.connection.jid), getSetting("displayname"), ["Bots"], true)
+		openChat(Strophe.getBareJidFromJid(converseConn.jid), getSetting("displayname"), ["Bots"], true)
 	});	
 }
 
@@ -1738,13 +1700,13 @@ function handleSummarizeAction(el) {
 	const llama = _converse.roster.findWhere({'jid': "llama@pade.chat"});
 	
 	if (llama) {
-		const llamaJid = getSetting("llamaAddress", "llama@" + _converse.connection.domain) + "/" + llama.presence.resources.models[0].get('name');
+		const llamaJid = getSetting("llamaAddress", "llama@" + converseConn.domain) + "/" + llama.presence.resources.models[0].get('name');
 		const promptText = "summarize this:" + "\n\n" + detail;	
 		console.debug("handleSummarizeAction summary text\n", promptText, llamaJid);	
 		
-		const stanza = $iq({'to': llamaJid, 'from': _converse.connection.jid, 'type': 'get'}).c('query', { 'xmlns': "urn:xmpp:gen-ai:0"}).t(promptText);					
+		const stanza = $iq({'to': llamaJid, 'from': converseConn.jid, 'type': 'get'}).c('query', { 'xmlns': "urn:xmpp:gen-ai:0"}).t(promptText);					
 		
-		_converse.connection.sendIQ(stanza, function(iq) {		
+		converseConn.sendIQ(stanza, function(iq) {		
 			const response = iq.querySelector('response')?.innerHTML;	
 			console.debug("handleSummarizeAction response", response, iq);		
 			injectMessage(el.model.chatbox || el.model.collection.chatbox, "Summary from " + timeAgo, response);		
@@ -1819,7 +1781,7 @@ function handleReactionAction(model, emoji) {
 		const nick = model.get('nickname') || model.get('nick') || Strophe.getNodeFromJid(model.get('from'));
 		const originId = uuidv4();
 		const body = ">" + nick + " : " + message + '\n' + emoji;
-		_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));				
+		_converse.api.send($msg({to: target, from: converseConn.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));				
 	}
 }
 
