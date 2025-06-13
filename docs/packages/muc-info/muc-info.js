@@ -5,9 +5,9 @@
         factory(converse);
     }
 }(this, function (converse) {
-    let __, html, _converse;
-    let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,dayjs, Model, BootstrapModal;		
-	let PreviewDialog = null, previewDialog = null, pade = {}, fastpath = {}, translations = {};	
+    let __, html, _converse, converseConn;
+    let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,dayjs;		
+	let pade = {}, fastpath = {}, translations = {};	
 
     converse.plugins.add("muc-info", {
         'dependencies': [],
@@ -22,8 +22,7 @@
             $pres = converse.env.$pres;
             $build = converse.env.$build;
             b64_sha1 = converse.env.b64_sha1;
-            Model = converse.env.Model;
-            BootstrapModal = converse.env.BootstrapModal;			
+			
             _ = converse.env._;
             __ = _converse.__;			
             dayjs = converse.env.dayjs;	
@@ -45,46 +44,46 @@
 				return temp;
 			};			
 
-            PreviewDialog = BootstrapModal.extend({
-                id: "plugin-muc-info-modal",			   
+			class PreviewDialog extends _converse.exports.BaseModal {				
+			   
                 initialize() {
-                    BootstrapModal.prototype.initialize.apply(this, arguments);
-                    this.listenTo(this.model, 'change', this.render);					
-                },
-                toHTML() {
+					super.initialize();					
+					this.listenTo(this.model, "change", () => this.requestUpdate());
+					
+					this.addEventListener('shown.bs.modal', () => 
+					{
+						if (this.model.get("type") == "image") {
+							this.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + url + '"/>';
+						}
+						else if (this.model.get("type") == "video") {
+							if (url.endsWith(".tgs")) {
+								this.querySelector('.modal-body').innerHTML = '<tgs-player style="height: 512px; width: 512px;" autoplay controls loop mode="normal" src="' + url + '"></tgs-player>';
+
+							} else if (url.endsWith(".json")) {
+								this.querySelector('.modal-body').innerHTML = '<lottie-player autoplay controls loop mode="normal" src="' + url + '"></lottie-player>';
+							} else {
+								this.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + url + '"/>';
+							}
+						}
+						else if (this.model.get("type") == "audio") {
+							this.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + url + '"/>';
+						}
+
+						this.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
+					});
+						
+                }
+				
+				renderModal() {
                   return html`<div class="modal-dialog modal-xl"> <div class="modal-content">
                          <div class="modal-header"><h1 class="modal-title">Media Content Preview</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>
                          <div class="modal-body"></div>
                          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>
                          </div> </div>`;
-                },
-                afterRender() {
-                    const url = this.model.get("url");
-					
-                    this.el.addEventListener('shown.bs.modal', () => 
-					{		
-						if (this.model.get("type") == "image") {
-							this.el.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + url + '"/>';
-						}
-						else if (this.model.get("type") == "video") {
-							if (url.endsWith(".tgs")) {
-								this.el.querySelector('.modal-body').innerHTML = '<tgs-player style="height: 512px; width: 512px;" autoplay controls loop mode="normal" src="' + url + '"></tgs-player>';
-
-							} else if (url.endsWith(".json")) {
-								this.el.querySelector('.modal-body').innerHTML = '<lottie-player autoplay controls loop mode="normal" src="' + url + '"></lottie-player>';
-							} else {
-								this.el.querySelector('.modal-body').innerHTML = '<video controls class="pade-preview-image" src="' + url + '"/>';
-							}
-						}
-						else if (this.model.get("type") == "audio") {
-							this.el.querySelector('.modal-body').innerHTML = '<audio controls class="pade-preview-image" src="' + url + '"/>';
-						}
-
-						this.el.querySelector('.modal-title').innerHTML = "Media Content Preview<br/>" + url + "<br/>" + this.model.get("from") + " - " + this.model.get("timestamp");
-
-                    }, false);					
-                 }
-            });
+                }
+            };
+			
+			_converse.api.elements.define('converse-pade-preview-dialog', PreviewDialog);	
 
             _converse.on('message', function (data)
             {
@@ -163,6 +162,10 @@
                 }				
 			});
 			
+			_converse.api.listen.on('connected', async function() {	
+				converseConn = await _converse.api.connection.get();
+			});				
+			
 			
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
@@ -170,7 +173,7 @@
 		
 				if (chatview && chatview.model.get("type") === "chatroom") {
 					buttons.push(html`
-						<button class="muc-info-icon" title="${__('More Information')}" @click=${doInfo}/>
+						<button class="btn muc-info-icon" title="${__('More Information')}" @click=${doInfo}/>
 							<converse-icon class="fa fa-info-circle" size="1em"></converse-icon>
 						</button>
 					`);
@@ -201,7 +204,7 @@
 		const id = toolbar_el.model.get("box_id");
 		const occupants = chatview.querySelector('.occupants');	
 
-		console.debug("doInfo", jid, id, occupants);	
+		console.debug("doInfo", jid, id, occupants, chatview);	
 		toggleInfoBar(chatview, id, jid);
     }
 	
@@ -215,33 +218,37 @@
         {
             info_area = document.createElement("div");
             info_area.classList.add('occupants-pade-info');
-            info_area.classList.add('col-md-3');
-            info_area.classList.add('col-4');
+            //info_area.classList.add('col-md-3');
+            //info_area.classList.add('col-4');
             chatroom_body.appendChild(info_area);
         }
 
-        const occupants_area = view.querySelector('.occupants.col-md-3.col-4');
+        const occupants_area = view.querySelector('.occupants');		
 
-        if (occupants_area.style.display != "none")
-        {
-			view.model.save({'hidden_occupants': true});			
-            occupants_area.style.display = "none";
+		if (occupants_area) 
+		{
+			if (occupants_area.style.display != "none")
+			{
+				view.model.save({'hidden_occupants': true});			
+				occupants_area.style.display = "none";
 
-            info_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
-            info_area.style.display = "";
+				info_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
+				info_area.style.display = "";
 
-            createContentSummary(view, jid, id);
-            createMediaContentSummary(jid, id);
-            createWorkgroups(jid, id);
-            createMylinks(jid, id);
-            createBroadcastEndpoints(jid, id);			
+				createContentSummary(view, jid, id);
+				createMediaContentSummary(jid, id);
+				createWorkgroups(jid, id);
+				createMylinks(jid, id);
+				createBroadcastEndpoints(jid, id);			
 
 
-        } else {
-			view.model.save({'hidden_occupants': false});	
-            occupants_area.style.display = "";
-            info_area.style.display = "none";
-        }
+			} else {
+				view.model.save({'hidden_occupants': false});	
+				occupants_area.style.display = "";
+				info_area.style.display = "none";
+			}
+		}
+		
         view.scrollDown();
     }	
 
@@ -304,59 +311,55 @@
         return html;
     }
 	
-    function createWorkgroups(jid, id)   {
+    async function createWorkgroups(jid, id)   {
         console.debug("createWorkgroups", jid, id);
 
         if (jid.startsWith("workgroup-"))
         {
             var workGroup = jid.split("@")[0].substring(10);
 
-            _converse.connection.sendIQ($iq({type: 'get', to: "workgroup." + _converse.connection.domain}).c('workgroups', {jid: _converse.connection.jid, xmlns: "http://jabber.org/protocol/workgroup"}).tree(), function(resp)
-            {
-                var workgroups = resp.querySelectorAll('workgroup');
-                var count = document.getElementById(id + "-wg-others-count");
+            const stanza = $iq({type: 'get', to: "workgroup." + converseConn.domain}).c('workgroups', {jid: converseConn.jid, xmlns: "http://jabber.org/protocol/workgroup"});
+			const resp = await _converse.api.sendIQ(stanza);				
+			var workgroups = resp.querySelectorAll('workgroup');
+			var count = document.getElementById(id + "-wg-others-count");
 
-                if (count) count.innerHTML = workgroups.length;
+			if (count) count.innerHTML = workgroups.length;
 
-                var detail = document.getElementById(id + "-wg-others-details");
+			var detail = document.getElementById(id + "-wg-others-details");
 
-                if (detail)
-                {
-                    var html = "";
+			if (detail)
+			{
+				var html = "";
 
-                    for (var i=0; i<workgroups.length; i++)
-                    {
-                        var jid = workgroups[i].getAttribute('jid');
-                        var name = Strophe.getNodeFromJid(jid);
-                        var room = 'workgroup-' + name + "@conference." + _converse.connection.domain;
-                        var checked = pade.activeWorkgroup.jid == jid ? "checked" : "";  
+				for (var i=0; i<workgroups.length; i++)
+				{
+					var jid = workgroups[i].getAttribute('jid');
+					var name = Strophe.getNodeFromJid(jid);
+					var room = 'workgroup-' + name + "@conference." + converseConn.domain;
+					var checked = pade.activeWorkgroup.jid == jid ? "checked" : "";  
 
-                        console.debug("get workgroups", room, jid);
-                        html += '<input id="info_active_workgroup-' + id + '" type="radio" ' + checked + ' value="' + jid + '"/>&nbsp;' + name + '<br/>';
-                    }
+					console.debug("get workgroups", room, jid);
+					html += '<input id="info_active_workgroup-' + id + '" type="radio" ' + checked + ' value="' + jid + '"/>&nbsp;' + name + '<br/>';
+				}
 
-                    var element = newElement('div', null, html);
+				var element = newElement('div', null, html);
 
-                    element.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
+				element.addEventListener('click', function(evt)
+				{
+					evt.stopPropagation();
 
-                        var activeWorkgroup = document.getElementsById(evt.target.id);
+					var activeWorkgroup = document.getElementsById(evt.target.id);
 
-                        for (var i=0; i<activeWorkgroup.length; i++)
-                        {
-                            console.debug("createWorkgroups other click", activeWorkgroup[i].value, activeWorkgroup[i].checked);
-							if (activeWorkgroup[i].checked) pade.activeWorkgroup = activeWorkgroup[i];
-                            //if (activeWorkgroup[i].checked) bgWindow.setActiveWorkgroup(pade.participants[activeWorkgroup[i].value]);
-                        }
-                    });
+					for (var i=0; i<activeWorkgroup.length; i++)
+					{
+						console.debug("createWorkgroups other click", activeWorkgroup[i].value, activeWorkgroup[i].checked);
+						if (activeWorkgroup[i].checked) pade.activeWorkgroup = activeWorkgroup[i];
+						//if (activeWorkgroup[i].checked) bgWindow.setActiveWorkgroup(pade.participants[activeWorkgroup[i].value]);
+					}
+				});
 
-                    detail.insertAdjacentElement('afterEnd', element);
-                }
-
-            }, function (error) {
-                console.warn("Workgroups not available");
-            });
+				detail.insertAdjacentElement('afterEnd', element);
+			}
 
             if (fastpath[workGroup])
             {
@@ -517,44 +520,41 @@
         }
     }
 
-    function createBroadcastEndpoints(jid, id) {
+    async function createBroadcastEndpoints(jid, id) {
         console.debug("createBroadcastEndpoints", jid, id);
 
-        _converse.connection.sendIQ($iq({type: 'get', to: "broadcast." + _converse.connection.domain}).c('query', {xmlns: "http://jabber.org/protocol/disco#items"}).tree(), function(resp)
-        {
-            const count = document.getElementById(id + "-broadcast-count");
-            const detail = document.getElementById(id + "-broadcast-details");
-            const items = resp.querySelectorAll('item');
+        const stanza = $iq({type: 'get', to: "broadcast." + converseConn.domain}).c('query', {xmlns: "http://jabber.org/protocol/disco#items"});
+		const resp = await _converse.api.sendIQ(stanza);				
+		const count = document.getElementById(id + "-broadcast-count");
+		const detail = document.getElementById(id + "-broadcast-details");
+		const items = resp.querySelectorAll('item');
 
-            if (count && detail)
-            {
-                count.innerHTML = items.length;
+		if (count && detail)
+		{
+			count.innerHTML = items.length;
 
-                for (let i=0; i<items.length; i++)
-                {
-                    const jid = items[i].getAttribute('jid');
-                    const name = Strophe.getNodeFromJid(jid);
+			for (let i=0; i<items.length; i++)
+			{
+				const jid = items[i].getAttribute('jid');
+				const name = Strophe.getNodeFromJid(jid);
 
-                    console.debug('createBroadcastEndpoints', jid, name);
+				console.debug('createBroadcastEndpoints', jid, name);
 
-                    const html = '<li title="' + jid + '">' + name + '</li>';
-                    const element = newElement('div', null, html);
+				const html = '<li title="' + jid + '">' + name + '</li>';
+				const element = newElement('div', null, html);
 
-                    element.addEventListener('click', function(evt)
-                    {
-                        evt.stopPropagation();
+				element.addEventListener('click', function(evt)
+				{
+					evt.stopPropagation();
 
-                        console.debug("createBroadcastEndpoints click", evt.target.title);
-                        _converse.api.chats.open(evt.target.title, {'bring_to_foreground': true}, true);
-                    });
+					console.debug("createBroadcastEndpoints click", evt.target.title);
+					_converse.api.chats.open(evt.target.title, {'bring_to_foreground': true}, true);
+				});
 
-                    detail.insertAdjacentElement('afterEnd', element);
-                }
-            }
+				detail.insertAdjacentElement('afterEnd', element);
+			}
+		}
 
-        }, function (error) {
-             console.warn("Broadcast plugin not available");
-        });
     }	
 	
     function createContentSummary(view, jid, id)   {
@@ -1007,9 +1007,10 @@
             if (elmnt) elmnt.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
 
             if (type == "image" || type == "audio" || type == "video")
-            {
-                previewDialog = new PreviewDialog({'model': new converse.env.Model({url: url, type: type, timestamp: timestamp, from: from}) });
-                previewDialog.show();
+            {				
+				const model = new converse.env.Model();
+				model.set({ url: url, type: type, timestamp: timestamp, from: from});
+				_converse.api.modal.show('converse-pade-preview-dialog', { model });					
             }
             else
 

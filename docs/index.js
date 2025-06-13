@@ -809,7 +809,7 @@ function startConverse(credential) {
 		},		
 		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableRayo", false), 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
-		whitelisted_plugins: ["paderoot", "olmeet", "toolbar-utilities"] //whitelistedPlugins		
+		whitelisted_plugins: whitelistedPlugins		
 	}
 
     if (getSetting("showToolbarIcons", true))  {	
