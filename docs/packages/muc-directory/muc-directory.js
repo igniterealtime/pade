@@ -5,9 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var Strophe, $iq, _converse, html, __, Model, BootstrapModal;
-    var MUCDirectoryDialog = null;
-    var mucDirectoryDialog = null;
+    var Strophe, $iq, _converse, html, __, converseConn;
     var mucJids = {}, nextItem = 0, nickColors = {}, roomJids = [], timestamp = (new Date()).toISOString();
 
     converse.plugins.add("muc-directory", {
@@ -16,52 +14,88 @@
         'initialize': function () {
             _converse = this._converse;
             html = converse.env.html;
-            Model = converse.env.Model;
-            BootstrapModal = converse.env.BootstrapModal;
+
             __ = _converse.__;
             Strophe = converse.env.Strophe;
             $iq = converse.env.$iq;
-
-            MUCDirectoryDialog = BootstrapModal.extend({
-                id: "plugin-muc-directory-modal",				
+			
+			class MUCDirectoryDialog extends _converse.exports.BaseModal {				
+			   
                 initialize() {
-                    BootstrapModal.prototype.initialize.apply(this, arguments);
-                    this.model.on('change', this.render, this);
-                },
-                toHTML() {
-                  return html`
-                     <div class="modal-dialog modal-lg">
+					super.initialize();					
+					this.listenTo(this.model, "change", () => this.requestUpdate());
+					
+					this.addEventListener('shown.bs.modal', () => {
+						nextItem = 0;
+						this.doDirectory();
+						 
+						this.keyInput = this.querySelector('#pade-muc-directory-filter');
+						this.keyInput.focus();
+						
+						this.keyInput.addEventListener('keyup', (ev) => { 
+							this.keyUp(ev);
+						});						 
+					});
+						
+                }
+				
+				renderModal() {
+                  return html`						 
+                     <div class="modal-dialog">
                          <div class="modal-content">
-                             <div class="modal-header"><h1 class="modal-title"><b><p class="fa fa-comments"></p>&nbsp;Group Chat Directory</b></h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>
                              <div class="modal-body">
                                 <input id="pade-muc-directory-filter" class="form-control" type="text" placeholder="Type three or more characters to filter directory" ><p/><div class="pade-col-container" style="overflow-x:hidden; overflow-y:scroll; height: 400px;" id="pade-directory-results"></div>
                              </div>
-                             <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>
                          </div>
-                     </div>
-                `},
-                afterRender() {
-                  const that = this;
-
-                  this.el.addEventListener('shown.bs.modal', function()
-                  {
-					 nextItem = 0;
-                     that.doDirectory();
-
-                  }, false);
-                },
-                events: {
-                    'keyup #pade-muc-directory-filter': 'keyUp',
-                },
-
+                     </div>						 
+				`
+                }
+				
+				getModalTitle () {
+					return __('Group Chat Directory');
+				}				
+				
                 keyUp(ev) {
-                    const filter = this.el.querySelector("#pade-muc-directory-filter").value.trim();
-                    this.doFilter(filter);
-                },
+                    if (ev.key === "Enter") {
+						const filter = this.querySelector("#pade-muc-directory-filter").value.trim();
+						this.doFilter(filter);
+                    }
+                }
+
+                async doDirectory() {
+                    console.debug("doDirectory");
+
+                    const directoryResults = this.querySelector("#pade-directory-results");
+ 
+                    if (nextItem == 0)  {
+						
+                        roomJids = Object.getOwnPropertyNames(mucJids);
+						
+						if (roomJids.length == 0 || converse.env.dayjs().isAfter(timestamp, 'hour')) {
+							timestamp = (new Date()).toISOString();
+							await fetchMUCs();
+							roomJids = Object.getOwnPropertyNames(mucJids);
+						}
+						
+                        // uncomment this if you want sorted listing
+                        //roomJids = roomJids.sort();
+
+                        directoryResults.addEventListener('scroll', () =>   {
+                            const left = directoryResults.scrollTop + directoryResults.clientHeight;
+                            const right = directoryResults.scrollHeight - 1;
+
+                            if (left >= right) {
+                                this.loadMore();
+                            }
+                        });
+
+                        this.loadMore();
+                    }
+                }
 
                 loadMore() {
-                    const directoryResults = this.el.querySelector("#pade-directory-results");
-                    const filter = this.el.querySelector("#pade-muc-directory-filter").value.trim();
+                    const directoryResults = this.querySelector("#pade-directory-results");
+                    const filter = this.querySelector("#pade-muc-directory-filter").value.trim();
 
                     console.debug("loadMore", roomJids.length, nextItem);
 
@@ -73,10 +107,10 @@
                             nextItem++;
                         }
                     }
-                },
+                }
 
                 doFilter(filter) {
-                    const panels = this.el.querySelectorAll('.pade-col > div');
+                    const panels = this.querySelectorAll('.pade-col > div');
                     console.debug("doFilter", filter, panels);
                     let needMore = false;
 
@@ -96,12 +130,12 @@
                     });
 
                     if (needMore) this.loadMore();
-                },
+                }
 
                 async doDirectory() {
                     console.debug("doDirectory");
 
-                    const directoryResults = this.el.querySelector("#pade-directory-results");
+                    const directoryResults = this.querySelector("#pade-directory-results");
                     const that = this;
 
                     if (nextItem == 0)
@@ -130,8 +164,14 @@
 
                         this.loadMore();
                     }
-                }
-            });
+                }				
+            };
+		
+			_converse.api.elements.define('converse-pade-muc-directory-dialog', MUCDirectoryDialog);	
+
+			_converse.api.listen.on('connected', async function() {	
+				converseConn = await _converse.api.connection.get();
+			});			
 
             _converse.api.listen.on('chatRoomViewInitialized', function (view)
             {
@@ -187,17 +227,16 @@
 				mucButton.addEventListener('click', function(evt)
 				{
 					evt.stopPropagation();
-
-					mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
-					mucDirectoryDialog.show();
+					
+					const model = new converse.env.Model();
+					_converse.api.modal.show('converse-pade-muc-directory-dialog', { model });						
 
 				}, false);	
 			}				
 		}		
 	}
 
-    async function getRoomDetails(room, ele, filter)
-    {
+    async function getRoomDetails(room, ele, filter)  {
         //console.debug("getRoomDetails", room, filter);
 
         const stanza = await _converse.api.disco.info(room);
@@ -207,47 +246,34 @@
         mucJids[room].occupants = getValue(stanza.querySelector('field[var="muc#roominfo_occupants"] > value'));
         mucJids[room].description = getValue(stanza.querySelector('field[var="muc#roominfo_description"] > value'));
 
-        if (filter.length == 0 || (filter.length > 2 && (mucJids[room].jid.indexOf(filter) > -1 ||  mucJids[room].label.indexOf(filter) > -1 ||  mucJids[room].description.indexOf(filter) > -1)))
-        {
-            _converse.connection.sendIQ(converse.env.$iq({type: 'get', to: room}).c('vCard', {xmlns: 'vcard-temp'}),
+        if (filter.length == 0 || (filter.length > 2 && (mucJids[room].jid.indexOf(filter) > -1 ||  mucJids[room].label.indexOf(filter) > -1 ||  mucJids[room].description.indexOf(filter) > -1))) {
+			const stanza = converse.env.$iq({type: 'get', to: room}).c('vCard', {xmlns: 'vcard-temp'});
+            const iq = await _converse.api.sendIQ(stanza);
+			const photo = iq.querySelector('vCard PHOTO');
 
-                function(iq)
-                {
-                    const photo = iq.querySelector('vCard PHOTO');
+			if (photo) {
+				const binval = photo.querySelector('BINVAL')?.innerHTML;
+				const type = photo.querySelector('TYPE')?.innerHTML
 
-                    if (photo)
-                    {
-                        const binval = photo.querySelector('BINVAL').innerHTML;
-                        const type = photo.querySelector('TYPE').innerHTML
-
-                        if (binval != "" &&  type != "")
-                        {
-                            mucJids[room].avatar = 'data:' + type + ';base64,' + binval;
-                            createPanel(mucJids[room], ele);
-                        } else {
-							mucJids[room].avatar = createAvatar(mucJids[room].label);
-							createPanel(mucJids[room], ele);							
-						}
-                    } else {
-						mucJids[room].avatar = createAvatar(mucJids[room].label);
-						createPanel(mucJids[room], ele);						
-					}
-                },
-
-                function (err)
-                {
-                    mucJids[room].avatar = createAvatar(mucJids[room].label);
-                    createPanel(mucJids[room], ele);
-                }
-            );
-        }
+				if (binval && binval != "" &&  type && type != "")
+				{
+					mucJids[room].avatar = 'data:' + type + ';base64,' + binval;
+					createPanel(mucJids[room], ele);
+				} else {
+					mucJids[room].avatar = createAvatar(mucJids[room].label);
+					createPanel(mucJids[room], ele);							
+				}
+			} else {
+				mucJids[room].avatar = createAvatar(mucJids[room].label);
+				createPanel(mucJids[room], ele);						
+			}
+		}
     }
 
-    function createPanel(room, chatgrid)
-    {
+    function createPanel(room, chatgrid) {
         console.debug("createPanel", room, chatgrid);
 
-        const html = '<div data-room-jid="' + room.jid + '" data-room-name="' + room.label + '" data-room-desc="' + room.description + '" title="' + room.jid + '" class="pade-col-content"><span data-room-jid="' + room.jid + '" class="pade-col-badge" data-badge="' + room.occupants + '"><img style="width: 32px" data-room-jid="' + room.jid + '" class="avatar" src="' + room.avatar + '"/></span><h3 data-room-jid="' + room.jid + '">' + room.label + '</h3><p class="pade-col-desc" title="' + room.description + '">' + room.description + '</p></div>';
+        const html = '<div data-room-jid="' + room.jid + '" data-room-name="' + room.label + '" data-room-desc="' + room.description + '" title="' + room.jid + '" class="pade-col-content"><span data-room-jid="' + room.jid + '" class="pade-col-badge" data-badge="' + room.occupants + '"><img style="width: 32px" data-room-jid="' + room.jid + '" class="avatar" src="' + room.avatar + '"/></span><h5 data-room-jid="' + room.jid + '">' + room.label + '</h5><p class="pade-col-desc" title="' + room.description + '">' + room.description + '</p></div>';
         const panel = newElement('div', room.jid, html, 'pade-col');
 
         panel.addEventListener('click', function(evt)
@@ -259,7 +285,7 @@
 
             if (jid)
             {
-                mucDirectoryDialog.modal.hide();
+                //mucDirectoryDialog.modal.hide();
                 _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
             }
 
