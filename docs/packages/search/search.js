@@ -44,7 +44,7 @@
 							this.doPDF(ev);
 						});	
 						
-						this.querySelector('.word-cloud').addEventListener('click', (ev) => { 
+						this.querySelector('.btn-word-cloud').addEventListener('click', (ev) => { 
 							this.doWordCloud(ev);
 						});							
 					  }
@@ -92,7 +92,7 @@
                     var tagRegExp = undefined;
                     var pdf_body = [];
 
-                    console.debug("doSearch", keyword, jid);
+                    console.debug("doSearch", keyword, jid, groupchat);
 
                     if (keyword != "")
                     {
@@ -105,12 +105,13 @@
 
                     if (method == "mam")
                     {
-                        _converse.api.archive.query({before: '', max: 999, 'groupchat': groupchat, 'with': jid}).then((result) => {
+                        _converse.api.archive.query({mam: {'with': jid}, rsm: { before: '', max:999 }, is_groupchat: groupchat}).then((result) => {
                             const messages = result.messages;
+							 console.debug("doSearch - messages", messages);
 
                             for (var i=0; i<messages.length; i++)
                             {
-                                if (messages[i].querySelector('body'))
+                                if (!!messages[i].querySelector('body'))
                                 {
                                     var body = messages[i].querySelector('body').innerHTML;
                                     var delay = messages[i].querySelector('forwarded').querySelector('delay');
@@ -118,7 +119,8 @@
                                     var time = delay ? delay.getAttribute('stamp') : dayjs().format();
                                     var pretty_time = dayjs(time).format('MMM DD HH:mm:ss');
                                     var pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
-                                    if (!searchRegExp || searchRegExp.test(body)) pdf_body.push([pretty_time, pretty_from, body]);
+									
+                                    if (!searchRegExp || searchRegExp.test(body) || body.toLowerCase().indexOf(keyword.toLowerCase()) > -1) pdf_body.push([pretty_time, pretty_from, body]);
 
                                     html =  html + makeHtml(searchRegExp, tagRegExp, body, pretty_time, pretty_from);
                                 }

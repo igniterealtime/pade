@@ -50,10 +50,11 @@
 					super.initialize();					
 					this.listenTo(this.model, "change", () => this.requestUpdate());
 					
-					this.addEventListener('shown.bs.modal', () => 
-					{
+					this.addEventListener('shown.bs.modal', () => {
+						const url = this.model.get("url");
+						
 						if (this.model.get("type") == "image") {
-							this.querySelector('.modal-body').innerHTML = '<img class="pade-preview-image" src="' + url + '"/>';
+							this.querySelector('.modal-body').innerHTML = '<img class="chat-image chat-image--modal" style="width: 100%" src="' + url + '"/>';
 						}
 						else if (this.model.get("type") == "video") {
 							if (url.endsWith(".tgs")) {
@@ -75,14 +76,14 @@
                 }
 				
 				renderModal() {
-                  return html`<div class="modal-dialog modal-xl"> <div class="modal-content">
-                         <div class="modal-header"><h1 class="modal-title">Media Content Preview</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+                  return html`<div class="modal-dialog"> <div class="modal-content">
+					     <div class="modal-header"><h5 class="modal-title">Preview</h5></div>				  
                          <div class="modal-body"></div>
                          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>
                          </div> </div>`;
                 }
             };
-			
+		
 			_converse.api.elements.define('converse-pade-preview-dialog', PreviewDialog);	
 
             _converse.on('message', function (data)
@@ -217,36 +218,30 @@
         if (!info_area)
         {
             info_area = document.createElement("div");
-            info_area.classList.add('occupants-pade-info');
-            //info_area.classList.add('col-md-3');
-            //info_area.classList.add('col-4');
+            info_area.classList.add('occupants-pade-info'); // col-xs-12 col-md-4 col-xl-2
+			info_area.style.display = "none";				
+            info_area.classList.add('col-xs-12');
+            info_area.classList.add('col-md-4');
+            info_area.classList.add('col-xl-2');			
             chatroom_body.appendChild(info_area);
         }
 
-        const occupants_area = view.querySelector('.occupants');		
+		if (info_area.style.display == "none") {
+			view.model.save({'hidden_occupants': true});			
 
-		if (occupants_area) 
-		{
-			if (occupants_area.style.display != "none")
-			{
-				view.model.save({'hidden_occupants': true});			
-				occupants_area.style.display = "none";
+			info_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
+			info_area.style.display = "";
 
-				info_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
-				info_area.style.display = "";
-
-				createContentSummary(view, jid, id);
-				createMediaContentSummary(jid, id);
-				createWorkgroups(jid, id);
-				createMylinks(jid, id);
-				createBroadcastEndpoints(jid, id);			
+			createContentSummary(view, jid, id);
+			createMediaContentSummary(jid, id);
+			createWorkgroups(jid, id);
+			createMylinks(jid, id);
+			createBroadcastEndpoints(jid, id);			
 
 
-			} else {
-				view.model.save({'hidden_occupants': false});	
-				occupants_area.style.display = "";
-				info_area.style.display = "none";
-			}
+		} else {
+			view.model.save({'hidden_occupants': false});	
+			info_area.style.display = "none";
 		}
 		
         view.scrollDown();
@@ -255,7 +250,7 @@
     function getHTML(id, jid)  {
         console.debug("getHTML", jid, id);
 
-        var html = '<h3>This Conversation</h3>' +
+        var html = '<h5>This Conversation</h5>' +
                    '<details>' +
                    '    <summary id="' + id + '-pinned-details">Pinned Messages (<span id="' + id + '-pinned-count">0</span>)<span style="float: right;" class="fas fa-thumbtack"/></summary>' +
                    '</details>' +
@@ -271,8 +266,8 @@
                    '</details>';
         }
 
-           html += '<h3 id="' + id + '-meeting-recordings">Meeting Recordings</h3>' +
-                   '<h3>Media Content</h3>' +
+           html += '<h5 id="' + id + '-meeting-recordings">Recordings</h5>' +
+                   '<h5>Media Content</h5>' +
                    '<details>' +
                    '    <summary id="' + id + '-photo-details">Photos (<span id="' + id + '-photo-count">0</span>)<span style="float: right;" class="fa fa-photo"/></summary>' +
                    '</details>' +
@@ -291,7 +286,7 @@
 
         if (jid.startsWith("workgroup-"))
         {
-            html += '<h3>This Workgroup</h3>' +
+            html += '<h5>This Workgroup</h5>' +
                     '<details>' +
                     '    <summary id="' + id + '-wg-queue-details">Queue (<span id="' + id + '-wg-queue-count">0</span>)<span style="float: right;" class="fas fa-info-circle"/></summary>' +
                     '</details>' +
@@ -303,7 +298,7 @@
                     '</details>';
         }
 
-        html += '<h3>Broadcasts</h3>' +
+        html += '<h5>Broadcasts</h5>' +
                 '<details>' +
                 '    <summary id="' + id + '-broadcast-details">Distribution Lists (<span id="' + id + '-broadcast-count">0</span>)<span style="float: right;" class="fas fa-bullhorn"/></summary>' +
                 '</details>';
@@ -759,7 +754,7 @@
 
         console.debug("createMediaContentSummary", jid, id);
 
-        _converse.api.archive.query({before: '', max: 999, 'groupchat': true, 'with': jid}).then(function(result) {
+        _converse.api.archive.query({mam: {'with': jid}, rsm: { before: '', max:999 }, is_groupchat: true}).then(function(result) {
             const messages = result.messages;
             console.debug("createMediaContentSummary - query", messages);
 
@@ -775,7 +770,7 @@
                 if (delay) timestamp = delay.getAttribute('stamp');
                 var stamp = dayjs(timestamp).format('MMM DD YYYY HH:mm:ss');
 
-                //console.debug("archived msg", i, from, body, msgId);
+                console.debug("archived msg", i, from, body, msgId);
 
                 if (body)
                 {

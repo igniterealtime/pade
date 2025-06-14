@@ -1,5 +1,13 @@
 /* Customizations */
 
+.conversejs .modal-dialog, converse-bg .modal-dialog {
+	max-width: 80%;
+}
+
+.conversejs .row > *, converse-bg .row > * {
+  flex-shrink: 1;
+}
+
 .conversejs #controlbox .controlbox-panes::-webkit-scrollbar {
     display: none;
 }
