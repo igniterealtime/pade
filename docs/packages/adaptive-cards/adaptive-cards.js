@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-	let DesignDialog = null, designDialog = null, _converse, dayjs, html, _, __, Model, BootstrapModal, Strophe, $iq, adaptiveCard;	
+	let DesignDialog = null, designDialog = null, _converse, dayjs, html, _, __, Strophe, $iq, adaptiveCard, converseConn;	
 
     converse.plugins.add("adaptive-cards", {
         'dependencies': [],
@@ -17,8 +17,7 @@
             $iq = converse.env.$iq;			
             html = converse.env.html;
             dayjs = converse.env.dayjs;
-            Model = converse.env.Model;
-            BootstrapModal = converse.env.BootstrapModal;
+
             _ = converse.env._;
             __ = _converse.__;
 			
@@ -28,7 +27,7 @@
 			adaptiveCard.onExecuteAction = function(action) { 
 				console.debug("adaptiveCard.onExecuteAction", action) 
 				
-				if (action._propertyBag?.title) {
+				if (converseConn && action._propertyBag?.title) {
 					let data = {};
 					
 					if (action._processedData && Object.getOwnPropertyNames(action._processedData).length > 0) {
@@ -37,17 +36,45 @@
 					
 					sendCardResult(action._propertyBag?.title, JSON.stringify(data)).then(resp => resultsSaved(resp, action._propertyBag?.title)).catch(err => resultsError(err, action._propertyBag?.title));
 				}
-			}			
+			}		
 
-            DesignDialog = BootstrapModal.extend({
-                id: "plugin-design-modal",
-                initialize() {
-                    BootstrapModal.prototype.initialize.apply(this, arguments);
-                    this.listenTo(this.model, 'change', this.render);
-                },
-                toHTML() {
+			class DesignDialog extends _converse.exports.BaseModal {
+
+				initialize() {
+					super.initialize();					
+					this.listenTo(this.model, "change", () => this.requestUpdate());
+					
+					this.addEventListener('shown.bs.modal', () => {
+					  
+						this.querySelector("#adaptive-card-text").style.display = '';
+						this.querySelector("#adaptive-card-preview").style.display = 'none';		
+						
+						this.querySelector('.btn-design-card').addEventListener('click', (ev) => { 
+							this.designCard(ev);
+						});	
+
+						this.querySelector('.btn-paste-card').addEventListener('click', (ev) => { 
+							this.pasteCard(ev);
+						});	
+						
+						this.querySelector('.btn-post-card').addEventListener('click', (ev) => { 
+							this.postCard(ev);
+						});
+						
+						this.querySelector('.btn-preview-card').addEventListener('click', (ev) => { 
+							this.previewCard(ev);
+						});							
+
+					});
+				}
+
+				getModalTitle () {
+					return __('Adaptice Cards Designer');
+				}
+
+				renderModal() {
                   return html`<div class="modal-dialog modal-xl" role="document"> <div class="modal-content">
-                         <div class="modal-header"><h1 class="modal-title" id="converse-plugin-design-label">Adaptice Cards Designer</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+                         <div class="modal-header"></div>
                          <div class="modal-body">
 							<textarea placeholder="Paste or type JSON" style="width:100%; height:600px;" id="adaptive-card-text"></textarea>
 							<div id="adaptive-card-preview" style="width:100%; height:600px;"></div>
@@ -57,58 +84,42 @@
 						 <button type="button" class="btn btn-success btn-paste-card">Paste</button>		
 						 <button type="button" class="btn btn-success btn-post-card">Post</button>
 						 <button type="button" class="btn btn-success btn-preview-card">Preview</button>							 
-                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>
                          </div>
                          </div> </div>`;
-                },
-                afterRender() {
-                  this.el.addEventListener('shown.bs.modal', () => {
-						this.el.querySelector("#adaptive-card-text").style.display = '';
-						this.el.querySelector("#adaptive-card-preview").style.display = 'none';						
-                  }, false);
-                },
-                events: {
-                    'click .btn-design-card': 	'designCard',		
-                    'click .btn-paste-card': 	'pasteCard',		
-                    'click .btn-post-card': 	'postCard',		
-                    'click .btn-preview-card': 	'previewCard'					
-                },
-
-                keyUp(ev) {
-                    if (ev.key === "Enter")
-                    {
-
-                    }
-                },
+				}
+				
 				designCard() {					
 					openWebAppsWindow("https://adaptivecards.io/designer/");
-				},
+				}
+				
 				pasteCard() {
 					navigator.clipboard.readText().then((clipText) => {
-                        this.el.querySelector("#adaptive-card-text").value = clipText;
+                        this.querySelector("#adaptive-card-text").value = clipText;
 						
 					}, function(err) {
 						console.error('adaptive card paste clipboard error', err);
 					});
-				},				
+				}
+				
 				postCard() {
                     const model = this.model.get("view").model;
-                    const clipText = JSON.stringify(JSON.parse(this.el.querySelector("#adaptive-card-text").value.trim()));						
+                    const clipText = JSON.stringify(JSON.parse(this.querySelector("#adaptive-card-text").value.trim()));						
 					console.debug("postClipboard", clipText);
 					
-					if (clipText) {					
+					if (clipText && converseConn) {					
 						const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';
 						const target = model.get('jid');
-						_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c("json", {'xmlns': 'urn:xmpp:json:0'}).t(clipText));						
+						_converse.api.send($msg({to: target, from: converseConn.jid, type}).c("json", {'xmlns': 'urn:xmpp:json:0'}).t(clipText));						
 					}			
-				},
+				}
+				
 				previewCard() {
-					const textarea = this.el.querySelector("#adaptive-card-text");
-					const button = this.el.querySelector(".btn-preview-card");
-					const preview = this.el.querySelector("#adaptive-card-preview");
+					const textarea = this.querySelector("#adaptive-card-text");
+					const button = this.querySelector(".btn-preview-card");
+					const preview = this.querySelector("#adaptive-card-preview");
 					
 					if (preview.style.display == 'none') {
-						const clipText = JSON.stringify(JSON.parse(this.el.querySelector("#adaptive-card-text").value.trim()));												
+						const clipText = JSON.stringify(JSON.parse(this.querySelector("#adaptive-card-text").value.trim()));												
 						const adaptiveCard = new AdaptiveCards.AdaptiveCard();
 						adaptiveCard.parse(JSON.parse(clipText));
 						const renderedCard = adaptiveCard.render();
@@ -125,26 +136,35 @@
 						textarea.style.display = '';
 						button.innerHTML = 'Preview';						
 					}
-				}
-            });				
+				}				
+					
+			}
+			
+			_converse.api.elements.define('converse-pade-design-dialog', DesignDialog);						
 				
 				
 			if (getSetting("enableAdaptiveCardDesign", false)) 
 			{
 				_converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
 				{
-					let color = "fill:var(--chat-toolbar-btn-color);";
-					if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
+					let style = "width:18px; height:18px; fill:var(--chat-color);";
+					if (toolbar_el.model.get("type") === "chatroom") {
+						style = "width:18px; height:18px; fill:var(--muc-color);";
+					}
 					
 					buttons.push(html`
-						<button class="adaptive-cards-design" title="${__('Design an Adaptive Card')}" @click=${designCard}/>
-							<converse-icon style="width:18px; height:18px; ${color}" class="fa fa-id-card" size="1em"></converse-icon>
+						<button class="btn adaptive-cards-design" title="${__('Design an Adaptive Card')}" @click=${designCard}/>
+							<converse-icon style="${style}" class="fa fa-id-card" size="1em"></converse-icon>
 						</button>
 					`);
 
 					return buttons;
 				});
 			}
+			
+			_converse.api.listen.on('connected', async function() {	
+				converseConn = await _converse.api.connection.get();
+			});				
 			
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {			
@@ -204,15 +224,16 @@
 		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
 		const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));		
 		console.debug("designCard", chatview);
-		
-        designDialog = new DesignDialog({ 'model': new Model({view: chatview}) });
-        designDialog.show(ev);		
+
+		const model = new converse.env.Model();
+		model.set({ view: chatview});
+		_converse.api.modal.show('converse-pade-design-dialog', { model });			
     }
 
 	function sendCardResult(id, result) {
 		const stanza = $iq({
 		  'type': 'set',
-		  'from': _converse.connection.jid
+		  'from': converseConn.jid
 		}).c('pubsub', {
 		  'xmlns': Strophe.NS.PUBSUB
 		}).c('publish', {
