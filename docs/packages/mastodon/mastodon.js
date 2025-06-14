@@ -6,7 +6,7 @@
     }
 }(this, function (converse) {
     var mastodonInterval;
-    var Strophe, dayjs
+    var Strophe, dayjs, converseConn
 
     converse.plugins.add("mastodon", {
         'dependencies': [],
@@ -16,7 +16,7 @@
             Strophe = converse.env.Strophe;
             dayjs = converse.env.dayjs;
 			
-            _converse.api.settings.update({
+            _converse.api.settings.extend({
 				mastodon: {
 					url: "https://toot.igniterealtime.org", 
 					token: "",
@@ -43,7 +43,7 @@
 				var type = view.model.get("type");
 				console.debug("chatBoxViewInitialized", jid, type);
 
-				if (jid === "converse-mastodon@" + _converse.connection.domain)
+				if (converseConn && jid === "converse-mastodon@" + converseConn.domain)
 				{
 					if (_converse.api.settings.get("mastodon").toolbar) {
 						const textarea = view.querySelector('.chat-textarea')
@@ -55,8 +55,9 @@
 				}					
             });
 
-            _converse.api.listen.on('connected', function()
-            {
+            _converse.api.listen.on('connected', async function()   {
+				converseConn = await _converse.api.connection.get();
+				
                 _converse.api.waitUntil('rosterContactsFetched').then(() => {
 
 					window.addEventListener("unload", function ()
@@ -69,7 +70,7 @@
 					var mastodonCheck = _converse.api.settings.get("mastodon").check * 60000;
 					mastodonInterval = setInterval(mastodonRefresh, mastodonCheck);	
 					
-					const jid = "converse-mastodon@" + _converse.connection.domain;
+					const jid = "converse-mastodon@" + converseConn.domain;
 					openChat(jid, _converse.api.settings.get("mastodon").title, ["Bots"]);	
 
 					setupTimer();
@@ -129,27 +130,29 @@
 				json = json.reblog;		
 			}
 			
-			const user = json.account.username + "@" + _converse.connection.domain;				
-			const time = dayjs(json.created_at).format('YYYY-MM-DDTHH:mm:ssZ');
-			const msgId = json.id;
-			const title = json.account.display_name.trim() == "" ? json.account.username : json.account.display_name;
-			const avatar = json.account.avatar_static;	
-			const timeAgo = timeago.format(new Date(json.created_at));
-			const timeAgoSpan = "<span class=chat-msg__time_span title='" + time + "' datetime='" + json.created_at + "'>" + timeAgo + '</span>';
-			const header = "<img width=48 style='border-radius: var(--avatar-border-radius)' src='" + avatar + "'/><br/><b>" + title + '</b> - ' + timeAgoSpan + " - <a href='" + json.url + "'>Reply<br/>"			
-			
-			let footer = "";
-			let cardImage = "";
+			if (converseConn) {
+				const user = json.account.username + "@" + converseConn.domain;				
+				const time = dayjs(json.created_at).format('YYYY-MM-DDTHH:mm:ssZ');
+				const msgId = json.id;
+				const title = json.account.display_name.trim() == "" ? json.account.username : json.account.display_name;
+				const avatar = json.account.avatar_static;	
+				const timeAgo = timeago.format(new Date(json.created_at));
+				const timeAgoSpan = "<span class=chat-msg__time_span title='" + time + "' datetime='" + json.created_at + "'>" + timeAgo + '</span>';
+				const header = "<img width=48 style='border-radius: var(--avatar-border-radius)' src='" + avatar + "'/><br/><b>" + title + '</b> - ' + timeAgoSpan + " - <a href='" + json.url + "'>Reply<br/>"			
+				
+				let footer = "";
+				let cardImage = "";
 
-			if (json.card) {
-				if (json.card.image) cardImage = '<img src="' + json.card.image + '"/>';				
-				footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href='${json.card.url}'>${json.card.title}</a></p>`
-			}
-			const from = "converse-mastodon@" + _converse.connection.domain;			
-			const body = ':MASTODON:' + header + json.content + footer;			
-			const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time, is_unstyled: true};  
-			chatbox = await _converse.api.chats.get(from, {}, true);
-			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));						
+				if (json.card) {
+					if (json.card.image) cardImage = '<img src="' + json.card.image + '"/>';				
+					footer = `<p>${cardImage}</p><p>${json.card.description}</p><p><a target=_blank href='${json.card.url}'>${json.card.title}</a></p>`
+				}
+				const from = "converse-mastodon@" + converseConn.domain;			
+				const body = ':MASTODON:' + header + json.content + footer;			
+				const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time, is_unstyled: true};  
+				chatbox = await _converse.api.chats.get(from, {}, true);
+				await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));	
+			}				
 		})				
 	}
 	

@@ -14,8 +14,7 @@
             _converse = this._converse;
             html = converse.env.html;
 
-            _converse.api.listen.on('afterMessageBodyTransformed', function(text)
-            {				
+            _converse.api.listen.on('afterMessageBodyTransformed', function(text)  {				
 				renderDiagram(text);
             });
 
@@ -58,14 +57,12 @@
         }
         else
 
-        if (text.startsWith("X:1"))
-        {
-            text.addTemplateResult(0, text.length, html([`<div id="abc-${msgId}"></div>`], msgId));
+        if (text.startsWith("X:1"))   {	
+            text.addTemplateResult(0, text.length, html`<div id="abc-${msgId}"></div>`);
 
-            setTimeout(function()
-            {
-                ABCJS.renderAbc("abc-" + msgId, text.replace(/<br>/g, '\n'));
-            }, 500);
+            setTimeout(function() {
+                ABCJS.renderAbc("abc-" + msgId, text.replace(/<br>/g, '\n'), {foregroundColor: ""});	// use default color
+            }, 1000);		
         }
     }
 }));

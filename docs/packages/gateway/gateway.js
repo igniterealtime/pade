@@ -6,7 +6,7 @@
     }
 }(this, function (converse) {
     var rssInterval;
-    var Strophe, dayjs
+    var Strophe, dayjs, converseConn
 
     converse.plugins.add("gateway", {
         'dependencies': [],
@@ -15,28 +15,6 @@
             _converse = this._converse;
             Strophe = converse.env.Strophe;
             dayjs = converse.env.dayjs;
-
-            _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
-            {
-				const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));	
-
-				if (chatview && chatview.model.get("type") === "chatbox" && chatview.model.get("jid") == "pade-rss@" + _converse.connection.domain) {				
-					let form = chatview.getMessageForm();
-					
-					if (form) {
-						form.onFormSubmitted = async (ev) => {
-							ev.stopPropagation();
-							const textarea = form.querySelector('.chat-textarea');
-							const message_text = textarea.value.trim();
-							textarea.value = '';					
-							textarea.focus();
-							console.debug("gateway - typed text " + message_text);
-						}
-					}
-				}
-				
-                return buttons;
-            });
 			
             _converse.api.listen.on('beforeMessageBodyTransformed', function(text)
             {	
@@ -60,7 +38,7 @@
 					
                 if (getSetting("enableRssFeeds", false))
                 {
-                    if (jid === "pade-rss@" + _converse.connection.domain)
+                    if (converseConn && jid === "pade-rss@" + converseConn.domain)
                     {
                         if (getSetting("showRssToolbar", false)) {
 							const textarea = view.querySelector('.chat-textarea')
@@ -72,9 +50,10 @@
                     }
 				}
             });
-
-            _converse.api.listen.on('connected', function()
-            {
+			
+			_converse.api.listen.on('connected', async function() {	
+				converseConn = await _converse.api.connection.get();
+				
                 _converse.api.waitUntil('rosterContactsFetched').then(() => {
 
 					window.addEventListener("unload", function ()
@@ -89,12 +68,12 @@
                         var rssFeedCheck = getSetting("rssFeedCheck", 30) * 60000;
                         rssInterval = setInterval(rssRefresh, rssFeedCheck);
 
-						const jid = "pade-rss@" + _converse.connection.domain;
+						const jid = "pade-rss@" + converseConn.domain;
                         openChat(jid, getSetting("rssFeedTitle", "RSS Feed"), ["Bots"]);																	
                     }
-                });
-            });
-
+                });				
+			});				
+			
             console.log("gateway plugin is ready");
         }
     });		
@@ -116,17 +95,19 @@
 
     function rssChatCheck()
     {
-		const from = "pade-rss@" + _converse.connection.domain;
-		const summary = getSetting("showRssSummary");
-        var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
-        console.debug("rssChatCheck", rssUrls, summary, from);
+		if (converseConn) {
+			const from = "pade-rss@" + converseConn.domain;
+			const summary = getSetting("showRssSummary");
+			var rssUrls = getSetting("rssAtomFeedUrls", "").split("\n");
+			console.debug("rssChatCheck", rssUrls, summary, from);
 
-        rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay, json) =>  {	
-			const body = 'RSS:' + html;			
-			const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time: delay};  
-			chatbox = await _converse.api.chats.get(from, {}, true);
-			await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
-        });
+			rssCheckEach(false, rssUrls, "rss-feed-chat-", async(msgId, html, title, delay, json) =>  {	
+				const body = 'RSS:' + html;			
+				const attrs = {json, body, message: body, id: msgId, msgId, type: 'chat', from, time: delay};  
+				chatbox = await _converse.api.chats.get(from, {}, true);
+				await (chatbox === null || chatbox === void 0 ? void 0 : chatbox.queueMessage(attrs));
+			});
+		}
     }
 
 	// https://github.com/igniterealtime/pade/commits/master.atom
