@@ -11461,6 +11461,10 @@ converse-bg[data-bs-theme=nordic] converse-muc-heading {
   color: var(--background-color);
   font-size: large;
 }
+.conversejs .alert-info p,
+.conversejs .alert-danger p {
+  color: var(--background-color) !important;
+}
 .conversejs .alert-info .modal-title,
 .conversejs .alert-danger .modal-title {
   font-size: 110%;
@@ -13975,7 +13979,7 @@ converse-chat-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--chat-textarea-background-color);
+  background-color: var(--background-color);
   border-bottom-left-radius: var(--chatbox-border-radius);
   border-bottom-right-radius: var(--chatbox-border-radius);
   border-top: 0;
@@ -14018,7 +14022,6 @@ converse-chat-content {
   margin-bottom: 0.25em;
 }
 .conversejs .chatbox .chat-content {
-  background-color: var(--background-color);
   border: 0;
   color: var(--text-color);
   font-size: var(--message-font-size);
@@ -14306,6 +14309,9 @@ converse-chat-content {
 }
 .conversejs #controlbox converse-login-form .login-trusted .form-check-input {
   margin-top: 0.35em;
+}
+.conversejs #controlbox converse-login-form .addon {
+  background-color: var(--background-color-rgb);
 }
 .conversejs #controlbox .toggle-register-login {
   font-weight: bold;
@@ -15666,7 +15672,7 @@ converse-rich-text {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--chat-textarea-background-color);
+  background-color: var(--background-color);
   border-bottom-left-radius: var(--chatbox-border-radius);
   border-bottom-right-radius: var(--chatbox-border-radius);
   border-top: 0;
@@ -15709,7 +15715,6 @@ converse-rich-text {
   margin-bottom: 0.25em;
 }
 .conversejs .chatbox .chat-content {
-  background-color: var(--background-color);
   border: 0;
   color: var(--text-color);
   font-size: var(--message-font-size);
@@ -16201,6 +16206,7 @@ converse-add-muc-modal .add-chatroom converse-autocomplete .suggestion-box ul li
   flex-direction: row;
   line-height: 1.5em;
   height: 2.5em;
+  padding: 0.2em 0;
 }
 .conversejs #chatrooms converse-rooms-list .list-item .open-room span {
   overflow-x: hidden;
@@ -16316,6 +16322,12 @@ converse-bg .converse-brand__heading converse-logo {
   \******************************************************************************************************************************************************************************************************************************************************************************/
 .conversejs converse-add-contact-modal .modal-body {
   overflow-y: visible !important;
+}
+/*!**************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/approval-alert.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************/
+.chat-body converse-contact-approval-alert {
+  margin: 0.5em;
 }
 /*!******************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].use[3]!./src/plugins/rosterview/styles/roster.scss ***!

@@ -33,7 +33,7 @@
 				if (pos > -1) {	
 					const strings = [text.substr(pos + 10)];
 					strings.raw = strings;								
-					text.addTemplateResult(0, text.length, html(strings));
+					text.addTemplateResult(0, text.length, converse.env.html(strings));
 				}				
             });
 			
@@ -121,10 +121,10 @@
 		const options = {method: "GET", headers: {"Authorization": (token ? "Bearer " + token : token), "Accept":"application/json", "Content-Type":"application/json"}};
 		const response = await fetch(endpoint, options);
 		const posts = await response.json();				
-						
-		posts.forEach(async function(json)
-		{	
-			console.debug("mastodon mastodonRefresh", path, json);			
+		console.debug("mastodon mastodonRefresh - posts", posts);
+			
+		if (!posts.error) posts.forEach(async function(json) {	
+			console.debug("mastodon mastodonRefresh - post", path, json);			
 			
 			if ((!json.content || json.content == "") && json.reblog?.account) {
 				json = json.reblog;		

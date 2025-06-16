@@ -1098,12 +1098,7 @@ function setupPadeRoot() {
 		},
 
 		overrides: {		
-			RosterFilterView: {
 
-			  shouldBeVisible() {
-				return _converse.roster && getSetting("converseRosterFilter") && (_converse.roster.length >= 5 || this.isActive());
-			  }
-			}
 		}
 	});		
 }
