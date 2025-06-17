@@ -1642,7 +1642,7 @@ function handleReplyAction(el) {
 	console.debug('handleReplyAction', el.model)
 	
 	let selectedText = window.getSelection().toString();
-	const prefix = el.model.get('nick') || el.model.get('nickname') || "";
+	const prefix = el.model.get('nick') || el.model.get('nickname') || el.model.get('contact_jid')?.split("@")[0] || "";
 	
 	if (!selectedText || selectedText == '') selectedText = el.model.get('message');
 	replyChat(el.model, prefix + ' : ' + selectedText);
@@ -1821,7 +1821,7 @@ function getTargetJidFromMessageModel(model) {
 	if (type === "chat")  {
 		target = model.get('jid');
 		if (model.get('sender') === 'them') {
-			target = model.get('from');
+			target = model.get('contact_jid');
 		}		
 	}
 	return target;
