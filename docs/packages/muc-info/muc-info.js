@@ -220,6 +220,7 @@
             info_area = document.createElement("div");
             info_area.classList.add('occupants-pade-info'); // col-xs-12 col-md-4 col-xl-2
 			info_area.style.display = "none";				
+			info_area.style.width = "300px";				
             info_area.classList.add('col-xs-12');
             info_area.classList.add('col-md-4');
             info_area.classList.add('col-xl-2');			

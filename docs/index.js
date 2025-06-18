@@ -445,10 +445,7 @@ function loadPlugins() {
         if (getSetting("enableVoiceChat", false))
         {
             whitelistedPlugins.push("voicechat");
-			loadCSS("./packages/voicechat/voicechat.css");	
-			loadJS("./packages/voicechat/hark.js");
-			loadJS("./packages/voicechat/jquery-3.5.1.min.js");			
-			loadJS("./packages/voicechat/lib-jitsi-meet.min.js");		
+			loadCSS("./packages/voicechat/voicechat.css");			
             loadJS("./packages/voicechat/voicechat.js");
         }
 		
@@ -768,20 +765,7 @@ function startConverse(credential) {
 		sounds_path: "./dist/sounds/",
 		theme: getSetting('converseTheme', 'classic'),					  
 		view_mode: "fullscreen",
-		voicechat: {
-			hosts: {
-				domain: getSetting("voiceChatDomain", domain),
-				muc: 'conference.' + getSetting("voiceChatDomain", domain),
-			},					
-			serviceUrl: getSetting("voiceChatUri", (domain == "localhost" || location.protocol == "http:" ? "ws://" : "wss://") + server + '/ws/'),
-			prefix: getSetting("voiceChatPrefix", "VC"),
-			transcribe: getSetting("enableVoiceChatText", false),
-			transcribeLanguage: getSetting("transcribeLanguage", "en-GB"),
-			start:  'Start Voice Chat',
-			stop: 'Stop Voice Chat',
-			started: 'has started speaking',
-			stopped: 'has stopped speaking'				
-		},	
+		voicechat_server: 'https://talk.4ng.net',		
 		olmeet_start_option: getSetting("ofmeetDisplayOptions", "into_chat_window"),
 		olmeet_head_display_toggle: getSetting("ofMeetHeadDisplayToggle", false),
 		olmeet_modal: !getSetting("converseEmbedOfMeet", true),		

@@ -1,5 +1,9 @@
 /* Customizations */
 
+.conversejs .col-xl-2, converse-bg .col-xl-2 {
+	width: 300px;
+}
+
 .conversejs .modal-dialog, converse-bg .modal-dialog {
 	max-width: 80%;
 }
