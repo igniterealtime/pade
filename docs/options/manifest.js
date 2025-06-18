@@ -994,15 +994,10 @@ this.manifest = {
             "type": "popupButton",
             "label": i18n.get("UI Theme"),
             "options": [
-                {"text": "Plain Simple", "value": "plainsimple"},
-                {"text": "Fly Concord", "value": "concord"},
-                {"text": "Paper White", "value": "paperwhite"},
-                {"text": "Lime Juice", "value": "limejuice"},
-                {"text": "Red Pill", "value": "redpill"},
-                {"text": "Dark Room", "value": "darkroom"},
-                {"text": "Black Board", "value": "blackboard"},
-                {"text": "Prosody", "value": "prosody"},			
-                {"text": "Dracula", "value": "dracula"}					
+                {"text": "Classic", "value": "classic"},
+                {"text": "Nordic", "value": "nordic"},
+                {"text": "Dracula", "value": "dracula"},
+                {"text": "Cyberpunk", "value": "cyberpunk"}				
             ]
         },		
         {

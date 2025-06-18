@@ -766,7 +766,7 @@ function startConverse(credential) {
 		show_chat_state_notifications: getSetting("notifyChatState", false),		
 		singleton: (autoJoinRooms && autoJoinRooms.length == 1),			  
 		sounds_path: "./dist/sounds/",
-		theme: "nordic", //getSetting('converseTheme', 'concord'),					  
+		theme: getSetting('converseTheme', 'classic'),					  
 		view_mode: "fullscreen",
 		voicechat: {
 			hosts: {
@@ -999,7 +999,7 @@ function setupPadeRoot() {
 								
 								window.focus();
 
-								const chat = _converse.chatboxes.get(event.data.room_jid);
+								const chat = _converse.state.chatboxes.get(event.data.room_jid);
 								
 								if (chat) {
 									chat.maybeShow(true);
@@ -1059,7 +1059,7 @@ function setupPadeRoot() {
 				let count = 0;
 				if (!data.attrs.message) return;
 				
-				_converse.chatboxes.each((chat_box) =>
+				_converse.state.chatboxes.each((chat_box) =>
 				{					
 					const newMessage = (data.attrs.from_muc || data.attrs.from) == chat_box.get("jid") ? data.attrs.message : null;
 					
@@ -1199,7 +1199,7 @@ function setupTimeAgo() {
 }
 
 function renderReactions() {
-	const models = _converse.chatboxes.models;	
+	const models = _converse.state.chatboxes.models;	
 	//console.debug("rections render", models);
 	const msgReactions = new Map();
 
@@ -1345,7 +1345,7 @@ function handleActiveConversations() {
 				return 0;
 			}
 
-			_converse.chatboxes.models.sort(compare).forEach(function (chatbox)
+			_converse.state.chatboxes.models.sort(compare).forEach(function (chatbox)
 			{
 				addActiveConversation(chatbox, activeDiv);
 			});
@@ -1444,7 +1444,7 @@ function addActiveConversation(chatbox, activeDiv, newMessage) {
 					if (type == "groupchat") _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
 				}
 
-				_converse.chatboxes.each(function (chatbox)
+				_converse.state.chatboxes.each(function (chatbox)
 				{
 					const itemId = chatbox.get('box_id');
 					const itemLabel = document.getElementById("pade-active-" + itemId);
@@ -1774,7 +1774,7 @@ function uuidv4() {
 }
 
 function getSelectedChatBox() {
-	var models = _converse.chatboxes.models;
+	var models = _converse.state.chatboxes.models;
 	var view = null;
 
 	console.debug("getSelectedChatBox", models);
@@ -1954,7 +1954,7 @@ function openChat(from, name, groups, closed) {
 	
 function createFeedItem(from_jid) {
 /*	
-	const chatbox = _converse.chatboxes.create({
+	const chatbox = _converse.state.chatboxes.create({
 	  'id': from_jid,
 	  'jid': from_jid,
 	  'type': _converse.HEADLINES_TYPE,

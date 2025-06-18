@@ -539,7 +539,7 @@ function doDefaults(background)
     setDefaultSetting("messageCarbons", true);
     setDefaultSetting("converseAutoStart", true);
     setDefaultSetting("showGroupChatStatusMessages", true);
-    setDefaultSetting("converseTheme", "concord");
+    setDefaultSetting("converseTheme", "classic");
     setDefaultSetting("enableHomePage", true);
     setDefaultSetting("homePageView", "fullscreen");
     setDefaultSetting("homePage", "https://igniterealtime.github.io/openfire-pade-plugin/help");
