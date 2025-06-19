@@ -105,14 +105,12 @@
 		timeago.render(document.querySelectorAll('.chat-msg__time_span'), locale);
 	}	
 
-	function mastodonRefresh()
-	{
-		mastodonFetch("/api/v1/timelines/public");
+	function mastodonRefresh()	{
 		mastodonFetch("/api/v1/timelines/home");		
+		mastodonFetch("/api/v1/timelines/public");		
 	}
 	
-	async function mastodonFetch(path)
-	{
+	async function mastodonFetch(path)	{
 		console.debug("mastodon mastodonRefresh", path);	
 
 		const token = _converse.api.settings.get("mastodon").token;				
