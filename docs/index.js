@@ -1022,7 +1022,7 @@ function setupPadeRoot() {
             {
                 console.debug("chatRoomViewInitialized", view);
 				addPadeUI();
-				//addPadeOccupantsUI(view);											
+				addPadeOccupantsUI(view);											
 			});
 			
             _converse.api.listen.on('chatBoxViewInitialized', function (view)
@@ -1089,15 +1089,14 @@ function setupPadeRoot() {
 
 function addPadeOccupantsUI(view) {
 	const allBadges = document.querySelectorAll(".occupant-badges");	
+	console.debug("addPadeOccupantsUI - occupant element", allBadges);	
 	
 	if (!allBadges || allBadges.length == 0) {
 		setTimeout(() => {
 			addPadeOccupantsUI(view);
 		}, 1000);
 		return;
-	}
-	
-	console.debug("chatRoomViewInitialized - occupant element", allBadges);	
+	}	
 		
 	view.model.occupants.forEach(occupant =>  {	
 		if (!occupant.get('jid')) return;
@@ -1108,8 +1107,8 @@ function addPadeOccupantsUI(view) {
 			const badges = element.querySelector(".occupant-badges");				
 			let padeEle = element.querySelector(".occupants-pade-chat");
 
-			console.debug("chatRoomViewInitialized - occupant", occupant, element, badges, padeEle);	
-			
+			console.debug("addPadeOccupantsUI - occupant", occupant, element, badges, padeEle);	
+/*		
 			let html = "<span data-room-nick='" + occupant.get('nick') + "' data-room-jid='" + occupant.get('jid') + "' title='click to chat' class='badge badge-success'>chat</span>";
 
 			if (_converse.bare_jid == occupant.get('jid'))
@@ -1141,7 +1140,8 @@ function addPadeOccupantsUI(view) {
 					}
 
 				}, false);				
-			}	
+			}
+*/
 		}			
 	});	
 }

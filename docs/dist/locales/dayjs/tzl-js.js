@@ -1,14 +1,2 @@
-(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([["locales/dayjs/tzl-js"],{
-
-/***/ "./node_modules/dayjs/locale/tzl.js":
-/*!******************************************!*\
-  !*** ./node_modules/dayjs/locale/tzl.js ***!
-  \******************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-!function(e,_){ true?module.exports=_(__webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js")):0}(this,(function(e){"use strict";function _(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var t=_(e),a={name:"tzl",weekdays:"Súladi_Lúneçi_Maitzi_Márcuri_Xhúadi_Viénerçi_Sáturi".split("_"),months:"Januar_Fevraglh_Març_Avrïu_Mai_Gün_Julia_Guscht_Setemvar_Listopäts_Noemvar_Zecemvar".split("_"),weekStart:1,weekdaysShort:"Súl_Lún_Mai_Már_Xhú_Vié_Sát".split("_"),monthsShort:"Jan_Fev_Mar_Avr_Mai_Gün_Jul_Gus_Set_Lis_Noe_Zec".split("_"),weekdaysMin:"Sú_Lú_Ma_Má_Xh_Vi_Sá".split("_"),ordinal:function(e){return e},formats:{LT:"HH.mm",LTS:"HH.mm.ss",L:"DD.MM.YYYY",LL:"D. MMMM [dallas] YYYY",LLL:"D. MMMM [dallas] YYYY HH.mm",LLLL:"dddd, [li] D. MMMM [dallas] YYYY HH.mm"}};return t.default.locale(a,null,!0),a}));
-
-/***/ })
-
-}]);
+(self.webpackChunkconverse_js=self.webpackChunkconverse_js||[]).push([["locales/dayjs/tzl-js"],{"./node_modules/dayjs/locale/tzl.js":function(_,e,a){_.exports=function(_){"use strict";var e={name:"tzl",weekdays:"S\xfaladi_L\xfane\xe7i_Maitzi_M\xe1rcuri_Xh\xfaadi_Vi\xe9ner\xe7i_S\xe1turi".split("_"),months:"Januar_Fevraglh_Mar\xe7_Avr\xefu_Mai_G\xfcn_Julia_Guscht_Setemvar_Listop\xe4ts_Noemvar_Zecemvar".split("_"),weekStart:1,weekdaysShort:"S\xfal_L\xfan_Mai_M\xe1r_Xh\xfa_Vi\xe9_S\xe1t".split("_"),monthsShort:"Jan_Fev_Mar_Avr_Mai_G\xfcn_Jul_Gus_Set_Lis_Noe_Zec".split("_"),weekdaysMin:"S\xfa_L\xfa_Ma_M\xe1_Xh_Vi_S\xe1".split("_"),ordinal:function(_){return _},formats:{LT:"HH.mm",LTS:"HH.mm.ss",L:"DD.MM.YYYY",LL:"D. MMMM [dallas] YYYY",LLL:"D. MMMM [dallas] YYYY HH.mm",LLLL:"dddd, [li] D. MMMM [dallas] YYYY HH.mm"}};return(_&&"object"==typeof _&&"default"in _?_:{default:_}).default.locale(e,null,!0),e}(a("./node_modules/dayjs/dayjs.min.js"))}}]);
 //# sourceMappingURL=tzl-js.js.map

@@ -1,14 +1,2 @@
-(self["webpackChunkconverse_js"] = self["webpackChunkconverse_js"] || []).push([["locales/dayjs/tk-js"],{
-
-/***/ "./node_modules/dayjs/locale/tk.js":
-/*!*****************************************!*\
-  !*** ./node_modules/dayjs/locale/tk.js ***!
-  \*****************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-!function(e,n){ true?module.exports=n(__webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js")):0}(this,(function(e){"use strict";function n(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var t=n(e),_={name:"tk",weekdays:"Ýekşenbe_Duşenbe_Sişenbe_Çarşenbe_Penşenbe_Anna_Şenbe".split("_"),weekdaysShort:"Ýek_Duş_Siş_Çar_Pen_Ann_Şen".split("_"),weekdaysMin:"Ýk_Dş_Sş_Çr_Pn_An_Şn".split("_"),months:"Ýanwar_Fewral_Mart_Aprel_Maý_Iýun_Iýul_Awgust_Sentýabr_Oktýabr_Noýabr_Dekabr".split("_"),monthsShort:"Ýan_Few_Mar_Apr_Maý_Iýn_Iýl_Awg_Sen_Okt_Noý_Dek".split("_"),weekStart:1,formats:{LT:"HH:mm",LTS:"HH:mm:ss",L:"DD.MM.YYYY",LL:"D MMMM YYYY",LLL:"D MMMM YYYY HH:mm",LLLL:"dddd, D MMMM YYYY HH:mm"},relativeTime:{future:"%s soň",past:"%s öň",s:"birnäçe sekunt",m:"bir minut",mm:"%d minut",h:"bir sagat",hh:"%d sagat",d:"bir gün",dd:"%d gün",M:"bir aý",MM:"%d aý",y:"bir ýyl",yy:"%d ýyl"},ordinal:function(e){return e+"."}};return t.default.locale(_,null,!0),_}));
-
-/***/ })
-
-}]);
+(self.webpackChunkconverse_js=self.webpackChunkconverse_js||[]).push([["locales/dayjs/tk-js"],{"./node_modules/dayjs/locale/tk.js":function(e,n,_){e.exports=function(e){"use strict";var n={name:"tk",weekdays:"\xddekşenbe_Duşenbe_Sişenbe_\xc7arşenbe_Penşenbe_Anna_Şenbe".split("_"),weekdaysShort:"\xddek_Duş_Siş_\xc7ar_Pen_Ann_Şen".split("_"),weekdaysMin:"\xddk_Dş_Sş_\xc7r_Pn_An_Şn".split("_"),months:"\xddanwar_Fewral_Mart_Aprel_Ma\xfd_I\xfdun_I\xfdul_Awgust_Sent\xfdabr_Okt\xfdabr_No\xfdabr_Dekabr".split("_"),monthsShort:"\xddan_Few_Mar_Apr_Ma\xfd_I\xfdn_I\xfdl_Awg_Sen_Okt_No\xfd_Dek".split("_"),weekStart:1,formats:{LT:"HH:mm",LTS:"HH:mm:ss",L:"DD.MM.YYYY",LL:"D MMMM YYYY",LLL:"D MMMM YYYY HH:mm",LLLL:"dddd, D MMMM YYYY HH:mm"},relativeTime:{future:"%s soň",past:"%s \xf6ň",s:"birn\xe4\xe7e sekunt",m:"bir minut",mm:"%d minut",h:"bir sagat",hh:"%d sagat",d:"bir g\xfcn",dd:"%d g\xfcn",M:"bir a\xfd",MM:"%d a\xfd",y:"bir \xfdyl",yy:"%d \xfdyl"},ordinal:function(e){return e+"."}};return(e&&"object"==typeof e&&"default"in e?e:{default:e}).default.locale(n,null,!0),n}(_("./node_modules/dayjs/dayjs.min.js"))}}]);
 //# sourceMappingURL=tk-js.js.map
