@@ -439,14 +439,17 @@ function loadPlugins() {
 		whitelistedPlugins.push("vmsg");	
 		loadJS("./packages/vmsg/vmsg.js");
 		
-		whitelistedPlugins.push("screencast");	
-		loadJS("./packages/screencast/screencast.js");		
+		whitelistedPlugins.push("screenshare");	
+		loadJS("./packages/screenshare/screenshare.js");		
 
         if (getSetting("enableVoiceChat", false))
         {
             whitelistedPlugins.push("voicechat");
 			loadCSS("./packages/voicechat/voicechat.css");			
             loadJS("./packages/voicechat/voicechat.js");
+			
+			whitelistedPlugins.push("screencast");	
+			loadJS("./packages/screencast/screencast.js");			
         }
 		
 		if (getSetting("enableDirectorySearch", false))

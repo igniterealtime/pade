@@ -3,7 +3,7 @@
 <img src="https://github.com/conversejs/community-plugins/blob/master/packages/screencast/screencast.png" />
 
 ## Overview
-This plugin uses the webrtc desktop capture and media recorder features to perform a screencast session. Please note that this plugin uses the (pre-released) new getDisplayMedia API to obtain desktop/screen video stream without the need for a plugin or browser extenstion.
+This plugin uses WHIP to publish desktop/screen streams to all occupants in a groupchat room and WHEP to enable room occupants subscribe to these published streams. 
 
 ## Install
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
