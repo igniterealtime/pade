@@ -5,6 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
+	let baseMeetUrl;
 	converse.plugins.add("olmeet", { initialize });
 	
 	const MEET_START_OPTIONS = {
@@ -22,7 +23,7 @@
 
 		if (bodyElement) {
 			const body = bodyElement.innerHTML;
-			const url = _converse.api.settings.get("olmeet_url");
+			const url = baseMeetUrl;
 			const pos = body.indexOf(url + "/");
 
 			if (pos > -1) {
@@ -71,19 +72,21 @@
 				
 			if (invite) { 	
 				const uri = invite.querySelector('external').getAttribute("uri");
+				console.debug("online meeting invite", uri);				
 								
 			}
 			else
 				
 			if (accept) {	
 				const id = accept.getAttribute("id");
+				console.debug("online meeting accept", id);					
 								
 			}
 			else
 				
 			if (retract) {	
 				const id = retract.getAttribute("id");
-
+				console.debug("online meeting retract", id);	
 			}	
 		}		
 					
@@ -111,9 +114,9 @@
 
 	function afterMessageBodyTransformed(_converse, text) {
 		const { api, __ } = _converse;
-		const pos = text.indexOf("https://");
+		const pos = text.indexOf(baseMeetUrl);
 
-		if (pos > -1 && text.indexOf(api.settings.get("olmeet_url")) > -1) {
+		if (pos > -1) {
 			console.debug("afterMessageBodyTransformed", text);
 			const { html } = env;
 			const url = text.substring(pos);
@@ -177,7 +180,7 @@
 	function doVideo(_converse, view) {
 		const { api } = _converse;
 		const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, "") + "-" + Math.random().toString(36).substr(2, 9);
-		const url = api.settings.get("olmeet_url") + "/" + room;
+		const url = baseMeetUrl + "/" + room;
 		const model = view.model;
 		console.debug("doVideo", room, url, view, model);
 			
@@ -408,14 +411,10 @@
 				olFrame.contentWindow.addEventListener(
 					"message",
 					function (event) {
-						if (
-							_converse.api.settings
-								.get("olmeet_url")
-								.indexOf(event.origin) === 0 &&
-							typeof event.data === "string"
-						) {
+						if (baseMeetUrl.indexOf(event.origin) === 0 &&	typeof event.data === "string") {
 							let data = JSON.parse(event.data);
 							let olEvent = data["olmeet_event"];
+							
 							if ("close" === olEvent) {
 								closeOnline();
 							}
@@ -426,6 +425,47 @@
 			}
 		} 
 	};
+	
+	async function handleConnected() {	
+		const features = await _converse.api.disco.getFeatures(await _converse.api.connection.get().domain);
+		console.debug("connected features", features);
+		
+		let jitsiAvailable = false;
+		let galeneAvailable = false;
+		let ohunAvailable = false;
+						
+		features.each(feature => {					
+			const fieldname = feature.get('var');
+			console.debug("connected feature", fieldname);	
+			
+			if (fieldname == "urn:xmpp:http:online-meetings#jitsi") jitsiAvailable = true;				
+			if (fieldname == "urn:xmpp:http:online-meetings#galene") galeneAvailable = true;	
+			if (fieldname == "urn:xmpp:http:online-meetings#ohun") ohunAvailable = true;				
+		});	
+		
+		baseMeetUrl = _converse.api.settings.get("olmeet_url");
+		
+		if (jitsiAvailable) {
+			const res = await _converse.api.sendIQ(converse.env.$iq({type: 'get'}).c('query', {type: 'jitsi', xmlns: 'urn:xmpp:http:online-meetings:0'}));				
+			console.debug('handleConnected query jitsi response', res);			
+			baseMeetUrl = res.querySelector('url')?.innerHTML;
+		}
+		else
+			
+		if (galeneAvailable) {
+			const res = await _converse.api.sendIQ(converse.env.$iq({type: 'get'}).c('query', {type: 'galene', xmlns: 'urn:xmpp:http:online-meetings:0'}));				
+			console.debug('handleConnected query galene response', res);			
+			baseMeetUrl = res.querySelector('url')?.innerHTML;
+		}
+		else	
+
+		if (ohunAvailable) {
+			const res = await _converse.api.sendIQ(converse.env.$iq({type: 'get'}).c('query', {type: 'ohun', xmlns: 'urn:xmpp:http:online-meetings:0'}));				
+			console.debug('handleConnected query ohun response', res);			
+			baseMeetUrl = res.querySelector('url')?.innerHTML;
+		}			
+				
+	}
 
 	function initialize() {
 		Strophe = converse.env.Strophe;
@@ -442,6 +482,7 @@
 			olmeet_url: MEET_START_OPTIONS.BASE_URL,
 		});
 
+		api.listen.on('connected', (data) => handleConnected(_converse));
 		api.listen.on("messageNotification", (data) => handleMessageNotification(_converse, data));
 		api.listen.on( "getToolbarButtons", (toolbar_el, buttons) => getToolbarButtons(_converse, toolbar_el, buttons));
 		api.listen.on("afterMessageBodyTransformed", (text) => afterMessageBodyTransformed(_converse, text));
