@@ -448,21 +448,21 @@
 		if (jitsiAvailable) {
 			const res = await _converse.api.sendIQ(converse.env.$iq({type: 'get'}).c('query', {type: 'jitsi', xmlns: 'urn:xmpp:http:online-meetings:0'}));				
 			console.debug('handleConnected query jitsi response', res);			
-			baseMeetUrl = res.querySelector('url')?.innerHTML;
+			if (res.querySelector('url')) baseMeetUrl = res.querySelector('url').innerHTML;
 		}
 		else
 			
 		if (galeneAvailable) {
 			const res = await _converse.api.sendIQ(converse.env.$iq({type: 'get'}).c('query', {type: 'galene', xmlns: 'urn:xmpp:http:online-meetings:0'}));				
 			console.debug('handleConnected query galene response', res);			
-			baseMeetUrl = res.querySelector('url')?.innerHTML;
+			if (res.querySelector('url')) baseMeetUrl = res.querySelector('url').innerHTML;
 		}
 		else	
 
 		if (ohunAvailable) {
 			const res = await _converse.api.sendIQ(converse.env.$iq({type: 'get'}).c('query', {type: 'ohun', xmlns: 'urn:xmpp:http:online-meetings:0'}));				
 			console.debug('handleConnected query ohun response', res);			
-			baseMeetUrl = res.querySelector('url')?.innerHTML;
+			if (res.querySelector('url')) baseMeetUrl = res.querySelector('url').innerHTML;
 		}			
 				
 	}
