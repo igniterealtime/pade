@@ -71,10 +71,10 @@
 												
 						const offer = await pcListen.createOffer();
 						pcListen.setLocalDescription(offer);
-						console.debug('handleStream - whep offer', offer.sdp);					
+						console.debug('whep offer', offer.sdp);					
 
 						const res = await _converse.api.sendIQ(converse.env.$iq({type: 'set'}).c('whep', {key, xmlns: 'urn:xmpp:whep:0'}).c('sdp', offer.sdp));				
-						console.debug('whep set response', res);
+						console.debug('whep response', res);
 						
 						const answer = res.querySelector('sdp').innerHTML;
 						pcListen.setRemoteDescription({sdp: answer,  type: 'answer'});	
@@ -127,10 +127,6 @@
 					if (button) button.style.display = 'none';					
 				}					
 			});	
-
-			_converse.api.listen.on('parseMessage', (stanza, attrs) => {
-				return parseStanza(stanza, attrs);
-			});	
 			
 			_converse.api.listen.on('parseMUCMessage', (stanza, attrs) => {
 				return parseStanza(stanza, attrs);
@@ -140,8 +136,7 @@
         }
 	});	
 	
-    var performScreenCast = function(ev)
-    {
+    function performScreenCast(ev)     {
         ev.stopPropagation();
         ev.preventDefault();
 
@@ -201,7 +196,7 @@
         }
     }
 	
-	var sendStartMessage = function sendMessage() {
+	function sendStartMessage() {
 		const message = "/me started streaming";			
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';	
 		const target = (model.get('type') == 'chatbox') ? model.get('jid') : (model.get('type') == 'chatroom' ? model.get('jid') : model.get('from'));			
@@ -209,7 +204,7 @@
 		_converse.api.send(msg);		
 	}
 	
-	var sendStopMessage = function sendMessage() {
+	function sendStopMessage() {
 		const message = "/me stopped streaming";			
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';	
 		const target = (model.get('type') == 'chatbox') ? model.get('jid') : (model.get('type') == 'chatroom' ? model.get('jid') : model.get('from'));			
@@ -217,8 +212,7 @@
 		_converse.api.send(msg);		
 	}	
 
-    var stopStream = function stopStream()
-    {
+    function stopStream()  {
 		button.classList.remove('blink_me');	
 
 		if (pcSpeak && audioStream) {	
@@ -227,8 +221,7 @@
 		}
     }
 
-    var handleError = function handleError (e)
-    {
+    function handleError(e) {
         console.error("ScreenCast", e)
     }
 	
@@ -238,7 +231,7 @@
 		const occupantEle = stanza.querySelector('occupant-id');	
 		
 		if (!invite && !retract) return attrs;
-		console.debug("parseStanza", stanza, attrs);
+		//console.debug("parseStanza", stanza, attrs);
 
 		let occupant_id;
 		
@@ -249,9 +242,9 @@
 			if (retract) occupant_id = retract.getAttribute("id");
 		}
 		
-		console.debug("parseStanza occupant", occupant_id, occupantId);		
+		//console.debug("parseStanza occupant", occupant_id, occupantId);		
 		
-		if (occupant_id) {		
+		if (occupant_id && attrs.from_muc) {		
 			const view = _converse.chatboxviews.get(attrs.from_muc);			
 			const element = document.getElementById(occupant_id);
 			
@@ -263,7 +256,7 @@
 				const badges = element.querySelector(".occupant-badges");				
 				let padeEle = element.querySelector(".occupants-pade-chat");
 				
-				console.debug("parseStanza - occupant element", badges, padeEle, occupant, ocId);
+				//console.debug("parseStanza - occupant element", badges, padeEle, occupant, ocId);
 
 				const html = "<span data-room-nick='" + occupant.get('nick') + "' data-stream-key='" + ocId + "' class='badge badge-groupchat' title='" + __("Screen/Desktop Share") + "'>SS</span>";
 				
@@ -281,7 +274,7 @@
 							
 							const key = ev.target.getAttribute('data-stream-key');							
 							const nick = ev.target.getAttribute('data-room-nick');								
-							console.debug("parseStanza stream click", key, nick);
+							//console.debug("parseStanza stream click", key, nick);
 
 							const modalModel = new converse.env.Model();
 							modalModel.set({ key, nick});

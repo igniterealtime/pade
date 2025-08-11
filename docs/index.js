@@ -428,6 +428,9 @@ function loadPlugins() {
 		whitelistedPlugins.push("olmeet");
 		loadJS("./packages/olmeet/olmeet.js");
 		
+		whitelistedPlugins.push("talk");
+		loadJS("./packages/talk/talk.js");
+		
 		whitelistedPlugins.push("search");
 		loadCSS("./packages/search/search.css");
 		loadJS("./packages/search/jspdf.debug.js");		
@@ -781,7 +784,7 @@ function startConverse(credential) {
 			check: getSetting("mastodonFeedCheck", 30),	
 			title: getSetting("mastodonFeedTitle", "Mastodon Feed")
 		},		
-		visible_toolbar_buttons: {'emoji': true, 'call': getSetting("enableRayo", false), 'clear': true },
+		visible_toolbar_buttons: {'emoji': true, 'call': true, 'clear': true },
 		websocket_url: getSetting("useWebsocket", false) ? wsServiceUrl : undefined,		
 		whitelisted_plugins: whitelistedPlugins		
 	}
@@ -1040,8 +1043,8 @@ function setupPadeRoot() {
 				addPadeUI();
 				const activeDiv = document.getElementById("active-conversations");
 				if (activeDiv) removeActiveConversation(chatbox, activeDiv);
-			});			
-			
+			});	
+
 			_converse.api.listen.on('message', (data) => {			
 				let count = 0;
 				if (!data.attrs.message) return;
