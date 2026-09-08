@@ -1,2 +1,0 @@
-(self.webpackChunkconverse_js=self.webpackChunkconverse_js||[]).push([["locales/dayjs/en-js"],{"./node_modules/dayjs/locale/en.js":function(e){e.exports={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_"),ordinal:function(e){var a=["th","st","nd","rd"],s=e%100;return"["+e+(a[(s-20)%10]||a[s]||a[0])+"]"}}}}]);
-//# sourceMappingURL=en-js.js.map
